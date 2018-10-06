@@ -18,7 +18,11 @@ class Game extends PIXI.Application {
 
     this.resize();
     this.manager.show(TITLE);
-    this.ticker.add(this.manager.loop.bind(this));
+    this.ticker.add(this.loop.bind(this));
+  }
+
+  loop(delta) {
+    this.manager.loop(delta);
   }
 
   resize() {

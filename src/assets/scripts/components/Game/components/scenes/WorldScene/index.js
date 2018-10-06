@@ -13,6 +13,15 @@ class WorldScene extends Scene {
   }
 
   create() {
+
+  }
+
+  update(delta) {
+
+  }
+
+  render() {
+
   }
 }
 

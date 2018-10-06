@@ -14,6 +14,14 @@ class CreditsScene extends Scene {
   create(resources) {
 
   }
+
+  update(delta) {
+
+  }
+
+  render() {
+
+  }
 }
 
 export default CreditsScene;

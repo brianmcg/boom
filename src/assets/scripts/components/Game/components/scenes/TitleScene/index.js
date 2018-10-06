@@ -19,6 +19,14 @@ class TitleScene extends Scene {
     this.sprites.forEach(sprite => this.addChild(sprite));
     this.events.emit(SCENE_PASS, TITLE);
   }
+
+  update(delta) {
+
+  }
+
+  render() {
+
+  }
 }
 
 export default TitleScene;
