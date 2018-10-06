@@ -2,18 +2,18 @@
 import Scene from '../../../../Scene';
 import { SPRITE_SHEETS } from '../../../constants/paths';
 import { WORLD } from '../../../constants/scene-types';
+import { SCENE_PASS, SCENE_FAIL, SCENE_QUIT } from '../../../constants/event-types';
 
-class SplashScene extends Scene {
+class WorldScene extends Scene {
   constructor(props) {
     super(props);
-    this.props.assets = [
+    this.assets = [
       ['spritesheet', `${SPRITE_SHEETS}/${WORLD}-${props.index}.json`],
     ];
   }
 
-  create(resources) {
-    console.log('create', resources);
+  create() {
   }
 }
 
-export default SplashScene;
+export default WorldScene;

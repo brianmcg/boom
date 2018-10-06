@@ -3,15 +3,14 @@ import * as PIXI from 'pixi.js';
 class Scene extends PIXI.Container {
   constructor(props = {}) {
     super();
-    this.props = props;
+    this.isRunning = false;
+    Object.assign(this, props);
   }
 
   load() {
-    const { assets, loader } = this.props;
-
     return new Promise((resolve) => {
-      assets.forEach(asset => loader.add(...asset));
-      loader.load(this.onLoad.bind(this, resolve));
+      this.assets.forEach(asset => this.loader.add(...asset));
+      this.loader.load(this.onLoad.bind(this, resolve));
     });
   }
 
@@ -22,6 +21,14 @@ class Scene extends PIXI.Container {
 
   resize(scale = 1) {
     this.scale = { x: scale, y: scale };
+  }
+
+  start() {
+    this.isRunning = true;
+  }
+
+  pause() {
+    this.isRunning = false;
   }
 }
 

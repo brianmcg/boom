@@ -3,6 +3,16 @@ import Game from './components/Game';
 
 const game = new Game();
 
-document.addEventListener('DOMContentLoaded', document.body.append(game.view));
+let resizeTimer;
 
-window.addEventListener('resize', game.resize());
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.append(game.view);
+  game.start();
+});
+
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    game.resize();
+  }, 200);
+});
