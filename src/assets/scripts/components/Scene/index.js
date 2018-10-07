@@ -14,6 +14,10 @@ class Scene extends PIXI.Container {
     });
   }
 
+  create() {
+    this.input.enable();
+  }
+
   onLoad(resolve, loader, resources) {
     this.create(resources);
     resolve(this);

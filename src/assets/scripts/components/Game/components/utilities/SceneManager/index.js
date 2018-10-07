@@ -2,18 +2,21 @@ import * as PIXI from 'pixi.js';
 import TitleScene from '../../scenes/TitleScene';
 import WorldScene from '../../scenes/WorldScene';
 import CreditsScene from '../../scenes/CreditsScene';
+import Player from '../../entities/Player';
+import Input from '../Input';
 import { TITLE, WORLD, CREDITS } from '../../../constants/scene-types';
 import { NUM_LEVELS } from '../../../constants/config';
 import { SCENE_PASS, SCENE_FAIL, SCENE_QUIT } from '../../../constants/event-types';
 
 class SceneManager {
   constructor(props) {
+    this.player = new Player();
     this.scenes = {
       [TITLE]: TitleScene,
       [WORLD]: WorldScene,
       [CREDITS]: CreditsScene,
     };
-
+    this.input = new Input();
     this.events = new PIXI.utils.EventEmitter();
     this.events.on(SCENE_PASS, this.onScenePass.bind(this));
     this.events.on(SCENE_FAIL, this.onSceneFail.bind(this));
@@ -67,8 +70,10 @@ class SceneManager {
 
     this.scene = new this.scenes[sceneType]({
       index,
+      player: this.player,
       loader: this.loader,
       events: this.events,
+      input: this.input,
     });
 
     this.scene.load().then(() => {

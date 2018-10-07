@@ -14,5 +14,5 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     game.resize();
-  }, 200);
+  }, 20);
 });
