@@ -33,6 +33,7 @@
         "webpack-merge": "^4.1.1"
     },
     "dependencies": {
+        "@pixi/filter-pixelate": "^2.5.0",
         "pixi.js": "^4.8.2"
     },
     "scripts": {

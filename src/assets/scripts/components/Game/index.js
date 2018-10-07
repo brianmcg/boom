@@ -1,8 +1,12 @@
 import * as PIXI from 'pixi.js';
-import SceneManager from './components/utilities/SceneManager';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from './constants/config';
-import { TITLE } from './constants/scene-types';
+import TitleScene from './components/scenes/TitleScene';
+import WorldScene from './components/scenes/WorldScene';
+import CreditsScene from './components/scenes/CreditsScene';
+import Input from './components/utilities/Input';
 import { BLACK } from './constants/colors';
+import { TITLE, WORLD, CREDITS } from './constants/scene-types';
+import { SCREEN_WIDTH, SCREEN_HEIGHT, NUM_LEVELS } from './constants/config';
+import { SCENE_COMPLETE, SCENE_RESTART, SCENE_QUIT } from './constants/scene-events';
 
 class Game extends PIXI.Application {
   constructor() {
@@ -11,26 +15,95 @@ class Game extends PIXI.Application {
       autoStart: false,
     });
 
-    this.manager = new SceneManager({
-      loader: this.loader,
-      stage: this.stage,
-    });
+    this.scenes = {
+      [TITLE]: TitleScene,
+      [WORLD]: WorldScene,
+      [CREDITS]: CreditsScene,
+    };
+    this.input = new Input();
+    this.events = new PIXI.utils.EventEmitter();
+    this.events.on(SCENE_COMPLETE, this.onSceneComplete.bind(this));
+    this.events.on(SCENE_RESTART, this.onSceneRestart.bind(this));
+    this.events.on(SCENE_QUIT, this.onSceneQuit.bind(this));
 
     this.resize();
-    this.manager.show(TITLE);
+
+    this.show(TITLE);
     this.ticker.add(this.loop.bind(this));
   }
 
+  onSceneComplete(type, index) {
+    switch (type) {
+      case TITLE:
+        this.show(WORLD, 0);
+        break;
+      case WORLD:
+        if (index < NUM_LEVELS) {
+          this.show(WORLD, index + 1);
+        } else {
+          this.show(CREDITS);
+        }
+        break;
+      default: {
+        this.show(TITLE);
+      }
+    }
+  }
+
+  onSceneRestart(type, index) {
+    this.show(type, index);
+  }
+
+  onSceneQuit(type) {
+    switch (type) {
+      case TITLE:
+        this.show(null);
+        break;
+      default: {
+        this.show(TITLE);
+      }
+    }
+  }
+
+  show(sceneType, index = 0) {
+    const Scene = this.scenes[sceneType];
+    const scaleFactor = Game.getScaleFactor();
+
+    if (this.scene) {
+      this.scene.destroy(true);
+      this.loader.reset();
+      Game.clearCache();
+    }
+
+    if (Scene) {
+      this.scene = new Scene({
+        index,
+        loader: this.loader,
+        events: this.events,
+        input: this.input,
+        scale: {
+          x: scaleFactor,
+          y: scaleFactor,
+        },
+      });
+
+      this.scene.load().then(() => {
+        this.stage.addChild(this.scene);
+      });
+    }
+  }
+
   loop(delta) {
-    this.manager.loop(delta);
+    if (this.scene) {
+      this.scene.update(delta);
+      this.scene.render();
+    }
   }
 
   resize() {
-    const widthRatio = window.innerWidth / SCREEN_WIDTH;
-    const heightRatio = window.innerHeight / SCREEN_HEIGHT;
-    const scale = Math.floor(Math.min(widthRatio, heightRatio)) || 1;
-    const scaledWidth = SCREEN_WIDTH * scale;
-    const scaledHeight = SCREEN_HEIGHT * scale;
+    const scaleFactor = Game.getScaleFactor();
+    const scaledWidth = SCREEN_WIDTH * scaleFactor;
+    const scaledHeight = SCREEN_HEIGHT * scaleFactor;
 
     this.renderer.view.style.width = `${scaledWidth}px`;
     this.renderer.view.style.height = `${scaledHeight}px`;
@@ -40,7 +113,25 @@ class Game extends PIXI.Application {
     this.renderer.view.style.margin = `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`;
     this.renderer.resize(scaledWidth, scaledHeight);
 
-    this.manager.resize(scale);
+    if (this.scene) {
+      this.scene.resize({ x: scaleFactor, y: scaleFactor });
+    }
+  }
+
+  static clearCache() {
+    const { TextureCache } = PIXI.utils;
+
+    Object.keys(TextureCache).forEach((key) => {
+      if (TextureCache[key]) {
+        TextureCache[key].destroy(true);
+      }
+    });
+  }
+
+  static getScaleFactor() {
+    const widthRatio = window.innerWidth / SCREEN_WIDTH;
+    const heightRatio = window.innerHeight / SCREEN_HEIGHT;
+    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
   }
 }
 

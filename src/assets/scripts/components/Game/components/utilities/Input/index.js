@@ -24,7 +24,7 @@ class Input {
   onKey(pressed, event) {
     const state = KEY_HASHMAP[event.keyCode];
 
-    if (!state || !this.isEnabled) {
+    if (!state || !this.enabled) {
       return;
     }
 
@@ -41,14 +41,6 @@ class Input {
 
   isKeyPressed(key) {
     return this.keys[key];
-  }
-
-  enable() {
-    this.isEnabled = true;
-  }
-
-  disabled() {
-    this.isEnabled = false;
   }
 }
 

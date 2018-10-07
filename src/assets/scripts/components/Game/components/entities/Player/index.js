@@ -5,10 +5,6 @@ class Player extends Character {
     super(props);
     Object.assign(this, { speed: 10 }, props);
   }
-
-  input() {
-
-  }
 }
 
 export default Player;

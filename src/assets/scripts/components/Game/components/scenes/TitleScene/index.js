@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js';
-import Scene from '../../../../Scene';
+import Scene from '../Scene';
 import { SPRITE_SHEETS } from '../../../constants/paths';
 import { TITLE } from '../../../constants/scene-types';
-import { SCENE_PASS } from '../../../constants/event-types';
+import { SCENE_COMPLETE } from '../../../constants/scene-events';
+import { FADING_OUT } from '../../../constants/scene-states';
 
 class TitleScene extends Scene {
   constructor(props) {
@@ -17,21 +18,24 @@ class TitleScene extends Scene {
   }
 
   create(resources) {
-    super.create();
-
     const { textures } = resources.spritesheet;
 
     this.sprites = Object.keys(textures).map(texture => new PIXI.Sprite(textures[texture]));
     this.sprites.forEach(sprite => this.addChild(sprite));
+
+    super.create();
   }
 
-  update() {
+  updateRunning() {
     if (this.input.isKeyPressed(this.input.SPACE)) {
-      this.events.emit(SCENE_PASS, this.type);
+      this.setStatus(SCENE_COMPLETE);
+      this.setState(FADING_OUT);
     }
   }
 
-  render() {} // eslint-disable-line
+  render() {
+    super.render();
+  }
 }
 
 export default TitleScene;

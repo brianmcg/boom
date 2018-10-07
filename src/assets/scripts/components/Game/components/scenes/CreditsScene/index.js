@@ -1,7 +1,7 @@
-import Scene from '../../../../Scene';
+import Scene from '../Scene';
 import { SPRITE_SHEETS } from '../../../constants/paths';
 import { CREDITS } from '../../../constants/scene-types';
-import { SCENE_PASS } from '../../../constants/event-types'; // eslint-disable-line
+import { SCENE_COMPLETE } from '../../../constants/scene-events'; // eslint-disable-line
 
 class CreditsScene extends Scene {
   constructor(props) {
@@ -14,12 +14,6 @@ class CreditsScene extends Scene {
       ],
     });
   }
-
-  create(resources) {} // eslint-disable-line
-
-  update(delta) {} // eslint-disable-line
-
-  render() {} // eslint-disable-line
 }
 
 export default CreditsScene;

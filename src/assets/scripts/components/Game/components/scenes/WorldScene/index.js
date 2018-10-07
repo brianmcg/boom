@@ -1,7 +1,6 @@
-import Scene from '../../../../Scene';
+import Scene from '../Scene';
 import { SPRITE_SHEETS } from '../../../constants/paths';
 import { WORLD } from '../../../constants/scene-types';
-import { SCENE_PASS, SCENE_FAIL, SCENE_QUIT } from '../../../constants/event-types'; // eslint-disable-line
 
 class WorldScene extends Scene {
   constructor(props) {
@@ -15,11 +14,13 @@ class WorldScene extends Scene {
     });
   }
 
-  create() {} // eslint-disable-line
+  create() {
+    super.create();
+  }
 
-  update(delta) {} // eslint-disable-line
-
-  render() {} // eslint-disable-line
+  render() {
+    super.render();
+  }
 }
 
 export default WorldScene;
