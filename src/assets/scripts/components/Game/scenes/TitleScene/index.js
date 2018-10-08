@@ -1,0 +1,39 @@
+import { PATHS } from '../../constants/config';
+import { Scene, Sprite } from '../../components/Graphics';
+
+class TitleScene extends Scene {
+  constructor(props) {
+    super(props);
+
+    Object.assign(this, {
+      type: Scene.TYPES.TITLE,
+      assets: [
+        ['spritesheet', `${PATHS.SPRITE_SHEETS}/${Scene.TYPES.TITLE}.json`],
+      ],
+    });
+  }
+
+  create(resources) {
+    const { textures } = resources.spritesheet;
+
+    this.sprites = Object.keys(textures).map(texture => new Sprite(textures[texture]));
+    this.sprites.forEach(sprite => this.addChild(sprite));
+
+    super.create();
+  }
+
+  updateRunning() {
+    super.updateRunning();
+
+    if (this.input.isKeyPressed(this.input.KEYS.SPACE)) {
+      this.setStatus(Scene.EVENTS.SCENE_COMPLETE);
+      this.setState(Scene.STATES.FADING_OUT);
+    }
+  }
+
+  render() {
+    super.render();
+  }
+}
+
+export default TitleScene;

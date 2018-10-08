@@ -19,3 +19,8 @@ export const SCREEN_HEIGHT = 200;
  * @type {Number}
  */
 export const NUM_LEVELS = 2;
+
+export const PATHS = {
+  SPRITE_SHEETS: 'assets/media/spritesheets',
+  MAPS: 'assets/media/maps',
+};

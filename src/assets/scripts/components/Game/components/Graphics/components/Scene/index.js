@@ -1,27 +1,28 @@
 import * as PIXI from 'pixi.js';
-import SCENE_FILTERS, {
-  COLOR_MATRIX_INDEX,
-  MAX_PIXEL_SIZE,
-  MIN_PIXEL_SIZE,
-  PAUSE_PIXEL_SIZE,
-  PIXEL_INCREMEMENT,
-  PIXELATE_INDEX,
-} from '../../../constants/filters';
-import {
-  LOADING,
-  FADING_IN,
-  FADING_OUT,
-  PAUSED,
-  RUNNING,
-  STOPPED,
-} from '../../../constants/scene-states';
+import { PixelateFilter } from '@pixi/filter-pixelate';
+import { STATES, EVENTS, TYPES } from './constants';
+
+const MAX_PIXEL_SIZE = 100;
+
+const PIXEL_INCREMEMENT = 2;
+
+const MIN_PIXEL_SIZE = 1;
+
+const PIXELATE_INDEX = 0;
+
+const COLOR_MATRIX_INDEX = 1;
+
+const PAUSE_PIXEL_SIZE = 4;
 
 class Scene extends PIXI.Container {
   constructor(props = {}) {
     super();
 
-    this.state = LOADING;
-    this.filters = SCENE_FILTERS;
+    this.state = STATES.LOADING;
+    this.filters = [
+      new PixelateFilter(MAX_PIXEL_SIZE),
+      new PIXI.filters.ColorMatrixFilter(),
+    ];
 
     Object.assign(this, props);
   }
@@ -39,28 +40,28 @@ class Scene extends PIXI.Container {
   }
 
   create() {
-    this.setState(FADING_IN);
+    this.setState(STATES.FADING_IN);
     this.pixelSize = MAX_PIXEL_SIZE * this.scale.x;
   }
 
   update(delta) {
     switch (this.state) {
-      case LOADING:
+      case STATES.LOADING:
         this.updateLoading(delta);
         break;
-      case FADING_IN:
+      case STATES.FADING_IN:
         this.updateFadeIn(delta);
         break;
-      case FADING_OUT:
+      case STATES.FADING_OUT:
         this.updateFadeOut(delta);
         break;
-      case PAUSED:
+      case STATES.PAUSED:
         this.updatePaused(delta);
         break;
-      case RUNNING:
+      case STATES.RUNNING:
         this.updateRunning(delta);
         break;
-      case STOPPED:
+      case STATES.STOPPED:
         this.updateStopped();
         break;
       default:
@@ -75,7 +76,7 @@ class Scene extends PIXI.Container {
 
     if (this.pixelSize < MIN_PIXEL_SIZE) {
       this.pixelSize = MIN_PIXEL_SIZE;
-      this.setState(RUNNING);
+      this.setState(STATES.RUNNING);
     }
   }
 
@@ -86,21 +87,21 @@ class Scene extends PIXI.Container {
 
     if (this.pixelSize > maxPixelSize) {
       this.pixelSize = maxPixelSize;
-      this.setState(STOPPED);
+      this.setState(STATES.STOPPED);
     }
   }
 
   updatePaused() {
     this.pixelSize = PAUSE_PIXEL_SIZE * this.scale.x;
 
-    if (this.input.isKeyPressed(this.input.ESC)) {
-      this.setState(RUNNING);
+    if (this.input.isKeyPressed(this.input.KEYS.ESC)) {
+      this.setState(STATES.RUNNING);
     }
   }
 
   updateRunning() {
-    if (this.input.isKeyPressed(this.input.ESC)) {
-      this.setState(PAUSED);
+    if (this.input.isKeyPressed(this.input.KEYS.ESC)) {
+      this.setState(STATES.PAUSED);
     }
   }
 
@@ -117,45 +118,45 @@ class Scene extends PIXI.Container {
   }
 
   resize(scale) {
-    if (this.state !== STOPPED) {
+    if (this.state !== STATES.STOPPED) {
       this.scale = scale;
     }
   }
 
   stop() {
-    this.setState(FADING_OUT);
+    this.setState(STATES.FADING_OUT);
   }
 
   setState(state) {
     if (this.state !== state) {
       switch (state) {
-        case LOADING:
+        case STATES.LOADING:
           this.input.enabled = false;
           this.filters[PIXELATE_INDEX].enabled = false;
           this.filters[COLOR_MATRIX_INDEX].enabled = false;
           break;
-        case FADING_IN:
+        case STATES.FADING_IN:
           this.input.enabled = false;
           this.filters[PIXELATE_INDEX].enabled = true;
           this.filters[COLOR_MATRIX_INDEX].enabled = false;
           break;
-        case FADING_OUT:
+        case STATES.FADING_OUT:
           this.input.enabled = false;
           this.filters[PIXELATE_INDEX].enabled = true;
           this.filters[COLOR_MATRIX_INDEX].enabled = false;
           break;
-        case PAUSED:
+        case STATES.PAUSED:
           this.input.enabled = true;
           this.filters[PIXELATE_INDEX].enabled = true;
           this.filters[COLOR_MATRIX_INDEX].enabled = true;
           this.filters[COLOR_MATRIX_INDEX].desaturate();
           break;
-        case RUNNING:
+        case STATES.RUNNING:
           this.input.enabled = true;
           this.filters[PIXELATE_INDEX].enabled = false;
           this.filters[COLOR_MATRIX_INDEX].enabled = false;
           break;
-        case STOPPED:
+        case STATES.STOPPED:
           this.input.enabled = false;
           this.filters[PIXELATE_INDEX].enabled = true;
           this.filters[COLOR_MATRIX_INDEX].enabled = false;
@@ -170,6 +171,18 @@ class Scene extends PIXI.Container {
 
   setStatus(status) {
     this.status = status;
+  }
+
+  static get TYPES() {
+    return TYPES;
+  }
+
+  static get STATES() {
+    return STATES;
+  }
+
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

@@ -1,14 +1,12 @@
-import * as PIXI from 'pixi.js';
-import TitleScene from './components/scenes/TitleScene';
-import WorldScene from './components/scenes/WorldScene';
-import CreditsScene from './components/scenes/CreditsScene';
-import Input from './components/utilities/Input';
+import Graphics, { Application, Scene } from './components/Graphics';
+import Input from './components/Input';
+import TitleScene from './scenes/TitleScene';
+import WorldScene from './scenes/WorldScene';
+import CreditsScene from './scenes/CreditsScene';
 import { BLACK } from './constants/colors';
-import { TITLE, WORLD, CREDITS } from './constants/scene-types';
 import { SCREEN_WIDTH, SCREEN_HEIGHT, NUM_LEVELS } from './constants/config';
-import { SCENE_COMPLETE, SCENE_RESTART, SCENE_QUIT } from './constants/scene-events';
 
-class Game extends PIXI.Application {
+class Game extends Application {
   constructor() {
     super(SCREEN_WIDTH, SCREEN_HEIGHT, {
       backgroundColor: BLACK,
@@ -16,33 +14,32 @@ class Game extends PIXI.Application {
     });
 
     this.scenes = {
-      [TITLE]: TitleScene,
-      [WORLD]: WorldScene,
-      [CREDITS]: CreditsScene,
+      [Scene.TYPES.TITLE]: TitleScene,
+      [Scene.TYPES.WORLD]: WorldScene,
+      [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
     this.input = new Input();
 
-    this.ticker.add(this.loop.bind(this));
-
     this.resize();
-    this.show(TITLE);
+
+    this.show(Scene.TYPES.TITLE);
   }
 
   onSceneComplete(type, index) {
     switch (type) {
-      case TITLE:
-        this.show(WORLD, 0);
+      case Scene.TYPES.TITLE:
+        this.show(Scene.TYPES.WORLD, 0);
         break;
-      case WORLD:
+      case Scene.TYPES.WORLD:
         if (index < NUM_LEVELS) {
-          this.show(WORLD, index + 1);
+          this.show(Scene.TYPES.WORLD, index + 1);
         } else {
-          this.show(CREDITS);
+          this.show(Scene.TYPES.CREDITS);
         }
         break;
       default: {
-        this.show(TITLE);
+        this.show(Scene.TYPES.TITLE);
       }
     }
   }
@@ -53,27 +50,27 @@ class Game extends PIXI.Application {
 
   onSceneQuit(type) {
     switch (type) {
-      case TITLE:
+      case Scene.TYPES.TITLE:
         this.show(null);
         break;
       default: {
-        this.show(TITLE);
+        this.show(Scene.TYPES.TITLE);
       }
     }
   }
 
   show(type, index = 0) {
-    const Scene = this.scenes[type];
+    const SceneType = this.scenes[type];
     const scaleFactor = Game.getScaleFactor();
 
     if (this.scene) {
       this.scene.destroy(true);
       this.loader.reset();
-      Game.clearCache();
+      Graphics.clearCache();
     }
 
-    if (Scene) {
-      this.scene = new Scene({
+    if (SceneType) {
+      this.scene = new SceneType({
         index,
         loader: this.loader,
         input: this.input,
@@ -84,9 +81,9 @@ class Game extends PIXI.Application {
         },
       });
 
-      this.scene.on(SCENE_COMPLETE, this.onSceneComplete.bind(this));
-      this.scene.on(SCENE_RESTART, this.onSceneRestart.bind(this));
-      this.scene.on(SCENE_QUIT, this.onSceneQuit.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.onSceneComplete.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_RESTART, this.onSceneRestart.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_QUIT, this.onSceneQuit.bind(this));
 
       this.scene.load().then(() => {
         this.stage.addChild(this.scene);
@@ -119,16 +116,6 @@ class Game extends PIXI.Application {
     if (this.scene) {
       this.scene.resize({ x: scaleFactor, y: scaleFactor });
     }
-  }
-
-  static clearCache() {
-    const { TextureCache } = PIXI.utils;
-
-    Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key]) {
-        TextureCache[key].destroy(true);
-      }
-    });
   }
 
   static getScaleFactor() {
