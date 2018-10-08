@@ -11,7 +11,7 @@ export const PIXELATE_INDEX = 0;
 
 export const COLOR_MATRIX_INDEX = 1;
 
-export const PAUSE_PIXEL_SIZE = 2;
+export const PAUSE_PIXEL_SIZE = 4;
 
 export default [
   new PixelateFilter(MAX_PIXEL_SIZE),

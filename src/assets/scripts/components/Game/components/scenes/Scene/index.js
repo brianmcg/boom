@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import SCENE_FILTERS, {
+  COLOR_MATRIX_INDEX,
   MAX_PIXEL_SIZE,
   MIN_PIXEL_SIZE,
   PAUSE_PIXEL_SIZE,
@@ -89,17 +90,25 @@ class Scene extends PIXI.Container {
     }
   }
 
-  updatePaused(delta) {
-    this.pixelSize = PAUSE_PIXEL_SIZE * this.scale.x * delta;
+  updatePaused() {
+    this.pixelSize = PAUSE_PIXEL_SIZE * this.scale.x;
+
+    if (this.input.isKeyPressed(this.input.ESC)) {
+      this.setState(RUNNING);
+    }
   }
 
-  updateRunning() {} // eslint-disable-line
+  updateRunning() {
+    if (this.input.isKeyPressed(this.input.ESC)) {
+      this.setState(PAUSED);
+    }
+  }
 
   updateStopped() {
     this.removeChildren();
 
     if (this.status) {
-      this.events.emit(this.status, this.type);
+      this.emit(this.status, this.type);
     }
   }
 
@@ -118,36 +127,45 @@ class Scene extends PIXI.Container {
   }
 
   setState(state) {
-    switch (state) {
-      case LOADING:
-        this.input.enabled = false;
-        this.filters[PIXELATE_INDEX].enabled = false;
-        break;
-      case FADING_IN:
-        this.input.enabled = false;
-        this.filters[PIXELATE_INDEX].enabled = true;
-        break;
-      case FADING_OUT:
-        this.input.enabled = false;
-        this.filters[PIXELATE_INDEX].enabled = true;
-        break;
-      case PAUSED:
-        this.input.enabled = true;
-        this.filters[PIXELATE_INDEX].enabled = true;
-        break;
-      case RUNNING:
-        this.input.enabled = true;
-        this.filters[PIXELATE_INDEX].enabled = false;
-        break;
-      case STOPPED:
-        this.input.enabled = false;
-        this.filters[PIXELATE_INDEX].enabled = true;
-        break;
-      default:
-        break;
-    }
+    if (this.state !== state) {
+      switch (state) {
+        case LOADING:
+          this.input.enabled = false;
+          this.filters[PIXELATE_INDEX].enabled = false;
+          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          break;
+        case FADING_IN:
+          this.input.enabled = false;
+          this.filters[PIXELATE_INDEX].enabled = true;
+          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          break;
+        case FADING_OUT:
+          this.input.enabled = false;
+          this.filters[PIXELATE_INDEX].enabled = true;
+          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          break;
+        case PAUSED:
+          this.input.enabled = true;
+          this.filters[PIXELATE_INDEX].enabled = true;
+          this.filters[COLOR_MATRIX_INDEX].enabled = true;
+          this.filters[COLOR_MATRIX_INDEX].desaturate();
+          break;
+        case RUNNING:
+          this.input.enabled = true;
+          this.filters[PIXELATE_INDEX].enabled = false;
+          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          break;
+        case STOPPED:
+          this.input.enabled = false;
+          this.filters[PIXELATE_INDEX].enabled = true;
+          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          break;
+        default:
+          break;
+      }
 
-    this.state = state;
+      this.state = state;
+    }
   }
 
   setStatus(status) {

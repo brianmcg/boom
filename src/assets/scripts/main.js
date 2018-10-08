@@ -1,9 +1,9 @@
 import '../styles/sass.scss';
 import Game from './components/Game';
 
-const game = new Game();
+let resizeTimer = null;
 
-let resizeTimer;
+const game = new Game();
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.append(game.view);
@@ -12,7 +12,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    game.resize();
-  }, 20);
+  resizeTimer = setTimeout(game.resize(), 20);
 });

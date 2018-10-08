@@ -1,7 +1,7 @@
 import Scene from '../Scene';
 import { SPRITE_SHEETS } from '../../../constants/paths';
 import { CREDITS } from '../../../constants/scene-types';
-import { SCENE_COMPLETE } from '../../../constants/scene-events'; // eslint-disable-line
+import { SCENE_COMPLETE } from '../../../constants/scene-events';
 
 class CreditsScene extends Scene {
   constructor(props) {

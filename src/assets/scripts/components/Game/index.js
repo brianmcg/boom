@@ -20,16 +20,13 @@ class Game extends PIXI.Application {
       [WORLD]: WorldScene,
       [CREDITS]: CreditsScene,
     };
+
     this.input = new Input();
-    this.events = new PIXI.utils.EventEmitter();
-    this.events.on(SCENE_COMPLETE, this.onSceneComplete.bind(this));
-    this.events.on(SCENE_RESTART, this.onSceneRestart.bind(this));
-    this.events.on(SCENE_QUIT, this.onSceneQuit.bind(this));
+
+    this.ticker.add(this.loop.bind(this));
 
     this.resize();
-
     this.show(TITLE);
-    this.ticker.add(this.loop.bind(this));
   }
 
   onSceneComplete(type, index) {
@@ -65,8 +62,8 @@ class Game extends PIXI.Application {
     }
   }
 
-  show(sceneType, index = 0) {
-    const Scene = this.scenes[sceneType];
+  show(type, index = 0) {
+    const Scene = this.scenes[type];
     const scaleFactor = Game.getScaleFactor();
 
     if (this.scene) {
@@ -79,13 +76,17 @@ class Game extends PIXI.Application {
       this.scene = new Scene({
         index,
         loader: this.loader,
-        events: this.events,
         input: this.input,
+        ticker: this.ticker,
         scale: {
           x: scaleFactor,
           y: scaleFactor,
         },
       });
+
+      this.scene.on(SCENE_COMPLETE, this.onSceneComplete.bind(this));
+      this.scene.on(SCENE_RESTART, this.onSceneRestart.bind(this));
+      this.scene.on(SCENE_QUIT, this.onSceneQuit.bind(this));
 
       this.scene.load().then(() => {
         this.stage.addChild(this.scene);
@@ -98,6 +99,8 @@ class Game extends PIXI.Application {
       this.scene.update(delta);
       this.scene.render();
     }
+
+    this.input.update();
   }
 
   resize() {
