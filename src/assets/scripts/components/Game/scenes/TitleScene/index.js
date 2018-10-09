@@ -25,7 +25,7 @@ class TitleScene extends Scene {
   updateRunning() {
     super.updateRunning();
 
-    if (this.input.isKeyPressed(this.input.KEYS.SPACE)) {
+    if (this.keyboard.isPressed(this.keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.SCENE_COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }

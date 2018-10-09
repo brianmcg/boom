@@ -1,18 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
-import { STATES, EVENTS, TYPES } from './constants';
-
-const MAX_PIXEL_SIZE = 100;
-
-const PIXEL_INCREMEMENT = 2;
-
-const MIN_PIXEL_SIZE = 1;
-
-const PIXELATE_INDEX = 0;
-
-const COLOR_MATRIX_INDEX = 1;
-
-const PAUSE_PIXEL_SIZE = 4;
+import {
+  STATES,
+  EVENTS,
+  TYPES,
+  PIXEL,
+} from './constants';
 
 class Scene extends PIXI.Container {
   constructor(props = {}) {
@@ -20,7 +13,7 @@ class Scene extends PIXI.Container {
 
     this.state = STATES.LOADING;
     this.filters = [
-      new PixelateFilter(MAX_PIXEL_SIZE),
+      new PixelateFilter(PIXEL.MAX_SIZE),
       new PIXI.filters.ColorMatrixFilter(),
     ];
 
@@ -41,7 +34,7 @@ class Scene extends PIXI.Container {
 
   create() {
     this.setState(STATES.FADING_IN);
-    this.pixelSize = MAX_PIXEL_SIZE * this.scale.x;
+    this.pixelSize = PIXEL.MAX_SIZE * this.scale.x;
   }
 
   update(delta) {
@@ -72,18 +65,18 @@ class Scene extends PIXI.Container {
   updateLoading() {} // eslint-disable-line
 
   updateFadeIn(delta) {
-    this.pixelSize -= PIXEL_INCREMEMENT * this.scale.x * delta;
+    this.pixelSize -= PIXEL.INCREMEMENT * this.scale.x * delta;
 
-    if (this.pixelSize < MIN_PIXEL_SIZE) {
-      this.pixelSize = MIN_PIXEL_SIZE;
+    if (this.pixelSize < PIXEL.MIN_SIZE) {
+      this.pixelSize = PIXEL.MIN_SIZE;
       this.setState(STATES.RUNNING);
     }
   }
 
   updateFadeOut(delta) {
-    const maxPixelSize = MAX_PIXEL_SIZE * this.scale.x;
+    const maxPixelSize = PIXEL.MAX_SIZE * this.scale.x;
 
-    this.pixelSize += PIXEL_INCREMEMENT * this.scale.x * delta;
+    this.pixelSize += PIXEL.INCREMEMENT * this.scale.x * delta;
 
     if (this.pixelSize > maxPixelSize) {
       this.pixelSize = maxPixelSize;
@@ -92,15 +85,15 @@ class Scene extends PIXI.Container {
   }
 
   updatePaused() {
-    this.pixelSize = PAUSE_PIXEL_SIZE * this.scale.x;
+    this.pixelSize = PIXEL.PAUSE_SIZE * this.scale.x;
 
-    if (this.input.isKeyPressed(this.input.KEYS.ESC)) {
+    if (this.keyboard.isPressed(this.keyboard.KEYS.ESC)) {
       this.setState(STATES.RUNNING);
     }
   }
 
   updateRunning() {
-    if (this.input.isKeyPressed(this.input.KEYS.ESC)) {
+    if (this.keyboard.isPressed(this.keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
     }
   }
@@ -114,7 +107,7 @@ class Scene extends PIXI.Container {
   }
 
   render() {
-    this.filters[PIXELATE_INDEX].size = this.pixelSize;
+    this.filters[0].size = this.pixelSize;
   }
 
   resize(scale) {
@@ -131,35 +124,35 @@ class Scene extends PIXI.Container {
     if (this.state !== state) {
       switch (state) {
         case STATES.LOADING:
-          this.input.enabled = false;
-          this.filters[PIXELATE_INDEX].enabled = false;
-          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          this.keyboard.enabled = false;
+          this.filters[0].enabled = false;
+          this.filters[1].enabled = false;
           break;
         case STATES.FADING_IN:
-          this.input.enabled = false;
-          this.filters[PIXELATE_INDEX].enabled = true;
-          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          this.keyboard.enabled = false;
+          this.filters[0].enabled = true;
+          this.filters[1].enabled = false;
           break;
         case STATES.FADING_OUT:
-          this.input.enabled = false;
-          this.filters[PIXELATE_INDEX].enabled = true;
-          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          this.keyboard.enabled = false;
+          this.filters[0].enabled = true;
+          this.filters[1].enabled = false;
           break;
         case STATES.PAUSED:
-          this.input.enabled = true;
-          this.filters[PIXELATE_INDEX].enabled = true;
-          this.filters[COLOR_MATRIX_INDEX].enabled = true;
-          this.filters[COLOR_MATRIX_INDEX].desaturate();
+          this.keyboard.enabled = true;
+          this.filters[0].enabled = true;
+          this.filters[1].enabled = true;
+          this.filters[1].desaturate();
           break;
         case STATES.RUNNING:
-          this.input.enabled = true;
-          this.filters[PIXELATE_INDEX].enabled = false;
-          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          this.keyboard.enabled = true;
+          this.filters[0].enabled = false;
+          this.filters[1].enabled = false;
           break;
         case STATES.STOPPED:
-          this.input.enabled = false;
-          this.filters[PIXELATE_INDEX].enabled = true;
-          this.filters[COLOR_MATRIX_INDEX].enabled = false;
+          this.keyboard.enabled = false;
+          this.filters[0].enabled = true;
+          this.filters[1].enabled = false;
           break;
         default:
           break;

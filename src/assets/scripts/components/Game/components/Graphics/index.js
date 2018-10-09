@@ -3,12 +3,6 @@ import Scene from './components/Scene';
 import Application from './components/Application';
 import Sprite from './components/Sprite';
 
-export {
-  Application,
-  Scene,
-  Sprite,
-};
-
 const clearCache = () => {
   const { TextureCache } = PIXI.utils;
 
@@ -17,6 +11,12 @@ const clearCache = () => {
       TextureCache[key].destroy(true);
     }
   });
+};
+
+export {
+  Application,
+  Scene,
+  Sprite,
 };
 
 export default { clearCache };

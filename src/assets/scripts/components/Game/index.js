@@ -1,5 +1,5 @@
 import Graphics, { Application, Scene } from './components/Graphics';
-import Input from './components/Input';
+import { Keyboard } from './components/Input';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -19,7 +19,7 @@ class Game extends Application {
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
-    this.input = new Input();
+    this.keyboard = new Keyboard();
 
     this.resize();
 
@@ -73,7 +73,9 @@ class Game extends Application {
       this.scene = new SceneType({
         index,
         loader: this.loader,
-        input: this.input,
+        input: {
+          keyBoard: this.keyboard,
+        },
         ticker: this.ticker,
         scale: {
           x: scaleFactor,
@@ -97,7 +99,7 @@ class Game extends Application {
       this.scene.render();
     }
 
-    this.input.update();
+    this.keyboard.update();
   }
 
   resize() {

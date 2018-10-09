@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "globals": {},
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": "airbnb-base",
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ]
+  }
+}

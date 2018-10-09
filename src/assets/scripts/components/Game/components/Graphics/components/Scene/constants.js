@@ -19,3 +19,10 @@ export const TYPES = {
   WORLD: 'world',
   CREDITS: 'credits',
 };
+
+export const PIXEL = {
+  MAX_SIZE: 100,
+  INCREMEMENT: 2,
+  MIN_SIZE: 1,
+  PAUSE_SIZE: 4,
+};
