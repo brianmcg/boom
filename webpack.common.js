@@ -10,6 +10,11 @@ module.exports = {
   entry: {
     main: path.resolve(__dirname, 'src/assets/scripts/main.js'),
   },
+  resolve: {
+    alias: {
+      game: path.resolve(__dirname, 'src/assets/scripts/components/Game'),
+    },
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',

@@ -1,5 +1,4 @@
-import { Scene } from '../../components/Graphics';
-import { PATHS } from '../../constants/config';
+import { Scene } from 'game/components/Graphics';
 
 class WorldScene extends Scene {
   constructor(props) {
@@ -8,7 +7,7 @@ class WorldScene extends Scene {
     Object.assign(this, {
       type: Scene.TYPES.WORLD,
       assets: [
-        ['spritesheet', `${PATHS.SPRITE_SHEETS}/${Scene.TYPES.WORLD}-${props.index}.json`],
+        ['spritesheet', `${Scene.PATHS.SPRITE_SHEET}/${Scene.TYPES.WORLD}-${props.index}.json`],
       ],
     });
   }

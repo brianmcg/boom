@@ -1,20 +1,29 @@
-{
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
+const path = require('path');
+
+module.exports = {
+  env: {
+    browser: true,
+    node: true,
+    es6: true
   },
-  "globals": {},
-  "parserOptions": {
-    "sourceType": "module"
+  globals: {},
+  parserOptions: {
+    sourceType: 'module'
   },
-  "extends": "airbnb-base",
-  "rules": {
-    "import/no-extraneous-dependencies": [
-      "error",
+  extends: 'airbnb-base',
+  rules: {
+    'import/no-extraneous-dependencies': [
+      'error',
       {
-        "devDependencies": true
+        devDependencies: true
       }
     ]
-  }
-}
+  },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: path.resolve(__dirname, 'webpack.common.js')
+      }
+    }
+  },
+};

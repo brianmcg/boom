@@ -1,17 +1,13 @@
-import Graphics, { Application, Scene } from './components/Graphics';
-import { Keyboard } from './components/Input';
+import Graphics, { Application, Scene } from 'game/components/Graphics';
+import { Keyboard } from 'game/components/Input';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import { BLACK } from './constants/colors';
-import { SCREEN_WIDTH, SCREEN_HEIGHT, NUM_LEVELS } from './constants/config';
+import { SCREEN, NUM_LEVELS } from './config';
 
 class Game extends Application {
   constructor() {
-    super(SCREEN_WIDTH, SCREEN_HEIGHT, {
-      backgroundColor: BLACK,
-      autoStart: false,
-    });
+    super(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     this.scenes = {
       [Scene.TYPES.TITLE]: TitleScene,
@@ -73,9 +69,7 @@ class Game extends Application {
       this.scene = new SceneType({
         index,
         loader: this.loader,
-        input: {
-          keyBoard: this.keyboard,
-        },
+        keyboard: this.keyboard,
         ticker: this.ticker,
         scale: {
           x: scaleFactor,
@@ -104,8 +98,8 @@ class Game extends Application {
 
   resize() {
     const scaleFactor = Game.getScaleFactor();
-    const scaledWidth = SCREEN_WIDTH * scaleFactor;
-    const scaledHeight = SCREEN_HEIGHT * scaleFactor;
+    const scaledWidth = SCREEN.WIDTH * scaleFactor;
+    const scaledHeight = SCREEN.HEIGHT * scaleFactor;
 
     this.renderer.view.style.width = `${scaledWidth}px`;
     this.renderer.view.style.height = `${scaledHeight}px`;
@@ -121,8 +115,8 @@ class Game extends Application {
   }
 
   static getScaleFactor() {
-    const widthRatio = window.innerWidth / SCREEN_WIDTH;
-    const heightRatio = window.innerHeight / SCREEN_HEIGHT;
+    const widthRatio = window.innerWidth / SCREEN.WIDTH;
+    const heightRatio = window.innerHeight / SCREEN.HEIGHT;
     return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
   }
 }

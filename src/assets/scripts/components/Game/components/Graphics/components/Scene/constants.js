@@ -26,3 +26,8 @@ export const PIXEL = {
   MIN_SIZE: 1,
   PAUSE_SIZE: 4,
 };
+
+export const PATHS = {
+  SPRITE_SHEET: 'assets/media/spritesheets',
+  MAP: 'assets/media/maps',
+};

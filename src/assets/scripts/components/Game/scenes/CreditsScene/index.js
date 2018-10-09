@@ -1,5 +1,4 @@
-import { Scene } from '../../components/Graphics';
-import { PATHS } from '../../constants/config';
+import { Scene } from 'game/components/Graphics';
 
 class CreditsScene extends Scene {
   constructor(props) {
@@ -8,7 +7,7 @@ class CreditsScene extends Scene {
     Object.assign(this, {
       type: Scene.TYPES.CREDITS,
       assets: [
-        ['spritesheet', `${PATHS.SPRITE_SHEETS}/${Scene.TYPES.CREDITS}.json`],
+        ['spritesheet', `${Scene.PATHS.SPRITE_SHEET}/${Scene.TYPES.CREDITS}.json`],
       ],
     });
   }

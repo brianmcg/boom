@@ -1,5 +1,4 @@
-import { PATHS } from '../../constants/config';
-import { Scene, Sprite } from '../../components/Graphics';
+import { Scene, Sprite } from 'game/components/Graphics';
 
 class TitleScene extends Scene {
   constructor(props) {
@@ -8,7 +7,7 @@ class TitleScene extends Scene {
     Object.assign(this, {
       type: Scene.TYPES.TITLE,
       assets: [
-        ['spritesheet', `${PATHS.SPRITE_SHEETS}/${Scene.TYPES.TITLE}.json`],
+        ['spritesheet', `${Scene.PATHS.SPRITE_SHEET}/${Scene.TYPES.TITLE}.json`],
       ],
     });
   }

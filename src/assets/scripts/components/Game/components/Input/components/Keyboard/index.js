@@ -27,10 +27,6 @@ class Keyboard {
   onKeyUp(e) {
     const state = KEY_CODE_MAP[e.keyCode];
 
-    if (!state || !this.enabled) {
-      return;
-    }
-
     this.heldDown[state] = false;
 
     if (e.preventDefault) {

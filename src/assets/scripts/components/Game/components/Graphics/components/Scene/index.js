@@ -5,6 +5,7 @@ import {
   EVENTS,
   TYPES,
   PIXEL,
+  PATHS,
 } from './constants';
 
 class Scene extends PIXI.Container {
@@ -124,33 +125,29 @@ class Scene extends PIXI.Container {
     if (this.state !== state) {
       switch (state) {
         case STATES.LOADING:
-          this.keyboard.enabled = false;
           this.filters[0].enabled = false;
           this.filters[1].enabled = false;
           break;
         case STATES.FADING_IN:
-          this.keyboard.enabled = false;
           this.filters[0].enabled = true;
           this.filters[1].enabled = false;
           break;
         case STATES.FADING_OUT:
-          this.keyboard.enabled = false;
           this.filters[0].enabled = true;
           this.filters[1].enabled = false;
           break;
         case STATES.PAUSED:
-          this.keyboard.enabled = true;
+          console.log('PAUSED', this.type);
           this.filters[0].enabled = true;
           this.filters[1].enabled = true;
           this.filters[1].desaturate();
           break;
         case STATES.RUNNING:
-          this.keyboard.enabled = true;
+          console.log('RUNNING', this.type);
           this.filters[0].enabled = false;
           this.filters[1].enabled = false;
           break;
         case STATES.STOPPED:
-          this.keyboard.enabled = false;
           this.filters[0].enabled = true;
           this.filters[1].enabled = false;
           break;
@@ -176,6 +173,10 @@ class Scene extends PIXI.Container {
 
   static get EVENTS() {
     return EVENTS;
+  }
+
+  static get PATHS() {
+    return PATHS;
   }
 }
 
