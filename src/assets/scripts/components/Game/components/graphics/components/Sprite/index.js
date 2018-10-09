@@ -1,3 +1,8 @@
 import * as PIXI from 'pixi.js';
 
-export default PIXI.Sprite;
+/**
+ * Class representing a sprite.
+ */
+class Sprite extends PIXI.Sprite {}
+
+export default Sprite;

@@ -1,4 +1,11 @@
+/**
+ * @module constants
+ */
 
+/**
+ * The names of the keys.
+ * @type {Object}
+ */
 export const KEY_NAMES = {
   LEFT_ARROW: 'LEFT_ARROW',
   RIGHT_ARROW: 'RIGHT_ARROW',
@@ -18,6 +25,10 @@ export const KEY_NAMES = {
   END: 'END',
 };
 
+/**
+ * A hashmap of key codes to key names.
+ * @type {Object}
+ */
 export const KEY_CODE_MAP = {
   37: KEY_NAMES.LEFT_ARROW,
   39: KEY_NAMES.RIGHT_ARROW,

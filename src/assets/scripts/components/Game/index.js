@@ -5,7 +5,13 @@ import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import { SCREEN, NUM_LEVELS } from './config';
 
+/**
+ * A class representing a game.
+ */
 class Game extends Application {
+  /**
+   * Create a game.
+   */
   constructor() {
     super(SCREEN.WIDTH, SCREEN.HEIGHT);
 
@@ -19,45 +25,65 @@ class Game extends Application {
 
     this.resize();
 
-    this.show(Scene.TYPES.TITLE);
+    this.showScene(Scene.TYPES.TITLE);
   }
 
-  onSceneComplete(type, index) {
-    switch (type) {
+  /**
+   * Handle the scene complete event.
+   * @param  {String} sceneType  The scene type.
+   * @param  {Number} sceneIndex The scene index.
+   */
+  handleSceneComplete(sceneType, sceneIndex) {
+    switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.show(Scene.TYPES.WORLD, 0);
+        this.showScene(Scene.TYPES.WORLD, 0);
         break;
       case Scene.TYPES.WORLD:
-        if (index < NUM_LEVELS) {
-          this.show(Scene.TYPES.WORLD, index + 1);
+        if (sceneIndex < NUM_LEVELS - 1) {
+          this.showScene(Scene.TYPES.WORLD, sceneIndex + 1);
         } else {
-          this.show(Scene.TYPES.CREDITS);
+          this.showScene(Scene.TYPES.CREDITS);
         }
         break;
       default: {
-        this.show(Scene.TYPES.TITLE);
+        this.showScene(Scene.TYPES.TITLE);
       }
     }
   }
 
-  onSceneRestart(type, index) {
-    this.show(type, index);
+  /**
+   * Handle the scene restart event.
+   * @param  {String} sceneType  The scene type.
+   * @param  {Number} sceneIndex The scene index.
+   */
+  handleSceneRestart(sceneType, sceneIndex) {
+    this.showScene(sceneType, sceneIndex);
   }
 
-  onSceneQuit(type) {
-    switch (type) {
+  /**
+   * Handle the scene quit event.
+   * @param  {String} sceneType  The scene type.
+   * @param  {Number} sceneIndex The scene index.
+   */
+  handleSceneQuit(sceneType) {
+    switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.show(null);
+        this.showScene(null);
         break;
       default: {
-        this.show(Scene.TYPES.TITLE);
+        this.showScene(Scene.TYPES.TITLE);
       }
     }
   }
 
-  show(type, index = 0) {
-    const SceneType = this.scenes[type];
-    const scaleFactor = Game.getScaleFactor();
+  /**
+   * Show a scene.
+   * @param  {String} sceneType  The scene type.
+   * @param  {Number} sceneIndex The scene index.
+   */
+  showScene(sceneType, sceneIndex) {
+    const SceneType = this.scenes[sceneType];
+    const scale = util.getScale(SCREEN);
 
     if (this.scene) {
       this.scene.destroy(true);
@@ -67,19 +93,19 @@ class Game extends Application {
 
     if (SceneType) {
       this.scene = new SceneType({
-        index,
+        index: sceneIndex,
         loader: this.loader,
         keyboard: this.keyboard,
         ticker: this.ticker,
         scale: {
-          x: scaleFactor,
-          y: scaleFactor,
+          x: scale.factor,
+          y: scale.factor,
         },
       });
 
-      this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.onSceneComplete.bind(this));
-      this.scene.on(Scene.EVENTS.SCENE_RESTART, this.onSceneRestart.bind(this));
-      this.scene.on(Scene.EVENTS.SCENE_QUIT, this.onSceneQuit.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.handleSceneComplete.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_RESTART, this.handleSceneRestart.bind(this));
+      this.scene.on(Scene.EVENTS.SCENE_QUIT, this.handleSceneQuit.bind(this));
 
       this.scene.load().then(() => {
         this.stage.addChild(this.scene);
@@ -87,37 +113,17 @@ class Game extends Application {
     }
   }
 
-  loop(delta) {
+  /**
+   * Execute a game loop.
+   * @param  {Number} delta The delta value.
+   */
+  executeLoop(delta) {
     if (this.scene) {
       this.scene.update(delta);
       this.scene.render();
     }
 
-    this.keyboard.update();
-  }
-
-  resize() {
-    const scaleFactor = Game.getScaleFactor();
-    const scaledWidth = SCREEN.WIDTH * scaleFactor;
-    const scaledHeight = SCREEN.HEIGHT * scaleFactor;
-
-    this.renderer.view.style.width = `${scaledWidth}px`;
-    this.renderer.view.style.height = `${scaledHeight}px`;
-    this.renderer.view.style.position = 'absolute';
-    this.renderer.view.style.left = '50%';
-    this.renderer.view.style.top = '50%';
-    this.renderer.view.style.margin = `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`;
-    this.renderer.resize(scaledWidth, scaledHeight);
-
-    if (this.scene) {
-      this.scene.resize({ x: scaleFactor, y: scaleFactor });
-    }
-  }
-
-  static getScaleFactor() {
-    const widthRatio = window.innerWidth / SCREEN.WIDTH;
-    const heightRatio = window.innerHeight / SCREEN.HEIGHT;
-    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
+    this.keyboard.resetPressed();
   }
 }
 
