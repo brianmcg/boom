@@ -1,5 +1,5 @@
-import Graphics, { Application, Scene } from 'game/components/Graphics';
-import { Keyboard } from 'game/components/Input';
+import { Application, Scene, util } from 'game/components/graphics';
+import { Keyboard } from 'game/components/input';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -62,7 +62,7 @@ class Game extends Application {
     if (this.scene) {
       this.scene.destroy(true);
       this.loader.reset();
-      Graphics.clearCache();
+      util.clearCache();
     }
 
     if (SceneType) {

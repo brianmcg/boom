@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { BLACK } from '../constants';
+import { BLACK } from '../../constants';
 
 class Application extends PIXI.Application {
   constructor(...props) {

@@ -1,4 +1,4 @@
-import { Scene } from 'game/components/Graphics';
+import { Scene } from 'game/components/graphics';
 
 class CreditsScene extends Scene {
   constructor(props) {
