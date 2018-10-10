@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { SCREEN } from 'game/config';
 
 /**
  * @module util
@@ -21,7 +20,7 @@ export const clearCache = () => {
  * Get the max scale of the canvas that fits window.
  * @return {Number} The maximum scale factor.
  */
-export const getMaxScaleFactor = () => {
+export const getMaxScaleFactor = (screenWidth, screenHeight) => {
   const windowWidth = window.innerWidth
     || document.documentElement.clientWidth
     || document.body.clientWidth;
@@ -30,8 +29,8 @@ export const getMaxScaleFactor = () => {
     || document.documentElement.clientHeight
     || document.body.clientHeight;
 
-  const widthRatio = windowWidth / SCREEN.WIDTH;
-  const heightRatio = windowHeight / SCREEN.HEIGHT;
+  const widthRatio = windowWidth / screenWidth;
+  const heightRatio = windowHeight / screenHeight;
 
   return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
 };

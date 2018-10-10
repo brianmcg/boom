@@ -81,7 +81,7 @@ class Game extends Application {
    */
   showScene(sceneType, sceneIndex) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = util.getMaxScaleFactor();
+    const scaleFactor = util.getMaxScaleFactor(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     if (this.scene) {
       this.scene.destroy(true);
