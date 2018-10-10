@@ -35,7 +35,7 @@ class Scene extends PIXI.Container {
   load() {
     return new Promise((resolve) => {
       this.assets.forEach(asset => this.loader.add(...asset));
-      this.loader.load(this.onLoad.bind(this, resolve));
+      this.loader.load(this.handleLoad.bind(this, resolve));
     });
   }
 
@@ -45,7 +45,7 @@ class Scene extends PIXI.Container {
    * @param  {Object}   loader    The loader
    * @param  {Object}   resources The loaded resources.
    */
-  onLoad(resolve, loader, resources) {
+  handleLoad(resolve, loader, resources) {
     this.create(resources);
     resolve(this);
   }
@@ -132,10 +132,12 @@ class Scene extends PIXI.Container {
    * @param  {Number} delta The delta value.
    */
   updateFadeIn(delta) {
+    const minPixelSize = PIXEL.MAX_SIZE * this.scale.x;
+
     this.pixelSize -= PIXEL.INCREMEMENT * this.scale.x * delta;
 
-    if (this.pixelSize < PIXEL.MIN_SIZE) {
-      this.pixelSize = PIXEL.MIN_SIZE;
+    if (this.pixelSize < minPixelSize) {
+      this.pixelSize = minPixelSize;
       this.setState(STATES.RUNNING);
     }
   }
@@ -156,6 +158,16 @@ class Scene extends PIXI.Container {
   }
 
   /**
+   * Update the scene when in a running state.
+   * @param  {Number} delta The delta value.
+   */
+  updateRunning() {
+    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
+      this.setState(STATES.PAUSED);
+    }
+  }
+
+  /**
    * Update the scene when in a paused state.
    * @param  {Number} delta The delta value.
    */
@@ -168,21 +180,13 @@ class Scene extends PIXI.Container {
   }
 
   /**
-   * Update the scene when in a running state.
-   * @param  {Number} delta The delta value.
-   */
-  updateRunning() {
-    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
-      this.setState(STATES.PAUSED);
-    }
-  }
-
-  /**
    * Render the scene.
    * @return {[type]} [description]
    */
   render() {
-    this.filters[0].size = this.pixelSize;
+    if (this.filters[0].enabled) {
+      this.filters[0].size = this.pixelSize;
+    }
   }
 
   /**
