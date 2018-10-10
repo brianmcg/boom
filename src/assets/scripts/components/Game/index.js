@@ -1,5 +1,5 @@
-import { Application, Scene, util } from 'game/components/graphics';
-import { Keyboard } from 'game/components/input';
+import { Application, Scene, util } from './components/graphics';
+import { Keyboard } from './components/input';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -22,8 +22,6 @@ class Game extends Application {
     };
 
     this.keyboard = new Keyboard();
-
-    this.resize();
 
     this.showScene(Scene.TYPES.TITLE);
   }
@@ -83,7 +81,7 @@ class Game extends Application {
    */
   showScene(sceneType, sceneIndex) {
     const SceneType = this.scenes[sceneType];
-    const scale = util.getScale(SCREEN);
+    const scaleFactor = util.getMaxScaleFactor();
 
     if (this.scene) {
       this.scene.destroy(true);
@@ -98,8 +96,8 @@ class Game extends Application {
         keyboard: this.keyboard,
         ticker: this.ticker,
         scale: {
-          x: scale.factor,
-          y: scale.factor,
+          x: scaleFactor,
+          y: scaleFactor,
         },
       });
 

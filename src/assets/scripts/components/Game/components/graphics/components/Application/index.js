@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { SCREEN } from 'game/config';
 import { BLACK } from '../../constants';
-import util from '../../util';
+import { getMaxScaleFactor } from '../../util';
 /**
  * Class representing an application.
  */
@@ -20,19 +20,23 @@ class Application extends PIXI.Application {
     this.renderer.view.style.top = '50%';
 
     this.ticker.add(this.executeLoop.bind(this));
+
+    this.resize();
   }
 
   /**
    * Resize the application
    */
   resize() {
-    const scale = util.getScale(SCREEN);
+    const scaleFactor = getMaxScaleFactor();
+    const scaledWidth = SCREEN.WIDTH * scaleFactor;
+    const scaledHeight = SCREEN.HEIGHT * scaleFactor;
 
-    this.renderer.view.style.margin = `-${scale.height / 2}px 0 0 -${scale.width / 2}px`;
-    this.renderer.resize(scale.width, scale.height);
+    this.renderer.view.style.margin = `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`;
+    this.renderer.resize(scaledWidth, scaledHeight);
 
     if (this.scene) {
-      this.scene.resize({ x: scale.factor, y: scale.factor });
+      this.scene.resize({ x: scaleFactor, y: scaleFactor });
     }
   }
 }
