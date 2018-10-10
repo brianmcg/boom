@@ -132,12 +132,10 @@ class Scene extends PIXI.Container {
    * @param  {Number} delta The delta value.
    */
   updateFadeIn(delta) {
-    const minPixelSize = PIXEL.MAX_SIZE * this.scale.x;
-
     this.pixelSize -= PIXEL.INCREMEMENT * this.scale.x * delta;
 
-    if (this.pixelSize < minPixelSize) {
-      this.pixelSize = minPixelSize;
+    if (this.pixelSize < PIXEL.MIN_SIZE) {
+      this.pixelSize = PIXEL.MIN_SIZE;
       this.setState(STATES.RUNNING);
     }
   }
@@ -158,16 +156,6 @@ class Scene extends PIXI.Container {
   }
 
   /**
-   * Update the scene when in a running state.
-   * @param  {Number} delta The delta value.
-   */
-  updateRunning() {
-    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
-      this.setState(STATES.PAUSED);
-    }
-  }
-
-  /**
    * Update the scene when in a paused state.
    * @param  {Number} delta The delta value.
    */
@@ -180,13 +168,21 @@ class Scene extends PIXI.Container {
   }
 
   /**
+   * Update the scene when in a running state.
+   * @param  {Number} delta The delta value.
+   */
+  updateRunning() {
+    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
+      this.setState(STATES.PAUSED);
+    }
+  }
+
+  /**
    * Render the scene.
    * @return {[type]} [description]
    */
   render() {
-    if (this.filters[0].enabled) {
-      this.filters[0].size = this.pixelSize;
-    }
+    this.filters[0].size = this.pixelSize;
   }
 
   /**
