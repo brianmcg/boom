@@ -1,9 +1,11 @@
 import { Application, Scene, util } from './components/graphics';
 import { Keyboard } from './components/input';
+import { SoundPlayer } from './components/audio';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import { SCREEN, NUM_LEVELS } from './config';
+import { SOUND_FILES } from './constants';
 
 /**
  * A class representing a game.
@@ -22,8 +24,13 @@ class Game extends Application {
     };
 
     this.keyboard = new Keyboard();
+    this.soundPlayer = new SoundPlayer();
 
-    this.showScene(Scene.TYPES.TITLE);
+    this.soundPlayer.loadSounds(SOUND_FILES).then(() => {
+      this.soundPlayer.playSound('doubleShotgun');
+      this.showScene(Scene.TYPES.TITLE);
+      // this.soundPlayer.unloadSounds();
+    });
   }
 
   /**

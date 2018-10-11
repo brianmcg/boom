@@ -1,15 +1,15 @@
 import { Howl } from 'howler';
-import { SOUND_ENABLED } from 'game/config';
-import { SOUND_FILES } from './constants';
+import { SOUND_FILE_PATH } from './constants';
 
 /**
- * Class representing a sound component.
+ * Class representing a sound player.
  */
-class Sound {
+class SoundPlayer {
   /**
-   * Creates a sound component.
+   * Creates a sound player.
+   * @param  {Boolean} enabled Enable sound.
    */
-  constructor(enabled) {
+  constructor(enabled = true) {
     this.sounds = {};
     this.pausedSoundIds = [];
     this.enabled = enabled;
@@ -23,10 +23,10 @@ class Sound {
    * @param  {Number}  volume Sound volume.
    * @return {Promise}   Promise object represents loading complete.
    */
-  loadSound(name, src = true, loop, volume = 1) {
+  loadSound(name, src, loop, volume = 1) {
     return new Promise((resolve) => {
       this.sounds[name] = new Howl({
-        src: [src],
+        src: [`${SOUND_FILE_PATH}/${src}`],
         loop,
         volume,
         onload: () => {
@@ -40,8 +40,8 @@ class Sound {
    * Load the game sounds.
    * @return {Promise}   Promise object represents loading complete.
    */
-  loadSounds() {
-    return Promise.all(SOUND_FILES.map(sound => this.loadSound(...sound)));
+  loadSounds(soundFiles) {
+    return Promise.all(soundFiles.map(sound => this.loadSound(...sound)));
   }
 
   /**
@@ -68,9 +68,13 @@ class Sound {
    * Unload all sounds.
    */
   unloadSounds() {
-    Object.keys(this.sounds).forEach((sound) => {
-      sound.stop();
-      sound.unload();
+    Object.keys(this.sounds).forEach((key) => {
+      const sound = this.sounds[key];
+
+      if (sound) {
+        sound.stop();
+        sound.unload();
+      }
     });
   }
 
@@ -100,7 +104,7 @@ class Sound {
         return null;
       }
 
-      const soundId = SOUND_ENABLED ? this.sounds[name].play() : null;
+      const soundId = this.enabled ? this.sounds[name].play() : null;
 
       if (distance) {
         if (distance > 1000) {
@@ -153,10 +157,10 @@ class Sound {
   stopSound(name) {
     const sound = this.sounds[name];
 
-    if (sound.playing()) {
+    if (sound && sound.playing()) {
       sound.stop();
     }
   }
 }
 
-export default Sound;
+export default SoundPlayer;
