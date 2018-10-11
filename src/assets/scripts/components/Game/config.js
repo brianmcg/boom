@@ -13,3 +13,9 @@ export const SCREEN = { WIDTH: 320, HEIGHT: 200 };
  * @type {Number}
  */
 export const NUM_LEVELS = 2;
+
+/**
+ * Enabled the sound.
+ * @type {Boolean}
+ */
+export const SOUND_ENABLED = true;
