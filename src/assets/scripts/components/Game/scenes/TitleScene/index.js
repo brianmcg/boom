@@ -11,6 +11,8 @@ class TitleScene extends Scene {
         ['spritesheet', `${Scene.PATHS.SPRITE_SHEET}/${Scene.TYPES.TITLE}.json`],
       ],
     });
+
+    this.index = 0;
   }
 
   create(resources) {

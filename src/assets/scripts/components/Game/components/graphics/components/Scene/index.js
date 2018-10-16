@@ -34,8 +34,12 @@ class Scene extends PIXI.Container {
    */
   load() {
     return new Promise((resolve) => {
-      this.assets.forEach(asset => this.loader.add(...asset));
-      this.loader.load(this.handleLoad.bind(this, resolve));
+      this.sound.load({
+        src: [`assets/media/audio/music-${this.index}.mp3`],
+      }).then(() => {
+        this.assets.forEach(asset => this.loader.add(...asset));
+        this.loader.load(this.handleLoad.bind(this, resolve));
+      });
     });
   }
 
@@ -90,25 +94,32 @@ class Scene extends PIXI.Container {
    * @param  {String} state The new state.
    */
   handleStateChange(state) {
+    // WEAPON_DOUBLE_SHOTGUN
+    // WEAPON_SHOTGUN
     switch (state) {
       case STATES.LOADING:
         this.filters[0].enabled = false;
         this.filters[1].enabled = false;
         break;
       case STATES.FADING_IN:
+        this.sound.playMusic();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
       case STATES.FADING_OUT:
+        this.sound.fadeOutMusic();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
       case STATES.PAUSED:
+        this.sound.pause();
+        this.sound.playSound('WEAPON_PISTOL');
         this.filters[0].enabled = true;
         this.filters[1].enabled = true;
         this.filters[1].desaturate();
         break;
       case STATES.RUNNING:
+        this.sound.resume();
         this.filters[0].enabled = false;
         this.filters[1].enabled = false;
         break;

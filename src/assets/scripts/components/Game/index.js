@@ -5,7 +5,12 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import { SCREEN, NUM_LEVELS } from './config';
-import { SOUND_FILES } from './constants';
+import {
+  SOUND_EFFECTS_SRC,
+  SOUND_EFFECTS_SPRITE,
+  FONT_SRC,
+  FONT_NAME,
+} from './constants';
 
 /**
  * A class representing a game.
@@ -24,12 +29,22 @@ class Game extends Application {
     };
 
     this.keyboard = new Keyboard();
-    this.soundPlayer = new SoundPlayer();
+    this.sound = new SoundPlayer();
+  }
 
-    this.soundPlayer.loadSounds(SOUND_FILES).then(() => {
-      this.soundPlayer.playSound('doubleShotgun');
-      this.showScene(Scene.TYPES.TITLE);
-      // this.soundPlayer.unloadSounds();
+  start() {
+    super.start();
+    this.load().then(() => this.showScene(Scene.TYPES.TITLE));
+  }
+
+  load() {
+    return new Promise((resolve) => {
+      this.loader.add(FONT_NAME, FONT_SRC).load(() => {
+        this.sound.load({
+          src: SOUND_EFFECTS_SRC,
+          sprite: SOUND_EFFECTS_SPRITE,
+        }).then(resolve);
+      });
     });
   }
 
@@ -41,18 +56,18 @@ class Game extends Application {
   handleSceneComplete(sceneType, sceneIndex) {
     switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.showScene(Scene.TYPES.WORLD, 0);
+        this.showScene(Scene.TYPES.WORLD, 1);
         break;
       case Scene.TYPES.WORLD:
-        if (sceneIndex < NUM_LEVELS - 1) {
+        if (sceneIndex < NUM_LEVELS) {
           this.showScene(Scene.TYPES.WORLD, sceneIndex + 1);
         } else {
-          this.showScene(Scene.TYPES.CREDITS);
+          this.showScene(Scene.TYPES.CREDITS, sceneIndex + 1);
         }
         break;
-      default: {
+      default:
         this.showScene(Scene.TYPES.TITLE);
-      }
+        break;
     }
   }
 
@@ -75,9 +90,9 @@ class Game extends Application {
       case Scene.TYPES.TITLE:
         this.showScene(null);
         break;
-      default: {
+      default:
         this.showScene(Scene.TYPES.TITLE);
-      }
+        break;
     }
   }
 
@@ -102,6 +117,7 @@ class Game extends Application {
         loader: this.loader,
         keyboard: this.keyboard,
         ticker: this.ticker,
+        sound: this.sound,
         scale: {
           x: scaleFactor,
           y: scaleFactor,

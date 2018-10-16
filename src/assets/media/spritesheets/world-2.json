@@ -605,7 +605,7 @@
     "meta": {
         "app": "http://www.texturepacker.com",
         "version": "1.0",
-        "image": "world-0.png",
+        "image": "world-2.png",
         "format": "RGBA8888",
         "size": {
             "w": 1024,
