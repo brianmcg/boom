@@ -54,11 +54,9 @@ export const SOUND_NAMES = {
   ZOMBIE_PAIN: 'ZOMBIE_PAIN',
 };
 
-export const SOUND_FILE_PATH = 'assets/media/audio';
+export const SOUND_NAME = 'effects';
 
-export const SOUND_EFFECTS_SRC = [`${SOUND_FILE_PATH}/effects.mp3`];
-
-export const SOUND_EFFECTS_SPRITE = {
+export const SOUND_SPRITE = {
   [SOUND_NAMES.AMP_ALERT]: [0, 1235.9183673469388],
   [SOUND_NAMES.AMP_DEATH]: [3000, 844.5351473922904],
   [SOUND_NAMES.AMP_PAIN]: [5000, 783.2199546485264],

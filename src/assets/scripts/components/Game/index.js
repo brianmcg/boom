@@ -6,10 +6,10 @@ import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import { SCREEN, NUM_LEVELS } from './config';
 import {
-  SOUND_EFFECTS_SRC,
-  SOUND_EFFECTS_SPRITE,
   FONT_SRC,
   FONT_NAME,
+  SOUND_NAME,
+  SOUND_SPRITE,
 } from './constants';
 
 /**
@@ -38,13 +38,13 @@ class Game extends Application {
   }
 
   load() {
+    this.loader.add(FONT_NAME, FONT_SRC);
+
     return new Promise((resolve) => {
-      this.loader.add(FONT_NAME, FONT_SRC).load(() => {
-        this.sound.load({
-          src: SOUND_EFFECTS_SRC,
-          sprite: SOUND_EFFECTS_SPRITE,
-        }).then(resolve);
-      });
+      this.sound.loadEffects(SOUND_NAME, SOUND_SPRITE)
+        .then(() => {
+          this.loader.load(resolve);
+        });
     });
   }
 

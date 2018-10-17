@@ -33,11 +33,10 @@ class Scene extends PIXI.Container {
    * @return {Object} A promise that assets will be loaded.
    */
   load() {
+    this.assets.forEach(asset => this.loader.add(...asset));
+
     return new Promise((resolve) => {
-      this.sound.load({
-        src: [`assets/media/audio/music-${this.index}.mp3`],
-      }).then(() => {
-        this.assets.forEach(asset => this.loader.add(...asset));
+      this.sound.loadMusic(this.index).then(() => {
         this.loader.load(this.handleLoad.bind(this, resolve));
       });
     });
@@ -113,7 +112,7 @@ class Scene extends PIXI.Container {
         break;
       case STATES.PAUSED:
         this.sound.pause();
-        this.sound.playSound('WEAPON_PISTOL');
+        this.sound.playEffect('WEAPON_PISTOL');
         this.filters[0].enabled = true;
         this.filters[1].enabled = true;
         this.filters[1].desaturate();

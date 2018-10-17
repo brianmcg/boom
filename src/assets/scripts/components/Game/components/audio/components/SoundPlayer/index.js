@@ -1,4 +1,5 @@
 import { Howl } from 'howler';
+import { SOUND_FILE_PATH } from './constants';
 
 /**
  * Class representing a sound player.
@@ -9,29 +10,46 @@ class SoundPlayer {
    * @param  {Boolean} enabled Enable sound.
    */
   constructor() {
-    this.pausedIds = [];
-    this.playingIds = [];
+    this.effectIds = [];
+    this.effects = null;
+    this.music = null;
     this.musicId = null;
   }
 
-  load(props) {
-    if (Object.prototype.hasOwnProperty.call(props, 'sprite')) {
-      return new Promise((resolve) => {
-        this.effects = new Howl({
-          onload: resolve,
-          onend: (soundId) => { this.playingIds = this.playingIds.filter(id => id !== soundId); },
-          ...props,
-        });
-      });
-    }
+  loadEffects(name, sprite) {
+    const removeId = (id) => {
+      this.effectIds = this.effectIds.filter(effectId => effectId !== id);
+    };
 
     return new Promise((resolve) => {
-      this.music = new Howl({ onload: resolve, ...props });
+      this.effects = new Howl({
+        src: [`${SOUND_FILE_PATH}/${name}.mp3`],
+        sprite,
+        onend: removeId,
+        onstop: removeId,
+        onload: resolve,
+      });
     });
   }
 
-  playSound(name) {
-    this.playingIds.push(this.effects.play(name));
+  loadMusic(index) {
+    return new Promise((resolve) => {
+      this.music = new Howl({
+        onload: resolve,
+        src: [`${SOUND_FILE_PATH}/music-${index}.mp3`],
+      });
+    });
+  }
+
+  playEffect(name, distance) {
+    const id = this.effects.play(name);
+
+    if (distance) {
+      const volume = distance > 1000 ? 0 : 1 - distance / 1000;
+      this.effects.volume(volume, id);
+    }
+
+    this.effectIds.push(id);
   }
 
   playMusic() {
@@ -43,21 +61,32 @@ class SoundPlayer {
   }
 
   pause() {
-    this.music.pause();
+    if (this.musicId) {
+      this.music.pause(this.musicId);
+    }
 
-    this.playingIds.forEach((id) => {
+    this.effectIds.forEach((id) => {
       this.effects.pause(id);
     });
-
-    this.pausedIds = [...this.playingIds];
-    this.playingIds.length = 0;
   }
 
   resume() {
-    this.music.play(this.musicId);
+    if (this.musicId) {
+      this.music.play(this.musicId);
+    }
 
-    this.pausedIds.forEach((id) => {
+    this.effectIds.forEach((id) => {
       this.effects.play(id);
+    });
+  }
+
+  stop() {
+    if (this.musicId) {
+      this.music.stop(this.musicId);
+    }
+
+    this.effectIds.forEach((id) => {
+      this.effects.stop(id);
     });
   }
 }
