@@ -4,7 +4,7 @@ import { SoundPlayer } from './components/audio';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import { SCREEN, NUM_LEVELS } from './config';
+import { NUM_LEVELS } from './config';
 import { FONT_SRC, FONT_NAME } from './constants';
 
 /**
@@ -15,7 +15,7 @@ class Game extends Application {
    * Create a game.
    */
   constructor() {
-    super(SCREEN.WIDTH, SCREEN.HEIGHT);
+    super();
 
     this.scenes = {
       [Scene.TYPES.TITLE]: TitleScene,
@@ -105,7 +105,7 @@ class Game extends Application {
    */
   showScene(sceneType, sceneIndex) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = util.getMaxScaleFactor(SCREEN.WIDTH, SCREEN.HEIGHT);
+    const scaleFactor = util.getMaxScaleFactor();
 
     if (this.scene) {
       this.scene.destroy(true);

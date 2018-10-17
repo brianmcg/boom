@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { SCREEN } from './constants';
 
 /**
  * @module util
@@ -10,7 +11,7 @@ import * as PIXI from 'pixi.js';
 export const clearCache = () => {
   const { TextureCache } = PIXI.utils;
   Object.keys(TextureCache).forEach((key) => {
-    if (TextureCache[key]) {
+    if (TextureCache[key] && !key.includes('font')) {
       TextureCache[key].destroy(true);
     }
   });
@@ -20,7 +21,7 @@ export const clearCache = () => {
  * Get the max scale of the canvas that fits window.
  * @return {Number} The maximum scale factor.
  */
-export const getMaxScaleFactor = (screenWidth, screenHeight) => {
+export const getMaxScaleFactor = () => {
   const windowWidth = window.innerWidth
     || document.documentElement.clientWidth
     || document.body.clientWidth;
@@ -29,8 +30,8 @@ export const getMaxScaleFactor = (screenWidth, screenHeight) => {
     || document.documentElement.clientHeight
     || document.body.clientHeight;
 
-  const widthRatio = windowWidth / screenWidth;
-  const heightRatio = windowHeight / screenHeight;
+  const widthRatio = windowWidth / SCREEN.WIDTH;
+  const heightRatio = windowHeight / SCREEN.HEIGHT;
 
   return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
 };

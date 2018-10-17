@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
+import { FONT_SIZE } from 'game/components/graphics/constants';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { Keyboard } from 'game/components/input';
 import { SOUNDS } from 'game/components/audio';
+import BitmapText from '../BitmapText';
 import {
   STATES,
   EVENTS,
@@ -61,6 +63,11 @@ class Scene extends PIXI.Container {
   create() {
     this.setState(STATES.FADING_IN);
     this.pixelSize = PIXEL.MAX_SIZE * this.scale.x;
+
+    const text = new BitmapText('Hello World', {
+      font: FONT_SIZE.LARGE,
+    });
+    this.addChild(text);
   }
 
   /**
@@ -106,6 +113,7 @@ class Scene extends PIXI.Container {
         break;
       case STATES.FADING_OUT:
         this.sound.fadeOutMusic();
+        this.sound.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
