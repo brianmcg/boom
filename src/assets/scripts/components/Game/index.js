@@ -5,12 +5,7 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import { SCREEN, NUM_LEVELS } from './config';
-import {
-  FONT_SRC,
-  FONT_NAME,
-  SOUND_NAME,
-  SOUND_SPRITE,
-} from './constants';
+import { FONT_SRC, FONT_NAME } from './constants';
 
 /**
  * A class representing a game.
@@ -32,16 +27,23 @@ class Game extends Application {
     this.sound = new SoundPlayer();
   }
 
+  /**
+   * Start the game.
+   */
   start() {
     super.start();
     this.load().then(() => this.showScene(Scene.TYPES.TITLE));
   }
 
+  /**
+   * Load the game font and sound effects.
+   * @return {Object} A promise that is resloved when the assets are loaded.
+   */
   load() {
     this.loader.add(FONT_NAME, FONT_SRC);
 
     return new Promise((resolve) => {
-      this.sound.loadEffects(SOUND_NAME, SOUND_SPRITE)
+      this.sound.loadEffects()
         .then(() => {
           this.loader.load(resolve);
         });

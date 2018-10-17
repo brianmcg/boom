@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { Keyboard } from 'game/components/input';
+import { SOUNDS } from 'game/components/audio';
 import {
   STATES,
   EVENTS,
@@ -93,8 +94,6 @@ class Scene extends PIXI.Container {
    * @param  {String} state The new state.
    */
   handleStateChange(state) {
-    // WEAPON_DOUBLE_SHOTGUN
-    // WEAPON_SHOTGUN
     switch (state) {
       case STATES.LOADING:
         this.filters[0].enabled = false;
@@ -112,7 +111,7 @@ class Scene extends PIXI.Container {
         break;
       case STATES.PAUSED:
         this.sound.pause();
-        this.sound.playEffect('WEAPON_PISTOL');
+        this.sound.playEffect(SOUNDS.WEAPON_PISTOL);
         this.filters[0].enabled = true;
         this.filters[1].enabled = true;
         this.filters[1].desaturate();

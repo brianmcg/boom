@@ -1,8 +1,7 @@
 import SoundPlayer from './components/SoundPlayer';
+import { SOUNDS } from './constants';
 
 export {
-  /**
-   * The sound player component.
-   */
+  SOUNDS,
   SoundPlayer,
 };
