@@ -11,6 +11,7 @@ import {
   PIXEL,
   PATHS,
 } from './constants';
+import { LOADING } from './text';
 
 /**
  * Class representing a scene.
@@ -22,11 +23,21 @@ class Scene extends PIXI.Container {
   constructor(props = {}) {
     super();
 
-    this.state = STATES.LOADING;
     this.filters = [
       new PixelateFilter(PIXEL.MAX_SIZE),
       new PIXI.filters.ColorMatrixFilter(),
     ];
+
+    this.loadingText = new BitmapText({
+      font: FONT_SIZE.LARGE,
+      text: LOADING,
+      center: true,
+      color: 0xFF0000,
+    });
+
+    this.addChild(this.loadingText);
+
+    this.setState(STATES.LOADING);
 
     Object.assign(this, props);
   }
@@ -63,11 +74,6 @@ class Scene extends PIXI.Container {
   create() {
     this.setState(STATES.FADING_IN);
     this.pixelSize = PIXEL.MAX_SIZE * this.scale.x;
-
-    const text = new BitmapText('Hello World', {
-      font: FONT_SIZE.LARGE,
-    });
-    this.addChild(text);
   }
 
   /**
@@ -108,6 +114,8 @@ class Scene extends PIXI.Container {
         break;
       case STATES.FADING_IN:
         this.sound.playMusic();
+        this.removeChild(this.loadingText);
+        this.loadingText.destroy();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
