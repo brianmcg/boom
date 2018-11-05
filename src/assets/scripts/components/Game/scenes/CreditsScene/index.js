@@ -16,7 +16,7 @@ class CreditsScene extends Scene {
   updateRunning() {
     super.updateRunning();
 
-    if (this.keyboard.isPressed(Keyboard.KEYS.SPACE)) {
+    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.SCENE_COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }

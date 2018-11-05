@@ -1,7 +1,7 @@
-/**
- * Weapon names.
- * @type {Object}
- */
+export const FONT_TYPES = {
+  MAIN: 'font',
+};
+
 export const WEAPON_TYPES = {
   CHAINGUN: 'CHAINGUN',
   DOUBLE_SHOTGUN: 'DOUBLE_SHOTGUN',
@@ -32,7 +32,3 @@ export const ACTION_TYPES = {
   ITEM_PICKUP: 'ITEM_PICKUP',
   WEAPON_PICKUP: 'WEAPON_PICKUP',
 };
-
-export const FONT_SRC = 'assets/media/fonts/font.xml';
-
-export const FONT_NAME = 'font';

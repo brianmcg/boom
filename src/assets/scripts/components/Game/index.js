@@ -4,8 +4,10 @@ import { SoundPlayer } from './components/audio';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import { NUM_LEVELS } from './config';
-import { FONT_SRC, FONT_NAME } from './constants';
+import { NUM_LEVELS } from './constants/config';
+import { FONT_FILE_PATH, SOUND_FILE_PATH } from './constants/paths';
+import { FONT_TYPES } from './constants/types';
+import { SOUNDS, SOUND_SPRITE } from './constants/sounds';
 
 /**
  * A class representing a game.
@@ -22,9 +24,6 @@ class Game extends Application {
       [Scene.TYPES.WORLD]: WorldScene,
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
-
-    this.keyboard = new Keyboard();
-    this.sound = new SoundPlayer();
   }
 
   /**
@@ -40,13 +39,15 @@ class Game extends Application {
    * @return {Object} A promise that is resloved when the assets are loaded.
    */
   load() {
-    this.loader.add(FONT_NAME, FONT_SRC);
+    this.loader.add(FONT_TYPES.MAIN, `${FONT_FILE_PATH}/${FONT_TYPES.MAIN}.xml`);
 
     return new Promise((resolve) => {
-      this.sound.loadEffects()
-        .then(() => {
-          this.loader.load(resolve);
-        });
+      SoundPlayer.loadEffects({
+        src: `${SOUND_FILE_PATH}/effects.mp3`,
+        sprite: SOUND_SPRITE,
+      }).then(() => {
+        this.loader.load(resolve);
+      });
     });
   }
 
@@ -103,7 +104,7 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  showScene(sceneType, sceneIndex) {
+  showScene(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
     const scaleFactor = util.getMaxScaleFactor();
 
@@ -115,9 +116,11 @@ class Game extends Application {
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        keyboard: this.keyboard,
         ticker: this.ticker,
-        sound: this.sound,
+        sounds: {
+          [SceneType.STATES.FADING_OUT]: SOUNDS.WEAPON_DOUBLE_SHOTGUN,
+          [SceneType.STATES.PAUSED]: SOUNDS.WEAPON_PISTOL,
+        },
         scale: {
           x: scaleFactor,
           y: scaleFactor,
@@ -130,7 +133,11 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.scene.load();
+      this.scene.load({
+        musicSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
+        spritesheetSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
+        mapSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
+      });
     }
   }
 
@@ -144,7 +151,7 @@ class Game extends Application {
       this.scene.render();
     }
 
-    this.keyboard.resetPressed();
+    Keyboard.resetPressed();
   }
 }
 

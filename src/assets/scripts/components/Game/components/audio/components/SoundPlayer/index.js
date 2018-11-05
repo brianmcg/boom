@@ -1,34 +1,30 @@
 import { Howl } from 'howler';
-import { SOUND_FILE_PATH, SOUND_SPRITE } from './constants';
+
+let effectIds = [];
+
+let effects = null;
+
+let music = null;
+
+let musicId = null;
 
 /**
  * Class representing a sound player.
  */
 class SoundPlayer {
   /**
-   * Creates a sound player.
-   * @param  {Boolean} enabled Enable sound.
-   */
-  constructor() {
-    this.effectIds = [];
-    this.effects = null;
-    this.music = null;
-    this.musicId = null;
-  }
-
-  /**
    * Load the sound effects.
    * @return {Object} A promise that is resloved when the sound is loaded.
    */
-  loadEffects() {
+  static loadEffects({ src, sprite }) {
     const removeId = (id) => {
-      this.effectIds = this.effectIds.filter(effectId => effectId !== id);
+      effectIds = effectIds.filter(effectId => effectId !== id);
     };
 
     return new Promise((resolve) => {
-      this.effects = new Howl({
-        src: [`${SOUND_FILE_PATH}/effects.mp3`],
-        sprite: SOUND_SPRITE,
+      effects = new Howl({
+        src: [src],
+        sprite,
         onend: removeId,
         onstop: removeId,
         onload: resolve,
@@ -41,11 +37,11 @@ class SoundPlayer {
    * @param  {Number} index The index of the scene.
    * @return {Object}       A promise that is resolved when the music is loaded.
    */
-  loadMusic(index) {
+  static loadMusic(src) {
     return new Promise((resolve) => {
-      this.music = new Howl({
+      music = new Howl({
         onload: resolve,
-        src: [`${SOUND_FILE_PATH}/music-${index}.mp3`],
+        src: [src],
       });
     });
   }
@@ -55,64 +51,64 @@ class SoundPlayer {
    * @param  {String} name     The name of the sound.
    * @param  {Number} distance The distance from the player.
    */
-  playEffect(name, distance = 0) {
-    const id = this.effects.play(name);
+  static playEffect(name, distance = 0) {
+    const id = effects.play(name);
     const volume = distance > 1000 ? 0 : 1 - distance / 1000;
 
-    this.effects.volume(volume, id);
-    this.effectIds.push(id);
+    effects.volume(volume, id);
+    effectIds.push(id);
   }
 
   /**
    * Play the loaded music.
    */
-  playMusic() {
-    this.musicId = this.music.play();
+  static playMusic() {
+    musicId = music.play();
   }
 
   /**
    * Fade out the music.
    */
-  fadeOutMusic() {
-    this.music.fade(1, 0, 1000);
+  static fadeOutMusic() {
+    music.fade(1, 0, 1000);
   }
 
   /**
    * Pause the playing sounds.
    */
-  pause() {
-    if (this.musicId) {
-      this.music.pause(this.musicId);
+  static pause() {
+    if (musicId) {
+      music.pause(musicId);
     }
 
-    this.effectIds.forEach((id) => {
-      this.effects.pause(id);
+    effectIds.forEach((id) => {
+      effects.pause(id);
     });
   }
 
   /**
    * Resume the paused sounds.
    */
-  resume() {
-    if (this.musicId) {
-      this.music.play(this.musicId);
+  static resume() {
+    if (musicId) {
+      music.play(musicId);
     }
 
-    this.effectIds.forEach((id) => {
-      this.effects.play(id);
+    effectIds.forEach((id) => {
+      effects.play(id);
     });
   }
 
   /**
    * Stop the playing sounds.
    */
-  stop() {
-    if (this.musicId) {
-      this.music.stop(this.musicId);
+  static stop() {
+    if (musicId) {
+      music.stop(musicId);
     }
 
-    this.effectIds.forEach((id) => {
-      this.effects.stop(id);
+    effectIds.forEach((id) => {
+      effects.stop(id);
     });
   }
 }

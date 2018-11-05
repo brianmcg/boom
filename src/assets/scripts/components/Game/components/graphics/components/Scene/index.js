@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { FONT_SIZE } from 'game/components/graphics/constants';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { Keyboard } from 'game/components/input';
-import { SOUNDS } from 'game/components/audio';
+import { SoundPlayer } from 'game/components/audio';
 import BitmapText from '../BitmapText';
 import {
   STATES,
@@ -23,6 +23,8 @@ class Scene extends PIXI.Container {
   constructor(props = {}) {
     super();
 
+    this.sounds = props.sounds;
+
     this.filters = [
       new PixelateFilter(PIXEL.MAX_SIZE),
       new PIXI.filters.ColorMatrixFilter(),
@@ -39,19 +41,20 @@ class Scene extends PIXI.Container {
 
     this.setState(STATES.LOADING);
 
-    this.loader = new PIXI.loaders.Loader()
+    this.loader = new PIXI.loaders.Loader();
     Object.assign(this, props);
   }
+
 
   /**
    * load the scene assets.
    * @return {Object} A promise that assets will be loaded.
    */
-  load() {
+  load({ musicSrc }) {
     this.assets.forEach(asset => this.loader.add(...asset));
 
     return new Promise((resolve) => {
-      this.sound.loadMusic(this.index).then(() => {
+      SoundPlayer.loadMusic(musicSrc).then(() => {
         this.loader.load(this.handleLoad.bind(this, resolve));
       });
     });
@@ -114,27 +117,25 @@ class Scene extends PIXI.Container {
         this.filters[1].enabled = false;
         break;
       case STATES.FADING_IN:
-        this.sound.playMusic();
+        SoundPlayer.playMusic();
         this.removeChild(this.loadingText);
         this.loadingText.destroy();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
       case STATES.FADING_OUT:
-        this.sound.fadeOutMusic();
-        this.sound.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+        SoundPlayer.fadeOutMusic();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
       case STATES.PAUSED:
-        this.sound.pause();
-        this.sound.playEffect(SOUNDS.WEAPON_PISTOL);
+        SoundPlayer.pause();
         this.filters[0].enabled = true;
         this.filters[1].enabled = true;
         this.filters[1].desaturate();
         break;
       case STATES.RUNNING:
-        this.sound.resume();
+        SoundPlayer.resume();
         this.filters[0].enabled = false;
         this.filters[1].enabled = false;
         break;
@@ -148,6 +149,10 @@ class Scene extends PIXI.Container {
         break;
       default:
         break;
+    }
+
+    if (this.sounds[state]) {
+      SoundPlayer.playEffect(this.sounds[state]);
     }
   }
 
@@ -188,7 +193,7 @@ class Scene extends PIXI.Container {
   updatePaused() {
     this.pixelSize = PIXEL.PAUSE_SIZE * this.scale.x;
 
-    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
+    if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.RUNNING);
     }
   }
@@ -198,7 +203,7 @@ class Scene extends PIXI.Container {
    * @param  {Number} delta The delta value.
    */
   updateRunning() {
-    if (this.keyboard.isPressed(Keyboard.KEYS.ESC)) {
+    if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
     }
   }

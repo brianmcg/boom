@@ -6,7 +6,7 @@
  * The names of the keys.
  * @type {Object}
  */
-export const KEY_NAMES = {
+export const KEYS = {
   LEFT_ARROW: 'LEFT_ARROW',
   RIGHT_ARROW: 'RIGHT_ARROW',
   UP_ARROW: 'UP_ARROW',
@@ -29,21 +29,21 @@ export const KEY_NAMES = {
  * A hashmap of key codes to key names.
  * @type {Object}
  */
-export const KEY_CODE_MAP = {
-  37: KEY_NAMES.LEFT_ARROW,
-  39: KEY_NAMES.RIGHT_ARROW,
-  38: KEY_NAMES.UP_ARROW,
-  40: KEY_NAMES.DOWN_ARROW,
-  32: KEY_NAMES.SPACE,
-  17: KEY_NAMES.CTRL,
-  16: KEY_NAMES.SHIFT,
-  27: KEY_NAMES.ESC,
-  13: KEY_NAMES.ENTER,
-  49: KEY_NAMES.NUM_1,
-  50: KEY_NAMES.NUM_2,
-  51: KEY_NAMES.NUM_3,
-  52: KEY_NAMES.NUM_4,
-  87: KEY_NAMES.PG_UP,
-  83: KEY_NAMES.PG_DOWN,
-  97: KEY_NAMES.END,
+export const KEY_CODES = {
+  37: KEYS.LEFT_ARROW,
+  39: KEYS.RIGHT_ARROW,
+  38: KEYS.UP_ARROW,
+  40: KEYS.DOWN_ARROW,
+  32: KEYS.SPACE,
+  17: KEYS.CTRL,
+  16: KEYS.SHIFT,
+  27: KEYS.ESC,
+  13: KEYS.ENTER,
+  49: KEYS.NUM_1,
+  50: KEYS.NUM_2,
+  51: KEYS.NUM_3,
+  52: KEYS.NUM_4,
+  87: KEYS.PG_UP,
+  83: KEYS.PG_DOWN,
+  97: KEYS.END,
 };

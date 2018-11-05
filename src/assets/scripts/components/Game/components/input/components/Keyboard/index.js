@@ -1,30 +1,19 @@
-import { KEY_CODE_MAP, KEY_NAMES } from './constants';
+import { KEY_CODES, KEYS } from './constants';
+
+const heldDown = Object.keys(KEYS).reduce((memo, name) => ({ [name]: false, ...memo }), {});
+
+const pressed = { ...heldDown };
 
 /**
  * Class representing a keyboard.
  */
 class Keyboard {
   /**
-   * Create a keyboard.
-   */
-  constructor() {
-    this.heldDown = Object.keys(KEY_NAMES).reduce((memo, name) => ({
-      [name]: false,
-      ...memo,
-    }), {});
-    this.pressed = { ...this.heldDown };
-    this.keyNames = KEY_NAMES;
-
-    document.addEventListener('keydown', this.onKeyDown.bind(this), { once: true });
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
-  }
-
-  /**
    * Handle the keydown event
    * @param  {Object} e The keyboard event.
    */
-  onKeyDown(e) {
-    this.pressed[KEY_CODE_MAP[e.keyCode]] = true;
+  static onKeyDown(e) {
+    pressed[KEY_CODES[e.keyCode]] = true;
 
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
@@ -34,28 +23,21 @@ class Keyboard {
    * Handle the keyup event
    * @param  {Object} e The keyboard event.
    */
-  onKeyUp(e) {
-    const state = KEY_CODE_MAP[e.keyCode];
+  static onKeyUp(e) {
+    heldDown[KEY_CODES[e.keyCode]] = false;
 
-    this.heldDown[state] = false;
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
 
-    if (e.preventDefault) {
-      e.preventDefault();
-    }
-
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
-
-    document.addEventListener('keydown', this.onKeyDown.bind(this), { once: true });
+    document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
   }
 
   /**
    * Reset all the pressed keys to false.
    */
-  resetPressed() {
-    Object.values(this.pressed).forEach((key) => {
-      this.pressed[key] = false;
+  static resetPressed() {
+    Object.keys(pressed).forEach((key) => {
+      pressed[key] = false;
     });
   }
 
@@ -64,8 +46,8 @@ class Keyboard {
    * @param  {String}  key The pressed key.
    * @return {Boolean}
    */
-  isPressed(key) {
-    return this.pressed[key];
+  static isPressed(key) {
+    return pressed[key];
   }
 
   /**
@@ -73,16 +55,19 @@ class Keyboard {
    * @param  {String}  key The held key.
    * @return {Boolean}
    */
-  isHeldDown(key) {
-    return this.heldDown[key];
+  static isHeldDown(key) {
+    return heldDown[key];
   }
 
   /**
    * The key names constant.
    */
   static get KEYS() {
-    return KEY_NAMES;
+    return KEYS;
   }
 }
+
+document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
+document.addEventListener('keyup', Keyboard.onKeyUp, false);
 
 export default Keyboard;
