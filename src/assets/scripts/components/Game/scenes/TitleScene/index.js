@@ -18,7 +18,8 @@ class TitleScene extends Scene {
   create(resources) {
     const { textures } = resources.spritesheet;
 
-    this.sprites = Object.keys(textures).map(texture => new Sprite(textures[texture]));
+    this.sprites = Object.values(textures).map(texture => new Sprite(texture));
+
     this.sprites.forEach(sprite => this.addChild(sprite));
 
     super.create();

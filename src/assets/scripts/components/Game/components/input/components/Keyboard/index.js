@@ -8,7 +8,10 @@ class Keyboard {
    * Create a keyboard.
    */
   constructor() {
-    this.heldDown = Object.keys(KEY_NAMES).reduce((memo, name) => ({ [name]: false, ...memo }), {});
+    this.heldDown = Object.keys(KEY_NAMES).reduce((memo, name) => ({
+      [name]: false,
+      ...memo,
+    }), {});
     this.pressed = { ...this.heldDown };
     this.keyNames = KEY_NAMES;
 
@@ -21,17 +24,10 @@ class Keyboard {
    * @param  {Object} e The keyboard event.
    */
   onKeyDown(e) {
-    const state = KEY_CODE_MAP[e.keyCode];
+    this.pressed[KEY_CODE_MAP[e.keyCode]] = true;
 
-    this.pressed[state] = true;
-
-    if (e.preventDefault) {
-      e.preventDefault();
-    }
-
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
   }
 
   /**
@@ -58,7 +54,7 @@ class Keyboard {
    * Reset all the pressed keys to false.
    */
   resetPressed() {
-    Object.keys(this.pressed).forEach((key) => {
+    Object.values(this.pressed).forEach((key) => {
       this.pressed[key] = false;
     });
   }

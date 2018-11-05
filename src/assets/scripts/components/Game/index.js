@@ -109,14 +109,12 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.destroy(true);
-      this.loader.reset();
       util.clearCache();
     }
 
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        loader: this.loader,
         keyboard: this.keyboard,
         ticker: this.ticker,
         sound: this.sound,

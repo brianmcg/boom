@@ -39,6 +39,7 @@ class Scene extends PIXI.Container {
 
     this.setState(STATES.LOADING);
 
+    this.loader = new PIXI.loaders.Loader()
     Object.assign(this, props);
   }
 
