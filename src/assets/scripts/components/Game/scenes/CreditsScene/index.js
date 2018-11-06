@@ -1,6 +1,6 @@
-import { Scene } from 'game/components/graphics';
-import { Keyboard } from 'game/components/input';
+import { Keyboard } from 'game/core/input';
 import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from '../../constants/paths';
+import Scene from '../Scene';
 
 class CreditsScene extends Scene {
   constructor(props) {

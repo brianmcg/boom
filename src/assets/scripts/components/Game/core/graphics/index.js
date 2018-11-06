@@ -3,15 +3,26 @@
  */
 
 import * as PIXI from 'pixi.js';
-import Scene from './components/Scene';
+import { PixelateFilter } from '@pixi/filter-pixelate';
 import BitmapText from './components/BitmapText';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.settings.SPRITE_BATCH_SIZE = 20000;
 
-const { Application, Sprite, utils } = PIXI;
+const {
+  Application,
+  Container,
+  filters,
+  loaders,
+  Sprite,
+  utils,
+} = PIXI;
 
 const { TextureCache } = utils;
+
+const { ColorMatrixFilter } = filters;
+
+const { Loader } = loaders;
 
 export {
   /**
@@ -20,10 +31,6 @@ export {
   Application,
   /**
    * The Scene component.
-   */
-  Scene,
-  /**
-   * The Sprite component.
    */
   Sprite,
   /**
@@ -34,4 +41,20 @@ export {
    * The BitmapText component.
    */
   BitmapText,
+  /**
+   * The color matrix filter.
+   */
+  ColorMatrixFilter,
+  /**
+   * The pixelate filter.
+   */
+  PixelateFilter,
+  /**
+   * The container component.
+   */
+  Container,
+  /**
+   * The loader component.
+   */
+  Loader,
 };

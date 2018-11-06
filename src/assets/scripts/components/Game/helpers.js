@@ -1,5 +1,5 @@
-import { TextureCache } from './components/graphics';
 import { SCREEN } from './constants/config';
+import { TextureCache } from './core/graphics';
 
 /**
  * Get the max scale of the canvas that fits window.

@@ -1,18 +1,24 @@
-import * as PIXI from 'pixi.js';
-import { PixelateFilter } from '@pixi/filter-pixelate';
-import { Keyboard } from 'game/components/input';
-import { SoundPlayer } from 'game/components/audio';
+import { Keyboard } from 'game/core/input';
+import { SoundPlayer } from 'game/core/audio';
+import {
+  Container,
+  PixelateFilter,
+  ColorMatrixFilter,
+  Loader,
+} from 'game/core/graphics';
+import { SOUNDS } from 'game/constants/sounds';
 import {
   STATES,
   EVENTS,
   TYPES,
   PIXEL,
 } from './constants';
+import LoadingContainer from './components/LoadingContainer';
 
 /**
  * Class representing a scene.
  */
-class Scene extends PIXI.Container {
+class Scene extends Container {
   /**
    * Create a scene.
    */
@@ -21,18 +27,15 @@ class Scene extends PIXI.Container {
 
     this.filters = [
       new PixelateFilter(PIXEL.MAX_SIZE),
-      new PIXI.filters.ColorMatrixFilter(),
+      new ColorMatrixFilter(),
     ];
-
-    this.loadingContent = props.loadingContent;
-
-    this.addChild(this.loadingContent);
+    this.loader = new Loader();
+    this.loadingContainer = new LoadingContainer();
+    this.index = props.index;
+    this.scale = props.scale;
 
     this.setState(STATES.LOADING);
-
-    this.loader = new PIXI.loaders.Loader();
-
-    Object.assign(this, props);
+    this.addChild(this.loadingContainer);
   }
 
 
@@ -66,7 +69,6 @@ class Scene extends PIXI.Container {
 
   /**
    * Create the scene.
-   * @return {[type]} [description]
    */
   create() {
     this.setState(STATES.FADING_IN);
@@ -106,50 +108,36 @@ class Scene extends PIXI.Container {
   handleStateChange(state) {
     switch (state) {
       case STATES.LOADING:
-        this.filters[0].enabled = false;
-        this.filters[1].enabled = false;
+        this.handleStateChangeLoading();
         break;
       case STATES.FADING_IN:
-        SoundPlayer.playMusic();
-        this.removeChild(this.loadingContent);
-        this.loadingContent.destroy();
-        this.filters[0].enabled = true;
-        this.filters[1].enabled = false;
+        this.handleStateChangeFadingIn();
         break;
       case STATES.FADING_OUT:
-        SoundPlayer.fadeOutMusic();
-        this.filters[0].enabled = true;
-        this.filters[1].enabled = false;
+        this.handleStateChangeFadingOut();
         break;
       case STATES.PAUSED:
-        SoundPlayer.pause();
-        this.filters[0].enabled = true;
-        this.filters[1].enabled = true;
-        this.filters[1].desaturate();
+        this.handleStateChangePaused();
         break;
       case STATES.RUNNING:
-        SoundPlayer.resume();
-        this.filters[0].enabled = false;
-        this.filters[1].enabled = false;
+        this.handleStateChangeRunning();
         break;
       case STATES.STOPPED:
-        this.filters[0].enabled = true;
-        this.filters[1].enabled = false;
-        this.removeChildren();
-        if (this.status) {
-          this.emit(this.status, this.type, this.index);
-        }
+        this.handleStateChangeStopped();
         break;
       default:
         break;
     }
-
-    if (this.sounds && this.sounds[state]) {
-      SoundPlayer.playEffect(this.sounds[state]);
-    }
   }
 
-  updateLoading() {} // eslint-disable-line
+  /**
+   * Update the scene when in a loading state.
+   */
+  updateLoading() {
+    if (this.loadingContainer.update) {
+      this.loadingContainer.update();
+    }
+  }
 
   /**
    * Update the scene when in a fade in state.
@@ -202,8 +190,66 @@ class Scene extends PIXI.Container {
   }
 
   /**
+   * Handle a state change to loading.
+   */
+  handleStateChangeLoading() {
+    this.filters[0].enabled = false;
+    this.filters[1].enabled = false;
+  }
+
+  /**
+   * Handle a state change to fading in.
+   */
+  handleStateChangeFadingIn() {
+    SoundPlayer.playMusic();
+    this.removeChild(this.loadingContainer);
+    this.loadingContainer.destroy();
+    this.filters[0].enabled = true;
+    this.filters[1].enabled = false;
+  }
+
+  /**
+   * Handle a state change to fading out.
+   */
+  handleStateChangeFadingOut() {
+    SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+    SoundPlayer.fadeOutMusic();
+    this.filters[0].enabled = true;
+    this.filters[1].enabled = false;
+  }
+
+  /**
+   * Handle a state change to paused.
+   */
+  handleStateChangePaused() {
+    SoundPlayer.pause();
+    SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
+    this.filters[0].enabled = true;
+    this.filters[1].enabled = true;
+    this.filters[1].desaturate();
+  }
+
+  /**
+   * Handle a state change to running.
+   */
+  handleStateChangeRunning() {
+    SoundPlayer.resume();
+    this.filters[0].enabled = false;
+    this.filters[1].enabled = false;
+  }
+
+  /**
+   * Handle a state change to stopped.
+   */
+  handleStateChangeStopped() {
+    this.filters[0].enabled = true;
+    this.filters[1].enabled = false;
+    this.removeChildren();
+    if (this.status) this.emit(this.status, this.type, this.index);
+  }
+
+  /**
    * Render the scene.
-   * @return {[type]} [description]
    */
   render() {
     this.filters[0].size = this.pixelSize;
@@ -238,6 +284,10 @@ class Scene extends PIXI.Container {
     this.status = status;
   }
 
+  /**
+   * Destroy the scene.
+   * @param  {Object} props The destroy options.
+   */
   destroy(props) {
     SoundPlayer.unloadMusic();
     super.destroy(props);

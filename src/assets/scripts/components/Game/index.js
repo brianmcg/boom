@@ -1,12 +1,13 @@
 import { getMaxScaleFactor, clearCache } from './helpers';
-import { Application, Scene, BitmapText } from './components/graphics';
-import { Keyboard } from './components/input';
-import { SoundPlayer } from './components/audio';
-import { BLACK, RED } from './constants/colors';
+import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN } from './constants/config';
 import { FONT_FILE_PATH, SOUND_FILE_PATH } from './constants/paths';
-import { FONT_SIZES, FONT_TYPES } from './constants/font';
-import { SOUNDS, SOUND_SPRITE } from './constants/sounds';
+import { FONT_TYPES } from './constants/font';
+import { SOUND_SPRITE } from './constants/sounds';
+import { Application } from './core/graphics';
+import { Keyboard } from './core/input';
+import { SoundPlayer } from './core/audio';
+import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -128,20 +129,10 @@ class Game extends Application {
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        sounds: {
-          [Scene.STATES.FADING_OUT]: SOUNDS.WEAPON_DOUBLE_SHOTGUN,
-          [Scene.STATES.PAUSED]: SOUNDS.WEAPON_PISTOL,
-        },
         scale: {
           x: scaleFactor,
           y: scaleFactor,
         },
-        loadingContent: new BitmapText({
-          font: FONT_SIZES.LARGE,
-          text: 'LOADING',
-          center: true,
-          color: RED,
-        }),
       });
 
       this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.handleSceneComplete.bind(this));
