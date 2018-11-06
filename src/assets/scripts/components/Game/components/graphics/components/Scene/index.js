@@ -238,6 +238,11 @@ class Scene extends PIXI.Container {
     this.status = status;
   }
 
+  destroy(props) {
+    SoundPlayer.unloadMusic();
+    super.destroy(props);
+  }
+
   /**
    * The scene types constant.
    */

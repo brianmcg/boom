@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+import { Howler, Howl } from 'howler';
 
 let effectIds = [];
 
@@ -14,7 +14,7 @@ let musicId = null;
 class SoundPlayer {
   /**
    * Load the sound effects.
-   * @return {Object} A promise that is resloved when the sound is loaded.
+   * @return {Object} A promise that is resolved when the sound is loaded.
    */
   static loadEffects({ src, sprite }) {
     const removeId = (id) => {
@@ -44,6 +44,11 @@ class SoundPlayer {
         src: [src],
       });
     });
+  }
+
+  static unloadMusic() {
+    music.unload();
+    music = null;
   }
 
   /**
@@ -110,6 +115,10 @@ class SoundPlayer {
     effectIds.forEach((id) => {
       effects.stop(id);
     });
+  }
+
+  static mute() {
+    Howler.mute(true);
   }
 }
 
