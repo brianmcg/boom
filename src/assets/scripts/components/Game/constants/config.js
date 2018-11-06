@@ -13,3 +13,9 @@ export const NUM_LEVELS = 2;
  * @type {Boolean}
  */
 export const SOUND_ENABLED = true;
+
+/**
+ * The screen dimensions.
+ * @type {Object}
+ */
+export const SCREEN = { WIDTH: 320, HEIGHT: 200 };

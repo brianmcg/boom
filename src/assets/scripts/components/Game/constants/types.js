@@ -1,7 +1,3 @@
-export const FONT_TYPES = {
-  MAIN: 'font',
-};
-
 export const WEAPON_TYPES = {
   CHAINGUN: 'CHAINGUN',
   DOUBLE_SHOTGUN: 'DOUBLE_SHOTGUN',

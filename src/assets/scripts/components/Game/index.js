@@ -1,13 +1,15 @@
-import { Application, Scene, util } from './components/graphics';
+import { getMaxScaleFactor, clearCache } from './helpers';
+import { Application, Scene, BitmapText } from './components/graphics';
 import { Keyboard } from './components/input';
 import { SoundPlayer } from './components/audio';
+import { BLACK, RED } from './constants/colors';
+import { NUM_LEVELS, SCREEN } from './constants/config';
+import { FONT_FILE_PATH, SOUND_FILE_PATH } from './constants/paths';
+import { FONT_SIZES, FONT_TYPES } from './constants/font';
+import { SOUNDS, SOUND_SPRITE } from './constants/sounds';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import { NUM_LEVELS } from './constants/config';
-import { FONT_FILE_PATH, SOUND_FILE_PATH } from './constants/paths';
-import { FONT_TYPES } from './constants/types';
-import { SOUNDS, SOUND_SPRITE } from './constants/sounds';
 
 /**
  * A class representing a game.
@@ -17,13 +19,23 @@ class Game extends Application {
    * Create a game.
    */
   constructor() {
-    super();
+    super(SCREEN.WIDTH, SCREEN.HEIGHT, {
+      backgroundColor: BLACK,
+      autoStart: false,
+    });
 
     this.scenes = {
       [Scene.TYPES.TITLE]: TitleScene,
       [Scene.TYPES.WORLD]: WorldScene,
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
+
+    this.renderer.view.style.position = 'absolute';
+    this.renderer.view.style.left = '50%';
+    this.renderer.view.style.top = '50%';
+
+    this.resize();
+    this.ticker.add(this.executeLoop.bind(this));
   }
 
   /**
@@ -65,7 +77,7 @@ class Game extends Application {
         if (sceneIndex < NUM_LEVELS) {
           this.showScene(Scene.TYPES.WORLD, sceneIndex + 1);
         } else {
-          this.showScene(Scene.TYPES.CREDITS, sceneIndex + 1);
+          this.showScene(Scene.TYPES.CREDITS);
         }
         break;
       default:
@@ -106,17 +118,16 @@ class Game extends Application {
    */
   showScene(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = util.getMaxScaleFactor();
+    const scaleFactor = getMaxScaleFactor();
 
     if (this.scene) {
       this.scene.destroy(true);
-      util.clearCache();
+      clearCache();
     }
 
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        ticker: this.ticker,
         sounds: {
           [Scene.STATES.FADING_OUT]: SOUNDS.WEAPON_DOUBLE_SHOTGUN,
           [Scene.STATES.PAUSED]: SOUNDS.WEAPON_PISTOL,
@@ -125,6 +136,12 @@ class Game extends Application {
           x: scaleFactor,
           y: scaleFactor,
         },
+        loadingContent: new BitmapText({
+          font: FONT_SIZES.LARGE,
+          text: 'LOADING',
+          center: true,
+          color: RED,
+        }),
       });
 
       this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.handleSceneComplete.bind(this));
@@ -148,6 +165,22 @@ class Game extends Application {
     }
 
     Keyboard.resetPressed();
+  }
+
+  /**
+   * Resize the game.
+   */
+  resize() {
+    const scaleFactor = getMaxScaleFactor();
+    const scaledWidth = SCREEN.WIDTH * scaleFactor;
+    const scaledHeight = SCREEN.HEIGHT * scaleFactor;
+
+    this.renderer.view.style.margin = `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`;
+    this.renderer.resize(scaledWidth, scaledHeight);
+
+    if (this.scene) {
+      this.scene.resize({ x: scaleFactor, y: scaleFactor });
+    }
   }
 }
 

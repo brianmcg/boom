@@ -2,14 +2,12 @@ import * as PIXI from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { Keyboard } from 'game/components/input';
 import { SoundPlayer } from 'game/components/audio';
-import BitmapText from '../BitmapText';
 import {
   STATES,
   EVENTS,
   TYPES,
   PIXEL,
 } from './constants';
-import { LOADING } from './text';
 
 /**
  * Class representing a scene.
@@ -26,14 +24,9 @@ class Scene extends PIXI.Container {
       new PIXI.filters.ColorMatrixFilter(),
     ];
 
-    this.loadingText = new BitmapText({
-      font: BitmapText.SIZE.LARGE,
-      text: LOADING,
-      center: true,
-      color: 0xFF0000,
-    });
+    this.loadingContent = props.loadingContent;
 
-    this.addChild(this.loadingText);
+    this.addChild(this.loadingContent);
 
     this.setState(STATES.LOADING);
 
@@ -53,9 +46,10 @@ class Scene extends PIXI.Container {
     data.forEach(asset => this.loader.add(...asset));
 
     return new Promise((resolve) => {
-      SoundPlayer.loadMusic(music).then(() => {
-        this.loader.load(this.handleLoad.bind(this, resolve));
-      });
+      SoundPlayer.loadMusic(music)
+        .then(() => {
+          this.loader.load(this.handleLoad.bind(this, resolve));
+        });
     });
   }
 
@@ -117,8 +111,8 @@ class Scene extends PIXI.Container {
         break;
       case STATES.FADING_IN:
         SoundPlayer.playMusic();
-        this.removeChild(this.loadingText);
-        this.loadingText.destroy();
+        this.removeChild(this.loadingContent);
+        this.loadingContent.destroy();
         this.filters[0].enabled = true;
         this.filters[1].enabled = false;
         break;
