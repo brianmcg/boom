@@ -36,15 +36,6 @@ export const TYPES = {
 };
 
 /**
- * The scene asset file paths.
- * @type {Object}
- */
-export const PATHS = {
-  SPRITE_SHEET: 'assets/media/spritesheets',
-  MAP: 'assets/media/maps',
-};
-
-/**
  * Pixel values.
  * @type {Object}
  */

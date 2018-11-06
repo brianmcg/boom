@@ -1,18 +1,19 @@
 import { Scene, Sprite } from 'game/components/graphics';
 import { Keyboard } from 'game/components/input';
+import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from '../../constants/paths';
 
 class TitleScene extends Scene {
   constructor(props) {
     super(props);
 
-    Object.assign(this, {
-      type: Scene.TYPES.TITLE,
-      assets: [
-        ['spritesheet', `${Scene.PATHS.SPRITE_SHEET}/${Scene.TYPES.TITLE}.json`],
-      ],
-    });
+    this.type = Scene.TYPES.TITLE;
 
-    this.index = 0;
+    this.assets = {
+      data: [
+        ['spritesheet', `${SPRITESHEET_FILE_PATH}/${this.type}.json`],
+      ],
+      music: `${SOUND_FILE_PATH}/${this.type}.mp3`,
+    };
   }
 
   create(resources) {

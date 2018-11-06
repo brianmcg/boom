@@ -2,7 +2,6 @@
  * @module constants.
  */
 
-
 /**
  * The screen dimensions.
  * @type {Object}
@@ -20,13 +19,3 @@ export const WHITE = 0xffffff;
  * @type {Number}
  */
 export const BLACK = 0x000000;
-
-/**
- * The font sizes.
- * @type {Object}
- */
-export const FONT_SIZE = {
-  SMALL: `${SCREEN.HEIGHT / 15}px font`,
-  MEDIUM: `${SCREEN.HEIGHT / 10}px font`,
-  LARGE: `${SCREEN.HEIGHT / 5}px font`,
-};

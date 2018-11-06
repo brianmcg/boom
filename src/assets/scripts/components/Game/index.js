@@ -118,8 +118,8 @@ class Game extends Application {
         index: sceneIndex,
         ticker: this.ticker,
         sounds: {
-          [SceneType.STATES.FADING_OUT]: SOUNDS.WEAPON_DOUBLE_SHOTGUN,
-          [SceneType.STATES.PAUSED]: SOUNDS.WEAPON_PISTOL,
+          [Scene.STATES.FADING_OUT]: SOUNDS.WEAPON_DOUBLE_SHOTGUN,
+          [Scene.STATES.PAUSED]: SOUNDS.WEAPON_PISTOL,
         },
         scale: {
           x: scaleFactor,
@@ -133,11 +133,7 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.scene.load({
-        musicSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
-        spritesheetSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
-        mapSrc: `${SOUND_FILE_PATH}/music-${sceneIndex}.mp3`,
-      });
+      this.scene.load();
     }
   }
 

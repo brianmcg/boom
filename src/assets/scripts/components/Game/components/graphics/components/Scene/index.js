@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { FONT_SIZE } from 'game/components/graphics/constants';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { Keyboard } from 'game/components/input';
 import { SoundPlayer } from 'game/components/audio';
@@ -9,7 +8,6 @@ import {
   EVENTS,
   TYPES,
   PIXEL,
-  PATHS,
 } from './constants';
 import { LOADING } from './text';
 
@@ -23,15 +21,13 @@ class Scene extends PIXI.Container {
   constructor(props = {}) {
     super();
 
-    this.sounds = props.sounds;
-
     this.filters = [
       new PixelateFilter(PIXEL.MAX_SIZE),
       new PIXI.filters.ColorMatrixFilter(),
     ];
 
     this.loadingText = new BitmapText({
-      font: FONT_SIZE.LARGE,
+      font: BitmapText.SIZE.LARGE,
       text: LOADING,
       center: true,
       color: 0xFF0000,
@@ -42,6 +38,7 @@ class Scene extends PIXI.Container {
     this.setState(STATES.LOADING);
 
     this.loader = new PIXI.loaders.Loader();
+
     Object.assign(this, props);
   }
 
@@ -50,11 +47,13 @@ class Scene extends PIXI.Container {
    * load the scene assets.
    * @return {Object} A promise that assets will be loaded.
    */
-  load({ musicSrc }) {
-    this.assets.forEach(asset => this.loader.add(...asset));
+  load() {
+    const { data, music } = this.assets;
+
+    data.forEach(asset => this.loader.add(...asset));
 
     return new Promise((resolve) => {
-      SoundPlayer.loadMusic(musicSrc).then(() => {
+      SoundPlayer.loadMusic(music).then(() => {
         this.loader.load(this.handleLoad.bind(this, resolve));
       });
     });
@@ -151,7 +150,7 @@ class Scene extends PIXI.Container {
         break;
     }
 
-    if (this.sounds[state]) {
+    if (this.sounds && this.sounds[state]) {
       SoundPlayer.playEffect(this.sounds[state]);
     }
   }
@@ -264,13 +263,6 @@ class Scene extends PIXI.Container {
    */
   static get EVENTS() {
     return EVENTS;
-  }
-
-  /**
-   * The scene paths constant.
-   */
-  static get PATHS() {
-    return PATHS;
   }
 }
 

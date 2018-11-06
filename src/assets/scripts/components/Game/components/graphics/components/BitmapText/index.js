@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { SCREEN } from '../../constants';
+import { FONT_SIZE } from './constants';
 
-export default class BitmapText extends PIXI.extras.BitmapText {
+class BitmapText extends PIXI.extras.BitmapText {
   /**
    * Creates a BitmapText
    * @param  {Object} props The text options
@@ -26,4 +27,10 @@ export default class BitmapText extends PIXI.extras.BitmapText {
       this.tint = color;
     }
   }
+
+  static get SIZE() {
+    return FONT_SIZE;
+  }
 }
+
+export default BitmapText;
