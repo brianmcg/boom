@@ -2,6 +2,12 @@ import { Keyboard } from 'game/core/input';
 import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH, MAP_FILE_PATH } from '../../constants/paths';
 import Scene from '../Scene';
 
+const TEXT = {
+  CONTINUE: 'Continue',
+  RESTART: 'Restart',
+  QUIT: 'Quit',
+};
+
 class WorldScene extends Scene {
   constructor(props) {
     super(props);
@@ -15,6 +21,25 @@ class WorldScene extends Scene {
       ],
       music: `${SOUND_FILE_PATH}/${this.type}-${this.index}.mp3`,
     };
+
+    this.menuItems = [{
+      label: TEXT.CONTINUE,
+      onSelect: () => {
+        this.setState(Scene.STATES.RUNNING);
+      },
+    }, {
+      label: TEXT.RESTART,
+      onSelect: () => {
+        this.setStatus(Scene.EVENTS.SCENE_RESTART);
+        this.setState(Scene.STATES.FADING_OUT);
+      },
+    }, {
+      label: TEXT.QUIT,
+      onSelect: () => {
+        this.setStatus(Scene.EVENTS.SCENE_QUIT);
+        this.setState(Scene.STATES.FADING_OUT);
+      },
+    }];
   }
 
   create() {

@@ -2,30 +2,56 @@ import { Keyboard } from 'game/core/input';
 import { SoundPlayer } from 'game/core/audio';
 import { Container, Loader } from 'game/core/graphics';
 import { SOUNDS } from 'game/constants/sounds';
-import {
-  STATES,
-  EVENTS,
-  TYPES,
-  PIXEL,
-} from './constants';
-import Loading from './containers/Loading';
-import Main from './containers/Main';
+import LoadingContainer from './containers/LoadingContainer';
+import MainContainer from './containers/MainContainer';
+import MenuContainer from './containers/MenuContainer';
+
+const STATES = {
+  LOADING: 'LOADING',
+  FADING_IN: 'FADING_IN',
+  FADING_OUT: 'FADING_OUT',
+  PAUSED: 'PAUSED',
+  RUNNING: 'RUNNING',
+  STOPPED: 'STOPPED',
+};
+
+const EVENTS = {
+  SCENE_COMPLETE: 'SCENE_COMPLETE',
+  SCENE_RESTART: 'SCENE_RESTART',
+  SCENE_QUIT: 'SCENE_QUIT',
+};
+
+const TYPES = {
+  TITLE: 'title',
+  WORLD: 'world',
+  CREDITS: 'credits',
+};
+
+const PIXEL = {
+  MAX_SIZE: 100,
+  INCREMEMENT: 2,
+  MIN_SIZE: 1,
+  PAUSE_SIZE: 4,
+};
 
 /**
  * Class representing a scene.
  */
 class Scene extends Container {
   /**
-   * Create a scene.
+   * Create a Scene.
+   * @param  {Number} options.index The index of the scene.
+   * @param  {Number} options.scale The scale of the scene.
    */
-  constructor(props = {}) {
+  constructor({ index = 0, scale = 1 }) {
     super();
 
+    this.index = index;
+    this.scale = scale;
     this.loader = new Loader();
-    this.loading = new Loading();
-    this.main = new Main();
-    this.index = props.index;
-    this.scale = props.scale;
+    this.loading = new LoadingContainer();
+    this.main = new MainContainer();
+    this.menu = new MenuContainer();
 
     this.setState(STATES.LOADING);
     this.addChild(this.loading);
@@ -65,6 +91,7 @@ class Scene extends Container {
    */
   create() {
     this.setState(STATES.FADING_IN);
+    this.menu.add(this.menuItems);
     this.pixelSize = PIXEL.MAX_SIZE * this.scale.x;
   }
 
@@ -169,6 +196,22 @@ class Scene extends Container {
 
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.RUNNING);
+      this.removeChild(this.menu);
+    }
+
+    if (this.menu.enabled) {
+      if (Keyboard.isPressed(Keyboard.KEYS.DOWN_ARROW)) {
+        this.menu.highlightNext();
+      }
+
+      if (Keyboard.isPressed(Keyboard.KEYS.UP_ARROW)) {
+        this.menu.highlightPrevious();
+      }
+
+      if (Keyboard.isPressed(Keyboard.KEYS.ENTER)) {
+        this.menu.select();
+        this.removeChild(this.menu);
+      }
     }
   }
 
@@ -179,6 +222,7 @@ class Scene extends Container {
   updateRunning() {
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
+      this.addChild(this.menu);
     }
   }
 
@@ -247,6 +291,10 @@ class Scene extends Container {
    */
   render() {
     this.main.setPixelSize(this.pixelSize);
+
+    if (this.menu.enabled) {
+      this.menu.render();
+    }
   }
 
   /**

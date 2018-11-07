@@ -5,13 +5,13 @@
 import * as PIXI from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import BitmapText from './components/BitmapText';
+import Container from './components/Container';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.settings.SPRITE_BATCH_SIZE = 20000;
 
 const {
   Application,
-  Container,
   filters,
   loaders,
   Sprite,

@@ -3,7 +3,7 @@ import { FONT_SIZES } from 'game/constants/font';
 import { RED } from 'game/constants/colors';
 import { SCREEN } from 'game/constants/config';
 
-class Loading extends Container {
+class LoadingContainer extends Container {
   constructor() {
     super();
 
@@ -21,4 +21,4 @@ class Loading extends Container {
   }
 }
 
-export default Loading;
+export default LoadingContainer;

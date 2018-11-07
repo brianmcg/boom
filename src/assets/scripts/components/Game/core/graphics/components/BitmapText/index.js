@@ -14,6 +14,10 @@ class BitmapText extends PIXI.extras.BitmapText {
       this.tint = color;
     }
   }
+
+  setColor(color) {
+    this.tint = color;
+  }
 }
 
 export default BitmapText;
