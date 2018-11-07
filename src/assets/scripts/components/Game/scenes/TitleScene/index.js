@@ -22,7 +22,7 @@ class TitleScene extends Scene {
 
     this.sprites = Object.values(textures).map(texture => new Sprite(texture));
 
-    this.sprites.forEach(sprite => this.addChild(sprite));
+    this.sprites.forEach(sprite => this.main.addChild(sprite));
 
     super.create();
   }

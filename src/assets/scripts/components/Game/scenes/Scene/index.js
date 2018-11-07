@@ -1,11 +1,6 @@
 import { Keyboard } from 'game/core/input';
 import { SoundPlayer } from 'game/core/audio';
-import {
-  Container,
-  PixelateFilter,
-  ColorMatrixFilter,
-  Loader,
-} from 'game/core/graphics';
+import { Container, Loader } from 'game/core/graphics';
 import { SOUNDS } from 'game/constants/sounds';
 import {
   STATES,
@@ -13,7 +8,8 @@ import {
   TYPES,
   PIXEL,
 } from './constants';
-import LoadingContainer from './components/LoadingContainer';
+import Loading from './containers/Loading';
+import Main from './containers/Main';
 
 /**
  * Class representing a scene.
@@ -25,17 +21,14 @@ class Scene extends Container {
   constructor(props = {}) {
     super();
 
-    this.filters = [
-      new PixelateFilter(PIXEL.MAX_SIZE),
-      new ColorMatrixFilter(),
-    ];
     this.loader = new Loader();
-    this.loadingContainer = new LoadingContainer();
+    this.loading = new Loading();
+    this.main = new Main();
     this.index = props.index;
     this.scale = props.scale;
 
     this.setState(STATES.LOADING);
-    this.addChild(this.loadingContainer);
+    this.addChild(this.loading);
   }
 
 
@@ -134,8 +127,8 @@ class Scene extends Container {
    * Update the scene when in a loading state.
    */
   updateLoading() {
-    if (this.loadingContainer.update) {
-      this.loadingContainer.update();
+    if (this.loading.update) {
+      this.loading.update();
     }
   }
 
@@ -193,8 +186,8 @@ class Scene extends Container {
    * Handle a state change to loading.
    */
   handleStateChangeLoading() {
-    this.filters[0].enabled = false;
-    this.filters[1].enabled = false;
+    this.main.disablePixelFilter();
+    this.main.disableColorFilter();
   }
 
   /**
@@ -202,10 +195,11 @@ class Scene extends Container {
    */
   handleStateChangeFadingIn() {
     SoundPlayer.playMusic();
-    this.removeChild(this.loadingContainer);
-    this.loadingContainer.destroy();
-    this.filters[0].enabled = true;
-    this.filters[1].enabled = false;
+    this.removeChild(this.loading);
+    this.addChild(this.main);
+    this.loading.destroy();
+    this.main.enablePixelFilter();
+    this.main.disableColorFilter();
   }
 
   /**
@@ -214,8 +208,8 @@ class Scene extends Container {
   handleStateChangeFadingOut() {
     SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
     SoundPlayer.fadeOutMusic();
-    this.filters[0].enabled = true;
-    this.filters[1].enabled = false;
+    this.main.enablePixelFilter();
+    this.main.disableColorFilter();
   }
 
   /**
@@ -224,9 +218,9 @@ class Scene extends Container {
   handleStateChangePaused() {
     SoundPlayer.pause();
     SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
-    this.filters[0].enabled = true;
-    this.filters[1].enabled = true;
-    this.filters[1].desaturate();
+    this.main.enablePixelFilter();
+    this.main.enableColorFilter();
+    this.main.desaturate();
   }
 
   /**
@@ -234,16 +228,16 @@ class Scene extends Container {
    */
   handleStateChangeRunning() {
     SoundPlayer.resume();
-    this.filters[0].enabled = false;
-    this.filters[1].enabled = false;
+    this.main.disablePixelFilter();
+    this.main.disableColorFilter();
   }
 
   /**
    * Handle a state change to stopped.
    */
   handleStateChangeStopped() {
-    this.filters[0].enabled = true;
-    this.filters[1].enabled = false;
+    this.main.enablePixelFilter();
+    this.main.disableColorFilter();
     this.removeChildren();
     if (this.status) this.emit(this.status, this.type, this.index);
   }
@@ -252,7 +246,7 @@ class Scene extends Container {
    * Render the scene.
    */
   render() {
-    this.filters[0].size = this.pixelSize;
+    this.main.setPixelSize(this.pixelSize);
   }
 
   /**
