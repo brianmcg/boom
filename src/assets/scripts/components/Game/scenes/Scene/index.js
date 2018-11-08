@@ -67,12 +67,10 @@ class Scene extends Container {
 
     data.forEach(asset => this.loader.add(...asset));
 
-    return new Promise((resolve) => {
-      SoundPlayer.loadMusic(music)
-        .then(() => {
-          this.loader.load(this.handleLoad.bind(this, resolve));
-        });
-    });
+    SoundPlayer.loadMusic(music)
+      .then(() => {
+        this.loader.load(this.handleLoad.bind(this));
+      });
   }
 
   /**
@@ -81,9 +79,8 @@ class Scene extends Container {
    * @param  {Object}   loader    The loader
    * @param  {Object}   resources The loaded resources.
    */
-  handleLoad(resolve, loader, resources) {
+  handleLoad(loader, resources) {
     this.create(resources);
-    resolve(this);
   }
 
   /**

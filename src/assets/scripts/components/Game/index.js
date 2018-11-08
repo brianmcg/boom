@@ -44,7 +44,7 @@ class Game extends Application {
    */
   start() {
     super.start();
-    this.load().then(() => this.showScene(Scene.TYPES.TITLE));
+    this.load();
   }
 
   /**
@@ -54,14 +54,14 @@ class Game extends Application {
   load() {
     this.loader.add(FONT_TYPES.MAIN, `${FONT_FILE_PATH}/${FONT_TYPES.MAIN}.xml`);
 
-    return new Promise((resolve) => {
-      SoundPlayer.loadEffects({
-        src: `${SOUND_FILE_PATH}/effects.mp3`,
-        sprite: SOUND_SPRITE,
-      }).then(() => {
-        this.loader.load(resolve);
+    SoundPlayer.loadEffects({ src: `${SOUND_FILE_PATH}/effects.mp3`, sprite: SOUND_SPRITE })
+      .then(() => {
+        this.loader.load(this.handleLoad.bind(this));
       });
-    });
+  }
+
+  handleLoad() {
+    this.showScene(Scene.TYPES.TITLE);
   }
 
   /**
