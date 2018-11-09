@@ -1,5 +1,5 @@
 import { Keyboard } from 'game/core/input';
-import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from '../../constants/paths';
+import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from 'game/constants/paths';
 import Scene from '../Scene';
 
 class CreditsScene extends Scene {

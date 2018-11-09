@@ -1,5 +1,5 @@
 import { Keyboard } from 'game/core/input';
-import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH, MAP_FILE_PATH } from '../../constants/paths';
+import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from 'game/constants/paths';
 import Scene from '../Scene';
 
 const TEXT = {
@@ -17,7 +17,6 @@ class WorldScene extends Scene {
     this.assets = {
       data: [
         ['spritesheet', `${SPRITESHEET_FILE_PATH}/${this.type}-${this.index}.json`],
-        ['map', `${MAP_FILE_PATH}/${this.type}-${this.index}.json`],
       ],
       music: `${SOUND_FILE_PATH}/${this.type}-${this.index}.mp3`,
     };

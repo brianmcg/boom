@@ -10,7 +10,6 @@ class LoadingContainer extends Container {
     this.text = new BitmapText({
       font: FONT_SIZES.LARGE,
       text: 'LOADING',
-      center: true,
       color: RED,
     });
 

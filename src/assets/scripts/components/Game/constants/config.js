@@ -18,4 +18,4 @@ export const SOUND_ENABLED = true;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 320, HEIGHT: 200 };
+export const SCREEN = { WIDTH: 320, HEIGHT: 180 };

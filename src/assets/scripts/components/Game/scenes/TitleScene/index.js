@@ -1,35 +1,8 @@
-import { Sprite, Texture, LoopSprite } from 'game/core/graphics';
 import { Keyboard } from 'game/core/input';
-import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH, ANIMATION_FILE_PATH } from '../../constants/paths';
-import { RED } from '../../constants/colors';
+import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH, SCENE_FILE_PATH } from 'game/constants/paths';
+import { SCREEN } from 'game/constants/config';
+import { createSprites } from './helpers';
 import Scene from '../Scene';
-import { SCREEN } from '../../constants/config';
-
-const createTitleSprites = (tiles) => {
-  const sparksTextures = [];
-  const smokeTextures = [];
-
-  Object.values(tiles.sparks).forEach((value) => {
-    sparksTextures.push(Texture.fromFrame(value.image));
-  });
-
-  Object.values(tiles.smoke).forEach((value) => {
-    smokeTextures.push(Texture.fromFrame(value.image));
-  });
-
-  return {
-    smoke: new LoopSprite(smokeTextures, 0.2, RED),
-    sparks: new LoopSprite(sparksTextures, 0.4),
-    logo: Sprite.fromFrame('logo.png'),
-  };
-};
-
-const parseTitleData = resources => ({
-  sprites: createTitleSprites({
-    sparks: resources.sparksAnimation.data.tilesets[0].tiles,
-    smoke: resources.smokeAnimation.data.tilesets[0].tiles,
-  }),
-});
 
 class TitleScene extends Scene {
   constructor(props) {
@@ -40,28 +13,42 @@ class TitleScene extends Scene {
     this.assets = {
       data: [
         ['spritesheet', `${SPRITESHEET_FILE_PATH}/${this.type}.json`],
-        ['smokeAnimation', `${ANIMATION_FILE_PATH}/smoke.json`],
-        ['sparksAnimation', `${ANIMATION_FILE_PATH}/sparks.json`],
+        ['scene', `${SCENE_FILE_PATH}/${this.type}.json`],
       ],
       music: `${SOUND_FILE_PATH}/${this.type}.mp3`,
     };
   }
 
   create(resources) {
-    const { sprites } = parseTitleData(resources);
+    const sprites = createSprites(resources);
+    const {
+      smoke,
+      sparks,
+      logo,
+      text,
+    } = sprites;
+    const ratio = logo.height / (SCREEN.HEIGHT / 1.75);
 
-    this.sprites = sprites;
+    logo.height /= ratio;
+    logo.width /= ratio;
+    logo.x = (SCREEN.WIDTH / 2) - (logo.width / 2);
+    logo.y = (SCREEN.HEIGHT / 2) - (logo.height / 2);
 
-    this.sprites.smoke.width = SCREEN.WIDTH;
-    this.sprites.smoke.height = SCREEN.HEIGHT;
-    this.sprites.smoke.alpha = 0.5;
-    this.sprites.sparks.width = SCREEN.WIDTH;
-    this.sprites.sparks.height = SCREEN.HEIGHT;
-    this.sprites.logo.scale = { x: 0.5, y: 0.5 };
+    smoke.width = SCREEN.WIDTH;
+    smoke.height = SCREEN.HEIGHT;
 
-    this.main.addChild(this.sprites.smoke);
-    this.main.addChild(this.sprites.sparks);
-    this.main.addChild(this.sprites.logo);
+    sparks.width = SCREEN.WIDTH;
+    sparks.height = SCREEN.HEIGHT;
+
+    text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
+    text.y = logo.y + logo.height
+      + ((SCREEN.HEIGHT - (logo.y + logo.height)) / 2) - text.height;
+
+    this.main.addChild(smoke);
+    this.main.addChild(sparks);
+    this.main.addChild(logo);
+    this.main.addChild(text);
+
 
     super.create();
   }

@@ -6,7 +6,7 @@ import * as PIXI from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import BitmapText from './components/BitmapText';
 import Container from './components/Container';
-import LoopSprite from './components/LoopSprite';
+import AnimatedSprite from './components/AnimatedSprite';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.settings.SPRITE_BATCH_SIZE = 20000;
@@ -59,6 +59,6 @@ export {
    * The loader component.
    */
   Loader,
-  LoopSprite,
+  AnimatedSprite,
   Texture,
 };
