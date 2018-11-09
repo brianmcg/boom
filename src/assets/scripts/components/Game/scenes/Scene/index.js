@@ -1,7 +1,7 @@
-import { Keyboard } from 'game/core/input';
-import { SoundPlayer } from 'game/core/audio';
-import { Container, Loader } from 'game/core/graphics';
-import { SOUNDS } from 'game/constants/sounds';
+import { Keyboard } from '~/core/input';
+import { SoundPlayer } from '~/core/audio';
+import { Container, Loader } from '~/core/graphics';
+import { SOUNDS } from '~/constants/sounds';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';

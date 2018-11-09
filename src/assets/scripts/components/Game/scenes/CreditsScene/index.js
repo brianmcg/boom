@@ -1,5 +1,5 @@
-import { Keyboard } from 'game/core/input';
-import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH } from 'game/constants/paths';
+import { Keyboard } from '~/core/input';
+import { SPRITESHEET_PATH, SOUND_PATH } from '~/constants/paths';
 import Scene from '../Scene';
 
 class CreditsScene extends Scene {
@@ -10,9 +10,9 @@ class CreditsScene extends Scene {
 
     this.assets = {
       data: [
-        ['spritesheet', `${SPRITESHEET_FILE_PATH}/${this.type}.json`],
+        ['spritesheet', `${SPRITESHEET_PATH}/${this.type}.json`],
       ],
-      music: `${SOUND_FILE_PATH}/${this.type}.mp3`,
+      music: `${SOUND_PATH}/${this.type}.mp3`,
     };
   }
 

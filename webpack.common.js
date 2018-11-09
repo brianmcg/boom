@@ -12,7 +12,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      game: path.resolve(__dirname, 'src/assets/scripts/components/Game'),
+      '~': path.resolve(__dirname, 'src/assets/scripts/components/Game'),
     },
   },
   output: {

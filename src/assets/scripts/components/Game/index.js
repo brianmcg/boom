@@ -1,7 +1,7 @@
 import { getMaxScaleFactor, clearCache } from './helpers';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN } from './constants/config';
-import { FONT_FILE_PATH, SOUND_FILE_PATH } from './constants/paths';
+import { FONT_PATH, SOUND_PATH } from './constants/paths';
 import { FONT_TYPES } from './constants/font';
 import { SOUND_SPRITE } from './constants/sounds';
 import { Application } from './core/graphics';
@@ -52,9 +52,9 @@ class Game extends Application {
    * @return {Object} A promise that is resloved when the assets are loaded.
    */
   load() {
-    this.loader.add(FONT_TYPES.MAIN, `${FONT_FILE_PATH}/${FONT_TYPES.MAIN}.xml`);
+    this.loader.add(FONT_TYPES.MAIN, `${FONT_PATH}/${FONT_TYPES.MAIN}.xml`);
 
-    SoundPlayer.loadEffects({ src: `${SOUND_FILE_PATH}/effects.mp3`, sprite: SOUND_SPRITE })
+    SoundPlayer.loadEffects({ src: `${SOUND_PATH}/effects.mp3`, sprite: SOUND_SPRITE })
       .then(() => {
         this.loader.load(this.handleLoad.bind(this));
       });

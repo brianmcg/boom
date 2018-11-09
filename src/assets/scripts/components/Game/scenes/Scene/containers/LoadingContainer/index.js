@@ -1,7 +1,7 @@
-import { BitmapText, Container } from 'game/core/graphics';
-import { FONT_SIZES } from 'game/constants/font';
-import { RED } from 'game/constants/colors';
-import { SCREEN } from 'game/constants/config';
+import { BitmapText, Container } from '~/core/graphics';
+import { FONT_SIZES } from '~/constants/font';
+import { RED } from '~/constants/colors';
+import { SCREEN } from '~/constants/config';
 
 class LoadingContainer extends Container {
   constructor() {

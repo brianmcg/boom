@@ -1,4 +1,4 @@
-import { Container, PixelateFilter, ColorMatrixFilter } from 'game/core/graphics';
+import { Container, PixelateFilter, ColorMatrixFilter } from '~/core/graphics';
 
 class MainContainer extends Container {
   constructor() {

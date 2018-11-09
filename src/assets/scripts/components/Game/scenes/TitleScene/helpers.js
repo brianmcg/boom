@@ -1,11 +1,11 @@
-import { FONT_SIZES } from 'game/constants/font';
-import { RED } from 'game/constants/colors';
+import { FONT_SIZES } from '~/constants/font';
+import { RED } from '~/constants/colors';
 import {
   Sprite,
   Texture,
   AnimatedSprite,
   BitmapText,
-} from 'game/core/graphics';
+} from '~/core/graphics';
 
 export const createSprites = (resources) => {
   const { animations, sprites } = resources.scene.data;

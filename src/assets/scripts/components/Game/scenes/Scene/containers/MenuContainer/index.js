@@ -1,7 +1,7 @@
-import { Container, BitmapText } from 'game/core/graphics';
-import { FONT_SIZES } from 'game/constants/font';
-import { RED, WHITE } from 'game/constants/colors';
-import { SCREEN } from 'game/constants/config';
+import { Container, BitmapText } from '~/core/graphics';
+import { FONT_SIZES } from '~/constants/font';
+import { RED, WHITE } from '~/constants/colors';
+import { SCREEN } from '~/constants/config';
 
 const PADDING = 4;
 

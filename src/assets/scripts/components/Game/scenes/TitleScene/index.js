@@ -1,6 +1,6 @@
-import { Keyboard } from 'game/core/input';
-import { SPRITESHEET_FILE_PATH, SOUND_FILE_PATH, SCENE_FILE_PATH } from 'game/constants/paths';
-import { SCREEN } from 'game/constants/config';
+import { Keyboard } from '~/core/input';
+import { SCREEN } from '~/constants/config';
+import { SPRITESHEET_PATH, SOUND_PATH, SCENE_PATH } from '~/constants/paths';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
 
@@ -12,10 +12,10 @@ class TitleScene extends Scene {
 
     this.assets = {
       data: [
-        ['spritesheet', `${SPRITESHEET_FILE_PATH}/${this.type}.json`],
-        ['scene', `${SCENE_FILE_PATH}/${this.type}.json`],
+        ['spritesheet', `${SPRITESHEET_PATH}/${this.type}.json`],
+        ['scene', `${SCENE_PATH}/${this.type}.json`],
       ],
-      music: `${SOUND_FILE_PATH}/${this.type}.mp3`,
+      music: `${SOUND_PATH}/${this.type}.mp3`,
     };
   }
 
@@ -48,7 +48,6 @@ class TitleScene extends Scene {
     this.main.addChild(sparks);
     this.main.addChild(logo);
     this.main.addChild(text);
-
 
     super.create();
   }
