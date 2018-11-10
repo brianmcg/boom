@@ -44,20 +44,27 @@ class TitleScene extends Scene {
     text.y = logo.y + logo.height
       + ((SCREEN.HEIGHT - (logo.y + logo.height)) / 2) - text.height;
 
+
+    this.addChild(this.prompt);
+
     this.main.addChild(smoke);
     this.main.addChild(sparks);
     this.main.addChild(logo);
-    this.main.addChild(text);
+    this.prompt.addChild(text);
 
     super.create();
   }
 
-  updateRunning() {
+  updateRunning(delta, elapsedMS) {
     super.updateRunning();
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.SCENE_COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
+    }
+
+    if (this.prompt.enabled) {
+      this.prompt.update(delta, elapsedMS);
     }
   }
 

@@ -5,6 +5,7 @@ import { SOUNDS } from '~/constants/sounds';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
+import PromptContainer from './containers/PromptContainer';
 
 const STATES = {
   LOADING: 'LOADING',
@@ -52,6 +53,7 @@ class Scene extends Container {
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
     this.menu = new MenuContainer();
+    this.prompt = new PromptContainer();
 
     this.setState(STATES.LOADING);
     this.addChild(this.loading);
@@ -96,7 +98,7 @@ class Scene extends Container {
    * Update the scene.
    * @param  {Number} delta The delta value.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.LOADING:
         this.updateLoading(delta);
@@ -111,7 +113,7 @@ class Scene extends Container {
         this.updatePaused(delta);
         break;
       case STATES.RUNNING:
-        this.updateRunning(delta);
+        this.updateRunning(delta, elapsedMS);
         break;
       default:
         break;

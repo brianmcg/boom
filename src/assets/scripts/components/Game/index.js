@@ -151,7 +151,7 @@ class Game extends Application {
    */
   executeLoop(delta) {
     if (this.scene) {
-      this.scene.update(delta);
+      this.scene.update(delta, this.ticker.elapsedMS);
       this.scene.render();
     }
 
