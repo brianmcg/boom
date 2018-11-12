@@ -13,11 +13,23 @@ class LoadingContainer extends Container {
       color: RED,
     });
 
+    this.counter = 0;
+
     this.text.x = (SCREEN.WIDTH / 2) - (this.text.width / 2);
     this.text.y = (SCREEN.WIDTH / 2) - (this.text.width / 2);
 
     this.addChild(this.text);
   }
+
+  update(delta) {
+    this.counter += delta;
+
+    if (this.counter >= 100) {
+      this.counter = 0;
+    }
+  }
+
+  render() {} //  eslint-disable-line
 }
 
 export default LoadingContainer;

@@ -27,13 +27,6 @@ const TYPES = {
   CREDITS: 'credits',
 };
 
-const PIXEL = {
-  MAX_SIZE: 100,
-  INCREMEMENT: 2,
-  MIN_SIZE: 1,
-  PAUSE_SIZE: 4,
-};
-
 /**
  * Class representing a scene.
  */
@@ -53,10 +46,17 @@ class Scene extends Container {
     this.main = new MainContainer();
     this.menu = new MenuContainer();
 
+    this.main.on(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
+      this.setState(STATES.RUNNING);
+    });
+
+    this.main.on(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
+      this.setState(STATES.STOPPED);
+    });
+
     this.setState(STATES.LOADING);
     this.addChild(this.loading);
   }
-
 
   /**
    * load the scene assets.
@@ -89,7 +89,6 @@ class Scene extends Container {
   create() {
     this.setState(STATES.FADING_IN);
     this.menu.add(this.menuItems);
-    this.pixelSize = PIXEL.MAX_SIZE * this.scale.x;
   }
 
   /**
@@ -151,9 +150,7 @@ class Scene extends Container {
    * Update the scene when in a loading state.
    */
   updateLoading() {
-    if (this.loading.update) {
-      this.loading.update();
-    }
+    this.loading.update();
   }
 
   /**
@@ -161,12 +158,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadeIn(delta) {
-    this.pixelSize -= PIXEL.INCREMEMENT * this.scale.x * delta;
-
-    if (this.pixelSize < PIXEL.MIN_SIZE) {
-      this.pixelSize = PIXEL.MIN_SIZE;
-      this.setState(STATES.RUNNING);
-    }
+    this.main.updateFadeIn(delta);
   }
 
   /**
@@ -174,22 +166,15 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadeOut(delta) {
-    const maxPixelSize = PIXEL.MAX_SIZE * this.scale.x;
-
-    this.pixelSize += PIXEL.INCREMEMENT * this.scale.x * delta;
-
-    if (this.pixelSize > maxPixelSize) {
-      this.pixelSize = maxPixelSize;
-      this.setState(STATES.STOPPED);
-    }
+    this.main.updateFadeOut(delta);
   }
 
   /**
    * Update the scene when in a paused state.
    * @param  {Number} delta The delta value.
    */
-  updatePaused() {
-    this.pixelSize = PIXEL.PAUSE_SIZE * this.scale.x;
+  updatePaused(delta) {
+    this.main.updatePaused(delta);
 
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.RUNNING);
@@ -287,11 +272,7 @@ class Scene extends Container {
    * Render the scene.
    */
   render() {
-    this.main.setPixelSize(this.pixelSize);
-
-    if (this.menu.enabled) {
-      this.menu.render();
-    }
+    this.children.forEach(child => child.render());
   }
 
   /**
