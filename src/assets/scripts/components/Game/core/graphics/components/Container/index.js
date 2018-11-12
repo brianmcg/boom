@@ -10,6 +10,8 @@ class Container extends PIXI.Container {
   constructor() {
     super();
 
+    this.updateable = [];
+
     this.on('added', () => {
       this.enabled = true;
     });
@@ -17,6 +19,22 @@ class Container extends PIXI.Container {
     this.on('removed', () => {
       this.enabled = false;
     });
+  }
+
+  addChild(child, { update = false } = {}) {
+    super.addChild(child);
+
+    if (update) {
+      this.updateable.push(child);
+    }
+  }
+
+  removeChild(child, { update = false } = {}) {
+    super.removeChild(child);
+
+    if (update) {
+      this.updateable = this.updateable.filter(updateableChild => updateableChild === child);
+    }
   }
 }
 

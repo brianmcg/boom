@@ -100,16 +100,16 @@ class Scene extends Container {
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.LOADING:
-        this.updateLoading(delta);
+        this.updateLoading(delta, elapsedMS);
         break;
       case STATES.FADING_IN:
-        this.updateFadeIn(delta);
+        this.updateFadeIn(delta, elapsedMS);
         break;
       case STATES.FADING_OUT:
-        this.updateFadeOut(delta);
+        this.updateFadeOut(delta, elapsedMS);
         break;
       case STATES.PAUSED:
-        this.updatePaused(delta);
+        this.updatePaused(delta, elapsedMS);
         break;
       case STATES.RUNNING:
         this.updateRunning(delta, elapsedMS);
@@ -203,7 +203,11 @@ class Scene extends Container {
    * Update the scene when in a running state.
    * @param  {Number} delta The delta value.
    */
-  updateRunning() {
+  updateRunning(delta, elapsedMS) {
+    if (this.prompt.enabled) {
+      this.prompt.update(delta, elapsedMS);
+    }
+
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
       this.addChild(this.menu);
@@ -246,9 +250,7 @@ class Scene extends Container {
   handleStateChangePaused() {
     SoundPlayer.pause();
     SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
-    this.main.enablePixelFilter();
-    this.main.enableColorFilter();
-    this.main.desaturate();
+    this.main.pause();
   }
 
   /**
@@ -256,8 +258,7 @@ class Scene extends Container {
    */
   handleStateChangeRunning() {
     SoundPlayer.resume();
-    this.main.disablePixelFilter();
-    this.main.disableColorFilter();
+    this.main.resume();
   }
 
   /**

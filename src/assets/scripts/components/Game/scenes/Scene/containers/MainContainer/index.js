@@ -46,6 +46,19 @@ class MainContainer extends Container {
     this.filters[1].desaturate();
   }
 
+  pause() {
+    this.enablePixelFilter();
+    this.enableColorFilter();
+    this.desaturate();
+    this.updateable.forEach(child => child.stop());
+  }
+
+  resume() {
+    this.disablePixelFilter();
+    this.disableColorFilter();
+    this.updateable.forEach(child => child.play());
+  }
+
   render() {
     this.filters[0].size = this.pixelSize;
   }
