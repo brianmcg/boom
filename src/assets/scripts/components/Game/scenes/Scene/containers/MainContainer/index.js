@@ -51,12 +51,14 @@ class MainContainer extends Container {
     this.enableColorFilter();
     this.desaturate();
     this.updateable.forEach(child => child.stop());
+    this.hideable.forEach(child => Object.assign(child, { visible: false }));
   }
 
   resume() {
     this.disablePixelFilter();
     this.disableColorFilter();
     this.updateable.forEach(child => child.play());
+    this.hideable.forEach(child => Object.assign(child, { visible: true }));
   }
 
   render() {

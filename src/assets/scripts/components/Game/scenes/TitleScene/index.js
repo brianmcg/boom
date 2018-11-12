@@ -47,7 +47,7 @@ class TitleScene extends Scene {
 
     this.main.addChild(smoke, { update: true });
     this.main.addChild(sparks, { update: true });
-    this.main.addChild(logo);
+    this.main.addChild(logo, { hide: true });
     this.prompt.addChild(text);
 
     super.create();
