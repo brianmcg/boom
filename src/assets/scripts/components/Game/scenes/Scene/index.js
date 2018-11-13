@@ -151,8 +151,8 @@ class Scene extends Container {
   /**
    * Update the scene when in a loading state.
    */
-  updateLoading() {
-    this.loading.update();
+  updateLoading(delta) {
+    this.loading.update(delta);
   }
 
   /**
@@ -242,6 +242,7 @@ class Scene extends Container {
     SoundPlayer.fadeOutMusic();
     this.main.enablePixelFilter();
     this.main.disableColorFilter();
+    this.removeChild(this.prompt);
   }
 
   /**

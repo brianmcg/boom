@@ -1,35 +1,37 @@
-import { BitmapText, Container } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/font';
+import { RectangleSprite, Container } from '~/core/graphics';
 import { RED } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
+
+const SIZE = 32;
+
+const INCREMENT = 0.1;
 
 class LoadingContainer extends Container {
   constructor() {
     super();
 
-    this.text = new BitmapText({
-      font: FONT_SIZES.LARGE,
-      text: 'LOADING',
-      color: RED,
-    });
-
     this.counter = 0;
 
-    this.text.x = (SCREEN.WIDTH / 2) - (this.text.width / 2);
-    this.text.y = (SCREEN.WIDTH / 2) - (this.text.width / 2);
+    this.spinner = new RectangleSprite({
+      color: RED,
+      w: SIZE,
+      h: SIZE,
+    });
 
-    this.addChild(this.text);
+    this.spinner.x = (SCREEN.WIDTH / 2);
+    this.spinner.y = (SCREEN.HEIGHT / 2);
+    this.spinner.anchor.set(0.5);
+
+    this.addChild(this.spinner);
   }
 
   update(delta) {
-    this.counter += delta;
-
-    if (this.counter >= 100) {
-      this.counter = 0;
-    }
+    this.counter += INCREMENT * delta;
   }
 
-  render() {} //  eslint-disable-line
+  render() {
+    this.spinner.rotation = this.counter;
+  }
 }
 
 export default LoadingContainer;
