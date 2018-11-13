@@ -2,11 +2,17 @@ import { RectangleSprite, Container } from '~/core/graphics';
 import { RED } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
 
-const SIZE = 32;
+const SIZE = SCREEN.HEIGHT / 5;
 
 const INCREMENT = 0.1;
 
+/**
+ * A class representing a LoadingContainer.
+ */
 class LoadingContainer extends Container {
+  /**
+   * Creates a LoadingContainer.
+   */
   constructor() {
     super();
 
@@ -25,10 +31,17 @@ class LoadingContainer extends Container {
     this.addChild(this.spinner);
   }
 
-  update(delta) {
+  /**
+   * Update the LoadingContainer
+   * @param  {Number} delta The delta time.
+   */
+  update(delta = 1) {
     this.counter += INCREMENT * delta;
   }
 
+  /**
+   * Render the LoadingContainer.
+   */
   render() {
     this.spinner.rotation = this.counter;
   }

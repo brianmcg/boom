@@ -4,7 +4,16 @@ import { SPRITESHEET_PATH, SOUND_PATH, SCENE_PATH } from '~/constants/paths';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
 
+/**
+ * Class representing a TitleScene.
+ * @extends {Scene}
+ */
 class TitleScene extends Scene {
+  /**
+   * Creates a TitleScene.
+   * @param  {Number} props.index The index of the scene.
+   * @param  {Number} props.scale The scale of the scene.
+   */
   constructor(props) {
     super(props);
 
@@ -19,6 +28,10 @@ class TitleScene extends Scene {
     };
   }
 
+  /**
+   * Create the TitleScene assets.
+   * @param  {Object} resources The loaded scene resources.
+   */
   create(resources) {
     const sprites = createSprites(resources);
     const {
@@ -53,27 +66,34 @@ class TitleScene extends Scene {
     super.create();
   }
 
+  /**
+   * Handle a state change to paused.
+   */
   handleStateChangePaused() {
     super.handleStateChangePaused();
     this.removeChild(this.prompt);
   }
 
+  /**
+   * Handle a state change to running.
+   */
   handleStateChangeRunning() {
     super.handleStateChangeRunning();
     this.addChild(this.prompt);
   }
 
+  /**
+   * Update the scene in a running state.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time.
+   */
   updateRunning(delta, elapsedMS) {
     super.updateRunning(delta, elapsedMS);
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
-      this.setStatus(Scene.EVENTS.SCENE_COMPLETE);
+      this.setStatus(Scene.EVENTS.COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }
-  }
-
-  render() {
-    super.render();
   }
 }
 

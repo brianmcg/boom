@@ -135,9 +135,9 @@ class Game extends Application {
         },
       });
 
-      this.scene.on(Scene.EVENTS.SCENE_COMPLETE, this.handleSceneComplete.bind(this));
-      this.scene.on(Scene.EVENTS.SCENE_RESTART, this.handleSceneRestart.bind(this));
-      this.scene.on(Scene.EVENTS.SCENE_QUIT, this.handleSceneQuit.bind(this));
+      this.scene.on(Scene.EVENTS.COMPLETE, this.handleSceneComplete.bind(this));
+      this.scene.on(Scene.EVENTS.RESTART, this.handleSceneRestart.bind(this));
+      this.scene.on(Scene.EVENTS.QUIT, this.handleSceneQuit.bind(this));
 
       this.stage.addChild(this.scene);
 

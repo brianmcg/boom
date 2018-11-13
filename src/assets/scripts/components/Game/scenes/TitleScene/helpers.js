@@ -7,6 +7,14 @@ import {
   BitmapText,
 } from '~/core/graphics';
 
+/**
+ * @module helpers.
+ */
+
+/**
+ * Create sprites from resources.
+ * @param  {Object} resources The loaded resources.
+ */
 export const createSprites = (resources) => {
   const { animations, sprites } = resources.scene.data;
   const smokeTextures = animations.smoke.map(image => Texture.fromFrame(image));

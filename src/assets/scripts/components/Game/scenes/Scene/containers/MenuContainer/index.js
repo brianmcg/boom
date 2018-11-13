@@ -11,7 +11,7 @@ const PADDING = 4;
 class MenuContainer extends Container {
   /**
    * Creates a menu container.
-   * @param  {Array}  items [description]
+   * @param  {Array}  items The menu items.
    */
   add(items = []) {
     this.currentIndex = 0;
@@ -40,6 +40,9 @@ class MenuContainer extends Container {
     });
   }
 
+  /**
+   * Highlight the next menu item.
+   */
   highlightNext() {
     if (this.items.length) {
       if (this.currentIndex < this.items.length - 1) {
@@ -50,6 +53,9 @@ class MenuContainer extends Container {
     }
   }
 
+  /**
+   * Highlight the previous menu item.
+   */
   highlightPrevious() {
     if (this.items.length) {
       if (this.currentIndex > 0) {
@@ -60,12 +66,18 @@ class MenuContainer extends Container {
     }
   }
 
+  /**
+   * Select the current menu item.
+   */
   select() {
     if (this.items.length) {
       this.items[this.currentIndex].onSelect();
     }
   }
 
+  /**
+   * Render the MenuContainer.
+   */
   render() {
     this.children.forEach((child, index) => {
       child.setColor(index === this.currentIndex ? RED : WHITE);

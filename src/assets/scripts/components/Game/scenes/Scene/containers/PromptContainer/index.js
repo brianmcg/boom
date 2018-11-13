@@ -28,6 +28,10 @@ class PromptContainer extends Container {
     }
   }
 
+  /**
+   * Render the container.
+   * @return {[type]} [description]
+   */
   render() {
     if (!this.counter) {
       this.visible = !this.visible;

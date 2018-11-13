@@ -12,7 +12,13 @@ const EVENTS = {
   FADE_OUT_COMPLETE: 'FADE_OUT_COMPLETE',
 };
 
+/**
+ * A class representing a MainContainer.
+ */
 class MainContainer extends Container {
+  /**
+   * Creates a MainContainer.
+   */
   constructor() {
     super();
 
@@ -26,26 +32,9 @@ class MainContainer extends Container {
     });
   }
 
-  enablePixelFilter() {
-    this.filters[0].enabled = true;
-  }
-
-  disablePixelFilter() {
-    this.filters[0].enabled = false;
-  }
-
-  enableColorFilter() {
-    this.filters[1].enabled = true;
-  }
-
-  disableColorFilter() {
-    this.filters[1].enabled = false;
-  }
-
-  desaturate() {
-    this.filters[1].desaturate();
-  }
-
+  /**
+   * Pause the MainContainer.
+   */
   pause() {
     this.enablePixelFilter();
     this.enableColorFilter();
@@ -54,6 +43,9 @@ class MainContainer extends Container {
     this.hideable.forEach(child => Object.assign(child, { visible: false }));
   }
 
+  /**
+   * Resume the MainContainer.
+   */
   resume() {
     this.disablePixelFilter();
     this.disableColorFilter();
@@ -61,10 +53,10 @@ class MainContainer extends Container {
     this.hideable.forEach(child => Object.assign(child, { visible: true }));
   }
 
-  render() {
-    this.filters[0].size = this.pixelSize;
-  }
-
+  /**
+   * Update the fade in effect.
+   * @param  {Number} delta The delta time.
+   */
   updateFadeIn(delta) {
     this.pixelSize -= PIXEL.INCREMEMENT * this.parent.scale.x * delta;
 
@@ -74,6 +66,10 @@ class MainContainer extends Container {
     }
   }
 
+  /**
+   * Update the fade out effect.
+   * @param  {Number} delta The delta time.
+   */
   updateFadeOut(delta) {
     const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
 
@@ -85,10 +81,59 @@ class MainContainer extends Container {
     }
   }
 
+  /**
+   * Update the paused effect.
+   */
   updatePaused() {
     this.pixelSize = PIXEL.PAUSE_SIZE * this.parent.scale.x;
   }
 
+  /**
+   * Render the MainContainer.
+   */
+  render() {
+    this.filters[0].size = this.pixelSize;
+  }
+
+  /**
+   * Enable the pixel filter.
+   */
+  enablePixelFilter() {
+    this.filters[0].enabled = true;
+  }
+
+  /**
+   * Disable the pixel filter.
+   */
+  disablePixelFilter() {
+    this.filters[0].enabled = false;
+  }
+
+  /**
+   * Enable the color filter.
+   */
+  enableColorFilter() {
+    this.filters[1].enabled = true;
+  }
+
+  /**
+   * Disable the color filter.
+   */
+  disableColorFilter() {
+    this.filters[1].enabled = false;
+  }
+
+  /**
+   * Desaturate the MainContainer.
+   * @return {[type]} [description]
+   */
+  desaturate() {
+    this.filters[1].desaturate();
+  }
+
+  /**
+   * Get the MainContainer events.
+   */
   static get EVENTS() {
     return EVENTS;
   }
