@@ -1,6 +1,6 @@
 import { Keyboard } from '~/core/input';
 import { SCREEN } from '~/constants/config';
-import { SPRITESHEET_PATH, SOUND_PATH, SCENE_PATH } from '~/constants/paths';
+import { SCENE_PATH } from '~/constants/paths';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
 
@@ -12,10 +12,9 @@ class TitleScene extends Scene {
 
     this.assets = {
       data: [
-        ['spritesheet', `${SPRITESHEET_PATH}/${this.type}.json`],
-        ['scene', `${SCENE_PATH}/${this.type}.json`],
+        ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
       ],
-      music: `${SOUND_PATH}/${this.type}.mp3`,
+      music: `${SCENE_PATH}/${this.type}/scene.mp3`,
     };
   }
 
