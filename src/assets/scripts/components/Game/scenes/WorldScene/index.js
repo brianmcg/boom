@@ -15,9 +15,7 @@ class WorldScene extends Scene {
     this.type = Scene.TYPES.WORLD;
 
     this.assets = {
-      data: [
-        ['scene', `${SCENE_PATH}/${this.type}_${this.index}/scene.json`],
-      ],
+      data: ['scene', `${SCENE_PATH}/${this.type}_${this.index}/scene.json`],
       music: `${SCENE_PATH}/${this.type}_${this.index}/scene.mp3`,
     };
 

@@ -1,3 +1,3 @@
-export const SCENE_PATH = 'assets/media/scenes';
+export const SCENE_PATH = 'assets/media/game/scenes';
 
-export const MEDIA_PATH = 'assets/media';
+export const GAME_PATH = 'assets/media/game';

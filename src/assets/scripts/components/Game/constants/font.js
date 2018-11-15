@@ -7,5 +7,5 @@ export const FONT_SIZES = {
 };
 
 export const FONT_TYPES = {
-  MAIN: 'main',
+  MAIN: 'main_font',
 };

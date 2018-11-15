@@ -67,7 +67,7 @@ class Scene extends Container {
   load() {
     const { data, music } = this.assets;
 
-    data.forEach(asset => this.loader.add(...asset));
+    this.loader.add(...data);
 
     SoundPlayer.loadMusic(music)
       .then(() => {

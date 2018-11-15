@@ -20,9 +20,7 @@ class TitleScene extends Scene {
     this.type = Scene.TYPES.TITLE;
 
     this.assets = {
-      data: [
-        ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
-      ],
+      data: ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
       music: `${SCENE_PATH}/${this.type}/scene.mp3`,
     };
   }

@@ -17,9 +17,7 @@ class CreditsScene extends Scene {
     this.type = Scene.TYPES.CREDITS;
 
     this.assets = {
-      data: [
-        ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
-      ],
+      data: ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
       music: `${SCENE_PATH}/${this.type}/scene.mp3`,
     };
   }
