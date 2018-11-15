@@ -16,7 +16,7 @@ import {
  * @param  {Object} resources The loaded resources.
  */
 export const createSprites = (resources) => {
-  const { animations, sprites } = resources.scene.data;
+  const { sprites, animations } = resources.scene.data;
   const smokeTextures = animations.smoke.map(image => Texture.fromFrame(image));
   const sparksTextures = animations.sparks.map(image => Texture.fromFrame(image));
 
