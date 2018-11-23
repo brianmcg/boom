@@ -1,5 +1,4 @@
 import { Keyboard } from '~/core/input';
-import { SCENE_PATH } from '~/constants/paths';
 import Scene from '../Scene';
 
 /**
@@ -13,13 +12,7 @@ class CreditsScene extends Scene {
    */
   constructor(props) {
     super(props);
-
     this.type = Scene.TYPES.CREDITS;
-
-    this.assets = {
-      data: ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
-      music: `${SCENE_PATH}/${this.type}/scene.mp3`,
-    };
   }
 
   /**

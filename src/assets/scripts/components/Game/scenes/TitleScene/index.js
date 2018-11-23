@@ -1,6 +1,5 @@
 import { Keyboard } from '~/core/input';
 import { SCREEN } from '~/constants/config';
-import { SCENE_PATH } from '~/constants/paths';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
 
@@ -16,13 +15,7 @@ class TitleScene extends Scene {
    */
   constructor(props) {
     super(props);
-
     this.type = Scene.TYPES.TITLE;
-
-    this.assets = {
-      data: ['scene', `${SCENE_PATH}/${this.type}/scene.json`],
-      music: `${SCENE_PATH}/${this.type}/scene.mp3`,
-    };
   }
 
   /**

@@ -1,5 +1,4 @@
 import { Keyboard } from '~/core/input';
-import { SCENE_PATH } from '~/constants/paths';
 import Scene from '../Scene';
 
 const TEXT = {
@@ -13,12 +12,6 @@ class WorldScene extends Scene {
     super(props);
 
     this.type = Scene.TYPES.WORLD;
-
-    this.assets = {
-      data: ['scene', `${SCENE_PATH}/${this.type}_${this.index}/scene.json`],
-      music: `${SCENE_PATH}/${this.type}_${this.index}/scene.mp3`,
-    };
-
 
     this.menuItems = [{
       label: TEXT.CONTINUE,

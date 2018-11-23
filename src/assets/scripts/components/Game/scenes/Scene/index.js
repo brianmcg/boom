@@ -2,6 +2,7 @@ import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
 import { Container, Loader } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
+import { SCENE_PATH } from '~/constants/paths';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
@@ -65,11 +66,9 @@ class Scene extends Container {
    * @return {Object} A promise that assets will be loaded.
    */
   load() {
-    const { data, music } = this.assets;
+    this.loader.add('scene', `${SCENE_PATH}/${this.type}/scene.json`);
 
-    this.loader.add(...data);
-
-    SoundPlayer.loadMusic(music)
+    SoundPlayer.loadMusic(`${SCENE_PATH}/${this.type}/scene.mp3`)
       .then(() => {
         this.loader.load(this.handleLoad.bind(this));
       });
