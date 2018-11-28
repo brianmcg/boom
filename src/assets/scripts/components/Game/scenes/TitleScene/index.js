@@ -3,6 +3,8 @@ import { SCREEN } from '~/constants/config';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
 
+const PADDING = 10;
+
 /**
  * Class representing a TitleScene.
  * @extends {Scene}
@@ -44,9 +46,7 @@ class TitleScene extends Scene {
     sparks.height = SCREEN.HEIGHT;
 
     text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
-    text.y = logo.y + logo.height
-      + ((SCREEN.HEIGHT - (logo.y + logo.height)) / 2) - text.height;
-
+    text.y = SCREEN.HEIGHT - text.height - PADDING;
 
     this.main.addChild(smoke, { update: true });
     this.main.addChild(sparks, { update: true });
@@ -56,34 +56,9 @@ class TitleScene extends Scene {
     super.create();
   }
 
-  /**
-   * Handle a state change to paused.
-   */
-  handleStateChangePaused() {
-    super.handleStateChangePaused();
-    this.removeChild(this.prompt);
-  }
-
-  /**
-   * Handle a state change to running.
-   */
   handleStateChangeRunning() {
     super.handleStateChangeRunning();
-    this.addChild(this.prompt);
-  }
-
-  /**
-   * Update the scene in a running state.
-   * @param  {Number} delta     The delta time.
-   * @param  {Number} elapsedMS The elapsed time.
-   */
-  updateRunning(delta, elapsedMS) {
-    super.updateRunning(delta, elapsedMS);
-
-    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
-      this.setStatus(Scene.EVENTS.COMPLETE);
-      this.setState(Scene.STATES.FADING_OUT);
-    }
+    this.setState(Scene.STATES.PROMPTING);
   }
 }
 

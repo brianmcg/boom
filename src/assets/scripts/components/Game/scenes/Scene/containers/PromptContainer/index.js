@@ -1,6 +1,9 @@
 import { Container } from '~/core/graphics';
+import { SCREEN } from '~/constants/config';
 
 const INTERVAL = 500;
+
+const PROMPT_PADDING = 10;
 
 /**
  * Class representing a prompt container.
@@ -36,6 +39,13 @@ class PromptContainer extends Container {
     if (!this.counter) {
       this.visible = !this.visible;
     }
+  }
+
+  addChild(sprite) {
+    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
+    sprite.y = SCREEN.HEIGHT - sprite.height - PROMPT_PADDING;
+
+    super.addChild(sprite);
   }
 }
 

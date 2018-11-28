@@ -6,7 +6,7 @@
  * The number of levels in the game.
  * @type {Number}
  */
-export const NUM_LEVELS = 2;
+export const NUM_LEVELS = 1;
 
 /**
  * Enabled the sound.

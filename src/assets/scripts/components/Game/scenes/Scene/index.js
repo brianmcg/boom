@@ -14,6 +14,7 @@ const STATES = {
   FADING_OUT: 'FADING_OUT',
   PAUSED: 'PAUSED',
   RUNNING: 'RUNNING',
+  PROMPTING: 'PROMPTING',
   STOPPED: 'STOPPED',
 };
 
@@ -66,9 +67,11 @@ class Scene extends Container {
    * @return {Object} A promise that assets will be loaded.
    */
   load() {
-    this.loader.add('scene', `${SCENE_PATH}/${this.type}/scene.json`);
+    const index = this.type === TYPES.WORLD ? `-${this.index}` : '';
 
-    SoundPlayer.loadMusic(`${SCENE_PATH}/${this.type}/scene.mp3`)
+    this.loader.add('scene', `${SCENE_PATH}/${this.type}${index}/scene.json`);
+
+    SoundPlayer.loadMusic(`${SCENE_PATH}/${this.type}${index}/scene.mp3`)
       .then(() => {
         this.loader.load(this.handleLoad.bind(this));
       });
@@ -113,6 +116,9 @@ class Scene extends Container {
       case STATES.RUNNING:
         this.updateRunning(delta, elapsedMS);
         break;
+      case STATES.PROMPTING:
+        this.updatePrompting(delta, elapsedMS);
+        break;
       default:
         break;
     }
@@ -138,6 +144,9 @@ class Scene extends Container {
         break;
       case STATES.RUNNING:
         this.handleStateChangeRunning();
+        break;
+      case STATES.PROMPTING:
+        this.handleStateChangePrompting();
         break;
       case STATES.STOPPED:
         this.handleStateChangeStopped();
@@ -200,16 +209,23 @@ class Scene extends Container {
 
   /**
    * Update the scene when in a running state.
-   * @param  {Number} delta The delta value.
    */
-  updateRunning(delta, elapsedMS) {
-    if (this.prompt.enabled) {
-      this.prompt.update(delta, elapsedMS);
-    }
-
+  updateRunning() {
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
       this.addChild(this.menu);
+    }
+  }
+
+  /**
+   * Update the scene when in a prompting state.
+   */
+  updatePrompting(delta, elapsedMS) {
+    this.prompt.update(delta, elapsedMS);
+
+    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
+      this.setStatus(Scene.EVENTS.COMPLETE);
+      this.setState(Scene.STATES.FADING_OUT);
     }
   }
 
@@ -259,6 +275,13 @@ class Scene extends Container {
   handleStateChangeRunning() {
     SoundPlayer.resume();
     this.main.resume();
+  }
+
+  /**
+   * Handle a state change to prompting.
+   */
+  handleStateChangePrompting() {
+    this.addChild(this.prompt);
   }
 
   /**
