@@ -1,9 +1,9 @@
-import { Keyboard } from '~/core/input';
+
 import { SCREEN } from '~/constants/config';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
-import CreditsContainer from './containers/CreditsContainer';
-import EndContainer from './containers/EndContainer';
+import ScrollContainer from './containers/ScrollContainer';
+import BackgroundContainer from './containers/BackgroundContainer';
 
 const SCROLL_SPEED = 0.4;
 
@@ -27,22 +27,14 @@ class CreditsScene extends Scene {
    */
   create(resources) {
     const sprites = createSprites(resources);
-    const {
-      smoke,
-      credits,
-      end,
-      pressSpace,
-    } = sprites;
+    const { background, prompt, scroll } = sprites;
 
-    smoke.width = SCREEN.WIDTH;
-    smoke.height = SCREEN.HEIGHT;
+    this.prompt.add(prompt);
+    this.scroll = new ScrollContainer(scroll);
+    this.background = new BackgroundContainer(background);
 
-    this.prompt.addChild(pressSpace);
-    this.credits = new CreditsContainer(credits);
-    this.end = new EndContainer(end);
-
-    this.main.addChild(smoke, { update: true });
-    this.main.addChild(this.credits);
+    this.main.addChild(this.background, { update: true });
+    this.main.addChild(this.scroll);
 
     super.create();
   }
@@ -55,27 +47,13 @@ class CreditsScene extends Scene {
   updateRunning(delta, elapsedMS) {
     super.updateRunning(delta, elapsedMS);
 
-    if (this.credits.enabled) {
-      this.credits.y -= (delta * SCROLL_SPEED);
+    if (this.scroll.enabled) {
+      this.scroll.y -= (delta * SCROLL_SPEED);
+      const last = this.scroll.lastChild();
 
-      if (this.credits.y < -this.credits.height) {
-        this.main.removeChild(this.credits);
-        this.main.addChild(this.end);
-      }
-    }
-
-    if (this.end.enabled) {
-      this.end.y -= (delta * SCROLL_SPEED);
-
-      if (this.end.y <= (SCREEN.HEIGHT / 2) - (this.end.height / 2)) {
-        this.end.y = (SCREEN.HEIGHT / 2) - (this.end.height / 2);
+      if (this.scroll.y < -this.scroll.height + ((SCREEN.HEIGHT) - (last.height))) {
         this.setState(Scene.STATES.PROMPTING);
       }
-    }
-
-    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
-      this.setStatus(Scene.EVENTS.COMPLETE);
-      this.setState(Scene.STATES.FADING_OUT);
     }
   }
 }

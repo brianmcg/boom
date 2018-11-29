@@ -14,7 +14,6 @@ class PromptContainer extends Container {
    */
   constructor() {
     super();
-
     this.counter = 0;
   }
 
@@ -41,11 +40,10 @@ class PromptContainer extends Container {
     }
   }
 
-  addChild(sprite) {
-    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
-    sprite.y = SCREEN.HEIGHT - sprite.height - PROMPT_PADDING;
-
-    super.addChild(sprite);
+  add({ text }) {
+    text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
+    text.y = SCREEN.HEIGHT - text.height - PROMPT_PADDING;
+    this.addChild(text);
   }
 }
 

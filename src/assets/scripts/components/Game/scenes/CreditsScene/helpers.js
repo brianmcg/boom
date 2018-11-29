@@ -41,18 +41,17 @@ export const createSprites = (resources) => {
     return memo;
   }, []);
 
-  const end = Sprite.fromFrame(sprites.end);
+  const message = Sprite.fromFrame(sprites.end);
 
-  const pressSpace = new BitmapText({
+  const text = new BitmapText({
     font: FONT_SIZES.SMALL,
     text: 'Press space to continue',
     color: RED,
   });
 
   return {
-    smoke,
-    credits,
-    end,
-    pressSpace,
+    background: { smoke },
+    scroll: { credits, message },
+    prompt: { text },
   };
 };
