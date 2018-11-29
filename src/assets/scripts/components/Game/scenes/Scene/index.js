@@ -210,7 +210,11 @@ class Scene extends Container {
   /**
    * Update the scene when in a running state.
    */
-  updateRunning() {
+  updateRunning(delta, elapsedMS) {
+    this.main.children.forEach(
+      child => child.update && child.update(delta, elapsedMS),
+    );
+
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
       this.addChild(this.menu);

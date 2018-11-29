@@ -39,7 +39,7 @@ class MainContainer extends Container {
     this.enablePixelFilter();
     this.enableColorFilter();
     this.desaturate();
-    this.updateable.forEach(child => child.stop());
+    this.playable.forEach(child => child.stop());
     this.hideable.forEach(child => Object.assign(child, { visible: false }));
   }
 
@@ -49,7 +49,7 @@ class MainContainer extends Container {
   resume() {
     this.disablePixelFilter();
     this.disableColorFilter();
-    this.updateable.forEach(child => child.play());
+    this.playable.forEach(child => child.play());
     this.hideable.forEach(child => Object.assign(child, { visible: true }));
   }
 
@@ -92,6 +92,7 @@ class MainContainer extends Container {
    * Render the MainContainer.
    */
   render() {
+    this.children.forEach(child => child.render && child.render());
     this.filters[0].size = this.pixelSize;
   }
 

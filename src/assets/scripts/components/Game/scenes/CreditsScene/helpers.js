@@ -50,8 +50,8 @@ export const createSprites = (resources) => {
   });
 
   return {
-    background: { smoke },
-    scroll: { credits, message },
-    prompt: { text },
+    backgroundSprites: { smoke },
+    scrollSprites: { credits, message },
+    promptSprites: { text },
   };
 };

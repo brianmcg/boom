@@ -10,7 +10,7 @@ class Container extends PIXI.Container {
   constructor() {
     super();
 
-    this.updateable = [];
+    this.playable = [];
     this.hideable = [];
 
     this.on('added', () => {
@@ -25,14 +25,14 @@ class Container extends PIXI.Container {
   /**
    * Add a child to the container.
    * @param {Object}  child          The child to add.
-   * @param {Boolean} options.update Add child to updateable list.
+   * @param {Boolean} options.play   Add child to playable list.
    * @param {Boolean} options.hide   Add child to hideable list.
    */
-  addChild(child, { update, hide } = {}) {
+  addChild(child, { play, hide } = {}) {
     super.addChild(child);
 
-    if (update) {
-      this.updateable.push(child);
+    if (play) {
+      this.playable.push(child);
     }
 
     if (hide) {
@@ -43,14 +43,14 @@ class Container extends PIXI.Container {
   /**
    * Remove a child from the container.
    * @param {Object}  child          The child to remove.
-   * @param {Boolean} options.update Remove child from updateable list.
+   * @param {Boolean} options.play Remove child from playable list.
    * @param {Boolean} options.hide   Remove child from hideable list.
    */
-  removeChild(child, { update, hide } = {}) {
+  removeChild(child, { play, hide } = {}) {
     super.removeChild(child);
 
-    if (update) {
-      this.updateable = this.updateable.filter(updateableChild => updateableChild === child);
+    if (play) {
+      this.playable = this.playable.filter(playableChild => playableChild === child);
     }
 
     if (hide) {
@@ -59,17 +59,17 @@ class Container extends PIXI.Container {
   }
 
   /**
-   * Play updateable children.
+   * Play playable children.
    */
   play() {
-    this.updateable.forEach(child => child.play());
+    this.playable.forEach(child => child.play());
   }
 
   /**
-   * Stop updateable children.
+   * Stop playable children.
    */
   stop() {
-    this.updateable.forEach(child => child.stop());
+    this.playable.forEach(child => child.stop());
   }
 
   /**

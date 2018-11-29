@@ -3,6 +3,10 @@ import { SCREEN } from '~/constants/config';
 
 const TEXT_PADDING = 2;
 
+const SCROLL_SPEED = 0.4;
+
+const SCROLL_COMPLETE = 'SCROLL_COMPLETE';
+
 class ScrollContainer extends Container {
   constructor({ credits, message }) {
     super();
@@ -28,9 +32,27 @@ class ScrollContainer extends Container {
     message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
     message.y = y + SCREEN.HEIGHT;
 
-    this.y = SCREEN.HEIGHT;
+    this.yPosition = SCREEN.HEIGHT;
 
     this.addChild(message);
+  }
+
+  update(delta) {
+    this.yPosition -= (delta * SCROLL_SPEED);
+
+    const last = this.lastChild();
+
+    if (this.yPosition < -this.height + ((SCREEN.HEIGHT) - (last.height))) {
+      this.emit(SCROLL_COMPLETE);
+    }
+  }
+
+  render() {
+    this.y = this.yPosition;
+  }
+
+  static get EVENTS() {
+    return { SCROLL_COMPLETE };
   }
 }
 

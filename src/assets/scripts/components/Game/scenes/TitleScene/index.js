@@ -1,9 +1,6 @@
-import { Keyboard } from '~/core/input';
-import { SCREEN } from '~/constants/config';
 import { createSprites } from './helpers';
 import Scene from '../Scene';
-
-const PADDING = 10;
+import BackgroundContainer from './containers/BackgroundContainer';
 
 /**
  * Class representing a TitleScene.
@@ -26,32 +23,11 @@ class TitleScene extends Scene {
    */
   create(resources) {
     const sprites = createSprites(resources);
-    const {
-      smoke,
-      sparks,
-      logo,
-      text,
-    } = sprites;
-    const ratio = logo.height / (SCREEN.HEIGHT / 1.75);
+    const { backgroundSprites, promptSprites } = sprites;
+    const background = new BackgroundContainer(backgroundSprites);
 
-    logo.height /= ratio;
-    logo.width /= ratio;
-    logo.x = (SCREEN.WIDTH / 2) - (logo.width / 2);
-    logo.y = (SCREEN.HEIGHT / 2) - (logo.height / 2);
-
-    smoke.width = SCREEN.WIDTH;
-    smoke.height = SCREEN.HEIGHT;
-
-    sparks.width = SCREEN.WIDTH;
-    sparks.height = SCREEN.HEIGHT;
-
-    text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
-    text.y = SCREEN.HEIGHT - text.height - PADDING;
-
-    this.main.addChild(smoke, { update: true });
-    this.main.addChild(sparks, { update: true });
-    this.main.addChild(logo, { hide: true });
-    this.prompt.addChild(text);
+    this.prompt.add(promptSprites);
+    this.main.addChild(background, { play: true });
 
     super.create();
   }
