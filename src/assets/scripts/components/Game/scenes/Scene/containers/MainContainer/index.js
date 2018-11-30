@@ -17,6 +17,11 @@ const EVENTS = {
  */
 class MainContainer extends Container {
   /**
+   * The container events.
+   */
+  static get EVENTS() { return EVENTS; }
+
+  /**
    * Creates a MainContainer.
    */
   constructor() {
@@ -130,13 +135,6 @@ class MainContainer extends Container {
    */
   desaturate() {
     this.filters[1].desaturate();
-  }
-
-  /**
-   * Get the MainContainer events.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

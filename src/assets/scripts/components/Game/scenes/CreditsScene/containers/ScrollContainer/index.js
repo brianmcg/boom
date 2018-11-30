@@ -5,13 +5,30 @@ const TEXT_PADDING = 2;
 
 const SCROLL_SPEED = 0.4;
 
-const SCROLL_COMPLETE = 'SCROLL_COMPLETE';
+const EVENTS = {
+  SCROLL_COMPLETE: 'SCROLL_COMPLETE',
+};
 
+/**
+ * Class representing a scroll container.
+ */
 class ScrollContainer extends Container {
+  /**
+   * The container events.
+   */
+  static get EVENTS() { return EVENTS; }
+
+  /**
+   * Creates a scroll container.
+   * @param  {[type]} options.credits [description]
+   * @param  {[type]} options.message [description]
+   * @return {[type]}                 [description]
+   */
   constructor({ credits, message }) {
     super();
 
     const ratio = message.height / (SCREEN.HEIGHT / 3);
+
     let y = 0;
 
     credits.forEach((credit) => {
@@ -37,22 +54,25 @@ class ScrollContainer extends Container {
     this.addChild(message);
   }
 
-  update(delta) {
+  /**
+   * Updates the scroll container.
+   * @param  {Number} delta [description]
+   */
+  update(delta = 1) {
     this.yPosition -= (delta * SCROLL_SPEED);
 
     const last = this.lastChild();
 
     if (this.yPosition < -this.height + ((SCREEN.HEIGHT) - (last.height))) {
-      this.emit(SCROLL_COMPLETE);
+      this.emit(EVENTS.SCROLL_COMPLETE);
     }
   }
 
+  /**
+   * Renders the scroll container.
+   */
   render() {
     this.y = this.yPosition;
-  }
-
-  static get EVENTS() {
-    return { SCROLL_COMPLETE };
   }
 }
 

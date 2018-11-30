@@ -45,6 +45,11 @@ const pressed = { ...held };
  */
 class Keyboard {
   /**
+   * The key names.
+   */
+  static get KEYS() { return KEYS; }
+
+  /**
    * Handle the keydown event
    * @param  {Object} e The keyboard event.
    */
@@ -93,13 +98,6 @@ class Keyboard {
    */
   static isHeld(key) {
     return held[key];
-  }
-
-  /**
-   * The key names constant.
-   */
-  static get KEYS() {
-    return KEYS;
   }
 }
 
