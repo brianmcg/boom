@@ -9,12 +9,11 @@ import BackgroundContainer from './containers/BackgroundContainer';
 class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
-   * @param  {Number} props.index The index of the scene.
-   * @param  {Number} props.scale The scale of the scene.
+   * @param  {Number} options.index The index of the scene.
+   * @param  {Number} options.scale The scale of the scene.
    */
-  constructor(props) {
-    super(props);
-    this.type = Scene.TYPES.TITLE;
+  constructor(options) {
+    super({ type: Scene.TYPES.TITLE, ...options });
   }
 
   /**
@@ -32,8 +31,7 @@ class TitleScene extends Scene {
     super.create();
   }
 
-  handleStateChangeRunning() {
-    super.handleStateChangeRunning();
+  onRunning() {
     this.setState(Scene.STATES.PROMPTING);
   }
 }

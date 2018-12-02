@@ -8,10 +8,8 @@ const TEXT = {
 };
 
 class WorldScene extends Scene {
-  constructor(props) {
-    super(props);
-
-    this.type = Scene.TYPES.WORLD;
+  constructor(options) {
+    super({ type: Scene.TYPES.WORLD, ...options });
 
     this.menuItems = [{
       label: TEXT.CONTINUE,

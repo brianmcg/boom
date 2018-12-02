@@ -36,7 +36,7 @@ class Game extends Application {
     this.renderer.view.style.top = '50%';
 
     this.resize();
-    this.ticker.add(this.executeLoop.bind(this));
+    this.ticker.add(this.loop.bind(this));
   }
 
   /**
@@ -56,13 +56,13 @@ class Game extends Application {
 
     SoundPlayer.loadEffects({ src: `${GAME_PATH}/sounds.mp3`, sprite: SOUND_SPRITE })
       .then(() => {
-        this.loader.load(this.handleLoad.bind(this));
+        this.loader.load(this.onLoad.bind(this));
       });
   }
 
 
-  handleLoad() {
-    this.showScene(Scene.TYPES.TITLE);
+  onLoad() {
+    this.show(Scene.TYPES.TITLE);
   }
 
   /**
@@ -70,20 +70,20 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  handleSceneComplete(sceneType, sceneIndex) {
+  onSceneComplete(sceneType, sceneIndex) {
     switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.showScene(Scene.TYPES.WORLD, 1);
+        this.show(Scene.TYPES.WORLD, 1);
         break;
       case Scene.TYPES.WORLD:
         if (sceneIndex < NUM_LEVELS) {
-          this.showScene(Scene.TYPES.WORLD, sceneIndex + 1);
+          this.show(Scene.TYPES.WORLD, sceneIndex + 1);
         } else {
-          this.showScene(Scene.TYPES.CREDITS);
+          this.show(Scene.TYPES.CREDITS);
         }
         break;
       default:
-        this.showScene(Scene.TYPES.TITLE);
+        this.show(Scene.TYPES.TITLE);
         break;
     }
   }
@@ -93,8 +93,8 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  handleSceneRestart(sceneType, sceneIndex) {
-    this.showScene(sceneType, sceneIndex);
+  onSceneRestart(sceneType, sceneIndex) {
+    this.show(sceneType, sceneIndex);
   }
 
   /**
@@ -102,13 +102,13 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  handleSceneQuit(sceneType) {
+  onSceneQuit(sceneType) {
     switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.showScene(null);
+        this.show(null);
         break;
       default:
-        this.showScene(Scene.TYPES.TITLE);
+        this.show(Scene.TYPES.TITLE);
         break;
     }
   }
@@ -118,7 +118,7 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  showScene(sceneType, sceneIndex = 0) {
+  show(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
     const scaleFactor = getMaxScaleFactor();
 
@@ -136,9 +136,9 @@ class Game extends Application {
         },
       });
 
-      this.scene.on(Scene.EVENTS.COMPLETE, this.handleSceneComplete.bind(this));
-      this.scene.on(Scene.EVENTS.RESTART, this.handleSceneRestart.bind(this));
-      this.scene.on(Scene.EVENTS.QUIT, this.handleSceneQuit.bind(this));
+      this.scene.on(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
+      this.scene.on(Scene.EVENTS.RESTART, this.onSceneRestart.bind(this));
+      this.scene.on(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
       this.stage.addChild(this.scene);
 
@@ -150,7 +150,7 @@ class Game extends Application {
    * Execute a game loop.
    * @param  {Number} delta The delta value.
    */
-  executeLoop(delta) {
+  loop(delta) {
     if (this.scene) {
       this.scene.update(delta, this.ticker.elapsedMS);
       this.scene.render();

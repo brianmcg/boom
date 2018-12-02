@@ -73,6 +73,20 @@ class Container extends PIXI.Container {
   }
 
   /**
+   * Show the container.
+   */
+  show() {
+    this.visible = true;
+  }
+
+  /**
+   * Hide the container.
+   */
+  hide() {
+    this.visible = false;
+  }
+
+  /**
    * Return the last child in the container.
    * @return {Object} The last child in the container.
    */

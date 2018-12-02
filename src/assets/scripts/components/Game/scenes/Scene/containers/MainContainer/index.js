@@ -8,8 +8,8 @@ const PIXEL = {
 };
 
 const EVENTS = {
-  FADE_IN_COMPLETE: 'FADE_IN_COMPLETE',
-  FADE_OUT_COMPLETE: 'FADE_OUT_COMPLETE',
+  FADE_IN_COMPLETE: 'fade:in:complete',
+  FADE_OUT_COMPLETE: 'fade:out:complete',
 };
 
 /**
@@ -45,7 +45,7 @@ class MainContainer extends Container {
     this.enableColorFilter();
     this.desaturate();
     this.playable.forEach(child => child.stop());
-    this.hideable.forEach(child => Object.assign(child, { visible: false }));
+    this.hideable.forEach(child => child.hide());
   }
 
   /**
@@ -55,7 +55,7 @@ class MainContainer extends Container {
     this.disablePixelFilter();
     this.disableColorFilter();
     this.playable.forEach(child => child.play());
-    this.hideable.forEach(child => Object.assign(child, { visible: true }));
+    this.hideable.forEach(child => child.show());
   }
 
   /**
@@ -98,7 +98,7 @@ class MainContainer extends Container {
    */
   render() {
     this.children.forEach(child => child.render && child.render());
-    this.filters[0].size = this.pixelSize;
+    if (this.filters[0].enabled) this.filters[0].size = this.pixelSize;
   }
 
   /**

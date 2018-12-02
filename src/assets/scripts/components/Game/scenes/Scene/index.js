@@ -53,24 +53,26 @@ class Scene extends Container {
    * Create a Scene.
    * @param  {Number} options.index The index of the scene.
    * @param  {Number} options.scale The scale of the scene.
+   * @param  {String} options.type  The type of scene.
    */
-  constructor({ index = 0, scale = 1 }) {
+  constructor({ index = 0, scale = 1, type }) {
     super();
 
     this.index = index;
     this.scale = scale;
+    this.type = type;
     this.loader = new Loader();
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
     this.menu = new MenuContainer();
     this.prompt = new PromptContainer();
-    this.path = `${this.type}${this.type === TYPES.WORLD ? `-${index}` : ''}`;
+    this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
 
-    this.main.on(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
+    this.main.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
       this.setState(STATES.RUNNING);
     });
 
-    this.main.on(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
+    this.main.once(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
       this.setState(STATES.STOPPED);
     });
 
@@ -86,7 +88,7 @@ class Scene extends Container {
 
     SoundPlayer.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`)
       .then(() => {
-        this.loader.load(this.handleLoad.bind(this));
+        this.loader.load(this.onLoad.bind(this));
       });
   }
 
@@ -96,7 +98,7 @@ class Scene extends Container {
    * @param  {Object}   loader    The loader
    * @param  {Object}   resources The loaded resources.
    */
-  handleLoad(loader, resources) {
+  onLoad(loader, resources) {
     this.create(resources);
   }
 
@@ -128,15 +130,15 @@ class Scene extends Container {
    * Handle a state change.
    * @param  {String} state The new state.
    */
-  handleStateChange(state) {
+  onStateChange(state) {
     switch (state) {
-      case STATES.LOADING: this.handleStateChangeLoading(); break;
-      case STATES.FADING_IN: this.handleStateChangeFadingIn(); break;
-      case STATES.FADING_OUT: this.handleStateChangeFadingOut(); break;
-      case STATES.PAUSED: this.handleStateChangePaused(); break;
-      case STATES.RUNNING: this.handleStateChangeRunning(); break;
-      case STATES.PROMPTING: this.handleStateChangePrompting(); break;
-      case STATES.STOPPED: this.handleStateChangeStopped(); break;
+      case STATES.LOADING: this.onLoading(); break;
+      case STATES.FADING_IN: this.onFadingIn(); break;
+      case STATES.FADING_OUT: this.onFadingOut(); break;
+      case STATES.PAUSED: this.onPaused(); break;
+      case STATES.RUNNING: this.onRunning(); break;
+      case STATES.PROMPTING: this.onPrompting(); break;
+      case STATES.STOPPED: this.onStopped(); break;
       default: break;
     }
   }
@@ -221,7 +223,7 @@ class Scene extends Container {
   /**
    * Handle a state change to loading.
    */
-  handleStateChangeLoading() {
+  onLoading() {
     this.addChild(this.loading);
     this.main.disablePixelFilter();
     this.main.disableColorFilter();
@@ -230,7 +232,7 @@ class Scene extends Container {
   /**
    * Handle a state change to fading in.
    */
-  handleStateChangeFadingIn() {
+  onFadingIn() {
     SoundPlayer.playMusic();
     this.removeChild(this.loading);
     this.addChild(this.main);
@@ -242,7 +244,7 @@ class Scene extends Container {
   /**
    * Handle a state change to fading out.
    */
-  handleStateChangeFadingOut() {
+  onFadingOut() {
     SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
     SoundPlayer.fadeOutMusic();
     this.main.enablePixelFilter();
@@ -253,7 +255,7 @@ class Scene extends Container {
   /**
    * Handle a state change to paused.
    */
-  handleStateChangePaused() {
+  onPaused() {
     SoundPlayer.pause();
     SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
     this.main.pause();
@@ -262,7 +264,7 @@ class Scene extends Container {
   /**
    * Handle a state change to running.
    */
-  handleStateChangeRunning() {
+  onRunning() {
     SoundPlayer.resume();
     this.main.resume();
   }
@@ -270,14 +272,14 @@ class Scene extends Container {
   /**
    * Handle a state change to prompting.
    */
-  handleStateChangePrompting() {
+  onPrompting() {
     this.addChild(this.prompt);
   }
 
   /**
    * Handle a state change to stopped.
    */
-  handleStateChangeStopped() {
+  onStopped() {
     this.main.enablePixelFilter();
     this.main.disableColorFilter();
     this.removeChildren();
@@ -308,7 +310,7 @@ class Scene extends Container {
   setState(state) {
     if (this.state !== state) {
       this.state = state;
-      this.handleStateChange(state);
+      this.onStateChange(state);
     }
   }
 
@@ -322,11 +324,11 @@ class Scene extends Container {
 
   /**
    * Destroy the scene.
-   * @param  {Object} props The destroy options.
+   * @param  {Object} options The destroy options.
    */
-  destroy(props) {
+  destroy(options) {
     SoundPlayer.unloadMusic();
-    super.destroy(props);
+    super.destroy(options);
   }
 }
 

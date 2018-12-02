@@ -9,12 +9,11 @@ import BackgroundContainer from './containers/BackgroundContainer';
 class CreditsScene extends Scene {
   /**
    * Creates a CreditsScene.
-   * @param  {Number} props.index The index of the scene.
-   * @param  {Number} props.scale The scale of the scene.
+   * @param  {Number} options.index The index of the scene.
+   * @param  {Number} options.scale The scale of the scene.
    */
-  constructor(props) {
-    super(props);
-    this.type = Scene.TYPES.CREDITS;
+  constructor(options) {
+    super({ type: Scene.TYPES.CREDITS, ...options });
   }
 
   /**
@@ -33,7 +32,7 @@ class CreditsScene extends Scene {
 
     this.prompt.add(promptSprites);
     this.main.addChild(background, { play: true });
-    this.main.addChild(scroll);
+    this.main.addChild(scroll, { hide: true });
 
     super.create();
   }

@@ -3,10 +3,10 @@ import * as PIXI from 'pixi.js';
 class BitmapText extends PIXI.extras.BitmapText {
   /**
    * Creates a BitmapText
-   * @param  {Object} props The text options
+   * @param  {Object} options The text options
    */
-  constructor(props) {
-    const { text, font, color } = props;
+  constructor(options) {
+    const { text, font, color } = options;
 
     super(text, { font });
 
