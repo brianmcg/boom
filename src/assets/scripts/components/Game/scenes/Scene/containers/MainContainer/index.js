@@ -32,6 +32,8 @@ class MainContainer extends Container {
       new ColorMatrixFilter(),
     ];
 
+    this.updateable = [];
+
     this.disablePixelFilter();
     this.disableColorFilter();
 
@@ -150,6 +152,22 @@ class MainContainer extends Container {
    */
   desaturate() {
     this.filters[1].desaturate();
+  }
+
+  addChild(child) {
+    super.addChild(child);
+
+    if (child.update) {
+      this.updateable.push(child);
+    }
+  }
+
+  removeChild(child) {
+    super.removeChild(child);
+
+    if (child.update) {
+      this.updateable = this.updateable.filter(u => u !== child);
+    }
   }
 }
 

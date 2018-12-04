@@ -59,11 +59,13 @@ class ScrollContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    const last = this.lastChild();
+    const lastIndex = this.children.length - 1;
+    const yEnd = SCREEN.HEIGHT - this.children[lastIndex].height - this.height;
 
     this.y -= (delta * SCROLL_SPEED);
 
-    if (this.y < -this.height + ((SCREEN.HEIGHT) - (last.height))) {
+    if (this.y <= yEnd) {
+      this.y = yEnd;
       this.emit(EVENTS.SCROLL_COMPLETE);
     }
   }

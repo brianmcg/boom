@@ -9,9 +9,7 @@ class Container extends PIXI.Container {
    */
   constructor() {
     super();
-
     this.playable = [];
-    this.updateable = [];
   }
 
   /**
@@ -24,10 +22,6 @@ class Container extends PIXI.Container {
     if (child.play) {
       this.playable.push(child);
     }
-
-    if (child.update) {
-      this.updateable.push(child);
-    }
   }
 
   /**
@@ -39,10 +33,6 @@ class Container extends PIXI.Container {
 
     if (child.play) {
       this.playable = this.playable.filter(p => p !== child);
-    }
-
-    if (child.update) {
-      this.updateable = this.updateable.filter(u => u !== child);
     }
   }
 
@@ -58,17 +48,6 @@ class Container extends PIXI.Container {
    */
   stop() {
     this.playable.forEach(child => child.stop());
-  }
-
-  /**
-   * Return the last child in the container.
-   * @return {Object} The last child in the container.
-   */
-  lastChild() {
-    if (this.children.length) {
-      return this.children[this.children.length - 1];
-    }
-    return null;
   }
 }
 

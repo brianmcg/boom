@@ -31,8 +31,8 @@ class CreditsScene extends Scene {
     });
 
     this.prompt.add(promptSprites);
-    this.main.addChild(background, { play: true });
-    this.main.addChild(scroll, { hide: true });
+    this.main.addChild(background);
+    this.main.addChild(scroll);
 
     super.create();
   }
