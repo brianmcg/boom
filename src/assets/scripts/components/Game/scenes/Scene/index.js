@@ -67,6 +67,7 @@ class Scene extends Container {
     this.menu = new MenuContainer();
     this.prompt = new PromptContainer();
     this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
+    this.sound = SoundPlayer;
 
     this.main.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
       this.setState(STATES.RUNNING);
@@ -86,7 +87,7 @@ class Scene extends Container {
   load() {
     this.loader.add('scene', `${SCENE_PATH}/${this.path}/scene.json`);
 
-    SoundPlayer.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`)
+    this.sound.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`)
       .then(() => {
         this.loader.load(this.onLoad.bind(this));
       });
@@ -111,6 +112,23 @@ class Scene extends Container {
   }
 
   /**
+   * Handle a state change.
+   * @param  {String} state The new state.
+   */
+  onStateChange(state) {
+    switch (state) {
+      case STATES.LOADING: this.onLoading(); break;
+      case STATES.FADING_IN: this.onFadingIn(); break;
+      case STATES.FADING_OUT: this.onFadingOut(); break;
+      case STATES.PAUSED: this.onPaused(); break;
+      case STATES.RUNNING: this.onRunning(); break;
+      case STATES.PROMPTING: this.onPrompting(); break;
+      case STATES.STOPPED: this.onStopped(); break;
+      default: break;
+    }
+  }
+
+  /**
    * Update the scene.
    * @param  {Number} delta The delta value.
    */
@@ -127,20 +145,64 @@ class Scene extends Container {
   }
 
   /**
-   * Handle a state change.
-   * @param  {String} state The new state.
+   * Handle a state change to loading.
    */
-  onStateChange(state) {
-    switch (state) {
-      case STATES.LOADING: this.onLoading(); break;
-      case STATES.FADING_IN: this.onFadingIn(); break;
-      case STATES.FADING_OUT: this.onFadingOut(); break;
-      case STATES.PAUSED: this.onPaused(); break;
-      case STATES.RUNNING: this.onRunning(); break;
-      case STATES.PROMPTING: this.onPrompting(); break;
-      case STATES.STOPPED: this.onStopped(); break;
-      default: break;
-    }
+  onLoading() {
+    this.addChild(this.loading);
+    this.main.onLoading();
+  }
+
+  /**
+   * Handle a state change to fading in.
+   */
+  onFadingIn() {
+    this.sound.playMusic();
+    this.removeChild(this.loading);
+    this.addChild(this.main);
+    this.main.onFadingIn();
+    this.loading.destroy(true);
+  }
+
+  /**
+   * Handle a state change to fading out.
+   */
+  onFadingOut() {
+    this.sound.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+    this.sound.fadeOutMusic();
+    this.main.onFadingOut();
+    this.removeChild(this.prompt);
+  }
+
+  /**
+   * Handle a state change to paused.
+   */
+  onPaused() {
+    this.sound.pause();
+    this.sound.playEffect(SOUNDS.WEAPON_PISTOL);
+    this.main.onPaused();
+  }
+
+  /**
+   * Handle a state change to running.
+   */
+  onRunning() {
+    this.sound.resume();
+    this.main.onRunning();
+  }
+
+  /**
+   * Handle a state change to prompting.
+   */
+  onPrompting() {
+    this.addChild(this.prompt);
+  }
+
+  /**
+   * Handle a state change to stopped.
+   */
+  onStopped() {
+    this.removeChildren();
+    if (this.status) this.emit(this.status, this.type, this.index);
   }
 
   /**
@@ -178,7 +240,7 @@ class Scene extends Container {
       this.removeChild(this.menu);
     }
 
-    if (this.menu.enabled) {
+    if (this.menu.parent) {
       if (Keyboard.isPressed(Keyboard.KEYS.DOWN_ARROW)) {
         this.menu.highlightNext();
       }
@@ -191,6 +253,8 @@ class Scene extends Container {
         this.menu.select();
         this.removeChild(this.menu);
       }
+
+      this.menu.update();
     }
   }
 
@@ -198,9 +262,7 @@ class Scene extends Container {
    * Update the scene when in a running state.
    */
   updateRunning(delta, elapsedMS) {
-    this.main.children.forEach(
-      child => child.update && child.update(delta, elapsedMS),
-    );
+    this.main.updateRunning(delta, elapsedMS);
 
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
@@ -218,79 +280,6 @@ class Scene extends Container {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }
-  }
-
-  /**
-   * Handle a state change to loading.
-   */
-  onLoading() {
-    this.addChild(this.loading);
-    this.main.disablePixelFilter();
-    this.main.disableColorFilter();
-  }
-
-  /**
-   * Handle a state change to fading in.
-   */
-  onFadingIn() {
-    SoundPlayer.playMusic();
-    this.removeChild(this.loading);
-    this.addChild(this.main);
-    this.loading.destroy();
-    this.main.enablePixelFilter();
-    this.main.disableColorFilter();
-  }
-
-  /**
-   * Handle a state change to fading out.
-   */
-  onFadingOut() {
-    SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-    SoundPlayer.fadeOutMusic();
-    this.main.enablePixelFilter();
-    this.main.disableColorFilter();
-    this.removeChild(this.prompt);
-  }
-
-  /**
-   * Handle a state change to paused.
-   */
-  onPaused() {
-    SoundPlayer.pause();
-    SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
-    this.main.pause();
-  }
-
-  /**
-   * Handle a state change to running.
-   */
-  onRunning() {
-    SoundPlayer.resume();
-    this.main.resume();
-  }
-
-  /**
-   * Handle a state change to prompting.
-   */
-  onPrompting() {
-    this.addChild(this.prompt);
-  }
-
-  /**
-   * Handle a state change to stopped.
-   */
-  onStopped() {
-    this.main.enablePixelFilter();
-    this.main.disableColorFilter();
-    this.removeChildren();
-    if (this.status) this.emit(this.status, this.type, this.index);
-  }
-
-  /**
-   * Render the scene.
-   */
-  render() {
-    this.children.forEach(child => child.render());
   }
 
   /**
@@ -327,7 +316,7 @@ class Scene extends Container {
    * @param  {Object} options The destroy options.
    */
   destroy(options) {
-    SoundPlayer.unloadMusic();
+    this.sound.unloadMusic();
     super.destroy(options);
   }
 }

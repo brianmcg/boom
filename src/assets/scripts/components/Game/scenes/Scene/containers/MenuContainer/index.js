@@ -76,9 +76,9 @@ class MenuContainer extends Container {
   }
 
   /**
-   * Render the MenuContainer.
+   * Update the MenuContainer.
    */
-  render() {
+  update() {
     this.children.forEach((child, index) => {
       child.setColor(index === this.currentIndex ? RED : WHITE);
     });

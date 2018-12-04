@@ -27,15 +27,6 @@ class PromptContainer extends Container {
 
     if (this.counter >= INTERVAL) {
       this.counter = 0;
-    }
-  }
-
-  /**
-   * Render the container.
-   * @return {[type]} [description]
-   */
-  render() {
-    if (!this.counter) {
       this.visible = !this.visible;
     }
   }

@@ -32,30 +32,50 @@ class MainContainer extends Container {
       new ColorMatrixFilter(),
     ];
 
+    this.disablePixelFilter();
+    this.disableColorFilter();
+
     this.on('added', () => {
-      this.pixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
+      this.filters[0].size = PIXEL.MAX_SIZE * this.parent.scale.x;
     });
+  }
+
+  onFadingIn() {
+    this.enablePixelFilter();
+    this.disableColorFilter();
+  }
+
+  onLoading() {
+    this.disablePixelFilter();
+    this.disableColorFilter();
+  }
+
+  onFadingOut() {
+    this.enablePixelFilter();
+    this.disableColorFilter();
   }
 
   /**
    * Pause the MainContainer.
    */
-  pause() {
+  onPaused() {
     this.enablePixelFilter();
     this.enableColorFilter();
     this.desaturate();
     this.playable.forEach(child => child.stop());
-    this.hideable.forEach(child => child.hide());
   }
 
   /**
    * Resume the MainContainer.
    */
-  resume() {
+  onRunning() {
     this.disablePixelFilter();
     this.disableColorFilter();
     this.playable.forEach(child => child.play());
-    this.hideable.forEach(child => child.show());
+  }
+
+  updateRunning(delta, elapsedMS) {
+    this.updateable.forEach(u => u.update(delta, elapsedMS));
   }
 
   /**
@@ -63,12 +83,14 @@ class MainContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateFadeIn(delta) {
-    this.pixelSize -= PIXEL.INCREMEMENT * this.parent.scale.x * delta;
+    let pixelSize = this.filters[0].size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
-    if (this.pixelSize < PIXEL.MIN_SIZE) {
-      this.pixelSize = PIXEL.MIN_SIZE;
+    if (pixelSize < PIXEL.MIN_SIZE) {
+      pixelSize = PIXEL.MIN_SIZE;
       this.emit(EVENTS.FADE_IN_COMPLETE);
     }
+
+    this.filters[0].size = pixelSize;
   }
 
   /**
@@ -77,28 +99,21 @@ class MainContainer extends Container {
    */
   updateFadeOut(delta) {
     const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
+    let pixelSize = this.filters[0].size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
-    this.pixelSize += PIXEL.INCREMEMENT * this.parent.scale.x * delta;
-
-    if (this.pixelSize > maxPixelSize) {
-      this.pixelSize = maxPixelSize;
+    if (pixelSize > maxPixelSize) {
+      pixelSize = maxPixelSize;
       this.emit(EVENTS.FADE_OUT_COMPLETE);
     }
+
+    this.filters[0].size = pixelSize;
   }
 
   /**
    * Update the paused effect.
    */
   updatePaused() {
-    this.pixelSize = PIXEL.PAUSE_SIZE * this.parent.scale.x;
-  }
-
-  /**
-   * Render the MainContainer.
-   */
-  render() {
-    this.children.forEach(child => child.render && child.render());
-    if (this.filters[0].enabled) this.filters[0].size = this.pixelSize;
+    this.filters[0].size = PIXEL.PAUSE_SIZE * this.parent.scale.x;
   }
 
   /**

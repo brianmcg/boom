@@ -16,8 +16,6 @@ class LoadingContainer extends Container {
   constructor() {
     super();
 
-    this.counter = 0;
-
     this.spinner = new RectangleSprite({
       color: RED,
       w: SIZE,
@@ -36,14 +34,7 @@ class LoadingContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    this.counter += INCREMENT * delta;
-  }
-
-  /**
-   * Render the LoadingContainer.
-   */
-  render() {
-    this.spinner.rotation = this.counter;
+    this.spinner.rotation += INCREMENT * delta;
   }
 }
 

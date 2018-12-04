@@ -36,7 +36,7 @@ class Game extends Application {
     this.renderer.view.style.top = '50%';
 
     this.resize();
-    this.ticker.add(this.loop.bind(this));
+    this.ticker.add(this.update.bind(this));
   }
 
   /**
@@ -147,13 +147,12 @@ class Game extends Application {
   }
 
   /**
-   * Execute a game loop.
+   * Execute a game update.
    * @param  {Number} delta The delta value.
    */
-  loop(delta) {
+  update(delta) {
     if (this.scene) {
       this.scene.update(delta, this.ticker.elapsedMS);
-      this.scene.render();
     }
 
     Keyboard.resetPressed();

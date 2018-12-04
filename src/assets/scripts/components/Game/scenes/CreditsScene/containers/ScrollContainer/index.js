@@ -49,30 +49,23 @@ class ScrollContainer extends Container {
     message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
     message.y = y + SCREEN.HEIGHT;
 
-    this.yPosition = SCREEN.HEIGHT;
+    this.y = SCREEN.HEIGHT;
 
     this.addChild(message);
   }
 
   /**
    * Updates the scroll container.
-   * @param  {Number} delta [description]
+   * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    this.yPosition -= (delta * SCROLL_SPEED);
-
     const last = this.lastChild();
 
-    if (this.yPosition < -this.height + ((SCREEN.HEIGHT) - (last.height))) {
+    this.y -= (delta * SCROLL_SPEED);
+
+    if (this.y < -this.height + ((SCREEN.HEIGHT) - (last.height))) {
       this.emit(EVENTS.SCROLL_COMPLETE);
     }
-  }
-
-  /**
-   * Renders the scroll container.
-   */
-  render() {
-    this.y = this.yPosition;
   }
 }
 
