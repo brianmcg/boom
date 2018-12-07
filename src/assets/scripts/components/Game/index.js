@@ -122,7 +122,7 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.destroy(true);
-      Game.clearCache();
+      Game.clearCache({ exclude: FONT_TYPES.MAIN });
     }
 
     if (SceneType) {
@@ -190,11 +190,12 @@ class Game extends Application {
   }
 
   /**
-   * Clear the texture cache.
-  */
-  static clearCache() {
+   * Clear the texture cache
+   * @param  {String} options.exclude Key name to exclude from operation.
+   */
+  static clearCache({ exclude }) {
     Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key] && !key.includes('font')) {
+      if (TextureCache[key] && !key.includes(exclude)) {
         TextureCache[key].destroy(true);
       }
     });
