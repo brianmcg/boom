@@ -59,7 +59,6 @@ class SoundPlayer {
   static playEffect(name, distance = 0) {
     const id = effects.play(name);
     const volume = distance > 1000 ? 0 : 1 - distance / 1000;
-
     effects.volume(volume, id);
     effectIds.push(id);
   }
@@ -86,9 +85,7 @@ class SoundPlayer {
       music.pause(musicId);
     }
 
-    effectIds.forEach((id) => {
-      effects.pause(id);
-    });
+    effectIds.forEach(id => effects.pause(id));
   }
 
   /**
@@ -99,9 +96,7 @@ class SoundPlayer {
       music.play(musicId);
     }
 
-    effectIds.forEach((id) => {
-      effects.play(id);
-    });
+    effectIds.forEach(id => effects.play(id));
   }
 
   /**
@@ -112,9 +107,7 @@ class SoundPlayer {
       music.stop(musicId);
     }
 
-    effectIds.forEach((id) => {
-      effects.stop(id);
-    });
+    effectIds.forEach(id => effects.stop(id));
   }
 
   static mute() {
