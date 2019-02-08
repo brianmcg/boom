@@ -1,12 +1,11 @@
-import { getMaxScaleFactor, clearCache } from './helpers';
+import { Application, TextureCache } from '~/core/graphics';
+import { Keyboard } from '~/core/input';
+import { SoundPlayer } from '~/core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN } from './constants/config';
 import { GAME_PATH } from './constants/paths';
 import { FONT_TYPES } from './constants/font';
 import { SOUND_SPRITE } from './constants/sounds';
-import { Application } from './core/graphics';
-import { Keyboard } from './core/input';
-import { SoundPlayer } from './core/audio';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -49,7 +48,6 @@ class Game extends Application {
 
   /**
    * Load the game font and sound effects.
-   * @return {Object} A promise that is resloved when the assets are loaded.
    */
   load() {
     this.loader.add(FONT_TYPES.MAIN, `${GAME_PATH}/${FONT_TYPES.MAIN}.xml`);
@@ -120,11 +118,11 @@ class Game extends Application {
    */
   show(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = getMaxScaleFactor();
+    const scaleFactor = Game.getMaxScaleFactor();
 
     if (this.scene) {
       this.scene.destroy(true);
-      clearCache();
+      Game.clearCache({ exclude: FONT_TYPES.MAIN });
     }
 
     if (SceneType) {
@@ -136,13 +134,11 @@ class Game extends Application {
         },
       });
 
-      this.scene.on(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
-      this.scene.on(Scene.EVENTS.RESTART, this.onSceneRestart.bind(this));
-      this.scene.on(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
+      this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
+      this.scene.once(Scene.EVENTS.RESTART, this.onSceneRestart.bind(this));
+      this.scene.once(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
       this.stage.addChild(this.scene);
-
-      this.scene.load();
     }
   }
 
@@ -162,7 +158,7 @@ class Game extends Application {
    * Resize the game.
    */
   resize() {
-    const scaleFactor = getMaxScaleFactor();
+    const scaleFactor = Game.getMaxScaleFactor();
     const scaledWidth = SCREEN.WIDTH * scaleFactor;
     const scaledHeight = SCREEN.HEIGHT * scaleFactor;
 
@@ -172,6 +168,37 @@ class Game extends Application {
     if (this.scene) {
       this.scene.resize({ x: scaleFactor, y: scaleFactor });
     }
+  }
+
+  /**
+   * Get the max scale of the canvas that fits window.
+   * @return {Number} The maximum scale factor.
+   */
+  static getMaxScaleFactor() {
+    const windowWidth = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+
+    const windowHeight = window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+
+    const widthRatio = windowWidth / SCREEN.WIDTH;
+    const heightRatio = windowHeight / SCREEN.HEIGHT;
+
+    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
+  }
+
+  /**
+   * Clear the texture cache
+   * @param  {String} options.exclude Key name to exclude from operation.
+   */
+  static clearCache({ exclude }) {
+    Object.keys(TextureCache).forEach((key) => {
+      if (TextureCache[key] && !key.includes(exclude)) {
+        TextureCache[key].destroy(true);
+      }
+    });
   }
 }
 

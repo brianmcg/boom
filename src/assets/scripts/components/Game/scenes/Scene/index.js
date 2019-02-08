@@ -89,18 +89,10 @@ class Scene extends Container {
 
     this.sound.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`)
       .then(() => {
-        this.loader.load(this.onLoad.bind(this));
+        this.loader.load((loader, resources) => {
+          this.create(resources);
+        });
       });
-  }
-
-  /**
-   * Handle the load event.
-   * @param  {Function} resolve   Resolve the load promise.
-   * @param  {Object}   loader    The loader
-   * @param  {Object}   resources The loaded resources.
-   */
-  onLoad(loader, resources) {
-    this.create(resources);
   }
 
   /**
@@ -135,8 +127,8 @@ class Scene extends Container {
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.LOADING: this.updateLoading(delta, elapsedMS); break;
-      case STATES.FADING_IN: this.updateFadeIn(delta, elapsedMS); break;
-      case STATES.FADING_OUT: this.updateFadeOut(delta, elapsedMS); break;
+      case STATES.FADING_IN: this.updateFadingIn(delta, elapsedMS); break;
+      case STATES.FADING_OUT: this.updateFadingOut(delta, elapsedMS); break;
       case STATES.PAUSED: this.updatePaused(delta, elapsedMS); break;
       case STATES.RUNNING: this.updateRunning(delta, elapsedMS); break;
       case STATES.PROMPTING: this.updatePrompting(delta, elapsedMS); break;
@@ -148,6 +140,7 @@ class Scene extends Container {
    * Handle a state change to loading.
    */
   onLoading() {
+    this.load();
     this.addChild(this.loading);
     this.main.onLoading();
   }
@@ -216,16 +209,16 @@ class Scene extends Container {
    * Update the scene when in a fade in state.
    * @param  {Number} delta The delta value.
    */
-  updateFadeIn(delta) {
-    this.main.updateFadeIn(delta);
+  updateFadingIn(delta) {
+    this.main.updateFadingIn(delta);
   }
 
   /**
    * Update the scene when in a fade out state.
    * @param  {Number} delta The delta value.
    */
-  updateFadeOut(delta) {
-    this.main.updateFadeOut(delta);
+  updateFadingOut(delta) {
+    this.main.updateFadingOut(delta);
   }
 
   /**

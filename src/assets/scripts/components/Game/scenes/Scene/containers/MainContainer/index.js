@@ -84,7 +84,7 @@ class MainContainer extends Container {
    * Update the fade in effect.
    * @param  {Number} delta The delta time.
    */
-  updateFadeIn(delta) {
+  updateFadingIn(delta) {
     let pixelSize = this.filters[0].size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
     if (pixelSize < PIXEL.MIN_SIZE) {
@@ -99,7 +99,7 @@ class MainContainer extends Container {
    * Update the fade out effect.
    * @param  {Number} delta The delta time.
    */
-  updateFadeOut(delta) {
+  updateFadingOut(delta) {
     const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
     let pixelSize = this.filters[0].size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
