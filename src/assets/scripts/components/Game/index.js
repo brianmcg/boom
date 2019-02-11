@@ -1,4 +1,4 @@
-import { Application, TextureCache } from '~/core/graphics';
+import { Application, TextureCache, DataLoader } from '~/core/graphics';
 import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
 import { BLACK } from './constants/colors';
@@ -34,6 +34,8 @@ class Game extends Application {
     this.renderer.view.style.left = '50%';
     this.renderer.view.style.top = '50%';
 
+    this.dataLoader = new DataLoader();
+
     this.resize();
     this.ticker.add(this.update.bind(this));
   }
@@ -50,12 +52,10 @@ class Game extends Application {
    * Load the game font and sound effects.
    */
   load() {
-    this.loader.add(FONT_TYPES.MAIN, `${GAME_PATH}/${FONT_TYPES.MAIN}.xml`);
-
-    SoundPlayer.loadEffects({ src: `${GAME_PATH}/sounds.mp3`, sprite: SOUND_SPRITE })
-      .then(() => {
-        this.loader.load(this.onLoad.bind(this));
-      });
+    Promise.all([
+      this.dataLoader.load([[FONT_TYPES.MAIN, `${GAME_PATH}/${FONT_TYPES.MAIN}.xml`]]),
+      SoundPlayer.loadEffects({ src: `${GAME_PATH}/sounds.mp3`, sprite: SOUND_SPRITE }),
+    ]).then(this.onLoad.bind(this));
   }
 
 
@@ -127,6 +127,7 @@ class Game extends Application {
 
     if (SceneType) {
       this.scene = new SceneType({
+        loader: this.dataLoader,
         index: sceneIndex,
         scale: {
           x: scaleFactor,

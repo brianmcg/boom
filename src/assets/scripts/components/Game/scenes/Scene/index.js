@@ -1,6 +1,6 @@
 import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
-import { Container, Loader } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
 import LoadingContainer from './containers/LoadingContainer';
@@ -51,17 +51,23 @@ class Scene extends Container {
 
   /**
    * Create a Scene.
-   * @param  {Number} options.index The index of the scene.
-   * @param  {Number} options.scale The scale of the scene.
-   * @param  {String} options.type  The type of scene.
+   * @param  {Number} options.index   The index of the scene.
+   * @param  {Number} options.scale   The scale of the scene.
+   * @param  {String} options.type    The type of scene.
+   * @param {Loader}  options.loader  The game loader.
    */
-  constructor({ index = 0, scale = 1, type }) {
+  constructor({
+    index = 0,
+    scale = 1,
+    type,
+    loader,
+  }) {
     super();
 
     this.index = index;
     this.scale = scale;
     this.type = type;
-    this.loader = new Loader();
+    this.loader = loader;
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
     this.menu = new MenuContainer();
@@ -85,14 +91,12 @@ class Scene extends Container {
    * @return {Object} A promise that assets will be loaded.
    */
   load() {
-    this.loader.add('scene', `${SCENE_PATH}/${this.path}/scene.json`);
-
-    this.sound.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`)
-      .then(() => {
-        this.loader.load((loader, resources) => {
-          this.create(resources);
-        });
-      });
+    Promise.all([
+      this.sound.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`),
+      this.loader.load([['scene', `${SCENE_PATH}/${this.path}/scene.json`]]),
+    ]).then((responses) => {
+      this.create(responses[1]);
+    });
   }
 
   /**

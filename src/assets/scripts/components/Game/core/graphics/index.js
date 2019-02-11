@@ -9,6 +9,7 @@ import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
 import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
+import DataLoader from './components/DataLoader';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.settings.SPRITE_BATCH_SIZE = 20000;
@@ -63,4 +64,5 @@ export {
   AnimatedSprite,
   Texture,
   RectangleSprite,
+  DataLoader,
 };
