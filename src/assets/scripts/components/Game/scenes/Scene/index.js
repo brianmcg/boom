@@ -54,20 +54,13 @@ class Scene extends Container {
    * @param  {Number} options.index   The index of the scene.
    * @param  {Number} options.scale   The scale of the scene.
    * @param  {String} options.type    The type of scene.
-   * @param {Loader}  options.loader  The game loader.
    */
-  constructor({
-    index = 0,
-    scale = 1,
-    type,
-    loader,
-  }) {
+  constructor({ index = 0, scale = 1, type }) {
     super();
 
     this.index = index;
     this.scale = scale;
     this.type = type;
-    this.loader = loader;
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
     this.menu = new MenuContainer();
@@ -84,19 +77,6 @@ class Scene extends Container {
     });
 
     this.setState(STATES.LOADING);
-  }
-
-  /**
-   * load the scene assets.
-   * @return {Object} A promise that assets will be loaded.
-   */
-  load() {
-    Promise.all([
-      this.sound.loadMusic(`${SCENE_PATH}/${this.path}/scene.mp3`),
-      this.loader.load([['scene', `${SCENE_PATH}/${this.path}/scene.json`]]),
-    ]).then((responses) => {
-      this.create(responses[1]);
-    });
   }
 
   /**
@@ -144,7 +124,6 @@ class Scene extends Container {
    * Handle a state change to loading.
    */
   onLoading() {
-    this.load();
     this.addChild(this.loading);
     this.main.onLoading();
   }
