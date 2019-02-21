@@ -2,7 +2,6 @@ import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
 import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
-import { SCENE_PATH } from '~/constants/paths';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
@@ -66,7 +65,6 @@ class Scene extends Container {
     this.menu = new MenuContainer();
     this.prompt = new PromptContainer();
     this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
-    this.sound = SoundPlayer;
 
     this.main.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
       this.setState(STATES.RUNNING);
@@ -132,7 +130,7 @@ class Scene extends Container {
    * Handle a state change to fading in.
    */
   onFadingIn() {
-    this.sound.playMusic();
+    SoundPlayer.playMusic();
     this.removeChild(this.loading);
     this.addChild(this.main);
     this.main.onFadingIn();
@@ -143,8 +141,8 @@ class Scene extends Container {
    * Handle a state change to fading out.
    */
   onFadingOut() {
-    this.sound.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-    this.sound.fadeOutMusic();
+    SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+    SoundPlayer.fadeOutMusic();
     this.main.onFadingOut();
     this.removeChild(this.prompt);
   }
@@ -153,8 +151,8 @@ class Scene extends Container {
    * Handle a state change to paused.
    */
   onPaused() {
-    this.sound.pause();
-    this.sound.playEffect(SOUNDS.WEAPON_PISTOL);
+    SoundPlayer.pause();
+    SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
     this.main.onPaused();
   }
 
@@ -162,7 +160,7 @@ class Scene extends Container {
    * Handle a state change to running.
    */
   onRunning() {
-    this.sound.resume();
+    SoundPlayer.resume();
     this.main.onRunning();
   }
 
@@ -178,7 +176,9 @@ class Scene extends Container {
    */
   onStopped() {
     this.removeChildren();
-    if (this.status) this.emit(this.status, this.type, this.index);
+    if (this.status) {
+      this.emit(this.status, this.type, this.index);
+    }
   }
 
   /**
@@ -292,7 +292,7 @@ class Scene extends Container {
    * @param  {Object} options The destroy options.
    */
   destroy(options) {
-    this.sound.unloadMusic();
+    SoundPlayer.unloadMusic();
     super.destroy(options);
   }
 }

@@ -12,21 +12,15 @@ import Sprite from './components/Sprite';
 import DataLoader from './components/DataLoader';
 
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
 PIXI.settings.SPRITE_BATCH_SIZE = 20000;
 
 const {
   Application,
   filters,
-  loaders,
-  utils,
-  Texture,
 } = PIXI;
 
-const { TextureCache } = utils;
-
 const { ColorMatrixFilter } = filters;
-
-const { Loader } = loaders;
 
 export {
   /**
@@ -37,10 +31,6 @@ export {
    * The Scene component.
    */
   Sprite,
-  /**
-   * The TextureCache component.
-   */
-  TextureCache,
   /**
    * The BitmapText component.
    */
@@ -58,11 +48,15 @@ export {
    */
   Container,
   /**
-   * The loader component.
+   * The animated sprite component.
    */
-  Loader,
   AnimatedSprite,
-  Texture,
+  /**
+   * The rectangle sprite components.
+   */
   RectangleSprite,
+  /**
+   * The data loader components.
+   */
   DataLoader,
 };

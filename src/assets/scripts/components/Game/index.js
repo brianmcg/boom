@@ -1,4 +1,4 @@
-import { Application, TextureCache, DataLoader } from '~/core/graphics';
+import { Application, DataLoader } from '~/core/graphics';
 import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
 import { BLACK } from './constants/colors';
@@ -122,7 +122,7 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.destroy(true);
-      Game.clearCache({ exclude: FONT_TYPES.MAIN });
+      DataLoader.reset({ exclude: FONT_TYPES.MAIN });
     }
 
     if (SceneType) {
@@ -190,18 +190,6 @@ class Game extends Application {
     const heightRatio = windowHeight / SCREEN.HEIGHT;
 
     return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
-  }
-
-  /**
-   * Clear the texture cache
-   * @param  {String} options.exclude Key name to exclude from operation.
-   */
-  static clearCache({ exclude }) {
-    Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key] && !key.includes(exclude)) {
-        TextureCache[key].destroy(true);
-      }
-    });
   }
 }
 
