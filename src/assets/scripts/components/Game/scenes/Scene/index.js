@@ -1,7 +1,9 @@
 import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
-import { Container } from '~/core/graphics';
+import { Container, DataLoader } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
+import { SCENE_PATH } from '~/constants/paths';
+import { SCENE_MUSIC, SCENE_DATA } from '~/constants/files';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
@@ -75,6 +77,13 @@ class Scene extends Container {
     });
 
     this.setState(STATES.LOADING);
+  }
+
+  load() {
+    return Promise.all([
+      SoundPlayer.loadMusic(`${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`),
+      DataLoader.load([['scene', `${SCENE_PATH}/${this.path}/${SCENE_DATA}`]]),
+    ]).then(responses => this.create(responses[1]));
   }
 
   /**

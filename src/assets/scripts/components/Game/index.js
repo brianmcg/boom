@@ -3,9 +3,10 @@ import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN } from './constants/config';
-import { GAME_PATH, SCENE_PATH } from './constants/paths';
+import { GAME_PATH } from './constants/paths';
 import { FONT_TYPES } from './constants/font';
 import { SOUND_SPRITE } from './constants/sounds';
+import { SOUND_EFFECTS, MAIN_FONT } from './constants/files';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -49,17 +50,10 @@ class Game extends Application {
   /**
    * Load the game font and sound effects.
    */
-  load(scene) {
-    if (scene) {
-      return Promise.all([
-        SoundPlayer.loadMusic(`${SCENE_PATH}/${scene.path}/scene.mp3`),
-        DataLoader.load([['scene', `${SCENE_PATH}/${scene.path}/scene.json`]]),
-      ]).then(responses => scene.create(responses[1]));
-    }
-
+  load() {
     return Promise.all([
-      SoundPlayer.loadEffects({ src: `${GAME_PATH}/sounds.mp3`, sprite: SOUND_SPRITE }),
-      DataLoader.load([[FONT_TYPES.MAIN, `${GAME_PATH}/${FONT_TYPES.MAIN}.xml`]]),
+      SoundPlayer.loadEffects({ src: `${GAME_PATH}/${SOUND_EFFECTS}`, sprite: SOUND_SPRITE }),
+      DataLoader.load([[FONT_TYPES.MAIN, `${GAME_PATH}/${MAIN_FONT}`]]),
     ]).then(this.show.bind(this, Scene.TYPES.TITLE));
   }
 
@@ -127,7 +121,6 @@ class Game extends Application {
 
     if (SceneType) {
       this.scene = new SceneType({
-        loader: this.dataLoader,
         index: sceneIndex,
         scale: {
           x: scaleFactor,
@@ -141,7 +134,7 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.load(this.scene);
+      this.scene.load();
     }
   }
 
