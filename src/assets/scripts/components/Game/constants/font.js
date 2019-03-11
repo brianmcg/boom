@@ -1,8 +1,5 @@
 import { SCREEN } from './config';
-
-export const FONT_TYPES = {
-  MAIN: 'main_font',
-};
+import { FONT_TYPES } from './assets';
 
 export const FONT_SIZES = {
   SMALL: `${SCREEN.HEIGHT / 15}px ${FONT_TYPES.MAIN}`,

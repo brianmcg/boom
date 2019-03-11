@@ -12,11 +12,19 @@ let musicId = null;
  * Class representing a sound player.
  */
 class SoundPlayer {
+  static load({ src, sprite }) {
+    if (sprite) {
+      return SoundPlayer.loadSprite({ src, sprite });
+    }
+
+    return SoundPlayer.loadSrc({ src });
+  }
+
   /**
    * Load the sound effects.
    * @return {Object} A promise that is resolved when the sound is loaded.
    */
-  static loadEffects({ src, sprite }) {
+  static loadSprite({ src, sprite }) {
     const removeId = (id) => {
       effectIds = effectIds.filter(effectId => effectId !== id);
     };
@@ -37,7 +45,7 @@ class SoundPlayer {
    * @param  {Number} index The index of the scene.
    * @return {Object}       A promise that is resolved when the music is loaded.
    */
-  static loadMusic(src) {
+  static loadSrc({ src }) {
     return new Promise((resolve) => {
       music = new Howl({
         onload: resolve,

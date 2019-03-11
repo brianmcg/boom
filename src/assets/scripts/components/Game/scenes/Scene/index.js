@@ -1,13 +1,15 @@
 import { Keyboard } from '~/core/input';
 import { SoundPlayer } from '~/core/audio';
-import { Container, DataLoader } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
+import { SOUND_TYPES, RESOURCE_TYPES } from '~/constants/assets';
 import { SCENE_MUSIC, SCENE_DATA } from '~/constants/files';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
+import Loader from '~/util/Loader';
 
 const STATES = {
   LOADING: 'loading',
@@ -80,10 +82,18 @@ class Scene extends Container {
   }
 
   load() {
-    return Promise.all([
-      SoundPlayer.loadMusic(`${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`),
-      DataLoader.load([['scene', `${SCENE_PATH}/${this.path}/${SCENE_DATA}`]]),
-    ]).then(responses => this.create(responses[1]));
+    const options = {
+      sound: {
+        name: SOUND_TYPES.MUSIC,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`,
+      },
+      data: [{
+        name: RESOURCE_TYPES.SCENE,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_DATA}`,
+      }],
+    };
+
+    Loader.load(options).then(response => this.create(response));
   }
 
   /**

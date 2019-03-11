@@ -9,7 +9,7 @@ const loader = new Loader();
 class DataLoader {
   static load(assets) {
     return new Promise((resolve) => {
-      assets.forEach(asset => loader.add(...asset));
+      assets.forEach(asset => loader.add(asset.name, asset.src));
       loader.load((instance, resources) => resolve(resources));
     });
   }
