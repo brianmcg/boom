@@ -2,7 +2,7 @@ import { Container, PixelateFilter, ColorMatrixFilter } from '~/core/graphics';
 
 const PIXEL = {
   MAX_SIZE: 100,
-  INCREMEMENT: 2,
+  INCREMEMENT: 4,
   MIN_SIZE: 1,
   PAUSE_SIZE: 4,
 };

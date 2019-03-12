@@ -128,10 +128,7 @@ class Game extends Application {
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        scale: {
-          x: scaleFactor,
-          y: scaleFactor,
-        },
+        scale: { x: scaleFactor, y: scaleFactor },
       });
 
       this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));

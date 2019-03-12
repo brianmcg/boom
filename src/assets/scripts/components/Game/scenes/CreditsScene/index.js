@@ -6,7 +6,7 @@ import BackgroundContainer from './containers/BackgroundContainer';
 /**
  * Class representing a CreditsScene.
  */
-class CreditsScene extends Scene {
+export default class CreditsScene extends Scene {
   /**
    * Creates a CreditsScene.
    * @param  {Number} options.index The index of the scene.
@@ -21,8 +21,7 @@ class CreditsScene extends Scene {
    * @param  {Object} resources The loaded scene resources.
    */
   create(resources) {
-    const sprites = createSprites(resources);
-    const { backgroundSprites, promptSprites, scrollSprites } = sprites;
+    const { backgroundSprites, promptSprites, scrollSprites } = createSprites(resources);
     const background = new BackgroundContainer(backgroundSprites);
     const scroll = new ScrollContainer(scrollSprites);
 
@@ -30,12 +29,10 @@ class CreditsScene extends Scene {
       this.setState(Scene.STATES.PROMPTING);
     });
 
-    this.prompt.add(promptSprites);
+    this.prompt.addChild(promptSprites);
     this.main.addChild(background);
     this.main.addChild(scroll);
 
     super.create();
   }
 }
-
-export default CreditsScene;

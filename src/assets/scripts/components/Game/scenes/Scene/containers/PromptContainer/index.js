@@ -3,7 +3,7 @@ import { SCREEN } from '~/constants/config';
 
 const INTERVAL = 500;
 
-const PADDING = 10;
+const PADDING = 8;
 
 /**
  * Class representing a prompt container.
@@ -31,10 +31,10 @@ class PromptContainer extends Container {
     }
   }
 
-  add({ text }) {
+  addChild({ text }) {
     text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
     text.y = SCREEN.HEIGHT - text.height - PADDING;
-    this.addChild(text);
+    super.addChild(text);
   }
 }
 

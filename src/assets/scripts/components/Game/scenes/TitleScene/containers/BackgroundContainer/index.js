@@ -5,7 +5,7 @@ class BackgroundContainer extends Container {
   constructor({ smoke, sparks, logo }) {
     super();
 
-    const ratio = logo.height / (SCREEN.HEIGHT / 1.75);
+    const ratio = logo.height / (SCREEN.HEIGHT / 1.5);
 
     logo.height /= ratio;
     logo.width /= ratio;
