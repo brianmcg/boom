@@ -1,15 +1,16 @@
-import { Application, TextureCache } from '~/core/graphics';
+import { Application } from '~/core/graphics';
 import { Keyboard } from '~/core/input';
-import { SoundPlayer } from '~/core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN } from './constants/config';
 import { GAME_PATH } from './constants/paths';
-import { FONT_TYPES } from './constants/font';
 import { SOUND_SPRITE } from './constants/sounds';
+import { SOUND_EFFECTS, MAIN_FONT } from './constants/files';
+import { SOUND_TYPES, FONT_TYPES } from './constants/assets';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
+import Loader from './util/Loader';
 
 /**
  * A class representing a game.
@@ -50,17 +51,19 @@ class Game extends Application {
    * Load the game font and sound effects.
    */
   load() {
-    this.loader.add(FONT_TYPES.MAIN, `${GAME_PATH}/${FONT_TYPES.MAIN}.xml`);
+    const options = {
+      sound: {
+        name: SOUND_TYPES.EFFECTS,
+        src: `${GAME_PATH}/${SOUND_EFFECTS}`,
+        sprite: SOUND_SPRITE,
+      },
+      data: [{
+        name: FONT_TYPES.MAIN,
+        src: `${GAME_PATH}/${MAIN_FONT}`,
+      }],
+    };
 
-    SoundPlayer.loadEffects({ src: `${GAME_PATH}/sounds.mp3`, sprite: SOUND_SPRITE })
-      .then(() => {
-        this.loader.load(this.onLoad.bind(this));
-      });
-  }
-
-
-  onLoad() {
-    this.show(Scene.TYPES.TITLE);
+    Loader.load(options).then(() => this.show(Scene.TYPES.TITLE));
   }
 
   /**
@@ -122,7 +125,7 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.destroy(true);
-      Game.clearCache({ exclude: FONT_TYPES.MAIN });
+      Loader.reset({ exclude: FONT_TYPES.MAIN });
     }
 
     if (SceneType) {
@@ -136,6 +139,8 @@ class Game extends Application {
       this.scene.once(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
       this.stage.addChild(this.scene);
+
+      this.scene.load();
     }
   }
 
@@ -184,18 +189,6 @@ class Game extends Application {
     const heightRatio = windowHeight / SCREEN.HEIGHT;
 
     return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
-  }
-
-  /**
-   * Clear the texture cache
-   * @param  {String} options.exclude Key name to exclude from operation.
-   */
-  static clearCache({ exclude }) {
-    Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key] && !key.includes(exclude)) {
-        TextureCache[key].destroy(true);
-      }
-    });
   }
 }
 
