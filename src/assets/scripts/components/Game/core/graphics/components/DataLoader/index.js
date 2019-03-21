@@ -1,8 +1,6 @@
-import * as PIXI from 'pixi.js';
+import { utils, Loader } from 'pixi.js';
 
-const { TextureCache } = PIXI.utils;
-
-const { Loader } = PIXI.loaders;
+const { TextureCache } = utils;
 
 const loader = new Loader();
 
@@ -21,11 +19,11 @@ class DataLoader {
   static reset({ exclude }) {
     loader.reset();
 
-    Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key] && !key.includes(exclude)) {
-        TextureCache[key].destroy(true);
-      }
-    });
+    // Object.keys(TextureCache).forEach((key) => {
+    //   if (TextureCache[key] && !key.includes(exclude)) {
+    //     TextureCache[key].destroy(true);
+    //   }
+    // });
   }
 }
 

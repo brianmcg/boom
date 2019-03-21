@@ -1,10 +1,10 @@
-import * as PIXI from 'pixi.js';
+import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
 /**
  * Class representing an AnimatedSprite.
  * @extends {PIXI.extras.AnimatedSprite}
  */
-class AnimatedSprite extends PIXI.extras.AnimatedSprite {
+export default class AnimatedSprite extends PixiAnimatedSprite {
   /**
    * [constructor description]
    * @param  {[type]} textures      [description]
@@ -41,5 +41,3 @@ class AnimatedSprite extends PIXI.extras.AnimatedSprite {
     this.play();
   }
 }
-
-export default AnimatedSprite;

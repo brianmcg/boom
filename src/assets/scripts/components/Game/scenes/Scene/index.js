@@ -93,7 +93,7 @@ class Scene extends Container {
       }],
     };
 
-    Loader.load(options).then(response => this.create(response));
+    return Loader.load(options).then(response => this.create(response));
   }
 
   /**

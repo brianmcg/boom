@@ -37,13 +37,15 @@ class Game extends Application {
 
     this.resize();
     this.ticker.add(this.update.bind(this));
+
+    this.ticker.maxFPS = 60;
   }
 
   /**
    * Start the game.
    */
-  start() {
-    super.start();
+  run() {
+    this.start();
     this.load();
   }
 
@@ -123,6 +125,10 @@ class Game extends Application {
     const SceneType = this.scenes[sceneType];
     const scaleFactor = Game.getMaxScaleFactor();
 
+    this.stop();
+
+    this.stage.removeChildren();
+
     if (this.scene) {
       this.scene.destroy(true);
       Loader.reset({ exclude: FONT_TYPES.MAIN });
@@ -139,6 +145,8 @@ class Game extends Application {
       this.scene.once(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
       this.stage.addChild(this.scene);
+
+      this.start();
 
       this.scene.load();
     }
@@ -159,7 +167,7 @@ class Game extends Application {
   /**
    * Resize the game.
    */
-  resize() {
+  center() {
     const scaleFactor = Game.getMaxScaleFactor();
     const scaledWidth = SCREEN.WIDTH * scaleFactor;
     const scaledHeight = SCREEN.HEIGHT * scaleFactor;

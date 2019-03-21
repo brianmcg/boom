@@ -44,8 +44,8 @@ class WorldScene extends Scene {
     }
   }
 
-  render() {
-    super.render();
+  render(renderer) {
+    super.render(renderer);
   }
 }
 

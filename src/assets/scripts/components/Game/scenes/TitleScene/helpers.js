@@ -15,7 +15,7 @@ export const createSprites = (resources) => {
   const { animations, sprites } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
   const sparksTextures = animations.sparks.map(image => textures[image]);
-  const logo = Sprite.fromFrame(sprites.logo);
+  const logo = new Sprite(textures[sprites.logo]);
   const smoke = new AnimatedSprite(smokeTextures, {
     animationSpeed: 0.2,
     tint: RED,

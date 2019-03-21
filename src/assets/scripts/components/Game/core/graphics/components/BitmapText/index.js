@@ -1,6 +1,6 @@
-import * as PIXI from 'pixi.js';
+import { BitmapText as PixiBitmapText } from 'pixi.js';
 
-class BitmapText extends PIXI.extras.BitmapText {
+export default class BitmapText extends PixiBitmapText {
   /**
    * Creates a BitmapText
    * @param  {Object} options The text options
@@ -19,5 +19,3 @@ class BitmapText extends PIXI.extras.BitmapText {
     this.tint = color;
   }
 }
-
-export default BitmapText;

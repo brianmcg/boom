@@ -36,7 +36,7 @@
   "dependencies": {
     "@pixi/filter-pixelate": "^2.5.0",
     "howler": "^2.0.15",
-    "pixi.js": "^4.8.6"
+    "pixi.js": "v5.0.0-rc.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

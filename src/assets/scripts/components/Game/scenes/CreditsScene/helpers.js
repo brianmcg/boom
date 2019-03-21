@@ -41,7 +41,7 @@ export const createSprites = (resources) => {
     return memo;
   }, []);
 
-  const message = Sprite.fromFrame(sprites.end);
+  const message = new Sprite(textures[sprites.end]);
 
   const text = new BitmapText({
     font: FONT_SIZES.SMALL,

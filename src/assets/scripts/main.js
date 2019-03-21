@@ -12,12 +12,12 @@ const game = new Game();
 const onClick = () => {
   document.body.removeChild(container);
   document.body.append(game.view);
-  game.start();
+  game.run();
 };
 
 const onResize = () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(game.resize.bind(game), 20);
+  resizeTimer = setTimeout(game.center.bind(game), 20);
 };
 
 window.addEventListener('resize', onResize);

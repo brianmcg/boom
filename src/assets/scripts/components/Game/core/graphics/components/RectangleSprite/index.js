@@ -14,9 +14,11 @@ class RectangleSprite extends Sprite {
     graphics.beginFill(color, 1);
     graphics.drawRect(0, 0, w, h);
     graphics.endFill();
-    this.texture = graphics.generateCanvasTexture();
+
+    this.texture = PIXI.RenderTexture.create(w, h);
     graphics.destroy();
-    this.alpha = 0.5;
+    // this.alpha = 0.5;
+    this.tint = 0xff0000;
   }
 }
 
