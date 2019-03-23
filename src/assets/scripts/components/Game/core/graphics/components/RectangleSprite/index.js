@@ -1,23 +1,17 @@
-import * as PIXI from 'pixi.js';
-import Sprite from '../Sprite';
+import { Texture, Sprite } from 'pixi.js';
 
 export default class RectangleSprite extends Sprite {
   /**
    * Creates a RectangleSprite.
-   * @param  {Number} options.color [description]
-   * @param  {Number} options.w     [description]
-   * @param  {Number} options.h     [description]
+   * @param  {Number} options.color   The sprite color.
+   * @param  {Number} options.width   The sprite width.
+   * @param  {Number} options.heigth  The sprite height.
    */
-  constructor({ color, w, h }) {
+  constructor({ color, width, height }) {
     super();
-    const graphics = new PIXI.Graphics();
-    graphics.beginFill(color, 1);
-    graphics.drawRect(0, 0, w, h);
-    graphics.endFill();
-
-    this.texture = PIXI.RenderTexture.create(w, h);
-    graphics.destroy();
-    // this.alpha = 0.5;
-    this.tint = 0xff0000;
+    this.texture = Texture.WHITE;
+    this.width = width;
+    this.height = height;
+    this.tint = color;
   }
 }

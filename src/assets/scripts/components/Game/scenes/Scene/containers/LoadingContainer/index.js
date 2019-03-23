@@ -16,17 +16,17 @@ export default class LoadingContainer extends Container {
   constructor() {
     super();
 
-    // this.spinner = new RectangleSprite({
-    //   color: RED,
-    //   w: SIZE,
-    //   h: SIZE,
-    // });
+    this.spinner = new RectangleSprite({
+      color: RED,
+      width: SIZE,
+      height: SIZE,
+    });
 
-    // this.spinner.x = (SCREEN.WIDTH / 2);
-    // this.spinner.y = (SCREEN.HEIGHT / 2);
-    // this.spinner.anchor.set(0.5);
+    this.spinner.x = (SCREEN.WIDTH / 2);
+    this.spinner.y = (SCREEN.HEIGHT / 2);
+    this.spinner.anchor.set(0.5);
 
-    // this.addChild(this.spinner);
+    this.addChild(this.spinner);
   }
 
   /**
@@ -34,6 +34,6 @@ export default class LoadingContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    // this.spinner.rotation += INCREMENT * delta;
+    this.spinner.rotation += INCREMENT * delta;
   }
 }
