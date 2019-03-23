@@ -14,7 +14,7 @@ import { RED, WHITE } from '~/constants/colors';
  */
 export const createSprites = (resources) => {
   const { data, textures } = resources.scene;
-  const { animations, sprites } = data;
+  const { animations } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
 
   const smoke = new AnimatedSprite(smokeTextures, {
@@ -42,7 +42,11 @@ export const createSprites = (resources) => {
     return memo;
   }, []);
 
-  const message = new Sprite(textures[sprites.end]);
+  const message = new BitmapText({
+    font: FONT_SIZES.LARGE,
+    text: 'The End',
+    color: WHITE,
+  });
 
   const text = new BitmapText({
     font: FONT_SIZES.SMALL,

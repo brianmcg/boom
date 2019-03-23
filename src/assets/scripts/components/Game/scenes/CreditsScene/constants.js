@@ -7,21 +7,15 @@
  * @type {Array}
  */
 export const CREDITS = [{
-  key: 'Lead Programmer',
+  key: 'Code',
   values: ['Brian Mcgrath'],
 }, {
-  key: 'Lead Script Writer',
+  key: 'Graphics',
   values: ['Brian McGrath'],
 }, {
   key: 'Sound',
-  values: [
-    'http://www.wolfensteingoodies.com',
-    'http://www.doom2.net',
-  ],
+  values: ['Brian McGrath'],
 }, {
-  key: 'Graphics',
-  values: [
-    'http://www.wolfensteingoodies.com',
-    'http://www.doom2.net',
-  ],
+  key: 'Script',
+  values: ['Brian McGrath'],
 }];

@@ -3,7 +3,7 @@ import { SCREEN } from '~/constants/config';
 
 const TEXT_PADDING = 2;
 
-const SCROLL_SPEED = 0.4;
+const SCROLL_SPEED = 0.6;
 
 const EVENTS = {
   SCROLL_COMPLETE: 'SCROLL_COMPLETE',
@@ -27,8 +27,6 @@ export default class ScrollContainer extends Container {
   constructor({ credits, message }) {
     super();
 
-    const ratio = message.height / (SCREEN.HEIGHT / 3);
-
     let y = 0;
 
     credits.forEach((credit) => {
@@ -44,8 +42,6 @@ export default class ScrollContainer extends Container {
       y += TEXT_PADDING * 5;
     });
 
-    message.height /= ratio;
-    message.width /= ratio;
     message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
     message.y = y + SCREEN.HEIGHT;
 
@@ -59,8 +55,8 @@ export default class ScrollContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    const lastIndex = this.children.length - 1;
-    const yEnd = SCREEN.HEIGHT - this.children[lastIndex].height - this.height;
+    const lastSprite = this.children[this.children.length - 1];
+    const yEnd = SCREEN.HEIGHT - (lastSprite.height * 2) - this.height;
 
     this.scrollY -= delta * SCROLL_SPEED;
 
