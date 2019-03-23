@@ -9,6 +9,12 @@
 export const MAX_FPS = 60;
 
 /**
+ * The time step.
+ * @type {Number}
+ */
+export const TIME_STEP = 1000 / 60;
+
+/**
  * The number of levels in the game.
  * @type {Number}
  */

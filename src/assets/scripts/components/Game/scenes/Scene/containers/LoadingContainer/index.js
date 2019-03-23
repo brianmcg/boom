@@ -22,6 +22,7 @@ export default class LoadingContainer extends Container {
       height: SIZE,
     });
 
+    this.progress = 0;
     this.spinner.x = (SCREEN.WIDTH / 2);
     this.spinner.y = (SCREEN.HEIGHT / 2);
     this.spinner.anchor.set(0.5);
@@ -34,6 +35,14 @@ export default class LoadingContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta = 1) {
-    this.spinner.rotation += INCREMENT * delta;
+    this.progress += INCREMENT * delta;
+  }
+
+  _render() {
+    this.spinner.rotation = this.progress;
+  }
+
+  destroy() {
+    super.destroy(true);
   }
 }

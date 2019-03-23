@@ -108,8 +108,8 @@ export default class Scene extends Container {
    * Handle a state change.
    * @param  {String} state The new state.
    */
-  onStateChange(state) {
-    switch (state) {
+  onStateChange() {
+    switch (this.state) {
       case STATES.LOADING: this.onLoading(); break;
       case STATES.FADING_IN: this.onFadingIn(); break;
       case STATES.FADING_OUT: this.onFadingOut(); break;
@@ -153,7 +153,7 @@ export default class Scene extends Container {
     this.removeChild(this.loading);
     this.addChild(this.main);
     this.main.onFadingIn();
-    this.loading.destroy(true);
+    this.loading.destroy();
   }
 
   /**
@@ -247,8 +247,6 @@ export default class Scene extends Container {
         this.menu.select();
         this.removeChild(this.menu);
       }
-
-      this.menu.update();
     }
   }
 
@@ -295,7 +293,7 @@ export default class Scene extends Container {
   setState(state) {
     if (this.state !== state) {
       this.state = state;
-      this.onStateChange(state);
+      this.onStateChange();
     }
   }
 
@@ -311,8 +309,11 @@ export default class Scene extends Container {
    * Destroy the scene.
    * @param  {Object} options The destroy options.
    */
-  destroy(options) {
+  destroy() {
     SoundPlayer.unloadMusic();
-    super.destroy(options);
+    this.main.destroy();
+    this.menu.destroy();
+    this.prompt.destroy();
+    super.destroy();
   }
 }

@@ -75,10 +75,7 @@ export default class MenuContainer extends Container {
     }
   }
 
-  /**
-   * Update the MenuContainer.
-   */
-  update() {
+  _render() {
     this.children.forEach((child, index) => {
       child.setColor(index === this.currentIndex ? RED : WHITE);
     });

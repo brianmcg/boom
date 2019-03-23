@@ -49,7 +49,7 @@ export default class ScrollContainer extends Container {
     message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
     message.y = y + SCREEN.HEIGHT;
 
-    this.y = SCREEN.HEIGHT;
+    this.scrollY = SCREEN.HEIGHT;
 
     this.addChild(message);
   }
@@ -62,11 +62,15 @@ export default class ScrollContainer extends Container {
     const lastIndex = this.children.length - 1;
     const yEnd = SCREEN.HEIGHT - this.children[lastIndex].height - this.height;
 
-    this.y -= (delta * SCROLL_SPEED);
+    this.scrollY -= delta * SCROLL_SPEED;
 
-    if (this.y <= yEnd) {
-      this.y = yEnd;
+    if (this.scrollY <= yEnd) {
+      this.scrollY = yEnd;
       this.emit(EVENTS.SCROLL_COMPLETE);
     }
+  }
+
+  _render() {
+    this.y = this.scrollY;
   }
 }

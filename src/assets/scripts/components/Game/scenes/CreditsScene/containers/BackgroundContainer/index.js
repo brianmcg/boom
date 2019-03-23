@@ -15,4 +15,8 @@ export default class BackgroundContainer extends Container {
     smoke.height = SCREEN.HEIGHT;
     this.addChild(smoke);
   }
+
+  destroy() {
+    super.destroy(true);
+  }
 }

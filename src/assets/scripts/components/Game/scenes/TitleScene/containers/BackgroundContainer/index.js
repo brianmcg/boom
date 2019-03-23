@@ -31,4 +31,8 @@ export default class BackgroundContainer extends Container {
     this.addChild(sparks);
     this.addChild(logo);
   }
+
+  destroy() {
+    super.destroy(true);
+  }
 }

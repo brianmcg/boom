@@ -31,8 +31,8 @@ export default class Game extends Application {
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
-    this.ticker.add(this.update.bind(this));
     this.ticker.maxFPS = MAX_FPS;
+    this.ticker.add(this.update.bind(this));
 
     this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
   }
@@ -122,7 +122,7 @@ export default class Game extends Application {
     const scaleFactor = Application.getMaxScaleFactor(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     if (this.scene) {
-      this.scene.destroy(true);
+      this.scene.destroy();
       Loader.reset({ exclude: FONT_TYPES.MAIN });
     }
 

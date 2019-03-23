@@ -1,11 +1,10 @@
 import { Container } from '~/core/graphics';
-import { SCREEN, MAX_FPS } from '~/constants/config';
+import { SCREEN, TIME_STEP } from '~/constants/config';
 
 const INTERVAL = 500;
 
 const PADDING = 8;
 
-const STEP = 1000 / MAX_FPS;
 /**
  * Class representing a prompt container.
  */
@@ -16,6 +15,7 @@ export default class PromptContainer extends Container {
   constructor() {
     super();
     this.counter = 0;
+    this.show = true;
   }
 
   /**
@@ -24,17 +24,27 @@ export default class PromptContainer extends Container {
    * @param  {Number} elapsedMS The elapsed time.
    */
   update(delta) {
-    this.counter += STEP * delta;
-
+    this.counter += TIME_STEP * delta;
     if (this.counter >= INTERVAL) {
       this.counter = 0;
-      this.visible = !this.visible;
     }
   }
 
+  /**
+   * Add a child to the container.
+   * @param {BitmapText} options.text The text to add.
+   */
   addChild({ text }) {
     text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
     text.y = SCREEN.HEIGHT - text.height - PADDING;
     super.addChild(text);
+  }
+
+  _render() {
+    if (!this.counter) {
+      this.children.forEach((child) => {
+        child.visible = !child.visible;
+      });
+    }
   }
 }
