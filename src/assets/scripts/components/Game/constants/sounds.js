@@ -1,3 +1,11 @@
+/**
+ * @module sounds
+ */
+
+/**
+ * The sound effects names.
+ * @type {Object}
+ */
 export const SOUNDS = {
   AMP_ALERT: 'AMP_ALERT',
   AMP_DEATH: 'AMP_DEATH',
@@ -19,6 +27,10 @@ export const SOUNDS = {
   ZOMBIE_PAIN: 'ZOMBIE_PAIN',
 };
 
+/**
+ * The sound effects sprite data.
+ * @type {Object}
+ */
 export const SOUND_SPRITE = {
   [SOUNDS.AMP_ALERT]: [0, 1235.9183673469388],
   [SOUNDS.AMP_DEATH]: [3000, 844.5351473922904],

@@ -3,6 +3,12 @@
  */
 
 /**
+ * The maximum frames per second.
+ * @type {Number}
+ */
+export const MAX_FPS = 60;
+
+/**
  * The number of levels in the game.
  * @type {Number}
  */

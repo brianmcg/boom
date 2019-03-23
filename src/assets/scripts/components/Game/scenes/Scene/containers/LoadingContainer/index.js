@@ -9,7 +9,7 @@ const INCREMENT = 0.1;
 /**
  * A class representing a LoadingContainer.
  */
-class LoadingContainer extends Container {
+export default class LoadingContainer extends Container {
   /**
    * Creates a LoadingContainer.
    */
@@ -37,5 +37,3 @@ class LoadingContainer extends Container {
     // this.spinner.rotation += INCREMENT * delta;
   }
 }
-
-export default LoadingContainer;

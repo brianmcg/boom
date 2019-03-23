@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Sprite from '../Sprite';
 
-class RectangleSprite extends Sprite {
+export default class RectangleSprite extends Sprite {
   /**
    * Creates a RectangleSprite.
    * @param  {Number} options.color [description]
@@ -21,5 +21,3 @@ class RectangleSprite extends Sprite {
     this.tint = 0xff0000;
   }
 }
-
-export default RectangleSprite;

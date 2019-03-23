@@ -22,7 +22,7 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
       loop,
     } = options;
 
-    super(textures);
+    super(textures, false);
 
     this.animationSpeed = animationSpeed;
 
@@ -37,7 +37,5 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     if (tint) {
       this.tint = tint;
     }
-
-    this.play();
   }
 }

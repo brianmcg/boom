@@ -1,7 +1,16 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
-class BackgroundContainer extends Container {
+/**
+ * Class representing a background container.
+ */
+export default class BackgroundContainer extends Container {
+  /**
+   * Creates a background container.
+   * @param  {AnimatedSprite} options.smoke  A smoke sprite.
+   * @param  {AnimatedSprite} options.sparks A sparks sprite.
+   * @param  {Sprite}         options.logo   A logo sprite.
+=   */
   constructor({ smoke, sparks, logo }) {
     super();
 
@@ -18,11 +27,8 @@ class BackgroundContainer extends Container {
     sparks.width = SCREEN.WIDTH;
     sparks.height = SCREEN.HEIGHT;
 
-
-    this.addChild(smoke, { play: true });
-    this.addChild(sparks, { play: true });
-    this.addChild(logo, { hide: true });
+    this.addChild(smoke);
+    this.addChild(sparks);
+    this.addChild(logo);
   }
 }
-
-export default BackgroundContainer;

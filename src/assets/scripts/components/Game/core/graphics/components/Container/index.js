@@ -1,15 +1,16 @@
-import * as PIXI from 'pixi.js';
+import { Container as PixiContainer } from 'pixi.js';
 
 /**
  * Class representing a Container.
  */
-class Container extends PIXI.Container {
+export default class Container extends PixiContainer {
   /**
    * Creates a Container.
    */
   constructor() {
     super();
     this.playable = [];
+    this.animateable = [];
   }
 
   /**
@@ -44,11 +45,17 @@ class Container extends PIXI.Container {
   }
 
   /**
+   * Update the container.
+   * @param  {Number} delta The delta time.
+   */
+  update(delta) {
+    this.playable.forEach(child => child.playing && child.update(delta));
+  }
+
+  /**
    * Stop playable children.
    */
   stop() {
     this.playable.forEach(child => child.stop());
   }
 }
-
-export default Container;

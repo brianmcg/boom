@@ -36,7 +36,7 @@ const TYPES = {
 /**
  * Class representing a scene.
  */
-class Scene extends Container {
+export default class Scene extends Container {
   /**
    * The scene types class property.
    */
@@ -125,14 +125,14 @@ class Scene extends Container {
    * Update the scene.
    * @param  {Number} delta The delta value.
    */
-  update(delta, elapsedMS) {
+  update(delta) {
     switch (this.state) {
-      case STATES.LOADING: this.updateLoading(delta, elapsedMS); break;
-      case STATES.FADING_IN: this.updateFadingIn(delta, elapsedMS); break;
-      case STATES.FADING_OUT: this.updateFadingOut(delta, elapsedMS); break;
-      case STATES.PAUSED: this.updatePaused(delta, elapsedMS); break;
-      case STATES.RUNNING: this.updateRunning(delta, elapsedMS); break;
-      case STATES.PROMPTING: this.updatePrompting(delta, elapsedMS); break;
+      case STATES.LOADING: this.updateLoading(delta); break;
+      case STATES.FADING_IN: this.updateFadingIn(delta); break;
+      case STATES.FADING_OUT: this.updateFadingOut(delta); break;
+      case STATES.PAUSED: this.updatePaused(delta); break;
+      case STATES.RUNNING: this.updateRunning(delta); break;
+      case STATES.PROMPTING: this.updatePrompting(delta); break;
       default: break;
     }
   }
@@ -194,7 +194,6 @@ class Scene extends Container {
    * Handle a state change to stopped.
    */
   onStopped() {
-    this.removeChildren();
     if (this.status) {
       this.emit(this.status, this.type, this.index);
     }
@@ -256,8 +255,8 @@ class Scene extends Container {
   /**
    * Update the scene when in a running state.
    */
-  updateRunning(delta, elapsedMS) {
-    this.main.updateRunning(delta, elapsedMS);
+  updateRunning(delta) {
+    this.main.updateRunning(delta);
 
     if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
       this.setState(STATES.PAUSED);
@@ -268,8 +267,10 @@ class Scene extends Container {
   /**
    * Update the scene when in a prompting state.
    */
-  updatePrompting(delta, elapsedMS) {
-    this.prompt.update(delta, elapsedMS);
+  updatePrompting(delta) {
+    this.main.updateRunning(delta);
+
+    this.prompt.update(delta);
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
@@ -315,5 +316,3 @@ class Scene extends Container {
     super.destroy(options);
   }
 }
-
-export default Scene;

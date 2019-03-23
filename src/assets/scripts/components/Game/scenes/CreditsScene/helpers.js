@@ -2,6 +2,7 @@ import { AnimatedSprite, BitmapText, Sprite } from '~/core/graphics';
 import { CREDITS } from './constants';
 import { FONT_SIZES } from '~/constants/font';
 import { RED, WHITE } from '~/constants/colors';
+
 /**
  * @module helpers
  */

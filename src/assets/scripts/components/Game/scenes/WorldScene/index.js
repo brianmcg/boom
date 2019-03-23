@@ -7,7 +7,7 @@ const TEXT = {
   QUIT: 'Quit',
 };
 
-class WorldScene extends Scene {
+export default class WorldScene extends Scene {
   constructor(options) {
     super({ type: Scene.TYPES.WORLD, ...options });
 
@@ -35,18 +35,12 @@ class WorldScene extends Scene {
     super.create();
   }
 
-  updateRunning() {
-    super.updateRunning();
+  updateRunning(delta) {
+    super.updateRunning(delta);
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }
   }
-
-  render(renderer) {
-    super.render(renderer);
-  }
 }
-
-export default WorldScene;

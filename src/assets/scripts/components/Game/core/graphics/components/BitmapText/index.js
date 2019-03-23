@@ -15,6 +15,10 @@ export default class BitmapText extends PixiBitmapText {
     }
   }
 
+  /**
+   * The the color of the bitmap text.
+   * @param {Number} color A hex number representing the color.
+   */
   setColor(color) {
     this.tint = color;
   }

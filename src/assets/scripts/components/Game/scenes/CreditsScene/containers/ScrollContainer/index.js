@@ -12,7 +12,7 @@ const EVENTS = {
 /**
  * Class representing a scroll container.
  */
-class ScrollContainer extends Container {
+export default class ScrollContainer extends Container {
   /**
    * The container events.
    */
@@ -70,5 +70,3 @@ class ScrollContainer extends Container {
     }
   }
 }
-
-export default ScrollContainer;

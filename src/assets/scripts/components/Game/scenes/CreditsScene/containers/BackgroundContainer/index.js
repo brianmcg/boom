@@ -4,7 +4,7 @@ import { SCREEN } from '~/constants/config';
 /**
  * Class representing a background container.
  */
-class BackgroundContainer extends Container {
+export default class BackgroundContainer extends Container {
   /**
    * Creates a background container.
    * @param  {Object} options.smoke The smoke sprite.
@@ -13,8 +13,6 @@ class BackgroundContainer extends Container {
     super();
     smoke.width = SCREEN.WIDTH;
     smoke.height = SCREEN.HEIGHT;
-    this.addChild(smoke, { play: true });
+    this.addChild(smoke);
   }
 }
-
-export default BackgroundContainer;

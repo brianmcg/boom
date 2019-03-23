@@ -2,7 +2,7 @@
  * @module graphics.
  */
 
-import * as PIXI from 'pixi.js';
+import { settings, SCALE_MODES, filters } from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import BitmapText from './components/BitmapText';
 import Container from './components/Container';
@@ -10,15 +10,11 @@ import AnimatedSprite from './components/AnimatedSprite';
 import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
 import DataLoader from './components/DataLoader';
+import Application from './components/Application';
 
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-PIXI.settings.SPRITE_BATCH_SIZE = 20000;
-
-const {
-  Application,
-  filters,
-} = PIXI;
+settings.SPRITE_BATCH_SIZE = 20000;
 
 const { ColorMatrixFilter } = filters;
 

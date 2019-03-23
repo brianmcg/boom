@@ -17,7 +17,9 @@ const onClick = () => {
 
 const onResize = () => {
   clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(game.center.bind(game), 20);
+  resizeTimer = setTimeout(() => {
+    game.resize();
+  }, 20);
 };
 
 window.addEventListener('resize', onResize);

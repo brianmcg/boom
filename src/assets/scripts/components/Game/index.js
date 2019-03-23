@@ -1,7 +1,7 @@
 import { Application } from '~/core/graphics';
 import { Keyboard } from '~/core/input';
 import { BLACK } from './constants/colors';
-import { NUM_LEVELS, SCREEN } from './constants/config';
+import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
 import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
 import { SOUND_EFFECTS, MAIN_FONT } from './constants/files';
@@ -15,7 +15,7 @@ import Loader from './util/Loader';
 /**
  * A class representing a game.
  */
-class Game extends Application {
+export default class Game extends Application {
   /**
    * Create a game.
    */
@@ -31,14 +31,10 @@ class Game extends Application {
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
-    this.renderer.view.style.position = 'absolute';
-    this.renderer.view.style.left = '50%';
-    this.renderer.view.style.top = '50%';
-
-    this.resize();
     this.ticker.add(this.update.bind(this));
+    this.ticker.maxFPS = MAX_FPS;
 
-    this.ticker.maxFPS = 60;
+    this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
   }
 
   /**
@@ -123,11 +119,7 @@ class Game extends Application {
    */
   show(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = Game.getMaxScaleFactor();
-
-    this.stop();
-
-    this.stage.removeChildren();
+    const scaleFactor = Application.getMaxScaleFactor(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     if (this.scene) {
       this.scene.destroy(true);
@@ -146,8 +138,6 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.start();
-
       this.scene.load();
     }
   }
@@ -158,46 +148,9 @@ class Game extends Application {
    */
   update(delta) {
     if (this.scene) {
-      this.scene.update(delta, this.ticker.elapsedMS);
+      this.scene.update(delta);
     }
 
     Keyboard.resetPressed();
   }
-
-  /**
-   * Resize the game.
-   */
-  center() {
-    const scaleFactor = Game.getMaxScaleFactor();
-    const scaledWidth = SCREEN.WIDTH * scaleFactor;
-    const scaledHeight = SCREEN.HEIGHT * scaleFactor;
-
-    this.renderer.view.style.margin = `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`;
-    this.renderer.resize(scaledWidth, scaledHeight);
-
-    if (this.scene) {
-      this.scene.resize({ x: scaleFactor, y: scaleFactor });
-    }
-  }
-
-  /**
-   * Get the max scale of the canvas that fits window.
-   * @return {Number} The maximum scale factor.
-   */
-  static getMaxScaleFactor() {
-    const windowWidth = window.innerWidth
-      || document.documentElement.clientWidth
-      || document.body.clientWidth;
-
-    const windowHeight = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
-
-    const widthRatio = windowWidth / SCREEN.WIDTH;
-    const heightRatio = windowHeight / SCREEN.HEIGHT;
-
-    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
-  }
 }
-
-export default Game;

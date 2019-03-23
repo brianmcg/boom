@@ -15,7 +15,7 @@ const EVENTS = {
 /**
  * A class representing a MainContainer.
  */
-class MainContainer extends Container {
+export default class MainContainer extends Container {
   /**
    * The container events.
    */
@@ -76,8 +76,8 @@ class MainContainer extends Container {
     this.playable.forEach(child => child.play());
   }
 
-  updateRunning(delta, elapsedMS) {
-    this.updateable.forEach(u => u.update(delta, elapsedMS));
+  updateRunning(delta) {
+    this.updateable.forEach(child => child.update(delta));
   }
 
   /**
@@ -170,5 +170,3 @@ class MainContainer extends Container {
     }
   }
 }
-
-export default MainContainer;

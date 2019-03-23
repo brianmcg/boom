@@ -1,3 +1,11 @@
+/**
+ * @module constants
+ */
+
+/**
+ * The game credits.
+ * @type {Array}
+ */
 export const CREDITS = [{
   key: 'Lead Programmer',
   values: ['Brian Mcgrath'],

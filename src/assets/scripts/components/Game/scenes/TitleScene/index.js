@@ -6,7 +6,7 @@ import BackgroundContainer from './containers/BackgroundContainer';
  * Class representing a TitleScene.
  * @extends {Scene}
  */
-class TitleScene extends Scene {
+export default class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
    * @param  {Number} options.index The index of the scene.
@@ -25,14 +25,13 @@ class TitleScene extends Scene {
     const background = new BackgroundContainer(backgroundSprites);
 
     this.prompt.addChild(promptSprites);
-    this.main.addChild(background, { play: true });
+    this.main.addChild(background);
 
     super.create();
   }
 
   onRunning() {
+    super.onRunning();
     this.setState(Scene.STATES.PROMPTING);
   }
 }
-
-export default TitleScene;

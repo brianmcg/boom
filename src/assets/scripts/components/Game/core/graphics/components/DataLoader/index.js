@@ -4,7 +4,15 @@ const { TextureCache } = utils;
 
 const loader = new Loader();
 
-class DataLoader {
+/**
+ * Class representing a data loader.
+ */
+export default class DataLoader {
+  /**
+   * Load data resources.
+   * @param  {Object} assets The assets to load.
+   * @return {Promise}       Resolves when assets load.
+   */
   static load(assets) {
     return new Promise((resolve) => {
       assets.forEach(asset => loader.add(asset.name, asset.src));
@@ -19,12 +27,10 @@ class DataLoader {
   static reset({ exclude }) {
     loader.reset();
 
-    // Object.keys(TextureCache).forEach((key) => {
-    //   if (TextureCache[key] && !key.includes(exclude)) {
-    //     TextureCache[key].destroy(true);
-    //   }
-    // });
+    Object.keys(TextureCache).forEach((key) => {
+      if (TextureCache[key] && !key.includes(exclude)) {
+        TextureCache[key].destroy(true);
+      }
+    });
   }
 }
-
-export default DataLoader;

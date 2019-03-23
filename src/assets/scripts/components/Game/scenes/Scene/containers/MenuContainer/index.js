@@ -8,7 +8,7 @@ const PADDING = 4;
 /**
  * A class representing a menu container.
  */
-class MenuContainer extends Container {
+export default class MenuContainer extends Container {
   /**
    * Creates a menu container.
    * @param  {Array}  items The menu items.
@@ -84,5 +84,3 @@ class MenuContainer extends Container {
     });
   }
 }
-
-export default MenuContainer;

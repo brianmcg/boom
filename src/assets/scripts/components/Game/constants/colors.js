@@ -1,4 +1,8 @@
 /**
+ * @module  colors
+ */
+
+/**
  * The hex value for white.
  * @type {Number}
  */

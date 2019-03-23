@@ -7,9 +7,9 @@ import { SoundPlayer } from '~/core/audio';
 export default class Loader {
   /**
    * Load game data.
-   * @param  {[type]} options.sound [description]
-   * @param  {[type]} options.data  [description]
-   * @return {[type]}               [description]
+   * @param  {Object}   options.sound The sound options.
+   * @param  {Object}   options.data  The data options.
+   * @return {Promise}                Resolves when the assets are loaded.
    */
   static load({ sound, data }) {
     return new Promise((resolve) => {
@@ -24,8 +24,7 @@ export default class Loader {
 
   /**
    * Reset the loader.
-   * @param  {[type]} options [description]
-   * @return {[type]}         [description]
+   * @param  {[type]} options The reset options.
    */
   static reset(options) {
     DataLoader.reset(options);
