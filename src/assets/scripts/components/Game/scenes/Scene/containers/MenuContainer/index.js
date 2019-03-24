@@ -19,7 +19,7 @@ export default class MenuContainer extends Container {
 
     this.items.forEach((item, index) => {
       const sprite = new BitmapText({
-        font: FONT_SIZES.MEDIUM,
+        font: FONT_SIZES.SMALL,
         text: item.label,
         color: index ? WHITE : RED,
       });

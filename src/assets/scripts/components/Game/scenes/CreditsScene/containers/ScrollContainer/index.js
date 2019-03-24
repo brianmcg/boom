@@ -1,7 +1,7 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
-const TEXT_PADDING = 2;
+const TEXT_PADDING = 8;
 
 const SCROLL_SPEED = 0.6;
 

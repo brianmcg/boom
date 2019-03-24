@@ -10,7 +10,7 @@ import { FONT_TYPES } from './assets';
  * @type {Object}
  */
 export const FONT_SIZES = {
-  SMALL: `${SCREEN.HEIGHT / 15}px ${FONT_TYPES.MAIN}`,
-  MEDIUM: `${SCREEN.HEIGHT / 10}px ${FONT_TYPES.MAIN}`,
-  LARGE: `${SCREEN.HEIGHT / 5}px ${FONT_TYPES.MAIN}`,
+  SMALL: `${SCREEN.HEIGHT / 12}px ${FONT_TYPES.MAIN}`,
+  MEDIUM: `${SCREEN.HEIGHT / 6}px ${FONT_TYPES.MAIN}`,
+  LARGE: `${SCREEN.HEIGHT / 4}px ${FONT_TYPES.MAIN}`,
 };
