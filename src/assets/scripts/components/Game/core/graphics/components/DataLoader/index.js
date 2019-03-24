@@ -24,7 +24,7 @@ export default class DataLoader {
    * Clear the texture cache
    * @param  {String} options.exclude Key name to exclude from operation.
    */
-  static reset({ exclude }) {
+  static reset({ exclude = null } = {}) {
     loader.reset();
 
     Object.keys(TextureCache).forEach((key) => {

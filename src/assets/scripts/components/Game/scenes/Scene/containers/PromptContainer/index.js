@@ -40,6 +40,20 @@ export default class PromptContainer extends Container {
     super.addChild(text);
   }
 
+  /**
+   * Handle state change to paused.
+   */
+  onPaused() {
+    this.visible = false;
+  }
+
+  /**
+   * Handle state change to running.
+   */
+  onRunning() {
+    this.visible = true;
+  }
+
   _render() {
     if (!this.counter) {
       this.children.forEach((child) => {

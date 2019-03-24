@@ -21,6 +21,14 @@ export default class BackgroundContainer extends Container {
     logo.x = (SCREEN.WIDTH / 2) - (logo.width / 2);
     logo.y = (SCREEN.HEIGHT / 2) - (logo.height / 2);
 
+    logo.play = () => {
+      logo.visible = true;
+    };
+
+    logo.stop = () => {
+      logo.visible = false;
+    };
+
     smoke.width = SCREEN.WIDTH;
     smoke.height = SCREEN.HEIGHT;
 

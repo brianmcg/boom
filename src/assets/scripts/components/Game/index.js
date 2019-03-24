@@ -1,5 +1,5 @@
-import { Application } from '~/core/graphics';
-import { Keyboard } from '~/core/input';
+import { Application } from './core/graphics';
+import { Keyboard } from './core/input';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
 import { GAME_PATH } from './constants/paths';
@@ -17,9 +17,10 @@ import Loader from './util/Loader';
  */
 export default class Game extends Application {
   /**
-   * Create a game.
+   * [description]
+   * @param  {Function} options.onQuit  on quit callback.
    */
-  constructor() {
+  constructor({ onQuit = () => {} }) {
     super(SCREEN.WIDTH, SCREEN.HEIGHT, {
       backgroundColor: BLACK,
       autoStart: false,
@@ -35,6 +36,7 @@ export default class Game extends Application {
     this.ticker.add(this.update.bind(this));
 
     this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
+    this.onQuit = onQuit;
   }
 
   /**
@@ -104,7 +106,10 @@ export default class Game extends Application {
   onSceneQuit(sceneType) {
     switch (sceneType) {
       case Scene.TYPES.TITLE:
-        this.show(null);
+        this.scene.destroy();
+        this.scene = null;
+        this.onQuit();
+        Loader.reset();
         break;
       default:
         this.show(Scene.TYPES.TITLE);

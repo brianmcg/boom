@@ -7,7 +7,12 @@ const container = document.getElementById('container');
 
 const button = document.getElementById('button');
 
-const game = new Game();
+const game = new Game({
+  onQuit: () => {
+    document.body.removeChild(game.view);
+    document.body.append(container);
+  },
+});
 
 const onClick = () => {
   document.body.removeChild(container);
@@ -24,6 +29,6 @@ const onResize = () => {
 
 window.addEventListener('resize', onResize);
 
-button.addEventListener('click', onClick, { once: true });
+button.addEventListener('click', onClick);
 
 window.game = game;

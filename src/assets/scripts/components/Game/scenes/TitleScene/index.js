@@ -14,6 +14,19 @@ export default class TitleScene extends Scene {
    */
   constructor(options) {
     super({ ...options, type: Scene.TYPES.TITLE });
+
+    this.menuItems = [{
+      label: Scene.TEXT.CONTINUE,
+      onSelect: () => {
+        this.setState(Scene.STATES.RUNNING);
+      },
+    }, {
+      label: Scene.TEXT.QUIT,
+      onSelect: () => {
+        this.setStatus(Scene.EVENTS.QUIT);
+        this.setState(Scene.STATES.FADING_OUT);
+      },
+    }];
   }
 
   /**

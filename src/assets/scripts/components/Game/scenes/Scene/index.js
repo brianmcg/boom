@@ -33,6 +33,12 @@ const TYPES = {
   CREDITS: 'credits',
 };
 
+const TEXT = {
+  CONTINUE: 'Continue',
+  RESTART: 'Restart',
+  QUIT: 'Quit',
+};
+
 /**
  * Class representing a scene.
  */
@@ -51,6 +57,11 @@ export default class Scene extends Container {
    * The scene events class property.
    */
   static get EVENTS() { return EVENTS; }
+
+  /**
+   * The scene text.
+   */
+  static get TEXT() { return TEXT; }
 
   /**
    * Create a Scene.
@@ -173,6 +184,7 @@ export default class Scene extends Container {
     SoundPlayer.pause();
     SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
     this.main.onPaused();
+    this.prompt.onPaused();
   }
 
   /**
@@ -181,6 +193,7 @@ export default class Scene extends Container {
   onRunning() {
     SoundPlayer.resume();
     this.main.onRunning();
+    this.prompt.onRunning();
   }
 
   /**
@@ -266,7 +279,7 @@ export default class Scene extends Container {
    * Update the scene when in a prompting state.
    */
   updatePrompting(delta) {
-    this.main.updateRunning(delta);
+    this.updateRunning(delta);
 
     this.prompt.update(delta);
 

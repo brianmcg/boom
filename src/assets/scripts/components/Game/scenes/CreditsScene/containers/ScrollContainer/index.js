@@ -66,6 +66,14 @@ export default class ScrollContainer extends Container {
     }
   }
 
+  play() {
+    this.visible = true;
+  }
+
+  stop() {
+    this.visible = false;
+  }
+
   _render() {
     this.y = this.scrollY;
   }

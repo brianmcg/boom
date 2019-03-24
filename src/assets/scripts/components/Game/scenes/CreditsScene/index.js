@@ -29,6 +29,19 @@ export default class CreditsScene extends Scene {
       this.setState(Scene.STATES.PROMPTING);
     });
 
+    this.menuItems = [{
+      label: Scene.TEXT.CONTINUE,
+      onSelect: () => {
+        this.setState(Scene.STATES.RUNNING);
+      },
+    }, {
+      label: Scene.TEXT.QUIT,
+      onSelect: () => {
+        this.setStatus(Scene.EVENTS.QUIT);
+        this.setState(Scene.STATES.FADING_OUT);
+      },
+    }];
+
     this.prompt.addChild(promptSprites);
     this.main.addChild(background);
     this.main.addChild(scroll);
