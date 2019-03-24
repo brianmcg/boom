@@ -23,7 +23,7 @@ const onClick = () => {
 const onResize = () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    game.resize();
+    game.onResize();
   }, 20);
 };
 

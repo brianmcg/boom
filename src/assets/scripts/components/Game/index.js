@@ -117,6 +117,10 @@ export default class Game extends Application {
     }
   }
 
+  onResize() {
+    this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
+  }
+
   /**
    * Show a scene.
    * @param  {String} sceneType  The scene type.

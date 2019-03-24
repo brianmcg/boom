@@ -1,9 +1,9 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
-const TEXT_PADDING = 8;
+const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
-const SCROLL_SPEED = 0.6;
+const SCROLL_SPEED = SCREEN.HEIGHT / 280;
 
 const EVENTS = {
   SCROLL_COMPLETE: 'SCROLL_COMPLETE',
