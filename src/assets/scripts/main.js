@@ -15,11 +15,11 @@ const game = new Game({
   },
 });
 
-const instructions = new Instructions({
-  onClick: () => {
-    document.body.removeChild(instructions.view);
-    document.body.append(game.view);
-  },
+const instructions = new Instructions();
+
+instructions.on('click', () => {
+  document.body.removeChild(instructions.view);
+  document.body.append(game.view);
 });
 
 document.body.append(instructions.view);

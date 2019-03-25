@@ -25,3 +25,5 @@ export const KEYS = {
 };
 
 export const TITLE = 'Goon Controls';
+
+export const BUTTON_TEXT = 'Click to play';

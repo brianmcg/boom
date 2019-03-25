@@ -5,12 +5,16 @@ export default class Table {
     const thead = document.createElement('thead');
     const theadr = document.createElement('tr');
 
+    this.view.setAttribute('class', 'table');
+    thead.setAttribute('class', 'thead');
+
     this.view.appendChild(thead);
     this.view.appendChild(tbody);
     thead.appendChild(theadr);
 
     data.ids.forEach((id) => {
       const th = document.createElement('th');
+      th.setAttribute('class', 'half-width');
       const span = document.createElement('span');
       const text = document.createTextNode(id);
 

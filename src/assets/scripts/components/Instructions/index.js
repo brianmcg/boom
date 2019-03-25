@@ -1,5 +1,6 @@
-import { KEYS, TITLE } from './constants';
+import { KEYS, TITLE, BUTTON_TEXT } from './constants';
 import Table from './components/Table';
+import Button from './components/Button';
 
 export default class Instructions {
   constructor() {
@@ -14,14 +15,18 @@ export default class Instructions {
     span.appendChild(text);
     content.appendChild(span);
 
+    this.button = new Button(BUTTON_TEXT);
+
     this.view = document.createElement('div');
     this.view.setAttribute('class', 'container');
     this.view.setAttribute('id', 'container');
     this.view.appendChild(content);
     this.view.appendChild(table.view);
+
+    this.view.appendChild(this.button.view);
+  }
+
+  on(...options) {
+    this.button.view.addEventHandler(...options);
   }
 }
-
-      // <div id="button" class="button">
-      //   <span>Click to play</span>
-      // </div>
