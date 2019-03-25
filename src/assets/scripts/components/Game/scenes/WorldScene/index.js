@@ -25,8 +25,8 @@ export default class WorldScene extends Scene {
     }];
   }
 
-  create() {
-    super.create();
+  create(resources) {
+    super.create(resources);
   }
 
   updateRunning(delta) {

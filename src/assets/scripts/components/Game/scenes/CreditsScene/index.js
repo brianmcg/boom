@@ -46,6 +46,6 @@ export default class CreditsScene extends Scene {
     this.main.addChild(background);
     this.main.addChild(scroll);
 
-    super.create();
+    super.create(resources);
   }
 }

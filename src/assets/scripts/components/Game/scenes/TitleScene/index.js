@@ -40,7 +40,7 @@ export default class TitleScene extends Scene {
     this.prompt.addChild(promptSprites);
     this.main.addChild(background);
 
-    super.create();
+    super.create(resources);
   }
 
   onRunning() {
