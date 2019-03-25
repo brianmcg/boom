@@ -1,24 +1,28 @@
 import '../styles/sass.scss';
 import Game from './components/Game';
+import Instructions from './components/Instructions';
 
 let resizeTimer = null;
 
-const container = document.getElementById('container');
+// const container = document.getElementById('container');
 
-const button = document.getElementById('button');
+// const button = document.getElementById('button');
 
 const game = new Game({
   onQuit: () => {
-    document.body.removeChild(game.view);
-    document.body.append(container);
+    // document.body.removeChild(game.view);
+    // document.body.append(instructions.view);
   },
 });
 
-const onClick = () => {
-  document.body.removeChild(container);
-  document.body.append(game.view);
-  game.run();
-};
+const instructions = new Instructions({
+  onClick: () => {
+    document.body.removeChild(instructions.view);
+    document.body.append(game.view);
+  },
+});
+
+document.body.append(instructions.view);
 
 const onResize = () => {
   clearTimeout(resizeTimer);
@@ -29,6 +33,6 @@ const onResize = () => {
 
 window.addEventListener('resize', onResize);
 
-button.addEventListener('click', onClick);
+// button.addEventListener('click', onClick);
 
 window.game = game;

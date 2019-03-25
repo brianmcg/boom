@@ -23,3 +23,5 @@ export const KEYS = {
     key: 'shift',
   }],
 };
+
+export const TITLE = 'Goon Controls';
