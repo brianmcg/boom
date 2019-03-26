@@ -10,7 +10,7 @@ import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
 import Loader from '~/util/Loader';
-import { createSprites } from './helpers';
+import { parse } from './helpers';
 
 const STATES = {
   LOADING: 'loading',
@@ -93,6 +93,9 @@ export default class Scene extends Container {
     this.setState(STATES.LOADING);
   }
 
+  /**
+   * Load the scene assets.
+   */
   load() {
     const options = {
       sound: {
@@ -105,15 +108,16 @@ export default class Scene extends Container {
       }],
     };
 
-    return Loader.load(options).then(response => this.create(response));
+    Loader.load(options).then(response => this.create(response));
   }
 
   /**
    * Create the scene.
+   * @param  {Object} assets The scene assets.
    */
-  create(resources) {
-    const { menu } = createSprites(resources);
-    this.menu = new MenuContainer(menu);
+  create(assets) {
+    const { sprites } = parse(assets);
+    this.menu = new MenuContainer({ sprites });
     this.menu.add(this.menuItems);
     this.setState(STATES.FADING_IN);
   }
@@ -217,6 +221,7 @@ export default class Scene extends Container {
 
   /**
    * Update the scene when in a loading state.
+   * @param {Numbmer} delta The delta value.
    */
   updateLoading(delta) {
     this.loading.update(delta);
@@ -268,6 +273,7 @@ export default class Scene extends Container {
 
   /**
    * Update the scene when in a running state.
+   * @param  {Number} delta The delta value.
    */
   updateRunning(delta) {
     this.main.updateRunning(delta);
@@ -280,6 +286,7 @@ export default class Scene extends Container {
 
   /**
    * Update the scene when in a prompting state.
+   * @param  {Number} delta The delta value.
    */
   updatePrompting(delta) {
     this.updateRunning(delta);
@@ -323,7 +330,6 @@ export default class Scene extends Container {
 
   /**
    * Destroy the scene.
-   * @param  {Object} options The destroy options.
    */
   destroy() {
     SoundPlayer.unloadMusic();

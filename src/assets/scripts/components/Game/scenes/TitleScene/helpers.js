@@ -3,15 +3,16 @@ import { RED } from '~/constants/colors';
 import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
 
 /**
- * @module helpers.
+ * @module helpers
  */
 
 /**
- * Create sprites from resources.
- * @param  {Object} resources The loaded resources.
+ * Parses the loaded scene assets.
+ * @param  {Object} assets The scene assets.
+ * @return {Object}        The parsed scene data.
  */
-export const createSprites = (resources) => {
-  const { data, textures } = resources.scene;
+export const parse = (assets) => {
+  const { data, textures } = assets;
   const { animations, sprites } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
   const sparksTextures = animations.sparks.map(image => textures[image]);
@@ -33,7 +34,9 @@ export const createSprites = (resources) => {
   });
 
   return {
-    backgroundSprites: { smoke, sparks, logo },
-    promptSprites: { text },
+    sprites: {
+      background: { smoke, sparks, logo },
+      prompt: { text },
+    },
   };
 };

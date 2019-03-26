@@ -1,9 +1,23 @@
 import { Sprite } from '~/core/graphics';
 
-export const createSprites = (resources) => {
-  const { data, textures } = resources.scene;
+/**
+ * @module helpers
+ */
+
+/**
+ * Parses the loaded scene assets.
+ * @param  {Object} assets The scene assets.
+ * @return {Object}        The parsed scene data.
+ */
+export const parse = (assets) => {
+  const { data, textures } = assets;
   const { sprites } = data;
+
   return {
-    menu: new Sprite(textures[sprites.menu]),
+    sprites: {
+      menu: {
+        icon: new Sprite(textures[sprites.menu]),
+      },
+    },
   };
 };

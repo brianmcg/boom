@@ -16,8 +16,8 @@ export default class Loader {
       Promise.all([
         SoundPlayer.load(sound),
         DataLoader.load(data),
-      ]).then(([, dataLoaderResponse]) => {
-        resolve(dataLoaderResponse);
+      ]).then(([, { scene }]) => {
+        resolve(scene);
       });
     });
   }

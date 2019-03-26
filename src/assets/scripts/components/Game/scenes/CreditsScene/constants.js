@@ -19,3 +19,12 @@ export const CREDITS = [{
   key: 'Script',
   values: ['Brian McGrath'],
 }];
+
+/**
+ * The scene text.
+ * @type {Object}
+ */
+export const TEXT = {
+  CONTINUE: 'Press space to continue',
+  END: 'The End',
+};

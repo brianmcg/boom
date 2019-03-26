@@ -1,19 +1,19 @@
-import { AnimatedSprite, BitmapText, Sprite } from '~/core/graphics';
-import { CREDITS } from './constants';
+import { AnimatedSprite, BitmapText } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/font';
 import { RED, WHITE } from '~/constants/colors';
+import { CREDITS, TEXT } from './constants';
 
 /**
  * @module helpers
  */
 
 /**
- * Create the scene sprites.
- * @param  {Object} resources The loaded resources.
- * @return {Object}           The scene sprites.
+ * Parses the loaded scene assets.
+ * @param  {Object} assets The scene assets.
+ * @return {Object}        The parsed scene data.
  */
-export const createSprites = (resources) => {
-  const { data, textures } = resources.scene;
+export const parse = (resources) => {
+  const { data, textures } = resources;
   const { animations } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
 
@@ -44,19 +44,21 @@ export const createSprites = (resources) => {
 
   const message = new BitmapText({
     font: FONT_SIZES.LARGE,
-    text: 'The End',
+    text: TEXT.END,
     color: WHITE,
   });
 
   const text = new BitmapText({
     font: FONT_SIZES.SMALL,
-    text: 'Press space to continue',
+    text: TEXT.CONTINUE,
     color: RED,
   });
 
   return {
-    backgroundSprites: { smoke },
-    scrollSprites: { credits, message },
-    promptSprites: { text },
+    sprites: {
+      background: { smoke },
+      scroll: { credits, message },
+      prompt: { text },
+    },
   };
 };

@@ -1,4 +1,4 @@
-import { createSprites } from './helpers';
+import { parse } from './helpers';
 import Scene from '../Scene';
 import BackgroundContainer from './containers/BackgroundContainer';
 
@@ -31,15 +31,15 @@ export default class TitleScene extends Scene {
 
   /**
    * Create the TitleScene assets.
-   * @param  {Object} resources The loaded scene resources.
+   * @param  {Object} assets The loaded scene assets.
    */
-  create(resources) {
-    super.create(resources);
+  create(assets) {
+    super.create(assets);
 
-    const { backgroundSprites, promptSprites } = createSprites(resources);
-    const background = new BackgroundContainer(backgroundSprites);
+    const { sprites } = parse(assets);
+    const background = new BackgroundContainer(sprites.background);
 
-    this.prompt.addChild(promptSprites);
+    this.prompt.addChild(sprites.prompt);
     this.main.addChild(background);
   }
 

@@ -3,7 +3,10 @@
  * @type {Object}
  */
 export const KEYS = {
-  cols: ['action', 'key'],
+  cols: [
+    'action',
+    'key',
+  ],
   rows: [{
     action: 'forward',
     key: 'up arrow',

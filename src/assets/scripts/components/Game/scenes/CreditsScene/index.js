@@ -1,4 +1,4 @@
-import { createSprites } from './helpers';
+import { parse } from './helpers';
 import Scene from '../Scene';
 import ScrollContainer from './containers/ScrollContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
@@ -18,14 +18,15 @@ export default class CreditsScene extends Scene {
 
   /**
    * Create the TitleScene assets.
-   * @param  {Object} resources The loaded scene resources.
+   * @param  {Object} assets The loaded scene assets.
    */
-  create(resources) {
-    super.create(resources);
+  create(assets) {
+    super.create(assets);
 
-    const { backgroundSprites, promptSprites, scrollSprites } = createSprites(resources);
-    const background = new BackgroundContainer(backgroundSprites);
-    const scroll = new ScrollContainer(scrollSprites);
+    const { sprites } = parse(assets);
+
+    const background = new BackgroundContainer(sprites.background);
+    const scroll = new ScrollContainer(sprites.scroll);
 
     scroll.on(ScrollContainer.EVENTS.SCROLL_COMPLETE, () => {
       this.setState(Scene.STATES.PROMPTING);
@@ -44,7 +45,7 @@ export default class CreditsScene extends Scene {
       },
     }];
 
-    this.prompt.addChild(promptSprites);
+    this.prompt.addChild(sprites.prompt);
     this.main.addChild(background);
     this.main.addChild(scroll);
   }

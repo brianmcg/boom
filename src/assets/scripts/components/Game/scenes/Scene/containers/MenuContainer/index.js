@@ -15,11 +15,11 @@ const ICON_PADDING_RIGHT = 5;
 export default class MenuContainer extends Container {
   /**
    * Creates a menu container.
-   * @param  {Sprite} menuIcon The menu icon sprite.
+   * @param  {Object} options.sprites The sprites.
    */
-  constructor(menuIcon) {
+  constructor({ sprites }) {
     super();
-    this.menuIcon = menuIcon;
+    this.menuIcon = sprites.menu.icon;
   }
 
   /**
