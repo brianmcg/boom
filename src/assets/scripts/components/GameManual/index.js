@@ -1,16 +1,26 @@
+import './styles/index.scss';
 import { KEYS, TITLE, BUTTON_TEXT } from './constants';
 import Table from './components/Table';
 import Button from './components/Button';
 
 const EVENTS = {
-  CLICK_START: 'click',
+  CLICK_START: 'click:button',
 };
 
-export default class Instructions {
+/**
+ * Class representing a game manual.
+ */
+export default class GameManual {
+  /**
+   * The events class property.
+   */
   static get EVENTS() {
     return EVENTS;
   }
 
+  /**
+   * Creates a game manual.
+   */
   constructor() {
     const content = document.createElement('div');
     const span = document.createElement('span');
@@ -30,11 +40,16 @@ export default class Instructions {
     this.view.setAttribute('id', 'container');
     this.view.appendChild(content);
     this.view.appendChild(table.view);
-
     this.view.appendChild(this.button.view);
   }
 
-  on(...options) {
-    this.button.view.addEventListener(...options);
+  /**
+   * Adds an event listener to the game manual.
+   * @param  {Event}    event    The event to add.
+   * @param  {Function} callback The callback to trigger.
+   */
+  on(event, callback) {
+    const [eventName, childName] = event.split(':');
+    this[childName].view.addEventListener(eventName, callback);
   }
 }

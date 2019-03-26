@@ -1,5 +1,9 @@
+/**
+ * The key controls map.
+ * @type {Object}
+ */
 export const KEYS = {
-  ids: ['action', 'key'],
+  cols: ['action', 'key'],
   rows: [{
     action: 'forward',
     key: 'up arrow',
@@ -24,6 +28,14 @@ export const KEYS = {
   }],
 };
 
+/**
+ * The title.
+ * @type {String}
+ */
 export const TITLE = 'Goon Controls';
 
+/**
+ * The button text.
+ * @type {String}
+ */
 export const BUTTON_TEXT = 'Click to play';

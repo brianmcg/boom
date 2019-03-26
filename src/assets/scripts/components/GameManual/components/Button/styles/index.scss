@@ -1,0 +1,14 @@
+@import 'src/assets/scripts/styles/colors.scss';
+
+.button {
+  border: 1px solid $red;
+  color: $red;
+  cursor: pointer;
+  padding: 8px 0;
+  text-align: center;
+
+  &:hover {
+    border: 1px solid $white;
+    color: $white;
+  }
+}

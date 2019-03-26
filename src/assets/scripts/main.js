@@ -1,4 +1,4 @@
-import '../styles/sass.scss';
+import './styles/index.scss';
 import GameManual from './components/GameManual';
 import Game from './components/Game';
 

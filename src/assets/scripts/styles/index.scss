@@ -1,0 +1,19 @@
+@import './colors';
+
+@font-face {
+  font-weight: normal;
+  font-style: normal;
+  font-family: "8 Bit Party Regular";
+  src: url("/assets/fonts/8_bit_party.eot?") format("eot"),
+    url("/assets/media/fonts/8_bit_party.woff") format("woff"),
+    url("/assets/media/fonts/8_bit_party.ttf") format("truetype"),
+    url("/assets/media/fonts/8_bit_party.svg#8-Bit-Party") format("svg");
+}
+
+body {
+  background-color: $black;
+  color: $white;
+  font-family: '8 Bit Party Regular', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}

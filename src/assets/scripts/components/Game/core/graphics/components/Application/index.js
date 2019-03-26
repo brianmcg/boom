@@ -6,7 +6,7 @@ import { Application as PixiApplication } from 'pixi.js';
 export default class Application extends PixiApplication {
   /**
    * Creates and application
-   * @param  {...[type]} options The application options.
+   * @param  {Object} options The application options.
    */
   constructor(...options) {
     super(...options);
@@ -15,15 +15,26 @@ export default class Application extends PixiApplication {
     this.renderer.view.style.left = '50%';
     this.renderer.view.style.top = '50%';
     this.resize = Application.prototype.resize;
+    this.loader = null;
     window.addEventListener('resize', this.onResize.bind(this));
   }
 
-  on(...options) {
-    this.stage.on(...options);
+  /**
+   * Add event listener to application.
+   * @param  {Event}    event    The event to listen for.
+   * @param  {Function} callback The callback to execute.
+   */
+  on(event, callback) {
+    this.stage.on(event, callback);
   }
 
-  emit(...options) {
-    this.stage.emit(...options);
+  /**
+   * Trigger an event.
+   * @param  {Event}    event    The event to listen for.
+   * @param  {Function} callback The callback to execute.
+   */
+  emit(event, callback) {
+    this.stage.emit(event, callback);
   }
 
   /**

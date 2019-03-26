@@ -1,0 +1,25 @@
+@import 'src/assets/scripts/styles/colors.scss';
+
+.table {
+  border-collapse: collapse;
+  margin: 20px 0;
+
+  thead {
+    border-bottom: 1px solid $red;
+    border-top: 1px solid $red;
+  }
+
+  td, th {
+    width: 50%;
+    padding: 8px;
+  }
+}
+
+.key {
+  float: left;
+  color: $red;
+}
+
+.action {
+  float: right;
+}
