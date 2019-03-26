@@ -20,29 +20,6 @@ body {
   padding: 0;
 }
 
-.half-width {
-  width: 50%;
-}
-
-.right {
-  float: right;
-}
-
-.action {
-  float: right;
-}
-
-.key {
-  float: left;
-  color: $red;
-}
-
-.background {
-  height: 100%;
-  position: absolute;
-  width: 100%;
-}
-
 .container {
   left: 50%;
   position: absolute;
@@ -51,7 +28,7 @@ body {
   -webkit-transform: translate(-50%, -50%);
 }
 
-.container-content {
+.content {
   position: relative;
 }
 
@@ -66,15 +43,25 @@ body {
 .table {
   border-collapse: collapse;
   margin: 20px 0;
+
+  thead {
+    border-bottom: 1px solid $red;
+    border-top: 1px solid $red;
+  }
+
+  td, th {
+    width: 50%;
+    padding: 8px;
+  }
 }
 
-.thead {
-  border-bottom: 1px solid $red;
-  border-top: 1px solid $red;
+.key {
+  float: left;
+  color: $red;
 }
 
-.cell {
-  padding: 8px;
+.action {
+  float: right;
 }
 
 .button {

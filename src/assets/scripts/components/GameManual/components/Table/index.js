@@ -14,7 +14,7 @@ export default class Table {
 
     data.ids.forEach((id) => {
       const th = document.createElement('th');
-      th.setAttribute('class', 'half-width');
+      th.setAttribute('class', 'half');
       const span = document.createElement('span');
       const text = document.createTextNode(id);
 
@@ -29,7 +29,7 @@ export default class Table {
       tbody.appendChild(tr);
 
       data.ids.forEach((id) => {
-        const td = document.createElement('td', ['half-width']);
+        const td = document.createElement('td', ['half']);
         const span = document.createElement('span');
         const text = document.createTextNode(row[id]);
 

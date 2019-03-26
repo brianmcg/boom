@@ -17,7 +17,7 @@ export default class Instructions {
     const text = document.createTextNode(TITLE);
     const table = new Table(KEYS);
 
-    content.setAttribute('class', 'container-content');
+    content.setAttribute('class', 'content');
     span.setAttribute('class', 'title');
 
     span.appendChild(text);

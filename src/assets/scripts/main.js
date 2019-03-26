@@ -19,5 +19,5 @@ game.on(Game.EVENTS.QUIT, () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.appendChild(manual.view)
+  document.body.appendChild(manual.view);
 });
