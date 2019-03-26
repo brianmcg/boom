@@ -1,4 +1,5 @@
 import { Keyboard } from '~/core/input';
+import { createSprites } from './helpers';
 import Scene from '../Scene';
 
 export default class WorldScene extends Scene {
@@ -27,6 +28,10 @@ export default class WorldScene extends Scene {
 
   create(resources) {
     super.create(resources);
+
+    const sprites = createSprites(resources);
+
+
   }
 
   updateRunning(delta) {
