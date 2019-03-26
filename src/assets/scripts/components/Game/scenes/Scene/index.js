@@ -10,6 +10,7 @@ import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
 import Loader from '~/util/Loader';
+import { createSprites } from './helpers';
 
 const STATES = {
   LOADING: 'loading',
@@ -77,7 +78,7 @@ export default class Scene extends Container {
     this.type = type;
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
-    this.menu = new MenuContainer();
+
     this.prompt = new PromptContainer();
     this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
 
@@ -110,9 +111,11 @@ export default class Scene extends Container {
   /**
    * Create the scene.
    */
-  create() {
-    this.setState(STATES.FADING_IN);
+  create(resources) {
+    const { menu } = createSprites(resources);
+    this.menu = new MenuContainer(menu);
     this.menu.add(this.menuItems);
+    this.setState(STATES.FADING_IN);
   }
 
   /**

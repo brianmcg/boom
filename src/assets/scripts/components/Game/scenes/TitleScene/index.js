@@ -34,13 +34,13 @@ export default class TitleScene extends Scene {
    * @param  {Object} resources The loaded scene resources.
    */
   create(resources) {
+    super.create(resources);
+
     const { backgroundSprites, promptSprites } = createSprites(resources);
     const background = new BackgroundContainer(backgroundSprites);
 
     this.prompt.addChild(promptSprites);
     this.main.addChild(background);
-
-    super.create();
   }
 
   onRunning() {

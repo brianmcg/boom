@@ -3,7 +3,11 @@ import { FONT_SIZES } from '~/constants/font';
 import { RED, WHITE } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
 
-const PADDING = 4;
+const PADDING = 6;
+
+const ICON_PADDING_TOP = 4;
+
+const ICON_PADDING_RIGHT = 5;
 
 /**
  * A class representing a menu container.
@@ -11,11 +15,25 @@ const PADDING = 4;
 export default class MenuContainer extends Container {
   /**
    * Creates a menu container.
+   * @param  {Sprite} menuIcon The menu icon sprite.
+   */
+  constructor(menuIcon) {
+    super();
+    this.menuIcon = menuIcon;
+  }
+
+  /**
+   * Creates a menu container.
    * @param  {Array}  items The menu items.
    */
   add(items = []) {
     this.currentIndex = 0;
     this.items = items;
+    this.itemSprites = [];
+
+    if (this.items.length) {
+      this.addChild(this.menuIcon);
+    }
 
     this.items.forEach((item, index) => {
       const sprite = new BitmapText({
@@ -23,6 +41,11 @@ export default class MenuContainer extends Container {
         text: item.label,
         color: index ? WHITE : RED,
       });
+
+      if (!index) {
+        this.menuIcon.y = sprite.y + ICON_PADDING_TOP;
+        this.menuIcon.x = sprite.x - ICON_PADDING_RIGHT - this.menuIcon.width;
+      }
 
       const totalHeight = (sprite.height + PADDING) * this.items.length;
 
@@ -32,6 +55,7 @@ export default class MenuContainer extends Container {
 
       sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
 
+      this.itemSprites.push(sprite);
       this.addChild(sprite);
 
       this.on('added', () => {
@@ -76,8 +100,14 @@ export default class MenuContainer extends Container {
   }
 
   _render() {
-    this.children.forEach((child, index) => {
-      child.setColor(index === this.currentIndex ? RED : WHITE);
+    this.itemSprites.forEach((child, index) => {
+      if (index === this.currentIndex) {
+        this.menuIcon.y = child.y + ICON_PADDING_TOP;
+        this.menuIcon.x = child.x - ICON_PADDING_RIGHT - this.menuIcon.width;
+        child.setColor(RED);
+      } else {
+        child.setColor(WHITE);
+      }
     });
   }
 }

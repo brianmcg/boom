@@ -21,6 +21,8 @@ export default class CreditsScene extends Scene {
    * @param  {Object} resources The loaded scene resources.
    */
   create(resources) {
+    super.create(resources);
+
     const { backgroundSprites, promptSprites, scrollSprites } = createSprites(resources);
     const background = new BackgroundContainer(backgroundSprites);
     const scroll = new ScrollContainer(scrollSprites);
@@ -45,7 +47,5 @@ export default class CreditsScene extends Scene {
     this.prompt.addChild(promptSprites);
     this.main.addChild(background);
     this.main.addChild(scroll);
-
-    super.create();
   }
 }
