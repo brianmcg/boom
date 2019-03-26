@@ -1,38 +1,23 @@
 import '../styles/sass.scss';
+import GameManual from './components/GameManual';
 import Game from './components/Game';
-import Instructions from './components/Instructions';
 
-let resizeTimer = null;
+const manual = new GameManual();
 
-// const container = document.getElementById('container');
+const game = new Game();
 
-// const button = document.getElementById('button');
-
-const game = new Game({
-  onQuit: () => {
-    // document.body.removeChild(game.view);
-    // document.body.append(instructions.view);
-  },
+manual.on(GameManual.EVENTS.CLICK_START, () => {
+  document.body.removeChild(manual.view);
+  document.body.appendChild(game.view);
+  game.run();
 });
 
-const instructions = new Instructions();
-
-instructions.on('click', () => {
-  document.body.removeChild(instructions.view);
-  document.body.append(game.view);
+game.on(Game.EVENTS.QUIT, () => {
+  document.body.removeChild(game.view);
+  document.body.appendChild(manual.view);
+  game.stop();
 });
 
-document.body.append(instructions.view);
-
-const onResize = () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    game.onResize();
-  }, 20);
-};
-
-window.addEventListener('resize', onResize);
-
-// button.addEventListener('click', onClick);
-
-window.game = game;
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.appendChild(manual.view)
+});

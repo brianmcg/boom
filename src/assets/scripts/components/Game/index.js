@@ -12,15 +12,25 @@ import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
 
+const EVENTS = {
+  QUIT: 'quit',
+};
+
 /**
  * A class representing a game.
  */
 export default class Game extends Application {
   /**
-   * [description]
-   * @param  {Function} options.onQuit  on quit callback.
+   * The events class property.
    */
-  constructor({ onQuit = () => {} }) {
+  static get EVENTS() {
+    return EVENTS;
+  }
+
+  /**
+   * Creates a game.
+   */
+  constructor() {
     super(SCREEN.WIDTH, SCREEN.HEIGHT, {
       backgroundColor: BLACK,
       autoStart: false,
@@ -36,7 +46,6 @@ export default class Game extends Application {
     this.ticker.add(this.update.bind(this));
 
     this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
-    this.onQuit = onQuit;
   }
 
   /**
@@ -108,7 +117,7 @@ export default class Game extends Application {
       case Scene.TYPES.TITLE:
         this.scene.destroy();
         this.scene = null;
-        this.onQuit();
+        this.emit(EVENTS.QUIT);
         Loader.reset();
         break;
       default:

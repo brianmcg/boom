@@ -11,7 +11,7 @@ export default class Button {
     this.view.appendChild(span);
   }
 
-  addEventHandler(...options) {
-    this.view.addEventHandler(...options);
+  addEventListener(...options) {
+    this.view.addEventListener(...options);
   }
 }

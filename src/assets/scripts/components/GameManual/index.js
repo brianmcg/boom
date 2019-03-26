@@ -2,7 +2,15 @@ import { KEYS, TITLE, BUTTON_TEXT } from './constants';
 import Table from './components/Table';
 import Button from './components/Button';
 
+const EVENTS = {
+  CLICK_START: 'click',
+};
+
 export default class Instructions {
+  static get EVENTS() {
+    return EVENTS;
+  }
+
   constructor() {
     const content = document.createElement('div');
     const span = document.createElement('span');
@@ -27,6 +35,6 @@ export default class Instructions {
   }
 
   on(...options) {
-    this.button.view.addEventHandler(...options);
+    this.button.view.addEventListener(...options);
   }
 }

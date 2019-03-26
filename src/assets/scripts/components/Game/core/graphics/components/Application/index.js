@@ -15,6 +15,15 @@ export default class Application extends PixiApplication {
     this.renderer.view.style.left = '50%';
     this.renderer.view.style.top = '50%';
     this.resize = Application.prototype.resize;
+    window.addEventListener('resize', this.onResize.bind(this));
+  }
+
+  on(...options) {
+    this.stage.on(...options);
+  }
+
+  emit(...options) {
+    this.stage.emit(...options);
   }
 
   /**
