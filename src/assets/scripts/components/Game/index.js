@@ -66,14 +66,29 @@ export default class Game extends Application {
   }
 
   /**
-   * Load the game.
+   * Load the game assets.
    */
   load() {
     this.loader.load(this.assets).then(() => this.show(Scene.TYPES.TITLE));
   }
 
+  /**
+   * Unload the game assets.
+   */
   unload() {
     this.loader.unload();
+  }
+
+  /**
+   * Execute a game update.
+   * @param  {Number} delta The delta value.
+   */
+  update(delta) {
+    if (this.scene) {
+      this.scene.update(delta);
+    }
+
+    Keyboard.resetPressed();
   }
 
   /**
@@ -127,7 +142,7 @@ export default class Game extends Application {
   }
 
   /**
-   * Resize the Game
+   * Resize the game
    * @param  {Number} width  The given width.
    * @param  {Number} height The given height.
    */
@@ -140,11 +155,11 @@ export default class Game extends Application {
       margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
     };
 
-    this.renderer.resize(scaledWidth, scaledHeight);
-
     if (this.scene) {
       this.scene.resize(scale);
     }
+
+    super.resize(scaledWidth, scaledHeight);
   }
 
   /**
@@ -175,17 +190,5 @@ export default class Game extends Application {
 
       this.loader.load(this.scene.assets).then(response => this.scene.create(response));
     }
-  }
-
-  /**
-   * Execute a game update.
-   * @param  {Number} delta The delta value.
-   */
-  update(delta) {
-    if (this.scene) {
-      this.scene.update(delta);
-    }
-
-    Keyboard.resetPressed();
   }
 }

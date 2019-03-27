@@ -18,9 +18,11 @@ export default class Application extends PixiApplication {
   }
 
   /**
-   * To be overriden by extending class.
+   * Resize the application.
    */
-  resize() {} // eslint-disable-line class-methods-use-this
+  resize(width, height) {
+    this.renderer.resize(width, height);
+  }
 
   /**
    * Add event listener to application.
