@@ -3,14 +3,14 @@
  */
 
 import { SCREEN } from './config';
-import { FONT_TYPES } from './assets';
+import { DATA_TYPES } from './assets';
 
 /**
  * Font sizes.
  * @type {Object}
  */
 export const FONT_SIZES = {
-  SMALL: `${SCREEN.HEIGHT / 12}px ${FONT_TYPES.MAIN}`,
-  MEDIUM: `${SCREEN.HEIGHT / 6}px ${FONT_TYPES.MAIN}`,
-  LARGE: `${SCREEN.HEIGHT / 4}px ${FONT_TYPES.MAIN}`,
+  SMALL: `${SCREEN.HEIGHT / 12}px ${DATA_TYPES.FONT}`,
+  MEDIUM: `${SCREEN.HEIGHT / 6}px ${DATA_TYPES.FONT}`,
+  LARGE: `${SCREEN.HEIGHT / 4}px ${DATA_TYPES.FONT}`,
 };

@@ -3,8 +3,8 @@ import { SoundPlayer } from '~/core/audio';
 import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
-import { SOUND_TYPES, RESOURCE_TYPES } from '~/constants/assets';
-import { SCENE_MUSIC, SCENE_DATA } from '~/constants/files';
+import { SOUND_TYPES, DATA_TYPES } from '~/constants/assets';
+import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
@@ -84,10 +84,10 @@ export default class Scene extends Container {
     this.assets = {
       sound: {
         name: SOUND_TYPES.MUSIC,
-        src: `${SCENE_PATH}/${path}/${SCENE_MUSIC}`,
+        src: `${SCENE_PATH}/${path}/${SCENE_SOUND}`,
       },
       data: [{
-        name: RESOURCE_TYPES.SCENE,
+        name: DATA_TYPES.SCENE,
         src: `${SCENE_PATH}/${path}/${SCENE_DATA}`,
       }],
     };

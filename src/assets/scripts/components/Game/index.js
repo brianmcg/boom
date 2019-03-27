@@ -4,8 +4,8 @@ import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
 import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
-import { SOUND_EFFECTS, MAIN_FONT } from './constants/files';
-import { SOUND_TYPES, FONT_TYPES } from './constants/assets';
+import { GAME_SOUND, GAME_DATA } from './constants/files';
+import { SOUND_TYPES, DATA_TYPES } from './constants/assets';
 import { getMaxScale } from './helpers';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
@@ -42,12 +42,12 @@ export default class Game extends Application {
     this.assets = {
       sound: {
         name: SOUND_TYPES.EFFECTS,
-        src: `${GAME_PATH}/${SOUND_EFFECTS}`,
+        src: `${GAME_PATH}/${GAME_SOUND}`,
         sprite: SOUND_SPRITE,
       },
       data: [{
-        name: FONT_TYPES.MAIN,
-        src: `${GAME_PATH}/${MAIN_FONT}`,
+        name: DATA_TYPES.FONT,
+        src: `${GAME_PATH}/${GAME_DATA}`,
       }],
     };
 
@@ -173,7 +173,7 @@ export default class Game extends Application {
 
     if (this.scene) {
       this.scene.destroy();
-      this.loader.unload({ exclude: FONT_TYPES.MAIN });
+      this.loader.unload({ exclude: DATA_TYPES.FONT });
     }
 
     if (SceneType) {
