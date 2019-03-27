@@ -5334,7 +5334,7 @@
     "weapons": ["weapons_01.png", "weapons_02.png", "weapons_03.png", "weapons_04.png", "weapons_05.png", "weapons_06.png", "weapons_07.png", "weapons_08.png", "weapons_09.png", "weapons_11.png", "weapons_12.png", "weapons_13.png", "weapons_14.png", "weapons_15.png"],
     "zombie": ["zombie_01.png", "zombie_02.png", "zombie_03.png", "zombie_04.png", "zombie_05.png", "zombie_06.png", "zombie_07.png", "zombie_08.png", "zombie_09.png", "zombie_10.png", "zombie_11.png", "zombie_12.png", "zombie_13.png", "zombie_14.png", "zombie_15.png", "zombie_16.png", "zombie_17.png", "zombie_18.png", "zombie_19.png", "zombie_20.png", "zombie_21.png", "zombie_22.png", "zombie_23.png", "zombie_24.png", "zombie_25.png", "zombie_26.png", "zombie_27.png", "zombie_28.png", "zombie_29.png", "zombie_30.png", "zombie_31.png", "zombie_32.png", "zombie_33.png", "zombie_34.png", "zombie_35.png", "zombie_36.png", "zombie_37.png", "zombie_38.png", "zombie_39.png", "zombie_40.png"]
   },
-  "sprites": {
+  "images": {
     "menu": "menu.png"
   },
   "meta": {

@@ -9,11 +9,12 @@ import BackgroundContainer from './containers/BackgroundContainer';
 export default class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
-   * @param  {Number} options.index The index of the scene.
-   * @param  {Number} options.scale The scale of the scene.
+   * @param  {Number} options.index   The index of the scene.
+   * @param  {Number} options.scale   The scale of the scene.
+   * @param  {String} options.type    The type of scene.
    */
   constructor(options) {
-    super({ ...options, type: Scene.TYPES.TITLE });
+    super({ type: Scene.TYPES.TITLE, ...options });
 
     this.menuItems = [{
       label: Scene.TEXT.CONTINUE,

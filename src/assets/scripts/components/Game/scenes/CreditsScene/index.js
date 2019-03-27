@@ -14,6 +14,19 @@ export default class CreditsScene extends Scene {
    */
   constructor(options) {
     super({ type: Scene.TYPES.CREDITS, ...options });
+
+    this.menuItems = [{
+      label: Scene.TEXT.CONTINUE,
+      onSelect: () => {
+        this.setState(Scene.STATES.RUNNING);
+      },
+    }, {
+      label: Scene.TEXT.QUIT,
+      onSelect: () => {
+        this.setStatus(Scene.EVENTS.QUIT);
+        this.setState(Scene.STATES.FADING_OUT);
+      },
+    }];
   }
 
   /**
@@ -31,19 +44,6 @@ export default class CreditsScene extends Scene {
     scroll.on(ScrollContainer.EVENTS.SCROLL_COMPLETE, () => {
       this.setState(Scene.STATES.PROMPTING);
     });
-
-    this.menuItems = [{
-      label: Scene.TEXT.CONTINUE,
-      onSelect: () => {
-        this.setState(Scene.STATES.RUNNING);
-      },
-    }, {
-      label: Scene.TEXT.QUIT,
-      onSelect: () => {
-        this.setStatus(Scene.EVENTS.QUIT);
-        this.setState(Scene.STATES.FADING_OUT);
-      },
-    }];
 
     this.prompt.addChild(sprites.prompt);
     this.main.addChild(background);

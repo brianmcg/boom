@@ -8,8 +8,8 @@ const PIXEL = {
 };
 
 const EVENTS = {
-  FADE_IN_COMPLETE: 'fade:in:complete',
-  FADE_OUT_COMPLETE: 'fade:out:complete',
+  FADE_IN_COMPLETE: 'main:fadein:complete',
+  FADE_OUT_COMPLETE: 'main:fadeout:complete',
 };
 
 /**

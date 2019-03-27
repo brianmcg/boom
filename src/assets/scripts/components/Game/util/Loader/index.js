@@ -26,7 +26,7 @@ export default class Loader {
    * Reset the loader.
    * @param  {[type]} options The reset options.
    */
-  static reset(options) {
-    DataLoader.reset(options);
+  static unload(...options) {
+    DataLoader.unload(...options);
   }
 }

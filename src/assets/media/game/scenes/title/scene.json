@@ -1226,7 +1226,7 @@
     "smoke": ["smoke_01.png", "smoke_02.png", "smoke_03.png", "smoke_04.png", "smoke_05.png", "smoke_06.png", "smoke_07.png", "smoke_08.png", "smoke_09.png", "smoke_10.png", "smoke_11.png", "smoke_12.png", "smoke_13.png", "smoke_14.png", "smoke_15.png", "smoke_16.png", "smoke_17.png", "smoke_18.png", "smoke_19.png", "smoke_20.png", "smoke_21.png", "smoke_22.png", "smoke_23.png", "smoke_24.png", "smoke_25.png", "smoke_26.png"],
     "sparks": ["sparks_01.png", "sparks_02.png", "sparks_03.png", "sparks_04.png", "sparks_05.png", "sparks_06.png", "sparks_07.png", "sparks_08.png", "sparks_09.png", "sparks_10.png", "sparks_11.png", "sparks_12.png", "sparks_13.png", "sparks_14.png", "sparks_15.png", "sparks_16.png", "sparks_17.png", "sparks_18.png", "sparks_19.png", "sparks_20.png", "sparks_21.png", "sparks_22.png", "sparks_23.png", "sparks_24.png", "sparks_25.png", "sparks_26.png", "sparks_27.png", "sparks_28.png", "sparks_29.png", "sparks_30.png", "sparks_31.png", "sparks_32.png", "sparks_33.png"]
   },
-  "sprites": {
+  "images": {
   	"logo": "logo.png",
     "menu": "menu.png"
   },

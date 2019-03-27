@@ -9,7 +9,6 @@ import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
-import Loader from '~/util/Loader';
 import { parse } from './helpers';
 
 const STATES = {
@@ -23,9 +22,9 @@ const STATES = {
 };
 
 const EVENTS = {
-  COMPLETE: 'complete',
-  RESTART: 'restart',
-  QUIT: 'quit',
+  COMPLETE: 'scene:complete',
+  RESTART: 'scene:restart',
+  QUIT: 'scene:quit',
 };
 
 const TYPES = {
@@ -72,15 +71,26 @@ export default class Scene extends Container {
    */
   constructor({ index = 0, scale = 1, type }) {
     super();
+    const path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
 
     this.index = index;
     this.scale = scale;
     this.type = type;
+
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
-
     this.prompt = new PromptContainer();
-    this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
+
+    this.assets = {
+      sound: {
+        name: SOUND_TYPES.MUSIC,
+        src: `${SCENE_PATH}/${path}/${SCENE_MUSIC}`,
+      },
+      data: [{
+        name: RESOURCE_TYPES.SCENE,
+        src: `${SCENE_PATH}/${path}/${SCENE_DATA}`,
+      }],
+    };
 
     this.main.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
       this.setState(STATES.RUNNING);
@@ -91,24 +101,6 @@ export default class Scene extends Container {
     });
 
     this.setState(STATES.LOADING);
-  }
-
-  /**
-   * Load the scene assets.
-   */
-  load() {
-    const options = {
-      sound: {
-        name: SOUND_TYPES.MUSIC,
-        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`,
-      },
-      data: [{
-        name: RESOURCE_TYPES.SCENE,
-        src: `${SCENE_PATH}/${this.path}/${SCENE_DATA}`,
-      }],
-    };
-
-    Loader.load(options).then(response => this.create(response));
   }
 
   /**
@@ -305,7 +297,8 @@ export default class Scene extends Container {
    */
   resize(scale) {
     if (this.state !== STATES.STOPPED) {
-      this.scale = scale;
+      this.scale.x = scale;
+      this.scale.y = scale;
     }
   }
 

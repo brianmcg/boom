@@ -13,10 +13,10 @@ import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
  */
 export const parse = (assets) => {
   const { data, textures } = assets;
-  const { animations, sprites } = data;
+  const { animations, images } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
   const sparksTextures = animations.sparks.map(image => textures[image]);
-  const logo = new Sprite(textures[sprites.logo]);
+  const logo = new Sprite(textures[images.logo]);
   const smoke = new AnimatedSprite(smokeTextures, {
     animationSpeed: 0.2,
     tint: RED,

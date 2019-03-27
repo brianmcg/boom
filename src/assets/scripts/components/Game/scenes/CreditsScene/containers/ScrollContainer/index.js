@@ -6,7 +6,7 @@ const TEXT_PADDING = SCREEN.HEIGHT / 40;
 const SCROLL_SPEED = SCREEN.HEIGHT / 280;
 
 const EVENTS = {
-  SCROLL_COMPLETE: 'SCROLL_COMPLETE',
+  SCROLL_COMPLETE: 'scroll:complete',
 };
 
 /**

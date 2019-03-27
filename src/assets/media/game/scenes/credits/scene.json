@@ -564,8 +564,7 @@
   "animations": {
     "smoke": ["smoke_01.png", "smoke_02.png", "smoke_03.png", "smoke_04.png", "smoke_05.png", "smoke_06.png", "smoke_07.png", "smoke_08.png", "smoke_09.png", "smoke_10.png", "smoke_11.png", "smoke_12.png", "smoke_13.png", "smoke_14.png", "smoke_15.png", "smoke_16.png", "smoke_17.png", "smoke_18.png", "smoke_19.png", "smoke_20.png", "smoke_21.png", "smoke_22.png", "smoke_23.png", "smoke_24.png", "smoke_25.png", "smoke_26.png"]
   },
-  "sprites": {
-    "end": "end.png",
+  "images": {
     "menu": "menu.png"
   },
   "meta": {

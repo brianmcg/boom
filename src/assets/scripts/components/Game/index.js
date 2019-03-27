@@ -6,15 +6,14 @@ import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
 import { SOUND_EFFECTS, MAIN_FONT } from './constants/files';
 import { SOUND_TYPES, FONT_TYPES } from './constants/assets';
+import { getMaxScale } from './helpers';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
 
-const EVENTS = {
-  QUIT: 'quit',
-};
+const EVENTS = { QUIT: 'game:quit' };
 
 /**
  * A class representing a game.
@@ -23,9 +22,7 @@ export default class Game extends Application {
   /**
    * The events class property.
    */
-  static get EVENTS() {
-    return EVENTS;
-  }
+  static get EVENTS() { return EVENTS; }
 
   /**
    * Creates a game.
@@ -42,25 +39,7 @@ export default class Game extends Application {
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
-    this.ticker.maxFPS = MAX_FPS;
-    this.ticker.add(this.update.bind(this));
-
-    this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
-  }
-
-  /**
-   * Start the game.
-   */
-  run() {
-    this.start();
-    this.load();
-  }
-
-  /**
-   * Load the game font and sound effects.
-   */
-  load() {
-    const options = {
+    this.assets = {
       sound: {
         name: SOUND_TYPES.EFFECTS,
         src: `${GAME_PATH}/${SOUND_EFFECTS}`,
@@ -72,7 +51,29 @@ export default class Game extends Application {
       }],
     };
 
-    Loader.load(options).then(() => this.show(Scene.TYPES.TITLE));
+    this.style = {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+    };
+
+    this.loader = Loader;
+
+    this.ticker.maxFPS = MAX_FPS;
+    this.ticker.add(this.update.bind(this));
+
+    this.resize();
+  }
+
+  /**
+   * Load the game.
+   */
+  load() {
+    this.loader.load(this.assets).then(() => this.show(Scene.TYPES.TITLE));
+  }
+
+  unload() {
+    this.loader.unload();
   }
 
   /**
@@ -118,7 +119,6 @@ export default class Game extends Application {
         this.scene.destroy();
         this.scene = null;
         this.emit(EVENTS.QUIT);
-        Loader.reset();
         break;
       default:
         this.show(Scene.TYPES.TITLE);
@@ -126,8 +126,25 @@ export default class Game extends Application {
     }
   }
 
-  onResize() {
-    this.resize(SCREEN.WIDTH, SCREEN.HEIGHT);
+  /**
+   * Resize the Game
+   * @param  {Number} width  The given width.
+   * @param  {Number} height The given height.
+   */
+  resize() {
+    const scale = getMaxScale(SCREEN.WIDTH, SCREEN.HEIGHT);
+    const scaledWidth = SCREEN.WIDTH * scale;
+    const scaledHeight = SCREEN.HEIGHT * scale;
+
+    this.style = {
+      margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
+    };
+
+    this.renderer.resize(scaledWidth, scaledHeight);
+
+    if (this.scene) {
+      this.scene.resize(scale);
+    }
   }
 
   /**
@@ -137,17 +154,17 @@ export default class Game extends Application {
    */
   show(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
-    const scaleFactor = Application.getMaxScaleFactor(SCREEN.WIDTH, SCREEN.HEIGHT);
+    const scale = getMaxScale(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     if (this.scene) {
       this.scene.destroy();
-      Loader.reset({ exclude: FONT_TYPES.MAIN });
+      this.loader.unload({ exclude: FONT_TYPES.MAIN });
     }
 
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        scale: { x: scaleFactor, y: scaleFactor },
+        scale: { x: scale, y: scale },
       });
 
       this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
@@ -156,7 +173,7 @@ export default class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.scene.load();
+      this.loader.load(this.scene.assets).then(response => this.scene.create(response));
     }
   }
 

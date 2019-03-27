@@ -4,7 +4,7 @@ import Table from './components/Table';
 import Button from './components/Button';
 
 const EVENTS = {
-  CLICK_START: 'click:button',
+  CLICK_START: 'manual:button:click',
 };
 
 /**
@@ -14,9 +14,7 @@ export default class GameManual {
   /**
    * The events class property.
    */
-  static get EVENTS() {
-    return EVENTS;
-  }
+  static get EVENTS() { return EVENTS; }
 
   /**
    * Creates a game manual.
@@ -49,7 +47,7 @@ export default class GameManual {
    * @param  {Function} callback The callback to trigger.
    */
   on(event, callback) {
-    const [eventName, childName] = event.split(':');
-    this[childName].view.addEventListener(eventName, callback);
+    const [, nodeName, eventName] = event.split(':');
+    this[nodeName].view.addEventListener(eventName, callback);
   }
 }

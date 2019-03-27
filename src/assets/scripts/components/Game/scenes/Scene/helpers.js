@@ -11,12 +11,12 @@ import { Sprite } from '~/core/graphics';
  */
 export const parse = (assets) => {
   const { data, textures } = assets;
-  const { sprites } = data;
+  const { images } = data;
 
   return {
     sprites: {
       menu: {
-        icon: new Sprite(textures[sprites.menu]),
+        icon: new Sprite(textures[images.menu]),
       },
     },
   };
