@@ -1,5 +1,5 @@
 import { DataLoader } from '~/core/graphics';
-import { SoundPlayer } from '~/core/audio';
+import { SoundPlayer, SoundLoader } from '~/core/audio';
 import { DATA_TYPES } from '~/constants/assets';
 /**
  * Class representing a Loader.
@@ -14,9 +14,11 @@ export default class Loader {
   static load({ sound, data }) {
     return new Promise((resolve) => {
       Promise.all([
+        SoundLoader.load(sound),
         SoundPlayer.load(sound),
         DataLoader.load(data),
-      ]).then(([, dataResources]) => {
+      ]).then(([soundResources,, dataResources]) => {
+        console.log(soundResources);
         resolve(dataResources[DATA_TYPES.SCENE]);
       });
     });
@@ -28,5 +30,6 @@ export default class Loader {
    */
   static unload(...options) {
     DataLoader.unload(...options);
+    SoundLoader.unload([]);
   }
 }
