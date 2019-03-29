@@ -1,5 +1,4 @@
 import { Keyboard } from '~/core/input';
-import { SoundPlayer } from '~/core/audio';
 import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
@@ -25,6 +24,11 @@ const EVENTS = {
   COMPLETE: 'scene:complete',
   RESTART: 'scene:restart',
   QUIT: 'scene:quit',
+  PLAY_SOUND: 'play:sound',
+  FADE_OUT_SOUND: 'fade:out:sound',
+  UNLOAD_SOUND: 'unload:sound',
+  PAUSE_SOUND: 'pause:sound',
+  RESUME_SOUND: 'resume:sound',
 };
 
 const TYPES = {
@@ -83,7 +87,6 @@ export default class Scene extends Container {
 
     this.assets = {
       sound: {
-        name: SOUND_TYPES.MUSIC,
         src: `${SCENE_PATH}/${path}/${SCENE_SOUND}`,
       },
       data: [{
@@ -107,8 +110,8 @@ export default class Scene extends Container {
    * Create the scene.
    * @param  {Object} assets The scene assets.
    */
-  create(assets) {
-    const { sprites } = parse(assets);
+  create(data) {
+    const { sprites } = parse(data);
     this.menu = new MenuContainer({ sprites });
     this.menu.add(this.menuItems);
     this.setState(STATES.FADING_IN);
@@ -159,7 +162,7 @@ export default class Scene extends Container {
    * Handle a state change to fading in.
    */
   onFadingIn() {
-    SoundPlayer.playMusic();
+    this.emit(EVENTS.PLAY_SOUND, 'music');
     this.removeChild(this.loading);
     this.addChild(this.main);
     this.main.onFadingIn();
@@ -170,8 +173,8 @@ export default class Scene extends Container {
    * Handle a state change to fading out.
    */
   onFadingOut() {
-    SoundPlayer.playEffect(SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-    SoundPlayer.fadeOutMusic();
+    this.emit(EVENTS.PLAY_SOUND, 'effects', SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+    this.emit(EVENTS.FADE_OUT_SOUND, 'music');
     this.main.onFadingOut();
     this.removeChild(this.prompt);
   }
@@ -180,8 +183,8 @@ export default class Scene extends Container {
    * Handle a state change to paused.
    */
   onPaused() {
-    SoundPlayer.pause();
-    SoundPlayer.playEffect(SOUNDS.WEAPON_PISTOL);
+    this.emit(EVENTS.PAUSE_SOUND);
+    this.emit(EVENTS.PLAY_SOUND, 'effects', SOUNDS.WEAPON_PISTOL);
     this.main.onPaused();
     this.prompt.onPaused();
   }
@@ -190,7 +193,7 @@ export default class Scene extends Container {
    * Handle a state change to running.
    */
   onRunning() {
-    SoundPlayer.resume();
+    this.emit(EVENTS.RESUME_SOUND);
     this.main.onRunning();
     this.prompt.onRunning();
   }
@@ -325,7 +328,7 @@ export default class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
-    SoundPlayer.unloadMusic();
+    this.emit(EVENTS.UNLOAD_SOUND, ['music']);
     this.main.destroy();
     this.menu.destroy();
     this.prompt.destroy();

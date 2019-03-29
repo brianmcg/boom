@@ -32,12 +32,12 @@ export default class TitleScene extends Scene {
 
   /**
    * Create the TitleScene assets.
-   * @param  {Object} assets The loaded scene assets.
+   * @param  {Object} data The loaded scene assets.
    */
-  create(assets) {
-    super.create(assets);
+  create(data) {
+    super.create(data);
 
-    const { sprites } = parse(assets);
+    const { sprites } = parse(data);
     const background = new BackgroundContainer(sprites.background);
 
     this.prompt.addChild(sprites.prompt);

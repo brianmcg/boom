@@ -15,11 +15,12 @@ export default class Loader {
     return new Promise((resolve) => {
       Promise.all([
         SoundLoader.load(sound),
-        SoundPlayer.load(sound),
         DataLoader.load(data),
-      ]).then(([soundResources,, dataResources]) => {
-        console.log(soundResources);
-        resolve(dataResources[DATA_TYPES.SCENE]);
+      ]).then(([loadedSound, loadedData]) => {
+        resolve({
+          data: loadedData[DATA_TYPES.SCENE],
+          sound: loadedSound,
+        });
       });
     });
   }

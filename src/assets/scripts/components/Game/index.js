@@ -1,5 +1,6 @@
 import { Application } from './core/graphics';
 import { Keyboard } from './core/input';
+import { SoundPlayer } from './core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
 import { GAME_PATH } from './constants/paths';
@@ -41,7 +42,6 @@ export default class Game extends Application {
 
     this.assets = {
       sound: {
-        name: SOUND_TYPES.EFFECTS,
         src: `${GAME_PATH}/${GAME_SOUND}`,
         sprite: SOUND_SPRITE,
       },
@@ -58,6 +58,7 @@ export default class Game extends Application {
     };
 
     this.loader = Loader;
+    this.sound = SoundPlayer;
 
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.update.bind(this));
@@ -69,7 +70,10 @@ export default class Game extends Application {
    * Load the game assets.
    */
   load() {
-    this.loader.load(this.assets).then(() => this.show(Scene.TYPES.TITLE));
+    this.loader.load(this.assets).then(({ sound }) => {
+      this.sound.add('effects', sound);
+      this.show(Scene.TYPES.TITLE);
+    });
   }
 
   /**
@@ -186,9 +190,32 @@ export default class Game extends Application {
       this.scene.once(Scene.EVENTS.RESTART, this.onSceneRestart.bind(this));
       this.scene.once(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
+      this.scene.on(Scene.EVENTS.PLAY_SOUND, (...options) => {
+        this.sound.play(...options);
+      });
+
+      this.scene.on(Scene.EVENTS.FADE_OUT_SOUND, (...options) => {
+        this.sound.fadeOut(...options);
+      });
+
+      this.scene.on(Scene.EVENTS.UNLOAD_SOUND, (options) => {
+        this.sound.unload(options);
+      });
+
+      this.scene.on(Scene.EVENTS.PAUSE_SOUND, () => {
+        this.sound.pause();
+      });
+
+      this.scene.on(Scene.EVENTS.RESUME_SOUND, () => {
+        this.sound.resume();
+      });
+
       this.stage.addChild(this.scene);
 
-      this.loader.load(this.scene.assets).then(response => this.scene.create(response));
+      this.loader.load(this.scene.assets).then(({ data, sound }) => {
+        this.sound.add('music', sound);
+        this.scene.create(data);
+      });
     }
   }
 }

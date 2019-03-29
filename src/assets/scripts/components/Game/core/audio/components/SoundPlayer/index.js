@@ -1,125 +1,104 @@
-import { Howler, Howl } from 'howler';
+const sounds = {};
 
-let effectIds = [];
-
-let effects = null;
-
-let music = null;
-
-let musicId = null;
+const ids = {};
 
 /**
  * Class representing a sound player.
  */
 class SoundPlayer {
-  static load({ src, sprite }) {
-    if (sprite) {
-      return SoundPlayer.loadSprite({ src, sprite });
-    }
-
-    return SoundPlayer.loadSrc({ src });
-  }
-
   /**
-   * Load the sound effects.
-   * @return {Object} A promise that is resolved when the sound is loaded.
+   * Add a sound.
+   * @param {String} type  The type of sound.
+   * @param {Sound}  sound The sound to add.
    */
-  static loadSprite({ src, sprite }) {
+  static add(type, sound) {
     const removeId = (id) => {
-      effectIds = effectIds.filter(effectId => effectId !== id);
+      ids[type] = ids[type].filter(soundId => soundId !== id);
     };
 
-    return new Promise((resolve) => {
-      effects = new Howl({
-        src: [src],
-        sprite,
-        onend: removeId,
-        onstop: removeId,
-        onload: resolve,
-      });
-    });
+    if (!ids[type]) {
+      ids[type] = [];
+    }
+
+    sound.onend = removeId;
+    sound.onstop = removeId;
+    sounds[type] = sound;
   }
 
   /**
-   * Load the music.
-   * @param  {Number} index The index of the scene.
-   * @return {Object}       A promise that is resolved when the music is loaded.
-   */
-  static loadSrc({ src }) {
-    return new Promise((resolve) => {
-      music = new Howl({
-        onload: resolve,
-        src: [src],
-      });
-    });
-  }
-
-  static unloadMusic() {
-    music.unload();
-    music = null;
-  }
-
-  /**
-   * Play a sound effect.
+   * Play a sound.
+   * @param  {String} type     The type of sound.
    * @param  {String} name     The name of the sound.
    * @param  {Number} distance The distance from the player.
    */
-  static playEffect(name, distance = 0) {
-    const id = effects.play(name);
-    const volume = distance > 1000 ? 0 : 1 - distance / 1000;
-    effects.volume(volume, id);
-    effectIds.push(id);
-  }
+  static play(type, name, distance = 0) {
+    console.log('play', type, name);
 
-  /**
-   * Play the loaded music.
-   */
-  static playMusic() {
-    musicId = music.play();
+    const sound = sounds[type];
+
+    const id = sound.play(name);
+
+    if (distance) {
+      const volume = distance > 1000 ? 0 : 1 - distance / 1000;
+      sound.volume(volume, id);
+    }
+
+    ids[type].push(id);
   }
 
   /**
    * Fade out the music.
    */
-  static fadeOutMusic() {
-    music.fade(1, 0, 1000);
+  static fadeOut(type) {
+    console.log('fadeOut', type);
+    sounds[type].fade(1, 0, 1000);
   }
 
   /**
    * Pause the playing sounds.
    */
   static pause() {
-    if (musicId) {
-      music.pause(musicId);
-    }
-
-    effectIds.forEach(id => effects.pause(id));
+    Object.keys(ids).forEach((key) => {
+      ids[key].forEach((id) => {
+        if (sounds[key].playing(id)) {
+          sounds[key].pause(id);
+        }
+      });
+    });
   }
 
   /**
    * Resume the paused sounds.
    */
   static resume() {
-    if (musicId) {
-      music.play(musicId);
-    }
-
-    effectIds.forEach(id => effects.play(id));
+    console.log('resume');
+    Object.keys(ids).forEach((key) => {
+      ids[key].forEach((id) => {
+        if (!sounds[key].playing(id)) {
+          console.log(key, sounds[key], id);
+          sounds[key].play(id);
+        }
+      });
+    });
   }
 
   /**
    * Stop the playing sounds.
    */
   static stop() {
-    if (musicId) {
-      music.stop(musicId);
-    }
-
-    effectIds.forEach(id => effects.stop(id));
+    console.log('stop');
+    Object.keys(ids).forEach((key) => {
+      ids[key].forEach(id => sounds[key].stop(id));
+    });
   }
 
-  static mute() {
-    Howler.mute(true);
+  /**
+   * Unload sounds.
+   * @param  {Array}  types The types of the sounds
+   */
+  static unload(types) {
+    console.log('unload', types);
+    types.forEach(type => sounds[type].unload());
   }
 }
 
