@@ -20,8 +20,9 @@ class SoundPlayer {
       ids[type] = [];
     }
 
-    sound.onend = removeId;
-    sound.onstop = removeId;
+    sound.on('end', removeId);
+    sound.on('stop', removeId);
+
     sounds[type] = sound;
   }
 
@@ -32,8 +33,6 @@ class SoundPlayer {
    * @param  {Number} distance The distance from the player.
    */
   static play(type, name, distance = 0) {
-    console.log('play', type, name);
-
     const sound = sounds[type];
 
     const id = sound.play(name);
@@ -47,10 +46,10 @@ class SoundPlayer {
   }
 
   /**
-   * Fade out the music.
+   * Fade out a sound
+   * @param  {String} type The type of sound.
    */
   static fadeOut(type) {
-    console.log('fadeOut', type);
     sounds[type].fade(1, 0, 1000);
   }
 
@@ -71,11 +70,9 @@ class SoundPlayer {
    * Resume the paused sounds.
    */
   static resume() {
-    console.log('resume');
     Object.keys(ids).forEach((key) => {
       ids[key].forEach((id) => {
         if (!sounds[key].playing(id)) {
-          console.log(key, sounds[key], id);
           sounds[key].play(id);
         }
       });
@@ -86,7 +83,6 @@ class SoundPlayer {
    * Stop the playing sounds.
    */
   static stop() {
-    console.log('stop');
     Object.keys(ids).forEach((key) => {
       ids[key].forEach(id => sounds[key].stop(id));
     });
@@ -97,7 +93,6 @@ class SoundPlayer {
    * @param  {Array}  types The types of the sounds
    */
   static unload(types) {
-    console.log('unload', types);
     types.forEach(type => sounds[type].unload());
   }
 }
