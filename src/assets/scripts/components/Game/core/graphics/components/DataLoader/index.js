@@ -2,34 +2,41 @@ import { utils, Loader } from 'pixi.js';
 
 const { TextureCache } = utils;
 
-const loader = new Loader();
-
 /**
  * Class representing a data loader.
  */
 export default class DataLoader {
   /**
+   * Creates a data loader.
+   */
+  constructor() {
+    this.loader = new Loader();
+    this.cache = TextureCache;
+  }
+
+  /**
    * Load data resources.
    * @param  {Object} assets The assets to load.
    * @return {Promise}       Resolves when assets load.
    */
-  static load(assets) {
+  load(assets) {
     return new Promise((resolve) => {
-      assets.forEach(asset => loader.add(asset.name, asset.src));
-      loader.load((instance, resources) => resolve(resources));
+      assets.forEach(asset => this.loader.add(asset.name, asset.src));
+      this.loader.load((loader, resources) => resolve(resources));
     });
   }
 
   /**
-   * Clear the texture cache
-   * @param  {String} options.exclude Key name to exclude from operation.
+   * Unload the data.
+   * @param  {Array}  keys The keys of the cache items to clear.
    */
-  static unload({ exclude = null } = {}) {
-    loader.reset();
+  unload(keys = []) {
+    this.loader.reset();
 
-    Object.keys(TextureCache).forEach((key) => {
-      if (TextureCache[key] && !key.includes(exclude)) {
-        TextureCache[key].destroy(true);
+    Object.keys(this.cache).forEach((key) => {
+      if (this.cache[key] && (!keys.length || keys.includes(key))) {
+        this.cache[key].destroy(true);
+        delete this.cache[key];
       }
     });
   }

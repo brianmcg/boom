@@ -1,29 +1,35 @@
-const sounds = {};
-
-const ids = {};
+const MAX_DISTANCE = 1000;
 
 /**
  * Class representing a sound player.
  */
-class SoundPlayer {
+export default class SoundPlayer {
+  /**
+   * Creates a sound player.
+   */
+  constructor() {
+    this.sounds = {};
+    this.ids = {};
+  }
+
   /**
    * Add a sound.
    * @param {String} type  The type of sound.
    * @param {Sound}  sound The sound to add.
    */
-  static add(type, sound) {
+  add(type, sound) {
     const removeId = (id) => {
-      ids[type] = ids[type].filter(soundId => soundId !== id);
+      this.ids[type] = this.ids[type].filter(soundId => soundId !== id);
     };
 
-    if (!ids[type]) {
-      ids[type] = [];
+    if (!this.ids[type]) {
+      this.ids[type] = [];
     }
 
     sound.on('end', removeId);
     sound.on('stop', removeId);
 
-    sounds[type] = sound;
+    this.sounds[type] = sound;
   }
 
   /**
@@ -32,35 +38,41 @@ class SoundPlayer {
    * @param  {String} name     The name of the sound.
    * @param  {Number} distance The distance from the player.
    */
-  static play(type, name, distance = 0) {
-    const sound = sounds[type];
+  play(type, name, distance = 0) {
+    const sound = this.sounds[type];
 
-    const id = sound.play(name);
+    if (sound) {
+      const id = sound.play(name);
 
-    if (distance) {
-      const volume = distance > 1000 ? 0 : 1 - distance / 1000;
-      sound.volume(volume, id);
+      if (distance) {
+        const volume = distance > MAX_DISTANCE ? 0 : 1 - distance / MAX_DISTANCE;
+        sound.volume(volume, id);
+      }
+
+      this.ids[type].push(id);
     }
-
-    ids[type].push(id);
   }
 
   /**
    * Fade out a sound
    * @param  {String} type The type of sound.
    */
-  static fadeOut(type) {
-    sounds[type].fade(1, 0, 1000);
+  fade(type) {
+    const sound = this.sounds[type];
+
+    if (sound) {
+      sound.fade(1, 0, 1000);
+    }
   }
 
   /**
    * Pause the playing sounds.
    */
-  static pause() {
-    Object.keys(ids).forEach((key) => {
-      ids[key].forEach((id) => {
-        if (sounds[key].playing(id)) {
-          sounds[key].pause(id);
+  pause() {
+    Object.keys(this.ids).forEach((key) => {
+      this.ids[key].forEach((id) => {
+        if (this.sounds[key].playing(id)) {
+          this.sounds[key].pause(id);
         }
       });
     });
@@ -69,11 +81,11 @@ class SoundPlayer {
   /**
    * Resume the paused sounds.
    */
-  static resume() {
-    Object.keys(ids).forEach((key) => {
-      ids[key].forEach((id) => {
-        if (!sounds[key].playing(id)) {
-          sounds[key].play(id);
+  resume() {
+    Object.keys(this.ids).forEach((key) => {
+      this.ids[key].forEach((id) => {
+        if (!this.sounds[key].playing(id)) {
+          this.sounds[key].play(id);
         }
       });
     });
@@ -82,19 +94,9 @@ class SoundPlayer {
   /**
    * Stop the playing sounds.
    */
-  static stop() {
-    Object.keys(ids).forEach((key) => {
-      ids[key].forEach(id => sounds[key].stop(id));
+  stop() {
+    Object.keys(this.ids).forEach((key) => {
+      this.ids[key].forEach(id => this.sounds[key].stop(id));
     });
   }
-
-  /**
-   * Unload sounds.
-   * @param  {Array}  types The types of the sounds
-   */
-  static unload(types) {
-    types.forEach(type => sounds[type].unload());
-  }
 }
-
-export default SoundPlayer;

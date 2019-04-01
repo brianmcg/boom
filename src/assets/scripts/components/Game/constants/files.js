@@ -1,4 +1,4 @@
-import { DATA_TYPES, SOUND_TYPES } from './assets';
+import { DATA, SOUND } from './assets';
 
 /**
  * @module  files
@@ -8,22 +8,22 @@ import { DATA_TYPES, SOUND_TYPES } from './assets';
  * The scene music file name.
  * @type {String}
  */
-export const SCENE_SOUND = `${SOUND_TYPES.MUSIC}.mp3`;
+export const SCENE_SOUND = `${SOUND.MUSIC}.mp3`;
 
 /**
  * The scene data file name.
  * @type {String}
  */
-export const SCENE_DATA = `${DATA_TYPES.SCENE}.json`;
+export const SCENE_DATA = `${DATA.SCENE}.json`;
 
 /**
  * The sound effects file name.
  * @type {String}
  */
-export const GAME_SOUND = `${SOUND_TYPES.EFFECTS}.mp3`;
+export const GAME_SOUND = `${SOUND.EFFECTS}.mp3`;
 
 /**
  * The main font file name.
  * @type {String}
  */
-export const GAME_DATA = `${DATA_TYPES.FONT}.xml`;
+export const GAME_DATA = `${DATA.FONT}.xml`;

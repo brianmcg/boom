@@ -6,7 +6,7 @@
  * The types of resources.
  * @type {Object}
  */
-export const DATA_TYPES = {
+export const DATA = {
   SCENE: 'scene',
   FONT: 'main_font',
 };
@@ -15,7 +15,7 @@ export const DATA_TYPES = {
  * The types of sounds.
  * @type {Object}
  */
-export const SOUND_TYPES = {
+export const SOUND = {
   EFFECTS: 'sounds',
   MUSIC: 'scene',
 };

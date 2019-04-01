@@ -1,24 +1,32 @@
 import { DataLoader } from '~/core/graphics';
-import { SoundPlayer, SoundLoader } from '~/core/audio';
-import { DATA_TYPES } from '~/constants/assets';
+import { SoundLoader } from '~/core/audio';
+import { DATA } from '~/constants/assets';
 /**
  * Class representing a Loader.
  */
 export default class Loader {
+  /**
+   * Creates a loader.
+   */
+  constructor() {
+    this.dataLoader = new DataLoader();
+    this.soundLoader = new SoundLoader();
+  }
+
   /**
    * Load game data.
    * @param  {Object}   options.sound The sound options.
    * @param  {Object}   options.data  The data options.
    * @return {Promise}                Resolves when the assets are loaded.
    */
-  static load({ sound, data }) {
+  load({ sound, data }) {
     return new Promise((resolve) => {
       Promise.all([
-        SoundLoader.load(sound),
-        DataLoader.load(data),
+        this.soundLoader.load(sound),
+        this.dataLoader.load(data),
       ]).then(([loadedSound, loadedData]) => {
         resolve({
-          data: loadedData[DATA_TYPES.SCENE],
+          data: loadedData[DATA.SCENE],
           sound: loadedSound,
         });
       });
@@ -26,11 +34,20 @@ export default class Loader {
   }
 
   /**
-   * Reset the loader.
-   * @param  {[type]} options The reset options.
+   * Reset the loader
+   * @param  {Array} options.data  The data to unload.
+   * @param  {Array} options.sound The sounds to unload.
    */
-  static unload(...options) {
-    DataLoader.unload(...options);
-    SoundLoader.unload([]);
+  unload({ data, sound } = {}) {
+    this.dataLoader.unload(data);
+    this.soundLoader.unload(sound);
+  }
+
+
+  get cache() {
+    return {
+      data: this.dataLoader.cache,
+      sound: this.soundLoader.cache,
+    };
   }
 }

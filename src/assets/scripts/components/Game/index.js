@@ -6,7 +6,7 @@ import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
 import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
 import { GAME_SOUND, GAME_DATA } from './constants/files';
-import { SOUND_TYPES, DATA_TYPES } from './constants/assets';
+import { SOUND, DATA } from './constants/assets';
 import { getMaxScale } from './helpers';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
@@ -42,11 +42,12 @@ export default class Game extends Application {
 
     this.assets = {
       sound: {
+        name: SOUND.EFFECTS,
         src: `${GAME_PATH}/${GAME_SOUND}`,
         sprite: SOUND_SPRITE,
       },
       data: [{
-        name: DATA_TYPES.FONT,
+        name: DATA.FONT,
         src: `${GAME_PATH}/${GAME_DATA}`,
       }],
     };
@@ -57,8 +58,8 @@ export default class Game extends Application {
       top: '50%',
     };
 
-    this.loader = Loader;
-    this.sound = SoundPlayer;
+    this.loader = new Loader();
+    this.sound = new SoundPlayer();
 
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.update.bind(this));
@@ -71,7 +72,7 @@ export default class Game extends Application {
    */
   load() {
     this.loader.load(this.assets).then(({ sound }) => {
-      this.sound.add('effects', sound);
+      this.sound.add(SOUND.EFFECTS, sound);
       this.show(Scene.TYPES.TITLE);
     });
   }
@@ -176,44 +177,30 @@ export default class Game extends Application {
     const scale = getMaxScale(SCREEN.WIDTH, SCREEN.HEIGHT);
 
     if (this.scene) {
+      const { sound, data } = this.loader.cache;
+      const dataKeys = Object.keys(data).filter(key => !key.includes(DATA.FONT));
+      const soundKeys = Object.keys(sound).filter(key => !key.includes(SOUND.EFFECTS));
+
       this.scene.destroy();
-      this.loader.unload({ exclude: DATA_TYPES.FONT });
+
+      this.loader.unload({ data: dataKeys, sound: soundKeys });
     }
 
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
         scale: { x: scale, y: scale },
+        sound: this.sound,
       });
 
       this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
       this.scene.once(Scene.EVENTS.RESTART, this.onSceneRestart.bind(this));
       this.scene.once(Scene.EVENTS.QUIT, this.onSceneQuit.bind(this));
 
-      this.scene.on(Scene.EVENTS.PLAY_SOUND, (...options) => {
-        this.sound.play(...options);
-      });
-
-      this.scene.on(Scene.EVENTS.FADE_OUT_SOUND, (...options) => {
-        this.sound.fadeOut(...options);
-      });
-
-      this.scene.on(Scene.EVENTS.UNLOAD_SOUND, (options) => {
-        this.sound.unload(options);
-      });
-
-      this.scene.on(Scene.EVENTS.PAUSE_SOUND, () => {
-        this.sound.pause();
-      });
-
-      this.scene.on(Scene.EVENTS.RESUME_SOUND, () => {
-        this.sound.resume();
-      });
-
       this.stage.addChild(this.scene);
 
       this.loader.load(this.scene.assets).then(({ data, sound }) => {
-        this.sound.add('music', sound);
+        this.sound.add(SOUND.MUSIC, sound);
         this.scene.create(data);
       });
     }

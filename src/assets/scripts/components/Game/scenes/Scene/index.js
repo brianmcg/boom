@@ -2,7 +2,7 @@ import { Keyboard } from '~/core/input';
 import { Container } from '~/core/graphics';
 import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
-import { SOUND_TYPES, DATA_TYPES } from '~/constants/assets';
+import { SOUND, DATA } from '~/constants/assets';
 import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
@@ -73,13 +73,22 @@ export default class Scene extends Container {
    * @param  {Number} options.scale   The scale of the scene.
    * @param  {String} options.type    The type of scene.
    */
-  constructor({ index = 0, scale = 1, type }) {
+  constructor(options) {
     super();
+
+    const {
+      index = 0,
+      scale = 1,
+      type,
+      sound,
+    } = options;
+
     const path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
 
     this.index = index;
     this.scale = scale;
     this.type = type;
+    this.sound = sound;
 
     this.loading = new LoadingContainer();
     this.main = new MainContainer();
@@ -87,10 +96,11 @@ export default class Scene extends Container {
 
     this.assets = {
       sound: {
+        name: SOUND.MUSIC,
         src: `${SCENE_PATH}/${path}/${SCENE_SOUND}`,
       },
       data: [{
-        name: DATA_TYPES.SCENE,
+        name: DATA.SCENE,
         src: `${SCENE_PATH}/${path}/${SCENE_DATA}`,
       }],
     };
@@ -162,9 +172,9 @@ export default class Scene extends Container {
    * Handle a state change to fading in.
    */
   onFadingIn() {
-    this.emit(EVENTS.PLAY_SOUND, 'music');
     this.removeChild(this.loading);
     this.addChild(this.main);
+    this.sound.play(SOUND.MUSIC);
     this.main.onFadingIn();
     this.loading.destroy();
   }
@@ -173,8 +183,8 @@ export default class Scene extends Container {
    * Handle a state change to fading out.
    */
   onFadingOut() {
-    this.emit(EVENTS.PLAY_SOUND, 'effects', SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-    this.emit(EVENTS.FADE_OUT_SOUND, 'music');
+    this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+    this.sound.fade(SOUND.MUSIC);
     this.main.onFadingOut();
     this.removeChild(this.prompt);
   }
@@ -183,8 +193,8 @@ export default class Scene extends Container {
    * Handle a state change to paused.
    */
   onPaused() {
-    this.emit(EVENTS.PAUSE_SOUND);
-    this.emit(EVENTS.PLAY_SOUND, 'effects', SOUNDS.WEAPON_PISTOL);
+    this.sound.pause();
+    this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
     this.main.onPaused();
     this.prompt.onPaused();
   }
@@ -193,7 +203,7 @@ export default class Scene extends Container {
    * Handle a state change to running.
    */
   onRunning() {
-    this.emit(EVENTS.RESUME_SOUND);
+    this.sound.resume();
     this.main.onRunning();
     this.prompt.onRunning();
   }
@@ -328,7 +338,6 @@ export default class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
-    this.emit(EVENTS.UNLOAD_SOUND, ['music']);
     this.main.destroy();
     this.menu.destroy();
     this.prompt.destroy();
