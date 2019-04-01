@@ -20,23 +20,23 @@ const { ColorMatrixFilter } = filters;
 
 export {
   /**
-   * The Application component.
+   * The application component.
    */
   Application,
   /**
-   * The Scene component.
+   * The scene component.
    */
   Sprite,
   /**
-   * The BitmapText component.
+   * The bitmap text component.
    */
   BitmapText,
   /**
-   * The color matrix filter.
+   * The color matrix filter component.
    */
   ColorMatrixFilter,
   /**
-   * The pixelate filter.
+   * The pixelate filter component.
    */
   PixelateFilter,
   /**

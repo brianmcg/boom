@@ -1,5 +1,8 @@
 import Sound from '../Sound';
 
+/**
+ * Class representing a sound loader.
+ */
 export default class SoundLoader {
   /**
    * Creates a sound loader.

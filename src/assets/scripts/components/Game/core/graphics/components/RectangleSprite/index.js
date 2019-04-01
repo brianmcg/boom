@@ -1,5 +1,8 @@
 import { Texture, Sprite } from 'pixi.js';
 
+/**
+ * Class representing a rectangle sprite.
+ */
 export default class RectangleSprite extends Sprite {
   /**
    * Creates a RectangleSprite.
@@ -12,6 +15,9 @@ export default class RectangleSprite extends Sprite {
     this.texture = Texture.WHITE;
     this.width = width;
     this.height = height;
-    this.tint = color;
+
+    if (color) {
+      this.tint = color;
+    }
   }
 }
