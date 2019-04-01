@@ -11,6 +11,7 @@ import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
 import DataLoader from './components/DataLoader';
 import Application from './components/Application';
+import EventEmitter from './components/EventEmitter';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -55,4 +56,8 @@ export {
    * The data loader components.
    */
   DataLoader,
+  /**
+   * The event emitter component.
+   */
+  EventEmitter,
 };

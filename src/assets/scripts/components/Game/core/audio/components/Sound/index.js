@@ -1,6 +1,6 @@
-import { Howl } from 'howler';
+import { Howl as Sound } from 'howler';
 
 /**
  * Class representing a sound.
  */
-export default class Sound extends Howl {}
+export default Sound;

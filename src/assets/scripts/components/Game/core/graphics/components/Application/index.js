@@ -1,4 +1,5 @@
 import { Application as PixiApplication } from 'pixi.js';
+import EventEmitter from '../EventEmitter';
 
 /**
  * Class representing an application.
@@ -13,6 +14,8 @@ export default class Application extends PixiApplication {
 
     delete this.loader;
     delete this.resize;
+
+    this.eventEmitter = new EventEmitter();
 
     window.addEventListener('resize', this.resize.bind(this));
   }
@@ -30,7 +33,7 @@ export default class Application extends PixiApplication {
    * @param  {Function} callback The callback to execute.
    */
   on(event, callback) {
-    this.stage.on(event, callback);
+    this.eventEmitter.on(event, callback);
   }
 
   /**
@@ -39,7 +42,7 @@ export default class Application extends PixiApplication {
    * @param  {Function} callback The callback to execute.
    */
   emit(event, callback) {
-    this.stage.emit(event, callback);
+    this.eventEmitter.emit(event, callback);
   }
 
   get style() {
