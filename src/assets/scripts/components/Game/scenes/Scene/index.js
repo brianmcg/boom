@@ -24,11 +24,6 @@ const EVENTS = {
   COMPLETE: 'scene:complete',
   RESTART: 'scene:restart',
   QUIT: 'scene:quit',
-  PLAY_SOUND: 'play:sound',
-  FADE_OUT_SOUND: 'fade:out:sound',
-  UNLOAD_SOUND: 'unload:sound',
-  PAUSE_SOUND: 'pause:sound',
-  RESUME_SOUND: 'resume:sound',
 };
 
 const TYPES = {
