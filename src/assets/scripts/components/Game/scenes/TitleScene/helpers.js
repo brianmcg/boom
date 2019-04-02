@@ -8,10 +8,11 @@ import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
 
 /**
  * Parses the loaded scene assets.
- * @param  {Object} assets The scene assets.
- * @return {Object}        The parsed scene data.
+ * @param  {Object} options.assets  The scene assets.
+ * @param  {Array}  options.text    The scene text.
+ * @return {Object}                 The parsed scene data.
  */
-export const parse = (assets) => {
+export const parse = ({ assets, text }) => {
   const { data, textures } = assets;
   const { animations, images } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
@@ -27,16 +28,16 @@ export const parse = (assets) => {
     animationSpeed: 0.4,
     loop: true,
   });
-  const text = new BitmapText({
+  const label = new BitmapText({
     font: FONT_SIZES.SMALL,
-    text: 'Press space to start',
+    text: text.PRESS_SPACE_TO_START,
     color: RED,
   });
 
   return {
     sprites: {
       background: { smoke, sparks, logo },
-      prompt: { text },
+      prompt: { label },
     },
   };
 };

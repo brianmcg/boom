@@ -1,13 +1,7 @@
-import { Container, BitmapText } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/font';
+import { Container } from '~/core/graphics';
 import { RED, WHITE } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
-
-const PADDING = 6;
-
-const ICON_PADDING_TOP = 4;
-
-const ICON_PADDING_RIGHT = 5;
+import { SCREEN_PADDING, ICON_PADDING_TOP, ICON_PADDING_RIGHT } from './constants';
 
 /**
  * A class representing a menu container.
@@ -19,7 +13,7 @@ export default class MenuContainer extends Container {
    */
   constructor({ sprites }) {
     super();
-    this.menuIcon = sprites.menu.icon;
+    this.sprites = sprites;
   }
 
   /**
@@ -27,35 +21,31 @@ export default class MenuContainer extends Container {
    * @param  {Array}  items The menu items.
    */
   add(items = []) {
+    const { icon, labels } = this.sprites;
+
     this.currentIndex = 0;
     this.items = items;
-    this.itemSprites = [];
 
     if (this.items.length) {
-      this.addChild(this.menuIcon);
+      this.addChild(icon);
     }
 
     this.items.forEach((item, index) => {
-      const sprite = new BitmapText({
-        font: FONT_SIZES.SMALL,
-        text: item.label,
-        color: index ? WHITE : RED,
-      });
+      const sprite = labels[item.label];
 
       if (!index) {
-        this.menuIcon.y = sprite.y + ICON_PADDING_TOP;
-        this.menuIcon.x = sprite.x - ICON_PADDING_RIGHT - this.menuIcon.width;
+        icon.y = sprite.y + ICON_PADDING_TOP;
+        icon.x = sprite.x - ICON_PADDING_RIGHT - icon.width;
       }
 
-      const totalHeight = (sprite.height + PADDING) * this.items.length;
+      const totalHeight = (sprite.height + SCREEN_PADDING) * this.items.length;
 
       sprite.y = ((SCREEN.HEIGHT / 2) - (totalHeight / 2))
         + (index * sprite.height)
-        + (index * PADDING);
+        + (index * SCREEN_PADDING);
 
       sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
 
-      this.itemSprites.push(sprite);
       this.addChild(sprite);
 
       this.on('added', () => {
@@ -100,10 +90,12 @@ export default class MenuContainer extends Container {
   }
 
   _render() {
-    this.itemSprites.forEach((child, index) => {
+    const { icon, labels } = this.sprites;
+
+    Object.values(labels).forEach((child, index) => {
       if (index === this.currentIndex) {
-        this.menuIcon.y = child.y + ICON_PADDING_TOP;
-        this.menuIcon.x = child.x - ICON_PADDING_RIGHT - this.menuIcon.width;
+        icon.y = child.y + ICON_PADDING_TOP;
+        icon.x = child.x - ICON_PADDING_RIGHT - icon.width;
         child.setColor(RED);
       } else {
         child.setColor(WHITE);

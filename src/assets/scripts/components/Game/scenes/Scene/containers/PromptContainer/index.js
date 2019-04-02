@@ -32,12 +32,12 @@ export default class PromptContainer extends Container {
 
   /**
    * Add a child to the container.
-   * @param {BitmapText} options.text The text to add.
+   * @param {BitmapText} options.label The label to add.
    */
-  addChild({ text }) {
-    text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
-    text.y = SCREEN.HEIGHT - text.height - PADDING;
-    super.addChild(text);
+  addChild({ label }) {
+    label.x = (SCREEN.WIDTH / 2) - (label.width / 2);
+    label.y = SCREEN.HEIGHT - label.height - PADDING;
+    super.addChild(label);
   }
 
   /**

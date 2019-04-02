@@ -20,10 +20,8 @@ export default class DataLoader {
    * @return {Promise}       Resolves when assets load.
    */
   load(assets) {
-    return new Promise((resolve) => {
-      assets.forEach(asset => this.loader.add(asset.name, asset.src));
-      this.loader.load((loader, resources) => resolve(resources));
-    });
+    assets.forEach(asset => this.loader.add(asset.name, asset.src));
+    return new Promise(resolve => this.loader.load((loader, resources) => resolve(resources)));
   }
 
   /**

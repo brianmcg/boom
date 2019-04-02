@@ -1,7 +1,7 @@
 import { AnimatedSprite, BitmapText } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/font';
 import { RED, WHITE } from '~/constants/colors';
-import { CREDITS, TEXT } from './constants';
+import { CREDITS } from './constants';
 
 /**
  * @module helpers
@@ -9,11 +9,12 @@ import { CREDITS, TEXT } from './constants';
 
 /**
  * Parses the loaded scene assets.
- * @param  {Object} assets The scene assets.
- * @return {Object}        The parsed scene data.
+ * @param  {Object} options.assets  The scene assets.
+ * @param  {Array}  options.text    The scene text.
+ * @return {Object}                 The parsed scene data.
  */
-export const parse = (resources) => {
-  const { data, textures } = resources;
+export const parse = ({ assets, text }) => {
+  const { data, textures } = assets;
   const { animations } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
 
@@ -42,23 +43,23 @@ export const parse = (resources) => {
     return memo;
   }, []);
 
-  const message = new BitmapText({
+  const end = new BitmapText({
     font: FONT_SIZES.LARGE,
-    text: TEXT.END,
+    text: text.END,
     color: WHITE,
   });
 
-  const text = new BitmapText({
+  const label = new BitmapText({
     font: FONT_SIZES.SMALL,
-    text: TEXT.CONTINUE,
+    text: text.CONTINUE,
     color: RED,
   });
 
   return {
     sprites: {
       background: { smoke },
-      scroll: { credits, message },
-      prompt: { text },
+      scroll: { credits, end },
+      prompt: { label },
     },
   };
 };

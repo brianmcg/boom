@@ -1,7 +1,8 @@
 import { parse } from './helpers';
-import Scene from '../Scene';
+import { TEXT } from './text';
 import ScrollContainer from './containers/ScrollContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
+import Scene from '../Scene';
 
 /**
  * Class representing a CreditsScene.
@@ -36,7 +37,7 @@ export default class CreditsScene extends Scene {
   create(assets) {
     super.create(assets);
 
-    const { sprites } = parse(assets);
+    const { sprites } = parse({ assets, text: TEXT });
 
     const background = new BackgroundContainer(sprites.background);
     const scroll = new ScrollContainer(sprites.scroll);

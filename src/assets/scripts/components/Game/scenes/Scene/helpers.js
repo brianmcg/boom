@@ -1,4 +1,6 @@
-import { Sprite } from '~/core/graphics';
+import { Sprite, BitmapText } from '~/core/graphics';
+import { FONT_SIZES } from '~/constants/font';
+import { WHITE, RED } from '~/constants/colors';
 
 /**
  * @module helpers
@@ -6,18 +8,28 @@ import { Sprite } from '~/core/graphics';
 
 /**
  * Parses the loaded scene assets.
- * @param  {Object} assets The scene assets.
- * @return {Object}        The parsed scene data.
+ * @param  {Object} options.assets  The scene assets.
+ * @param  {Array}  options.text    The scene text.
+ * @return {Object}                 The parsed scene data.
  */
-export const parse = (assets) => {
+export const parse = ({ assets, text }) => {
   const { data, textures } = assets;
   const { images } = data;
 
+  const labels = text.reduce((memo, key, index) => ({
+    ...memo,
+    [key]: new BitmapText({
+      font: FONT_SIZES.SMALL,
+      text: key,
+      color: index ? WHITE : RED,
+    }),
+  }), {});
+
+  const icon = new Sprite(textures[images.menu]);
+
+  const menu = { icon, labels };
+
   return {
-    sprites: {
-      menu: {
-        icon: new Sprite(textures[images.menu]),
-      },
-    },
+    sprites: { menu },
   };
 };

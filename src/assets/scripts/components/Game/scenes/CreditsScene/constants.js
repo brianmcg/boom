@@ -1,3 +1,5 @@
+import { TEXT } from './text';
+
 /**
  * @module constants
  */
@@ -7,24 +9,15 @@
  * @type {Array}
  */
 export const CREDITS = [{
-  key: 'Code',
-  values: ['Brian Mcgrath'],
+  key: TEXT.CODE,
+  values: [TEXT.AUTHOR],
 }, {
-  key: 'Graphics',
-  values: ['Brian McGrath'],
+  key: TEXT.GRAPHICS,
+  values: [TEXT.AUTHOR],
 }, {
-  key: 'Sound',
-  values: ['Brian McGrath'],
+  key: TEXT.SOUND,
+  values: [TEXT.AUTHOR],
 }, {
-  key: 'Script',
-  values: ['Brian McGrath'],
+  key: TEXT.SCRIPT,
+  values: [TEXT.AUTHOR],
 }];
-
-/**
- * The scene text.
- * @type {Object}
- */
-export const TEXT = {
-  CONTINUE: 'Press space to continue',
-  END: 'The End',
-};

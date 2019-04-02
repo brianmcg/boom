@@ -20,11 +20,10 @@ export default class ScrollContainer extends Container {
 
   /**
    * Creates a scroll container.
-   * @param  {[type]} options.credits [description]
-   * @param  {[type]} options.message [description]
-   * @return {[type]}                 [description]
+   * @param  {Object}     options.credits The credits data.
+   * @param  {BitmapText} options.end     The end text.
    */
-  constructor({ credits, message }) {
+  constructor({ credits, end }) {
     super();
 
     let y = 0;
@@ -42,12 +41,12 @@ export default class ScrollContainer extends Container {
       y += TEXT_PADDING * 5;
     });
 
-    message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
-    message.y = y + SCREEN.HEIGHT;
+    end.x = (SCREEN.WIDTH / 2) - (end.width / 2);
+    end.y = y + SCREEN.HEIGHT;
 
     this.scrollY = SCREEN.HEIGHT;
 
-    this.addChild(message);
+    this.addChild(end);
   }
 
   /**

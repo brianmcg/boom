@@ -4,39 +4,13 @@ import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
 import { SOUND, DATA } from '~/constants/assets';
 import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
+import { STATES, EVENTS, TYPES } from './constants';
+import { TEXT } from './text';
+import { parse } from './helpers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
-import { parse } from './helpers';
-
-const STATES = {
-  LOADING: 'loading',
-  FADING_IN: 'fading:in',
-  FADING_OUT: 'fading:out',
-  PAUSED: 'paused',
-  RUNNING: 'running',
-  PROMPTING: 'prompting',
-  STOPPED: 'stopped',
-};
-
-const EVENTS = {
-  COMPLETE: 'scene:complete',
-  RESTART: 'scene:restart',
-  QUIT: 'scene:quit',
-};
-
-const TYPES = {
-  TITLE: 'title',
-  WORLD: 'world',
-  CREDITS: 'credits',
-};
-
-const TEXT = {
-  CONTINUE: 'Continue',
-  RESTART: 'Restart',
-  QUIT: 'Quit',
-};
 
 /**
  * Class representing a scene.
@@ -67,6 +41,7 @@ export default class Scene extends Container {
    * @param  {Number} options.index   The index of the scene.
    * @param  {Number} options.scale   The scale of the scene.
    * @param  {String} options.type    The type of scene.
+   * @param  {String} options.sound   The scene music.
    */
   constructor(options) {
     super();
@@ -115,9 +90,10 @@ export default class Scene extends Container {
    * Create the scene.
    * @param  {Object} assets The scene assets.
    */
-  create(data) {
-    const { sprites } = parse(data);
-    this.menu = new MenuContainer({ sprites });
+  create(assets) {
+    const text = this.menuItems.map(item => item.label);
+    const { sprites } = parse({ assets, text });
+    this.menu = new MenuContainer({ sprites: sprites.menu });
     this.menu.add(this.menuItems);
     this.setState(STATES.FADING_IN);
   }
