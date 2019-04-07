@@ -57,9 +57,16 @@ export const parse = ({ assets, text }) => {
 
   return {
     sprites: {
-      background: { smoke },
-      scroll: { credits, end },
-      prompt: { label },
+      background: {
+        smoke,
+      },
+      scroll: {
+        credits,
+        end,
+      },
+      prompt: {
+        label,
+      },
     },
   };
 };
