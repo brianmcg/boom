@@ -1,44 +1,68 @@
-import Sector from '../Sector';
-
 export default class World {
   constructor(grid = [[]]) {
-    this.dynamicBodies = [];
-    this.staticBodies = [];
-    this.dynamicSectors = [];
     this.grid = grid;
+    this.bodies = {};
+    this.updateableIds = [];
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
   }
 
   add(body) {
-    if (body.update) {
-      if (body instanceof Sector) {
-        this.dynamicSectors.push(body);
-      } else {
-        this.dynamicBodies.push(body);
-      }
-    } else {
-      this.staticBodies.push(body);
+    this.bodies[body.id] = body;
+
+    if (body.update && typeof body.update === 'function') {
+      this.updateableIds.push(body.id);
     }
   }
 
   remove(body) {
+    this.bodies = this.bodies.filter(thisBody => thisBody !== body);
+
     if (body.update) {
-      if (body instanceof Sector) {
-        this.dynamicSectors = this.dynamicSectors.filter(dynamicSector => dynamicSector !== body);
-      } else {
-        this.dynamicBodies = this.dynamicBodies.filter(dynamicBody => dynamicBody !== body);
-      }
-    } else {
-      this.staticBodies = this.staticBodies.filter(staticBody => staticBody !== body);
+      this.updateableIds = this.updateableIds.filter(id => id !== body.id);
     }
   }
 
   update(delta) {
-    this.dynamicSectors.forEach(sector => sector.update(delta));
-    this.dynamicBodies.forEach(body => body.update(delta, this));
+    this.updateableIds.forEach(id => this.bodies[id].update(delta, this));
   }
 
   sector(x, y) {
     return this.grid[y][x];
+  }
+
+  adjacentSectors(body) {
+    const sectors = [];
+    const x = body.gridX;
+    const y = body.gridY;
+
+    for (let i = x - 1; i <= x + 1; i += 1) {
+      for (let j = y - 1; j <= y + 1; j += 1) {
+        const sector = this.sector(i, j);
+
+        if (sector !== body) {
+          sectors.push(sector);
+        }
+      }
+    }
+
+    return sectors;
+  }
+
+  adjacentBodies(body) {
+    const sectors = this.adjacentSectors(body);
+
+    return sectors.reduce((bodies, sector) => {
+      sector.childIds.forEach((id) => {
+        if (this.bodies[id] !== body) {
+          bodies.push(this.bodies[id]);
+        }
+      });
+
+      if (sector !== body) {
+        bodies.push(sector);
+      }
+
+      return bodies;
+    }, []);
   }
 }

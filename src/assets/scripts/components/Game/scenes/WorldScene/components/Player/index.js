@@ -5,5 +5,6 @@ export default class Player extends Character {
     super(options);
     this.maxHealth = 100;
     this.health = this.maxHealth;
+    this.rotationVelocity = 6;
   }
 }

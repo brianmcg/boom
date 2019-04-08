@@ -30,8 +30,18 @@ export default class Body extends EventEmitter {
     this.height = height;
   }
 
-  isBlocking() {
+  blocking() {
     return !!this.height;
+  }
+
+  collide(body) {
+    const thisShape = this.shape;
+    const otherShape = body.shape;
+
+    return thisShape.x < otherShape.x + otherShape.width
+      && thisShape.x + thisShape.width > otherShape.x
+      && thisShape.y < otherShape.y + otherShape.length
+      && thisShape.length + thisShape.y > otherShape.y;
   }
 
   get name() {

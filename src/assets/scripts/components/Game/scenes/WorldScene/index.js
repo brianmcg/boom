@@ -51,7 +51,6 @@ export default class WorldScene extends Scene {
       });
     });
 
-
     const { player } = this.level;
 
     this.playerSprite = new RectangleSprite({
@@ -63,15 +62,15 @@ export default class WorldScene extends Scene {
     this.playerSprite.x = player.shape.x;
     this.playerSprite.y = player.shape.y;
 
-
     this.addChild(this.playerSprite);
   }
 
   updateRunning(delta) {
     super.updateRunning(delta);
+    const { player } = this.level;
 
-    this.level.player.velocity = 2;
-    // this.level.player.angle = DEG[45];
+    player.velocity = 2;
+    // player.angle = DEG[22];
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
