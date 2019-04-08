@@ -2,6 +2,7 @@ import { TILE_SIZE } from '~/constants/config';
 import { Sector } from '~/core/physics';
 import Level from './components/Level';
 import Player from './components/Player';
+import { RectangleSprite } from '~/core/graphics';
 
 /**
  * @module helpers
@@ -89,14 +90,54 @@ const createLevel = (data) => {
   return level;
 };
 
+const debugCreateSprites = (level) => {
+  const sprites = {};
+  const { player, grid } = level;
+
+  grid.forEach((row) => {
+    row.forEach((sector) => {
+      if (sector.height) {
+        const { shape } = sector;
+
+        const sprite = new RectangleSprite({
+          width: shape.width,
+          height: shape.length,
+        });
+
+        sprites[sector.id] = sprite;
+      }
+    });
+  });
+
+  const { shape } = player;
+
+  const playerSprite = new RectangleSprite({
+    width: shape.width,
+    height: shape.length,
+    color: 0xFF0000,
+  });
+
+  sprites[player.id] = playerSprite;
+
+  return sprites;
+};
+
+export const parse = (resources) => {
+  const { data } = resources;
+  const { map } = data;
+  const level = createLevel(map);
+  return { level };
+};
+
 /**
  * Parses the loaded scene assets.
  * @param  {Object} assets The scene assets.
  * @return {Object}        The parsed scene data.
  */
-export const parse = (assets) => {
-  const { data } = assets;
+export const debugParse = (resources) => {
+  const { data } = resources;
   const { map } = data;
   const level = createLevel(map);
-  return { level };
+  const sprites = debugCreateSprites(level);
+  return { level, sprites };
 };

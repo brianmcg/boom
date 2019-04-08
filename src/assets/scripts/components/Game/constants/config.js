@@ -37,3 +37,9 @@ export const TILE_SIZE = 64;
  * @type {Object}
  */
 export const SCREEN = { WIDTH: 320, HEIGHT: 180 };
+
+/**
+ * Debug mode on or off.
+ * @type {Boolean}
+ */
+export const DEBUG = true;

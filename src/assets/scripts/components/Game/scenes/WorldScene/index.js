@@ -1,8 +1,9 @@
 import { Keyboard } from '~/core/input';
-import { parse } from './helpers';
+import { DEBUG } from '~/constants/config';
+import { parse, debugParse } from './helpers';
 import Scene from '../Scene';
-import { RectangleSprite } from '~/core/graphics';
-import { DEG } from '~/core/physics';
+import DebugContainer from './containers/DebugContainer';
+import WorldContainer from './containers/WorldContainer';
 
 export default class WorldScene extends Scene {
   constructor(options) {
@@ -30,69 +31,19 @@ export default class WorldScene extends Scene {
 
   create(resources) {
     super.create(resources);
-    const { level } = parse(resources);
-    this.level = level;
 
-    this.level.grid.forEach((row) => {
-      row.forEach((sector) => {
-        if (sector.height) {
-          const { shape } = sector;
+    const options = DEBUG ? debugParse(resources) : parse(resources);
+    const world = DEBUG ? new DebugContainer(options) : new WorldContainer(options);
 
-          const sprite = new RectangleSprite({
-            width: shape.width,
-            height: shape.length,
-          });
-
-          sprite.x = shape.x;
-          sprite.y = shape.y;
-
-          this.main.addChild(sprite);
-        }
-      });
-    });
-
-    const { player } = this.level;
-
-    this.playerSprite = new RectangleSprite({
-      width: player.shape.width,
-      height: player.shape.length,
-      color: 0xFF0000,
-    });
-
-    this.playerSprite.x = player.shape.x;
-    this.playerSprite.y = player.shape.y;
-
-    this.addChild(this.playerSprite);
+    this.main.addChild(world);
   }
 
   updateRunning(delta) {
     super.updateRunning(delta);
-    const { player } = this.level;
-
-    player.velocity = 2;
-    // player.angle = DEG[22];
 
     if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
-    }
-
-    this.level.update(delta);
-  }
-
-  resize(scale) {
-    if (this.state !== Scene.STATES.STOPPED) {
-      this.scale.x = scale / 4;
-      this.scale.y = scale / 4;
-    }
-  }
-
-  _render() {
-    if (this.level) {
-      const { shape } = this.level.player;
-
-      this.playerSprite.x = shape.x;
-      this.playerSprite.y = shape.y;
     }
   }
 }
