@@ -2,13 +2,22 @@ import Character from '../Character';
 import { TILE_SIZE } from '~/constants/config';
 import { DEG } from '~/core/physics';
 
+const { min, max } = Math;
+
+const DEFAULTS = {
+  MAX_VELOCITY: TILE_SIZE / 16,
+  MAX_ROT_VELOCITY: DEG[2],
+  ACCELERATION: TILE_SIZE / 256,
+  ROT_ACCELERATION: 2,
+};
+
 export default class Player extends Character {
   constructor(options = {}) {
     const {
-      maxVelocity = TILE_SIZE / 16,
-      maxRotVelocity = DEG[2],
-      acceleration = TILE_SIZE / 256,
-      rotAcceleration = 2,
+      maxVelocity = DEFAULTS.MAX_VELOCITY,
+      maxRotVelocity = DEFAULTS.MAX_ROT_VELOCITY,
+      acceleration = DEFAULTS.ACCELERATION,
+      rotAcceleration = DEFAULTS.ROT_ACCELERATION,
       ...otherOptions
     } = options;
 
@@ -21,21 +30,25 @@ export default class Player extends Character {
   }
 
   update(delta, world) {
-    if (this.actions.isMovingForward) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-    } else if (this.actions.isMovingBackward) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+    const {
+      isMovingForward,
+      isMovingBackward,
+      isTurningLeft,
+      isTurningRight,
+    } = this.actions;
+
+    if (isMovingForward) {
+      this.velocity = min(this.velocity + this.acceleration, this.maxVelocity);
+    } else if (isMovingBackward) {
+      this.velocity = max(this.velocity - this.acceleration, this.maxVelocity * -1);
     } else {
-      this.velocity = Math.max(0, this.velocity - this.acceleration);
+      this.velocity = max(0, this.velocity - this.acceleration);
     }
 
-    if (this.actions.isTurningLeft) {
-      this.rotVelocity = Math.max(
-        this.rotVelocity - this.rotAcceleration,
-        this.maxRotVelocity * -1,
-      );
-    } else if (this.actions.isTurningRight) {
-      this.rotVelocity = Math.min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
+    if (isTurningLeft) {
+      this.rotVelocity = max(this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1);
+    } else if (isTurningRight) {
+      this.rotVelocity = min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
     } else {
       this.rotVelocity = 0;
     }

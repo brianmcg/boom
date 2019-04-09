@@ -12,10 +12,13 @@ export default class DynamicBody extends Body {
   }
 
   update(delta = 1, world) {
+    // Get bodies from surrounding sectors
     const bodies = world.adjacentBodies(this);
 
+    // Unmark id from sector before moving
     world.sector(this.gridX, this.gridY).removeChildId(this.id);
 
+    // Update angle
     this.angle += Math.round(this.rotVelocity * delta);
 
     this.angle %= DEG[360];
@@ -24,8 +27,10 @@ export default class DynamicBody extends Body {
       this.angle += DEG[360];
     }
 
+    // Update x coordinate
     this.x += COS[this.angle] * this.velocity * delta;
 
+    // Check for x axis collisions
     bodies.forEach((body) => {
       if (body.blocking(this) && body.collide(this)) {
         if (body.x > this.x) {
@@ -36,8 +41,10 @@ export default class DynamicBody extends Body {
       }
     });
 
+    // Update y coordinate
     this.y += SIN[this.angle] * this.velocity * delta;
 
+    // Check for y axis collisions
     bodies.forEach((body) => {
       if (body.blocking(this) && body.collide(this)) {
         if (body.y > this.y) {
@@ -48,6 +55,7 @@ export default class DynamicBody extends Body {
       }
     });
 
+    // Mark current sector with id
     world.sector(this.gridX, this.gridY).addChildId(this.id);
   }
 }
