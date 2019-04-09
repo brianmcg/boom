@@ -5,9 +5,18 @@ let idCount = 0;
 
 /**
  * Class representing a body.
+ * @extends {EventEmitter}
  */
 export default class Body extends EventEmitter {
-  constructor(options) {
+  /**
+   * Creates a body.
+   * @param  {Number} options.x      The x coordinate of the body.
+   * @param  {Number} options.y      The y coordinate of the body
+   * @param  {Number} options.width  The width of the body.
+   * @param  {Number} options.length The length of the body.
+   * @param  {Number} options.height The height of the body.
+   */
+  constructor(options = {}) {
     super();
 
     const {
@@ -16,24 +25,31 @@ export default class Body extends EventEmitter {
       width = 0,
       length = 0,
       height = 0,
-      angle = 0,
     } = options;
 
     idCount += 1;
 
-    this.id = `${this.name}_${idCount}`;
+    this.id = `${this.this.constructor.name}_${idCount}`;
     this.x = x;
     this.y = y;
-    this.angle = angle;
     this.width = width;
     this.length = length;
     this.height = height;
   }
 
+  /**
+   * Check if this body is blocking.
+   * @return {Boolean}
+   */
   blocking() {
     return !!this.height;
   }
 
+  /**
+   * Check if this body is colliding with another.
+   * @param  {Body}     body The other body to check.
+   * @return {Boolean}
+   */
   collide(body) {
     const thisShape = this.shape;
     const otherShape = body.shape;
@@ -44,18 +60,26 @@ export default class Body extends EventEmitter {
       && thisShape.length + thisShape.y > otherShape.y;
   }
 
-  get name() {
-    return this.constructor.name;
-  }
-
+  /**
+   * The grid x position.
+   * @member {Number}
+   */
   get gridX() {
     return Math.floor(this.x / TILE_SIZE);
   }
 
+  /**
+   * The grid y position.
+   * @member {Number}
+   */
   get gridY() {
     return Math.floor(this.y / TILE_SIZE);
   }
 
+  /**
+   * The shape of the body.
+   * @member {Object}
+   */
   get shape() {
     return {
       x: this.x - this.width / 2,

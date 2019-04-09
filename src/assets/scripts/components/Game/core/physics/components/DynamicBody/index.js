@@ -3,14 +3,30 @@ import { COS, SIN, DEG } from '../../constants';
 
 /**
  * Class representing a dynamic body.
+ * @extends {Body}
  */
 export default class DynamicBody extends Body {
+  /* Creates a dynamic body.
+   * @param  {Number} options.x      The x coordinate of the dynamic body.
+   * @param  {Number} options.y      The y coordinate of the dynamic body
+   * @param  {Number} options.width  The width of the dynamic body.
+   * @param  {Number} options.length The length of the dynamic body.
+   * @param  {Number} options.height The height of the dynamic body.
+   * @param  {Number} options.angle  The angle of the dynamic body.
+   */
   constructor(options = {}) {
-    super(options);
+    const { angle = 0, ...other } = options;
+    super(other);
     this.velocity = 0;
     this.rotVelocity = 0;
+    this.angle = angle;
   }
 
+  /**
+   * Update the dynamic body.
+   * @param  {Number} delta The delta time value.
+   * @param  {World}  world The world that contains the body.
+   */
   update(delta = 1, world) {
     // Get bodies from surrounding sectors
     const bodies = world.adjacentBodies(this);

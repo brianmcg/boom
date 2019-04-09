@@ -1,4 +1,11 @@
+/**
+ * Class representing a world.
+ */
 export default class World {
+  /**
+   * Creates a world.
+   * @param  {Array}  grid The map grid.
+   */
   constructor(grid = [[]]) {
     this.grid = grid;
     this.bodies = {};
@@ -6,6 +13,10 @@ export default class World {
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
   }
 
+  /**
+   * Add a body to the world.
+   * @param {Body} body The body to add.
+   */
   add(body) {
     this.bodies[body.id] = body;
 
@@ -14,6 +25,10 @@ export default class World {
     }
   }
 
+  /**
+   * Remove a body from the world.
+   * @param {Body} body The body to remove.
+   */
   remove(body) {
     this.bodies = this.bodies.filter(thisBody => thisBody !== body);
 
@@ -22,14 +37,29 @@ export default class World {
     }
   }
 
+  /**
+   * Update
+   * @param  {Number} delta The delta time value.
+   */
   update(delta) {
     this.updateableIds.forEach(id => this.bodies[id].update(delta, this));
   }
 
+  /**
+   * Get the sector at the given grid coordinates.
+   * @param  {Number} x The x grid coordinate.
+   * @param  {Number} y The y grid coordinate.
+   * @return {Sector}   The sector.
+   */
   sector(x, y) {
     return this.grid[y][x];
   }
 
+  /**
+   * Get the sectors surrounding a given body.
+   * @param  {Body}   body The body.
+   * @return {Array}       The sectors surrounding the body.
+   */
   adjacentSectors(body) {
     const sectors = [];
     const x = body.gridX;
@@ -48,6 +78,11 @@ export default class World {
     return sectors;
   }
 
+  /**
+   * Get the bodies surrounding a given body.
+   * @param  {Body}   body The body to check.
+   * @return {Array}       The bodies surroung the body.
+   */
   adjacentBodies(body) {
     const sectors = this.adjacentSectors(body);
 

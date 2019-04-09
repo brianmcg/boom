@@ -11,17 +11,34 @@ const DEFAULTS = {
   ROT_ACCELERATION: 2,
 };
 
+/**
+ * Creates a player.
+ * @extends {Character}
+ */
 export default class Player extends Character {
+  /* Creates a player.
+   * @param  {Number} options.x               The x coordinate of the player.
+   * @param  {Number} options.y               The y coordinate of the player
+   * @param  {Number} options.width           The width of the player.
+   * @param  {Number} options.length          The length of the player.
+   * @param  {Number} options.height          The height of the player.
+   * @param  {Number} options.angle           The angle of the player.
+   * @param  {Number} options.maxHealth       The maximum health of the player.
+   * @param  {Number} options.maxVelocity     The maximum velocity of the player.
+   * @param  {Number} options.maxRotVelocity  The maximum rotation velocity of the player.
+   * @param  {Number} options.acceleration    The acceleration of the player.
+   * @param  {Number} options.rotAcceleration The rotation acceleration of the player.
+   */
   constructor(options = {}) {
     const {
       maxVelocity = DEFAULTS.MAX_VELOCITY,
       maxRotVelocity = DEFAULTS.MAX_ROT_VELOCITY,
       acceleration = DEFAULTS.ACCELERATION,
       rotAcceleration = DEFAULTS.ROT_ACCELERATION,
-      ...otherOptions
+      ...other
     } = options;
 
-    super(otherOptions);
+    super(other);
 
     this.maxVelocity = maxVelocity;
     this.maxRotVelocity = maxRotVelocity;
@@ -29,6 +46,11 @@ export default class Player extends Character {
     this.rotAcceleration = rotAcceleration;
   }
 
+  /**
+   * Update the dynamic body.
+   * @param  {Number} delta The delta time value.
+   * @param  {World}  world The world that contains the body.
+   */
   update(delta, world) {
     const {
       isMovingForward,
