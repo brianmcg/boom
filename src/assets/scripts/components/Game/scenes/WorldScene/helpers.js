@@ -2,6 +2,7 @@ import { TILE_SIZE } from '~/constants/config';
 import { Sector } from '~/core/physics';
 import Level from './components/Level';
 import Player from './components/Player';
+import DoorSector from './components/DoorSector';
 import { RectangleSprite } from '~/core/graphics';
 
 /**
@@ -29,7 +30,7 @@ const createLevel = (data) => {
   const mapWidth = data.layers[LAYERS.WALLS].width;
   const mapHeight = data.layers[LAYERS.WALLS].height;
   const { tiles } = data.tilesets[LAYERS.WALLS];
-  // const tileProperties = data.tilesets[0].tileproperties;
+  const tileProperties = data.tilesets[0].tileproperties;
   // const start = {};
   // const end = {};
 
@@ -50,25 +51,51 @@ const createLevel = (data) => {
     for (let x = 0; x < mapWidth; x += 1) {
       const index = (y * mapWidth) + x;
       const wallValue = data.layers[LAYERS.WALLS].data[index];
-      // const doorValue = data.layers[LAYERS.DOORS].data[index];
+      const doorValue = data.layers[LAYERS.DOORS].data[index];
       // const itemValue = data.layers[LAYERS.ITEMS].data[index];
       // const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
       //
       let wallImage;
+      let doorImage;
+      let properties;
+      let faces;
+      let doorAxis;
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
+        faces = [wallImage, wallImage, wallImage, wallImage];
       }
 
-      const sector = new Sector({
-        x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-        y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-        width: TILE_SIZE,
-        height: wallImage ? TILE_SIZE : 0,
-        length: TILE_SIZE,
-      });
+      if (doorValue) {
+        properties = tileProperties[doorValue - 1] || {};
+        doorImage = tiles[doorValue - 1].image;
 
-      row.push(sector);
+        if (data.layers[LAYERS.DOORS].data[index - 1] || data.layers[LAYERS.DOORS].data[index + 1]) {
+          doorAxis = 'y';
+        } else {
+          doorAxis = 'x';
+        }
+      }
+
+      if (!!doorImage && !wallImage) {
+        row.push(new DoorSector({
+          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+          width: 4,
+          height: doorImage ? TILE_SIZE : 0,
+          length: 4,
+          axis: doorAxis,
+        }));
+      } else {
+        row.push(new Sector({
+          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+          width: TILE_SIZE,
+          height: wallImage ? TILE_SIZE : 0,
+          length: TILE_SIZE,
+          faces,
+        }));
+      }
     }
 
     grid.push(row);

@@ -12,9 +12,11 @@ export default class Sector extends Body {
    * @param  {Number} options.width  The width of the sector.
    * @param  {Number} options.length The length of the sector.
    * @param  {Number} options.height The height of the sector.
+   * @param  {Array}  options.faces  The faces of the sector.
    */
-  constructor(options) {
-    super(options);
+  constructor({ faces = [], ...other }) {
+    super(other);
+    this.faces = faces;
     this.childIds = [];
   }
 

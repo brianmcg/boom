@@ -29,7 +29,7 @@ export default class Body extends EventEmitter {
 
     idCount += 1;
 
-    this.id = `${this.this.constructor.name}_${idCount}`;
+    this.id = `${this.constructor.name}_${idCount}`;
     this.x = x;
     this.y = y;
     this.width = width;
