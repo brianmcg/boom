@@ -76,8 +76,8 @@ export default class MainContainer extends Container {
     this.playable.forEach(child => child.play());
   }
 
-  updateRunning(delta) {
-    this.updateable.forEach(child => child.update(delta));
+  updateRunning(...options) {
+    this.updateable.forEach(child => child.update(...options));
   }
 
   /**

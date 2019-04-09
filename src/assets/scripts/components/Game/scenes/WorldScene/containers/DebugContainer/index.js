@@ -16,8 +16,8 @@ export default class DebugContainer extends Container {
     });
   }
 
-  update(delta) {
-    this.level.update(delta);
+  update(...options) {
+    this.level.update(...options);
   }
 
   _render() {

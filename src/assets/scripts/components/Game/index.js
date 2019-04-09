@@ -1,5 +1,4 @@
 import { Application } from './core/graphics';
-import { Keyboard } from './core/input';
 import { SoundPlayer } from './core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
@@ -14,7 +13,9 @@ import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
 
-const EVENTS = { QUIT: 'game:quit' };
+const EVENTS = {
+  QUIT: 'game:quit',
+};
 
 /**
  * A class representing a game.
@@ -92,56 +93,53 @@ export default class Game extends Application {
     if (this.scene) {
       this.scene.update(delta);
     }
-
-    Keyboard.resetPressed();
   }
 
   /**
    * Handle the scene complete event.
-   * @param  {String} sceneType  The scene type.
-   * @param  {Number} sceneIndex The scene index.
+   * @param  {String} type  The scene type.
+   * @param  {Number} index The scene index.
    */
-  onSceneComplete(sceneType, sceneIndex) {
-    switch (sceneType) {
+  onSceneComplete(type, index) {
+    switch (type) {
       case Scene.TYPES.TITLE:
-        this.show(Scene.TYPES.WORLD, 1);
+        this.show(Scene.TYPES.WORLD, index + 1);
         break;
       case Scene.TYPES.WORLD:
-        if (sceneIndex < NUM_LEVELS) {
-          this.show(Scene.TYPES.WORLD, sceneIndex + 1);
+        if (index < NUM_LEVELS) {
+          this.show(Scene.TYPES.WORLD, index + 1);
         } else {
-          this.show(Scene.TYPES.CREDITS);
+          this.show(Scene.TYPES.CREDITS, index + 1);
         }
         break;
       default:
-        this.show(Scene.TYPES.TITLE);
+        this.show(Scene.TYPES.TITLE, 0);
         break;
     }
   }
 
   /**
    * Handle the scene restart event.
-   * @param  {String} sceneType  The scene type.
-   * @param  {Number} sceneIndex The scene index.
+   * @param  {String} type  The scene type.
+   * @param  {Number} index The scene index.
    */
-  onSceneRestart(sceneType, sceneIndex) {
-    this.show(sceneType, sceneIndex);
+  onSceneRestart(type, index) {
+    this.show(type, index);
   }
 
   /**
    * Handle the scene quit event.
-   * @param  {String} sceneType  The scene type.
-   * @param  {Number} sceneIndex The scene index.
+   * @param  {String} type  The scene type.
    */
-  onSceneQuit(sceneType) {
-    switch (sceneType) {
+  onSceneQuit(type) {
+    switch (type) {
       case Scene.TYPES.TITLE:
         this.scene.destroy();
         this.scene = null;
         this.emit(EVENTS.QUIT);
         break;
       default:
-        this.show(Scene.TYPES.TITLE);
+        this.show(Scene.TYPES.TITLE, 0);
         break;
     }
   }

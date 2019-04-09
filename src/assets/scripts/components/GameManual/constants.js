@@ -28,6 +28,9 @@ export const KEYS = {
   }, {
     action: 'crouch',
     key: 'shift',
+  }, {
+    action: 'menu',
+    key: 'escape',
   }],
 };
 

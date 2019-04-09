@@ -55,9 +55,12 @@ export default class Keyboard {
    */
   static onKeyDown(e) {
     pressed[KEY_CODES[e.keyCode]] = true;
+    held[KEY_CODES[e.keyCode]] = true;
 
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
+
+    document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
   }
 
   /**
@@ -69,8 +72,6 @@ export default class Keyboard {
 
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
-
-    document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
   }
 
   /**

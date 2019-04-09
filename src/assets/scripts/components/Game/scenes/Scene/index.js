@@ -12,6 +12,8 @@ import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
 
+const { isPressed, resetPressed, KEYS } = Keyboard;
+
 /**
  * Class representing a scene.
  */
@@ -129,6 +131,8 @@ export default class Scene extends Container {
       case STATES.PROMPTING: this.updatePrompting(delta); break;
       default: break;
     }
+
+    resetPressed();
   }
 
   /**
@@ -226,21 +230,21 @@ export default class Scene extends Container {
   updatePaused(delta) {
     this.main.updatePaused(delta);
 
-    if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
+    if (isPressed(KEYS.ESC)) {
       this.setState(STATES.RUNNING);
       this.removeChild(this.menu);
     }
 
     if (this.menu.parent) {
-      if (Keyboard.isPressed(Keyboard.KEYS.DOWN_ARROW)) {
+      if (isPressed(KEYS.DOWN_ARROW)) {
         this.menu.highlightNext();
       }
 
-      if (Keyboard.isPressed(Keyboard.KEYS.UP_ARROW)) {
+      if (isPressed(KEYS.UP_ARROW)) {
         this.menu.highlightPrevious();
       }
 
-      if (Keyboard.isPressed(Keyboard.KEYS.ENTER)) {
+      if (isPressed(KEYS.ENTER)) {
         this.menu.select();
         this.removeChild(this.menu);
       }
@@ -251,13 +255,13 @@ export default class Scene extends Container {
    * Update the scene when in a running state.
    * @param  {Number} delta The delta value.
    */
-  updateRunning(delta) {
-    this.main.updateRunning(delta);
-
-    if (Keyboard.isPressed(Keyboard.KEYS.ESC)) {
+  updateRunning(...options) {
+    if (isPressed(KEYS.ESC)) {
       this.setState(STATES.PAUSED);
       this.addChild(this.menu);
     }
+
+    this.main.updateRunning(...options);
   }
 
   /**
@@ -269,7 +273,7 @@ export default class Scene extends Container {
 
     this.prompt.update(delta);
 
-    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
+    if (isPressed(KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setState(Scene.STATES.FADING_OUT);
     }

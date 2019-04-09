@@ -6,14 +6,9 @@ import { COS, SIN, DEG } from '../../constants';
  */
 export default class DynamicBody extends Body {
   constructor(options = {}) {
-    const { maxVelocity = 0, maxRotationVelocity = 0 } = options;
-
     super(options);
-
     this.velocity = 0;
-    this.rotationVelocity = 0;
-    this.maxVelocity = maxVelocity;
-    this.maxRotationVelocity = maxRotationVelocity;
+    this.rotVelocity = 0;
   }
 
   update(delta = 1, world) {
@@ -21,7 +16,7 @@ export default class DynamicBody extends Body {
 
     world.sector(this.gridX, this.gridY).removeChildId(this.id);
 
-    this.angle += Math.round(this.rotationVelocity * delta);
+    this.angle += Math.round(this.rotVelocity * delta);
 
     this.angle %= DEG[360];
 

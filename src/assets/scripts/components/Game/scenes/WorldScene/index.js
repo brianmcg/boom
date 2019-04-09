@@ -39,11 +39,15 @@ export default class WorldScene extends Scene {
   }
 
   updateRunning(delta) {
-    super.updateRunning(delta);
+    const { isHeld, KEYS } = Keyboard;
 
-    if (Keyboard.isPressed(Keyboard.KEYS.SPACE)) {
-      this.setStatus(Scene.EVENTS.COMPLETE);
-      this.setState(Scene.STATES.FADING_OUT);
-    }
+    const input = {
+      isMovingForward: isHeld(KEYS.UP_ARROW),
+      isMovingBackward: isHeld(KEYS.DOWN_ARROW),
+      isTurningLeft: isHeld(KEYS.LEFT_ARROW),
+      isTurningRight: isHeld(KEYS.RIGHT_ARROW),
+    };
+
+    super.updateRunning(delta, input);
   }
 }

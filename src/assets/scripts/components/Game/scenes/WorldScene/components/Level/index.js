@@ -18,19 +18,17 @@ export default class Level extends World {
 
     super(grid);
 
-    this.player = player;
-    this.enemies = enemies;
-    this.items = items;
-    this.objects = objects;
+    enemies.forEach(enemy => this.add(enemy));
+    items.forEach(item => this.add(item));
+    objects.forEach(object => this.add(object));
 
     this.add(player);
-
-    this.enemies.forEach(enemy => this.add(enemy));
-    this.items.forEach(item => this.add(item));
-    this.objects.forEach(object => this.add(object));
+    this.player = player;
   }
 
-  getSector(x, y) {
-    return this.grid[y][x];
+  update(delta, input) {
+    this.player.actions = input;
+
+    super.update(delta);
   }
 }
