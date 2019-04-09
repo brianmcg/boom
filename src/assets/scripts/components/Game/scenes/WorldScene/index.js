@@ -5,6 +5,8 @@ import Scene from '../Scene';
 import DebugContainer from './containers/DebugContainer';
 import WorldContainer from './containers/WorldContainer';
 
+const { isHeld, isPressed, KEYS } = Keyboard;
+
 export default class WorldScene extends Scene {
   constructor(options) {
     super({ type: Scene.TYPES.WORLD, ...options });
@@ -39,13 +41,12 @@ export default class WorldScene extends Scene {
   }
 
   updateRunning(delta) {
-    const { isHeld, KEYS } = Keyboard;
-
     const input = {
       isMovingForward: isHeld(KEYS.UP_ARROW),
       isMovingBackward: isHeld(KEYS.DOWN_ARROW),
       isTurningLeft: isHeld(KEYS.LEFT_ARROW),
       isTurningRight: isHeld(KEYS.RIGHT_ARROW),
+      isUsing: isPressed(KEYS.SPACE),
     };
 
     super.updateRunning(delta, input);

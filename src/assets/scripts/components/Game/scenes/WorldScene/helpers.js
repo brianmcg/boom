@@ -59,7 +59,7 @@ const createLevel = (data) => {
       let doorImage;
       let properties;
       let faces;
-      let doorAxis;
+      let doorAxisX;
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
@@ -69,22 +69,17 @@ const createLevel = (data) => {
       if (doorValue) {
         properties = tileProperties[doorValue - 1] || {};
         doorImage = tiles[doorValue - 1].image;
-
-        if (data.layers[LAYERS.DOORS].data[index - 1] || data.layers[LAYERS.DOORS].data[index + 1]) {
-          doorAxis = 'y';
-        } else {
-          doorAxis = 'x';
-        }
+        doorAxisX = data.layers[LAYERS.DOORS].data[index - 1];
       }
 
       if (!!doorImage && !wallImage) {
         row.push(new DoorSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: 4,
+          width: doorAxisX ? TILE_SIZE : 4,
           height: doorImage ? TILE_SIZE : 0,
-          length: 4,
-          axis: doorAxis,
+          length: doorAxisX ? 4 : TILE_SIZE,
+          axis: doorAxisX,
         }));
       } else {
         row.push(new Sector({
