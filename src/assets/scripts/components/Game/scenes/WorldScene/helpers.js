@@ -76,10 +76,10 @@ const createLevel = (data) => {
         row.push(new DoorSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: doorAxisX ? TILE_SIZE : 4,
+          width: doorAxisX ? TILE_SIZE : 32,
           height: doorImage ? TILE_SIZE : 0,
-          length: doorAxisX ? 4 : TILE_SIZE,
-          axis: doorAxisX,
+          length: doorAxisX ? 32 : TILE_SIZE,
+          axis: doorAxisX ? 'x' : 'y',
         }));
       } else {
         row.push(new Sector({

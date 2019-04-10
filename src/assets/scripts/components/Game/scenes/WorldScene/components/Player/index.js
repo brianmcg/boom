@@ -58,6 +58,7 @@ export default class Player extends Character {
       isMovingBackward,
       isTurningLeft,
       isTurningRight,
+      isUsing,
     } = this.actions;
 
     if (isMovingForward) {
@@ -74,6 +75,10 @@ export default class Player extends Character {
       this.rotVelocity = min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
     } else {
       this.rotVelocity = 0;
+    }
+
+    if (isUsing) {
+      world.adjacentSectors(this).forEach(sector => sector.use && sector.use());
     }
 
     super.update(delta, world);

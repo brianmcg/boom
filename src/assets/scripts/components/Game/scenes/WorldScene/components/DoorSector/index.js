@@ -1,4 +1,4 @@
-import { DynamicSector, DEG } from '~/core/physics';
+import { Sector, DEG, SIN } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
 
 const STATES = {
@@ -14,7 +14,7 @@ const EVENTS = {
 
 const SPEED = 2;
 
-export default class DoorSector extends DynamicSector {
+export default class DoorSector extends Sector {
   static get EVENTS() { return EVENTS; }
 
   constructor({ key, axis, ...other }) {
@@ -22,30 +22,24 @@ export default class DoorSector extends DynamicSector {
     this.key = key;
     this.axis = axis;
     this.angle = DEG[90];
-    // this.setState(STATES.OPENING);
     this.closed = { x: this.x, y: this.y };
     this.opened = { x: this.x, y: this.y - this.length };
     this.timer = 0;
-    this.velocity = -SPEED;
   }
 
   setState(state) {
     switch (state) {
       case STATES.OPENING: {
-        this.velocity = -2;
         break;
       }
       case STATES.OPENED: {
-        this.velocity = 0;
         this.timer = 5000;
         break;
       }
       case STATES.CLOSING: {
-        this.velocity = 2;
         break;
       }
       case STATES.CLOSED: {
-        this.velocity = 0;
         break;
       }
       default: break;
@@ -55,53 +49,55 @@ export default class DoorSector extends DynamicSector {
   }
 
   collide(body) {
-    return false;
+    if (body instanceof Sector) {
+      return false;
+    }
+
+    return super.collide(body);
   }
 
-  open() {
+  use() {
     if (!this.locked) {
-      this.state = STATES.OPENING;
+      this.setState(STATES.OPENING);
     } else {
       this.emit(EVENTS.LOCKED, '');
     }
   }
 
-  // update(delta, ...other) {
-  //   // console.log(this.x, this.y);
-  //   switch (this.state) {
-  //     case STATES.OPENING: {
-  //       super.update(delta, ...other);
+  update(delta) {
+    switch (this.state) {
+      case STATES.OPENING: {
+        this.y += SIN[this.angle] * -SPEED * delta;
 
-  //       if (this.y <= this.opened.y) {
-  //         this.y = this.opened.y;
-  //         this.state = STATES.OPENED;
-  //       }
+        if (this.y <= this.opened.y) {
+          this.y = this.opened.y;
+          this.setState(STATES.OPENED);
+        }
 
-  //       break;
-  //     }
-  //     case STATES.CLOSING: {
-  //       super.update(delta, ...other);
+        break;
+      }
+      case STATES.CLOSING: {
+        this.y += SIN[this.angle] * SPEED * delta;
 
-  //       if (this.y >= this.closed.y) {
-  //         this.y = this.closed.y;
-  //         this.state = STATES.CLOSED;
-  //       }
+        if (this.y >= this.closed.y) {
+          this.y = this.closed.y;
+          this.setState(STATES.CLOSED);
+        }
 
-  //       break;
-  //     }
-  //     case STATES.OPENED: {
-  //       if (this.timer) {
-  //         this.timer -= TIME_STEP * delta;
+        break;
+      }
+      case STATES.OPENED: {
+        if (this.timer) {
+          this.timer -= TIME_STEP * delta;
+          if (this.timer <= 0) {
+            this.timer = 0;
+            this.setState(STATES.CLOSING);
+          }
+        }
 
-  //         if (this.timer <= 0) {
-  //           this.timer = 0;
-  //           this.state = STATES.CLOSING;
-  //         }
-  //       }
-
-  //       break;
-  //     }
-  //     default: break;
-  //   }
-  // }
+        break;
+      }
+      default: break;
+    }
+  }
 }

@@ -43,37 +43,35 @@ export default class DynamicBody extends Body {
       this.angle += DEG[360];
     }
 
-    if (this.velocity) {
-      // Update x coordinate
-      this.x += COS[this.angle] * this.velocity * delta;
+    // Update x coordinate
+    this.x += COS[this.angle] * this.velocity * delta;
 
-      // Check for x axis collisions
-      bodies.forEach((body) => {
-        if (body.blocking(this) && this.collide(body)) {
-          if (body.x > this.x) {
-            this.x = (body.x - (body.width / 2)) - (this.width / 2);
-          } else {
-            this.x = body.x + (body.width / 2) + (this.width / 2);
-          }
+    // Check for x axis collisions
+    bodies.forEach((body) => {
+      if (body.blocking(this) && this.collide(body)) {
+        if (body.x > this.x) {
+          this.x = (body.x - (body.width / 2)) - (this.width / 2);
+        } else {
+          this.x = body.x + (body.width / 2) + (this.width / 2);
         }
-      });
+      }
+    });
 
-      // Update y coordinate
-      this.y += SIN[this.angle] * this.velocity * delta;
+    // Update y coordinate
+    this.y += SIN[this.angle] * this.velocity * delta;
 
-      // Check for y axis collisions
-      bodies.forEach((body) => {
-        if (body.blocking(this) && this.collide(body)) {
-          if (body.y > this.y) {
-            this.y = (body.y - (body.length / 2)) - (this.length / 2);
-          } else {
-            this.y = body.y + (body.length / 2) + (this.length / 2);
-          }
+    // Check for y axis collisions
+    bodies.forEach((body) => {
+      if (body.blocking(this) && this.collide(body)) {
+        if (body.y > this.y) {
+          this.y = (body.y - (body.length / 2)) - (this.length / 2);
+        } else {
+          this.y = body.y + (body.length / 2) + (this.length / 2);
         }
-      });
+      }
+    });
 
-      // Mark current sector with id
-      world.sector(this.gridX, this.gridY).addChildId(this.id);
-    }
+    // Mark current sector with id
+    world.sector(this.gridX, this.gridY).addChildId(this.id);
   }
 }
