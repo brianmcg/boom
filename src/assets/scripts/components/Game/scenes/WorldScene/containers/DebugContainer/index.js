@@ -21,7 +21,7 @@ export default class DebugContainer extends Container {
   }
 
   _render() {
-    const { grid, player } = this.level;
+    const { grid, player, items } = this.level;
     const playerSprite = this.sprites[player.id];
 
     playerSprite.x = (SCREEN.WIDTH / 2) - (playerSprite.width / 2);
@@ -34,6 +34,13 @@ export default class DebugContainer extends Container {
           this.sprites[sector.id].y = (playerSprite.y + (sector.shape.y - player.shape.y) * SCALE);
         }
       });
+    });
+
+    items.forEach((item) => {
+      if (item.blocking()) {
+        this.sprites[item.id].x = (playerSprite.x + (item.shape.x - player.shape.x) * SCALE);
+        this.sprites[item.id].y = (playerSprite.y + (item.shape.y - player.shape.y) * SCALE);
+      }
     });
   }
 }

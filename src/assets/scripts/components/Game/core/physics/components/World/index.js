@@ -18,11 +18,17 @@ export default class World {
    * @param {Body} body The body to add.
    */
   add(body) {
-    this.bodies[body.id] = body;
+    // const sector = this.sector(body.gridX, body.gridY);
+
+    // if (sector && sector !== body) {
+    //   sector.addChildId(body);
+    // }
 
     if (body.update && typeof body.update === 'function') {
       this.updateableIds.push(body.id);
     }
+
+    this.bodies[body.id] = body;
   }
 
   /**

@@ -1,10 +1,10 @@
 import { TILE_SIZE } from '~/constants/config';
-import { Sector } from '~/core/physics';
+import { RectangleSprite } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
 import LevelSector from './components/LevelSector';
-import { RectangleSprite } from '~/core/graphics';
+import Item from './components/Item';
 
 /**
  * @module helpers
@@ -108,13 +108,14 @@ const createLevel = (data) => {
           //   value: properties.value
           // }));
         } else {
-          // items.push(createItem({
-          //   image: _.last(tiles[itemValue - 1].image.split('/')),
-          //   x: x * TILE_SIZE + (TILE_SIZE / 2),
-          //   y: y * TILE_SIZE + (TILE_SIZE / 2),
-          //   blocking: !properties.nonBlocking,
-          //   radius: TILE_SIZE / 8
-          // }));
+          items.push(new Item({
+            face: tiles[itemValue - 1].image,
+            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+            width: TILE_SIZE / 2,
+            height: properties.nonBlocking ? 0 : TILE_SIZE / 2,
+            length: TILE_SIZE / 2,
+          }));
         }
       }
     }
@@ -133,6 +134,7 @@ const createLevel = (data) => {
   const level = new Level({
     grid,
     player,
+    items,
   });
 
   return level;
@@ -140,7 +142,7 @@ const createLevel = (data) => {
 
 const debugCreateSprites = (level) => {
   const sprites = {};
-  const { player, grid } = level;
+  const { player, grid, items } = level;
 
   grid.forEach((row) => {
     row.forEach((sector) => {
@@ -155,6 +157,17 @@ const debugCreateSprites = (level) => {
         sprites[sector.id] = sprite;
       }
     });
+  });
+
+  items.forEach((item) => {
+    if (item.height) {
+      const sprite = new RectangleSprite({
+        width: item.shape.width,
+        height: item.shape.length,
+      });
+
+      sprites[item.id] = sprite;
+    }
   });
 
   const { shape } = player;
