@@ -3,6 +3,7 @@ import { Sector } from '~/core/physics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
+import LevelSector from './components/LevelSector';
 import { RectangleSprite } from '~/core/graphics';
 
 /**
@@ -24,7 +25,7 @@ const LAYERS = {
 
 const createLevel = (data) => {
   const grid = [];
-  // const items = [];
+  const items = [];
   // const enemies = [];
 
   const mapWidth = data.layers[LAYERS.WALLS].width;
@@ -52,7 +53,7 @@ const createLevel = (data) => {
       const index = (y * mapWidth) + x;
       const wallValue = data.layers[LAYERS.WALLS].data[index];
       const doorValue = data.layers[LAYERS.DOORS].data[index];
-      // const itemValue = data.layers[LAYERS.ITEMS].data[index];
+      const itemValue = data.layers[LAYERS.ITEMS].data[index];
       // const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
       //
       let wallImage;
@@ -80,9 +81,10 @@ const createLevel = (data) => {
           height: doorImage ? TILE_SIZE : 0,
           length: doorAxisX ? 32 : TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
+          key: properties.key,
         }));
       } else {
-        row.push(new Sector({
+        row.push(new LevelSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
           width: TILE_SIZE,
@@ -90,6 +92,30 @@ const createLevel = (data) => {
           length: TILE_SIZE,
           faces,
         }));
+      }
+
+      if (itemValue) {
+        properties = tileProperties[itemValue - 1] || {};
+        if (properties.key) {
+          // TODO:
+          // items.push(createPickup({
+          //   image: _.last(tiles[itemValue - 1].image.split('/')),
+          //   x: x * TILE_SIZE + (TILE_SIZE / 2),
+          //   y: y * TILE_SIZE + (TILE_SIZE / 2),
+          //   blocking: !properties.nonBlocking,
+          //   radius: TILE_SIZE / 8,
+          //   key: properties.key,
+          //   value: properties.value
+          // }));
+        } else {
+          // items.push(createItem({
+          //   image: _.last(tiles[itemValue - 1].image.split('/')),
+          //   x: x * TILE_SIZE + (TILE_SIZE / 2),
+          //   y: y * TILE_SIZE + (TILE_SIZE / 2),
+          //   blocking: !properties.nonBlocking,
+          //   radius: TILE_SIZE / 8
+          // }));
+        }
       }
     }
 

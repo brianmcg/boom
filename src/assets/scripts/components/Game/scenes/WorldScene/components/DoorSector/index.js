@@ -1,6 +1,6 @@
 import { Sector } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
-import { STATES, EVENTS } from './constants';
+import { STATES, EVENTS, AXIS } from './constants';
 import { TEXT } from './text';
 
 const SPEED = 2;
@@ -8,8 +8,27 @@ const SPEED = 2;
 export default class DoorSector extends Sector {
   static get EVENTS() { return EVENTS; }
 
-  constructor({ key, axis, ...other }) {
+  /**
+   * Creates a door sector
+   * @param  {Number} options.x      The x coordinate of the sector.
+   * @param  {Number} options.y      The y coordinate of the sector
+   * @param  {Number} options.width  The width of the sector.
+   * @param  {Number} options.length The length of the sector.
+   * @param  {Number} options.height The height of the sector.
+   * @param  {String} options.face   The face of the sector.
+   * @param  {String} options.axis   The axis of the door.
+   * @param  {String} options.key    The key that unlocks the door.
+   */
+  constructor(options) {
+    const {
+      key,
+      axis = AXIS.X,
+      face,
+      ...other
+    } = options;
+
     super(other);
+
     this.timer = 0;
     this.key = key;
     this.axis = axis;
@@ -21,7 +40,7 @@ export default class DoorSector extends Sector {
 
     this.opened = {
       ...this.closed,
-      [axis]: this[axis] - (axis === 'x' ? this.width : this.length),
+      [axis]: this[axis] - (axis === AXIS.X ? this.width : this.length),
     };
   }
 

@@ -8,3 +8,8 @@ export const STATES = {
 export const EVENTS = {
   LOCKED: 'door:locked',
 };
+
+export const AXIS = {
+  X: 'x',
+  Y: 'y',
+};
