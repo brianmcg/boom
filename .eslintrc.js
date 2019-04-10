@@ -19,7 +19,13 @@ module.exports = {
       {
         devDependencies: true
       }
-    ]
+    ],
+    'prefer-destructuring': ['error', {
+      'array': false,
+      'object': true
+    }, {
+      'enforceForRenamedProperties': false
+    }]
   },
   settings: {
     'import/resolver': {

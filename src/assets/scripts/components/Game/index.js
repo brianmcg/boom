@@ -74,7 +74,7 @@ export default class Game extends Application {
   load() {
     this.loader.load(this.assets).then(({ sound }) => {
       this.sound.add(SOUND.EFFECTS, sound);
-      this.show(Scene.TYPES.TITLE);
+      this.show(Scene.TYPES.WORLD, 1);
     });
   }
 

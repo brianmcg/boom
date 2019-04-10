@@ -41,8 +41,11 @@ export default class Body extends EventEmitter {
    * Check if this body is blocking.
    * @return {Boolean}
    */
-  blocking() {
-    return !!this.height;
+  blocking(body) {
+    if (body) {
+      return body.blocking() && !!this.height;
+    }
+    return this.height;
   }
 
   /**
