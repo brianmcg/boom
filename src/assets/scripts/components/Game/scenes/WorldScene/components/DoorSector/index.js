@@ -1,16 +1,7 @@
-import { Sector, DEG, SIN } from '~/core/physics';
+import { Sector } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
-
-const STATES = {
-  OPENING: 'door:opening',
-  OPENED: 'door:opened',
-  CLOSING: 'door:closing',
-  CLOSED: 'door:closed',
-};
-
-const EVENTS = {
-  LOCKED: 'door:locked',
-};
+import { STATES, EVENTS } from './constants';
+import { TEXT } from './text';
 
 const SPEED = 2;
 
@@ -19,27 +10,25 @@ export default class DoorSector extends Sector {
 
   constructor({ key, axis, ...other }) {
     super(other);
+    this.timer = 0;
     this.key = key;
     this.axis = axis;
-    this.angle = DEG[90];
-    this.closed = { x: this.x, y: this.y };
-    this.opened = { x: this.x, y: this.y - this.length };
-    this.timer = 0;
+
+    this.closed = {
+      x: this.x,
+      y: this.y,
+    };
+
+    this.opened = {
+      ...this.closed,
+      [axis]: this[axis] - (axis === 'x' ? this.width : this.length),
+    };
   }
 
   setState(state) {
     switch (state) {
-      case STATES.OPENING: {
-        break;
-      }
       case STATES.OPENED: {
         this.timer = 5000;
-        break;
-      }
-      case STATES.CLOSING: {
-        break;
-      }
-      case STATES.CLOSED: {
         break;
       }
       default: break;
@@ -60,27 +49,27 @@ export default class DoorSector extends Sector {
     if (!this.locked) {
       this.setState(STATES.OPENING);
     } else {
-      this.emit(EVENTS.LOCKED, '');
+      this.emit(EVENTS.LOCKED, TEXT.KEY_REQUIRED);
     }
   }
 
   update(delta) {
     switch (this.state) {
       case STATES.OPENING: {
-        this.y += SIN[this.angle] * -SPEED * delta;
+        this[this.axis] += -SPEED * delta;
 
-        if (this.y <= this.opened.y) {
-          this.y = this.opened.y;
+        if (this[this.axis] <= this.opened[this.axis]) {
+          this[this.axis] = this.opened[this.axis];
           this.setState(STATES.OPENED);
         }
 
         break;
       }
       case STATES.CLOSING: {
-        this.y += SIN[this.angle] * SPEED * delta;
+        this[this.axis] += SPEED * delta;
 
-        if (this.y >= this.closed.y) {
-          this.y = this.closed.y;
+        if (this[this.axis] >= this.closed[this.axis]) {
+          this[this.axis] = this.closed[this.axis];
           this.setState(STATES.CLOSED);
         }
 
