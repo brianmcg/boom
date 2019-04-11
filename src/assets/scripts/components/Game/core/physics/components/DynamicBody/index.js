@@ -27,12 +27,12 @@ export default class DynamicBody extends Body {
    * @param  {Number} delta The delta time value.
    * @param  {World}  world The world that contains the body.
    */
-  update(delta = 1, world) {
+  update(delta) {
     // Get bodies from surrounding sectors
-    const bodies = world.adjacentBodies(this);
+    const bodies = this.world.adjacentBodies(this);
 
     // Unmark id from sector before moving
-    world.sector(this.gridX, this.gridY).removeChildId(this.id);
+    this.world.sector(this.gridX, this.gridY).removeChildId(this.id);
 
     // Update angle
     this.angle += Math.round(this.rotVelocity * delta);
@@ -72,6 +72,6 @@ export default class DynamicBody extends Body {
     });
 
     // Mark current sector with id
-    world.sector(this.gridX, this.gridY).addChildId(this.id);
+    this.world.sector(this.gridX, this.gridY).addChildId(this.id);
   }
 }

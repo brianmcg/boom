@@ -1,6 +1,7 @@
 import Character from '../Character';
 import { TILE_SIZE } from '~/constants/config';
 import { DEG } from '~/core/physics';
+import Item from '../Item';
 
 const { min, max } = Math;
 
@@ -50,9 +51,8 @@ export default class Player extends Character {
   /**
    * Update the dynamic body.
    * @param  {Number} delta The delta time value.
-   * @param  {World}  world The world that contains the body.
    */
-  update(delta, world) {
+  update(delta) {
     const {
       isMovingForward,
       isMovingBackward,
@@ -77,14 +77,24 @@ export default class Player extends Character {
       this.rotVelocity = 0;
     }
 
-    if (isUsing) {
-      world.adjacentSectors(this).forEach(sector => sector.use && sector.use());
-    }
+    this.world.adjacentBodies(this).forEach((body) => {
+      if (body instanceof Item && this.collide(body)) {
+        this.pickup(body);
+      } else if (isUsing && body.use) {
+        body.use();
+      }
+    });
 
-    super.update(delta, world);
+    super.update(delta);
 
     Object.keys(this.actions).forEach((key) => {
       this.actions[key] = false;
     });
+  }
+
+  pickup(item) {
+    this.world.remove(item);
+    // TODO: Add value;
+    this.item = null;
   }
 }

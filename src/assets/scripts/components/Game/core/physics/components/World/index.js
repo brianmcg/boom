@@ -20,9 +20,14 @@ export default class World {
   add(body) {
     if (body.update && typeof body.update === 'function') {
       this.updateableIds.push(body.id);
+      body.world = this;
     }
 
-    this.sector(body.gridX, body.gridY).addChildId(body.id);
+    const sector = this.sector(body.gridX, body.gridY);
+
+    if (sector !== body) {
+      this.sector(body.gridX, body.gridY).addChildId(body.id);
+    }
     this.bodies[body.id] = body;
   }
 
@@ -36,7 +41,7 @@ export default class World {
     }
 
     this.sector(body.gridX, body.gridY).removeChildId(body.id);
-    this.bodies = this.bodies.filter(thisBody => thisBody !== body);
+    delete this.bodies[body.id];
   }
 
   /**
@@ -44,7 +49,7 @@ export default class World {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
-    this.updateableIds.forEach(id => this.bodies[id].update(delta, this));
+    this.updateableIds.forEach(id => this.bodies[id].update(delta));
   }
 
   /**

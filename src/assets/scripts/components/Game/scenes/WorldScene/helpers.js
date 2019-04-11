@@ -5,6 +5,8 @@ import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
 import GameObject from './components/GameObject';
+import Item from './components/Item';
+import Enemy from './components/Enemy';
 
 /**
  * @module helpers
@@ -25,8 +27,9 @@ const LAYERS = {
 
 const createLevel = (data) => {
   const grid = [];
+  const objects = [];
   const items = [];
-  // const enemies = [];
+  const enemies = [];
 
   const mapWidth = data.layers[LAYERS.WALLS].width;
   const mapHeight = data.layers[LAYERS.WALLS].height;
@@ -54,7 +57,7 @@ const createLevel = (data) => {
       const wallValue = data.layers[LAYERS.WALLS].data[index];
       const doorValue = data.layers[LAYERS.DOORS].data[index];
       const itemValue = data.layers[LAYERS.ITEMS].data[index];
-      // const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
+      const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
       //
       let wallImage;
       let doorImage;
@@ -71,6 +74,7 @@ const createLevel = (data) => {
         properties = tileProperties[doorValue - 1] || {};
         doorImage = tiles[doorValue - 1].image;
         doorAxisX = data.layers[LAYERS.DOORS].data[index - 1];
+        sideIds = [doorImage];
       }
 
       if (!!doorImage && !wallImage) {
@@ -82,6 +86,7 @@ const createLevel = (data) => {
           length: doorAxisX ? 32 : TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
           key: properties.key,
+          sideIds,
         }));
       } else {
         row.push(new Sector({
@@ -97,18 +102,15 @@ const createLevel = (data) => {
       if (itemValue) {
         properties = tileProperties[itemValue - 1] || {};
         if (properties.key) {
-          // TODO:
-          // items.push(createPickup({
-          //   image: _.last(tiles[itemValue - 1].image.split('/')),
-          //   x: x * TILE_SIZE + (TILE_SIZE / 2),
-          //   y: y * TILE_SIZE + (TILE_SIZE / 2),
-          //   blocking: !properties.nonBlocking,
-          //   radius: TILE_SIZE / 8,
-          //   key: properties.key,
-          //   value: properties.value
-          // }));
+          items.push(new Item({
+            type: tiles[itemValue - 1].image,
+            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+            width: TILE_SIZE / 2,
+            length: TILE_SIZE / 2,
+          }));
         } else {
-          items.push(new GameObject({
+          objects.push(new GameObject({
             type: tiles[itemValue - 1].image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
@@ -117,6 +119,14 @@ const createLevel = (data) => {
             length: TILE_SIZE / 2,
           }));
         }
+      }
+
+      if (enemyValue) {
+        // enemies.push(createEnemy({
+        //   idFragment: _.last(tiles[enemyValue - 1].image.split('/')).split('_')[0],
+        //   x: x * TILE_SIZE + (TILE_SIZE / 2),
+        //   y: y * TILE_SIZE + (TILE_SIZE / 2)
+        // }));
       }
     }
 
@@ -134,6 +144,7 @@ const createLevel = (data) => {
   const level = new Level({
     grid,
     player,
+    objects,
     items,
   });
 
@@ -142,43 +153,26 @@ const createLevel = (data) => {
 
 const debugCreateSprites = (level) => {
   const sprites = {};
-  const { player, grid, items } = level;
+  const { bodies } = level;
 
-  grid.forEach((row) => {
-    row.forEach((sector) => {
-      if (sector.height) {
-        const { shape } = sector;
+  let color;
 
-        const sprite = new RectangleSprite({
-          width: shape.width,
-          height: shape.length,
-        });
-
-        sprites[sector.id] = sprite;
+  Object.values(bodies).forEach((body) => {
+    if (body.height || body instanceof Item) {
+      if (body instanceof Player) {
+        color = 0x00FF00;
+      } else if (body instanceof Item) {
+        color = 0x0000FF;
+      } else {
+        color = 0xFFFFFF;
       }
-    });
-  });
-
-  items.forEach((item) => {
-    if (item.height) {
-      const sprite = new RectangleSprite({
-        width: item.shape.width,
-        height: item.shape.length,
+      sprites[body.id] = new RectangleSprite({
+        width: body.shape.width,
+        height: body.shape.length,
+        color,
       });
-
-      sprites[item.id] = sprite;
     }
   });
-
-  const { shape } = player;
-
-  const playerSprite = new RectangleSprite({
-    width: shape.width,
-    height: shape.length,
-    color: 0xFF0000,
-  });
-
-  sprites[player.id] = playerSprite;
 
   return sprites;
 };

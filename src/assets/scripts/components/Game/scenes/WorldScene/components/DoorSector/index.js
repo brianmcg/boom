@@ -64,7 +64,7 @@ export default class DoorSector extends Sector {
     }
   }
 
-  update(delta, world) {
+  update(delta) {
     const { axis, state } = this;
 
     switch (state) {
@@ -92,7 +92,7 @@ export default class DoorSector extends Sector {
         if (this.timer) {
           this.timer -= TIME_STEP * delta;
           if (this.timer <= 0) {
-            const isBlocked = world.adjacentBodies(this)
+            const isBlocked = this.world.adjacentBodies(this)
               .reduce((result, body) => (
                 result || body instanceof DynamicBody
               ), false);
@@ -110,13 +110,5 @@ export default class DoorSector extends Sector {
       }
       default: break;
     }
-  }
-
-  collide(body) {
-    if (body instanceof Sector) {
-      return false;
-    }
-
-    return super.collide(body);
   }
 }

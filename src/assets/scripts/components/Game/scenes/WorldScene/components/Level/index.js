@@ -11,6 +11,7 @@ export default class Level extends World {
     const {
       player,
       enemies = [],
+      objects = [],
       items = [],
       grid = [[]],
     } = options;
@@ -18,10 +19,12 @@ export default class Level extends World {
     super(grid);
 
     enemies.forEach(enemy => this.add(enemy));
+    objects.forEach(object => this.add(object));
     items.forEach(item => this.add(item));
 
     this.add(player);
     this.player = player;
+    this.objects = objects;
     this.items = items;
   }
 

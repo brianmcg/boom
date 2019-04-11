@@ -53,7 +53,7 @@ export default class ScrollContainer extends Container {
    * Updates the scroll container.
    * @param  {Number} delta The delta time.
    */
-  update(delta = 1) {
+  update(delta) {
     const lastSprite = this.children[this.children.length - 1];
     const yEnd = SCREEN.HEIGHT - (lastSprite.height * 2) - this.height;
 

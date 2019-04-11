@@ -39,7 +39,7 @@ class LoadingContainer extends Container {
    * Update the LoadingContainer
    * @param  {Number} delta The delta time.
    */
-  update(delta = 1) {
+  update(delta) {
     this.counter += INCREMENT * delta;
 
     if (this.counter > INTERVAL) {
