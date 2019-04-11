@@ -1,4 +1,4 @@
-import { DataLoader } from '~/core/graphics';
+import { GraphicsLoader } from '~/core/graphics';
 import { SoundLoader } from '~/core/audio';
 import { DATA } from '~/constants/assets';
 /**
@@ -9,7 +9,7 @@ export default class Loader {
    * Creates a loader.
    */
   constructor() {
-    this.dataLoader = new DataLoader();
+    this.graphicsLoader = new GraphicsLoader();
     this.soundLoader = new SoundLoader();
   }
 
@@ -23,7 +23,7 @@ export default class Loader {
     return new Promise((resolve) => {
       Promise.all([
         this.soundLoader.load(sound),
-        this.dataLoader.load(data),
+        this.graphicsLoader.load(data),
       ]).then(([loadedSound, loadedData]) => {
         resolve({
           data: loadedData[DATA.SCENE],
@@ -39,14 +39,14 @@ export default class Loader {
    * @param  {Array} options.sound The sounds to unload.
    */
   unload({ data, sound } = {}) {
-    this.dataLoader.unload(data);
+    this.graphicsLoader.unload(data);
     this.soundLoader.unload(sound);
   }
 
 
   get cache() {
     return {
-      data: this.dataLoader.cache,
+      data: this.graphicsLoader.cache,
       sound: this.soundLoader.cache,
     };
   }

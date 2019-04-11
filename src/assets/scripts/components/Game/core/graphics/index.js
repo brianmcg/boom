@@ -9,9 +9,10 @@ import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
 import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
-import DataLoader from './components/DataLoader';
+import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import EventEmitter from './components/EventEmitter';
+import ParticleContainer from './components/ParticleContainer';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -55,9 +56,13 @@ export {
   /**
    * The data loader components.
    */
-  DataLoader,
+  GraphicsLoader,
   /**
    * The event emitter component.
    */
   EventEmitter,
+  /**
+   * The particle container component.
+   */
+  ParticleContainer,
 };

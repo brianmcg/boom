@@ -1,7 +1,6 @@
 import { Sector } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
 import { STATES, EVENTS, AXIS } from './constants';
-import { TEXT } from './text';
 
 const SPEED = 2;
 
@@ -57,19 +56,11 @@ export default class DoorSector extends Sector {
     this.state = state;
   }
 
-  collide(body) {
-    if (body instanceof Sector) {
-      return false;
-    }
-
-    return super.collide(body);
-  }
-
   use() {
     if (!this.locked) {
       this.setState(STATES.OPENING);
     } else {
-      this.emit(EVENTS.LOCKED, TEXT.KEY_REQUIRED);
+      this.emit(EVENTS.LOCKED, this.key);
     }
   }
 
@@ -110,5 +101,13 @@ export default class DoorSector extends Sector {
       }
       default: break;
     }
+  }
+
+  collide(body) {
+    if (body instanceof Sector) {
+      return false;
+    }
+
+    return super.collide(body);
   }
 }
