@@ -5,6 +5,8 @@ import { TEXT } from './text';
 
 const SPEED = 2;
 
+const WAIT_TIME = 5000;
+
 export default class DoorSector extends Sector {
   static get EVENTS() { return EVENTS; }
 
@@ -29,9 +31,14 @@ export default class DoorSector extends Sector {
 
     super(other);
 
+    const axisLength = axis === AXIS.X
+      ? this.width
+      : this.length;
+
     this.timer = 0;
     this.key = key;
     this.axis = axis;
+    this.face = face;
 
     this.closed = {
       x: this.x,
@@ -40,14 +47,14 @@ export default class DoorSector extends Sector {
 
     this.opened = {
       ...this.closed,
-      [axis]: this[axis] - (axis === AXIS.X ? this.width : this.length),
+      [axis]: this[axis] - axisLength,
     };
   }
 
   setState(state) {
     switch (state) {
       case STATES.OPENED: {
-        this.timer = 5000;
+        this.timer = WAIT_TIME;
         break;
       }
       default: break;
@@ -73,22 +80,24 @@ export default class DoorSector extends Sector {
   }
 
   update(delta) {
-    switch (this.state) {
-      case STATES.OPENING: {
-        this[this.axis] += -SPEED * delta;
+    const { axis, state } = this;
 
-        if (this[this.axis] <= this.opened[this.axis]) {
-          this[this.axis] = this.opened[this.axis];
+    switch (state) {
+      case STATES.OPENING: {
+        this[axis] -= SPEED * delta;
+
+        if (this[axis] <= this.opened[axis]) {
+          this[axis] = this.opened[axis];
           this.setState(STATES.OPENED);
         }
 
         break;
       }
       case STATES.CLOSING: {
-        this[this.axis] += SPEED * delta;
+        this[axis] += SPEED * delta;
 
-        if (this[this.axis] >= this.closed[this.axis]) {
-          this[this.axis] = this.closed[this.axis];
+        if (this[axis] >= this.closed[axis]) {
+          this[axis] = this.closed[axis];
           this.setState(STATES.CLOSED);
         }
 
