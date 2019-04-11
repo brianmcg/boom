@@ -122,6 +122,13 @@ const createLevel = (data) => {
       }
 
       if (enemyValue) {
+        enemies.push(new Enemy({
+          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+          width: TILE_SIZE / 2,
+          height: TILE_SIZE / 2,
+          length: TILE_SIZE / 2,
+        }));
         // enemies.push(createEnemy({
         //   idFragment: _.last(tiles[enemyValue - 1].image.split('/')).split('_')[0],
         //   x: x * TILE_SIZE + (TILE_SIZE / 2),
@@ -146,6 +153,7 @@ const createLevel = (data) => {
     player,
     objects,
     items,
+    enemies,
   });
 
   return level;
@@ -163,6 +171,8 @@ const debugCreateSprites = (level) => {
         color = 0x00FF00;
       } else if (body instanceof Item) {
         color = 0x0000FF;
+      } else if (body instanceof Enemy) {
+        color = 0xFF0000;
       } else {
         color = 0xFFFFFF;
       }

@@ -4,7 +4,7 @@ import { DEG } from '~/core/physics';
 export default class Enemy extends Character {
   constructor(options) {
     super(options);
-    this.velocity = 3;
-    this.rotVelocity = DEG[2];
+    this.velocity = 1;
+    this.rotVelocity = DEG[1];
   }
 }
