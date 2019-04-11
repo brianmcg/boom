@@ -1,4 +1,4 @@
-import { Sector } from '~/core/physics';
+import { Sector, DynamicBody } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
 import { STATES, EVENTS, AXIS } from './constants';
 
@@ -64,7 +64,7 @@ export default class DoorSector extends Sector {
     }
   }
 
-  update(delta) {
+  update(delta, world) {
     const { axis, state } = this;
 
     switch (state) {
@@ -92,8 +92,17 @@ export default class DoorSector extends Sector {
         if (this.timer) {
           this.timer -= TIME_STEP * delta;
           if (this.timer <= 0) {
-            this.timer = 0;
-            this.setState(STATES.CLOSING);
+            const isBlocked = world.adjacentBodies(this)
+              .reduce((result, body) => (
+                result || body instanceof DynamicBody
+              ), false);
+
+            if (!isBlocked) {
+              this.timer = 0;
+              this.setState(STATES.CLOSING);
+            } else {
+              this.timer = 1;
+            }
           }
         }
 

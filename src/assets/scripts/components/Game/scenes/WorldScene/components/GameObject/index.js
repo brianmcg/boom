@@ -1,6 +1,6 @@
 import { Body } from '~/core/physics';
 
-export default class Item extends Body {
+export default class GameObject extends Body {
   constructor({ type, ...other }) {
     super(other);
     this.type = type;

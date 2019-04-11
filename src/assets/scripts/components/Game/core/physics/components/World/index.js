@@ -62,18 +62,14 @@ export default class World {
    * @param  {Body}   body The body.
    * @return {Array}       The sectors surrounding the body.
    */
-  adjacentSectors(body) {
+  adjacentSectors(body, radius = 1) {
     const sectors = [];
     const x = body.gridX;
     const y = body.gridY;
 
-    for (let i = x - 1; i <= x + 1; i += 1) {
-      for (let j = y - 1; j <= y + 1; j += 1) {
-        const sector = this.sector(i, j);
-
-        if (sector !== body) {
-          sectors.push(sector);
-        }
+    for (let i = x - radius; i <= x + radius; i += 1) {
+      for (let j = y - radius; j <= y + radius; j += 1) {
+        sectors.push(this.sector(i, j));
       }
     }
 

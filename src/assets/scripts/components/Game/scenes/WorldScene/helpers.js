@@ -4,7 +4,7 @@ import { RectangleSprite } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
-import Item from './components/Item';
+import GameObject from './components/GameObject';
 
 /**
  * @module helpers
@@ -108,8 +108,8 @@ const createLevel = (data) => {
           //   value: properties.value
           // }));
         } else {
-          items.push(new Item({
-            face: tiles[itemValue - 1].image,
+          items.push(new GameObject({
+            type: tiles[itemValue - 1].image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE / 2,
