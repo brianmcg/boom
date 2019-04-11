@@ -1,9 +1,9 @@
 import { TILE_SIZE } from '~/constants/config';
+import { Sector } from '~/core/physics';
 import { RectangleSprite } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
-import LevelSector from './components/LevelSector';
 import Item from './components/Item';
 
 /**
@@ -59,12 +59,12 @@ const createLevel = (data) => {
       let wallImage;
       let doorImage;
       let properties;
-      let faces;
+      let sideIds;
       let doorAxisX;
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
-        faces = [wallImage, wallImage, wallImage, wallImage];
+        sideIds = [wallImage, wallImage, wallImage, wallImage];
       }
 
       if (doorValue) {
@@ -84,13 +84,13 @@ const createLevel = (data) => {
           key: properties.key,
         }));
       } else {
-        row.push(new LevelSector({
+        row.push(new Sector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
           width: TILE_SIZE,
           height: wallImage ? TILE_SIZE : 0,
           length: TILE_SIZE,
-          faces,
+          sideIds,
         }));
       }
 

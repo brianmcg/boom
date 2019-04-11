@@ -29,7 +29,7 @@ export default class Body extends EventEmitter {
 
     idCount += 1;
 
-    this.id = `${this.constructor.name}_${idCount}`;
+    this.id = `${this.name}_${idCount}`;
     this.x = x;
     this.y = y;
     this.width = width;
@@ -41,11 +41,8 @@ export default class Body extends EventEmitter {
    * Check if this body is blocking.
    * @return {Boolean}
    */
-  blocking(body) {
-    if (body) {
-      return body.blocking() && !!this.height;
-    }
-    return this.height;
+  blocking() {
+    return !!this.height;
   }
 
   /**
@@ -90,5 +87,9 @@ export default class Body extends EventEmitter {
       width: this.width,
       length: this.length,
     };
+  }
+
+  get name() {
+    return this.constructor.name;
   }
 }

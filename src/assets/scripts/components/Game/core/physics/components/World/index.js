@@ -18,16 +18,11 @@ export default class World {
    * @param {Body} body The body to add.
    */
   add(body) {
-    // const sector = this.sector(body.gridX, body.gridY);
-
-    // if (sector && sector !== body) {
-    //   sector.addChildId(body);
-    // }
-
     if (body.update && typeof body.update === 'function') {
       this.updateableIds.push(body.id);
     }
 
+    this.sector(body.gridX, body.gridY).addChildId(body.id);
     this.bodies[body.id] = body;
   }
 
@@ -36,11 +31,12 @@ export default class World {
    * @param {Body} body The body to remove.
    */
   remove(body) {
-    this.bodies = this.bodies.filter(thisBody => thisBody !== body);
-
     if (body.update) {
       this.updateableIds = this.updateableIds.filter(id => id !== body.id);
     }
+
+    this.sector(body.gridX, body.gridY).removeChildId(body.id);
+    this.bodies = this.bodies.filter(thisBody => thisBody !== body);
   }
 
   /**

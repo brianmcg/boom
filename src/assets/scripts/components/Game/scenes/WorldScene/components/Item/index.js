@@ -1,8 +1,8 @@
 import { Body } from '~/core/physics';
 
 export default class Item extends Body {
-  constructor({ face, ...other }) {
+  constructor({ textureId, ...other }) {
     super(other);
-    this.face = face;
+    this.textureId = textureId;
   }
 }

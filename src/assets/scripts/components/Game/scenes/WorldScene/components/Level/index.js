@@ -17,17 +17,12 @@ export default class Level extends World {
 
     super(grid);
 
-    this.items = items;
-
     enemies.forEach(enemy => this.add(enemy));
-
-    items.forEach((item) => {
-      this.sector(item.gridX, item.gridY).addChildId(item.id);
-      this.add(item);
-    });
+    items.forEach(item => this.add(item));
 
     this.add(player);
     this.player = player;
+    this.items = items;
   }
 
   update(delta, input) {

@@ -7,16 +7,16 @@ import DynamicBody from '../DynamicBody';
 export default class DynamicSector extends DynamicBody {
   /**
    * Creates a sector
-   * @param  {Number} options.x      The x coordinate of the sector.
-   * @param  {Number} options.y      The y coordinate of the sector
-   * @param  {Number} options.width  The width of the sector.
-   * @param  {Number} options.length The length of the sector.
-   * @param  {Number} options.height The height of the sector.
-   * @param  {Array}  options.faces  The faces of the sector.
+   * @param  {Number} options.x       The x coordinate of the sector.
+   * @param  {Number} options.y       The y coordinate of the sector
+   * @param  {Number} options.width   The width of the sector.
+   * @param  {Number} options.length  The length of the sector.
+   * @param  {Number} options.height  The height of the sector.
+   * @param  {Array}  options.sideIds The ids of the sides of the sector.
    */
-  constructor({ faces = [], ...other }) {
+  constructor({ sideIds = [], ...other }) {
     super(other);
-    this.faces = faces;
+    this.sideIds = sideIds;
     this.childIds = [];
   }
 

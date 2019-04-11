@@ -12,22 +12,17 @@ export default class DoorSector extends Sector {
 
   /**
    * Creates a door sector
-   * @param  {Number} options.x      The x coordinate of the sector.
-   * @param  {Number} options.y      The y coordinate of the sector
-   * @param  {Number} options.width  The width of the sector.
-   * @param  {Number} options.length The length of the sector.
-   * @param  {Number} options.height The height of the sector.
-   * @param  {String} options.face   The face of the sector.
-   * @param  {String} options.axis   The axis of the door.
-   * @param  {String} options.key    The key that unlocks the door.
+   * @param  {Number} options.x       The x coordinate of the sector.
+   * @param  {Number} options.y       The y coordinate of the sector
+   * @param  {Number} options.width   The width of the sector.
+   * @param  {Number} options.length  The length of the sector.
+   * @param  {Number} options.height  The height of the sector.
+   * @param  {Array}  options.sideIds The ids of the sides of the sector.
+   * @param  {String} options.axis    The axis of the door.
+   * @param  {String} options.key     The key that unlocks the door.
    */
   constructor(options) {
-    const {
-      key,
-      axis = AXIS.X,
-      face,
-      ...other
-    } = options;
+    const { key, axis = AXIS.X, ...other } = options;
 
     super(other);
 
@@ -38,7 +33,6 @@ export default class DoorSector extends Sector {
     this.timer = 0;
     this.key = key;
     this.axis = axis;
-    this.face = face;
 
     this.closed = {
       x: this.x,
