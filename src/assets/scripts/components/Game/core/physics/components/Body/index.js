@@ -25,6 +25,7 @@ export default class Body extends EventEmitter {
       width = 0,
       length = 0,
       height = 0,
+      blocking = true,
     } = options;
 
     idCount += 1;
@@ -35,14 +36,7 @@ export default class Body extends EventEmitter {
     this.width = width;
     this.length = length;
     this.height = height;
-  }
-
-  /**
-   * Check if this body is blocking.
-   * @return {Boolean}
-   */
-  blocking() {
-    return !!this.height;
+    this.blocking = blocking;
   }
 
   /**

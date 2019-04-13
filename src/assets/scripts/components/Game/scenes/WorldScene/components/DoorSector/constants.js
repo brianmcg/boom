@@ -9,7 +9,8 @@ export const EVENTS = {
   LOCKED: 'door:locked',
 };
 
-export const AXIS = {
-  X: 'x',
-  Y: 'y',
+export const DEFAULTS = {
+  AXIS: 'x',
+  SPEED: 2,
+  WAIT_TIME: 2000,
 };

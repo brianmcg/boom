@@ -34,7 +34,7 @@ export default class WorldScene extends Scene {
   create(resources) {
     super.create(resources);
 
-    const options = DEBUG ? debugParse(resources) : parse(resources);
+    const options = parse(resources, DEBUG);
     const world = DEBUG ? new DebugContainer(options) : new WorldContainer(options);
 
     this.main.addChild(world);

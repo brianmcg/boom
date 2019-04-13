@@ -7,6 +7,12 @@ import DoorSector from './components/DoorSector';
 import GameObject from './components/GameObject';
 import Item from './components/Item';
 import Enemy from './components/Enemy';
+import {
+  GREY,
+  RED,
+  YELLOW,
+  BLUE,
+} from '~/constants/colors';
 
 /**
  * @module helpers
@@ -58,7 +64,7 @@ const createLevel = (data) => {
       const doorValue = data.layers[LAYERS.DOORS].data[index];
       const itemValue = data.layers[LAYERS.ITEMS].data[index];
       const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
-      //
+
       let wallImage;
       let doorImage;
       let properties;
@@ -81,11 +87,12 @@ const createLevel = (data) => {
         row.push(new DoorSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: doorAxisX ? TILE_SIZE : 32,
-          height: doorImage ? TILE_SIZE : 0,
-          length: doorAxisX ? 32 : TILE_SIZE,
+          width: doorAxisX ? TILE_SIZE : (TILE_SIZE / 2),
+          height: TILE_SIZE,
+          length: doorAxisX ? (TILE_SIZE / 2) : TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
           key: properties.key,
+          blocking: !!doorImage,
           sideIds,
         }));
       } else {
@@ -95,9 +102,11 @@ const createLevel = (data) => {
           width: TILE_SIZE,
           height: wallImage ? TILE_SIZE : 0,
           length: TILE_SIZE,
+          blocking: !!wallImage,
           sideIds,
         }));
       }
+
 
       if (itemValue) {
         properties = tileProperties[itemValue - 1] || {};
@@ -108,6 +117,7 @@ const createLevel = (data) => {
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE / 2,
             length: TILE_SIZE / 2,
+            blocking: false,
           }));
         } else {
           objects.push(new GameObject({
@@ -115,8 +125,9 @@ const createLevel = (data) => {
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE / 2,
-            height: properties.nonBlocking ? 0 : TILE_SIZE / 2,
+            height: TILE_SIZE / 2,
             length: TILE_SIZE / 2,
+            blocking: !properties.nonBlocking,
           }));
         }
       }
@@ -129,11 +140,6 @@ const createLevel = (data) => {
           height: TILE_SIZE / 2,
           length: TILE_SIZE / 2,
         }));
-        // enemies.push(createEnemy({
-        //   idFragment: _.last(tiles[enemyValue - 1].image.split('/')).split('_')[0],
-        //   x: x * TILE_SIZE + (TILE_SIZE / 2),
-        //   y: y * TILE_SIZE + (TILE_SIZE / 2)
-        // }));
       }
     }
 
@@ -159,20 +165,25 @@ const createLevel = (data) => {
   return level;
 };
 
-const debugCreateSprites = (level) => {
+// TODO: Create level sprites.
+const createSprites = level => level;
+
+const createDebugSprites = (level) => {
   const sprites = {};
   const { bodies } = level;
 
   let color;
 
   Object.values(bodies).forEach((body) => {
-    if (body.height || body instanceof Item) {
+    if (body.blocking || body instanceof Item) {
       if (body instanceof Player) {
-        color = 0x00FF00;
+        color = YELLOW;
       } else if (body instanceof Item) {
-        color = 0x0000FF;
+        color = BLUE;
       } else if (body instanceof Enemy) {
-        color = 0xFF0000;
+        color = RED;
+      } else if (!body.blocking) {
+        color = GREY;
       } else {
         color = 0xFFFFFF;
       }
@@ -187,22 +198,19 @@ const debugCreateSprites = (level) => {
   return sprites;
 };
 
-export const parse = (resources) => {
-  const { data } = resources;
-  const { map } = data;
-  const level = createLevel(map);
-  return { level };
-};
-
 /**
  * Parses the loaded scene assets.
  * @param  {Object} assets The scene assets.
  * @return {Object}        The parsed scene data.
  */
-export const debugParse = (resources) => {
+export const parse = (resources, debug) => {
   const { data } = resources;
   const { map } = data;
   const level = createLevel(map);
-  const sprites = debugCreateSprites(level);
-  return { level, sprites };
+  const sprites = debug ? createDebugSprites(level) : createSprites(level);
+
+  return {
+    level,
+    sprites,
+  };
 };
