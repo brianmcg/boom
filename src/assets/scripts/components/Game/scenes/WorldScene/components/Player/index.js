@@ -87,6 +87,10 @@ export default class Player extends Character {
 
     super.update(delta);
 
+    if (this.world.sector(this.gridX, this.gridY).exit) {
+      this.world.emit('complete', this);
+    }
+
     Object.keys(this.actions).forEach((key) => {
       this.actions[key] = false;
     });

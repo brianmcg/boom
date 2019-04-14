@@ -1,12 +1,15 @@
+import { EventEmitter } from '~/core/graphics';
+
 /**
  * Class representing a world.
  */
-export default class World {
+export default class World extends EventEmitter {
   /**
    * Creates a world.
    * @param  {Array}  grid The map grid.
    */
   constructor(grid = [[]]) {
+    super();
     this.grid = grid;
     this.bodies = {};
     this.updateableIds = [];

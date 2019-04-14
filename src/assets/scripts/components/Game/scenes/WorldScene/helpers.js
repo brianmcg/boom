@@ -41,19 +41,19 @@ const createLevel = (data) => {
   const mapHeight = data.layers[LAYERS.WALLS].height;
   const { tiles } = data.tilesets[LAYERS.WALLS];
   const tileProperties = data.tilesets[0].tileproperties;
-  // const start = {};
-  // const end = {};
+  const start = {};
+  const end = {};
 
-  // data.layers[LAYERS.GAME].objects.forEach((object) => {
-  //   if (object.name === SECTOR_TYPES.START) {
-  //     start.x = Math.floor(object.x / TILE_SIZE);
-  //     start.y = Math.floor(object.y / TILE_SIZE);
-  //   }
-  //   if (object.name === SECTOR_TYPES.END) {
-  //     end.x = Math.floor(object.x / TILE_SIZE);
-  //     end.y = Math.floor(object.y / TILE_SIZE);
-  //   }
-  // });
+  data.layers[LAYERS.GAME].objects.forEach((object) => {
+    if (object.name === SECTOR_TYPES.START) {
+      start.x = Math.floor(object.x / TILE_SIZE);
+      start.y = Math.floor(object.y / TILE_SIZE);
+    }
+    if (object.name === SECTOR_TYPES.END) {
+      end.x = Math.floor(object.x / TILE_SIZE);
+      end.y = Math.floor(object.y / TILE_SIZE);
+    }
+  });
 
   for (let y = 0; y < mapHeight; y += 1) {
     const row = [];
@@ -70,6 +70,7 @@ const createLevel = (data) => {
       let properties;
       let sideIds;
       let doorAxisX;
+
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
@@ -96,7 +97,7 @@ const createLevel = (data) => {
           sideIds,
         }));
       } else {
-        row.push(new Sector({
+        const sector = new Sector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
           width: TILE_SIZE,
@@ -104,9 +105,12 @@ const createLevel = (data) => {
           length: TILE_SIZE,
           blocking: !!wallImage,
           sideIds,
-        }));
-      }
+        });
 
+        sector.exit = x === end.x && y === end.y;
+
+        row.push(sector);
+      }
 
       if (itemValue) {
         properties = tileProperties[itemValue - 1] || {};
@@ -147,8 +151,8 @@ const createLevel = (data) => {
   }
 
   const player = new Player({
-    x: (TILE_SIZE * 2) + (TILE_SIZE / 2),
-    y: (TILE_SIZE * 2) + (TILE_SIZE / 2),
+    x: (TILE_SIZE * start.x) + (TILE_SIZE / 2),
+    y: (TILE_SIZE * start.y) + (TILE_SIZE / 2),
     width: TILE_SIZE / 2,
     height: TILE_SIZE / 2,
     length: TILE_SIZE / 2,

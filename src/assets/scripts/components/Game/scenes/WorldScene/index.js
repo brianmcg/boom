@@ -1,6 +1,6 @@
 import { Keyboard } from '~/core/input';
 import { DEBUG } from '~/constants/config';
-import { parse, debugParse } from './helpers';
+import { parse } from './helpers';
 import Scene from '../Scene';
 import DebugContainer from './containers/DebugContainer';
 import WorldContainer from './containers/WorldContainer';
@@ -34,8 +34,13 @@ export default class WorldScene extends Scene {
   create(resources) {
     super.create(resources);
 
-    const options = parse(resources, DEBUG);
-    const world = DEBUG ? new DebugContainer(options) : new WorldContainer(options);
+    const { level, sprites } = parse(resources, DEBUG);
+
+    level.on('complete', () => this.setState(Scene.STATES.PROMPTING));
+
+    const world = DEBUG
+      ? new DebugContainer({ level, sprites })
+      : new WorldContainer({ level, sprites });
 
     this.main.addChild(world);
   }
@@ -50,5 +55,19 @@ export default class WorldScene extends Scene {
     };
 
     super.updateRunning(delta, input);
+  }
+
+  onPrompting() {
+    this.onPaused();
+    this.addChild(this.prompt);
+  }
+
+  updatePrompting(delta) {
+    this.prompt.update(delta);
+
+    if (isPressed(KEYS.SPACE)) {
+      this.setStatus(Scene.EVENTS.COMPLETE);
+      this.setState(Scene.STATES.FADING_OUT);
+    }
   }
 }
