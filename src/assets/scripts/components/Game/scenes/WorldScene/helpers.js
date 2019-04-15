@@ -12,6 +12,7 @@ import {
   RED,
   YELLOW,
   BLUE,
+  WHITE,
 } from '~/constants/colors';
 
 /**
@@ -70,7 +71,6 @@ const createLevel = (data) => {
       let properties;
       let sideIds;
       let doorAxisX;
-
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
@@ -199,8 +199,9 @@ const createDebugSprites = (level) => {
       } else if (body instanceof DoorSector) {
         color = BROWN;
       } else {
-        color = 0xFFFFFF;
+        color = WHITE;
       }
+
       bodySprites[body.id] = new RectangleSprite({
         width: body.shape.width,
         height: body.shape.length,
@@ -223,8 +224,5 @@ export const parse = (resources, debug) => {
   const level = createLevel(map);
   const sprites = debug ? createDebugSprites(level) : createSprites(level);
 
-  return {
-    level,
-    sprites,
-  };
+  return { level, sprites };
 };

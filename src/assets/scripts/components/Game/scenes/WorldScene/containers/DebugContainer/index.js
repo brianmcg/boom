@@ -1,7 +1,6 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
-import { DEG, Sector } from '~/core/physics';
-import Player from '../../components/Player';
+import { DEG } from '~/core/physics';
 
 const SCALE = 0.25;
 
@@ -49,7 +48,7 @@ export default class DebugContainer extends Container {
     const bodyIds = [];
 
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      const { xIntersection, yIntersection, visibleBodyIds } = player.castRay({ angle: rayAngle });
+      const { xIntersection, yIntersection, visibleBodyIds } = player.castRay({ rayAngle });
       this.dotSprites[xIndex].x = (playerSprite.x + ((xIntersection - 2) - player.shape.x) * SCALE);
       this.dotSprites[xIndex].y = (playerSprite.y + ((yIntersection - 2) - player.shape.y) * SCALE);
 

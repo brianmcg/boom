@@ -1,5 +1,12 @@
 import { World } from '~/core/physics';
 
+const EVENTS = {
+  COMPLETE: 'level:complete',
+};
+
+/**
+ * Class representing a level.
+ */
 export default class Level extends World {
   /**
    * @param  {Player} options.player  [description]
@@ -28,9 +35,27 @@ export default class Level extends World {
     this.items = items;
   }
 
+  /**
+   * Update the level.
+   * @param  {Number} delta The delta time value.
+   * @param  {Object} input The player input.
+   */
   update(delta, input) {
     this.player.actions = input;
 
     super.update(delta);
+
+    if (this.sector(this.player.gridX, this.player.gridY).exit) {
+      this.emit(EVENTS.COMPLETE, this.player);
+    }
+  }
+
+  /**
+   * The level events.
+   * @static
+   * @member
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }

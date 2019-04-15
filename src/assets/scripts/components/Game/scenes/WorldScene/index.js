@@ -1,9 +1,10 @@
 import { Keyboard } from '~/core/input';
 import { DEBUG } from '~/constants/config';
 import { parse } from './helpers';
-import Scene from '../Scene';
 import DebugContainer from './containers/DebugContainer';
 import WorldContainer from './containers/WorldContainer';
+import Level from './components/Level';
+import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
@@ -36,7 +37,7 @@ export default class WorldScene extends Scene {
 
     const { level, sprites } = parse(resources, DEBUG);
 
-    level.on('complete', () => this.setState(Scene.STATES.PROMPTING));
+    level.on(Level.EVENTS.COMPLETE, () => this.setState(Scene.STATES.PROMPTING));
 
     const world = DEBUG
       ? new DebugContainer({ level, sprites })
@@ -47,11 +48,11 @@ export default class WorldScene extends Scene {
 
   updateRunning(delta) {
     const input = {
-      isMovingForward: isHeld(KEYS.UP_ARROW),
-      isMovingBackward: isHeld(KEYS.DOWN_ARROW),
-      isTurningLeft: isHeld(KEYS.LEFT_ARROW),
-      isTurningRight: isHeld(KEYS.RIGHT_ARROW),
-      isUsing: isPressed(KEYS.SPACE),
+      moveForward: isHeld(KEYS.UP_ARROW),
+      moveBackward: isHeld(KEYS.DOWN_ARROW),
+      turnLeft: isHeld(KEYS.LEFT_ARROW),
+      turnRight: isHeld(KEYS.RIGHT_ARROW),
+      use: isPressed(KEYS.SPACE),
     };
 
     super.updateRunning(delta, input);

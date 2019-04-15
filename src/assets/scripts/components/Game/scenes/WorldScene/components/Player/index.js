@@ -1,16 +1,8 @@
 import Character from '../Character';
-import { TILE_SIZE } from '~/constants/config';
-import { DEG } from '~/core/physics';
 import Item from '../Item';
+import { DEFAULTS } from './constants';
 
 const { min, max } = Math;
-
-const DEFAULTS = {
-  MAX_VELOCITY: TILE_SIZE / 16,
-  MAX_ROT_VELOCITY: DEG[2],
-  ACCELERATION: TILE_SIZE / 256,
-  ROT_ACCELERATION: 2,
-};
 
 /**
  * Creates a player.
@@ -49,29 +41,29 @@ export default class Player extends Character {
   }
 
   /**
-   * Update the dynamic body.
+   * Update the player.
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
     const {
-      isMovingForward,
-      isMovingBackward,
-      isTurningLeft,
-      isTurningRight,
-      isUsing,
+      moveForward,
+      moveBackward,
+      turnLeft,
+      turnRight,
+      use,
     } = this.actions;
 
-    if (isMovingForward) {
+    if (moveForward) {
       this.velocity = min(this.velocity + this.acceleration, this.maxVelocity);
-    } else if (isMovingBackward) {
+    } else if (moveBackward) {
       this.velocity = max(this.velocity - this.acceleration, this.maxVelocity * -1);
     } else {
       this.velocity = max(0, this.velocity - this.acceleration);
     }
 
-    if (isTurningLeft) {
+    if (turnLeft) {
       this.rotVelocity = max(this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1);
-    } else if (isTurningRight) {
+    } else if (turnRight) {
       this.rotVelocity = min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
     } else {
       this.rotVelocity = 0;
@@ -80,22 +72,22 @@ export default class Player extends Character {
     this.world.adjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
         this.pickup(body);
-      } else if (isUsing && body.use) {
+      } else if (use && body.use) {
         body.use();
       }
     });
 
     super.update(delta);
 
-    if (this.world.sector(this.gridX, this.gridY).exit) {
-      this.world.emit('complete', this);
-    }
-
     Object.keys(this.actions).forEach((key) => {
       this.actions[key] = false;
     });
   }
 
+  /**
+   * Pick up an item.
+   * @param  {Item} item The item to pick up.
+   */
   pickup(item) {
     this.world.remove(item);
     // TODO: Add value;

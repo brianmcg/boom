@@ -51,10 +51,12 @@ export default class Character extends DynamicBody {
       y,
       gridX,
       gridY,
+      angle,
+      world,
     } = this;
 
-    const rayAngle = options.angle || this.angle;
-    const visibleBodyIds = [...this.world.sector(gridX, gridY).childIds];
+    const rayAngle = options.rayAngle || angle;
+    const visibleBodyIds = [...world.sector(gridX, gridY).childIds];
 
     if (rayAngle > 0 && rayAngle < DEG[180]) {
       horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
@@ -87,15 +89,15 @@ export default class Character extends DynamicBody {
         yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
 
         if (
-          (xGridIndex >= this.world.width)
-            || (yGridIndex >= this.world.height)
+          (xGridIndex >= world.width)
+            || (yGridIndex >= world.height)
             || xGridIndex < 0 || yGridIndex < 0
         ) {
           distToHorizontalGridBeingHit = Infinity;
           break;
         }
 
-        sector = this.world.sector(xGridIndex, yGridIndex);
+        sector = world.sector(xGridIndex, yGridIndex);
 
         if (sector.blocking) {
           if (sector instanceof DoorSector) {
@@ -154,15 +156,15 @@ export default class Character extends DynamicBody {
         yGridIndex = Math.floor(yIntersection / TILE_SIZE);
 
         if (
-          (xGridIndex >= this.world.width)
-            || (yGridIndex >= this.world.height)
+          (xGridIndex >= world.width)
+            || (yGridIndex >= world.height)
             || xGridIndex < 0 || yGridIndex < 0
         ) {
           distToVerticalGridBeingHit = Infinity;
           break;
         }
 
-        sector = this.world.sector(xGridIndex, yGridIndex);
+        sector = world.sector(xGridIndex, yGridIndex);
 
         if (sector.blocking) {
           if (sector instanceof DoorSector) {
@@ -193,11 +195,7 @@ export default class Character extends DynamicBody {
     if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
       xGridIndex = Math.floor(xIntersection / TILE_SIZE);
       yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
-      sector = this.world.sector(xGridIndex, yGridIndex);
-
-      // if (sector instanceof DoorSector) {
-      //   xIntersection -= TILE_SIZE / 2;
-      // }
+      sector = world.sector(xGridIndex, yGridIndex);
 
       // if (sector.side.image && sector.side.value) {
       //   image = sector.side.image;
@@ -221,11 +219,7 @@ export default class Character extends DynamicBody {
 
     xGridIndex = Math.floor(verticalGrid / TILE_SIZE);
     yGridIndex = Math.floor(yIntersection / TILE_SIZE);
-    sector = this.world.sector(xGridIndex, yGridIndex);
-
-    // if (sector instanceof DoorSector) {
-    //   yIntersection -= TILE_SIZE / 2;
-    // }
+    sector = world.sector(xGridIndex, yGridIndex);
 
     // if (sector.side.image && !sector.side.value) {
     //   image = sector.side.image;
