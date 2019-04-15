@@ -93,4 +93,11 @@ export default class Player extends Character {
     // TODO: Add value;
     this.item = null;
   }
+
+  distanceTo(body) {
+    const dx = this.x - body.x;
+    const dy = this.y - body.y;
+
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 }

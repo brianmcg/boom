@@ -43,3 +43,9 @@ export const SCREEN = { WIDTH: 320, HEIGHT: 180 };
  * @type {Boolean}
  */
 export const DEBUG = true;
+
+/**
+ * The draw distance.
+ * @type {Number}
+ */
+export const DRAW_DISTANCE = TILE_SIZE * 10;

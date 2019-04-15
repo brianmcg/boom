@@ -13,6 +13,7 @@ import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import EventEmitter from './components/EventEmitter';
 import ParticleContainer from './components/ParticleContainer';
+import Line from './components/Line';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -65,4 +66,8 @@ export {
    * The particle container component.
    */
   ParticleContainer,
+  /**
+   * The line component.
+   */
+  Line,
 };

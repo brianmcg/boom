@@ -1,6 +1,7 @@
 import { Container } from '~/core/graphics';
-import { SCREEN } from '~/constants/config';
-import { DEG } from '~/core/physics';
+import { SCREEN, DRAW_DISTANCE } from '~/constants/config';
+import { DEG, Sector } from '~/core/physics';
+import Player from '../../components/Player';
 
 const SCALE = 0.25;
 
@@ -9,7 +10,7 @@ export default class DebugContainer extends Container {
     super();
     this.level = level;
     this.bodySprites = sprites.bodySprites;
-    this.dotSprites = sprites.dotSprites;
+    this.raySprites = sprites.raySprites;
 
     Object.values(this.bodySprites).forEach((sprite) => {
       sprite.width *= SCALE;
@@ -17,7 +18,7 @@ export default class DebugContainer extends Container {
       this.addChild(sprite);
     });
 
-    this.dotSprites.forEach((sprite) => {
+    this.raySprites.forEach((sprite) => {
       sprite.width *= SCALE;
       sprite.height *= SCALE;
       this.addChild(sprite);
@@ -48,12 +49,21 @@ export default class DebugContainer extends Container {
     const bodyIds = [];
 
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      const { xIntersection, yIntersection, visibleBodyIds } = player.castRay({ rayAngle });
-      this.dotSprites[xIndex].x = (playerSprite.x + ((xIntersection - 2) - player.shape.x) * SCALE);
-      this.dotSprites[xIndex].y = (playerSprite.y + ((yIntersection - 2) - player.shape.y) * SCALE);
+      const {
+        xIntersection,
+        yIntersection,
+        visibleBodyIds,
+      } = player.castRay({ rayAngle });
+
+      this.raySprites[xIndex].updatePoints([
+        SCREEN.WIDTH / 2,
+        SCREEN.HEIGHT / 2,
+        (playerSprite.x + ((xIntersection - 2) - player.shape.x) * SCALE),
+        (playerSprite.y + ((yIntersection - 2) - player.shape.y) * SCALE),
+      ]);
 
       visibleBodyIds.forEach((id) => {
-        if (id !== player.id && !bodyIds.includes(id)) {
+        if (!bodyIds.includes(id) && bodies[id].distanceToPlayer < DRAW_DISTANCE) {
           bodyIds.push(id);
         }
       });
@@ -69,10 +79,13 @@ export default class DebugContainer extends Container {
       if (this.bodySprites[body.id]) {
         this.bodySprites[body.id].x = (playerSprite.x + (body.shape.x - player.shape.x) * SCALE);
         this.bodySprites[body.id].y = (playerSprite.y + (body.shape.y - player.shape.y) * SCALE);
-
-        // if (body instanceof Sector || body instanceof Player || bodyIds.includes(body.id)) {
         this.bodySprites[body.id].visible = true;
-        // }
+
+        if (bodyIds.includes(body.id) || body instanceof Sector || body instanceof Player) {
+          this.bodySprites[body.id].alpha = 1;
+        } else if (body.distanceToPlayer) {
+          this.bodySprites[body.id].alpha = 0.4;
+        }
       }
     });
   }

@@ -1,6 +1,6 @@
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
-import { RectangleSprite } from '~/core/graphics';
+import { RectangleSprite, Line } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
@@ -178,20 +178,16 @@ const createDebugSprites = (level) => {
 
   let color;
 
-  const dotSprites = [];
+  const raySprites = [];
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    dotSprites.push(new RectangleSprite({
-      width: 5,
-      height: 5,
-      color: 0xFF0000,
-    }));
+    raySprites.push(new Line({ color: YELLOW }));
   }
 
   Object.values(bodies).forEach((body) => {
     if (body.blocking || body instanceof Item) {
       if (body instanceof Player) {
-        color = YELLOW;
+        color = 0x00FF00;
       } else if (body instanceof Item) {
         color = BLUE;
       } else if (body instanceof Enemy) {
@@ -210,7 +206,7 @@ const createDebugSprites = (level) => {
     }
   });
 
-  return { bodySprites, dotSprites };
+  return { bodySprites, raySprites };
 };
 
 /**

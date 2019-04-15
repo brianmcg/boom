@@ -29,7 +29,7 @@ export default class Character extends DynamicBody {
     this.maxHealth = maxHealth;
   }
 
-  castRay(options = {}) {
+  castRay({ rayAngle }) {
     let horizontalGrid;
     let verticalGrid;
     let distToNextHorizontalGrid;
@@ -55,8 +55,10 @@ export default class Character extends DynamicBody {
       world,
     } = this;
 
-    const rayAngle = options.rayAngle || angle;
-    const visibleBodyIds = [...world.sector(gridX, gridY).childIds];
+    const visibleBodyIds = [...world.sector(gridX, gridY).childIds]
+      .filter(id => this.id !== id);
+
+    rayAngle = rayAngle || angle;
 
     if (rayAngle > 0 && rayAngle < DEG[180]) {
       horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
