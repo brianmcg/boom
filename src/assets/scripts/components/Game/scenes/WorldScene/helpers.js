@@ -1,4 +1,4 @@
-import { TILE_SIZE } from '~/constants/config';
+import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
 import { RectangleSprite } from '~/core/graphics';
 import Level from './components/Level';
@@ -8,7 +8,7 @@ import GameObject from './components/GameObject';
 import Item from './components/Item';
 import Enemy from './components/Enemy';
 import {
-  GREY,
+  BROWN,
   RED,
   YELLOW,
   BLUE,
@@ -88,9 +88,9 @@ const createLevel = (data) => {
         row.push(new DoorSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: doorAxisX ? TILE_SIZE : (TILE_SIZE / 2),
+          width: TILE_SIZE,
           height: TILE_SIZE,
-          length: doorAxisX ? (TILE_SIZE / 2) : TILE_SIZE,
+          length: TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
           key: properties.key,
           blocking: !!doorImage,
@@ -169,14 +169,24 @@ const createLevel = (data) => {
   return level;
 };
 
-// TODO: Create level sprites.
+// TODO: Create level bodySprites.
 const createSprites = level => level;
 
 const createDebugSprites = (level) => {
-  const sprites = {};
+  const bodySprites = {};
   const { bodies } = level;
 
   let color;
+
+  const dotSprites = [];
+
+  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+    dotSprites.push(new RectangleSprite({
+      width: 5,
+      height: 5,
+      color: 0xFF0000,
+    }));
+  }
 
   Object.values(bodies).forEach((body) => {
     if (body.blocking || body instanceof Item) {
@@ -186,12 +196,12 @@ const createDebugSprites = (level) => {
         color = BLUE;
       } else if (body instanceof Enemy) {
         color = RED;
-      } else if (!body.blocking) {
-        color = GREY;
+      } else if (body instanceof DoorSector) {
+        color = BROWN;
       } else {
         color = 0xFFFFFF;
       }
-      sprites[body.id] = new RectangleSprite({
+      bodySprites[body.id] = new RectangleSprite({
         width: body.shape.width,
         height: body.shape.length,
         color,
@@ -199,7 +209,7 @@ const createDebugSprites = (level) => {
     }
   });
 
-  return sprites;
+  return { bodySprites, dotSprites };
 };
 
 /**

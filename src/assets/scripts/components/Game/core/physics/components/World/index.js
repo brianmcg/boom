@@ -14,6 +14,9 @@ export default class World extends EventEmitter {
     this.bodies = {};
     this.updateableIds = [];
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
+
+    this.width = this.grid.length;
+    this.height = this.grid[0].length
   }
 
   /**
