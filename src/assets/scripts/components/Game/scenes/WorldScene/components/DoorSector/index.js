@@ -27,10 +27,6 @@ export default class DoorSector extends Sector {
 
     super(other);
 
-    const axisLength = axis === DEFAULTS.AXIS
-      ? this.width
-      : this.length;
-
     this.timer = 0;
     this.key = key;
     this.axis = axis;
@@ -44,7 +40,7 @@ export default class DoorSector extends Sector {
 
     this.opened = {
       ...this.closed,
-      [axis]: this[axis] - axisLength,
+      [axis]: this[axis] + this.length,
     };
   }
 
@@ -73,9 +69,9 @@ export default class DoorSector extends Sector {
 
     switch (state) {
       case STATES.OPENING: {
-        this[axis] -= speed * delta;
+        this[axis] += speed * delta;
 
-        if (this[axis] <= this.opened[axis]) {
+        if (this[axis] >= this.opened[axis]) {
           this[axis] = this.opened[axis];
           this.setState(STATES.OPENED);
         }
@@ -83,9 +79,9 @@ export default class DoorSector extends Sector {
         break;
       }
       case STATES.CLOSING: {
-        this[axis] += speed * delta;
+        this[axis] -= speed * delta;
 
-        if (this[axis] >= this.closed[axis]) {
+        if (this[axis] <= this.closed[axis]) {
           this[axis] = this.closed[axis];
           this.setState(STATES.CLOSED);
         }
@@ -112,5 +108,10 @@ export default class DoorSector extends Sector {
       }
       default: break;
     }
+  }
+
+  get offset() {
+    const { closed, axis } = this;
+    return this[axis] - closed[axis];
   }
 }

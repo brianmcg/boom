@@ -1,6 +1,7 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
-import { DEG } from '~/core/physics';
+import { DEG, Sector } from '~/core/physics';
+import Player from '../../components/Player';
 
 const SCALE = 0.25;
 
@@ -39,24 +40,24 @@ export default class DebugContainer extends Container {
       sprite.visible = false;
     });
 
-    Object.values(bodies).forEach((body) => {
-      if (this.bodySprites[body.id]) {
-        this.bodySprites[body.id].x = (playerSprite.x + (body.shape.x - player.shape.x) * SCALE);
-        this.bodySprites[body.id].y = (playerSprite.y + (body.shape.y - player.shape.y) * SCALE);
-        this.bodySprites[body.id].visible = true;
-      }
-    });
-
     let rayAngle = player.angle - DEG[30];
 
     if (rayAngle < 0) {
       rayAngle += DEG[360];
     }
 
+    const bodyIds = [];
+
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      const ray = player.castRay({ angle: rayAngle });
-      this.dotSprites[xIndex].x = (playerSprite.x + ((ray.xIntersection - 2) - player.shape.x) * SCALE);
-      this.dotSprites[xIndex].y = (playerSprite.y + ((ray.yIntersection - 2) - player.shape.y) * SCALE);
+      const { xIntersection, yIntersection, visibleBodyIds } = player.castRay({ angle: rayAngle });
+      this.dotSprites[xIndex].x = (playerSprite.x + ((xIntersection - 2) - player.shape.x) * SCALE);
+      this.dotSprites[xIndex].y = (playerSprite.y + ((yIntersection - 2) - player.shape.y) * SCALE);
+
+      visibleBodyIds.forEach((id) => {
+        if (id !== player.id && !bodyIds.includes(id)) {
+          bodyIds.push(id);
+        }
+      });
 
       rayAngle += 1;
 
@@ -64,5 +65,16 @@ export default class DebugContainer extends Container {
         rayAngle -= DEG[360];
       }
     }
+
+    Object.values(bodies).forEach((body) => {
+      if (this.bodySprites[body.id]) {
+        this.bodySprites[body.id].x = (playerSprite.x + (body.shape.x - player.shape.x) * SCALE);
+        this.bodySprites[body.id].y = (playerSprite.y + (body.shape.y - player.shape.y) * SCALE);
+
+        // if (body instanceof Sector || body instanceof Player || bodyIds.includes(body.id)) {
+        this.bodySprites[body.id].visible = true;
+        // }
+      }
+    });
   }
 }

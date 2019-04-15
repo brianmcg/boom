@@ -31,35 +31,39 @@ export default class Character extends DynamicBody {
 
   castRay(options = {}) {
     let horizontalGrid;
+    let verticalGrid;
     let distToNextHorizontalGrid;
+    let distToNextVerticalGrid;
+    let distToHorizontalGridBeingHit;
+    let distToVerticalGridBeingHit;
+    let distToNextXIntersection;
+    let distToNextYIntersection;
     let xIntersection;
     let yIntersection;
-    let distToHorizontalGridBeingHit;
-    let verticalGrid;
-    let distToNextXIntersection;
     let xGridIndex;
     let yGridIndex;
+    let xOffsetDist;
+    let yOffsetDist;
     let sector;
-    let distToNextVerticalGrid;
-    let distToVerticalGridBeingHit;
-    let distToNextYIntersection;
 
-    const casterX = this.x;
-    const casterY = this.y;
-    const { gridX, gridY } = this;
+    const {
+      x,
+      y,
+      gridX,
+      gridY,
+    } = this;
 
     const rayAngle = options.angle || this.angle;
-    // let visibleItemIds = this.world.sector(gridX, gridY).itemIds;
-    // let visibleEnemyIds = this.world.sector(gridX, gridY).enemyIds;
+    const visibleBodyIds = [...this.world.sector(gridX, gridY).childIds];
 
     if (rayAngle > 0 && rayAngle < DEG[180]) {
       horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
       distToNextHorizontalGrid = TILE_SIZE;
-      xIntersection = (horizontalGrid - casterY) / TAN[rayAngle] + casterX;
+      xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
     } else {
       horizontalGrid = gridY * TILE_SIZE;
       distToNextHorizontalGrid = -TILE_SIZE;
-      xIntersection = (horizontalGrid - casterY) / TAN[rayAngle] + casterX;
+      xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
       horizontalGrid -= 1;
     }
 
@@ -94,31 +98,25 @@ export default class Character extends DynamicBody {
         sector = this.world.sector(xGridIndex, yGridIndex);
 
         if (sector.blocking) {
-          // if (sector instanceof DoorSector) {
-          //   offsetRatio = TILE_SIZE / sector.offset.y;
-          //   xOffsetDist = distToNextXIntersection / offsetRatio;
-          //   yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+          if (sector instanceof DoorSector) {
+            xOffsetDist = distToNextXIntersection / 2;
+            yOffsetDist = distToNextHorizontalGrid / 2;
 
-          //   if ((xIntersection + xOffsetDist) % TILE_SIZE > sector.offset.x) {
-          //     xIntersection += xOffsetDist;
-          //     horizontalGrid += yOffsetDist;
-          //     distToHorizontalGridBeingHit = (xIntersection - casterX) / cos(rayAngle);
-          //     break;
-          //   } else {
-          //     xIntersection += distToNextXIntersection;
-          //     horizontalGrid += distToNextHorizontalGrid;
-          //   }
-          // } else {
-          distToHorizontalGridBeingHit = (xIntersection - casterX) / COS[rayAngle];
-          break;
-          // }
+            if ((xIntersection + xOffsetDist) % TILE_SIZE > sector.offset) {
+              xIntersection += xOffsetDist;
+              horizontalGrid += yOffsetDist;
+              distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
+              break;
+            } else {
+              xIntersection += distToNextXIntersection;
+              horizontalGrid += distToNextHorizontalGrid;
+            }
+          } else {
+            distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
+            break;
+          }
         } else {
-          // if (sector && sector.itemIds.length) {
-          //   visibleItemIds = _.union(visibleItemIds, sector.itemIds);
-          // }
-          // if (sector && sector.enemyIds.length) {
-          //   visibleEnemyIds = _.union(visibleEnemyIds, sector.enemyIds);
-          // }
+          sector.childIds.forEach(id => visibleBodyIds.push(id));
           xIntersection += distToNextXIntersection;
           horizontalGrid += distToNextHorizontalGrid;
         }
@@ -128,11 +126,11 @@ export default class Character extends DynamicBody {
     if (rayAngle < DEG[90] || rayAngle > DEG[270]) {
       verticalGrid = TILE_SIZE + gridX * TILE_SIZE;
       distToNextVerticalGrid = TILE_SIZE;
-      yIntersection = TAN[rayAngle] * (verticalGrid - casterX) + casterY;
+      yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
     } else {
       verticalGrid = gridX * TILE_SIZE;
       distToNextVerticalGrid = -TILE_SIZE;
-      yIntersection = TAN[rayAngle] * (verticalGrid - casterX) + casterY;
+      yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
       verticalGrid -= 1;
     }
 
@@ -167,31 +165,25 @@ export default class Character extends DynamicBody {
         sector = this.world.sector(xGridIndex, yGridIndex);
 
         if (sector.blocking) {
-          // if (sector instanceof Door) {
-          //   offsetRatio = TILE_SIZE / sector.offset.x;
-          //   yOffsetDist = distToNextYIntersection / offsetRatio;
-          //   xOffsetDist = distToNextVerticalGrid / offsetRatio;
+          if (sector instanceof DoorSector) {
+            yOffsetDist = distToNextYIntersection / 2;
+            xOffsetDist = distToNextVerticalGrid / 2;
 
-          //   if ((yIntersection + yOffsetDist) % TILE_SIZE > sector.offset.y) {
-          //     yIntersection += yOffsetDist;
-          //     verticalGrid += xOffsetDist;
-          //     distToVerticalGridBeingHit = (yIntersection - casterY) / sin(rayAngle);
-          //     break;
-          //   } else {
-          //     yIntersection += distToNextYIntersection;
-          //     verticalGrid += distToNextVerticalGrid;
-          //   }
-          // } else {
-          distToVerticalGridBeingHit = (yIntersection - casterY) / SIN[rayAngle];
-          break;
-          // }
+            if ((yIntersection + yOffsetDist) % TILE_SIZE > sector.offset) {
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
+              break;
+            } else {
+              yIntersection += distToNextYIntersection;
+              verticalGrid += distToNextVerticalGrid;
+            }
+          } else {
+            distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
+            break;
+          }
         } else {
-          // if (sector && sector.itemIds.length) {
-          //   visibleItemIds = _.union(visibleItemIds, sector.itemIds);
-          // }
-          // if (sector && sector.enemyIds.length) {
-          //   visibleEnemyIds = _.union(visibleEnemyIds, sector.enemyIds);
-          // }
+          sector.childIds.forEach(id => visibleBodyIds.push(id));
           yIntersection += distToNextYIntersection;
           verticalGrid += distToNextVerticalGrid;
         }
@@ -217,6 +209,7 @@ export default class Character extends DynamicBody {
         xIntersection: Math.floor(xIntersection),
         yIntersection: horizontalGrid,
         distance: distToHorizontalGridBeingHit,
+        visibleBodyIds,
         // door: sector instanceof Door,
         // side: 1,
         // image: image,
@@ -244,6 +237,7 @@ export default class Character extends DynamicBody {
       xIntersection: verticalGrid,
       yIntersection: Math.floor(yIntersection),
       distance: distToVerticalGridBeingHit,
+      visibleBodyIds,
       // door: sector instanceof Door,
       // image: image,
       // side: 0,
