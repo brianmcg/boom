@@ -58,7 +58,9 @@ export default class Character extends DynamicBody {
     const visibleBodyIds = [...world.sector(gridX, gridY).childIds]
       .filter(id => this.id !== id);
 
-    rayAngle = rayAngle || angle;
+    if (!rayAngle && rayAngle !== 0) {
+      rayAngle = angle;
+    }
 
     if (rayAngle > 0 && rayAngle < DEG[180]) {
       horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
@@ -210,6 +212,7 @@ export default class Character extends DynamicBody {
         yIntersection: horizontalGrid,
         distance: distToHorizontalGridBeingHit,
         visibleBodyIds,
+        side: 0,
         // door: sector instanceof Door,
         // side: 1,
         // image: image,
@@ -234,6 +237,7 @@ export default class Character extends DynamicBody {
       yIntersection: Math.floor(yIntersection),
       distance: distToVerticalGridBeingHit,
       visibleBodyIds,
+      side: 1,
       // door: sector instanceof Door,
       // image: image,
       // side: 0,

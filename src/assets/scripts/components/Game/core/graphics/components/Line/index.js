@@ -6,7 +6,7 @@ export default class Line extends Graphics {
       points = [0, 0, 0, 0],
       width = 1,
       color = 0xFFFFFF,
-      alpha = 0.1,
+      alpha = 0.15,
     } = options;
 
     super();

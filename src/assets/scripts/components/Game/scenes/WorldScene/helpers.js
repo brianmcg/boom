@@ -169,9 +169,6 @@ const createLevel = (data) => {
   return level;
 };
 
-// TODO: Create level bodySprites.
-const createSprites = level => level;
-
 const createDebugSprites = (level) => {
   const bodySprites = {};
   const { bodies } = level;
@@ -209,16 +206,31 @@ const createDebugSprites = (level) => {
   return { bodySprites, raySprites };
 };
 
+// TODO: Create level bodySprites.
+const createSprites = () => {
+  const walls = [];
+  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+    walls.push(new RectangleSprite({
+      height: TILE_SIZE,
+      width: 1,
+    }));
+  }
+  // console.log(level, textures);
+  return {
+    entities: { walls },
+  };
+};
+
 /**
  * Parses the loaded scene assets.
  * @param  {Object} assets The scene assets.
  * @return {Object}        The parsed scene data.
  */
 export const parse = (resources, debug) => {
-  const { data } = resources;
+  const { data, textures } = resources;
   const { map } = data;
   const level = createLevel(map);
-  const sprites = debug ? createDebugSprites(level) : createSprites(level);
+  const sprites = debug ? createDebugSprites(level) : createSprites(level, textures);
 
   return { level, sprites };
 };

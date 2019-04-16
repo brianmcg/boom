@@ -58,8 +58,8 @@ export default class DebugContainer extends Container {
       this.raySprites[xIndex].updatePoints([
         SCREEN.WIDTH / 2,
         SCREEN.HEIGHT / 2,
-        (playerSprite.x + ((xIntersection - 2) - player.shape.x) * SCALE),
-        (playerSprite.y + ((yIntersection - 2) - player.shape.y) * SCALE),
+        (playerSprite.x + (xIntersection - player.shape.x) * SCALE),
+        (playerSprite.y + (yIntersection - player.shape.y) * SCALE),
       ]);
 
       visibleBodyIds.forEach((id) => {
@@ -70,9 +70,7 @@ export default class DebugContainer extends Container {
 
       rayAngle += 1;
 
-      if (rayAngle >= DEG[360]) {
-        rayAngle -= DEG[360];
-      }
+      rayAngle %= DEG[360];
     }
 
     Object.values(bodies).forEach((body) => {
