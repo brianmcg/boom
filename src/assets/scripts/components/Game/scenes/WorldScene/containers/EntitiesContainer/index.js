@@ -1,6 +1,7 @@
 import { Container } from '~/core/graphics';
 import { DEG, COS, TAN } from '~/core/physics';
 import { SCREEN, TILE_SIZE } from '~/constants/config';
+import { calculateTint } from './helpers';
 
 const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
 
@@ -18,6 +19,8 @@ export default class EntitiesContainer extends Container {
       wall.y = (SCREEN.HEIGHT / 2) - (TILE_SIZE / 2);
       this.addChild(wall);
     });
+
+    this.brightness = 0;
   }
 
   _render() {
@@ -63,12 +66,7 @@ export default class EntitiesContainer extends Container {
 
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;
-
-      if (side) {
-        wallSprite.tint = 0xd3d3d3;
-      } else {
-        wallSprite.tint = 0xFFFFFF;
-      }
+      wallSprite.tint = calculateTint(this.brightness, distance, side);
 
       rayAngle += 1;
 
