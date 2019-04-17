@@ -77,14 +77,16 @@ const createLevel = (data) => {
 
       if (wallValue) {
         wallImage = tiles[wallValue - 1].image;
-        sideIds = [wallImage, wallImage, wallImage, wallImage];
+
+        if (doorValue) {
+          doorImage = tiles[doorValue - 1].image;
+        }
       }
 
       if (doorValue) {
         properties = tileProperties[doorValue - 1] || {};
         doorImage = tiles[doorValue - 1].image;
         doorAxisX = data.layers[LAYERS.DOORS].data[index - 1];
-        sideIds = [doorImage];
       }
 
       if (!!doorImage && !wallImage) {
@@ -97,9 +99,13 @@ const createLevel = (data) => {
           axis: doorAxisX ? 'x' : 'y',
           key: properties.key,
           blocking: !!doorImage,
-          sideIds,
+          sideIds: [doorImage],
         }));
       } else {
+        sideIds = doorImage
+          ? [wallImage, doorImage, wallImage, doorImage]
+          : [wallImage, wallImage, wallImage, wallImage];
+
         const sector = new Sector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
@@ -218,13 +224,13 @@ const createSprites = (level, resources) => {
   const { textures, data } = resources;
   const { frames } = data;
 
-  // debugger;
-
   level.grid.forEach((row) => {
     row.forEach((sector) => {
-      if (sector.sideIds[0] && !wallImages.includes(sector.sideIds[0])) {
-        wallImages.push(sector.sideIds[0]);
-      }
+      sector.sideIds.forEach((sideId) => {
+        if (sideId && !wallImages.includes(sideId)) {
+          wallImages.push(sideId);
+        }
+      });
     });
   });
 

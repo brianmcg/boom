@@ -29,7 +29,7 @@ export default class DebugContainer extends Container {
     this.level.update(...options);
   }
 
-  _render() {
+  animate() {
     const { player, bodies } = this.level;
     const playerSprite = this.bodySprites[player.id];
 

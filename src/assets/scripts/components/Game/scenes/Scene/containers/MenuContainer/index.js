@@ -89,7 +89,7 @@ export default class MenuContainer extends Container {
     }
   }
 
-  _render() {
+  animate() {
     const { icon, labels } = this.sprites;
 
     Object.values(labels).forEach((child, index) => {

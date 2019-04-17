@@ -14,4 +14,8 @@ export default class WorldContainer extends Container {
   update(...options) {
     this.level.update(...options);
   }
+
+  animate() {
+    this.children.forEach(child => child.animate());
+  }
 }

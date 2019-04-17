@@ -54,7 +54,7 @@ export default class PromptContainer extends Container {
     this.visible = true;
   }
 
-  _render() {
+  animate() {
     if (!this.counter) {
       this.children.forEach((child) => {
         child.visible = !child.visible;

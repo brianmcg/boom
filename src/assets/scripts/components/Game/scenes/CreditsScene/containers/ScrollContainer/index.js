@@ -73,7 +73,7 @@ export default class ScrollContainer extends Container {
     this.visible = false;
   }
 
-  _render() {
+  animate() {
     this.y = this.scrollY;
   }
 }

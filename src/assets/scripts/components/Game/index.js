@@ -63,7 +63,7 @@ export default class Game extends Application {
     this.sound = new SoundPlayer();
 
     this.ticker.maxFPS = MAX_FPS;
-    this.ticker.add(this.update.bind(this));
+    this.ticker.add(this.frame.bind(this));
 
     this.resize();
   }
@@ -86,12 +86,13 @@ export default class Game extends Application {
   }
 
   /**
-   * Execute a game update.
+   * Execute a game frame.
    * @param  {Number} delta The delta value.
    */
-  update(delta) {
+  frame(delta) {
     if (this.scene) {
       this.scene.update(delta);
+      this.scene.animate();
     }
   }
 

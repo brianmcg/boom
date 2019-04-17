@@ -23,6 +23,10 @@ export default class Container extends PixiContainer {
     if (child.play) {
       this.playable.push(child);
     }
+
+    if (child.animate) {
+      this.animateable.push(child);
+    }
   }
 
   /**
@@ -34,6 +38,10 @@ export default class Container extends PixiContainer {
 
     if (child.play) {
       this.playable = this.playable.filter(p => p !== child);
+    }
+
+    if (child.animate) {
+      this.animateable = this.animateable.filter(a => a !== child);
     }
   }
 
@@ -50,6 +58,13 @@ export default class Container extends PixiContainer {
    */
   update(delta) {
     this.playable.forEach(child => child.playing && child.update(delta));
+  }
+
+  /**
+   * Animate the container children.
+   */
+  animate() {
+    this.animateable.forEach(child => child.animate());
   }
 
   /**

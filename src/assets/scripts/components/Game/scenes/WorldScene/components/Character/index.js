@@ -45,6 +45,8 @@ export default class Character extends DynamicBody {
     let xOffsetDist;
     let yOffsetDist;
     let sector;
+    let intersection;
+    let isDoor;
 
     const {
       x,
@@ -200,9 +202,18 @@ export default class Character extends DynamicBody {
       xGridIndex = Math.floor(xIntersection / TILE_SIZE);
       yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
       sector = world.sector(xGridIndex, yGridIndex);
+      isDoor = sector instanceof DoorSector;
 
-      if (sector instanceof DoorSector) {
+      if (isDoor) {
         xIntersection -= sector.offset;
+      }
+
+      xIntersection = Math.floor(xIntersection);
+
+      if (!isDoor && rayAngle < DEG[180]) {
+        intersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
+      } else {
+        intersection = xIntersection % TILE_SIZE;
       }
 
       // if (sector.side.image && sector.side.value) {
@@ -212,28 +223,29 @@ export default class Character extends DynamicBody {
       // }
 
       return {
-        xIntersection: Math.floor(xIntersection),
-        yIntersection: horizontalGrid,
         distance: distToHorizontalGridBeingHit,
-        visibleBodyIds,
         side: 1,
-        isDoor: sector instanceof DoorSector,
         sideId: sector.sideIds[0],
-        // door: sector instanceof Door,
-        // side: 1,
-        // image: image,
-        // visibleItemIds: visibleItemIds,
-        // visibleEnemyIds: visibleEnemyIds,
-        // blood: sector.blood
+        visibleBodyIds,
+        intersection,
       };
     }
 
     xGridIndex = Math.floor(verticalGrid / TILE_SIZE);
     yGridIndex = Math.floor(yIntersection / TILE_SIZE);
     sector = world.sector(xGridIndex, yGridIndex);
+    isDoor = sector instanceof DoorSector;
 
-    if (sector instanceof DoorSector) {
+    if (isDoor) {
       yIntersection -= sector.offset;
+    }
+
+    yIntersection = Math.floor(yIntersection);
+
+    if (!isDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
+      intersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
+    } else {
+      intersection = yIntersection % TILE_SIZE;
     }
 
     // if (sector.side.image && !sector.side.value) {
@@ -243,18 +255,11 @@ export default class Character extends DynamicBody {
     // }
 
     return {
-      xIntersection: verticalGrid,
-      yIntersection: Math.floor(yIntersection),
       distance: distToVerticalGridBeingHit,
-      visibleBodyIds,
       side: 0,
-      isDoor: sector instanceof DoorSector,
       sideId: sector.sideIds[0],
-      // door: sector instanceof Door,
-      // image: image,
-      // side: 0,
-      // visibleItemIds: visibleItemIds,
-      // visibleEnemyIds: visibleEnemyIds
+      visibleBodyIds,
+      intersection,
     };
   }
 }
