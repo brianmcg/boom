@@ -32,6 +32,7 @@ export default class EntitiesContainer extends Container {
     let correctedDistance;
     let spriteHeight;
     let spriteY;
+    let intersection;
     const eyeHeight = player.height;
 
     let rayAngle = player.angle - DEG[30];
@@ -49,6 +50,8 @@ export default class EntitiesContainer extends Container {
         visibleBodyIds,
         distance,
         side,
+        isDoor,
+        sideId,
       } = player.castRay({ rayAngle });
 
       // update wall sprites
@@ -63,6 +66,22 @@ export default class EntitiesContainer extends Container {
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
 
       spriteY = CAMERA_CENTER_Y - (spriteHeight / (TILE_SIZE / (TILE_SIZE - eyeHeight)));
+
+      if (side) {
+        if (!isDoor && rayAngle < DEG[180]) {
+          intersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
+        } else {
+          intersection = xIntersection % TILE_SIZE;
+        }
+        wallSprite.changeTexture(sideId, intersection);
+      } else {
+        if (!isDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
+          intersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
+        } else {
+          intersection = yIntersection % TILE_SIZE;
+        }
+        wallSprite.changeTexture(sideId, intersection);
+      }
 
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;

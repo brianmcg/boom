@@ -201,6 +201,10 @@ export default class Character extends DynamicBody {
       yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
       sector = world.sector(xGridIndex, yGridIndex);
 
+      if (sector instanceof DoorSector) {
+        xIntersection -= sector.offset;
+      }
+
       // if (sector.side.image && sector.side.value) {
       //   image = sector.side.image;
       // } else {
@@ -212,7 +216,9 @@ export default class Character extends DynamicBody {
         yIntersection: horizontalGrid,
         distance: distToHorizontalGridBeingHit,
         visibleBodyIds,
-        side: 0,
+        side: 1,
+        isDoor: sector instanceof DoorSector,
+        sideId: sector.sideIds[0],
         // door: sector instanceof Door,
         // side: 1,
         // image: image,
@@ -226,6 +232,10 @@ export default class Character extends DynamicBody {
     yGridIndex = Math.floor(yIntersection / TILE_SIZE);
     sector = world.sector(xGridIndex, yGridIndex);
 
+    if (sector instanceof DoorSector) {
+      yIntersection -= sector.offset;
+    }
+
     // if (sector.side.image && !sector.side.value) {
     //   image = sector.side.image;
     // } else {
@@ -237,7 +247,9 @@ export default class Character extends DynamicBody {
       yIntersection: Math.floor(yIntersection),
       distance: distToVerticalGridBeingHit,
       visibleBodyIds,
-      side: 1,
+      side: 0,
+      isDoor: sector instanceof DoorSector,
+      sideId: sector.sideIds[0],
       // door: sector instanceof Door,
       // image: image,
       // side: 0,

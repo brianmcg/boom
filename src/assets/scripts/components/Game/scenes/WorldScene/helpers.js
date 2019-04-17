@@ -1,12 +1,13 @@
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
-import { RectangleSprite, Line } from '~/core/graphics';
+import { RectangleSprite, Line, Sprite } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
 import GameObject from './components/GameObject';
 import Item from './components/Item';
 import Enemy from './components/Enemy';
+import WallSprite from './sprites/WallSprite';
 import {
   BROWN,
   RED,
@@ -14,6 +15,8 @@ import {
   BLUE,
   WHITE,
 } from '~/constants/colors';
+
+import * as PIXI from 'pixi.js';
 
 /**
  * @module helpers
@@ -207,17 +210,58 @@ const createDebugSprites = (level) => {
 };
 
 // TODO: Create level bodySprites.
-const createSprites = () => {
-  const walls = [];
+const createSprites = (level, resources) => {
+  const wallImages = [];
+  const wallSliceTextures = {};
+  const wallSprites = [];
+
+  const { textures, data } = resources;
+  const { frames } = data;
+
+  // debugger;
+
+  level.grid.forEach((row) => {
+    row.forEach((sector) => {
+      if (sector.sideIds[0] && !wallImages.includes(sector.sideIds[0])) {
+        wallImages.push(sector.sideIds[0]);
+      }
+    });
+  });
+
+  // resources.spritesheet.data.frames
+
+  wallImages.forEach((image) => {
+    wallSliceTextures[image] = [];
+
+    const { frame } = frames[image];
+    const texture = textures[image];
+
+    for (let i = 0; i < frame.w; i += 1) {
+      const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
+      wallSliceTextures[image].push(new PIXI.Texture(texture, slice));
+    }
+    // _.times(frame.w, (i) => {
+    //   const clearSlice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
+    //   wallSliceTextures[image].clear.push(new PIXI.Texture(texture, clearSlice));
+    // });
+  });
+
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    walls.push(new RectangleSprite({
-      height: TILE_SIZE,
-      width: 1,
-    }));
+    const wallSprite = new WallSprite(wallSliceTextures);
+    // wallSprite.position.x = i;
+    wallSprites.push(wallSprite);
   }
+
+  // const walls = [];
+  // for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+  //   walls.push(new RectangleSprite({
+  //     height: TILE_SIZE,
+  //     width: 1,
+  //   }));
+  // }
   // console.log(level, textures);
   return {
-    entities: { walls },
+    entities: { walls: wallSprites },
   };
 };
 
@@ -227,10 +271,10 @@ const createSprites = () => {
  * @return {Object}        The parsed scene data.
  */
 export const parse = (resources, debug) => {
-  const { data, textures } = resources;
+  const { data } = resources;
   const { map } = data;
   const level = createLevel(map);
-  const sprites = debug ? createDebugSprites(level) : createSprites(level, textures);
+  const sprites = debug ? createDebugSprites(level) : createSprites(level, resources);
 
   return { level, sprites };
 };
