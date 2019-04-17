@@ -1,6 +1,6 @@
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
-import { RectangleSprite, Line, Sprite } from '~/core/graphics';
+import { RectangleSprite, Line } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
 import DoorSector from './components/DoorSector';
@@ -86,7 +86,7 @@ const createLevel = (data) => {
       if (doorValue) {
         properties = tileProperties[doorValue - 1] || {};
         doorImage = tiles[doorValue - 1].image;
-        doorAxisX = data.layers[LAYERS.DOORS].data[index - 1];
+        doorAxisX = data.layers[LAYERS.DOORS].data[index - 1] || data.layers[LAYERS.DOORS].data[index + 1];
       }
 
       if (!!doorImage && !wallImage) {
@@ -99,12 +99,18 @@ const createLevel = (data) => {
           axis: doorAxisX ? 'x' : 'y',
           key: properties.key,
           blocking: !!doorImage,
-          sideIds: [doorImage],
+          sideIds: [doorImage, doorImage, doorImage, doorImage],
         }));
       } else {
-        sideIds = doorImage
-          ? [wallImage, doorImage, wallImage, doorImage]
-          : [wallImage, wallImage, wallImage, wallImage];
+        if (doorImage) {
+          if (doorAxisX) {
+            sideIds = [doorImage, wallImage, doorImage, wallImage];
+          } else {
+            sideIds = [wallImage, doorImage, wallImage, doorImage];
+          }
+        } else {
+          sideIds = [wallImage, wallImage, wallImage, wallImage];
+        }
 
         const sector = new Sector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),

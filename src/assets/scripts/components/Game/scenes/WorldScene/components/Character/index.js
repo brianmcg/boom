@@ -47,6 +47,7 @@ export default class Character extends DynamicBody {
     let sector;
     let intersection;
     let isDoor;
+    let sideId;
 
     const {
       x,
@@ -216,16 +217,16 @@ export default class Character extends DynamicBody {
         intersection = xIntersection % TILE_SIZE;
       }
 
-      // if (sector.side.image && sector.side.value) {
-      //   image = sector.side.image;
-      // } else {
-      //   image = sector.image;
-      // }
+      if (y < sector.y) {
+        sideId = sector.sideIds[1];
+      } else {
+        sideId = sector.sideIds[3];
+      }
 
       return {
         distance: distToHorizontalGridBeingHit,
         side: 1,
-        sideId: sector.sideIds[0],
+        sideId,
         visibleBodyIds,
         intersection,
       };
@@ -248,11 +249,11 @@ export default class Character extends DynamicBody {
       intersection = yIntersection % TILE_SIZE;
     }
 
-    // if (sector.side.image && !sector.side.value) {
-    //   image = sector.side.image;
-    // } else {
-    //   image = sector.image;
-    // }
+    if (x < sector.x) {
+      sideId = sector.sideIds[0];
+    } else {
+      sideId = sector.sideIds[2];
+    }
 
     return {
       distance: distToVerticalGridBeingHit,
