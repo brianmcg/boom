@@ -44,7 +44,6 @@ const createLevel = (data) => {
   const mapWidth = data.layers[LAYERS.WALLS].width;
   const mapHeight = data.layers[LAYERS.WALLS].height;
   const { tiles } = data.tilesets[LAYERS.WALLS];
-  const tileProperties = data.tilesets[0].tileproperties;
   const start = {};
   const end = {};
 
@@ -76,20 +75,25 @@ const createLevel = (data) => {
       let doorAxisX;
 
       if (wallValue) {
-        wallImage = tiles[wallValue - 1].image;
+        wallImage = tiles.find(tile => tile.id === wallValue - 1).image;
 
         if (doorValue) {
-          doorImage = tiles[doorValue - 1].image;
+          doorImage = tiles.find(tile => tile.id === doorValue - 1).image;
         }
       }
 
       if (doorValue) {
-        properties = tileProperties[doorValue - 1] || {};
-        doorImage = tiles[doorValue - 1].image;
+        const tile = tiles.find(t => t.id === doorValue - 1);
+        doorImage = tile.image;
         doorAxisX = data.layers[LAYERS.DOORS].data[index - 1] || data.layers[LAYERS.DOORS].data[index + 1];
       }
 
       if (!!doorImage && !wallImage) {
+        const tile = tiles.find(t => t.id === doorValue - 1);
+        properties = tile.properties || [];
+
+        const key = (properties.find(prop => prop.name === 'key') || {}).value;
+
         row.push(new DoorSector({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
@@ -97,9 +101,9 @@ const createLevel = (data) => {
           height: TILE_SIZE,
           length: TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
-          key: properties.key,
           blocking: !!doorImage,
           sideIds: [doorImage, doorImage, doorImage, doorImage],
+          key,
         }));
       } else {
         if (doorImage) {
@@ -128,17 +132,26 @@ const createLevel = (data) => {
       }
 
       if (itemValue) {
-        properties = tileProperties[itemValue - 1] || {};
-        if (properties.key) {
+        const tile = tiles.find(t => t.id === itemValue - 1);
+        properties = tile.properties || [];
+
+        const key = (properties.find(prop => prop.name === 'key') || {}).value;
+        const { value } = properties.find(prop => prop.name === 'value') || {};
+
+        if (key) {
           items.push(new Item({
-            type: tiles[itemValue - 1].image,
+            type: tile.image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE / 2,
             length: TILE_SIZE / 2,
             blocking: false,
+            key,
+            value,
           }));
         } else {
+          const nonBlocking = (properties.find(prop => prop.name === 'nonBlocking') || {}).value;
+
           objects.push(new GameObject({
             type: tiles[itemValue - 1].image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
@@ -146,7 +159,7 @@ const createLevel = (data) => {
             width: TILE_SIZE / 2,
             height: TILE_SIZE / 2,
             length: TILE_SIZE / 2,
-            blocking: !properties.nonBlocking,
+            blocking: !nonBlocking,
           }));
         }
       }
@@ -240,8 +253,6 @@ const createSprites = (level, resources) => {
     });
   });
 
-  // resources.spritesheet.data.frames
-
   wallImages.forEach((image) => {
     wallSliceTextures[image] = [];
 
@@ -252,26 +263,13 @@ const createSprites = (level, resources) => {
       const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
       wallSliceTextures[image].push(new PIXI.Texture(texture, slice));
     }
-    // _.times(frame.w, (i) => {
-    //   const clearSlice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
-    //   wallSliceTextures[image].clear.push(new PIXI.Texture(texture, clearSlice));
-    // });
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
     const wallSprite = new WallSprite(wallSliceTextures);
-    // wallSprite.position.x = i;
     wallSprites.push(wallSprite);
   }
 
-  // const walls = [];
-  // for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-  //   walls.push(new RectangleSprite({
-  //     height: TILE_SIZE,
-  //     width: 1,
-  //   }));
-  // }
-  // console.log(level, textures);
   return {
     entities: { walls: wallSprites },
   };

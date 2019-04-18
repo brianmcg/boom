@@ -229,6 +229,8 @@ export default class Character extends DynamicBody {
         sideId,
         visibleBodyIds,
         intersection,
+        xIntersection: Math.floor(xIntersection),
+        yIntersection: horizontalGrid,
       };
     }
 
@@ -261,6 +263,8 @@ export default class Character extends DynamicBody {
       sideId: sector.sideIds[0],
       visibleBodyIds,
       intersection,
+      xIntersection: verticalGrid,
+      yIntersection: Math.floor(yIntersection),
     };
   }
 }

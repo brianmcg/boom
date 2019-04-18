@@ -11,6 +11,6 @@ export const EVENTS = {
 
 export const DEFAULTS = {
   AXIS: 'x',
-  SPEED: 2,
+  SPEED: 1,
   WAIT_TIME: 2000,
 };
