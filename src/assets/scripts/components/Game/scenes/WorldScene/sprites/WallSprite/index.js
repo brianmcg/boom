@@ -18,9 +18,8 @@ export default class WallSprite extends Sprite {
    * Change the xurrent texture.
    * @param  {String}  image  The name of the image.
    * @param  {Number}  offset The index of the slice.
-   * @return {undefined}
    */
-  changeTexture(image, offset = 0) {
+  changeTexture(image, offset) {
     this.texture = this.textures[image][offset];
   }
 }

@@ -6,7 +6,7 @@
  * The maximum frames per second.
  * @type {Number}
  */
-export const MAX_FPS = 60;
+export const MAX_FPS = 35;
 
 /**
  * The time step.
@@ -48,4 +48,4 @@ export const DEBUG = false;
  * The draw distance.
  * @type {Number}
  */
-export const DRAW_DISTANCE = TILE_SIZE * 16;
+export const DRAW_DISTANCE = TILE_SIZE * 8;

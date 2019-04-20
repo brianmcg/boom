@@ -8,6 +8,7 @@ import GameObject from './components/GameObject';
 import Item from './components/Item';
 import Enemy from './components/Enemy';
 import WallSprite from './sprites/WallSprite';
+import BackgroundSprite from './sprites/BackgroundSprite';
 import {
   BROWN,
   RED,
@@ -28,11 +29,13 @@ const SECTOR_TYPES = {
 };
 
 const LAYERS = {
-  WALLS: 0,
-  DOORS: 1,
-  ITEMS: 2,
-  ENEMIES: 3,
-  GAME: 4,
+  FLOOR: 0,
+  WALLS: 1,
+  DOORS: 2,
+  ITEMS: 3,
+  ENEMIES: 4,
+  ROOF: 5,
+  GAME: 6,
 };
 
 const createLevel = (data) => {
@@ -43,7 +46,7 @@ const createLevel = (data) => {
 
   const mapWidth = data.layers[LAYERS.WALLS].width;
   const mapHeight = data.layers[LAYERS.WALLS].height;
-  const { tiles } = data.tilesets[LAYERS.WALLS];
+  const { tiles } = data.tilesets[0];
   const start = {};
   const end = {};
 
@@ -63,16 +66,28 @@ const createLevel = (data) => {
 
     for (let x = 0; x < mapWidth; x += 1) {
       const index = (y * mapWidth) + x;
+      const floorValue = data.layers[LAYERS.FLOOR].data[index];
       const wallValue = data.layers[LAYERS.WALLS].data[index];
       const doorValue = data.layers[LAYERS.DOORS].data[index];
       const itemValue = data.layers[LAYERS.ITEMS].data[index];
       const enemyValue = data.layers[LAYERS.ENEMIES].data[index];
+      const roofValue = data.layers[LAYERS.ROOF].data[index];
 
       let wallImage;
       let doorImage;
       let properties;
       let sideIds;
       let doorAxisX;
+      let floorImage;
+      let roofImage;
+
+      if (floorValue) {
+        floorImage = tiles.find(t => t.id === floorValue - 1).image;
+      }
+
+      if (roofValue) {
+        roofImage = tiles.find(t => t.id === roofValue - 1).image;
+      }
 
       if (wallValue) {
         wallImage = tiles.find(tile => tile.id === wallValue - 1).image;
@@ -85,7 +100,8 @@ const createLevel = (data) => {
       if (doorValue) {
         const tile = tiles.find(t => t.id === doorValue - 1);
         doorImage = tile.image;
-        doorAxisX = data.layers[LAYERS.DOORS].data[index - 1] || data.layers[LAYERS.DOORS].data[index + 1];
+        doorAxisX = data.layers[LAYERS.DOORS].data[index - 1]
+          || data.layers[LAYERS.DOORS].data[index + 1];
       }
 
       if (!!doorImage && !wallImage) {
@@ -102,18 +118,18 @@ const createLevel = (data) => {
           length: TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
           blocking: !!doorImage,
-          sideIds: [doorImage, doorImage, doorImage, doorImage],
+          sideIds: [doorImage, doorImage, doorImage, doorImage, floorImage, roofImage],
           key,
         }));
       } else {
         if (doorImage) {
           if (doorAxisX) {
-            sideIds = [doorImage, wallImage, doorImage, wallImage];
+            sideIds = [doorImage, wallImage, doorImage, wallImage, floorImage, roofImage];
           } else {
-            sideIds = [wallImage, doorImage, wallImage, doorImage];
+            sideIds = [wallImage, doorImage, wallImage, doorImage, floorImage, roofImage];
           }
         } else {
-          sideIds = [wallImage, wallImage, wallImage, wallImage];
+          sideIds = [wallImage, wallImage, wallImage, wallImage, floorImage, roofImage];
         }
 
         const sector = new Sector({
@@ -238,16 +254,24 @@ const createDebugSprites = (level) => {
 const createSprites = (level, resources) => {
   const wallImages = [];
   const wallSliceTextures = {};
+  const backgroundPixelTextures = {};
   const wallSprites = [];
-
+  const backgroundSprites = [];
   const { textures, data } = resources;
   const { frames } = data;
+  const backgroundImages = [];
 
   level.grid.forEach((row) => {
     row.forEach((sector) => {
-      sector.sideIds.forEach((sideId) => {
+      const [a, b, c, d, e, f] = sector.sideIds;
+      [a, b, c, d].forEach((sideId) => {
         if (sideId && !wallImages.includes(sideId)) {
           wallImages.push(sideId);
+        }
+      });
+      [e, f].forEach((sideId) => {
+        if (sideId && !backgroundImages.includes(sideId)) {
+          backgroundImages.push(sideId);
         }
       });
     });
@@ -270,8 +294,33 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
+  backgroundImages.forEach((image) => {
+    backgroundPixelTextures[image] = [];
+
+    const { frame } = frames[image];
+    const texture = textures[image];
+
+    for (let i = 0; i < TILE_SIZE; i += 1) {
+      const row = [];
+      for (let j = 0; j < TILE_SIZE; j += 1) {
+        const pixel = new PIXI.Rectangle(frame.x + i, frame.y + j, 1, 1);
+        row.push(new PIXI.Texture(texture, pixel));
+      }
+      backgroundPixelTextures[image].push(row);
+    }
+  });
+
+  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+    const row = [];
+    for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
+      row.push(new BackgroundSprite(backgroundPixelTextures));
+    }
+    backgroundSprites.push(row);
+  }
+
   return {
     entities: { walls: wallSprites },
+    background: backgroundSprites,
   };
 };
 
