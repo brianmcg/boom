@@ -36,7 +36,7 @@ export const TILE_SIZE = 64;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 320, HEIGHT: 180 };
+export const SCREEN = { WIDTH: 320, HEIGHT: 137 };
 
 /**
  * Debug mode on or off.
@@ -48,4 +48,4 @@ export const DEBUG = false;
  * The draw distance.
  * @type {Number}
  */
-export const DRAW_DISTANCE = TILE_SIZE * 8;
+export const DRAW_DISTANCE = TILE_SIZE * 10;

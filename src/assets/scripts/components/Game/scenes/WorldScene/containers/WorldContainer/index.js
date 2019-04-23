@@ -150,8 +150,8 @@ export default class WorldContainer extends Container {
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
-            mapX = Math.round(player.x + (COS[rayAngle] * correctedDistance));
-            mapY = Math.round(player.y + (SIN[rayAngle] * correctedDistance));
+            mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+            mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
 
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
