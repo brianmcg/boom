@@ -1,7 +1,7 @@
-import Character from '../Character';
+import Actor from '../Actor';
 import { DEG } from '~/core/physics';
 
-export default class Enemy extends Character {
+export default class Enemy extends Actor {
   constructor(options) {
     super(options);
     this.velocity = 1;

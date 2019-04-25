@@ -1,4 +1,4 @@
-import Character from '../Character';
+import Actor from '../Actor';
 import Item from '../Item';
 import { DEFAULTS } from './constants';
 
@@ -6,9 +6,9 @@ const { min, max } = Math;
 
 /**
  * Creates a player.
- * @extends {Character}
+ * @extends {Actor}
  */
-export default class Player extends Character {
+export default class Player extends Actor {
   /**
    *  Creates a player.
    * @param  {Number} options.x               The x coordinate of the player.

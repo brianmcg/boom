@@ -12,7 +12,7 @@ import { TILE_SIZE } from '~/constants/config';
  * Creates a character
  * @extends {DynamicBody}
  */
-export default class Character extends DynamicBody {
+export default class Actor extends DynamicBody {
   /* Creates a character.
    * @param  {Number} options.x         The x coordinate of the character.
    * @param  {Number} options.y         The y coordinate of the character
@@ -24,9 +24,15 @@ export default class Character extends DynamicBody {
    */
   constructor(options = {}) {
     const { maxHealth = 100, ...other } = options;
+
     super(other);
+
     this.health = maxHealth;
     this.maxHealth = maxHealth;
+
+    if (this.constructor === Actor) {
+      throw new TypeError('Can not construct abstract class.');
+    }
   }
 
   castRay({ rayAngle }) {

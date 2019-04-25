@@ -25,7 +25,11 @@ export default class WorldContainer extends Container {
       tint: true,
     });
 
-    const entitiesContainer = new Container();
+    const entitiesContainer = new ParticleContainer(SCREEN.WIDTH * 2, {
+      uvs: true,
+      tint: true,
+      vertices: true,
+    });
 
     walls.forEach((wall, i) => {
       wall.x = i;
