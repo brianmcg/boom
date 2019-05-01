@@ -13,6 +13,22 @@ const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
 
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 
+let wallSprite;
+let angleDifference;
+let correctedDistance;
+let spriteHeight;
+let spriteY;
+let wallBottomIntersection;
+let wallTopIntersection;
+let backgroundSprite;
+let actualDistance;
+let mapX;
+let mapY;
+let pixelX;
+let pixelY;
+let topId;
+let bottomId;
+
 export default class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
@@ -61,22 +77,6 @@ export default class WorldContainer extends Container {
     const { entities, background } = this.sprites;
     const { walls } = entities;
 
-    let wallSprite;
-    let angleDifference;
-    let correctedDistance;
-    let spriteHeight;
-    let spriteY;
-    let wallBottomIntersection;
-    let wallTopIntersection;
-    let backgroundSprite;
-    let actualDistance;
-    let mapX;
-    let mapY;
-    let pixelX;
-    let pixelY;
-    let topId;
-    let bottomId;
-
     const eyeHeight = player.height;
 
     let rayAngle = player.angle - DEG[30];
@@ -124,8 +124,8 @@ export default class WorldContainer extends Container {
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
-            mapX = Math.round(player.x + (COS[rayAngle] * correctedDistance));
-            mapY = Math.round(player.y + (SIN[rayAngle] * correctedDistance));
+            mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+            mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
 
             bottomId = this.level.sector(
               Math.floor(mapX / TILE_SIZE),

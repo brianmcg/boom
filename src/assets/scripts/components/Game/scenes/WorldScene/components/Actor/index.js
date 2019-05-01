@@ -8,6 +8,27 @@ import {
 import DoorSector from '../DoorSector';
 import { TILE_SIZE } from '~/constants/config';
 
+let horizontalGrid;
+let verticalGrid;
+let distToNextHorizontalGrid;
+let distToNextVerticalGrid;
+let distToHorizontalGridBeingHit;
+let distToVerticalGridBeingHit;
+let distToNextXIntersection;
+let distToNextYIntersection;
+let xIntersection;
+let yIntersection;
+let xGridIndex;
+let yGridIndex;
+let xOffsetDist;
+let yOffsetDist;
+let intersection;
+let sideId;
+let isVerticalDoor;
+let isHorizontalDoor;
+let horizontalSector;
+let verticalSector;
+
 /**
  * Creates a character
  * @extends {DynamicBody}
@@ -36,25 +57,6 @@ export default class Actor extends DynamicBody {
   }
 
   castRay({ rayAngle }) {
-    let horizontalGrid;
-    let verticalGrid;
-    let distToNextHorizontalGrid;
-    let distToNextVerticalGrid;
-    let distToHorizontalGridBeingHit;
-    let distToVerticalGridBeingHit;
-    let distToNextXIntersection;
-    let distToNextYIntersection;
-    let xIntersection;
-    let yIntersection;
-    let xGridIndex;
-    let yGridIndex;
-    let xOffsetDist;
-    let yOffsetDist;
-    let sector;
-    let intersection;
-    let isDoor;
-    let sideId;
-
     const {
       x,
       y,
@@ -102,22 +104,24 @@ export default class Actor extends DynamicBody {
         yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
 
         if (
-          (xGridIndex >= world.width)
-            || (yGridIndex >= world.height)
-            || xGridIndex < 0 || yGridIndex < 0
+          xGridIndex >= world.width
+            || yGridIndex >= world.height
+            || xGridIndex < 0
+            || yGridIndex < 0
         ) {
           distToHorizontalGridBeingHit = Infinity;
           break;
         }
 
-        sector = world.sector(xGridIndex, yGridIndex);
+        horizontalSector = world.sector(xGridIndex, yGridIndex);
 
-        if (sector.blocking) {
-          if (sector instanceof DoorSector) {
+        if (horizontalSector.blocking) {
+          isHorizontalDoor = horizontalSector instanceof DoorSector;
+          if (isHorizontalDoor) {
             xOffsetDist = distToNextXIntersection / 2;
             yOffsetDist = distToNextHorizontalGrid / 2;
 
-            if ((xIntersection + xOffsetDist) % TILE_SIZE > sector.offset) {
+            if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalSector.offset) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
@@ -131,7 +135,7 @@ export default class Actor extends DynamicBody {
             break;
           }
         } else {
-          sector.childIds.forEach(id => visibleBodyIds.push(id));
+          horizontalSector.childIds.forEach(id => visibleBodyIds.push(id));
           xIntersection += distToNextXIntersection;
           horizontalGrid += distToNextHorizontalGrid;
         }
@@ -169,22 +173,25 @@ export default class Actor extends DynamicBody {
         yGridIndex = Math.floor(yIntersection / TILE_SIZE);
 
         if (
-          (xGridIndex >= world.width)
-            || (yGridIndex >= world.height)
-            || xGridIndex < 0 || yGridIndex < 0
+          xGridIndex >= world.width
+            || yGridIndex >= world.height
+            || xGridIndex < 0
+            || yGridIndex < 0
         ) {
           distToVerticalGridBeingHit = Infinity;
           break;
         }
 
-        sector = world.sector(xGridIndex, yGridIndex);
+        verticalSector = world.sector(xGridIndex, yGridIndex);
 
-        if (sector.blocking) {
-          if (sector instanceof DoorSector) {
+        if (verticalSector.blocking) {
+          isVerticalDoor = verticalSector instanceof DoorSector;
+
+          if (isVerticalDoor) {
             yOffsetDist = distToNextYIntersection / 2;
             xOffsetDist = distToNextVerticalGrid / 2;
 
-            if ((yIntersection + yOffsetDist) % TILE_SIZE > sector.offset) {
+            if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalSector.offset) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
@@ -198,7 +205,7 @@ export default class Actor extends DynamicBody {
             break;
           }
         } else {
-          sector.childIds.forEach(id => visibleBodyIds.push(id));
+          verticalSector.childIds.forEach(id => visibleBodyIds.push(id));
           yIntersection += distToNextYIntersection;
           verticalGrid += distToNextVerticalGrid;
         }
@@ -206,27 +213,22 @@ export default class Actor extends DynamicBody {
     }
 
     if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-      xGridIndex = Math.floor(xIntersection / TILE_SIZE);
-      yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
-      sector = world.sector(xGridIndex, yGridIndex);
-      isDoor = sector instanceof DoorSector;
-
-      if (isDoor) {
-        xIntersection -= sector.offset;
+      if (isHorizontalDoor) {
+        xIntersection -= horizontalSector.offset;
       }
 
       xIntersection = Math.floor(xIntersection);
 
-      if (!isDoor && rayAngle < DEG[180]) {
+      if (!isHorizontalDoor && rayAngle < DEG[180]) {
         intersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
       } else {
         intersection = xIntersection % TILE_SIZE;
       }
 
-      if (y < sector.y) {
-        sideId = sector.sideIds[1];
+      if (y < horizontalSector.y) {
+        sideId = horizontalSector.sideIds[1];
       } else {
-        sideId = sector.sideIds[3];
+        sideId = horizontalSector.sideIds[3];
       }
 
       return {
@@ -235,42 +237,37 @@ export default class Actor extends DynamicBody {
         sideId,
         visibleBodyIds,
         intersection,
-        xIntersection: Math.floor(xIntersection),
+        xIntersection,
         yIntersection: horizontalGrid,
       };
     }
 
-    xGridIndex = Math.floor(verticalGrid / TILE_SIZE);
-    yGridIndex = Math.floor(yIntersection / TILE_SIZE);
-    sector = world.sector(xGridIndex, yGridIndex);
-    isDoor = sector instanceof DoorSector;
-
-    if (isDoor) {
-      yIntersection -= sector.offset;
+    if (isVerticalDoor) {
+      yIntersection -= verticalSector.offset;
     }
 
     yIntersection = Math.floor(yIntersection);
 
-    if (!isDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
+    if (!isVerticalDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
       intersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
     } else {
       intersection = yIntersection % TILE_SIZE;
     }
 
-    if (x < sector.x) {
-      sideId = sector.sideIds[0];
+    if (x < verticalSector.x) {
+      sideId = verticalSector.sideIds[0];
     } else {
-      sideId = sector.sideIds[2];
+      sideId = verticalSector.sideIds[2];
     }
 
     return {
       distance: distToVerticalGridBeingHit,
       side: 0,
-      sideId: sector.sideIds[0],
+      sideId: verticalSector.sideIds[0],
       visibleBodyIds,
       intersection,
       xIntersection: verticalGrid,
-      yIntersection: Math.floor(yIntersection),
+      yIntersection,
     };
   }
 }
