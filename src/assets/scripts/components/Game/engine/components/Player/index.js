@@ -8,7 +8,7 @@ const { min, max } = Math;
  * Creates a player.
  * @extends {Actor}
  */
-export default class Player extends Actor {
+class Player extends Actor {
   /**
    *  Creates a player.
    * @param  {Number} options.x               The x coordinate of the player.
@@ -101,3 +101,5 @@ export default class Player extends Actor {
     return Math.sqrt(dx * dx + dy * dy);
   }
 }
+
+export default Player;

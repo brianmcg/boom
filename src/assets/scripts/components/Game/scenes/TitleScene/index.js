@@ -2,11 +2,12 @@ import { parse } from './helpers';
 import { TEXT } from './text';
 import BackgroundContainer from './containers/BackgroundContainer';
 import Scene from '../Scene';
+
 /**
  * Class representing a TitleScene.
  * @extends {Scene}
  */
-export default class TitleScene extends Scene {
+class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
    * @param  {Number} options.index   The index of the scene.
@@ -49,3 +50,5 @@ export default class TitleScene extends Scene {
     this.setState(Scene.STATES.PROMPTING);
   }
 }
+
+export default TitleScene;

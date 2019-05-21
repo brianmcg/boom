@@ -1,4 +1,6 @@
 /**
  * Class representing a mouse.
  */
-export default class Mouse {}
+class Mouse {}
+
+export default Mouse;

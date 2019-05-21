@@ -1,6 +1,6 @@
 import { Graphics } from 'pixi.js';
 
-export default class Line extends Graphics {
+class Line extends Graphics {
   constructor(options = {}) {
     const {
       points = [0, 0, 0, 0],
@@ -25,3 +25,5 @@ export default class Line extends Graphics {
     this.lineTo(points[2], points[3]);
   }
 }
+
+export default Line;

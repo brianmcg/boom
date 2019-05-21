@@ -8,7 +8,7 @@ import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
-export default class WorldScene extends Scene {
+class WorldScene extends Scene {
   constructor(options) {
     super({ type: Scene.TYPES.WORLD, ...options });
 
@@ -72,3 +72,5 @@ export default class WorldScene extends Scene {
     }
   }
 }
+
+export default WorldScene;

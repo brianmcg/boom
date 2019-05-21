@@ -7,7 +7,7 @@ const EVENTS = {
 /**
  * Class representing a level.
  */
-export default class Level extends World {
+class Level extends World {
   /**
    * @param  {Player} options.player  [description]
    * @param  {Array}  options.enemies [description]
@@ -59,3 +59,5 @@ export default class Level extends World {
     return EVENTS;
   }
 }
+
+export default Level;

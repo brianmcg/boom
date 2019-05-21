@@ -35,12 +35,14 @@
   },
   "dependencies": {
     "@pixi/filter-pixelate": "^2.5.0",
+    "better-docs": "^1.1.6",
     "howler": "^2.0.15",
     "pixi.js": "v5.0.0-rc.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "doc": "jsdoc -r src/assets/scripts/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json"
   }
 }

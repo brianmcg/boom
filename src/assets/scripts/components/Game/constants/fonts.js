@@ -1,5 +1,5 @@
 /**
- * @module  font.
+ * @module  game/constants/fonts
  */
 
 import { SCREEN } from './config';

@@ -3,8 +3,8 @@ import { Sector } from '~/core/physics';
 import { RectangleSprite, Line } from '~/core/graphics';
 import Level from './components/Level';
 import Player from './components/Player';
-import DoorSector from './components/DoorSector';
-import GameObject from './components/GameObject';
+import Door from './components/Door';
+import Entity from './components/Entity';
 import Item from './components/Item';
 import Enemy from './components/Enemy';
 import WallSprite from './sprites/WallSprite';
@@ -18,10 +18,6 @@ import {
 } from '~/constants/colors';
 
 import * as PIXI from 'pixi.js';
-
-/**
- * @module helpers
- */
 
 const SECTOR_TYPES = {
   START: 'start',
@@ -110,7 +106,7 @@ const createLevel = (data) => {
 
         const key = (properties.find(prop => prop.name === 'key') || {}).value;
 
-        row.push(new DoorSector({
+        row.push(new Door({
           x: (TILE_SIZE * x) + (TILE_SIZE / 2),
           y: (TILE_SIZE * y) + (TILE_SIZE / 2),
           width: TILE_SIZE,
@@ -168,7 +164,7 @@ const createLevel = (data) => {
         } else {
           const nonBlocking = (properties.find(prop => prop.name === 'nonBlocking') || {}).value;
 
-          objects.push(new GameObject({
+          objects.push(new Entity({
             type: tiles[itemValue - 1].image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
@@ -233,7 +229,7 @@ const createDebugSprites = (level) => {
         color = BLUE;
       } else if (body instanceof Enemy) {
         color = RED;
-      } else if (body instanceof DoorSector) {
+      } else if (body instanceof Door) {
         color = BROWN;
       } else {
         color = WHITE;

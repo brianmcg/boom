@@ -15,7 +15,7 @@ const EVENTS = {
 /**
  * A class representing a MainContainer.
  */
-export default class MainContainer extends Container {
+class MainContainer extends Container {
   /**
    * The container events.
    */
@@ -148,7 +148,6 @@ export default class MainContainer extends Container {
 
   /**
    * Desaturate the MainContainer.
-   * @return {[type]} [description]
    */
   desaturate() {
     this.filters[1].desaturate();
@@ -170,3 +169,5 @@ export default class MainContainer extends Container {
     }
   }
 }
+
+export default MainContainer;

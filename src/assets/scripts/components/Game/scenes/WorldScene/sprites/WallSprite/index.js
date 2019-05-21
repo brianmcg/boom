@@ -4,7 +4,7 @@ import { Sprite } from '~/core/graphics';
  * Class representing an WallSprite.
  * @extends {Sprite}
  */
-export default class WallSprite extends Sprite {
+class WallSprite extends Sprite {
   /**
    * Creates an WallSprite.
    * @param  {Array} textures The texture slices.
@@ -23,3 +23,5 @@ export default class WallSprite extends Sprite {
     this.texture = this.textures[image][offset];
   }
 }
+
+export default WallSprite;

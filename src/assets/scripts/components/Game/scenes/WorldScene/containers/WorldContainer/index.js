@@ -29,7 +29,7 @@ let pixelY;
 let topId;
 let bottomId;
 
-export default class WorldContainer extends Container {
+class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
 
@@ -190,3 +190,5 @@ export default class WorldContainer extends Container {
     }
   }
 }
+
+export default WorldContainer;

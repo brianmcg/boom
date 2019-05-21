@@ -4,7 +4,7 @@ import { DATA } from '~/constants/assets';
 /**
  * Class representing a Loader.
  */
-export default class Loader {
+class Loader {
   /**
    * Creates a loader.
    */
@@ -51,3 +51,5 @@ export default class Loader {
     };
   }
 }
+
+export default Loader;

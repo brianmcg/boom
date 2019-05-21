@@ -10,7 +10,7 @@ const EVENTS = {
 /**
  * Class representing a game manual.
  */
-export default class GameManual {
+class GameManual {
   /**
    * The events class property.
    */
@@ -51,3 +51,5 @@ export default class GameManual {
     this[nodeName].view.addEventListener(eventName, callback);
   }
 }
+
+export default GameManual;

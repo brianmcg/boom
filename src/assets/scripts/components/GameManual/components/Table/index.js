@@ -3,7 +3,7 @@ import './styles/index.scss';
 /**
  * Class representing a table.
  */
-export default class Table {
+class Table {
   /**
    * Creates a table.
    * @param  {Array} options.cols The column names.
@@ -52,3 +52,5 @@ export default class Table {
     this.view.appendChild(tbody);
   }
 }
+
+export default Table;

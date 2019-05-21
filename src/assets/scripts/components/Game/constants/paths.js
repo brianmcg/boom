@@ -1,5 +1,5 @@
 /**
- * @module paths.
+ * @module  game/constants/paths
  */
 
 /**

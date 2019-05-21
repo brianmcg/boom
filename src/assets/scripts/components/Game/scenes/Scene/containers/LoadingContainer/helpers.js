@@ -1,7 +1,3 @@
-/**
- * @module  helpers
- */
-
 import { RectangleSprite } from '~/core/graphics';
 
 /**

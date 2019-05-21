@@ -3,7 +3,7 @@ const MAX_DISTANCE = 1000;
 /**
  * Class representing a sound player.
  */
-export default class SoundPlayer {
+class SoundPlayer {
   /**
    * Creates a sound player.
    */
@@ -100,3 +100,5 @@ export default class SoundPlayer {
     });
   }
 }
+
+export default SoundPlayer;

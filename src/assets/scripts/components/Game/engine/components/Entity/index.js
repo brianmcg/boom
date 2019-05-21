@@ -1,6 +1,6 @@
 import { Body } from '~/core/physics';
 
-export default class GameObject extends Body {
+class Entity extends Body {
   constructor({ type, ...other }) {
     super(other);
     this.type = type;
@@ -11,3 +11,5 @@ export default class GameObject extends Body {
     this.distanceToPlayer = this.world.player.distanceTo(this);
   }
 }
+
+export default Entity;

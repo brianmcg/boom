@@ -3,7 +3,7 @@ import { Container as PixiContainer } from 'pixi.js';
 /**
  * Class representing a Container.
  */
-export default class Container extends PixiContainer {
+class Container extends PixiContainer {
   /**
    * Creates a Container.
    */
@@ -74,3 +74,5 @@ export default class Container extends PixiContainer {
     this.playable.forEach(child => child.stop());
   }
 }
+
+export default Container;

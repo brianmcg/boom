@@ -3,6 +3,6 @@ import { utils } from 'pixi.js';
 const { EventEmitter } = utils;
 
 /**
- * Class representing an event emitter.
+ * @class EventEmitter
  */
 export default EventEmitter;

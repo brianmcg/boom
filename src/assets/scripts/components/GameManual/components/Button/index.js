@@ -3,7 +3,7 @@ import './styles/index.scss';
 /**
  * Class representing a button.
  */
-export default class Button {
+class Button {
   /**
    * Creates a button.
    * @param  {String} buttonText The button text.
@@ -29,3 +29,5 @@ export default class Button {
     this.view.addEventListener(event, callback);
   }
 }
+
+export default Button;

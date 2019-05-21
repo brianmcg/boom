@@ -6,7 +6,7 @@ import { SCREEN_PADDING, ICON_PADDING_TOP, ICON_PADDING_RIGHT } from './constant
 /**
  * A class representing a menu container.
  */
-export default class MenuContainer extends Container {
+class MenuContainer extends Container {
   /**
    * Creates a menu container.
    * @param  {Object} options.sprites The sprites.
@@ -103,3 +103,5 @@ export default class MenuContainer extends Container {
     });
   }
 }
+
+export default MenuContainer;

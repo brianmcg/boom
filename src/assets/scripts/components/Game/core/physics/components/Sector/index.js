@@ -4,7 +4,7 @@ import Body from '../Body';
  * Creates a sector
  * @extends {Body}
  */
-export default class Sector extends Body {
+class Sector extends Body {
   /**
    * Creates a sector
    * @param  {Number} options.x       The x coordinate of the sector.
@@ -36,3 +36,5 @@ export default class Sector extends Body {
     this.childIds = this.childIds.filter(childId => childId !== id);
   }
 }
+
+export default Sector;

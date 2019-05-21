@@ -1,5 +1,5 @@
 /**
- * @module helpers
+ * @module game/helpers
  */
 
 /**

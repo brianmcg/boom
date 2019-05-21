@@ -1,5 +1,5 @@
 /**
- * @input
+ * @module  game/core/input
  */
 
 import Keyboard from './components/Keyboard';

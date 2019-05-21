@@ -43,7 +43,7 @@ const pressed = { ...held };
 /**
  * Class representing a keyboard.
  */
-export default class Keyboard {
+class Keyboard {
   /**
    * The key names.
    */
@@ -105,3 +105,5 @@ export default class Keyboard {
 document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
 
 document.addEventListener('keyup', Keyboard.onKeyUp, false);
+
+export default Keyboard;

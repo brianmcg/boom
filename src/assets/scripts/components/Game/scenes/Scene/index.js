@@ -16,8 +16,9 @@ const { isPressed, resetPressed, KEYS } = Keyboard;
 
 /**
  * Class representing a scene.
+ * @class
  */
-export default class Scene extends Container {
+class Scene extends Container {
   /**
    * The scene types class property.
    */
@@ -319,3 +320,5 @@ export default class Scene extends Container {
     super.destroy();
   }
 }
+
+export default Scene;

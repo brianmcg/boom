@@ -1,7 +1,7 @@
 import { DATA, SOUND } from './assets';
 
 /**
- * @module  files
+ * @module  game/constants/files
  */
 
 /**

@@ -8,7 +8,7 @@ const PADDING = 8;
 /**
  * Class representing a prompt container.
  */
-export default class PromptContainer extends Container {
+class PromptContainer extends Container {
   /**
    * Create a prompt container
    */
@@ -62,3 +62,5 @@ export default class PromptContainer extends Container {
     }
   }
 }
+
+export default PromptContainer;

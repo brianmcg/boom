@@ -1,18 +1,21 @@
 import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
 /**
+ * @namespace
+ */
+
+/**
  * Class representing an AnimatedSprite.
  * @extends {PIXI.extras.AnimatedSprite}
  */
-export default class AnimatedSprite extends PixiAnimatedSprite {
+class AnimatedSprite extends PixiAnimatedSprite {
   /**
    * [constructor description]
-   * @param  {[type]} textures      [description]
-   * @param  {[type]} options.animationSpeed [description]
-   * @param  {[type]} options.tint  [description]
-   * @param  {[type]} options.alpha [description]
-   * @param  {[type]} options.loop  [description]
-   * @return {[type]}               [description]
+   * @param  {Array}   textures               [description]
+   * @param  {Number}  options.animationSpeed [description]
+   * @param  {Number}  options.tint           [description]
+   * @param  {Number}  options.alpha          [description]
+   * @param  {Boolean} options.loop           [description]
    */
   constructor(textures, options) {
     const {
@@ -39,3 +42,5 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     }
   }
 }
+
+export default AnimatedSprite;

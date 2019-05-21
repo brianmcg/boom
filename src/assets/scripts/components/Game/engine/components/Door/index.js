@@ -2,7 +2,7 @@ import { Sector, DynamicBody } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
 import { STATES, EVENTS, DEFAULTS } from './constants';
 
-export default class DoorSector extends Sector {
+class Door extends Sector {
   static get EVENTS() { return EVENTS; }
 
   /**
@@ -115,3 +115,5 @@ export default class DoorSector extends Sector {
     return this[axis] - closed[axis];
   }
 }
+
+export default Door;

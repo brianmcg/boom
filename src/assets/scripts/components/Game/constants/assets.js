@@ -1,5 +1,5 @@
 /**
- * @module  assets
+ * @module  game/constants/assets
  */
 
 /**

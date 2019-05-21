@@ -1,4 +1,8 @@
 /**
+ * @module game-manual/constants
+ */
+
+/**
  * The key controls map.
  * @type {Object}
  */

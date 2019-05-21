@@ -3,7 +3,7 @@ import Sound from '../Sound';
 /**
  * Class representing a sound loader.
  */
-export default class SoundLoader {
+class SoundLoader {
   /**
    * Creates a sound loader.
    */
@@ -68,3 +68,5 @@ export default class SoundLoader {
     });
   }
 }
+
+export default SoundLoader;

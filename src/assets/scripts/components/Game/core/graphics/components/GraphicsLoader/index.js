@@ -5,7 +5,7 @@ const { TextureCache } = utils;
 /**
  * Class representing a data loader.
  */
-export default class GraphicsLoader {
+class GraphicsLoader {
   /**
    * Creates a data loader.
    */
@@ -39,3 +39,5 @@ export default class GraphicsLoader {
     });
   }
 }
+
+export default GraphicsLoader;

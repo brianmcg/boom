@@ -1,5 +1,9 @@
 import { SCREEN } from '~/constants/config';
 
+/**
+ * @module game/core/physics/constants
+ */
+
 const DEG = [];
 
 const SIN = [];

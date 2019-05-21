@@ -1,6 +1,6 @@
 import { Body } from '~/core/physics';
 
-export default class Item extends Body {
+class Item extends Body {
   constructor({ key, value, ...other }) {
     super(other);
     this.key = key;
@@ -12,3 +12,5 @@ export default class Item extends Body {
     this.distanceToPlayer = this.world.player.distanceTo(this);
   }
 }
+
+export default Item;

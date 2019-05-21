@@ -1,7 +1,7 @@
 import Actor from '../Actor';
 import { DEG } from '~/core/physics';
 
-export default class Enemy extends Actor {
+class Enemy extends Actor {
   constructor(options) {
     super(options);
     this.velocity = 1;
@@ -14,3 +14,5 @@ export default class Enemy extends Actor {
     this.distanceToPlayer = this.world.player.distanceTo(this);
   }
 }
+
+export default Enemy;

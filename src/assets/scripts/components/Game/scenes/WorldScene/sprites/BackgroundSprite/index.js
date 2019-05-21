@@ -4,10 +4,9 @@ import { Sprite } from '~/core/graphics';
  * Class representing a background sprite.
  * @extends {Sprite}
  */
-export default class BackgroundSprite extends Sprite {
+class BackgroundSprite extends Sprite {
   /**
    * Creates a background sprite.
-   * @return {[type]}          [description]
    */
   constructor(textures) {
     super();
@@ -25,3 +24,5 @@ export default class BackgroundSprite extends Sprite {
     this.texture = this.textures[key][x][y];
   }
 }
+
+export default BackgroundSprite;

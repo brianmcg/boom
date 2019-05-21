@@ -7,7 +7,7 @@ let idCount = 0;
  * Class representing a body.
  * @extends {EventEmitter}
  */
-export default class Body extends EventEmitter {
+class Body extends EventEmitter {
   /**
    * Creates a body.
    * @param  {Number} options.x      The x coordinate of the body.
@@ -83,7 +83,13 @@ export default class Body extends EventEmitter {
     };
   }
 
+  /**
+   * The name of the class.
+   * @member {String}
+   */
   get name() {
     return this.constructor.name;
   }
 }
+
+export default Body;

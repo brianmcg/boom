@@ -4,7 +4,7 @@ import DynamicBody from '../DynamicBody';
  * Creates a dynamic sector
  * @extends {DynamicBody}
  */
-export default class DynamicSector extends DynamicBody {
+class DynamicSector extends DynamicBody {
   /**
    * Creates a sector
    * @param  {Number} options.x       The x coordinate of the sector.
@@ -36,3 +36,5 @@ export default class DynamicSector extends DynamicBody {
     this.childIds = this.childIds.filter(childId => childId !== id);
   }
 }
+
+export default DynamicSector;

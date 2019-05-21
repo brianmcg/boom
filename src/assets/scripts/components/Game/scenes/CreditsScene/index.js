@@ -7,7 +7,7 @@ import Scene from '../Scene';
 /**
  * Class representing a CreditsScene.
  */
-export default class CreditsScene extends Scene {
+class CreditsScene extends Scene {
   /**
    * Creates a CreditsScene.
    * @param  {Number} options.index The index of the scene.
@@ -51,3 +51,5 @@ export default class CreditsScene extends Scene {
     this.main.addChild(scroll);
   }
 }
+
+export default CreditsScene;

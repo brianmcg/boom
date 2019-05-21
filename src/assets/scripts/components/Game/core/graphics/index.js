@@ -1,5 +1,5 @@
 /**
- * @module graphics.
+ * @module  game/core/graphics
  */
 
 import { settings, SCALE_MODES, filters } from 'pixi.js';

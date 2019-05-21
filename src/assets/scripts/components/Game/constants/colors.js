@@ -1,5 +1,5 @@
 /**
- * @module  colors
+ * @module  game/constants/colors
  */
 
 /**

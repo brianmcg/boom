@@ -5,7 +5,7 @@ import { COS, SIN, DEG } from '../../constants';
  * Class representing a dynamic body.
  * @extends {Body}
  */
-export default class DynamicBody extends Body {
+class DynamicBody extends Body {
   /* Creates a dynamic body.
    * @param  {Number} options.x      The x coordinate of the dynamic body.
    * @param  {Number} options.y      The y coordinate of the dynamic body
@@ -75,3 +75,5 @@ export default class DynamicBody extends Body {
     this.world.sector(this.gridX, this.gridY).addChildId(this.id);
   }
 }
+
+export default DynamicBody;

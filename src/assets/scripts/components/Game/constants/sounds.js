@@ -1,5 +1,5 @@
 /**
- * @module sounds
+ * @module  game/constants/sounds
  */
 
 /**

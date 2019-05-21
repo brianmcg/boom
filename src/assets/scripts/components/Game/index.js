@@ -20,7 +20,7 @@ const EVENTS = {
 /**
  * A class representing a game.
  */
-export default class Game extends Application {
+class Game extends Application {
   /**
    * The events class property.
    */
@@ -205,3 +205,5 @@ export default class Game extends Application {
     }
   }
 }
+
+export default Game;

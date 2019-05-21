@@ -1,10 +1,6 @@
 import { TEXT } from './text';
 
 /**
- * @module constants
- */
-
-/**
  * The game credits.
  * @type {Array}
  */

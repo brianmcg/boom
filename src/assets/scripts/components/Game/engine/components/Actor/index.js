@@ -5,7 +5,7 @@ import {
   COS,
   SIN,
 } from '~/core/physics';
-import DoorSector from '../DoorSector';
+import Door from '../Door';
 import { TILE_SIZE } from '~/constants/config';
 
 let horizontalGrid;
@@ -33,7 +33,7 @@ let verticalSector;
  * Creates a character
  * @extends {DynamicBody}
  */
-export default class Actor extends DynamicBody {
+class Actor extends DynamicBody {
   /* Creates a character.
    * @param  {Number} options.x         The x coordinate of the character.
    * @param  {Number} options.y         The y coordinate of the character
@@ -116,7 +116,7 @@ export default class Actor extends DynamicBody {
         horizontalSector = world.sector(xGridIndex, yGridIndex);
 
         if (horizontalSector.blocking) {
-          isHorizontalDoor = horizontalSector instanceof DoorSector;
+          isHorizontalDoor = horizontalSector instanceof Door;
           if (isHorizontalDoor) {
             xOffsetDist = distToNextXIntersection / 2;
             yOffsetDist = distToNextHorizontalGrid / 2;
@@ -185,7 +185,7 @@ export default class Actor extends DynamicBody {
         verticalSector = world.sector(xGridIndex, yGridIndex);
 
         if (verticalSector.blocking) {
-          isVerticalDoor = verticalSector instanceof DoorSector;
+          isVerticalDoor = verticalSector instanceof Door;
 
           if (isVerticalDoor) {
             yOffsetDist = distToNextYIntersection / 2;
@@ -271,3 +271,5 @@ export default class Actor extends DynamicBody {
     };
   }
 }
+
+export default Actor;

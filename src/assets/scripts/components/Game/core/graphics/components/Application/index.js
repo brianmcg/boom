@@ -4,7 +4,7 @@ import EventEmitter from '../EventEmitter';
 /**
  * Class representing an application.
  */
-export default class Application extends PixiApplication {
+class Application extends PixiApplication {
   /**
    * Creates and application
    * @param  {Object} options The application options.
@@ -53,3 +53,5 @@ export default class Application extends PixiApplication {
     Object.assign(this.renderer.view.style, style);
   }
 }
+
+export default Application;

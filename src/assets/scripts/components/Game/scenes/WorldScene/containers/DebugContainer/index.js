@@ -5,7 +5,7 @@ import Player from '../../components/Player';
 
 const SCALE = 0.25;
 
-export default class DebugContainer extends Container {
+class DebugContainer extends Container {
   constructor({ level, sprites }) {
     super();
     this.level = level;
@@ -88,3 +88,5 @@ export default class DebugContainer extends Container {
     });
   }
 }
+
+export default DebugContainer;

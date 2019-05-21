@@ -1,10 +1,6 @@
 import { Sprite, BitmapText } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/font';
+import { FONT_SIZES } from '~/constants/fonts';
 import { WHITE, RED } from '~/constants/colors';
-
-/**
- * @module helpers
- */
 
 /**
  * Parses the loaded scene assets.

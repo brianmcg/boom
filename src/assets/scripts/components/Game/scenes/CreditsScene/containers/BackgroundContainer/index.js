@@ -4,7 +4,7 @@ import { SCREEN } from '~/constants/config';
 /**
  * Class representing a background container.
  */
-export default class BackgroundContainer extends Container {
+class BackgroundContainer extends Container {
   /**
    * Creates a background container.
    * @param  {Object} options.smoke The smoke sprite.
@@ -20,3 +20,5 @@ export default class BackgroundContainer extends Container {
     super.destroy(true);
   }
 }
+
+export default BackgroundContainer;

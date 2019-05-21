@@ -3,7 +3,7 @@ import { Texture, Sprite } from 'pixi.js';
 /**
  * Class representing a rectangle sprite.
  */
-export default class RectangleSprite extends Sprite {
+class RectangleSprite extends Sprite {
   /**
    * Creates a RectangleSprite.
    * @param  {Number} options.color   The sprite color.
@@ -21,3 +21,5 @@ export default class RectangleSprite extends Sprite {
     }
   }
 }
+
+export default RectangleSprite;
