@@ -6,6 +6,8 @@ const manual = new GameManual();
 
 const game = new Game();
 
+window.game = game;
+
 manual.on(GameManual.EVENTS.CLICK_START, () => {
   document.body.removeChild(manual.view);
   document.body.appendChild(game.view);

@@ -12,7 +12,7 @@ export const MAX_FPS = 60;
  * The time step.
  * @type {Number}
  */
-export const TIME_STEP = 1000 / 60;
+export const TIME_STEP = 1000 / MAX_FPS;
 
 /**
  * The number of levels in the game.
@@ -42,7 +42,7 @@ export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = false;
+export const DEBUG = true;
 
 /**
  * The draw distance.
