@@ -3,7 +3,7 @@ import { DEBUG } from '~/constants/config';
 import { parse } from './helpers';
 import DebugContainer from './containers/DebugContainer';
 import WorldContainer from './containers/WorldContainer';
-import Level from './components/Level';
+import Level from '~/engine/components/Level';
 import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;

@@ -11,6 +11,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
+    "better-docs": "^1.1.6",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.7",
@@ -21,6 +22,7 @@
     "eslint-plugin-import": "^2.14.0",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^3.2.0",
+    "jsdoc": "^3.6.2",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
@@ -35,7 +37,6 @@
   },
   "dependencies": {
     "@pixi/filter-pixelate": "^2.5.0",
-    "better-docs": "^1.1.6",
     "howler": "^2.0.15",
     "pixi.js": "v5.0.0-rc.3"
   },
@@ -43,6 +44,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "doc": "jsdoc -r src/assets/scripts/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json"
+    "doc": "jsdoc -r src/assets/scripts/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
+    "lint": "eslint src/assets/scripts/"
   }
 }

@@ -1,4 +1,4 @@
-import { FONT_SIZES } from '~/constants/font';
+import { FONT_SIZES } from '~/constants/fonts';
 import { RED } from '~/constants/colors';
 import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
 

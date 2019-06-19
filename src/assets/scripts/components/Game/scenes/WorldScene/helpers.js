@@ -1,12 +1,12 @@
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
 import { RectangleSprite, Line } from '~/core/graphics';
-import Level from './components/Level';
-import Player from './components/Player';
-import Door from './components/Door';
-import Entity from './components/Entity';
-import Item from './components/Item';
-import Enemy from './components/Enemy';
+import Level from '~/engine/components/Level';
+import Player from '~/engine/components/Player';
+import Door from '~/engine/components/Door';
+import Entity from '~/engine/components/Entity';
+import Item from '~/engine/components/Item';
+import Enemy from '~/engine/components/Enemy';
 import WallSprite from './sprites/WallSprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
 import {

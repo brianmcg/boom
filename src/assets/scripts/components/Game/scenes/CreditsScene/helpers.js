@@ -1,5 +1,5 @@
 import { AnimatedSprite, BitmapText } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/font';
+import { FONT_SIZES } from '~/constants/fonts';
 import { RED, WHITE } from '~/constants/colors';
 import { CREDITS } from './constants';
 

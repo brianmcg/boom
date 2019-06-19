@@ -11,7 +11,7 @@ import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import Loader from './util/Loader';
+import Loader from './utilities/Loader';
 
 const EVENTS = {
   QUIT: 'game:quit',

@@ -1,7 +1,7 @@
 import { Container } from '~/core/graphics';
 import { SCREEN, DRAW_DISTANCE } from '~/constants/config';
 import { DEG, Sector } from '~/core/physics';
-import Player from '../../components/Player';
+import Player from '~/engine/components/Player';
 
 const SCALE = 0.25;
 
