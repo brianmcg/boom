@@ -66,6 +66,9 @@ class WorldContainer extends Container {
     this.brightness = 0;
     this.addChild(backgroundContainer);
     this.addChild(entitiesContainer);
+
+    bottomId = level.sector(0, 0).sideIds[4];
+    topId = level.sector(0, 0).sideIds[5];
   }
 
   update(...options) {
@@ -91,9 +94,9 @@ class WorldContainer extends Container {
       const {
         visibleBodyIds,
         distance,
-        side,
+        isHorizontal,
         sideId,
-        intersection,
+        sectorIntersection,
       } = player.castRay({ rayAngle });
 
       // update wall sprites
@@ -107,10 +110,15 @@ class WorldContainer extends Container {
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = CAMERA_CENTER_Y - (spriteHeight / (TILE_SIZE / (TILE_SIZE - eyeHeight)));
 
-      wallSprite.changeTexture(sideId, intersection);
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;
-      wallSprite.tint = calculateTint(this.brightness, distance, side);
+
+      if (distance < DRAW_DISTANCE) {
+        wallSprite.changeTexture(sideId, sectorIntersection);
+        wallSprite.tint = calculateTint(this.brightness, distance, isHorizontal);
+      } else {
+        wallSprite.tint = BLACK;
+      }
 
       // Update background sprites
       wallBottomIntersection = Math.floor(spriteY + spriteHeight);
@@ -127,10 +135,10 @@ class WorldContainer extends Container {
             mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
 
-            bottomId = this.level.sector(
-              Math.floor(mapX / TILE_SIZE),
-              Math.floor(mapY / TILE_SIZE),
-            ).sideIds[4];
+            // bottomId = this.level.sector(
+            //   Math.floor(mapX / TILE_SIZE),
+            //   Math.floor(mapY / TILE_SIZE),
+            // ).sideIds[4];
 
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
@@ -160,10 +168,10 @@ class WorldContainer extends Container {
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
 
-            topId = this.level.sector(
-              Math.floor(mapX / TILE_SIZE),
-              Math.floor(mapY / TILE_SIZE),
-            ).sideIds[5];
+            // topId = this.level.sector(
+            //   Math.floor(mapX / TILE_SIZE),
+            //   Math.floor(mapY / TILE_SIZE),
+            // ).sideIds[5];
 
             if (pixelX < 0) {
               pixelX = TILE_SIZE + pixelX;

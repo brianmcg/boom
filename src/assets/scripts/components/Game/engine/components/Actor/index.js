@@ -22,7 +22,7 @@ let xGridIndex;
 let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
-let intersection;
+let sectorIntersection;
 let sideId;
 let isVerticalDoor;
 let isHorizontalDoor;
@@ -220,9 +220,9 @@ class Actor extends DynamicBody {
       xIntersection = Math.floor(xIntersection);
 
       if (!isHorizontalDoor && rayAngle < DEG[180]) {
-        intersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
+        sectorIntersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
       } else {
-        intersection = xIntersection % TILE_SIZE;
+        sectorIntersection = xIntersection % TILE_SIZE;
       }
 
       if (y < horizontalSector.y) {
@@ -233,10 +233,10 @@ class Actor extends DynamicBody {
 
       return {
         distance: distToHorizontalGridBeingHit,
-        side: 1,
+        isHorizontal: true,
         sideId,
         visibleBodyIds,
-        intersection,
+        sectorIntersection,
         xIntersection,
         yIntersection: horizontalGrid,
       };
@@ -249,9 +249,9 @@ class Actor extends DynamicBody {
     yIntersection = Math.floor(yIntersection);
 
     if (!isVerticalDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
-      intersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
+      sectorIntersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
     } else {
-      intersection = yIntersection % TILE_SIZE;
+      sectorIntersection = yIntersection % TILE_SIZE;
     }
 
     if (x < verticalSector.x) {
@@ -262,10 +262,9 @@ class Actor extends DynamicBody {
 
     return {
       distance: distToVerticalGridBeingHit,
-      side: 0,
       sideId: verticalSector.sideIds[0],
       visibleBodyIds,
-      intersection,
+      sectorIntersection,
       xIntersection: verticalGrid,
       yIntersection,
     };

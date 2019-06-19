@@ -38,6 +38,7 @@ class Player extends Actor {
     this.maxRotVelocity = maxRotVelocity;
     this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
+    this.zAngle = 0;
   }
 
   /**
