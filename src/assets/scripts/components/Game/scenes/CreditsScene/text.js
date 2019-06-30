@@ -1,4 +1,8 @@
 /**
+ * @module game/scenes/credits-scene/text
+ */
+
+/**
  * The scene text.
  * @type {Object}
  */

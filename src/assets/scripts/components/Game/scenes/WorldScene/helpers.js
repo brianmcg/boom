@@ -19,6 +19,10 @@ import {
 
 import * as PIXI from 'pixi.js';
 
+/**
+ * @module game/scenes/world-scene/helpers
+ */
+
 const SECTOR_TYPES = {
   START: 'start',
   END: 'end',

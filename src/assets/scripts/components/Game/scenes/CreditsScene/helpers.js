@@ -4,6 +4,10 @@ import { RED, WHITE } from '~/constants/colors';
 import { CREDITS } from './constants';
 
 /**
+ * @module game/scenes/credits-scene/helpers
+ */
+
+/**
  * Parses the loaded scene assets.
  * @param  {Object} options.assets  The scene assets.
  * @param  {Array}  options.text    The scene text.

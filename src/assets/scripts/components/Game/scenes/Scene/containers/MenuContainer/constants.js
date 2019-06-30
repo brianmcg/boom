@@ -1,4 +1,8 @@
 /**
+ * @module game/scenes/scene/containers/menu-container/constants
+ */
+
+/**
  * The screen padding.
  * @type {Number}
  */

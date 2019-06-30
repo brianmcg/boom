@@ -3,6 +3,10 @@ import { RED } from '~/constants/colors';
 import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
 
 /**
+ * @module game/scenes/title-scene/helpers
+ */
+
+/**
  * Parses the loaded scene assets.
  * @param  {Object} options.assets  The scene assets.
  * @param  {Array}  options.text    The scene text.

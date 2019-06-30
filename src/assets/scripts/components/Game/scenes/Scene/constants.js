@@ -1,4 +1,8 @@
 /**
+ * @module game/scenes/scene/constants
+ */
+
+/**
  * The scene states.
  * @type {Object}
  */

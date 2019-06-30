@@ -3,6 +3,10 @@ import { FONT_SIZES } from '~/constants/fonts';
 import { WHITE, RED } from '~/constants/colors';
 
 /**
+ * @module game/scenes/scene/helpers
+ */
+
+/**
  * Parses the loaded scene assets.
  * @param  {Object} options.assets  The scene assets.
  * @param  {Array}  options.text    The scene text.
