@@ -153,6 +153,7 @@ class WorldContainer extends Container {
 
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.visible = true;
+            // TODO: test with distance
             backgroundSprite.tint = calculateTint(this.brightness, actualDistance);
           } else {
             backgroundSprite.visible = false;

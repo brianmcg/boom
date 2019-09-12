@@ -8,7 +8,8 @@ class Entity extends Body {
   }
 
   update() {
-    this.distanceToPlayer = this.world.player.distanceTo(this);
+    const { player } = this.world;
+    this.distanceToPlayer = player.distanceTo(this);
   }
 }
 

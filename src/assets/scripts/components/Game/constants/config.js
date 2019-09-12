@@ -24,7 +24,7 @@ export const NUM_LEVELS = 1;
  * Enabled the sound.
  * @type {Boolean}
  */
-export const SOUND_ENABLED = true;
+export const SOUND_ENABLED = false;
 
 /**
  * The size of mao tile.
@@ -42,7 +42,7 @@ export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = true;
+export const DEBUG = false;
 
 /**
  * The draw distance.
