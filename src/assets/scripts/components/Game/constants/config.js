@@ -42,7 +42,7 @@ export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = false;
+export const DEBUG = true;
 
 /**
  * The draw distance.

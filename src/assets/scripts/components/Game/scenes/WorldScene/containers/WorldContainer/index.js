@@ -1,4 +1,4 @@
-import { Container, ParticleContainer } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import {
   DEG,
   COS,
@@ -7,6 +7,8 @@ import {
 } from '~/core/physics';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
 import { BLACK } from '~/constants/colors';
+import EntityContainer from './containers/EntityContainer';
+import BackgroundContainer from './containers/BackgroundContainer';
 import { calculateTint } from './helpers';
 
 const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
@@ -36,30 +38,13 @@ class WorldContainer extends Container {
     const { entities, background } = sprites;
     const { walls, items } = entities;
 
-    const backgroundContainer = new ParticleContainer(SCREEN.HEIGHT * SCREEN.WIDTH, {
-      uvs: true,
-      tint: true,
-    });
+    const backgroundContainer = new BackgroundContainer();
 
-    const entitiesContainer = new ParticleContainer(SCREEN.WIDTH * 2, {
-      uvs: true,
-      tint: true,
-      vertices: true,
-    });
-
-    entitiesContainer.sortableChildren = true;
-    entitiesContainer.update = function() {
-      console.log('update');
-      this.children.forEach((child) => {
-        child.zIndex += 1;
-      });
-      this.sortChildren();
-    };
+    const entityContainer = new EntityContainer();
 
     walls.forEach((wall, i) => {
       wall.x = i;
-      wall.y = (SCREEN.HEIGHT / 2) - (TILE_SIZE / 2);
-      entitiesContainer.addChild(wall);
+      entityContainer.addChild(wall);
     });
 
     background.forEach((row, i) => {
@@ -70,40 +55,31 @@ class WorldContainer extends Container {
       });
     });
 
-    Object.values(items).forEach((item, i) => {
-      item.x = i * 64;
-      item.y = 0;
-      item.height = 64;
-      item.width = 64;
-      entitiesContainer.addChild(item);
-    });
+    // Object.values(items).forEach((item, i) => {
+    //   item.x = i * 64;
+    //   item.y = 0;
+    //   item.height = 64;
+    //   item.width = 64;
+    //   entityContainer.addChild(item);
+    // });
 
-    this.updateable = [];
     this.level = level;
     this.sprites = sprites;
     this.brightness = 0;
     this.addChild(backgroundContainer);
-    this.addChild(entitiesContainer);
+    this.addChild(entityContainer);
 
     bottomId = level.sector(0, 0).sideIds[4];
     topId = level.sector(0, 0).sideIds[5];
   }
 
-  addChild(child) {
-    super.addChild(child);
-
-    if (child.update) {
-      this.updateable.push(child);
-    }
-  }
-
   update(...options) {
     this.level.update(...options);
-
-    this.updateable.forEach(child => child.update(...options));
   }
 
   animate() {
+    super.animate();
+
     const { player, bodies } = this.level;
     const { entities, background } = this.sprites;
     const { walls } = entities;

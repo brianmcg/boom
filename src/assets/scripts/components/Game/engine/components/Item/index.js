@@ -10,13 +10,7 @@ class Item extends Body {
     super(other);
     this.key = key;
     this.value = value;
-    this.distanceToPlayer = 0;
     this.type = type;
-  }
-
-  update() {
-    const { player } = this.world;
-    this.distanceToPlayer = player.distanceTo(this);
   }
 }
 

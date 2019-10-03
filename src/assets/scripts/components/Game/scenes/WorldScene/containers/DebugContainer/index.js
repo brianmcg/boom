@@ -64,7 +64,7 @@ class DebugContainer extends Container {
       ]);
 
       visibleBodyIds.forEach((id) => {
-        if (!bodyIds.includes(id) && bodies[id].distanceToPlayer < distance) {
+        if (!bodyIds.includes(id) && player.distanceTo(bodies[id]) < distance) {
           bodyIds.push(id);
         }
       });
@@ -82,7 +82,7 @@ class DebugContainer extends Container {
 
         if (bodyIds.includes(body.id) || body instanceof Sector || body instanceof Player) {
           this.bodySprites[body.id].alpha = 1;
-        } else if (body.distanceToPlayer) {
+        } else {
           this.bodySprites[body.id].alpha = 0.4;
         }
       }

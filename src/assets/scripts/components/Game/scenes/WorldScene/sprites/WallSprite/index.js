@@ -12,7 +12,7 @@ class WallSprite extends Sprite {
   constructor(textures) {
     super();
     this.textures = textures;
-    this.zIndex = 1;
+    this.zIndex = Number.MAX_VALUE;
   }
 
   /**

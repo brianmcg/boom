@@ -6,7 +6,6 @@ class Enemy extends Actor {
     super(options);
     this.velocity = 1;
     this.rotVelocity = DEG[1];
-    this.distanceToPlayer = 0;
 
     // if (this.constructor === Enemy) {
     //   throw new TypeError('Can not construct abstract class.');
@@ -15,7 +14,6 @@ class Enemy extends Actor {
 
   update(delta) {
     super.update(delta);
-    this.distanceToPlayer = this.world.player.distanceTo(this);
   }
 }
 
