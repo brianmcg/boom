@@ -35,13 +35,7 @@ class DynamicBody extends Body {
     this.world.sector(this.gridX, this.gridY).removeChildId(this.id);
 
     // Update angle
-    this.angle += Math.round(this.rotVelocity * delta);
-
-    this.angle %= DEG[360];
-
-    if (this.angle < 0) {
-      this.angle += DEG[360];
-    }
+    this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG[360]) % DEG[360];
 
     // Update x coordinate
     this.x += COS[this.angle] * this.velocity * delta;

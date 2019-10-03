@@ -31,6 +31,24 @@ let pixelY;
 let topId;
 let bottomId;
 
+const toDegrees = (angle = 0) => {
+  return Math.round(angle * DEGREES_180 / Math.PI);
+};
+
+const atan2 = (dy = 0, dx = 0) => {
+  let angle = toDegrees(Math.atan2(dy, dx));
+
+  while (angle < 0) {
+    angle += DEGREES_360;
+  }
+
+  while (angle >= DEGREES_360) {
+    angle -= DEGREES_360;
+  }
+
+  return angle;
+};
+
 class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
@@ -86,11 +104,7 @@ class WorldContainer extends Container {
 
     const eyeHeight = player.height;
 
-    let rayAngle = player.angle - DEG[30];
-
-    if (rayAngle < 0) {
-      rayAngle += DEG[360];
-    }
+    let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       wallSprite = walls[xIndex];
@@ -104,11 +118,7 @@ class WorldContainer extends Container {
       } = player.castRay({ rayAngle });
 
       // update wall sprites
-      angleDifference = rayAngle - player.angle;
-
-      if (angleDifference < 0) {
-        angleDifference += DEG[360];
-      }
+      angleDifference = (rayAngle - player.angle + DEG[360]) % DEG[360];
 
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
@@ -198,8 +208,7 @@ class WorldContainer extends Container {
       }
 
       // Update ray angle
-      rayAngle += 1;
-      rayAngle %= DEG[360];
+      rayAngle = (rayAngle + 1 + DEG[360]) % DEG[360];
     }
   }
 }

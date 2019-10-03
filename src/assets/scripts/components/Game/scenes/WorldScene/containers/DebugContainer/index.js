@@ -40,11 +40,7 @@ class DebugContainer extends Container {
       sprite.visible = false;
     });
 
-    let rayAngle = player.angle - DEG[30];
-
-    if (rayAngle < 0) {
-      rayAngle += DEG[360];
-    }
+    let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
     const bodyIds = [];
 
@@ -69,9 +65,7 @@ class DebugContainer extends Container {
         }
       });
 
-      rayAngle += 1;
-
-      rayAngle %= DEG[360];
+      rayAngle = (rayAngle + 1 + DEG[360]) % DEG[360];
     }
 
     Object.values(bodies).forEach((body) => {
