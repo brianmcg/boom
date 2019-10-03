@@ -53,6 +53,7 @@ class DebugContainer extends Container {
         xIntersection,
         yIntersection,
         visibleBodyIds,
+        distance,
       } = player.castRay({ rayAngle });
 
       this.raySprites[xIndex].updatePoints([
@@ -63,7 +64,7 @@ class DebugContainer extends Container {
       ]);
 
       visibleBodyIds.forEach((id) => {
-        if (!bodyIds.includes(id) && bodies[id].distanceToPlayer < DRAW_DISTANCE) {
+        if (!bodyIds.includes(id) && bodies[id].distanceToPlayer < distance) {
           bodyIds.push(id);
         }
       });

@@ -34,7 +34,7 @@ class WorldContainer extends Container {
     super();
 
     const { entities, background } = sprites;
-    const { walls } = entities;
+    const { walls, items } = entities;
 
     const backgroundContainer = new ParticleContainer(SCREEN.HEIGHT * SCREEN.WIDTH, {
       uvs: true,
@@ -46,6 +46,15 @@ class WorldContainer extends Container {
       tint: true,
       vertices: true,
     });
+
+    entitiesContainer.sortableChildren = true;
+    entitiesContainer.update = function() {
+      console.log('update');
+      this.children.forEach((child) => {
+        child.zIndex += 1;
+      });
+      this.sortChildren();
+    };
 
     walls.forEach((wall, i) => {
       wall.x = i;
@@ -61,6 +70,15 @@ class WorldContainer extends Container {
       });
     });
 
+    Object.values(items).forEach((item, i) => {
+      item.x = i * 64;
+      item.y = 0;
+      item.height = 64;
+      item.width = 64;
+      entitiesContainer.addChild(item);
+    });
+
+    this.updateable = [];
     this.level = level;
     this.sprites = sprites;
     this.brightness = 0;
@@ -71,8 +89,18 @@ class WorldContainer extends Container {
     topId = level.sector(0, 0).sideIds[5];
   }
 
+  addChild(child) {
+    super.addChild(child);
+
+    if (child.update) {
+      this.updateable.push(child);
+    }
+  }
+
   update(...options) {
     this.level.update(...options);
+
+    this.updateable.forEach(child => child.update(...options));
   }
 
   animate() {

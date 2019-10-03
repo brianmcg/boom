@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { Sector } from '~/core/physics';
 import { RectangleSprite, Line } from '~/core/graphics';
@@ -8,6 +9,7 @@ import Entity from '~/engine/components/Entity';
 import Item from '~/engine/components/Item';
 import Enemy from '~/engine/components/Enemy';
 import WallSprite from './sprites/WallSprite';
+import ItemSprite from './sprites/ItemSprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
 import {
   BROWN,
@@ -16,8 +18,6 @@ import {
   BLUE,
   WHITE,
 } from '~/constants/colors';
-
-import * as PIXI from 'pixi.js';
 
 /**
  * @module game/scenes/world-scene/helpers
@@ -294,6 +294,12 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
+  const itemSprites = {};
+
+  level.items.forEach((item) => {
+    itemSprites[item.id] = new ItemSprite(textures[item.type]);
+  });
+
   backgroundImages.forEach((image) => {
     backgroundPixelTextures[image] = [];
 
@@ -319,7 +325,7 @@ const createSprites = (level, resources) => {
   }
 
   return {
-    entities: { walls: wallSprites },
+    entities: { walls: wallSprites, items: itemSprites },
     background: backgroundSprites,
   };
 };
