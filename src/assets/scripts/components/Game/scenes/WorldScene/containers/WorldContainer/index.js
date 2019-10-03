@@ -31,19 +31,17 @@ let pixelY;
 let topId;
 let bottomId;
 
-const toDegrees = (angle = 0) => {
-  return Math.round(angle * DEGREES_180 / Math.PI);
-};
+const toDegrees = (angle = 0) => Math.round(angle * DEG[180] / Math.PI);
 
 const atan2 = (dy = 0, dx = 0) => {
   let angle = toDegrees(Math.atan2(dy, dx));
 
   while (angle < 0) {
-    angle += DEGREES_360;
+    angle += DEG[360];
   }
 
-  while (angle >= DEGREES_360) {
-    angle -= DEGREES_360;
+  while (angle >= DEG[360]) {
+    angle -= DEG[360];
   }
 
   return angle;
