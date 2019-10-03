@@ -13,6 +13,7 @@ import { calculateTint } from './helpers';
 
 const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
 
+const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 
 let wallSprite;
@@ -31,10 +32,19 @@ let pixelY;
 let topId;
 let bottomId;
 
+let bodyId;
+let sprite;
+let dx;
+let dy;
+let spriteAngle;
+let spriteScale;
+let spriteWidth;
+let spriteX;
+
 const toDegrees = (angle = 0) => Math.round(angle * DEG[180] / Math.PI);
 
-const atan2 = (dy = 0, dx = 0) => {
-  let angle = toDegrees(Math.atan2(dy, dx));
+const atan2 = (dyA = 0, dxA = 0) => {
+  let angle = toDegrees(Math.atan2(dyA, dxA));
 
   while (angle < 0) {
     angle += DEG[360];
@@ -71,13 +81,13 @@ class WorldContainer extends Container {
       });
     });
 
-    // Object.values(items).forEach((item, i) => {
-    //   item.x = i * 64;
-    //   item.y = 0;
-    //   item.height = 64;
-    //   item.width = 64;
-    //   entityContainer.addChild(item);
-    // });
+    Object.values(items).forEach((item) => {
+      // item.x = i * 64;
+      // item.y = 0;
+      // item.height = 64;
+      // item.width = 64;
+      entityContainer.addChild(item);
+    });
 
     this.level = level;
     this.sprites = sprites;
@@ -98,9 +108,11 @@ class WorldContainer extends Container {
 
     const { player, bodies } = this.level;
     const { entities, background } = this.sprites;
-    const { walls } = entities;
+    const { walls, items } = entities;
 
     const eyeHeight = player.height;
+
+    const bodyIds = [];
 
     let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
@@ -205,8 +217,57 @@ class WorldContainer extends Container {
         }
       }
 
+      visibleBodyIds.forEach((id) => {
+        if (!bodyIds.includes(id) && player.distanceTo(bodies[id]) < DRAW_DISTANCE) {
+          bodyIds.push(id);
+        }
+      });
+
       // Update ray angle
       rayAngle = (rayAngle + 1 + DEG[360]) % DEG[360];
+    }
+
+    for (let i = 0; i < bodyIds.length; i += 1) {
+      bodyId = bodyIds[i];
+      sprite = items[bodyId];
+
+      if (!sprite) {
+        break;
+      }
+      dx = bodies[bodyId].x - player.x;
+      dy = bodies[bodyId].y - player.y;
+      actualDistance = Math.sqrt(dx * dx + dy * dy);
+      spriteAngle = atan2(dy, dx) - player.angle;
+      spriteAngle %= DEG[360];
+
+      if (spriteAngle < 0) {
+        spriteAngle += DEG[360];
+      }
+
+      if (spriteAngle > DEG[270] || spriteAngle < DEG[90]) {
+        correctedDistance = COS[spriteAngle] * actualDistance;
+
+        if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
+          spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+          spriteWidth = sprite.getLocalBounds().width * spriteScale;
+          spriteHeight = sprite.getLocalBounds().height * spriteScale;
+          spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+
+          sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+          sprite.position.y = CAMERA_CENTER_Y
+            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - eyeHeight)));
+          sprite.width = spriteWidth;
+          sprite.height = spriteHeight;
+          sprite.zOrder = actualDistance;
+          // wallSprite.tint = calculateTint(this.brightness, distance, isHorizontal);
+          // sprite.tint = calculateTint(actualDistance, this.globalBrightness);
+          sprite.visible = true;
+
+          if (sprite.updateAnimation) {
+            sprite.updateAnimation(this.world.entityMap[bodyId], player);
+          }
+        }
+      }
     }
   }
 }
