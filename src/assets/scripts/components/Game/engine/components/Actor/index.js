@@ -66,7 +66,7 @@ class Actor extends DynamicBody {
       world,
     } = this;
 
-    const visibleBodyIds = [...world.sector(gridX, gridY).childIds]
+    const visibleBodyIds = world.sector(gridX, gridY).childIds
       .filter(id => this.id !== id);
 
     if (!rayAngle && rayAngle !== 0) {

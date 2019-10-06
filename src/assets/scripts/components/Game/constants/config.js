@@ -36,7 +36,7 @@ export const TILE_SIZE = 64;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
+export const SCREEN = { WIDTH: 300, HEIGHT: 128 };
 
 /**
  * Debug mode on or off.

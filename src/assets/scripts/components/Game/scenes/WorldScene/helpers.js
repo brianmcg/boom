@@ -147,6 +147,7 @@ const createLevel = (data) => {
         row.push(sector);
       }
 
+
       if (itemValue) {
         const tile = tiles.find(t => t.id === itemValue - 1);
         properties = tile.properties || [];
@@ -169,7 +170,7 @@ const createLevel = (data) => {
           const nonBlocking = (properties.find(prop => prop.name === 'nonBlocking') || {}).value;
 
           objects.push(new Entity({
-            type: tiles[itemValue - 1].image,
+            type: tile.image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE / 2,
@@ -294,17 +295,13 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
-  // const itemSprites = {};
-
   const objectSprites = {};
 
   level.items.forEach((item) => {
-    console.log(item.id, item.type);
     objectSprites[item.id] = new ItemSprite(textures[item.type]);
   });
 
   level.objects.forEach((object) => {
-    console.log(object.id, object.type);
     objectSprites[object.id] = new ItemSprite(textures[object.type]);
   });
 

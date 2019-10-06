@@ -11,6 +11,7 @@ export default class ItemSprite extends Sprite {
    */
   constructor(texture) {
     super(texture);
-    this.zIndex = Number.MAX_VALUE;
+    this.zOrder = Number.MAX_VALUE;
+    this.hideOnAnimate = true;
   }
 }
