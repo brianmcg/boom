@@ -1,7 +1,7 @@
-import { ParticleContainer } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
-class EntityContainer extends ParticleContainer {
+class EntityContainer extends Container {
   constructor() {
     super(SCREEN.WIDTH * 2, {
       uvs: true,
@@ -9,12 +9,15 @@ class EntityContainer extends ParticleContainer {
       vertices: true,
     });
 
-    this.sortableChildren = true;
+    // this.sortableChildren = true;
   }
 
-  animate() {
-    this.sortChildren();
-  }
+  // animate() {
+  //   this.children.sort((a, b) => {
+  //     return b.zIndex - a.zIndex;
+  //   });
+  //   // this.sortChildren();
+  // }
 }
 
 export default EntityContainer;

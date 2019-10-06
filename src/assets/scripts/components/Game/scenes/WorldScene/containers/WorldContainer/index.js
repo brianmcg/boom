@@ -62,15 +62,17 @@ class WorldContainer extends Container {
     super();
 
     const { entities, background } = sprites;
-    const { walls, items } = entities;
+    const { walls, objects } = entities;
 
     const backgroundContainer = new BackgroundContainer();
 
-    const entityContainer = new EntityContainer();
+    this.entityContainer = new EntityContainer();
+
+    this.entityContainer.sortableChildren = true;
 
     walls.forEach((wall, i) => {
       wall.x = i;
-      entityContainer.addChild(wall);
+      this.entityContainer.addChild(wall);
     });
 
     background.forEach((row, i) => {
@@ -81,19 +83,27 @@ class WorldContainer extends Container {
       });
     });
 
-    Object.values(items).forEach((item) => {
+    this.entities = [];
+
+    Object.values(objects).forEach((object) => {
       // item.x = i * 64;
       // item.y = 0;
       // item.height = 64;
       // item.width = 64;
-      entityContainer.addChild(item);
+      this.entities.push(object);
+      this.entityContainer.addChild(object);
     });
+
+    // Object.values(objects).forEach((object) => {
+    //   this.entities.push(object);
+    //   this.entityContainer.addChild(object);
+    // });
 
     this.level = level;
     this.sprites = sprites;
     this.brightness = 0;
     this.addChild(backgroundContainer);
-    this.addChild(entityContainer);
+    this.addChild(this.entityContainer);
 
     bottomId = level.sector(0, 0).sideIds[4];
     topId = level.sector(0, 0).sideIds[5];
@@ -108,13 +118,18 @@ class WorldContainer extends Container {
 
     const { player, bodies } = this.level;
     const { entities, background } = this.sprites;
-    const { walls, items } = entities;
+    const { walls, objects } = entities;
 
     const eyeHeight = player.height;
 
     const bodyIds = [];
 
     let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
+
+    this.entities.forEach((entity) => {
+      entity.visible = false;
+      // this.entityContainer.removeChild(entity);
+    });
 
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       wallSprite = walls[xIndex];
@@ -136,6 +151,7 @@ class WorldContainer extends Container {
 
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;
+      wallSprite.zIndex = distance;
 
       if (distance < DRAW_DISTANCE) {
         wallSprite.changeTexture(sideId, sectorIntersection);
@@ -167,13 +183,13 @@ class WorldContainer extends Container {
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
 
-            if (pixelX < 0) {
-              pixelX = TILE_SIZE + pixelX;
-            }
+            // if (pixelX < 0) {
+            //   pixelX = TILE_SIZE + pixelX;
+            // }
 
-            if (pixelY < 0) {
-              pixelY = TILE_SIZE + pixelY;
-            }
+            // if (pixelY < 0) {
+            //   pixelY = TILE_SIZE + pixelY;
+            // }
 
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.visible = true;
@@ -198,13 +214,13 @@ class WorldContainer extends Container {
             //   Math.floor(mapY / TILE_SIZE),
             // ).sideIds[5];
 
-            if (pixelX < 0) {
-              pixelX = TILE_SIZE + pixelX;
-            }
+            // if (pixelX < 0) {
+            //   pixelX = TILE_SIZE + pixelX;
+            // }
 
-            if (pixelY < 0) {
-              pixelY = TILE_SIZE + pixelY;
-            }
+            // if (pixelY < 0) {
+            //   pixelY = TILE_SIZE + pixelY;
+            // }
 
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
             backgroundSprite.visible = true;
@@ -218,7 +234,7 @@ class WorldContainer extends Container {
       }
 
       visibleBodyIds.forEach((id) => {
-        if (!bodyIds.includes(id) && player.distanceTo(bodies[id]) < DRAW_DISTANCE) {
+        if (!bodyIds.includes(id)) { //  && player.distanceTo(bodies[id]) < DRAW_DISTANCE) {
           bodyIds.push(id);
         }
       });
@@ -229,11 +245,11 @@ class WorldContainer extends Container {
 
     for (let i = 0; i < bodyIds.length; i += 1) {
       bodyId = bodyIds[i];
-      sprite = items[bodyId];
+      sprite = objects[bodyId];
 
-      if (!sprite) {
-        break;
-      }
+      // if (!sprite) {
+      //   break;
+      // }
       dx = bodies[bodyId].x - player.x;
       dy = bodies[bodyId].y - player.y;
       actualDistance = Math.sqrt(dx * dx + dy * dy);
@@ -258,10 +274,12 @@ class WorldContainer extends Container {
             - (spriteHeight / (TILE_SIZE / (TILE_SIZE - eyeHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
-          sprite.zOrder = actualDistance;
+          // sprite.zOrder = actualDistance;
           // wallSprite.tint = calculateTint(this.brightness, distance, isHorizontal);
           // sprite.tint = calculateTint(actualDistance, this.globalBrightness);
           sprite.visible = true;
+          // this.entityContainer.addChild(sprite);
+          sprite.zIndex = actualDistance;
 
           if (sprite.updateAnimation) {
             sprite.updateAnimation(this.world.entityMap[bodyId], player);
@@ -269,6 +287,12 @@ class WorldContainer extends Container {
         }
       }
     }
+
+    this.entityContainer.sortChildren();
+
+    // this.entityContainer.children.sort((a, b) => {
+    //   return b.zOrder - a.zOrder;
+    // });
   }
 }
 

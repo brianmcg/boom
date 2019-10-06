@@ -180,15 +180,15 @@ const createLevel = (data) => {
         }
       }
 
-      if (enemyValue) {
-        enemies.push(new Enemy({
-          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: TILE_SIZE / 2,
-          height: TILE_SIZE / 2,
-          length: TILE_SIZE / 2,
-        }));
-      }
+      // if (enemyValue) {
+      //   enemies.push(new Enemy({
+      //     x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+      //     y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+      //     width: TILE_SIZE / 2,
+      //     height: TILE_SIZE / 2,
+      //     length: TILE_SIZE / 2,
+      //   }));
+      // }
     }
 
     grid.push(row);
@@ -294,10 +294,18 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
-  const itemSprites = {};
+  // const itemSprites = {};
+
+  const objectSprites = {};
 
   level.items.forEach((item) => {
-    itemSprites[item.id] = new ItemSprite(textures[item.type]);
+    console.log(item.id, item.type);
+    objectSprites[item.id] = new ItemSprite(textures[item.type]);
+  });
+
+  level.objects.forEach((object) => {
+    console.log(object.id, object.type);
+    objectSprites[object.id] = new ItemSprite(textures[object.type]);
   });
 
   backgroundImages.forEach((image) => {
@@ -325,7 +333,7 @@ const createSprites = (level, resources) => {
   }
 
   return {
-    entities: { walls: wallSprites, items: itemSprites },
+    entities: { walls: wallSprites, objects: objectSprites },
     background: backgroundSprites,
   };
 };
