@@ -9,7 +9,7 @@ import Entity from '~/engine/components/Entity';
 import Item from '~/engine/components/Item';
 import Enemy from '~/engine/components/Enemy';
 import WallSprite from './sprites/WallSprite';
-import ItemSprite from './sprites/ItemSprite';
+import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
 import {
   BROWN,
@@ -295,14 +295,14 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
-  const objectSprites = {};
+  const entitySprites = {};
 
   level.items.forEach((item) => {
-    objectSprites[item.id] = new ItemSprite(textures[item.type]);
+    entitySprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
   level.objects.forEach((object) => {
-    objectSprites[object.id] = new ItemSprite(textures[object.type]);
+    entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
   backgroundImages.forEach((image) => {
@@ -330,7 +330,7 @@ const createSprites = (level, resources) => {
   }
 
   return {
-    entities: { walls: wallSprites, objects: objectSprites },
+    entities: { walls: wallSprites, objects: entitySprites },
     background: backgroundSprites,
   };
 };

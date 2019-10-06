@@ -1,12 +1,12 @@
 import { Sprite } from '~/core/graphics';
 
 /**
- * Class representing an ItemSprite.
+ * Class representing an EntitySprite.
  * @extends {PIXI.Sprite}
  */
-export default class ItemSprite extends Sprite {
+class EntitySprite extends Sprite {
   /**
-   * Creates an ItemSprite.
+   * Creates an EntitySprite.
    * @param  {String} image The name of the image.
    */
   constructor(texture) {
@@ -15,3 +15,5 @@ export default class ItemSprite extends Sprite {
     this.hideOnAnimate = true;
   }
 }
+
+export default EntitySprite;
