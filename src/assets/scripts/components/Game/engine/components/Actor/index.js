@@ -56,6 +56,13 @@ class Actor extends DynamicBody {
     }
   }
 
+  distanceTo(body) {
+    const dx = this.x - body.x;
+    const dy = this.y - body.y;
+
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
   castRay({ rayAngle }) {
     const {
       x,
@@ -66,7 +73,9 @@ class Actor extends DynamicBody {
       world,
     } = this;
 
-    const visibleBodyIds = world.sector(gridX, gridY).childIds
+    const { bodies } = this.world;
+
+    let visibleBodyIds = world.sector(gridX, gridY).childIds
       .filter(id => this.id !== id);
 
     if (!rayAngle && rayAngle !== 0) {
@@ -231,6 +240,9 @@ class Actor extends DynamicBody {
         sideId = horizontalSector.sideIds[3];
       }
 
+      visibleBodyIds = visibleBodyIds
+        .filter(id => this.distanceTo(bodies[id]) <= distToHorizontalGridBeingHit);
+
       return {
         distance: distToHorizontalGridBeingHit,
         isHorizontal: true,
@@ -259,6 +271,9 @@ class Actor extends DynamicBody {
     } else {
       sideId = verticalSector.sideIds[2];
     }
+
+    visibleBodyIds = visibleBodyIds
+      .filter(id => this.distanceTo(bodies[id]) <= distToVerticalGridBeingHit);
 
     return {
       distance: distToVerticalGridBeingHit,

@@ -92,7 +92,7 @@ class Door extends Sector {
         if (this.timer) {
           this.timer -= TIME_STEP * delta;
           if (this.timer <= 0) {
-            const isBlocked = this.world.adjacentBodies(this)
+            const isBlocked = this.world.getAdjacentBodies(this)
               .reduce((result, body) => (result || body instanceof DynamicBody), false);
 
             if (!isBlocked) {

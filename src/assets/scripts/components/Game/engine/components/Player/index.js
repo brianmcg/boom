@@ -70,7 +70,7 @@ class Player extends Actor {
       this.rotVelocity = 0;
     }
 
-    this.world.adjacentBodies(this).forEach((body) => {
+    this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
         this.pickup(body);
       } else if (use && body.use) {
@@ -93,13 +93,6 @@ class Player extends Actor {
     this.world.remove(item);
     // TODO: Add value;
     this.item = null;
-  }
-
-  distanceTo(body) {
-    const dx = this.x - body.x;
-    const dy = this.y - body.y;
-
-    return Math.sqrt(dx * dx + dy * dy);
   }
 }
 

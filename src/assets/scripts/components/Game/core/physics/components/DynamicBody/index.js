@@ -29,7 +29,7 @@ class DynamicBody extends Body {
    */
   update(delta) {
     // Get bodies from surrounding sectors
-    const bodies = this.world.adjacentBodies(this);
+    const bodies = this.world.getAdjacentBodies(this);
 
     // Unmark id from sector before moving
     this.world.sector(this.gridX, this.gridY).removeChildId(this.id);

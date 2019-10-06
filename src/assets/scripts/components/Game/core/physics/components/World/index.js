@@ -92,7 +92,7 @@ class World extends EventEmitter {
    * @param  {Body}   body The body to check.
    * @return {Array}       The bodies surroung the body.
    */
-  adjacentBodies(body) {
+  getAdjacentBodies(body) {
     const sectors = this.adjacentSectors(body);
 
     return sectors.reduce((bodies, sector) => {

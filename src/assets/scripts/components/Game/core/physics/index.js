@@ -2,12 +2,12 @@ import Body from './components/Body';
 import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Sector from './components/Sector';
-import DynamicSector from './components/DynamicSector';
 import {
   COS,
   SIN,
   TAN,
   DEG,
+  atan2,
 } from './constants';
 
 /**
@@ -32,10 +32,6 @@ export {
    */
   Sector,
   /**
-   * The dynamic sector component.
-   */
-  DynamicSector,
-  /**
    * The cosine table.
    * @const
    */
@@ -55,4 +51,8 @@ export {
    * @const
    */
   DEG,
+  /**
+   * atan2 function.
+   */
+  atan2,
 };
