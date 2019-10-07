@@ -49,7 +49,6 @@ class DebugContainer extends Container {
         xIntersection,
         yIntersection,
         visibleBodyIds,
-        distance,
       } = castRay({ rayAngle, caster: player });
 
       this.raySprites[xIndex].updatePoints([
