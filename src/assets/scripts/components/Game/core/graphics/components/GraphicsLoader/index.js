@@ -1,7 +1,5 @@
 import { utils, Loader } from 'pixi.js';
 
-const { TextureCache } = utils;
-
 /**
  * Class representing a data loader.
  */
@@ -11,7 +9,7 @@ class GraphicsLoader {
    */
   constructor() {
     this.loader = new Loader();
-    this.cache = TextureCache;
+    this.cache = utils.TextureCache;
   }
 
   /**
@@ -20,7 +18,7 @@ class GraphicsLoader {
    * @return {Promise}       Resolves when assets load.
    */
   load(assets) {
-    assets.forEach(asset => this.loader.add(asset.name, asset.src));
+    assets.forEach(({ name, src }) => this.loader.add(name, src));
     return new Promise(resolve => this.loader.load((loader, resources) => resolve(resources)));
   }
 
