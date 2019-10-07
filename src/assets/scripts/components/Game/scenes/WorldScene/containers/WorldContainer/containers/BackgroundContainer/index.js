@@ -8,10 +8,20 @@ class BackgroundContainer extends ParticleContainer {
   /**
    * Creates a background container.
    */
-  constructor() {
+  constructor(background) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT, {
       uvs: true,
       tint: true,
+    });
+
+    this.background = background;
+
+    background.forEach((row, i) => {
+      row.forEach((pixel, y) => {
+        pixel.x = i;
+        pixel.y = y;
+        this.addChild(pixel);
+      });
     });
   }
 }

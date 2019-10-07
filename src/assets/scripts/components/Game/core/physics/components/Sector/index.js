@@ -1,10 +1,26 @@
 import Body from '../Body';
 
+const SIDES = {
+  FRONT: 0,
+  LEFT: 1,
+  BACK: 2,
+  RIGHT: 3,
+  BOTTOM: 4,
+  TOP: 5,
+};
+
 /**
  * Creates a sector
  * @extends {Body}
  */
 class Sector extends Body {
+  /**
+   * Constant representing the sides of a sector.
+   */
+  static get SIDES() {
+    return SIDES;
+  }
+
   /**
    * Creates a sector
    * @param  {Number} options.x       The x coordinate of the sector.

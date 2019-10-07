@@ -1,26 +1,37 @@
 import { Container } from '~/core/graphics';
 
 /**
- * Class representing an entity container.
+ * Class representing an map container.
  */
-class EntityContainer extends Container {
+class MapContainer extends Container {
   /**
-   * Creates an entity container.
+   * Creates an map container.
    */
-  constructor() {
+  constructor({ walls, objects }) {
     super();
     this.hideable = [];
+    this.walls = walls;
+    this.objects = objects;
+
+    walls.forEach((wall, i) => {
+      wall.x = i;
+      this.addChild(wall);
+    });
+
+    Object.values(objects).forEach((object) => {
+      this.addChild(object);
+    });
   }
 
   /**
-   * Animate the entity container
+   * Sorts the map container
    */
-  animate() {
+  sort() {
     this.children.sort((a, b) => b.zOrder - a.zOrder);
   }
 
   /**
-   * Reset the entity container.
+   * Reset the map container.
    */
   reset() {
     this.hideable.forEach((child) => {
@@ -50,7 +61,7 @@ class EntityContainer extends Container {
   }
 }
 
-export default EntityContainer;
+export default MapContainer;
 
 
 // constructor() {

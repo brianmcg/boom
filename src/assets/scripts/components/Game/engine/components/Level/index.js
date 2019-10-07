@@ -45,7 +45,7 @@ class Level extends World {
 
     super.update(delta);
 
-    if (this.sector(this.player.gridX, this.player.gridY).exit) {
+    if (this.getSector(this.player.gridX, this.player.gridY).exit) {
       this.emit(EVENTS.COMPLETE, this.player);
     }
   }

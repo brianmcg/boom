@@ -60,7 +60,7 @@ class DebugContainer extends Container {
       ]);
 
       visibleBodyIds.forEach((id) => {
-        if (!bodyIds.includes(id) && player.distanceTo(bodies[id]) < distance) {
+        if (!bodyIds.includes(id)) {
           bodyIds.push(id);
         }
       });

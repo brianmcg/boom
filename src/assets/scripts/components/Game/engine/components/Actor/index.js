@@ -75,7 +75,7 @@ class Actor extends DynamicBody {
 
     const { bodies } = this.world;
 
-    let visibleBodyIds = world.sector(gridX, gridY).childIds
+    let visibleBodyIds = world.getSector(gridX, gridY).childIds
       .filter(id => this.id !== id);
 
     if (!rayAngle && rayAngle !== 0) {
@@ -122,7 +122,7 @@ class Actor extends DynamicBody {
           break;
         }
 
-        horizontalSector = world.sector(xGridIndex, yGridIndex);
+        horizontalSector = world.getSector(xGridIndex, yGridIndex);
 
         if (horizontalSector.blocking) {
           isHorizontalDoor = horizontalSector instanceof Door;
@@ -144,7 +144,7 @@ class Actor extends DynamicBody {
             break;
           }
         } else {
-          horizontalSector.childIds.forEach(id => visibleBodyIds.push(id));
+          visibleBodyIds = visibleBodyIds.concat(horizontalSector.childIds);
           xIntersection += distToNextXIntersection;
           horizontalGrid += distToNextHorizontalGrid;
         }
@@ -191,7 +191,7 @@ class Actor extends DynamicBody {
           break;
         }
 
-        verticalSector = world.sector(xGridIndex, yGridIndex);
+        verticalSector = world.getSector(xGridIndex, yGridIndex);
 
         if (verticalSector.blocking) {
           isVerticalDoor = verticalSector instanceof Door;
@@ -214,7 +214,7 @@ class Actor extends DynamicBody {
             break;
           }
         } else {
-          verticalSector.childIds.forEach(id => visibleBodyIds.push(id));
+          visibleBodyIds = visibleBodyIds.concat(verticalSector.childIds);
           yIntersection += distToNextYIntersection;
           verticalGrid += distToNextVerticalGrid;
         }

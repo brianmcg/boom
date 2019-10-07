@@ -295,14 +295,14 @@ const createSprites = (level, resources) => {
     wallSprites.push(wallSprite);
   }
 
-  const entitySprites = {};
+  const mapSprites = {};
 
   level.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.type]);
+    mapSprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
   level.objects.forEach((object) => {
-    entitySprites[object.id] = new EntitySprite(textures[object.type]);
+    mapSprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
   backgroundImages.forEach((image) => {
@@ -330,7 +330,7 @@ const createSprites = (level, resources) => {
   }
 
   return {
-    entities: { walls: wallSprites, objects: entitySprites },
+    map: { walls: wallSprites, objects: mapSprites },
     background: backgroundSprites,
   };
 };

@@ -29,10 +29,10 @@ class World extends EventEmitter {
       body.world = this;
     }
 
-    const sector = this.sector(body.gridX, body.gridY);
+    const sector = this.getSector(body.gridX, body.gridY);
 
     if (sector !== body) {
-      this.sector(body.gridX, body.gridY).addChildId(body.id);
+      this.getSector(body.gridX, body.gridY).addChildId(body.id);
     }
     this.bodies[body.id] = body;
   }
@@ -46,7 +46,7 @@ class World extends EventEmitter {
       this.updateableIds = this.updateableIds.filter(id => id !== body.id);
     }
 
-    this.sector(body.gridX, body.gridY).removeChildId(body.id);
+    this.getSector(body.gridX, body.gridY).removeChildId(body.id);
     delete this.bodies[body.id];
   }
 
@@ -64,7 +64,7 @@ class World extends EventEmitter {
    * @param  {Number} y The y grid coordinate.
    * @return {Sector}   The sector.
    */
-  sector(x, y) {
+  getSector(x, y) {
     return this.grid[y][x];
   }
 
@@ -73,14 +73,14 @@ class World extends EventEmitter {
    * @param  {Body}   body The body.
    * @return {Array}       The sectors surrounding the body.
    */
-  adjacentSectors(body, radius = 1) {
+  getAdjacentSectors(body, radius = 1) {
     const sectors = [];
     const x = body.gridX;
     const y = body.gridY;
 
     for (let i = x - radius; i <= x + radius; i += 1) {
       for (let j = y - radius; j <= y + radius; j += 1) {
-        sectors.push(this.sector(i, j));
+        sectors.push(this.getSector(i, j));
       }
     }
 
@@ -93,7 +93,7 @@ class World extends EventEmitter {
    * @return {Array}       The bodies surroung the body.
    */
   getAdjacentBodies(body) {
-    const sectors = this.adjacentSectors(body);
+    const sectors = this.getAdjacentSectors(body);
 
     return sectors.reduce((bodies, sector) => {
       sector.childIds.forEach((id) => {

@@ -8,13 +8,9 @@ import {
 } from '~/core/physics';
 import Camera from '~/engine/components/Camera';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
-import EntityContainer from './containers/EntityContainer';
-import BackgroundContainer from './containers/BackgroundContainer';
 import { calculateTint } from './helpers';
-
-// const this.camera.distance = SCREEN.WIDTH / 2 / TAN[DEG[30]];
-// const this.camera.centerX = SCREEN.WIDTH / 2;
-// const this.camera.centerY = SCREEN.HEIGHT / 2;
+import MapContainer from './containers/MapContainer';
+import BackgroundContainer from './containers/BackgroundContainer';
 
 let wallSprite;
 let angleDifference;
@@ -45,41 +41,20 @@ class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
 
-    const { entities, background } = sprites;
-    const { walls, objects } = entities;
+    const { map, background } = sprites;
+
+    this.backgroundContainer = new BackgroundContainer(background);
+    this.mapContainer = new MapContainer(map);
 
     this.camera = new Camera(level.player);
-
-    const backgroundContainer = new BackgroundContainer();
-
-    const entityContainer = new EntityContainer();
-
-    walls.forEach((wall, i) => {
-      wall.x = i;
-      entityContainer.addChild(wall);
-    });
-
-    background.forEach((row, i) => {
-      row.forEach((pixel, y) => {
-        pixel.x = i;
-        pixel.y = y;
-        backgroundContainer.addChild(pixel);
-      });
-    });
-
-    Object.values(objects).forEach((object) => {
-      entityContainer.addChild(object);
-    });
-
     this.level = level;
-    this.sprites = sprites;
     this.brightness = 0;
-    this.addChild(backgroundContainer);
-    this.addChild(entityContainer);
 
-    // bottomId = level.sector(0, 0).sideIds[4];
+    this.addChild(this.backgroundContainer);
+    this.addChild(this.mapContainer);
 
-    // topId = level.sector(0, 0).sideIds[5];
+    // bottomId = level.getSector(0, 0).sideIds[4];
+    // topId = level.getSector(0, 0).sideIds[5];
   }
 
   update(...options) {
@@ -89,14 +64,14 @@ class WorldContainer extends Container {
 
   animate() {
     const { player, bodies } = this.level;
-    const { entities, background } = this.sprites;
-    const { walls, objects } = entities;
+    const { background } = this.backgroundContainer;
+    const { walls, objects } = this.mapContainer;
 
     const totalVisibleBodyIds = [];
 
     let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
-    this.children.forEach(child => child.reset && child.reset());
+    this.mapContainer.reset();
 
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       wallSprite = walls[xIndex];
@@ -114,7 +89,8 @@ class WorldContainer extends Container {
 
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * this.camera.distance / correctedDistance;
-      spriteY = this.camera.centerY - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));
+      spriteY = this.camera.centerY
+        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));
 
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;
@@ -136,7 +112,8 @@ class WorldContainer extends Container {
         backgroundSprite = background[xIndex][yIndex];
 
         if (yIndex >= wallBottomIntersection) {
-          actualDistance = this.camera.height / (yIndex - this.camera.centerY) * this.camera.distance;
+          actualDistance = this.camera.height / (yIndex - this.camera.centerY)
+            * this.camera.distance;
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
@@ -146,7 +123,7 @@ class WorldContainer extends Container {
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
 
-            bottomId = this.level.sector(
+            bottomId = this.level.getSector(
               Math.floor(mapX / TILE_SIZE),
               Math.floor(mapY / TILE_SIZE),
             ).sideIds[4];
@@ -178,7 +155,7 @@ class WorldContainer extends Container {
             pixelX = mapX % TILE_SIZE;
             pixelY = mapY % TILE_SIZE;
 
-            topId = this.level.sector(
+            topId = this.level.getSector(
               Math.floor(mapX / TILE_SIZE),
               Math.floor(mapY / TILE_SIZE),
             ).sideIds[5];
@@ -202,6 +179,7 @@ class WorldContainer extends Container {
         }
       }
 
+      // Add visible body ids to total
       visibleBodyIds.forEach((id) => {
         if (!totalVisibleBodyIds.includes(id)) {
           totalVisibleBodyIds.push(id);
@@ -212,6 +190,7 @@ class WorldContainer extends Container {
       rayAngle = (rayAngle + 1) % DEG[360];
     }
 
+    // Update the visible bodies
     for (let i = 0; i < totalVisibleBodyIds.length; i += 1) {
       bodyId = totalVisibleBodyIds[i];
       sprite = objects[bodyId];
@@ -245,7 +224,7 @@ class WorldContainer extends Container {
       }
     }
 
-    super.animate();
+    this.mapContainer.sort();
   }
 }
 
