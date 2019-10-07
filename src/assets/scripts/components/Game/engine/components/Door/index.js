@@ -1,4 +1,5 @@
-import { Sector, DynamicBody } from '~/core/physics';
+import { DynamicBody } from '~/core/physics';
+import Sector from '../Sector';
 import { TIME_STEP } from '~/constants/config';
 import { STATES, EVENTS, DEFAULTS } from './constants';
 
@@ -12,7 +13,7 @@ class Door extends Sector {
    * @param  {Number} options.width   The width of the sector.
    * @param  {Number} options.length  The length of the sector.
    * @param  {Number} options.height  The height of the sector.
-   * @param  {Array}  options.sideIds The ids of the sides of the sector.
+   * @param  {Object} options.sides   The ids of the sides of the sector.
    * @param  {String} options.axis    The axis of the door.
    * @param  {String} options.key     The key that unlocks the door.
    */

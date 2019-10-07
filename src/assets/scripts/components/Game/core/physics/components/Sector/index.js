@@ -1,26 +1,10 @@
 import Body from '../Body';
 
-const SIDES = {
-  FRONT: 0,
-  LEFT: 1,
-  BACK: 2,
-  RIGHT: 3,
-  BOTTOM: 4,
-  TOP: 5,
-};
-
 /**
  * Creates a sector
  * @extends {Body}
  */
 class Sector extends Body {
-  /**
-   * Constant representing the sides of a sector.
-   */
-  static get SIDES() {
-    return SIDES;
-  }
-
   /**
    * Creates a sector
    * @param  {Number} options.x       The x coordinate of the sector.
@@ -28,12 +12,11 @@ class Sector extends Body {
    * @param  {Number} options.width   The width of the sector.
    * @param  {Number} options.length  The length of the sector.
    * @param  {Number} options.height  The height of the sector.
-   * @param  {Array}  options.sideIds The ids of the sides of the sector.
+   * @param  {Object} options.sides   The ids of the sides of the sector.
    */
-  constructor({ sideIds = [], ...other }) {
-    super(other);
+  constructor(options) {
+    super(options);
     this.childIds = [];
-    this.sideIds = sideIds;
   }
 
   /**

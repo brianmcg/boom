@@ -53,8 +53,8 @@ class WorldContainer extends Container {
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
 
-    // bottomId = level.getSector(0, 0).sideIds[4];
-    // topId = level.getSector(0, 0).sideIds[5];
+    // bottomId = level.getSector(0, 0).bottom;
+    // topId = level.getSector(0, 0).top;
   }
 
   update(...options) {
@@ -65,7 +65,7 @@ class WorldContainer extends Container {
   animate() {
     const { player, bodies } = this.level;
     const { background } = this.backgroundContainer;
-    const { walls, objects } = this.mapContainer;
+    const { walls, entities } = this.mapContainer;
 
     const totalVisibleBodyIds = [];
 
@@ -80,7 +80,7 @@ class WorldContainer extends Container {
         visibleBodyIds,
         distance,
         isHorizontal,
-        sideId,
+        side,
         sectorIntersection,
       } = player.castRay({ rayAngle });
 
@@ -92,12 +92,11 @@ class WorldContainer extends Container {
       spriteY = this.camera.centerY
         - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));
 
-      wallSprite.height = spriteHeight;
-      wallSprite.y = spriteY;
-      wallSprite.zOrder = distance;
-
       if (distance < DRAW_DISTANCE) {
-        wallSprite.changeTexture(sideId, sectorIntersection);
+        wallSprite.height = spriteHeight;
+        wallSprite.y = spriteY;
+        wallSprite.zOrder = distance;
+        wallSprite.changeTexture(side, sectorIntersection);
         wallSprite.tint = calculateTint(this.brightness, distance, isHorizontal);
         wallSprite.visible = true;
       } else {
@@ -116,7 +115,7 @@ class WorldContainer extends Container {
             * this.camera.distance;
           correctedDistance = actualDistance / COS[angleDifference];
 
-          if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
+          if (DRAW_DISTANCE > correctedDistance) {
             mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
 
@@ -126,7 +125,7 @@ class WorldContainer extends Container {
             bottomId = this.level.getSector(
               Math.floor(mapX / TILE_SIZE),
               Math.floor(mapY / TILE_SIZE),
-            ).sideIds[4];
+            ).bottom;
 
             if (pixelX < 0) {
               pixelX = TILE_SIZE + pixelX;
@@ -158,7 +157,7 @@ class WorldContainer extends Container {
             topId = this.level.getSector(
               Math.floor(mapX / TILE_SIZE),
               Math.floor(mapY / TILE_SIZE),
-            ).sideIds[5];
+            ).top;
 
             if (pixelX < 0) {
               pixelX = TILE_SIZE + pixelX;
@@ -193,7 +192,7 @@ class WorldContainer extends Container {
     // Update the visible bodies
     for (let i = 0; i < totalVisibleBodyIds.length; i += 1) {
       bodyId = totalVisibleBodyIds[i];
-      sprite = objects[bodyId];
+      sprite = entities[bodyId];
       dx = bodies[bodyId].x - player.x;
       dy = bodies[bodyId].y - player.y;
       actualDistance = Math.sqrt(dx * dx + dy * dy);
@@ -202,12 +201,11 @@ class WorldContainer extends Container {
       if (spriteAngle > DEG[270] || spriteAngle < DEG[90]) {
         correctedDistance = COS[spriteAngle] * actualDistance;
 
-        if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
+        if (DRAW_DISTANCE > correctedDistance) {
           spriteScale = Math.abs(this.camera.distance / correctedDistance);
           spriteWidth = sprite.getLocalBounds().width * spriteScale;
           spriteHeight = sprite.getLocalBounds().height * spriteScale;
           spriteX = TAN[spriteAngle] * this.camera.distance;
-
           sprite.position.x = this.camera.centerX + spriteX - spriteWidth / 2;
           sprite.position.y = this.camera.centerY
             - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));

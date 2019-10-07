@@ -1,6 +1,6 @@
-import { Body } from '~/core/physics';
+import Entity from '../Entity';
 
-class Item extends Body {
+class Item extends Entity {
   constructor({
     key,
     value,
@@ -10,7 +10,6 @@ class Item extends Body {
     super(other);
     this.key = key;
     this.value = value;
-    this.type = type;
   }
 }
 

@@ -1,9 +1,15 @@
 import { Sector as PhysicsSector } from '~/core/physics';
 
 class Sector extends PhysicsSector {
-  constructor({ sideIds, ...other }) {
+  constructor({ sides = {}, ...other }) {
     super(other);
-    this.sideIds = sideIds;
+
+    this.front = sides.front;
+    this.left = sides.left;
+    this.back = sides.back;
+    this.right = sides.right;
+    this.bottom = sides.bottom;
+    this.top = sides.top;
   }
 }
 

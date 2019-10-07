@@ -23,7 +23,7 @@ let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
 let sectorIntersection;
-let sideId;
+let side;
 let isVerticalDoor;
 let isHorizontalDoor;
 let horizontalSector;
@@ -235,9 +235,9 @@ class Actor extends DynamicBody {
       }
 
       if (y < horizontalSector.y) {
-        sideId = horizontalSector.sideIds[1];
+        side = horizontalSector.left;
       } else {
-        sideId = horizontalSector.sideIds[3];
+        side = horizontalSector.right;
       }
 
       visibleBodyIds = visibleBodyIds
@@ -246,7 +246,7 @@ class Actor extends DynamicBody {
       return {
         distance: distToHorizontalGridBeingHit,
         isHorizontal: true,
-        sideId,
+        side,
         visibleBodyIds,
         sectorIntersection,
         xIntersection,
@@ -267,9 +267,9 @@ class Actor extends DynamicBody {
     }
 
     if (x < verticalSector.x) {
-      sideId = verticalSector.sideIds[0];
+      side = verticalSector.front;
     } else {
-      sideId = verticalSector.sideIds[2];
+      side = verticalSector.back;
     }
 
     visibleBodyIds = visibleBodyIds
@@ -277,7 +277,7 @@ class Actor extends DynamicBody {
 
     return {
       distance: distToVerticalGridBeingHit,
-      sideId: verticalSector.sideIds[0],
+      side,
       visibleBodyIds,
       sectorIntersection,
       xIntersection: verticalGrid,

@@ -7,19 +7,19 @@ class MapContainer extends Container {
   /**
    * Creates an map container.
    */
-  constructor({ walls, objects }) {
+  constructor({ walls, entities }) {
     super();
     this.hideable = [];
     this.walls = walls;
-    this.objects = objects;
+    this.entities = entities;
 
     walls.forEach((wall, i) => {
       wall.x = i;
       this.addChild(wall);
     });
 
-    Object.values(objects).forEach((object) => {
-      this.addChild(object);
+    Object.values(entities).forEach((entity) => {
+      this.addChild(entity);
     });
   }
 

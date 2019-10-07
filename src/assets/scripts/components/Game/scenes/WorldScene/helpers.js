@@ -1,13 +1,15 @@
 import * as PIXI from 'pixi.js';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
-import { Sector } from '~/core/physics';
 import { RectangleSprite, Line } from '~/core/graphics';
-import Level from '~/engine/components/Level';
-import Player from '~/engine/components/Player';
-import Door from '~/engine/components/Door';
-import Entity from '~/engine/components/Entity';
-import Item from '~/engine/components/Item';
-import Enemy from '~/engine/components/Enemy';
+import {
+  Sector,
+  Level,
+  Player,
+  Door,
+  Entity,
+  Item,
+  Enemy,
+} from '~/engine';
 import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
@@ -76,7 +78,7 @@ const createLevel = (data) => {
       let wallImage;
       let doorImage;
       let properties;
-      let sideIds;
+      let sides;
       let doorAxisX;
       let floorImage;
       let roofImage;
@@ -118,18 +120,46 @@ const createLevel = (data) => {
           length: TILE_SIZE,
           axis: doorAxisX ? 'x' : 'y',
           blocking: !!doorImage,
-          sideIds: [doorImage, doorImage, doorImage, doorImage, floorImage, roofImage],
+          sides: {
+            front: doorImage,
+            left: doorImage,
+            back: doorImage,
+            right: doorImage,
+            bottom: floorImage,
+            top: roofImage,
+          },
           key,
         }));
       } else {
         if (doorImage) {
           if (doorAxisX) {
-            sideIds = [doorImage, wallImage, doorImage, wallImage, floorImage, roofImage];
+            sides = {
+              front: doorImage,
+              left: wallImage,
+              back: doorImage,
+              right: wallImage,
+              bottom: floorImage,
+              top: roofImage,
+            };
           } else {
-            sideIds = [wallImage, doorImage, wallImage, doorImage, floorImage, roofImage];
+            sides = {
+              front: wallImage,
+              left: doorImage,
+              back: wallImage,
+              right: doorImage,
+              bottom: floorImage,
+              top: roofImage,
+            };
           }
         } else {
-          sideIds = [wallImage, wallImage, wallImage, wallImage, floorImage, roofImage];
+          sides = {
+            front: wallImage,
+            left: wallImage,
+            back: wallImage,
+            right: wallImage,
+            bottom: floorImage,
+            top: roofImage,
+          };
         }
 
         const sector = new Sector({
@@ -139,14 +169,13 @@ const createLevel = (data) => {
           height: wallImage ? TILE_SIZE : 0,
           length: TILE_SIZE,
           blocking: !!wallImage,
-          sideIds,
+          sides,
         });
 
         sector.exit = x === end.x && y === end.y;
 
         row.push(sector);
       }
-
 
       if (itemValue) {
         const tile = tiles.find(t => t.id === itemValue - 1);
@@ -251,62 +280,70 @@ const createDebugSprites = (level) => {
   return { bodySprites, raySprites };
 };
 
-// TODO: Create level bodySprites.
 const createSprites = (level, resources) => {
-  const wallImages = [];
-  const wallSliceTextures = {};
-  const backgroundPixelTextures = {};
-  const wallSprites = [];
-  const backgroundSprites = [];
   const { textures, data } = resources;
   const { frames } = data;
+  const wallTextures = {};
+  const wallImages = [];
+  const wallSprites = [];
   const backgroundImages = [];
+  const backgroundTextures = {};
+  const backgroundSprites = [];
 
   level.grid.forEach((row) => {
     row.forEach((sector) => {
-      const [a, b, c, d, e, f] = sector.sideIds;
-      [a, b, c, d].forEach((sideId) => {
-        if (sideId && !wallImages.includes(sideId)) {
-          wallImages.push(sideId);
+      const {
+        front,
+        left,
+        back,
+        right,
+        top,
+        bottom,
+      } = sector;
+
+      [front, left, back, right].forEach((side) => {
+        if (side && !wallImages.includes(side)) {
+          wallImages.push(side);
         }
       });
-      [e, f].forEach((sideId) => {
-        if (sideId && !backgroundImages.includes(sideId)) {
-          backgroundImages.push(sideId);
+
+      [top, bottom].forEach((side) => {
+        if (side && !backgroundImages.includes(side)) {
+          backgroundImages.push(side);
         }
       });
     });
   });
 
   wallImages.forEach((image) => {
-    wallSliceTextures[image] = [];
+    wallTextures[image] = [];
 
     const { frame } = frames[image];
     const texture = textures[image];
 
     for (let i = 0; i < frame.w; i += 1) {
       const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallSliceTextures[image].push(new PIXI.Texture(texture, slice));
+      wallTextures[image].push(new PIXI.Texture(texture, slice));
     }
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    const wallSprite = new WallSprite(wallSliceTextures);
+    const wallSprite = new WallSprite(wallTextures);
     wallSprites.push(wallSprite);
   }
 
-  const mapSprites = {};
+  const entitySprites = {};
 
   level.items.forEach((item) => {
-    mapSprites[item.id] = new EntitySprite(textures[item.type]);
+    entitySprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
   level.objects.forEach((object) => {
-    mapSprites[object.id] = new EntitySprite(textures[object.type]);
+    entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
   backgroundImages.forEach((image) => {
-    backgroundPixelTextures[image] = [];
+    backgroundTextures[image] = [];
 
     const { frame } = frames[image];
     const texture = textures[image];
@@ -317,20 +354,20 @@ const createSprites = (level, resources) => {
         const pixel = new PIXI.Rectangle(frame.x + i, frame.y + j, 1, 1);
         row.push(new PIXI.Texture(texture, pixel));
       }
-      backgroundPixelTextures[image].push(row);
+      backgroundTextures[image].push(row);
     }
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
     const row = [];
     for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
-      row.push(new BackgroundSprite(backgroundPixelTextures));
+      row.push(new BackgroundSprite(backgroundTextures));
     }
     backgroundSprites.push(row);
   }
 
   return {
-    map: { walls: wallSprites, objects: mapSprites },
+    map: { walls: wallSprites, entities: entitySprites },
     background: backgroundSprites,
   };
 };
