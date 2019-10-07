@@ -13,6 +13,7 @@ import {
 import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
+import EnemySprite from './sprites/EnemySprite';
 import {
   BROWN,
   RED,
@@ -29,11 +30,6 @@ const SECTOR_TYPES = {
   START: 'start',
   END: 'end',
 };
-
-// const ENEMIES = [Amp].reduce((result, enemy) => ({
-//   ...result,
-//   [enemy.constructor.name.toLowerCase()]: enemy,
-// }), {)};
 
 const ENEMIES = [Amp].reduce((result, enemy) => ({
   ...result,
@@ -297,9 +293,46 @@ const createDebugSprites = (level) => {
   return { bodySprites, raySprites };
 };
 
+const createEnemySprite = ({ animations, textures }) => {
+  const { tiles } = animations.tilesets[0];
+  const textureCollection = {};
+
+  animations.layers.forEach((layer) => {
+    textureCollection[layer.name] = {};
+    for (let y = 0; y < layer.height; y += 1) {
+      const layerTextures = [];
+      for (let x = 0; x < layer.width; x += 1) {
+        const item = layer.data[(y * layer.width) + x];
+        if (item) {
+          const tile = tiles.find(t => t.id === item - 1);
+          layerTextures.push(textures[tile.image]);
+        }
+      }
+      if (!textures.length) {
+        textureCollection[layer.name][y] = layerTextures;
+      }
+    }
+  });
+
+  return new EnemySprite(textureCollection);
+};
+
+const createEnemySprites = ({ enemies, animations, textures }) => {
+  const enemySprites = {};
+
+  enemies.forEach((enemy) => {
+    enemySprites[enemy.id] = createEnemySprite({
+      animations: animations[enemy.type],
+      textures,
+    });
+  });
+
+  return enemySprites;
+};
+
 const createSprites = (level, resources) => {
   const { textures, data } = resources;
-  const { frames } = data;
+  const { frames, animations } = data;
   const wallTextures = {};
   const wallImages = [];
   const wallSprites = [];
@@ -359,8 +392,15 @@ const createSprites = (level, resources) => {
     entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
-  debugger;
+  const enemies = createEnemySprites({
+    enemies: level.enemies,
+    animations: animations.enemies,
+    textures,
+  });
 
+  // level.enemies.forEach((enemy) => {
+  //   entitySprites[enemy.id]
+  // });
 
   backgroundImages.forEach((image) => {
     backgroundTextures[image] = [];

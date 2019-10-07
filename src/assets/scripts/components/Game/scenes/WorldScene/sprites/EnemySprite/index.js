@@ -50,7 +50,7 @@ class EnemySprite extends AnimatedSprite {
       frame = 0;
       loop = false;
       newAngleTextures = 0;
-    } else if (enemy.isHurting()) {
+    } else if (enemy.isHurt()) {
       newActionTextures = HURTING;
       frame = 0;
       loop = false;
