@@ -8,7 +8,7 @@ import {
   Door,
   Entity,
   Item,
-  Enemy,
+  Amp,
 } from '~/engine';
 import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
@@ -29,6 +29,16 @@ const SECTOR_TYPES = {
   START: 'start',
   END: 'end',
 };
+
+// const ENEMIES = [Amp].reduce((result, enemy) => ({
+//   ...result,
+//   [enemy.constructor.name.toLowerCase()]: enemy,
+// }), {)};
+
+const ENEMIES = [Amp].reduce((result, enemy) => ({
+  ...result,
+  [enemy.name.toLowerCase()]: enemy,
+}), {});
 
 const LAYERS = {
   FLOOR: 0,
@@ -210,15 +220,22 @@ const createLevel = (data) => {
         }
       }
 
-      // if (enemyValue) {
-      //   enemies.push(new Enemy({
-      //     x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-      //     y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-      //     width: TILE_SIZE / 2,
-      //     height: TILE_SIZE / 2,
-      //     length: TILE_SIZE / 2,
-      //   }));
-      // }
+      if (enemyValue) {
+        const { image } = tiles.find(t => t.id === enemyValue - 1);
+        const type = image.split('_')[0];
+        const EnemyType = ENEMIES[type];
+
+        if (EnemyType) {
+          enemies.push(new EnemyType({
+            type,
+            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+            width: TILE_SIZE / 2,
+            height: TILE_SIZE / 2,
+            length: TILE_SIZE / 2,
+          }));
+        }
+      }
     }
 
     grid.push(row);
@@ -261,7 +278,7 @@ const createDebugSprites = (level) => {
         color = 0x00FF00;
       } else if (body instanceof Item) {
         color = BLUE;
-      } else if (body instanceof Enemy) {
+      } else if (body instanceof Amp) {
         color = RED;
       } else if (body instanceof Door) {
         color = BROWN;
@@ -341,6 +358,9 @@ const createSprites = (level, resources) => {
   level.objects.forEach((object) => {
     entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
+
+  debugger;
+
 
   backgroundImages.forEach((image) => {
     backgroundTextures[image] = [];

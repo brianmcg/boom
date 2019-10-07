@@ -1,4 +1,4 @@
-import Actor from '../Actor';
+import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import { DEFAULTS } from './constants';
 
@@ -6,9 +6,9 @@ const { min, max } = Math;
 
 /**
  * Creates a player.
- * @extends {Actor}
+ * @extends {AbstractActor}
  */
-class Player extends Actor {
+class Player extends AbstractActor {
   /**
    *  Creates a player.
    * @param  {Number} options.x               The x coordinate of the player.

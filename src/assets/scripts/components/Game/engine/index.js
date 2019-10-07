@@ -1,6 +1,6 @@
-import Actor from './components/Actor';
+import AbstractActor from './components/AbstractActor';
+import Amp from './components/Amp';
 import Door from './components/Door';
-import Enemy from './components/Enemy';
 import Entity from './components/Entity';
 import Item from './components/Item';
 import Level from './components/Level';
@@ -13,17 +13,17 @@ import Sector from './components/Sector';
 
 export {
   /**
-   * The actor components
+   * The abstract actor components
    */
-  Actor,
+  AbstractActor,
+  /**
+   * The abstract enemy component.
+   */
+  Amp,
   /**
    * The door component.
    */
   Door,
-  /**
-   * The enemy component.
-   */
-  Enemy,
   /**
    * The entity component.
    */

@@ -4,7 +4,7 @@ import { DynamicBody } from '~/core/physics';
  * Creates a character
  * @extends {DynamicBody}
  */
-class Actor extends DynamicBody {
+class AbstractActor extends DynamicBody {
   /* Creates a character.
    * @param  {Number} options.x         The x coordinate of the character.
    * @param  {Number} options.y         The y coordinate of the character
@@ -22,10 +22,10 @@ class Actor extends DynamicBody {
     this.health = maxHealth;
     this.maxHealth = maxHealth;
 
-    if (this.constructor === Actor) {
+    if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
   }
 }
 
-export default Actor;
+export default AbstractActor;

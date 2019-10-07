@@ -33,6 +33,7 @@ class Level extends World {
     this.player = player;
     this.objects = objects;
     this.items = items;
+    this.enemies = enemies;
   }
 
   /**
