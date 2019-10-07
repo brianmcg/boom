@@ -1,6 +1,6 @@
 import { Container } from '~/core/graphics';
-import { SCREEN, DRAW_DISTANCE } from '~/constants/config';
-import { DEG, Sector } from '~/core/physics';
+import { SCREEN } from '~/constants/config';
+import { DEG, Sector, castRay } from '~/core/physics';
 import Player from '~/engine/components/Player';
 
 const SCALE = 0.25;
@@ -49,8 +49,7 @@ class DebugContainer extends Container {
         xIntersection,
         yIntersection,
         visibleBodyIds,
-        distance,
-      } = player.castRay({ rayAngle });
+      } = castRay({ rayAngle, caster: player });
 
       this.raySprites[xIndex].updatePoints([
         SCREEN.WIDTH / 2,

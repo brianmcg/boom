@@ -2,12 +2,13 @@ import Body from './components/Body';
 import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Sector from './components/Sector';
+import DynamicFlatSector from './components/DynamicFlatSector';
+import { distanceBetween, castRay, atan2 } from './helpers';
 import {
   COS,
   SIN,
   TAN,
   DEG,
-  atan2,
 } from './constants';
 
 /**
@@ -32,6 +33,10 @@ export {
    */
   Sector,
   /**
+   * The flat sector component.
+   */
+  DynamicFlatSector,
+  /**
    * The cosine table.
    * @const
    */
@@ -52,7 +57,15 @@ export {
    */
   DEG,
   /**
-   * atan2 function.
+   * The atan2 function.
    */
   atan2,
+  /**
+   * The distance function.
+   */
+  distanceBetween,
+  /**
+   * The cast ray function.
+   */
+  castRay,
 };

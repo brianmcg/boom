@@ -5,6 +5,7 @@ import {
   TAN,
   SIN,
   atan2,
+  castRay,
 } from '~/core/physics';
 import Camera from '~/engine/components/Camera';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
@@ -25,6 +26,8 @@ let mapX;
 let mapY;
 let pixelX;
 let pixelY;
+let gridX;
+let gridY;
 let topId;
 let bottomId;
 
@@ -66,27 +69,29 @@ class WorldContainer extends Container {
     const { player, bodies } = this.level;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
-
     const totalVisibleBodyIds = [];
 
+    // Get initial ray angle 30 deg less than player angle
     let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
+    // Reset map container
     this.mapContainer.reset();
 
+    // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       wallSprite = walls[xIndex];
 
+      // Cast ray
       const {
         visibleBodyIds,
         distance,
         isHorizontal,
         side,
         sectorIntersection,
-      } = player.castRay({ rayAngle });
+      } = castRay({ rayAngle, caster: player });
 
-      // update wall sprites
+      // Update wall sprites
       angleDifference = (rayAngle - player.angle + DEG[360]) % DEG[360];
-
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * this.camera.distance / correctedDistance;
       spriteY = this.camera.centerY
@@ -118,26 +123,13 @@ class WorldContainer extends Container {
           if (DRAW_DISTANCE > correctedDistance) {
             mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-
-            pixelX = mapX % TILE_SIZE;
-            pixelY = mapY % TILE_SIZE;
-
-            bottomId = this.level.getSector(
-              Math.floor(mapX / TILE_SIZE),
-              Math.floor(mapY / TILE_SIZE),
-            ).bottom;
-
-            if (pixelX < 0) {
-              pixelX = TILE_SIZE + pixelX;
-            }
-
-            if (pixelY < 0) {
-              pixelY = TILE_SIZE + pixelY;
-            }
-
+            pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+            pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+            gridX = Math.floor(mapX / TILE_SIZE);
+            gridY = Math.floor(mapY / TILE_SIZE);
+            bottomId = this.level.getSector(gridX, gridY).bottom;
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
-            // TODO: test with distance
             backgroundSprite.tint = calculateTint(this.brightness, actualDistance);
           } else {
             backgroundSprite.alpha = 0;
@@ -150,23 +142,11 @@ class WorldContainer extends Container {
           if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
             mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-
-            pixelX = mapX % TILE_SIZE;
-            pixelY = mapY % TILE_SIZE;
-
-            topId = this.level.getSector(
-              Math.floor(mapX / TILE_SIZE),
-              Math.floor(mapY / TILE_SIZE),
-            ).top;
-
-            if (pixelX < 0) {
-              pixelX = TILE_SIZE + pixelX;
-            }
-
-            if (pixelY < 0) {
-              pixelY = TILE_SIZE + pixelY;
-            }
-
+            pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+            pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+            gridX = Math.floor(mapX / TILE_SIZE);
+            gridY = Math.floor(mapY / TILE_SIZE);
+            topId = this.level.getSector(gridX, gridY).top;
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
             backgroundSprite.tint = calculateTint(this.brightness, actualDistance);
@@ -185,7 +165,7 @@ class WorldContainer extends Container {
         }
       });
 
-      // Update ray angle
+      // Increment ray angle
       rayAngle = (rayAngle + 1) % DEG[360];
     }
 
@@ -222,6 +202,7 @@ class WorldContainer extends Container {
       }
     }
 
+    // Sort sprites in map container
     this.mapContainer.sort();
   }
 }

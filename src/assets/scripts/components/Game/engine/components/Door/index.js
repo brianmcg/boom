@@ -1,9 +1,8 @@
-import { DynamicBody } from '~/core/physics';
-import Sector from '../Sector';
+import { DynamicBody, DynamicFlatSector } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
 import { STATES, EVENTS, DEFAULTS } from './constants';
 
-class Door extends Sector {
+class Door extends DynamicFlatSector {
   static get EVENTS() { return EVENTS; }
 
   /**
@@ -17,21 +16,18 @@ class Door extends Sector {
    * @param  {String} options.axis    The axis of the door.
    * @param  {String} options.key     The key that unlocks the door.
    */
-  constructor(options) {
-    const {
-      key,
-      axis = DEFAULTS.AXIS,
-      speed = DEFAULTS.SPEED,
-      waitTime = DEFAULTS.WAIT_TIME,
-      ...other
-    } = options;
-
-    super(other);
+  constructor({
+    key,
+    sides,
+    waitTime = DEFAULTS.WAIT_TIME,
+    axis = DEFAULTS.AXIS,
+    speed = DEFAULTS.SPEED,
+    ...other
+  }) {
+    super({ ...other, axis, speed });
 
     this.timer = 0;
     this.key = key;
-    this.axis = axis;
-    this.speed = speed;
     this.waitTime = waitTime;
 
     this.closed = {
@@ -41,8 +37,15 @@ class Door extends Sector {
 
     this.opened = {
       ...this.closed,
-      [axis]: this[axis] + this.length,
+      [this.axis]: this[this.axis] + this.length,
     };
+
+    this.front = sides.front;
+    this.left = sides.left;
+    this.back = sides.back;
+    this.right = sides.right;
+    this.bottom = sides.bottom;
+    this.top = sides.top;
   }
 
   setState(state) {
