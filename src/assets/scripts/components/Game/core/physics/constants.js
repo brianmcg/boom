@@ -23,17 +23,9 @@ for (let i = 0; i < SCREEN.WIDTH * 6; i += 1) {
   TAN.push(Math.tan(radian));
 }
 
-const atan2 = (dyA = 0, dxA = 0) => {
-  const radians = Math.atan2(dyA, dxA);
-  const angle = Math.round(radians * DEG[180] / Math.PI) % DEG[360];
-
-  return (angle < 0) ? angle + DEG[360] : angle;
-};
-
 export {
   DEG,
   SIN,
   COS,
   TAN,
-  atan2,
 };
