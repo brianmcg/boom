@@ -7,8 +7,8 @@ import {
   atan2,
   castRay,
 } from '~/core/physics';
-import Camera from '~/engine/components/Camera';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
+import Camera from './components/Camera';
 import { calculateTint } from './helpers';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';

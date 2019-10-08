@@ -1,7 +1,7 @@
 import { Container } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 import { DEG, Sector, castRay } from '~/core/physics';
-import Player from '~/engine/components/Player';
+import Player from '../../entities/Player';
 
 const SCALE = 0.25;
 

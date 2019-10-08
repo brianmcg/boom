@@ -1,15 +1,13 @@
 import * as PIXI from 'pixi.js';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import { RectangleSprite, Line } from '~/core/graphics';
-import {
-  Sector,
-  Level,
-  Player,
-  Door,
-  Entity,
-  Item,
-  Amp,
-} from '~/engine';
+import Sector from './entities/Sector';
+import Level from './entities/Level';
+import Player from './entities/Player';
+import Door from './entities/Door';
+import Entity from './entities/Entity';
+import Item from './entities/Item';
+import Amp from './entities/Amp';
 import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
