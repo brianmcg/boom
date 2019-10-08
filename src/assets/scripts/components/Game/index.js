@@ -6,7 +6,6 @@ import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
 import { GAME_SOUND, GAME_DATA } from './constants/files';
 import { SOUND, DATA } from './constants/assets';
-import { getMaxScale } from './helpers';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -21,11 +20,6 @@ const EVENTS = {
  * A class representing a game.
  */
 class Game extends Application {
-  /**
-   * The events class property.
-   */
-  static get EVENTS() { return EVENTS; }
-
   /**
    * Creates a game.
    */
@@ -150,7 +144,7 @@ class Game extends Application {
    * @param  {Number} height The given height.
    */
   resize() {
-    const scale = getMaxScale(SCREEN.WIDTH, SCREEN.HEIGHT);
+    const scale = Game.maxScale;
     const scaledWidth = SCREEN.WIDTH * scale;
     const scaledHeight = SCREEN.HEIGHT * scale;
 
@@ -172,7 +166,7 @@ class Game extends Application {
    */
   show(sceneType, sceneIndex = 0) {
     const SceneType = this.scenes[sceneType];
-    const scale = getMaxScale(SCREEN.WIDTH, SCREEN.HEIGHT);
+    const scale = Game.maxScale;
 
     if (this.scene) {
       const { sound, data } = this.loader.cache;
@@ -202,6 +196,31 @@ class Game extends Application {
         this.scene.create(data);
       });
     }
+  }
+
+  /**
+   * The events class property.
+   */
+  static get EVENTS() {
+    return EVENTS;
+  }
+
+  /**
+   * The maximum scale factor given window size.
+   */
+  static get maxScale() {
+    const windowWidth = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+
+    const windowHeight = window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+
+    const widthRatio = windowWidth / SCREEN.WIDTH;
+    const heightRatio = windowHeight / SCREEN.HEIGHT;
+
+    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
   }
 }
 
