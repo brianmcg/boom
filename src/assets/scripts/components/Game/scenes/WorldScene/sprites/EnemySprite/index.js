@@ -1,5 +1,5 @@
-import { AnimatedSprite } from '~/core/graphics';
 import { DEG } from '~/core/physics';
+import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
 const ATTACKING = 'attacking';
 
@@ -17,7 +17,7 @@ const STANDING = 'standing';
  * Class representing an EnemySprite.
  * @extends {PIXI.extras.AnimatedSprite}
  */
-class EnemySprite extends AnimatedSprite {
+class EnemySprite extends AnimatedEntitySprite {
   /**
    * Creates an EnemySprite.
    * @param  {Array}  textureCollection The textures for the sprite.
@@ -31,7 +31,6 @@ class EnemySprite extends AnimatedSprite {
     this.currentAngleTextures = 0;
     this.currentActionTextures = MOVING;
     this.textureCollection = textureCollection;
-    this.zOrder = Number.MAX_VALUE;
   }
 
   /**

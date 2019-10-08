@@ -136,7 +136,6 @@ class Game extends Application {
     switch (type) {
       case Scene.TYPES.TITLE:
         this.scene.destroy();
-        this.scene = null;
         this.emit(EVENTS.QUIT);
         break;
       default:

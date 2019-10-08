@@ -8,6 +8,8 @@ import Door from './entities/Door';
 import Entity from './entities/Entity';
 import Item from './entities/Item';
 import Amp from './entities/Amp';
+import Zombie from './entities/Zombie';
+import Mancubus from './entities/Mancubus';
 import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
@@ -29,7 +31,7 @@ const SECTOR_TYPES = {
   END: 'end',
 };
 
-const ENEMIES = [Amp].reduce((result, enemy) => ({
+const ENEMY_TYPES = [Amp, Zombie, Mancubus].reduce((result, enemy) => ({
   ...result,
   [enemy.name.toLowerCase()]: enemy,
 }), {});
@@ -217,7 +219,7 @@ const createLevel = (data) => {
       if (enemyValue) {
         const { image } = tiles.find(t => t.id === enemyValue - 1);
         const type = image.split('_')[0];
-        const EnemyType = ENEMIES[type];
+        const EnemyType = ENEMY_TYPES[type];
 
         if (EnemyType) {
           enemies.push(new EnemyType({

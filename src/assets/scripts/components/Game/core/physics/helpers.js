@@ -73,7 +73,7 @@ export const castRay = ({ rayAngle, caster }) => {
   }
 
   if (rayAngle === 0 || rayAngle === DEG[180]) {
-    distToHorizontalGridBeingHit = Infinity;
+    distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= DEG[90] && rayAngle < DEG[270]) {
       distToNextXIntersection = TILE_SIZE / TAN[rayAngle];
@@ -97,7 +97,7 @@ export const castRay = ({ rayAngle, caster }) => {
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
-        distToHorizontalGridBeingHit = Infinity;
+        distToHorizontalGridBeingHit = Number.MAX_VALUE;
         break;
       }
 
@@ -142,7 +142,7 @@ export const castRay = ({ rayAngle, caster }) => {
   }
 
   if (rayAngle === DEG[90] || rayAngle === DEG[270]) {
-    distToVerticalGridBeingHit = Infinity;
+    distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= 0 && rayAngle < DEG[180]) {
       distToNextYIntersection = TILE_SIZE * TAN[rayAngle];
@@ -166,7 +166,7 @@ export const castRay = ({ rayAngle, caster }) => {
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
-        distToVerticalGridBeingHit = Infinity;
+        distToVerticalGridBeingHit = Number.MAX_VALUE;
         break;
       }
 

@@ -8,8 +8,8 @@ import {
   castRay,
 } from '~/core/physics';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
+import { GREY } from '~/constants/colors';
 import Camera from './components/Camera';
-import { calculateTint } from './helpers';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 
@@ -103,7 +103,7 @@ class WorldContainer extends Container {
         wallSprite.y = spriteY;
         wallSprite.zOrder = distance;
         wallSprite.changeTexture(side, sectorIntersection);
-        wallSprite.tint = calculateTint(this.brightness, distance, isHorizontal);
+        wallSprite.tint = this.calculateTint(distance, isHorizontal);
         wallSprite.visible = true;
       } else {
         wallSprite.visible = false;
@@ -131,7 +131,7 @@ class WorldContainer extends Container {
             bottomId = this.level.getSector(gridX, gridY).bottom;
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
-            backgroundSprite.tint = calculateTint(this.brightness, actualDistance);
+            backgroundSprite.tint = this.calculateTint(actualDistance);
           } else {
             backgroundSprite.alpha = 0;
           }
@@ -150,7 +150,7 @@ class WorldContainer extends Container {
             topId = this.level.getSector(gridX, gridY).top;
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
-            backgroundSprite.tint = calculateTint(this.brightness, actualDistance);
+            backgroundSprite.tint = this.calculateTint(actualDistance);
           } else {
             backgroundSprite.alpha = 0;
           }
@@ -184,8 +184,8 @@ class WorldContainer extends Container {
 
         if (DRAW_DISTANCE > correctedDistance) {
           spriteScale = Math.abs(this.camera.distance / correctedDistance);
-          spriteWidth = sprite.getLocalBounds().width * spriteScale;
-          spriteHeight = sprite.getLocalBounds().height * spriteScale;
+          spriteWidth = TILE_SIZE * spriteScale;
+          spriteHeight = TILE_SIZE * spriteScale;
           spriteX = TAN[spriteAngle] * this.camera.distance;
           sprite.position.x = this.camera.centerX + spriteX - spriteWidth / 2;
           sprite.position.y = this.camera.centerY
@@ -193,7 +193,7 @@ class WorldContainer extends Container {
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;
-          sprite.tint = calculateTint(this.brightness, actualDistance);
+          sprite.tint = this.calculateTint(actualDistance);
           sprite.visible = true;
 
           if (sprite.updateAnimation) {
@@ -205,6 +205,31 @@ class WorldContainer extends Container {
 
     // Sort sprites in map container
     this.mapContainer.sort();
+  }
+
+  calculateTint(distance = 0, side = 0) {
+    let intensity = 1;
+
+    if (distance > DRAW_DISTANCE) {
+      distance = DRAW_DISTANCE;
+    }
+
+    if (side) {
+      intensity -= 0.1;
+    }
+
+    intensity += this.brightness;
+    intensity -= (distance / DRAW_DISTANCE);
+
+    if (intensity > 1) {
+      intensity = 1;
+    }
+
+    if (intensity < 0) {
+      intensity = 0;
+    }
+
+    return Math.round(intensity * 255) * GREY;
   }
 }
 
