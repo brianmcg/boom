@@ -49,6 +49,7 @@ class Container extends PixiContainer {
    * Play playable children.
    */
   play() {
+    this.playing = true;
     this.playable.forEach(child => child.play());
   }
 
@@ -71,6 +72,7 @@ class Container extends PixiContainer {
    * Stop playable children.
    */
   stop() {
+    this.playing = false;
     this.playable.forEach(child => child.stop());
   }
 }

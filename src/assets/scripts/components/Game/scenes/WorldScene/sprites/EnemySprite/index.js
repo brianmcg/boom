@@ -23,12 +23,14 @@ class EnemySprite extends AnimatedSprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(textureCollection = []) {
-    super(textureCollection[STANDING][0]);
+    super(textureCollection[MOVING][0], {
+      animationSpeed: 0.125,
+      loop: true,
+    });
 
     this.currentAngleTextures = 0;
-    this.currentActionTextures = STANDING;
+    this.currentActionTextures = MOVING;
     this.textureCollection = textureCollection;
-    this.animationSpeed = 0.125;
     this.zOrder = Number.MAX_VALUE;
   }
 

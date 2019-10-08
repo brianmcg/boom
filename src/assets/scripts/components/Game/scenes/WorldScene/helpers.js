@@ -317,28 +317,19 @@ const createEnemySprite = ({ animations, textures }) => {
   return new EnemySprite(textureCollection);
 };
 
-const createEnemySprites = ({ enemies, animations, textures }) => {
-  const enemySprites = {};
-
-  enemies.forEach((enemy) => {
-    enemySprites[enemy.id] = createEnemySprite({
-      animations: animations[enemy.type],
-      textures,
-    });
-  });
-
-  return enemySprites;
-};
-
 const createSprites = (level, resources) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
-  const wallTextures = {};
-  const wallImages = [];
-  const wallSprites = [];
+
   const backgroundImages = [];
   const backgroundTextures = {};
   const backgroundSprites = [];
+
+  const wallTextures = {};
+  const wallImages = [];
+  const wallSprites = [];
+
+  const entitySprites = {};
 
   level.grid.forEach((row) => {
     row.forEach((sector) => {
@@ -365,43 +356,6 @@ const createSprites = (level, resources) => {
     });
   });
 
-  wallImages.forEach((image) => {
-    wallTextures[image] = [];
-
-    const { frame } = frames[image];
-    const texture = textures[image];
-
-    for (let i = 0; i < frame.w; i += 1) {
-      const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[image].push(new PIXI.Texture(texture, slice));
-    }
-  });
-
-  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    const wallSprite = new WallSprite(wallTextures);
-    wallSprites.push(wallSprite);
-  }
-
-  const entitySprites = {};
-
-  level.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.type]);
-  });
-
-  level.objects.forEach((object) => {
-    entitySprites[object.id] = new EntitySprite(textures[object.type]);
-  });
-
-  const enemies = createEnemySprites({
-    enemies: level.enemies,
-    animations: animations.enemies,
-    textures,
-  });
-
-  // level.enemies.forEach((enemy) => {
-  //   entitySprites[enemy.id]
-  // });
-
   backgroundImages.forEach((image) => {
     backgroundTextures[image] = [];
 
@@ -425,6 +379,38 @@ const createSprites = (level, resources) => {
     }
     backgroundSprites.push(row);
   }
+
+  wallImages.forEach((image) => {
+    wallTextures[image] = [];
+
+    const { frame } = frames[image];
+    const texture = textures[image];
+
+    for (let i = 0; i < frame.w; i += 1) {
+      const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
+      wallTextures[image].push(new PIXI.Texture(texture, slice));
+    }
+  });
+
+  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+    const wallSprite = new WallSprite(wallTextures);
+    wallSprites.push(wallSprite);
+  }
+
+  level.items.forEach((item) => {
+    entitySprites[item.id] = new EntitySprite(textures[item.type]);
+  });
+
+  level.objects.forEach((object) => {
+    entitySprites[object.id] = new EntitySprite(textures[object.type]);
+  });
+
+  level.enemies.forEach((enemy) => {
+    entitySprites[enemy.id] = createEnemySprite({
+      animations: animations.enemies[enemy.type],
+      textures,
+    });
+  });
 
   return {
     map: { walls: wallSprites, entities: entitySprites },

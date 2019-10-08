@@ -61,6 +61,7 @@ class WorldContainer extends Container {
   }
 
   update(...options) {
+    super.update(...options);
     this.level.update(...options);
     this.camera.update(...options);
   }
