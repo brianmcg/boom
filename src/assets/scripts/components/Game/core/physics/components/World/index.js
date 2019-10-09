@@ -65,7 +65,26 @@ class World extends EventEmitter {
    * @return {Sector}   The sector.
    */
   getSector(x, y) {
-    return this.grid[y][x];
+    let gridX = x;
+    let gridY = y;
+
+    if (x > this.width) {
+      gridX = this.width - 1;
+    }
+
+    if (x < 0) {
+      gridX = 0;
+    }
+
+    if (y > this.height - 1) {
+      gridY = this.height - 1;
+    }
+
+    if (y < 0) {
+      gridY = 0;
+    }
+
+    return this.grid[gridY][gridX];
   }
 
   /**

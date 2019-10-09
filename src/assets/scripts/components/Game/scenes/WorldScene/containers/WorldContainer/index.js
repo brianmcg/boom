@@ -140,7 +140,7 @@ class WorldContainer extends Container {
             * this.camera.distance;
           correctedDistance = actualDistance / COS[angleDifference];
 
-          if (DRAW_DISTANCE === 0 || DRAW_DISTANCE > correctedDistance) {
+          if (DRAW_DISTANCE > correctedDistance) {
             mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
             pixelX = (mapX + TILE_SIZE) % TILE_SIZE;

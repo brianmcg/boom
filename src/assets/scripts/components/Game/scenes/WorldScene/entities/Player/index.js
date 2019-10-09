@@ -2,8 +2,6 @@ import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import { DEFAULTS } from './constants';
 
-const { min, max } = Math;
-
 /**
  * Creates a player.
  * @extends {AbstractActor}
@@ -38,7 +36,14 @@ class Player extends AbstractActor {
     this.maxRotVelocity = maxRotVelocity;
     this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
-    this.zAngle = 0;
+
+    this.maxHeight = this.height;
+    this.minHeight = this.height / 2;
+    this.heightVelocity = 2;
+
+    this.yAngle = 0;
+    this.yRotVelocity = DEFAULTS.Y_ROT_VELOCITY;
+    this.maxYAngle = DEFAULTS.MAX_Y_ANGLE;
   }
 
   /**
@@ -51,25 +56,53 @@ class Player extends AbstractActor {
       moveBackward,
       turnLeft,
       turnRight,
+      lookDown,
+      lookUp,
+      crouch,
       use,
     } = this.actions;
 
+    // Update velocity
+    this.maxVelocity = DEFAULTS.MAX_VELOCITY * this.height / this.maxHeight;
+
     if (moveForward) {
-      this.velocity = min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
     } else if (moveBackward) {
-      this.velocity = max(this.velocity - this.acceleration, this.maxVelocity * -1);
+      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
     } else {
-      this.velocity = max(0, this.velocity - this.acceleration);
+      this.velocity = Math.max(0, this.velocity - this.acceleration);
     }
 
+    // Update rotation velocity
     if (turnLeft) {
-      this.rotVelocity = max(this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1);
+      this.rotVelocity = Math.max(
+        this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1,
+      );
     } else if (turnRight) {
-      this.rotVelocity = min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
+      this.rotVelocity = Math.min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
     } else {
       this.rotVelocity = 0;
     }
 
+    // Update y axis rotation
+    if (lookDown) {
+      this.yAngle = Math.max(this.yAngle - this.yRotVelocity, -this.maxYAngle);
+    } else if (lookUp) {
+      this.yAngle = Math.min(this.yAngle + this.yRotVelocity, this.maxYAngle);
+    } else if (this.yAngle < 0) {
+      this.yAngle = Math.min(this.yAngle + this.yRotVelocity, 0);
+    } else if (this.yAngle > 0) {
+      this.yAngle = Math.max(this.yAngle - this.yRotVelocity, 0);
+    }
+
+    // Update height
+    if (crouch) {
+      this.height = Math.max(this.height - this.heightVelocity, this.minHeight);
+    } else {
+      this.height = Math.min(this.height + this.heightVelocity, this.maxHeight);
+    }
+
+    // Check interactive bodies
     this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
         this.pickup(body);
@@ -78,8 +111,10 @@ class Player extends AbstractActor {
       }
     });
 
+    // Update parent
     super.update(delta);
 
+    // Reset actions
     Object.keys(this.actions).forEach((key) => {
       this.actions[key] = false;
     });

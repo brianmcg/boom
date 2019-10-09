@@ -7,9 +7,9 @@ const DEFAULT_CENTER_Y = SCREEN.HEIGHT / 2;
 
 const DEFAULT_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
 
-const MAX_HEIGHT_DIFF = 5;
+const SHAKE_AMOUNT = 0.06;
 
-let yIncrement = 0.06;
+const MAX_SHAKE = 5;
 
 class Camera {
   constructor(player) {
@@ -18,32 +18,36 @@ class Camera {
     this.centerX = DEFAULT_CENTER_X;
     this.centerY = DEFAULT_CENTER_Y;
     this.height = player.height;
+
+    this.offsetY = 0;
+    this.shakeDirection = 1;
   }
 
   update(delta) {
-    const { height, velocity, maxVelocity } = this.player;
+    const {
+      height,
+      velocity,
+      maxVelocity,
+      yAngle,
+    } = this.player;
+
+    this.centerY = DEFAULT_CENTER_Y + yAngle;
 
     if (velocity) {
-      this.height += yIncrement * velocity * delta;
-
-      if ((this.height - height) > MAX_HEIGHT_DIFF) {
-        this.height = height + MAX_HEIGHT_DIFF;
-        yIncrement *= -1;
-      }
-
-      if (this.height < height) {
-        this.height = height;
-        yIncrement *= -1;
+      if (this.shakeDirection > 0) {
+        this.offsetY = Math.min(this.offsetY + (SHAKE_AMOUNT * delta * velocity), MAX_SHAKE);
+      } else if (this.shakeDirection < 0) {
+        this.offsetY = Math.max(this.offsetY - (SHAKE_AMOUNT * delta * velocity), 0);
       }
     } else {
-      yIncrement = Math.abs(yIncrement);
-
-      this.height -= yIncrement * delta * maxVelocity;
-
-      if (this.height < height) {
-        this.height = height;
-      }
+      this.offsetY = Math.max(this.offsetY - (SHAKE_AMOUNT * delta * maxVelocity), 0);
     }
+
+    if (this.offsetY === MAX_SHAKE || this.offsetY === 0) {
+      this.shakeDirection *= -1;
+    }
+
+    this.height = height + this.offsetY;
   }
 }
 

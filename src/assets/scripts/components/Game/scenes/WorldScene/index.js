@@ -53,6 +53,9 @@ class WorldScene extends Scene {
       turnLeft: isHeld(KEYS.LEFT_ARROW),
       turnRight: isHeld(KEYS.RIGHT_ARROW),
       use: isPressed(KEYS.SPACE),
+      lookDown: isHeld(KEYS.COMMA),
+      lookUp: isHeld(KEYS.PERIOD),
+      crouch: isHeld(KEYS.SHIFT),
     };
 
     super.updateRunning(delta, input);

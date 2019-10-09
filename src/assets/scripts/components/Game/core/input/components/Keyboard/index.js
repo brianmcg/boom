@@ -15,6 +15,8 @@ const KEYS = {
   PG_UP: 'PG_UP',
   PG_DOWN: 'PG_DOWN',
   END: 'END',
+  PERIOD: 'PERIOD',
+  COMMA: 'COMMA',
 };
 
 const KEY_CODES = {
@@ -34,6 +36,8 @@ const KEY_CODES = {
   87: KEYS.PG_UP,
   83: KEYS.PG_DOWN,
   97: KEYS.END,
+  188: KEYS.COMMA,
+  190: KEYS.PERIOD,
 };
 
 const held = Object.keys(KEYS).reduce((memo, name) => ({ [name]: false, ...memo }), {});
