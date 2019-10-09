@@ -41,9 +41,9 @@ class Player extends AbstractActor {
     this.minHeight = this.height / 2;
     this.heightVelocity = 2;
 
-    this.yAngle = 0;
-    this.yRotVelocity = DEFAULTS.Y_ROT_VELOCITY;
-    this.maxYAngle = DEFAULTS.MAX_Y_ANGLE;
+    this.zAxis = 0;
+    this.velocityZ = DEFAULTS.Y_ROT_VELOCITY;
+    this.maxVelocityZ = DEFAULTS.MAX_Y_ANGLE;
   }
 
   /**
@@ -86,13 +86,13 @@ class Player extends AbstractActor {
 
     // Update y axis rotation
     if (lookDown) {
-      this.yAngle = Math.max(this.yAngle - this.yRotVelocity, -this.maxYAngle);
+      this.zAxis = Math.max(this.zAxis - this.velocityZ, -this.maxVelocityZ);
     } else if (lookUp) {
-      this.yAngle = Math.min(this.yAngle + this.yRotVelocity, this.maxYAngle);
-    } else if (this.yAngle < 0) {
-      this.yAngle = Math.min(this.yAngle + this.yRotVelocity, 0);
-    } else if (this.yAngle > 0) {
-      this.yAngle = Math.max(this.yAngle - this.yRotVelocity, 0);
+      this.zAxis = Math.min(this.zAxis + this.velocityZ, this.maxVelocityZ);
+    } else if (this.zAxis < 0) {
+      this.zAxis = Math.min(this.zAxis + this.velocityZ, 0);
+    } else if (this.zAxis > 0) {
+      this.zAxis = Math.max(this.zAxis - this.velocityZ, 0);
     }
 
     // Update height

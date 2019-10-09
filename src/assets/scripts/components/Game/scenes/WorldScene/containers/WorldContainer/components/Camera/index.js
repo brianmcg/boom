@@ -11,7 +11,14 @@ const SHAKE_AMOUNT = 0.06;
 
 const MAX_SHAKE = 5;
 
+/**
+ * Class representing a camera.
+ */
 class Camera {
+  /**
+   * Creates a camera.
+   * @param  {Player} player The game player.
+   */
   constructor(player) {
     this.player = player;
     this.distance = DEFAULT_DISTANCE;
@@ -19,37 +26,44 @@ class Camera {
     this.centerY = DEFAULT_CENTER_Y;
     this.height = player.height;
 
-    this.shakeAmountY = 0;
-    this.shakeDirectionY = 1;
+    this.heightOffset = 0;
+    this.heightOffsetDirection = 1;
   }
 
+  /**
+   * Update the camera.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
     const {
       height,
+      maxHeight,
       velocity,
       maxVelocity,
-      yAngle,
+      zAxis,
     } = this.player;
 
-    this.centerY = DEFAULT_CENTER_Y + yAngle;
+    const shakeAmount = SHAKE_AMOUNT * delta * height / maxHeight;
+    const maxShake = MAX_SHAKE * height / maxHeight;
 
     if (velocity) {
-      if (this.shakeDirectionY > 0) {
-        this.shakeAmountY = Math.min(
-          this.shakeAmountY + (SHAKE_AMOUNT * delta * Math.abs(velocity)), MAX_SHAKE,
+      if (this.heightOffsetDirection > 0) {
+        this.heightOffset = Math.min(
+          this.heightOffset + (shakeAmount * Math.abs(velocity)), maxShake,
         );
-      } else if (this.shakeDirectionY < 0) {
-        this.shakeAmountY = Math.max(this.shakeAmountY - (SHAKE_AMOUNT * delta * Math.abs(velocity)), 0);
+      } else if (this.heightOffsetDirection < 0) {
+        this.heightOffset = Math.max(this.heightOffset - (shakeAmount * Math.abs(velocity)), 0);
       }
     } else {
-      this.shakeAmountY = Math.max(this.shakeAmountY - (SHAKE_AMOUNT * delta * maxVelocity), 0);
+      this.heightOffset = Math.max(this.heightOffset - (shakeAmount * maxVelocity), 0);
     }
 
-    if (this.shakeAmountY === MAX_SHAKE || this.shakeAmountY === 0) {
-      this.shakeDirectionY *= -1;
+    if (this.heightOffset === maxShake || this.heightOffset === 0) {
+      this.heightOffsetDirection *= -1;
     }
 
-    this.height = height + this.shakeAmountY;
+    this.height = height + this.heightOffset;
+    this.centerY = DEFAULT_CENTER_Y + zAxis;
   }
 }
 
