@@ -12,6 +12,7 @@ import { GREY } from '~/constants/colors';
 import Camera from './components/Camera';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
+import PlayerContainer from './containers/PlayerContainer';
 
 let wallSprite;
 let angleDifference;
@@ -44,10 +45,11 @@ class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
 
-    const { map, background } = sprites;
+    const { map, background, player } = sprites;
 
     this.backgroundContainer = new BackgroundContainer(background);
     this.mapContainer = new MapContainer(map);
+    this.playerContainer = new PlayerContainer(player);
 
     this.camera = new Camera(level.player);
     this.level = level;
@@ -55,6 +57,7 @@ class WorldContainer extends Container {
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
+    this.addChild(this.playerContainer);
 
     // bottomId = level.getSector(0, 0).bottom;
     // topId = level.getSector(0, 0).top;

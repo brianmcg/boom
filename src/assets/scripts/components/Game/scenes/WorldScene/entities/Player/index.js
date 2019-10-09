@@ -1,5 +1,6 @@
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
+import Weapon from '../Weapon';
 import { DEFAULTS } from './constants';
 
 /**
@@ -44,6 +45,10 @@ class Player extends AbstractActor {
     this.zAxis = 0;
     this.velocityZ = DEFAULTS.Y_ROT_VELOCITY;
     this.maxVelocityZ = DEFAULTS.MAX_Y_ANGLE;
+
+    this.currentWeaponIndex = 0;
+
+    this.weapons = [new Weapon({ type: 'pistol' })];
   }
 
   /**
@@ -105,7 +110,7 @@ class Player extends AbstractActor {
     // Check interactive bodies
     this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
-        this.pickup(body);
+        this.pickUp(body);
       } else if (use && body.use) {
         body.use();
       }
@@ -124,10 +129,17 @@ class Player extends AbstractActor {
    * Pick up an item.
    * @param  {Item} item The item to pick up.
    */
-  pickup(item) {
+  pickUp(item) {
     this.world.remove(item);
+
     // TODO: Add value;
-    this.item = null;
+    // if (item instanceof Weapon) {
+    //   console.log('picked up weapon');
+    // }
+  }
+
+  get weapon() {
+    return this.weapons[this.currentWeaponIndex];
   }
 }
 

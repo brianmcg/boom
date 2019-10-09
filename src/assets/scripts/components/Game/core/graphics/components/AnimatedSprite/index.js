@@ -19,21 +19,21 @@ class AnimatedSprite extends PixiAnimatedSprite {
    */
   constructor(textures, options) {
     const {
-      animationSpeed,
-      tint,
-      alpha,
-      loop,
+      animationSpeed = 1,
+      tint = 0,
+      alpha = 1,
+      loop = false,
     } = options;
 
     super(textures, false);
 
     this.animationSpeed = animationSpeed;
 
-    if (loop) {
+    if (loop || loop === false) {
       this.loop = loop;
     }
 
-    if (alpha) {
+    if (alpha || alpha === 0) {
       this.alpha = alpha;
     }
 

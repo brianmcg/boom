@@ -14,6 +14,7 @@ import WallSprite from './sprites/WallSprite';
 import EntitySprite from './sprites/EntitySprite';
 import BackgroundSprite from './sprites/BackgroundSprite';
 import EnemySprite from './sprites/EnemySprite';
+import WeaponSprite from './sprites/WeaponSprite';
 import {
   BROWN,
   RED,
@@ -317,6 +318,27 @@ const createEnemySprite = ({ animations, textures }) => {
   return new EnemySprite(textureCollection);
 };
 
+const createWeaponSprite = ({ animations, textures }) => {
+  const { tiles } = animations.tilesets[0];
+  const textureCollection = {};
+
+  animations.layers.forEach((layer) => {
+    const layerTextures = [];
+
+    layer.data.forEach((item) => {
+      if (item) {
+        const { image } = tiles.find(t => t.id === item - 1);
+
+        layerTextures.push(textures[image]);
+      }
+    });
+
+    textureCollection[layer.name] = layerTextures;
+  });
+
+  return new WeaponSprite(textureCollection);
+};
+
 const createSprites = (level, resources) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
@@ -412,7 +434,13 @@ const createSprites = (level, resources) => {
     });
   });
 
+  const weaponSprite = createWeaponSprite({
+    animations: animations.weapons,
+    textures,
+  });
+
   return {
+    player: { weapon: weaponSprite },
     map: { walls: wallSprites, entities: entitySprites },
     background: backgroundSprites,
   };
