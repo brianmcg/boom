@@ -126,8 +126,8 @@ class WorldContainer extends Container {
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
             pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
             pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.floor(mapX / TILE_SIZE);
-            gridY = Math.floor(mapY / TILE_SIZE);
+            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.level.width - 1), 0);
+            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.level.height - 1), 0);
             bottomId = this.level.getSector(gridX, gridY).bottom;
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
@@ -145,8 +145,8 @@ class WorldContainer extends Container {
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
             pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
             pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.floor(mapX / TILE_SIZE);
-            gridY = Math.floor(mapY / TILE_SIZE);
+            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.level.width - 1), 0);
+            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.level.height - 1), 0);
             topId = this.level.getSector(gridX, gridY).top;
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
             backgroundSprite.alpha = 1;

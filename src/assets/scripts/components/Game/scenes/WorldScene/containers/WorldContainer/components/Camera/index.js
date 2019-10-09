@@ -19,8 +19,8 @@ class Camera {
     this.centerY = DEFAULT_CENTER_Y;
     this.height = player.height;
 
-    this.offsetY = 0;
-    this.shakeDirection = 1;
+    this.shakeAmountY = 0;
+    this.shakeDirectionY = 1;
   }
 
   update(delta) {
@@ -34,20 +34,22 @@ class Camera {
     this.centerY = DEFAULT_CENTER_Y + yAngle;
 
     if (velocity) {
-      if (this.shakeDirection > 0) {
-        this.offsetY = Math.min(this.offsetY + (SHAKE_AMOUNT * delta * velocity), MAX_SHAKE);
-      } else if (this.shakeDirection < 0) {
-        this.offsetY = Math.max(this.offsetY - (SHAKE_AMOUNT * delta * velocity), 0);
+      if (this.shakeDirectionY > 0) {
+        this.shakeAmountY = Math.min(
+          this.shakeAmountY + (SHAKE_AMOUNT * delta * Math.abs(velocity)), MAX_SHAKE,
+        );
+      } else if (this.shakeDirectionY < 0) {
+        this.shakeAmountY = Math.max(this.shakeAmountY - (SHAKE_AMOUNT * delta * Math.abs(velocity)), 0);
       }
     } else {
-      this.offsetY = Math.max(this.offsetY - (SHAKE_AMOUNT * delta * maxVelocity), 0);
+      this.shakeAmountY = Math.max(this.shakeAmountY - (SHAKE_AMOUNT * delta * maxVelocity), 0);
     }
 
-    if (this.offsetY === MAX_SHAKE || this.offsetY === 0) {
-      this.shakeDirection *= -1;
+    if (this.shakeAmountY === MAX_SHAKE || this.shakeAmountY === 0) {
+      this.shakeDirectionY *= -1;
     }
 
-    this.height = height + this.offsetY;
+    this.height = height + this.shakeAmountY;
   }
 }
 
