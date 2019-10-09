@@ -73,6 +73,7 @@ class WorldContainer extends Container {
     const { player, bodies } = this.level;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
+
     const totalVisibleBodyIds = [];
 
     // Get initial ray angle 30 deg less than player angle
@@ -199,8 +200,8 @@ class WorldContainer extends Container {
           sprite.tint = this.calculateTint(actualDistance);
           sprite.visible = true;
 
-          if (sprite.updateAnimation) {
-            sprite.updateAnimation(bodies[bodyId], player);
+          if (sprite.animate) {
+            sprite.animate(bodies[bodyId], player);
           }
         }
       }

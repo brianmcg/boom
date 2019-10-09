@@ -39,7 +39,7 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Player} player The player entity.
    * @return {undefined}
    */
-  updateAnimation(enemy, player) {
+  animate(enemy, player) {
     let newAngleTextures;
     let newActionTextures;
     let newAngle;

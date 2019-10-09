@@ -11,6 +11,7 @@ class Container extends PixiContainer {
     super();
     this.playable = [];
     this.animateable = [];
+    this.autoPlay = true;
   }
 
   /**
@@ -20,7 +21,7 @@ class Container extends PixiContainer {
   addChild(child) {
     super.addChild(child);
 
-    if (child.play) {
+    if (child.autoPlay && child.play) {
       this.playable.push(child);
     }
 
