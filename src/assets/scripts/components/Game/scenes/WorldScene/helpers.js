@@ -294,7 +294,7 @@ const createDebugSprites = (level) => {
   return { bodySprites, raySprites };
 };
 
-const createEnemySprite = ({ animations, textures }) => {
+const createEnemySprite = ({ animations, textures, enemy }) => {
   const { tiles } = animations.tilesets[0];
   const textureCollection = {};
 
@@ -315,7 +315,7 @@ const createEnemySprite = ({ animations, textures }) => {
     }
   });
 
-  return new EnemySprite(textureCollection);
+  return new EnemySprite(enemy, textureCollection);
 };
 
 const createWeaponSprite = ({ animations, textures }) => {
@@ -431,6 +431,7 @@ const createSprites = (level, resources) => {
     entitySprites[enemy.id] = createEnemySprite({
       animations: animations.enemies[enemy.type],
       textures,
+      enemy,
     });
   });
 

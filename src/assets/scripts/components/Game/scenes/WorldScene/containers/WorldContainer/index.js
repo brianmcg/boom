@@ -33,6 +33,7 @@ let topId;
 let bottomId;
 
 let bodyId;
+let body;
 let sprite;
 let dx;
 let dy;
@@ -177,9 +178,11 @@ class WorldContainer extends Container {
     // Update the visible bodies
     for (let i = 0; i < totalVisibleBodyIds.length; i += 1) {
       bodyId = totalVisibleBodyIds[i];
+      body = bodies[bodyId];
       sprite = entities[bodyId];
-      dx = bodies[bodyId].x - player.x;
-      dy = bodies[bodyId].y - player.y;
+
+      dx = body.x - player.x;
+      dy = body.y - player.y;
       actualDistance = Math.sqrt(dx * dx + dy * dy);
       spriteAngle = (atan2(dy, dx) - player.angle + DEG[360]) % DEG[360];
 
@@ -201,7 +204,7 @@ class WorldContainer extends Container {
           sprite.visible = true;
 
           if (sprite.animate) {
-            sprite.animate(bodies[bodyId], player);
+            sprite.animate();
           }
         }
       }

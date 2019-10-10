@@ -22,12 +22,13 @@ class EnemySprite extends AnimatedEntitySprite {
    * Creates an EnemySprite.
    * @param  {Array}  textureCollection The textures for the sprite.
    */
-  constructor(textureCollection = []) {
+  constructor(enemy, textureCollection = []) {
     super(textureCollection[MOVING][0], {
       animationSpeed: 0.125,
       loop: true,
     });
 
+    this.enemy = enemy;
     this.currentAngleTextures = 0;
     this.currentActionTextures = MOVING;
     this.textureCollection = textureCollection;
@@ -39,7 +40,10 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Player} player The player entity.
    * @return {undefined}
    */
-  animate(enemy, player) {
+  animate() {
+    const { enemy } = this;
+    const { player } = enemy.world;
+
     let newAngleTextures;
     let newActionTextures;
     let newAngle;

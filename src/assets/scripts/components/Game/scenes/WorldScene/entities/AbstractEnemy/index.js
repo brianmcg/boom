@@ -12,10 +12,6 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
   }
-
-  update(delta) {
-    super.update(delta);
-  }
 }
 
 export default AbstractEnemy;
