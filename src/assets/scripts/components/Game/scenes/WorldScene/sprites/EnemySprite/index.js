@@ -13,6 +13,17 @@ const SHOOTING = 'shooting';
 
 const STANDING = 'standing';
 
+// const STATES = {
+//   AIMING: 'aim',
+//   CHASING: 'chase',
+//   DEAD: 'dead',
+//   FIRING: 'fire',
+//   HURT: 'hurt',
+//   IDLE: 'idle',
+//   PATROLLING: 'patrol',
+//   READY: 'ready',
+// };
+
 /**
  * Class representing an EnemySprite.
  * @extends {PIXI.extras.AnimatedSprite}
@@ -29,9 +40,11 @@ class EnemySprite extends AnimatedEntitySprite {
     });
 
     this.enemy = enemy;
-    this.currentAngleTextures = 0;
-    this.currentActionTextures = MOVING;
+    this.angleTextures = 0;
+    this.actionTextures = MOVING;
     this.textureCollection = textureCollection;
+
+    console.log(enemy.STATES);
   }
 
   /**
@@ -42,73 +55,37 @@ class EnemySprite extends AnimatedEntitySprite {
    */
   animate() {
     const { enemy } = this;
-    const { player } = enemy.world;
-
-    let newAngleTextures;
-    let newActionTextures;
-    let newAngle;
-    let frame;
-    let loop;
 
     if (enemy.isDead()) {
-      newActionTextures = DYING;
-      frame = 0;
-      loop = false;
-      newAngleTextures = 0;
+      this.loop = false;
+      this.updateTextures(DYING, 0, 0);
     } else if (enemy.isHurt()) {
-      newActionTextures = HURTING;
-      frame = 0;
-      loop = false;
-      newAngleTextures = 0;
+      this.loop = false;
+      this.updateTextures(HURTING, 0, 0);
     } else if (enemy.isFiring()) {
-      newActionTextures = SHOOTING;
-      loop = false;
-      frame = 0;
-      newAngleTextures = 0;
+      this.loop = false;
+      this.updateTextures(SHOOTING, 0, 0);
     } else if (enemy.isReady()) {
-      newActionTextures = ATTACKING;
-      loop = false;
-      frame = 0;
-      newAngleTextures = 0;
+      this.loop = false;
+      this.updateTextures(ATTACKING, 0, 0);
     } else if (enemy.isAiming()) {
-      newActionTextures = ATTACKING;
-      loop = false;
-      frame = 0;
-      newAngleTextures = 0;
+      this.loop = false;
+      this.updateTextures(ATTACKING, 0, 0);
     } else if (enemy.isPatrolling() || enemy.isChasing()) {
-      newActionTextures = MOVING;
-      loop = true;
-      frame = this.currentFrame;
-      newAngle = enemy.angle - player.angle + DEG[203];
-      if (newAngle < 0) {
-        newAngle += DEG[360];
-      }
-      if (newAngle >= DEG[360]) {
-        newAngle -= DEG[360];
-      }
-      newAngleTextures = Math.floor(newAngle / DEG[45]);
+      this.loop = true;
+      this.updateTextures(MOVING, Math.floor(enemy.angleDiff / DEG[45]), this.currentFrame);
     } else {
-      newActionTextures = STANDING;
-      loop = false;
-      frame = 0;
-      newAngle = enemy.angle - player.angle + DEG[203];
-      if (newAngle < 0) {
-        newAngle += DEG[360];
-      }
-      if (newAngle >= DEG[360]) {
-        newAngle -= DEG[360];
-      }
-      newAngleTextures = Math.floor(newAngle / DEG[45]);
+      this.loop = false;
+      this.updateTextures(STANDING, Math.floor(enemy.angleDiff / DEG[45]), 0);
     }
+  }
 
-    if (this.currentActionTextures !== newActionTextures
-      || this.currentAngleTextures !== newAngleTextures
-    ) {
-      this.currentAngleTextures = newAngleTextures;
-      this.currentActionTextures = newActionTextures;
-      this.textures = this.textureCollection[newActionTextures][newAngleTextures];
+  updateTextures(actionTextures, angleTextures, frame) {
+    if (this.actionTextures !== actionTextures || this.angleTextures !== angleTextures) {
+      this.angleTextures = angleTextures;
+      this.actionTextures = actionTextures;
+      this.textures = this.textureCollection[actionTextures][angleTextures];
       this.texture = this.textures[frame];
-      this.loop = loop;
       this.gotoAndPlay(frame);
     }
   }

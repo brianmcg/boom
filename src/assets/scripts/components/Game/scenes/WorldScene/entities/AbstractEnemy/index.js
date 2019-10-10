@@ -12,6 +12,17 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
   }
+
+  get angleDiff() {
+    const { player } = this.world;
+    const diff = this.angle - player.angle;
+
+    return (diff + DEG[203] + DEG[360]) % DEG[360];
+  }
+
+  static get FOO() {
+    return 'foo';
+  }
 }
 
 export default AbstractEnemy;
