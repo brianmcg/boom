@@ -7,7 +7,7 @@ const DEFAULT_CENTER_Y = SCREEN.HEIGHT / 2;
 
 const DEFAULT_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
 
-const SHAKE_AMOUNT = 0.06;
+const SHAKE_AMOUNT = 0.05;
 
 const MAX_SHAKE = 5;
 
@@ -52,10 +52,14 @@ class Camera {
           this.heightOffset + (shakeAmount * Math.abs(velocity)), maxShake,
         );
       } else if (this.heightOffsetDirection < 0) {
-        this.heightOffset = Math.max(this.heightOffset - (shakeAmount * Math.abs(velocity)), 0);
+        this.heightOffset = Math.max(
+          this.heightOffset - (shakeAmount * Math.abs(velocity) * 1.75), 0,
+        );
       }
     } else {
-      this.heightOffset = Math.max(this.heightOffset - (shakeAmount * maxVelocity), 0);
+      this.heightOffset = Math.max(
+        this.heightOffset - (shakeAmount * maxVelocity * 1.75), 0,
+      );
     }
 
     if (this.heightOffset === maxShake || this.heightOffset === 0) {

@@ -1,7 +1,7 @@
 import { DEG } from '~/core/physics';
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
-const ANIMATIONS = {
+const ACTIONS = {
   ATTACKING: 'attacking',
   DYING: 'dying',
   HURTING: 'hurting',
@@ -10,20 +10,9 @@ const ANIMATIONS = {
   STANDING: 'standing',
 };
 
-// const STATES = {
-//   AIMING: 'aim',
-//   CHASING: 'chase',
-//   DEAD: 'dead',
-//   FIRING: 'fire',
-//   HURT: 'hurt',
-//   IDLE: 'idle',
-//   PATROLLING: 'patrol',
-//   READY: 'ready',
-// };
-
 /**
  * Class representing an EnemySprite.
- * @extends {PIXI.extras.AnimatedSprite}
+ * @extends {AnimatedEntitySprite}
  */
 class EnemySprite extends AnimatedEntitySprite {
   /**
@@ -31,14 +20,14 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
-    super(textureCollection[MANIMATIONS.OVING][0], {
+    super(textureCollection[ACTIONS.MOVING][0], {
       animationSpeed: 0.125,
       loop: true,
     });
 
     this.enemy = enemy;
     this.angleTextures = 0;
-    this.actionTextures = ANIMATIONS.MOVING;
+    this.actionTextures = ACTIONS.MOVING;
     this.textureCollection = textureCollection;
   }
 
@@ -52,30 +41,63 @@ class EnemySprite extends AnimatedEntitySprite {
     const { enemy } = this;
 
     if (enemy.isDead()) {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.DYING, 0, 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.DYING,
+        angleTextures: 0,
+        frame: 0,
+        loop: false,
+      });
     } else if (enemy.isHurt()) {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.HURTING, 0, 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.HURTING,
+        angleTextures: 0,
+        frame: 0,
+        loop: false,
+      });
     } else if (enemy.isFiring()) {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.SHOOTING, 0, 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.SHOOTING,
+        angleTextures: 0,
+        frame: 0,
+        loop: false,
+      });
     } else if (enemy.isReady()) {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.ATTACKING, 0, 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.ATTACKING,
+        angleTextures: 0,
+        frame: 0,
+        loop: false,
+      });
     } else if (enemy.isAiming()) {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.ATTACKING, 0, 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.ATTACKING,
+        angleTextures: 0,
+        frame: 0,
+        loop: false,
+      });
     } else if (enemy.isPatrolling() || enemy.isChasing()) {
-      this.loop = true;
-      this.updateTextures(ANIMATIONS.MOVING, Math.floor(enemy.angleDiff / DEG[45]), this.currentFrame);
+      this.updateTextures({
+        actionTextures: ACTIONS.MOVING,
+        angleTextures: Math.floor(enemy.angleDiff / DEG[45]),
+        frame: this.currentFrame,
+        loop: true,
+      });
     } else {
-      this.loop = false;
-      this.updateTextures(ANIMATIONS.STANDING, Math.floor(enemy.angleDiff / DEG[45]), 0);
+      this.updateTextures({
+        actionTextures: ACTIONS.STANDING,
+        angleTextures: Math.floor(enemy.angleDiff / DEG[45]),
+        frame: 0,
+        loop: false,
+      });
     }
   }
 
-  updateTextures(actionTextures, angleTextures, frame, loop) {
+  updateTextures({
+    actionTextures,
+    angleTextures,
+    frame,
+    loop,
+  }) {
     if (this.actionTextures !== actionTextures || this.angleTextures !== angleTextures) {
       this.loop = loop;
       this.angleTextures = angleTextures;

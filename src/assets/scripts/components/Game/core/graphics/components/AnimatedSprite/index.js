@@ -16,6 +16,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
    * @param  {Number}  options.tint           [description]
    * @param  {Number}  options.alpha          [description]
    * @param  {Boolean} options.loop           [description]
+   * @param  {Boolean} options.autoPlay       [description]
    */
   constructor(textures, options) {
     const {
@@ -23,9 +24,12 @@ class AnimatedSprite extends PixiAnimatedSprite {
       tint = 0,
       alpha = 1,
       loop = false,
+      autoPlay = true,
     } = options;
 
     super(textures, false);
+
+    this.autoPlay = autoPlay;
 
     this.animationSpeed = animationSpeed;
 
