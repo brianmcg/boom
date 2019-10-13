@@ -11,7 +11,6 @@ const MOVE_AMOUNT_Y = 0.1;
 
 const STATES = {
   FIRING: 'weapon:firing',
-  WAITING: 'weapon:waiting',
   ARMING: 'weapon:arming',
   UNARMING: 'weapon:unarming',
   IDLE: 'weapon:idle',
@@ -31,7 +30,7 @@ class Weapon extends Item {
     this.player = player;
     this.offsetYDirection = 1;
     this.timer = 0;
-    this.waitTime = 100;
+    this.waitTime = 200;
     this.power = 4;
 
     this.setIdle();
@@ -40,7 +39,7 @@ class Weapon extends Item {
   update(delta) {
     const { actions, velocity } = this.player;
 
-    // Update x
+    // Update x offset
     if (actions.turnLeft) {
       this.offsetX = Math.max(this.offsetX - MOVE_AMOUNT_X * delta, -MAX_MOVE_X);
     } else if (actions.turnRight) {
@@ -51,7 +50,7 @@ class Weapon extends Item {
       this.offsetX = Math.min(this.offsetX + MOVE_AMOUNT_X * delta, 0);
     }
 
-    // Update y
+    // Update y offset
     if (velocity) {
       if (this.offsetYDirection > 0) {
         this.offsetY = Math.min(this.offsetY + MOVE_AMOUNT_Y * delta, MAX_MOVE_Y);
@@ -62,15 +61,17 @@ class Weapon extends Item {
       this.offsetY = Math.max(this.offsetY - MOVE_AMOUNT_Y * delta, 0);
     }
 
-    // Update direction
     if (Math.abs(this.offsetY) === MAX_MOVE_Y || Math.abs(this.offsetY) === 0) {
       this.offsetYDirection *= -1;
     }
 
     // Update state
     if (actions.attack) {
+      if (!this.isFiring()) {
+        this.setFiring();
+      }
+    } else if (actions.continueAttack) {
       if (!this.isFiring() && !this.isDisabled()) {
-        this.player.eyeRotation += this.power;
         this.setFiring();
       }
     }
@@ -86,6 +87,7 @@ class Weapon extends Item {
   }
 
   setFiring() {
+    this.emit(EVENTS.FIRE, this.power);
     this.state = STATES.FIRING;
   }
 
@@ -123,6 +125,10 @@ class Weapon extends Item {
 
   isIdle() {
     return this.state === STATES.IDLE;
+  }
+
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

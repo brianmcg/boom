@@ -65,7 +65,7 @@ class Player extends AbstractActor {
     this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
     this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
 
-    this.currentWeaponIndex = 0;
+    this.currentWeaponIndex = 2;
 
     this.actions = {};
 
@@ -73,6 +73,12 @@ class Player extends AbstractActor {
       type,
       player: this,
     }));
+
+    this.weapons.forEach((weapon) => {
+      weapon.on(Weapon.EVENTS.FIRE, (power) => {
+        this.eyeRotation += power;
+      });
+    });
   }
 
   setActions(actions) {

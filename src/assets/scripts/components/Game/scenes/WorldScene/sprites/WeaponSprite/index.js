@@ -6,6 +6,7 @@ class WeaponSprite extends AnimatedSprite {
     super(textureCollection[weapon.type], {
       animationSpeed: 0.4,
       loop: false,
+      àutoPlay: false,
     });
 
     this.currentWeaponTextures = weapon.type;
@@ -23,14 +24,15 @@ class WeaponSprite extends AnimatedSprite {
     this.x = this.centerX;
     this.y = this.centerY;
 
+    this.weapon = weapon;
+
     this.onComplete = () => {
-      if (weapon.isFiring()) {
+      this.gotoAndStop(0);
+
+      if (this.weapon.isFiring()) {
         this.weapon.setDisabled();
-        this.gotoAndStop(0);
       }
     };
-
-    this.weapon = weapon;
     // this.y = SCREEN.HEIGHT / 2; // - 10;
   }
 
@@ -40,12 +42,8 @@ class WeaponSprite extends AnimatedSprite {
     this.x = this.centerX + offsetX;
     this.y = this.centerY + offsetY;
 
-    this.play();
-  }
-
-  play() {
     if (!this.playing && this.weapon.isFiring()) {
-      super.play();
+      this.play();
     }
   }
 
