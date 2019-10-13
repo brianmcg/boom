@@ -9,10 +9,15 @@ import {
 } from '~/core/physics';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
 import { GREY } from '~/constants/colors';
-import Camera from './components/Camera';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
+
+const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
+
+const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
+
+const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 
 let wallSprite;
 let angleDifference;
@@ -42,6 +47,9 @@ let spriteScale;
 let spriteWidth;
 let spriteX;
 
+let centerY;
+let rayAngle;
+
 class WorldContainer extends Container {
   constructor({ level, sprites }) {
     super();
@@ -52,22 +60,17 @@ class WorldContainer extends Container {
     this.mapContainer = new MapContainer(map);
     this.playerContainer = new PlayerContainer(player);
 
-    this.camera = new Camera(level.player);
     this.level = level;
     this.brightness = 0;
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
-
-    // bottomId = level.getSector(0, 0).bottom;
-    // topId = level.getSector(0, 0).top;
   }
 
   update(...options) {
     super.update(...options);
     this.level.update(...options);
-    this.camera.update(...options);
   }
 
   animate() {
@@ -78,7 +81,9 @@ class WorldContainer extends Container {
     const totalVisibleBodyIds = [];
 
     // Get initial ray angle 30 deg less than player angle
-    let rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
+    rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
+
+    centerY = CAMERA_CENTER_Y + player.eyeRotation;
 
     // Reset map container
     this.mapContainer.reset();
@@ -96,12 +101,13 @@ class WorldContainer extends Container {
         sectorIntersection,
       } = castRay({ rayAngle, caster: player });
 
+
       // Update wall sprites
       angleDifference = (rayAngle - player.angle + DEG[360]) % DEG[360];
       correctedDistance = distance * COS[angleDifference];
-      spriteHeight = TILE_SIZE * this.camera.distance / correctedDistance;
-      spriteY = this.camera.centerY
-        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));
+      spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
+      spriteY = centerY
+        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.eyeHeight)));
 
       if (distance < DRAW_DISTANCE) {
         wallSprite.height = spriteHeight;
@@ -122,8 +128,8 @@ class WorldContainer extends Container {
         backgroundSprite = background[xIndex][yIndex];
 
         if (yIndex >= wallBottomIntersection) {
-          actualDistance = this.camera.height / (yIndex - this.camera.centerY)
-            * this.camera.distance;
+          actualDistance = player.eyeHeight / (yIndex - centerY)
+            * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE > correctedDistance) {
@@ -141,8 +147,8 @@ class WorldContainer extends Container {
             backgroundSprite.alpha = 0;
           }
         } else if (yIndex <= wallTopIntersection) {
-          actualDistance = (TILE_SIZE - this.camera.height) / (this.camera.centerY - yIndex)
-            * this.camera.distance;
+          actualDistance = (TILE_SIZE - player.eyeHeight) / (centerY - yIndex)
+            * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE > correctedDistance) {
@@ -190,13 +196,13 @@ class WorldContainer extends Container {
         correctedDistance = COS[spriteAngle] * actualDistance;
 
         if (DRAW_DISTANCE > correctedDistance) {
-          spriteScale = Math.abs(this.camera.distance / correctedDistance);
+          spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
           spriteWidth = TILE_SIZE * spriteScale;
           spriteHeight = TILE_SIZE * spriteScale;
-          spriteX = TAN[spriteAngle] * this.camera.distance;
-          sprite.position.x = this.camera.centerX + spriteX - spriteWidth / 2;
-          sprite.position.y = this.camera.centerY
-            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - this.camera.height)));
+          spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+          sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+          sprite.position.y = centerY
+            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.eyeHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;

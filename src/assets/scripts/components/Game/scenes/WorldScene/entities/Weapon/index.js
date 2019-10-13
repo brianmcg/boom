@@ -1,11 +1,16 @@
+import Item from '../Item';
+
 const MAX_MOVE_X = 8;
+
 const MAX_MOVE_Y = 4;
+
 const MOVE_AMOUNT_X = 0.4;
+
 const MOVE_AMOUNT_Y = 0.1;
 
-class Weapon {
+class Weapon extends Item {
   constructor({ type, player }) {
-    this.type = type;
+    super({ type });
     this.x = 0;
     this.y = 0;
     this.player = player;
@@ -25,9 +30,7 @@ class Weapon {
       this.x = Math.min(this.x + MOVE_AMOUNT_X * delta, 0);
     }
 
-    const absVelocity = Math.abs(velocity);
-
-    if (absVelocity) {
+    if (velocity) {
       if (this.yDirection > 0) {
         this.y = Math.min(this.y + MOVE_AMOUNT_Y * delta, MAX_MOVE_Y);
       } else if (this.yDirection < 0) {

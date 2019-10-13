@@ -4,7 +4,6 @@ class Item extends Entity {
   constructor({
     key,
     value,
-    type,
     ...other
   }) {
     super(other);

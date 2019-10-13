@@ -1,15 +1,23 @@
+import { TILE_SIZE } from '~/constants/config';
+import { DEG } from '~/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
-import { DEFAULTS } from './constants';
 
 const WEAPON_NAMES = ['pistol', 'double_shotgun', 'chaingun'];
 
-// const WEAPONS = {
-//   [WEAPON_NAMES.PISTOL]: { type: WEAPON_NAMES.PISTOL },
-//   [WEAPON_NAMES.SHOTGUN]: { type: WEAPON_NAMES.SHOTGUN },
-//   [WEAPON_NAMES.CHAINGUN]: { type: WEAPON_NAMES.CHAINGUN },
-// };
+const EYE_HEIGHT_INCREMENT = 0.04;
+
+const MAX_EYE_HEIGHT_OFFSET = 2;
+
+const DEFAULTS = {
+  MAX_VELOCITY: TILE_SIZE / 16,
+  MAX_ROTATION_VELOCITY: DEG[2],
+  ACCELERATION: TILE_SIZE / 256,
+  ROTATION_ACCELERATION: 2,
+  MAX_EYE_ROTATION_VELOCITY: 128,
+  EYE_ROTATION_VELOCITY: 4,
+};
 
 /**
  * Creates a player.
@@ -33,9 +41,9 @@ class Player extends AbstractActor {
   constructor(options = {}) {
     const {
       maxVelocity = DEFAULTS.MAX_VELOCITY,
-      maxRotVelocity = DEFAULTS.MAX_ROT_VELOCITY,
+      maxRotVelocity = DEFAULTS.MAX_ROTATION_VELOCITY,
       acceleration = DEFAULTS.ACCELERATION,
-      rotAcceleration = DEFAULTS.ROT_ACCELERATION,
+      rotAcceleration = DEFAULTS.ROTATION_ACCELERATION,
       ...other
     } = options;
 
@@ -47,12 +55,15 @@ class Player extends AbstractActor {
     this.rotAcceleration = rotAcceleration;
 
     this.maxHeight = this.height;
-    this.minHeight = this.height / 2;
+    this.minHeight = this.height / 3 * 2;
     this.heightVelocity = 2;
 
-    this.zAxis = 0;
-    this.velocityZ = DEFAULTS.Y_ROT_VELOCITY;
-    this.maxVelocityZ = DEFAULTS.MAX_Y_ANGLE;
+    this.eyeHeightOffset = 0;
+    this.eyeHeightOffsetDirection = 1;
+
+    this.eyeRotation = 0;
+    this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
+    this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
 
     this.currentWeaponIndex = 0;
 
@@ -104,13 +115,19 @@ class Player extends AbstractActor {
 
     // Update y axis rotation
     if (lookDown) {
-      this.zAxis = Math.max(this.zAxis - this.velocityZ, -this.maxVelocityZ);
+      this.eyeRotation = Math.max(
+        this.eyeRotation - this.eyeRotationVelocity,
+        -this.maxEyeRotationVelocity,
+      );
     } else if (lookUp) {
-      this.zAxis = Math.min(this.zAxis + this.velocityZ, this.maxVelocityZ);
-    } else if (this.zAxis < 0) {
-      this.zAxis = Math.min(this.zAxis + this.velocityZ, 0);
-    } else if (this.zAxis > 0) {
-      this.zAxis = Math.max(this.zAxis - this.velocityZ, 0);
+      this.eyeRotation = Math.min(
+        this.eyeRotation + this.eyeRotationVelocity,
+        this.maxEyeRotationVelocity,
+      );
+    } else if (this.eyeRotation < 0) {
+      this.eyeRotation = Math.min(this.eyeRotation + this.eyeRotationVelocity, 0);
+    } else if (this.eyeRotation > 0) {
+      this.eyeRotation = Math.max(this.eyeRotation - this.eyeRotationVelocity, 0);
     }
 
     // Update height
@@ -118,6 +135,34 @@ class Player extends AbstractActor {
       this.height = Math.max(this.height - this.heightVelocity, this.minHeight);
     } else {
       this.height = Math.min(this.height + this.heightVelocity, this.maxHeight);
+    }
+
+    if (this.velocity) {
+      if (this.eyeHeightOffsetDirection > 0) {
+        this.eyeHeightOffset = Math.min(
+          this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * Math.abs(this.velocity) * delta,
+          MAX_EYE_HEIGHT_OFFSET,
+        );
+      } else if (this.eyeHeightOffsetDirection < 0) {
+        this.eyeHeightOffset = Math.max(
+          this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * Math.abs(this.velocity) * delta * 2,
+          -MAX_EYE_HEIGHT_OFFSET,
+        );
+      }
+
+      if (Math.abs(this.eyeHeightOffset) === MAX_EYE_HEIGHT_OFFSET) {
+        this.eyeHeightOffsetDirection *= -1;
+      }
+    } else if (this.eyeHeightOffset > 0) {
+      this.eyeHeightOffset = Math.max(
+        this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
+        0,
+      );
+    } else if (this.eyeHeightOffset < 0) {
+      this.eyeHeightOffset = Math.min(
+        this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
+        0,
+      );
     }
 
     // Check interactive bodies
@@ -155,6 +200,10 @@ class Player extends AbstractActor {
 
   get weapon() {
     return this.weapons[this.currentWeaponIndex];
+  }
+
+  get eyeHeight() {
+    return this.height + this.eyeHeightOffset;
   }
 }
 
