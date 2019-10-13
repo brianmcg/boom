@@ -318,7 +318,7 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   return new EnemySprite(enemy, textureCollection);
 };
 
-const createWeaponSprite = ({ animations, textures }) => {
+const createWeaponSprite = ({ animations, textures, weapon }) => {
   const { tiles } = animations.tilesets[0];
   const textureCollection = {};
 
@@ -336,7 +336,7 @@ const createWeaponSprite = ({ animations, textures }) => {
     textureCollection[layer.name] = layerTextures;
   });
 
-  return new WeaponSprite(textureCollection);
+  return new WeaponSprite(textureCollection, weapon);
 };
 
 const createSprites = (level, resources) => {
@@ -437,6 +437,7 @@ const createSprites = (level, resources) => {
 
   const weaponSprite = createWeaponSprite({
     animations: animations.weapons,
+    weapon: level.player.weapon,
     textures,
   });
 

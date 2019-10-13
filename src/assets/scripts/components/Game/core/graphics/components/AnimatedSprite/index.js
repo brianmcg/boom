@@ -25,12 +25,13 @@ class AnimatedSprite extends PixiAnimatedSprite {
       alpha = 1,
       loop = false,
       autoPlay = true,
+      autoAnimate = true,
     } = options;
 
     super(textures, false);
 
+    this.autoAnimate = autoAnimate;
     this.autoPlay = autoPlay;
-
     this.animationSpeed = animationSpeed;
 
     if (loop || loop === false) {

@@ -3,6 +3,14 @@ import Item from '../Item';
 import Weapon from '../Weapon';
 import { DEFAULTS } from './constants';
 
+const WEAPON_NAMES = ['pistol', 'double_shotgun', 'chaingun'];
+
+// const WEAPONS = {
+//   [WEAPON_NAMES.PISTOL]: { type: WEAPON_NAMES.PISTOL },
+//   [WEAPON_NAMES.SHOTGUN]: { type: WEAPON_NAMES.SHOTGUN },
+//   [WEAPON_NAMES.CHAINGUN]: { type: WEAPON_NAMES.CHAINGUN },
+// };
+
 /**
  * Creates a player.
  * @extends {AbstractActor}
@@ -48,7 +56,12 @@ class Player extends AbstractActor {
 
     this.currentWeaponIndex = 0;
 
-    this.weapons = [new Weapon({ type: 'pistol' })];
+    this.actions = {};
+
+    this.weapons = WEAPON_NAMES.map(type => new Weapon({
+      type,
+      player: this,
+    }));
   }
 
   /**
@@ -115,6 +128,8 @@ class Player extends AbstractActor {
         body.use();
       }
     });
+
+    this.weapon.update(delta);
 
     // Update parent
     super.update(delta);

@@ -23,6 +23,7 @@ class EnemySprite extends AnimatedEntitySprite {
     super(textureCollection[ACTIONS.MOVING][0], {
       animationSpeed: 0.125,
       loop: true,
+      autoAnimate: false,
     });
 
     this.enemy = enemy;

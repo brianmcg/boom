@@ -5,6 +5,7 @@ class AnimatedEntitySprite extends AnimatedSprite {
     super(...options);
 
     this.hideOnAnimate = true;
+    this.autoAnimate = false;
     this.zOrder = Number.MAX_VALUE;
   }
 }

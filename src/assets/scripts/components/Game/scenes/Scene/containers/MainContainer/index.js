@@ -64,7 +64,7 @@ class MainContainer extends Container {
     this.enablePixelFilter();
     this.enableColorFilter();
     this.desaturate();
-    this.playable.forEach(child => child.stop());
+    super.stop();
   }
 
   /**
@@ -73,7 +73,7 @@ class MainContainer extends Container {
   onRunning() {
     this.disablePixelFilter();
     this.disableColorFilter();
-    this.playable.forEach(child => child.play());
+    super.play();
   }
 
   updateRunning(...options) {

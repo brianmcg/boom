@@ -210,6 +210,8 @@ class WorldContainer extends Container {
       }
     }
 
+    super.animate();
+
     // Sort sprites in map container
     this.mapContainer.sort();
   }

@@ -2,14 +2,14 @@ import { AnimatedSprite } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
 class WeaponSprite extends AnimatedSprite {
-  constructor(textureCollection) {
-    super(textureCollection.pistol, {
+  constructor(textureCollection, weapon) {
+    super(textureCollection[weapon.type], {
       animationSpeed: 0.4,
       loop: false,
       autoPlay: false,
     });
 
-    this.currentWeaponTextures = 'pistol';
+    this.currentWeaponTextures = weapon.type;
     this.textureCollection = textureCollection;
 
     this.width *= 2;
@@ -18,9 +18,21 @@ class WeaponSprite extends AnimatedSprite {
     this.x = (SCREEN.WIDTH / 2) - (this.width / 2);
     this.y = (SCREEN.HEIGHT / 2) - (this.height / 2);
 
+    this.weapon = weapon;
+
+    this.defaultX = (SCREEN.WIDTH / 2) - (this.width / 2);
+    this.defaultY = (SCREEN.HEIGHT / 2) - (this.height / 2);
+
     // this.y = SCREEN.HEIGHT / 2; // - 10;
 
     this.onComplete = () => this.gotoAndStop(0);
+  }
+
+  animate() {
+    const { x, y } = this.weapon;
+
+    this.x = this.defaultX + x;
+    this.y = this.defaultY + y;
   }
 
   // animate(player) {

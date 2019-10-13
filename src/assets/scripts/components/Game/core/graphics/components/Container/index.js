@@ -12,6 +12,7 @@ class Container extends PixiContainer {
     this.playable = [];
     this.animateable = [];
     this.autoPlay = true;
+    this.autoAnimate = true;
   }
 
   /**
@@ -25,7 +26,7 @@ class Container extends PixiContainer {
       this.playable.push(child);
     }
 
-    if (child.animate) {
+    if (child.autoAnimate && child.animate) {
       this.animateable.push(child);
     }
   }
@@ -44,6 +45,13 @@ class Container extends PixiContainer {
     if (child.animate) {
       this.animateable = this.animateable.filter(a => a !== child);
     }
+  }
+
+  removeChildren() {
+    super.removeChildren();
+
+    this.playable = [];
+    this.animateable = [];
   }
 
   /**
