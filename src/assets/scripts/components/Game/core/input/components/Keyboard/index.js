@@ -58,13 +58,13 @@ class Keyboard {
    * @param  {Object} e The keyboard event.
    */
   static onKeyDown(e) {
-    pressed[KEY_CODES[e.keyCode]] = true;
-    held[KEY_CODES[e.keyCode]] = true;
+    e.preventDefault();
+    e.stopPropagation();
 
-    if (e.preventDefault) e.preventDefault();
-    if (e.stopPropagation) e.stopPropagation();
-
-    document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
+    if (!e.repeat) {
+      pressed[KEY_CODES[e.keyCode]] = true;
+      held[KEY_CODES[e.keyCode]] = true;
+    }
   }
 
   /**
@@ -72,10 +72,10 @@ class Keyboard {
    * @param  {Object} e The keyboard event.
    */
   static onKeyUp(e) {
-    held[KEY_CODES[e.keyCode]] = false;
+    e.preventDefault();
+    e.stopPropagation();
 
-    if (e.preventDefault) e.preventDefault();
-    if (e.stopPropagation) e.stopPropagation();
+    held[KEY_CODES[e.keyCode]] = false;
   }
 
   /**
@@ -106,7 +106,7 @@ class Keyboard {
   }
 }
 
-document.addEventListener('keydown', Keyboard.onKeyDown, { once: true });
+document.addEventListener('keydown', Keyboard.onKeyDown, false);
 
 document.addEventListener('keyup', Keyboard.onKeyUp, false);
 

@@ -6,7 +6,6 @@ class WeaponSprite extends AnimatedSprite {
     super(textureCollection[weapon.type], {
       animationSpeed: 0.4,
       loop: false,
-      autoPlay: false,
     });
 
     this.currentWeaponTextures = weapon.type;
@@ -18,21 +17,36 @@ class WeaponSprite extends AnimatedSprite {
     this.x = (SCREEN.WIDTH / 2) - (this.width / 2);
     this.y = (SCREEN.HEIGHT / 2) - (this.height / 2);
 
+    this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
+    this.centerY = (SCREEN.HEIGHT / 2) - (this.height / 2);
+
+    this.x = this.centerX;
+    this.y = this.centerY;
+
+    this.onComplete = () => {
+      if (weapon.isFiring()) {
+        this.weapon.setDisabled();
+        this.gotoAndStop(0);
+      }
+    };
+
     this.weapon = weapon;
-
-    this.defaultX = (SCREEN.WIDTH / 2) - (this.width / 2);
-    this.defaultY = (SCREEN.HEIGHT / 2) - (this.height / 2);
-
     // this.y = SCREEN.HEIGHT / 2; // - 10;
-
-    this.onComplete = () => this.gotoAndStop(0);
   }
 
   animate() {
-    const { x, y } = this.weapon;
+    const { offsetX, offsetY } = this.weapon;
 
-    this.x = this.defaultX + x;
-    this.y = this.defaultY + y;
+    this.x = this.centerX + offsetX;
+    this.y = this.centerY + offsetY;
+
+    this.play();
+  }
+
+  play() {
+    if (!this.playing && this.weapon.isFiring()) {
+      super.play();
+    }
   }
 
   // animate(player) {

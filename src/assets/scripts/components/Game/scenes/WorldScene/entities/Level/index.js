@@ -38,17 +38,21 @@ class Level extends World {
 
   /**
    * Update the level.
-   * @param  {Number} delta The delta time value.
-   * @param  {Object} input The player input.
+   * @param  {Number} delta           The delta time value.
+   * @param  {Object} options.actions The player actions.
    */
-  update(delta, input) {
-    this.player.actions = input;
+  update(delta, { actions }) {
+    this.player.setActions(actions);
 
     super.update(delta);
 
-    if (this.getSector(this.player.gridX, this.player.gridY).exit) {
+    if (this.isExitSector()) {
       this.emit(EVENTS.COMPLETE, this.player);
     }
+  }
+
+  isExitSector() {
+    return this.getSector(this.player.gridX, this.player.gridY).exit;
   }
 
   /**

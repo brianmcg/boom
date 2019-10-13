@@ -47,18 +47,20 @@ class WorldScene extends Scene {
   }
 
   updateRunning(delta) {
-    const input = {
-      moveForward: isHeld(KEYS.UP_ARROW),
-      moveBackward: isHeld(KEYS.DOWN_ARROW),
-      turnLeft: isHeld(KEYS.LEFT_ARROW),
-      turnRight: isHeld(KEYS.RIGHT_ARROW),
-      use: isPressed(KEYS.SPACE),
-      lookDown: isHeld(KEYS.COMMA),
-      lookUp: isHeld(KEYS.PERIOD),
-      crouch: isHeld(KEYS.SHIFT),
-    };
-
-    super.updateRunning(delta, input);
+    super.updateRunning(delta, {
+      actions: {
+        moveForward: isHeld(KEYS.UP_ARROW),
+        moveBackward: isHeld(KEYS.DOWN_ARROW),
+        turnLeft: isHeld(KEYS.LEFT_ARROW),
+        turnRight: isHeld(KEYS.RIGHT_ARROW),
+        use: isPressed(KEYS.SPACE),
+        lookDown: isHeld(KEYS.COMMA),
+        lookUp: isHeld(KEYS.PERIOD),
+        crouch: isHeld(KEYS.SHIFT),
+        attack: isPressed(KEYS.CTRL),
+        continueAttack: isHeld(KEYS.CTRL),
+      },
+    });
   }
 
   onPrompting() {

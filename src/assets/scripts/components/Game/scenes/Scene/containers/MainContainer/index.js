@@ -61,6 +61,7 @@ class MainContainer extends Container {
    * Pause the MainContainer.
    */
   onPaused() {
+    this.alpha = 0.4;
     this.enablePixelFilter();
     this.enableColorFilter();
     this.desaturate();
@@ -71,6 +72,7 @@ class MainContainer extends Container {
    * Resume the MainContainer.
    */
   onRunning() {
+    this.alpha = 1;
     this.disablePixelFilter();
     this.disableColorFilter();
     super.play();

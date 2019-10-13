@@ -75,6 +75,10 @@ class Player extends AbstractActor {
     }));
   }
 
+  setActions(actions) {
+    this.actions = actions;
+  }
+
   /**
    * Update the player.
    * @param  {Number} delta The delta time value.
@@ -125,9 +129,9 @@ class Player extends AbstractActor {
         this.maxEyeRotationVelocity,
       );
     } else if (this.eyeRotation < 0) {
-      this.eyeRotation = Math.min(this.eyeRotation + this.eyeRotationVelocity, 0);
+      this.eyeRotation = Math.min(this.eyeRotation + this.eyeRotationVelocity * 2, 0);
     } else if (this.eyeRotation > 0) {
-      this.eyeRotation = Math.max(this.eyeRotation - this.eyeRotationVelocity, 0);
+      this.eyeRotation = Math.max(this.eyeRotation - this.eyeRotationVelocity * 2, 0);
     }
 
     // Update height
