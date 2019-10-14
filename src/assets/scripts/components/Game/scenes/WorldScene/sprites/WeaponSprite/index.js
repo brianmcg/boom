@@ -2,14 +2,14 @@ import { AnimatedSprite } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 
 class WeaponSprite extends AnimatedSprite {
-  constructor(textureCollection, weapon) {
-    super(textureCollection[weapon.type], {
+  constructor(textureCollection, player) {
+    super(textureCollection[player.weapon.type], {
       animationSpeed: 0.4,
       loop: false,
       autoPlay: false,
     });
 
-    this.currentWeaponTextures = weapon.type;
+    this.currentWeaponTextures = player.weapon.type;
     this.textureCollection = textureCollection;
 
     this.width *= 2;
@@ -24,48 +24,28 @@ class WeaponSprite extends AnimatedSprite {
     this.x = this.centerX;
     this.y = this.centerY;
 
-    this.weapon = weapon;
+    this.player = player;
 
     this.onComplete = () => {
       this.gotoAndStop(0);
 
-      if (this.weapon.isFiring()) {
-        this.weapon.setDisabled();
+      if (player.weapon.isFiring()) {
+        player.weapon.setDisabled();
       }
     };
     // this.y = SCREEN.HEIGHT / 2; // - 10;
   }
 
   animate() {
-    const { offsetX, offsetY } = this.weapon;
+    const { weapon } = this.player;
 
-    this.x = this.centerX + offsetX;
-    this.y = this.centerY + offsetY;
+    this.x = this.centerX + weapon.offsetX;
+    this.y = this.centerY + weapon.offsetY;
 
-    if (!this.playing && this.weapon.isFiring()) {
+    if (!this.playing && weapon.isFiring()) {
       this.play();
     }
   }
-
-  // animate(player) {
-  //   if (!player.changingWeapon) {
-  //     if (this.currentWeaponTextures !== player.currentWeapon.name) {
-  //       this.currentWeaponTextures = player.currentWeapon.name;
-  //       this.textures = this.textureCollection[player.currentWeapon.name];
-  //       this.texture = this.textures[0];
-  //     }
-  //   }
-
-  //   if (this.playing && !player.currentWeapon.firing) {
-  //     this.gotoAndStop(0);
-  //   }
-
-  //   if (player.currentWeapon.shoot && player.currentWeapon.firing) {
-  //     if (!this.playing) {
-  //       this.play();
-  //     }
-  //   }
-  // }
 }
 
 export default WeaponSprite;
