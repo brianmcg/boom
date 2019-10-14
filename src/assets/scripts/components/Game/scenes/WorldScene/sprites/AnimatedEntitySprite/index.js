@@ -4,7 +4,7 @@ import { AnimatedSprite } from '~/core/graphics';
  * Class representing an AnimatedSprite.
  */
 class AnimatedEntitySprite extends AnimatedSprite {
-    /**
+  /**
    * Creates an AnimatedEntitySprite.
    * @param  {Array}   textures               The sprite textures.
    * @param  {Number}  options.animationSpeed The sprite animationSpeed.

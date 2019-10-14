@@ -12,6 +12,7 @@ class Container extends PixiContainer {
     this.playable = [];
     this.animateable = [];
     this.autoPlay = true;
+    this.playing = false;
   }
 
   /**
@@ -58,10 +59,11 @@ class Container extends PixiContainer {
 
   /**
    * Update the container.
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta   The delta time.
+   * @param  {Object} options The update options.
    */
-  update(delta) {
-    this.playable.forEach(child => child.visible && child.playing && child.update(delta));
+  update(...options) {
+    this.playable.forEach(child => child.isUpdateable && child.update(...options));
   }
 
   /**
@@ -85,6 +87,10 @@ class Container extends PixiContainer {
   stop() {
     this.playing = false;
     this.playable.forEach(child => child.autoPlay && child.stop());
+  }
+
+  get isUpdateable() {
+    return this.visible && this.playing;
   }
 }
 

@@ -36,6 +36,12 @@ class WeaponSprite extends AnimatedSprite {
     // this.y = SCREEN.HEIGHT / 2; // - 10;
   }
 
+  update(delta) {
+    if (this.playing) {
+      super.update(delta);
+    }
+  }
+
   animate() {
     const { weapon } = this.player;
 
@@ -45,6 +51,11 @@ class WeaponSprite extends AnimatedSprite {
     if (!this.playing && weapon.isFiring()) {
       this.play();
     }
+  }
+
+  get isUpdateable() {
+    const { weapon } = this.player;
+    return weapon.isArming() || weapon.isUnarming() || weapon.isFiring();
   }
 }
 

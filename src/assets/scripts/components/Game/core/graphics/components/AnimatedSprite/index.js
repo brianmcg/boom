@@ -40,6 +40,10 @@ class AnimatedSprite extends PixiAnimatedSprite {
       this.tint = tint;
     }
   }
+
+  get isUpdateable() {
+    return this.visible && this.playing;
+  }
 }
 
 export default AnimatedSprite;
