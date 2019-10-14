@@ -415,7 +415,7 @@ const createSprites = (level, resources) => {
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    const wallSprite = new WallSprite(wallTextures);
+    const wallSprite = new WallSprite(wallTextures, i);
     wallSprites.push(wallSprite);
   }
 

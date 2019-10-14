@@ -5,26 +5,23 @@ import { Container } from '~/core/graphics';
  */
 class MapContainer extends Container {
   /**
-   * Creates an map container.
+   * Creates a MapContainer.
+   * @param  {Array}  options.walls    The wall sprites.
+   * @param  {Object} options.entities The entity sprites.
    */
   constructor({ walls, entities }) {
     super();
-    this.hideable = [];
+
     this.walls = walls;
     this.entities = entities;
+    this.hideable = Object.values(entities);
 
-    walls.forEach((wall, i) => {
-      wall.x = i;
-      this.addChild(wall);
-    });
-
-    Object.values(entities).forEach((entity) => {
-      this.addChild(entity);
-    });
+    this.hideable.forEach(entity => this.addChild(entity));
+    this.walls.forEach(wall => this.addChild(wall));
   }
 
   /**
-   * Sorts the map container
+   * Sort the map container
    */
   sort() {
     this.children.sort((a, b) => b.zOrder - a.zOrder);
@@ -37,27 +34,6 @@ class MapContainer extends Container {
     this.hideable.forEach((child) => {
       child.visible = false;
     });
-  }
-
-  addChild(child) {
-    if (child.hideOnAnimate) {
-      this.hideable.push(child);
-    }
-
-    super.addChild(child);
-  }
-
-  removeChild(child) {
-    if (child.hideOnAnimate) {
-      this.hideable = this.hideable.filter(h => h !== child);
-    }
-
-    super.removeChild(child);
-  }
-
-  removeChildren() {
-    this.hideable = [];
-    super.removeChildren();
   }
 }
 

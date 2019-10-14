@@ -5,7 +5,8 @@ import { Container } from '~/core/graphics';
  */
 class PlayerContainer extends Container {
   /**
-   * Creates an map container.
+   * Creates a PlayerContainer.
+   * @param  {WeaponSprite} options.weapon The weapon sprite.
    */
   constructor({ weapon }) {
     super();

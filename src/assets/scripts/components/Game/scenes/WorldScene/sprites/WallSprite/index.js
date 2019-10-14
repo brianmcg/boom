@@ -7,10 +7,12 @@ import { Sprite } from '~/core/graphics';
 class WallSprite extends Sprite {
   /**
    * Creates an WallSprite.
-   * @param  {Array} textures The texture slices.
+   * @param  {Array}  textures The texture slices.
+   * @param  {Number} index    The index of the wall sprite.
    */
-  constructor(textures) {
+  constructor(textures, index) {
     super();
+    this.x = index;
     this.textures = textures;
     this.zOrder = Number.MAX_VALUE;
   }

@@ -17,6 +17,7 @@ const ACTIONS = {
 class EnemySprite extends AnimatedEntitySprite {
   /**
    * Creates an EnemySprite.
+   * @param  {Enemy}  enemy             The enemy.
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
@@ -26,83 +27,87 @@ class EnemySprite extends AnimatedEntitySprite {
     });
 
     this.enemy = enemy;
-    this.angleTextures = 0;
-    this.actionTextures = ACTIONS.MOVING;
+    this.angleId = 0;
+    this.actionId = ACTIONS.MOVING;
     this.textureCollection = textureCollection;
   }
 
   /**
-   * Update the animation.
-   * @param  {Enemy}  enemy  The enemy entity.
-   * @param  {Player} player The player entity.
-   * @return {undefined}
+   * Animate the sprite.
    */
   animate() {
     const { enemy } = this;
 
     if (enemy.isDead()) {
       this.updateTextures({
-        actionTextures: ACTIONS.DYING,
-        angleTextures: 0,
+        actionId: ACTIONS.DYING,
+        angleId: 0,
         frame: 0,
         loop: false,
       });
     } else if (enemy.isHurt()) {
       this.updateTextures({
-        actionTextures: ACTIONS.HURTING,
-        angleTextures: 0,
+        actionId: ACTIONS.HURTING,
+        angleId: 0,
         frame: 0,
         loop: false,
       });
     } else if (enemy.isFiring()) {
       this.updateTextures({
-        actionTextures: ACTIONS.SHOOTING,
-        angleTextures: 0,
+        actionId: ACTIONS.SHOOTING,
+        angleId: 0,
         frame: 0,
         loop: false,
       });
     } else if (enemy.isReady()) {
       this.updateTextures({
-        actionTextures: ACTIONS.ATTACKING,
-        angleTextures: 0,
+        actionId: ACTIONS.ATTACKING,
+        angleId: 0,
         frame: 0,
         loop: false,
       });
     } else if (enemy.isAiming()) {
       this.updateTextures({
-        actionTextures: ACTIONS.ATTACKING,
-        angleTextures: 0,
+        actionId: ACTIONS.ATTACKING,
+        angleId: 0,
         frame: 0,
         loop: false,
       });
     } else if (enemy.isPatrolling() || enemy.isChasing()) {
       this.updateTextures({
-        actionTextures: ACTIONS.MOVING,
-        angleTextures: Math.floor(enemy.angleDiff / DEG[45]),
+        actionId: ACTIONS.MOVING,
+        angleId: Math.floor(enemy.angleDiff / DEG[45]),
         frame: this.currentFrame,
         loop: true,
       });
     } else {
       this.updateTextures({
-        actionTextures: ACTIONS.STANDING,
-        angleTextures: Math.floor(enemy.angleDiff / DEG[45]),
+        actionId: ACTIONS.STANDING,
+        angleId: Math.floor(enemy.angleDiff / DEG[45]),
         frame: 0,
         loop: false,
       });
     }
   }
 
+  /**
+   * Update the sprite textures.
+   * @param  {String}   options.actionId The id of the action.
+   * @param  {String}   options.angleId  The id of the angle.
+   * @param  {Number}   options.frame    The frame number.
+   * @param  {Boolean}  options.loop     The loop options.
+   */
   updateTextures({
-    actionTextures,
-    angleTextures,
+    actionId,
+    angleId,
     frame,
     loop,
   }) {
-    if (this.actionTextures !== actionTextures || this.angleTextures !== angleTextures) {
+    if (this.actionId !== actionId || this.angleId !== angleId) {
       this.loop = loop;
-      this.angleTextures = angleTextures;
-      this.actionTextures = actionTextures;
-      this.textures = this.textureCollection[actionTextures][angleTextures];
+      this.angleId = angleId;
+      this.actionId = actionId;
+      this.textures = this.textureCollection[actionId][angleId];
       this.texture = this.textures[frame];
       this.gotoAndPlay(frame);
     }

@@ -50,7 +50,15 @@ let spriteX;
 let centerY;
 let rayAngle;
 
+/**
+ * Class representing a WorldContainer.
+ */
 class WorldContainer extends Container {
+  /**
+   * Creates a WorldContainer.
+   * @param  {Level}  options.level   The level.
+   * @param  {Object} options.sprites The sprites object.
+   */
   constructor({ level, sprites }) {
     super();
 
@@ -68,11 +76,18 @@ class WorldContainer extends Container {
     this.addChild(this.playerContainer);
   }
 
+  /**
+   * Update the WorldContainer
+   * @param  {...Object} options The update options.
+   */
   update(...options) {
     super.update(...options);
     this.level.update(...options);
   }
 
+  /**
+   * Animate the container.
+   */
   animate() {
     const { player, bodies } = this.level;
     const { background } = this.backgroundContainer;
@@ -216,6 +231,11 @@ class WorldContainer extends Container {
     this.mapContainer.sort();
   }
 
+  /**
+   * Calculate the tint.
+   * @param  {Number} distance The distance.
+   * @param  {Number} side     The side.
+   */
   calculateTint(distance = 0, side = 0) {
     let intensity = 1;
 

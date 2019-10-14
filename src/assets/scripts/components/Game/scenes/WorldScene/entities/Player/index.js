@@ -65,7 +65,7 @@ class Player extends AbstractActor {
     this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
     this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
 
-    this.currentWeaponIndex = 2;
+    this.currentWeaponIndex = 0;
 
     this.actions = {};
 
@@ -81,7 +81,11 @@ class Player extends AbstractActor {
     });
   }
 
-  setActions(actions) {
+  /**
+   * Set the player actions.
+   * @param {Object} actions The player actions.
+   */
+  setActions(actions = {}) {
     this.actions = actions;
   }
 

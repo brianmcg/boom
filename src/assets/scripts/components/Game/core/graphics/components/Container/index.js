@@ -32,7 +32,7 @@ class Container extends PixiContainer {
 
   /**
    * Remove a child from the container.
-   * @param {Object}  child          The child to remove.
+   * @param {Object}  child   The child to remove.
    */
   removeChild(child) {
     super.removeChild(child);
@@ -46,6 +46,9 @@ class Container extends PixiContainer {
     }
   }
 
+  /**
+   * Remove all the container children.
+   */
   removeChildren() {
     super.removeChildren();
 

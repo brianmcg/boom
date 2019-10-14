@@ -2,22 +2,22 @@ import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
 /**
  * Class representing an AnimatedSprite.
- * @extends {PIXI.extras.AnimatedSprite}
+ * @extends {PixiAnimatedSprite}
  */
 class AnimatedSprite extends PixiAnimatedSprite {
   /**
-   * [constructor description]
-   * @param  {Array}   textures               [description]
-   * @param  {Number}  options.animationSpeed [description]
-   * @param  {Number}  options.tint           [description]
-   * @param  {Number}  options.alpha          [description]
-   * @param  {Boolean} options.loop           [description]
-   * @param  {Boolean} options.autoPlay       [description]
+   * Creates an AnimatedSprite
+   * @param  {Array}   textures               The sprite textures.
+   * @param  {Number}  options.animationSpeed The sprite animationSpeed.
+   * @param  {Number}  options.tint           The sprite tint.
+   * @param  {Number}  options.alpha          The sprite alpha.
+   * @param  {Boolean} options.loop           The sprite loop.
+   * @param  {Boolean} options.autoPlay       The sprite auto play.
    */
   constructor(textures, options) {
     const {
       animationSpeed = 1,
-      tint = 0,
+      tint,
       alpha = 1,
       loop = false,
       autoPlay = true,
