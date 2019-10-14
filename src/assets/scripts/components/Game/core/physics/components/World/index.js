@@ -12,7 +12,7 @@ class World extends EventEmitter {
     super();
     this.grid = grid;
     this.bodies = {};
-    this.updateableIds = [];
+    this.updateableBodyIds = [];
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
 
     this.width = this.grid.length;
@@ -24,8 +24,8 @@ class World extends EventEmitter {
    * @param {Body} body The body to add.
    */
   add(body) {
-    if (body.update && typeof body.update === 'function') {
-      this.updateableIds.push(body.id);
+    if (body.update) {
+      this.updateableBodyIds.push(body.id);
       body.world = this;
     }
 
@@ -43,7 +43,7 @@ class World extends EventEmitter {
    */
   remove(body) {
     if (body.update) {
-      this.updateableIds = this.updateableIds.filter(id => id !== body.id);
+      this.updateableBodyIds = this.updateableBodyIds.filter(id => id !== body.id);
     }
 
     this.getSector(body.gridX, body.gridY).removeChildId(body.id);
@@ -55,7 +55,7 @@ class World extends EventEmitter {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
-    this.updateableIds.forEach(id => this.bodies[id].update(delta));
+    this.updateableBodyIds.forEach(id => this.bodies[id].update(delta));
   }
 
   /**
@@ -97,12 +97,12 @@ class World extends EventEmitter {
 
     return sectors.reduce((bodies, sector) => {
       sector.childIds.forEach((id) => {
-        if (this.bodies[id] !== body) {
+        if (id !== body.id) {
           bodies.push(this.bodies[id]);
         }
       });
 
-      if (sector !== body) {
+      if (sector.id !== body.id) {
         bodies.push(sector);
       }
 

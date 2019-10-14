@@ -53,7 +53,11 @@ class WeaponSprite extends AnimatedSprite {
     }
   }
 
-  get isUpdateable() {
+  /**
+   * updateable
+   * @type {Boolean} Is the sprite updateable
+   */
+  get updateable() {
     const { weapon } = this.player;
     return weapon.isArming() || weapon.isUnarming() || weapon.isFiring();
   }

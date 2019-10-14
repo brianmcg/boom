@@ -9,8 +9,8 @@ class Container extends PixiContainer {
    */
   constructor() {
     super();
-    this.playable = [];
-    this.animateable = [];
+    this.playableChildren = [];
+    this.animateableChildren = [];
     this.autoPlay = true;
     this.playing = false;
   }
@@ -23,11 +23,11 @@ class Container extends PixiContainer {
     super.addChild(child);
 
     if (child.play) {
-      this.playable.push(child);
+      this.playableChildren.push(child);
     }
 
     if (child.animate) {
-      this.animateable.push(child);
+      this.animateableChildren.push(child);
     }
   }
 
@@ -39,11 +39,11 @@ class Container extends PixiContainer {
     super.removeChild(child);
 
     if (child.play) {
-      this.playable = this.playable.filter(p => p !== child);
+      this.playableChildren = this.playableChildren.filter(p => p !== child);
     }
 
     if (child.animate) {
-      this.animateable = this.animateable.filter(a => a !== child);
+      this.animateableChildren = this.animateableChildren.filter(a => a !== child);
     }
   }
 
@@ -53,8 +53,8 @@ class Container extends PixiContainer {
   removeChildren() {
     super.removeChildren();
 
-    this.playable = [];
-    this.animateable = [];
+    this.playableChildren = [];
+    this.animateableChildren = [];
   }
 
   /**
@@ -63,14 +63,14 @@ class Container extends PixiContainer {
    * @param  {Object} options The update options.
    */
   update(...options) {
-    this.playable.forEach(child => child.isUpdateable && child.update(...options));
+    this.playableChildren.forEach(child => child.updateable && child.update(...options));
   }
 
   /**
    * Animate the container children.
    */
   animate() {
-    this.animateable.forEach(child => child.visible && child.animate());
+    this.animateableChildren.forEach(child => child.visible && child.animate());
   }
 
   /**
@@ -78,7 +78,7 @@ class Container extends PixiContainer {
    */
   play() {
     this.playing = true;
-    this.playable.forEach(child => child.autoPlay && child.play());
+    this.playableChildren.forEach(child => child.autoPlay && child.play());
   }
 
   /**
@@ -86,10 +86,14 @@ class Container extends PixiContainer {
    */
   stop() {
     this.playing = false;
-    this.playable.forEach(child => child.autoPlay && child.stop());
+    this.playableChildren.forEach(child => child.autoPlay && child.stop());
   }
 
-  get isUpdateable() {
+  /**
+   * updateable
+   * @type {Boolean} Is the container updateable
+   */
+  get updateable() {
     return this.visible && this.playing;
   }
 }
