@@ -12,7 +12,6 @@ class Container extends PixiContainer {
     this.playable = [];
     this.animateable = [];
     this.autoPlay = true;
-    this.autoAnimate = true;
   }
 
   /**
@@ -22,11 +21,11 @@ class Container extends PixiContainer {
   addChild(child) {
     super.addChild(child);
 
-    if (child.autoPlay && child.play) {
+    if (child.play) {
       this.playable.push(child);
     }
 
-    if (child.autoAnimate && child.animate) {
+    if (child.animate) {
       this.animateable.push(child);
     }
   }
@@ -55,26 +54,26 @@ class Container extends PixiContainer {
   }
 
   /**
-   * Play playable children.
-   */
-  play() {
-    this.playing = true;
-    this.playable.forEach(child => child.play());
-  }
-
-  /**
    * Update the container.
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    this.playable.forEach(child => child.playing && child.update(delta));
+    this.playable.forEach(child => child.visible && child.playing && child.update(delta));
   }
 
   /**
    * Animate the container children.
    */
   animate() {
-    this.animateable.forEach(child => child.animate());
+    this.animateable.forEach(child => child.visible && child.animate());
+  }
+
+  /**
+   * Play playable children.
+   */
+  play() {
+    this.playing = true;
+    this.playable.forEach(child => child.autoPlay && child.play());
   }
 
   /**
@@ -82,7 +81,7 @@ class Container extends PixiContainer {
    */
   stop() {
     this.playing = false;
-    this.playable.forEach(child => child.stop());
+    this.playable.forEach(child => child.autoPlay && child.stop());
   }
 }
 

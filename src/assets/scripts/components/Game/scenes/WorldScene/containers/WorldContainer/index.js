@@ -77,16 +77,15 @@ class WorldContainer extends Container {
     const { player, bodies } = this.level;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
-
     const totalVisibleBodyIds = [];
+
+    // Reset map container
+    this.mapContainer.reset();
 
     // Get initial ray angle 30 deg less than player angle
     rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
     centerY = CAMERA_CENTER_Y + player.eyeRotation;
-
-    // Reset map container
-    this.mapContainer.reset();
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
@@ -100,7 +99,6 @@ class WorldContainer extends Container {
         side,
         sectorIntersection,
       } = castRay({ rayAngle, caster: player });
-
 
       // Update wall sprites
       angleDifference = (rayAngle - player.angle + DEG[360]) % DEG[360];
@@ -208,10 +206,6 @@ class WorldContainer extends Container {
           sprite.zOrder = actualDistance;
           sprite.tint = this.calculateTint(actualDistance);
           sprite.visible = true;
-
-          if (sprite.animate) {
-            sprite.animate();
-          }
         }
       }
     }

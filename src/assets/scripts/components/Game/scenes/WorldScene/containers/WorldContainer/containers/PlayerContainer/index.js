@@ -10,8 +10,6 @@ class PlayerContainer extends Container {
   constructor({ weapon }) {
     super();
 
-    this.weapon = weapon;
-
     this.addChild(weapon);
   }
 }

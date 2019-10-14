@@ -62,14 +62,3 @@ class MapContainer extends Container {
 }
 
 export default MapContainer;
-
-
-// constructor() {
-//   super(SCREEN.WIDTH * 2, {
-//     uvs: true,
-//     tint: true,
-//     vertices: true,
-//   });
-
-//   // this.sortableChildren = true;
-// }

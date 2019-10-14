@@ -6,7 +6,7 @@ class WeaponSprite extends AnimatedSprite {
     super(textureCollection[weapon.type], {
       animationSpeed: 0.4,
       loop: false,
-      àutoPlay: false,
+      autoPlay: false,
     });
 
     this.currentWeaponTextures = weapon.type;
