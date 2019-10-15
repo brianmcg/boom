@@ -35,7 +35,24 @@ class Game extends Application {
       [Scene.TYPES.CREDITS]: CreditsScene,
     };
 
-    this.assets = {
+    this.style = {
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+    };
+
+    this.loader = new Loader();
+    this.sound = new SoundPlayer();
+    this.ticker.maxFPS = MAX_FPS;
+    this.ticker.add(this.loop.bind(this));
+    this.resize();
+  }
+
+  /**
+   * Load the game assets.
+   */
+  load() {
+    const assets = {
       sound: {
         name: SOUND.EFFECTS,
         src: `${GAME_PATH}/${GAME_SOUND}`,
@@ -47,26 +64,7 @@ class Game extends Application {
       }],
     };
 
-    this.style = {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-    };
-
-    this.loader = new Loader();
-    this.sound = new SoundPlayer();
-
-    this.ticker.maxFPS = MAX_FPS;
-    this.ticker.add(this.frame.bind(this));
-
-    this.resize();
-  }
-
-  /**
-   * Load the game assets.
-   */
-  load() {
-    this.loader.load(this.assets).then(({ sound }) => {
+    this.loader.load(assets).then(({ sound }) => {
       this.sound.add(SOUND.EFFECTS, sound);
       this.show(Scene.TYPES.WORLD, 1);
     });
@@ -80,10 +78,10 @@ class Game extends Application {
   }
 
   /**
-   * Execute a game frame.
+   * Execute a game loop.
    * @param  {Number} delta The delta value.
    */
-  frame(delta) {
+  loop(delta) {
     if (this.scene) {
       this.scene.update(delta);
       this.scene.animate();
@@ -97,19 +95,9 @@ class Game extends Application {
    */
   onSceneComplete(type, index) {
     switch (type) {
-      case Scene.TYPES.TITLE:
-        this.show(Scene.TYPES.WORLD, index + 1);
-        break;
-      case Scene.TYPES.WORLD:
-        if (index < NUM_LEVELS) {
-          this.show(Scene.TYPES.WORLD, index + 1);
-        } else {
-          this.show(Scene.TYPES.CREDITS, index + 1);
-        }
-        break;
-      default:
-        this.show(Scene.TYPES.TITLE, 0);
-        break;
+      case Scene.TYPES.TITLE: this.onTitleSceneComplete(index); break;
+      case Scene.TYPES.WORLD: this.onWorldSceneComplete(index); break;
+      default: this.show(Scene.TYPES.TITLE); break;
     }
   }
 
@@ -128,35 +116,41 @@ class Game extends Application {
    */
   onSceneQuit(type) {
     switch (type) {
-      case Scene.TYPES.TITLE:
-        this.scene.destroy();
-        this.emit(EVENTS.QUIT);
-        break;
-      default:
-        this.show(Scene.TYPES.TITLE, 0);
-        break;
+      case Scene.TYPES.TITLE: this.onTitleSceneQuit(); break;
+      default: this.show(Scene.TYPES.TITLE, 0); break;
     }
   }
 
   /**
-   * Resize the game
-   * @param  {Number} width  The given width.
-   * @param  {Number} height The given height.
+   * Handle the title scene complete event.
+   * @param  {String} type  The scene type.
+   * @param  {Number} index The scene index.
    */
-  resize() {
-    const scale = Game.maxScale;
-    const scaledWidth = SCREEN.WIDTH * scale;
-    const scaledHeight = SCREEN.HEIGHT * scale;
+  onTitleSceneComplete(type, index) {
+    this.show(Scene.TYPES.WORLD, index + 1);
+  }
 
-    this.style = {
-      margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
-    };
-
-    if (this.scene) {
-      this.scene.resize(scale);
+  /**
+   * Handle the world scene complete event.
+   * @param  {String} type  The scene type.
+   * @param  {Number} index The scene index.
+   */
+  onWorldSceneComplete(type, index) {
+    if (index < NUM_LEVELS) {
+      this.show(Scene.TYPES.WORLD, index + 1);
+    } else {
+      this.show(Scene.TYPES.CREDITS, index + 1);
     }
+  }
 
-    super.resize(scaledWidth, scaledHeight);
+  /**
+   * Handle the title scene quit event.
+   * @param  {String} type  The scene type.
+   * @param  {Number} index The scene index.
+   */
+  onTitleSceneQuit() {
+    this.scene.destroy();
+    this.emit(EVENTS.QUIT);
   }
 
   /**
@@ -199,10 +193,24 @@ class Game extends Application {
   }
 
   /**
-   * The events class property.
+   * Resize the game
+   * @param  {Number} width  The given width.
+   * @param  {Number} height The given height.
    */
-  static get EVENTS() {
-    return EVENTS;
+  resize() {
+    const scale = Game.maxScale;
+    const scaledWidth = SCREEN.WIDTH * scale;
+    const scaledHeight = SCREEN.HEIGHT * scale;
+
+    this.style = {
+      margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
+    };
+
+    if (this.scene) {
+      this.scene.resize(scale);
+    }
+
+    super.resize(scaledWidth, scaledHeight);
   }
 
   /**
@@ -221,6 +229,13 @@ class Game extends Application {
     const heightRatio = windowHeight / SCREEN.HEIGHT;
 
     return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
+  }
+
+  /**
+   * The events class property.
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 
