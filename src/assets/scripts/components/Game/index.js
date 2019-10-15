@@ -97,7 +97,8 @@ class Game extends Application {
     switch (type) {
       case Scene.TYPES.TITLE: this.onTitleSceneComplete(index); break;
       case Scene.TYPES.WORLD: this.onWorldSceneComplete(index); break;
-      default: this.show(Scene.TYPES.TITLE); break;
+      case Scene.TYPES.CREDITS: this.onCreditsSceneComplete(); break;
+      default: break;
     }
   }
 
@@ -117,7 +118,7 @@ class Game extends Application {
   onSceneQuit(type) {
     switch (type) {
       case Scene.TYPES.TITLE: this.onTitleSceneQuit(); break;
-      default: this.show(Scene.TYPES.TITLE, 0); break;
+      default: this.onCreditsSceneComplete(); break;
     }
   }
 
@@ -126,7 +127,7 @@ class Game extends Application {
    * @param  {String} type  The scene type.
    * @param  {Number} index The scene index.
    */
-  onTitleSceneComplete(type, index) {
+  onTitleSceneComplete(index) {
     this.show(Scene.TYPES.WORLD, index + 1);
   }
 
@@ -135,12 +136,16 @@ class Game extends Application {
    * @param  {String} type  The scene type.
    * @param  {Number} index The scene index.
    */
-  onWorldSceneComplete(type, index) {
+  onWorldSceneComplete(index) {
     if (index < NUM_LEVELS) {
       this.show(Scene.TYPES.WORLD, index + 1);
     } else {
       this.show(Scene.TYPES.CREDITS, index + 1);
     }
+  }
+
+  onCreditsSceneComplete() {
+    this.show(Scene.TYPES.TITLE);
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Keyboard } from '~/core/input';
-import { DEBUG } from '~/constants/config';
+// import { DEBUG } from '~/constants/config';
 import { parse } from './helpers';
-import DebugContainer from './containers/DebugContainer';
+// import DebugContainer from './containers/DebugContainer';
 import WorldContainer from './containers/WorldContainer';
 import Level from './entities/Level';
 import Scene from '../Scene';
@@ -15,35 +15,31 @@ class WorldScene extends Scene {
     this.menuItems = [{
       label: Scene.TEXT.CONTINUE,
       onSelect: () => {
-        this.setState(Scene.STATES.RUNNING);
+        this.setRunning();
       },
     }, {
       label: Scene.TEXT.RESTART,
       onSelect: () => {
         this.setStatus(Scene.EVENTS.RESTART);
-        this.setState(Scene.STATES.FADING_OUT);
+        this.setFadingOut();
       },
     }, {
       label: Scene.TEXT.QUIT,
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
-        this.setState(Scene.STATES.FADING_OUT);
+        this.setFadingOut();
       },
     }];
   }
 
   create(resources) {
+    const { level, sprites } = parse(resources);
+
     super.create(resources);
 
-    const { level, sprites } = parse(resources, DEBUG);
+    level.on(Level.EVENTS.COMPLETE, () => this.setPrompting());
 
-    level.on(Level.EVENTS.COMPLETE, () => this.setState(Scene.STATES.PROMPTING));
-
-    const world = DEBUG
-      ? new DebugContainer({ level, sprites })
-      : new WorldContainer({ level, sprites });
-
-    this.main.addChild(world);
+    this.main.addChild(new WorldContainer({ level, sprites }));
   }
 
   updateRunning(delta) {
@@ -63,17 +59,17 @@ class WorldScene extends Scene {
     });
   }
 
-  onPrompting() {
-    this.onPaused();
-    this.addChild(this.prompt);
-  }
+  // setPrompting() {
+  //  this.setPaused();
+  //  this.addChild(this.prompt);
+  // }
 
   updatePrompting(delta) {
     this.prompt.update(delta);
 
     if (isPressed(KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
-      this.setState(Scene.STATES.FADING_OUT);
+      this.setFadingOut();
     }
   }
 }

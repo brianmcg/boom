@@ -19,13 +19,13 @@ class CreditsScene extends Scene {
     this.menuItems = [{
       label: Scene.TEXT.CONTINUE,
       onSelect: () => {
-        this.setState(Scene.STATES.RUNNING);
+        this.setRunning();
       },
     }, {
       label: Scene.TEXT.QUIT,
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
-        this.setState(Scene.STATES.FADING_OUT);
+        this.setFadingOut();
       },
     }];
   }
@@ -38,12 +38,11 @@ class CreditsScene extends Scene {
     super.create(assets);
 
     const { sprites } = parse({ assets, text: TEXT });
-
     const background = new BackgroundContainer(sprites.background);
     const scroll = new ScrollContainer(sprites.scroll);
 
     scroll.on(ScrollContainer.EVENTS.SCROLL_COMPLETE, () => {
-      this.setState(Scene.STATES.PROMPTING);
+      this.setPrompting();
     });
 
     this.prompt.addChild(sprites.prompt);

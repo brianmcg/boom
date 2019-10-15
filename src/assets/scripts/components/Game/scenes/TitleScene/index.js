@@ -20,13 +20,13 @@ class TitleScene extends Scene {
     this.menuItems = [{
       label: Scene.TEXT.CONTINUE,
       onSelect: () => {
-        this.setState(Scene.STATES.RUNNING);
+        this.setRunning();
       },
     }, {
       label: Scene.TEXT.QUIT,
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
-        this.setState(Scene.STATES.FADING_OUT);
+        this.setFadingOut();
       },
     }];
   }
@@ -45,9 +45,9 @@ class TitleScene extends Scene {
     super.create(assets);
   }
 
-  onRunning() {
-    super.onRunning();
-    this.setState(Scene.STATES.PROMPTING);
+  setRunning() {
+    super.setRunning();
+    this.setPrompting();
   }
 }
 

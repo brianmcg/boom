@@ -66,10 +66,12 @@ class ScrollContainer extends Container {
   }
 
   play() {
+    super.play();
     this.visible = true;
   }
 
   stop() {
+    super.stop();
     this.visible = false;
   }
 
