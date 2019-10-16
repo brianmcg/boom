@@ -43,14 +43,14 @@ class PromptContainer extends Container {
   /**
    * Handle state change to paused.
    */
-  onPaused() {
+  setPaused() {
     this.visible = false;
   }
 
   /**
    * Handle state change to running.
    */
-  onRunning() {
+  setRunning() {
     this.visible = true;
   }
 

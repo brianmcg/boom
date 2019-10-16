@@ -41,7 +41,7 @@ class Level extends World {
    * @param  {Number} delta           The delta time value.
    * @param  {Object} options.actions The player actions.
    */
-  update(delta, { actions }) {
+  update(delta, actions) {
     this.player.setActions(actions);
 
     super.update(delta);

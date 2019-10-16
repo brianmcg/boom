@@ -40,46 +40,6 @@ class MainContainer extends Container {
     });
   }
 
-  onFadingIn() {
-    this.enablePixelFilter();
-    this.disableColorFilter();
-  }
-
-  onLoading() {
-    this.disablePixelFilter();
-    this.disableColorFilter();
-  }
-
-  onFadingOut() {
-    this.enablePixelFilter();
-    this.disableColorFilter();
-  }
-
-  /**
-   * Pause the MainContainer.
-   */
-  onPaused() {
-    this.alpha = 0.4;
-    this.enablePixelFilter();
-    this.enableColorFilter();
-    this.desaturate();
-    super.stop();
-  }
-
-  /**
-   * Resume the MainContainer.
-   */
-  onRunning() {
-    this.alpha = 1;
-    this.disablePixelFilter();
-    this.disableColorFilter();
-    super.play();
-  }
-
-  updateRunning(...options) {
-    super.update(...options);
-  }
-
   /**
    * Update the fade in effect.
    * @param  {Number} delta The delta time.
@@ -116,6 +76,42 @@ class MainContainer extends Container {
    */
   updatePaused() {
     this.filters[0].size = PIXEL.PAUSE_SIZE * this.parent.scale.x;
+  }
+
+  setFadingIn() {
+    this.enablePixelFilter();
+    this.disableColorFilter();
+  }
+
+  setLoading() {
+    this.disablePixelFilter();
+    this.disableColorFilter();
+  }
+
+  setFadingOut() {
+    this.enablePixelFilter();
+    this.disableColorFilter();
+  }
+
+  /**
+   * Pause the MainContainer.
+   */
+  setPaused() {
+    this.alpha = 0.4;
+    this.enablePixelFilter();
+    this.enableColorFilter();
+    this.desaturate();
+    super.stop();
+  }
+
+  /**
+   * Resume the MainContainer.
+   */
+  setRunning() {
+    this.alpha = 1;
+    this.disablePixelFilter();
+    this.disableColorFilter();
+    super.play();
   }
 
   /**

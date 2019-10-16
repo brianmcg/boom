@@ -49,6 +49,11 @@ class CreditsScene extends Scene {
     this.main.addChild(background);
     this.main.addChild(scroll);
   }
+
+  updatePrompting(delta) {
+    this.updateRunning(delta);
+    super.updatePrompting(delta);
+  }
 }
 
 export default CreditsScene;

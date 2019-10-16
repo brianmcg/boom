@@ -127,7 +127,7 @@ class Scene extends Container {
       this.addChild(this.menu);
     }
 
-    this.main.updateRunning(...options);
+    this.main.update(...options);
   }
 
   /**
@@ -135,27 +135,19 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused(delta) {
-    this.main.updatePaused(delta);
-
-    if (isPressed(KEYS.ESC)) {
+    if (isPressed(KEYS.DOWN_ARROW)) {
+      this.menu.highlightNext();
+    } else if (isPressed(KEYS.UP_ARROW)) {
+      this.menu.highlightPrevious();
+    } else if (isPressed(KEYS.ENTER)) {
+      this.menu.select();
+      this.removeChild(this.menu);
+    } else if (isPressed(KEYS.ESC)) {
       this.setRunning();
       this.removeChild(this.menu);
     }
 
-    if (this.menu.parent) {
-      if (isPressed(KEYS.DOWN_ARROW)) {
-        this.menu.highlightNext();
-      }
-
-      if (isPressed(KEYS.UP_ARROW)) {
-        this.menu.highlightPrevious();
-      }
-
-      if (isPressed(KEYS.ENTER)) {
-        this.menu.select();
-        this.removeChild(this.menu);
-      }
-    }
+    this.main.updatePaused(delta);
   }
 
   /**
@@ -163,14 +155,12 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePrompting(delta) {
-    this.updateRunning(delta);
-
-    this.prompt.update(delta);
-
     if (isPressed(KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setFadingOut();
     }
+
+    this.prompt.update(delta);
   }
 
   /**
@@ -187,7 +177,7 @@ class Scene extends Container {
   setLoading() {
     if (this.setState(STATES.LOADING)) {
       this.addChild(this.loading);
-      this.main.onLoading();
+      this.main.setLoading();
     }
   }
 
@@ -199,7 +189,7 @@ class Scene extends Container {
       this.removeChild(this.loading);
       this.addChild(this.main);
       this.sound.play(SOUND.MUSIC);
-      this.main.onFadingIn();
+      this.main.setFadingIn();
       this.loading.destroy();
     }
   }
@@ -210,8 +200,8 @@ class Scene extends Container {
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
       this.sound.resume();
-      this.main.onRunning();
-      this.prompt.onRunning();
+      this.main.setRunning();
+      this.prompt.setRunning();
     }
   }
 
@@ -222,8 +212,8 @@ class Scene extends Container {
     if (this.setState(STATES.PAUSED)) {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
-      this.main.onPaused();
-      this.prompt.onPaused();
+      this.main.setPaused();
+      this.prompt.setPaused();
     }
   }
 
@@ -243,7 +233,7 @@ class Scene extends Container {
     if (this.setState(STATES.FADING_OUT)) {
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
       this.sound.fade(SOUND.MUSIC);
-      this.main.onFadingOut();
+      this.main.setFadingOut();
       this.removeChild(this.prompt);
     }
   }

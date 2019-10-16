@@ -49,6 +49,11 @@ class TitleScene extends Scene {
     super.setRunning();
     this.setPrompting();
   }
+
+  updatePrompting(delta) {
+    this.updateRunning(delta);
+    super.updatePrompting(delta);
+  }
 }
 
 export default TitleScene;
