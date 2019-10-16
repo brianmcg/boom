@@ -38,7 +38,7 @@ class WorldScene extends Scene {
     this.level = level;
     this.level.on(Level.EVENTS.COMPLETE, () => this.setPrompting());
 
-    this.main.addChild(new WorldContainer({ level, sprites }));
+    this.mainContainer.addChild(new WorldContainer({ level, sprites }));
   }
 
   updateRunning(delta) {

@@ -45,9 +45,9 @@ class CreditsScene extends Scene {
       this.setPrompting();
     });
 
-    this.prompt.addChild(sprites.prompt);
-    this.main.addChild(background);
-    this.main.addChild(scroll);
+    this.promptContainer.addChild(sprites.prompt);
+    this.mainContainer.addChild(background);
+    this.mainContainer.addChild(scroll);
   }
 
   updatePrompting(delta) {

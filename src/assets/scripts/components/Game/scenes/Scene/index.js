@@ -43,9 +43,9 @@ class Scene extends Container {
     this.type = type;
     this.sound = sound;
 
-    this.loading = new LoadingContainer();
-    this.main = new MainContainer();
-    this.prompt = new PromptContainer();
+    this.loadingContainer = new LoadingContainer();
+    this.mainContainer = new MainContainer();
+    this.promptContainer = new PromptContainer();
 
     this.assets = {
       sound: {
@@ -58,11 +58,11 @@ class Scene extends Container {
       }],
     };
 
-    this.main.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
+    this.mainContainer.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
       this.setRunning();
     });
 
-    this.main.once(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
+    this.mainContainer.once(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
       this.setStopped();
     });
 
@@ -106,7 +106,7 @@ class Scene extends Container {
    * @param {Numbmer} delta The delta value.
    */
   updateLoading(delta) {
-    this.loading.update(delta);
+    this.loadingContainer.update(delta);
   }
 
   /**
@@ -114,7 +114,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingIn(delta) {
-    this.main.updateFadingIn(delta);
+    this.mainContainer.updateFadingIn(delta);
   }
 
   /**
@@ -127,7 +127,7 @@ class Scene extends Container {
       this.addChild(this.menu);
     }
 
-    this.main.update(delta);
+    this.mainContainer.update(delta);
   }
 
   /**
@@ -135,6 +135,13 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused(delta) {
+    // this.menu.update(delta, {
+    //   moveDown: this.menu.highlightNext(),
+    //   moveUp: isPressed(KEYS.UP_ARROW),
+    //   select: isPressed(KEYS.ENTER),
+    //   close: isPressed(KEYS.ESC),
+    // });
+
     if (isPressed(KEYS.DOWN_ARROW)) {
       this.menu.highlightNext();
     } else if (isPressed(KEYS.UP_ARROW)) {
@@ -147,7 +154,7 @@ class Scene extends Container {
       this.removeChild(this.menu);
     }
 
-    this.main.updatePaused(delta);
+    this.mainContainer.updatePaused(delta);
   }
 
   /**
@@ -160,7 +167,7 @@ class Scene extends Container {
       this.setFadingOut();
     }
 
-    this.prompt.update(delta);
+    this.promptContainer.update(delta);
   }
 
   /**
@@ -168,7 +175,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingOut(delta) {
-    this.main.updateFadingOut(delta);
+    this.mainContainer.updateFadingOut(delta);
   }
 
   /**
@@ -176,8 +183,8 @@ class Scene extends Container {
    */
   setLoading() {
     if (this.setState(STATES.LOADING)) {
-      this.addChild(this.loading);
-      this.main.setLoading();
+      this.addChild(this.loadingContainer);
+      this.mainContainer.setLoading();
     }
   }
 
@@ -186,11 +193,11 @@ class Scene extends Container {
    */
   setFadingIn() {
     if (this.setState(STATES.FADING_IN)) {
-      this.removeChild(this.loading);
-      this.addChild(this.main);
+      this.removeChild(this.loadingContainer);
+      this.addChild(this.mainContainer);
       this.sound.play(SOUND.MUSIC);
-      this.main.setFadingIn();
-      this.loading.destroy();
+      this.mainContainer.setFadingIn();
+      this.loadingContainer.destroy();
     }
   }
 
@@ -200,8 +207,8 @@ class Scene extends Container {
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
       this.sound.resume();
-      this.main.setRunning();
-      this.prompt.setRunning();
+      this.mainContainer.setRunning();
+      this.promptContainer.setRunning();
     }
   }
 
@@ -212,8 +219,8 @@ class Scene extends Container {
     if (this.setState(STATES.PAUSED)) {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
-      this.main.setPaused();
-      this.prompt.setPaused();
+      this.mainContainer.setPaused();
+      this.promptContainer.setPaused();
     }
   }
 
@@ -222,7 +229,7 @@ class Scene extends Container {
    */
   setPrompting() {
     if (this.setState(STATES.PROMPTING)) {
-      this.addChild(this.prompt);
+      this.addChild(this.promptContainer);
     }
   }
 
@@ -233,8 +240,8 @@ class Scene extends Container {
     if (this.setState(STATES.FADING_OUT)) {
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
       this.sound.fade(SOUND.MUSIC);
-      this.main.setFadingOut();
-      this.removeChild(this.prompt);
+      this.mainContainer.setFadingOut();
+      this.removeChild(this.promptContainer);
     }
   }
 
@@ -286,9 +293,9 @@ class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
-    this.main.destroy();
+    this.mainContainer.destroy();
     this.menu.destroy();
-    this.prompt.destroy();
+    this.promptContainer.destroy();
     super.destroy();
   }
 
