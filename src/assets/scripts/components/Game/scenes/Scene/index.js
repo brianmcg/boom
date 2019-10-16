@@ -121,13 +121,13 @@ class Scene extends Container {
    * Update the scene when in a running state.
    * @param  {Number} delta The delta value.
    */
-  updateRunning(...options) {
+  updateRunning(delta) {
     if (isPressed(KEYS.ESC)) {
       this.setPaused();
       this.addChild(this.menu);
     }
 
-    this.main.update(...options);
+    this.main.update(delta);
   }
 
   /**

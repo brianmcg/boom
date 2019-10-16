@@ -25,10 +25,6 @@ class DebugContainer extends Container {
     });
   }
 
-  update(...options) {
-    this.level.update(...options);
-  }
-
   animate() {
     const { player, bodies } = this.level;
     const playerSprite = this.bodySprites[player.id];

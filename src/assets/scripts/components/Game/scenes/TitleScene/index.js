@@ -37,10 +37,9 @@ class TitleScene extends Scene {
    */
   create(assets) {
     const { sprites } = parse({ assets, text: TEXT });
-    const background = new BackgroundContainer(sprites.background);
 
     this.prompt.addChild(sprites.prompt);
-    this.main.addChild(background);
+    this.main.addChild(new BackgroundContainer(sprites.background));
 
     super.create(assets);
   }

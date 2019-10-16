@@ -18,8 +18,8 @@ class Amp extends AbstractEnemy {
     this.state = STATES.PATROLLING;
   }
 
-  update(...options) {
-    super.update(...options);
+  update(delta) {
+    super.update(delta);
   }
 
   isAiming() {

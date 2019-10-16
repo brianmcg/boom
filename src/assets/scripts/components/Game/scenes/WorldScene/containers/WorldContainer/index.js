@@ -77,15 +77,6 @@ class WorldContainer extends Container {
   }
 
   /**
-   * Update the WorldContainer
-   * @param  {...Object} options The update options.
-   */
-  update(delta, actions) {
-    super.update(delta);
-    this.level.update(delta, actions);
-  }
-
-  /**
    * Animate the container.
    */
   animate() {

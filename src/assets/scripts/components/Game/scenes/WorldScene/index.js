@@ -35,13 +35,14 @@ class WorldScene extends Scene {
 
     super.create(resources);
 
-    level.on(Level.EVENTS.COMPLETE, () => this.setPrompting());
+    this.level = level;
+    this.level.on(Level.EVENTS.COMPLETE, () => this.setPrompting());
 
     this.main.addChild(new WorldContainer({ level, sprites }));
   }
 
   updateRunning(delta) {
-    const actions = {
+    this.level.update(delta, {
       moveForward: isHeld(KEYS.UP_ARROW),
       moveBackward: isHeld(KEYS.DOWN_ARROW),
       turnLeft: isHeld(KEYS.LEFT_ARROW),
@@ -52,9 +53,9 @@ class WorldScene extends Scene {
       crouch: isHeld(KEYS.SHIFT),
       attack: isPressed(KEYS.CTRL),
       continueAttack: isHeld(KEYS.CTRL),
-    };
+    });
 
-    super.updateRunning(delta, actions);
+    super.updateRunning(delta);
   }
 }
 

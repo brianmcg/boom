@@ -19,10 +19,6 @@ class AbstractEnemy extends AbstractActor {
 
     return (diff + DEG[203] + DEG[360]) % DEG[360];
   }
-
-  static get FOO() {
-    return 'foo';
-  }
 }
 
 export default AbstractEnemy;

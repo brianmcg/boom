@@ -21,6 +21,8 @@ class BackgroundContainer extends Container {
     logo.x = (SCREEN.WIDTH / 2) - (logo.width / 2);
     logo.y = (SCREEN.HEIGHT / 2) - (logo.height / 2);
 
+    logo.autoPlay = true;
+
     logo.play = () => {
       logo.visible = true;
     };
