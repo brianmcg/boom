@@ -80,9 +80,9 @@ class WorldContainer extends Container {
    * Update the WorldContainer
    * @param  {...Object} options The update options.
    */
-  update(...options) {
-    super.update(...options);
-    this.level.update(...options);
+  update(delta, actions) {
+    super.update(delta);
+    this.level.update(delta, actions);
   }
 
   /**

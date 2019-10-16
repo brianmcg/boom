@@ -141,10 +141,12 @@ class Game extends Application {
    * @param  {Number} index The scene index.
    */
   onWorldSceneComplete(index) {
+    const { WORLD, CREDITS } = Scene.TYPES;
+
     if (index < NUM_LEVELS) {
-      this.show(Scene.TYPES.WORLD, index + 1);
+      this.show(WORLD, index + 1);
     } else {
-      this.show(Scene.TYPES.CREDITS, index + 1);
+      this.show(CREDITS);
     }
   }
 

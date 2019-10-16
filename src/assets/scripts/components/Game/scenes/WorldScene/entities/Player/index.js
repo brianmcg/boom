@@ -192,11 +192,6 @@ class Player extends AbstractActor {
 
     // Update parent
     super.update(delta);
-
-    // Reset actions
-    Object.keys(this.actions).forEach((key) => {
-      this.actions[key] = false;
-    });
   }
 
   /**
