@@ -10,10 +10,16 @@ class Application extends PixiApplication {
    * @param  {Object} options The application options.
    */
   constructor(...options) {
-    super(...options);
+    super({
+      ...options,
+      autoStart: false,
+      forceFXAA: true,
+    });
 
     delete this.loader;
     delete this.resize;
+    delete this.start;
+    delete this.stop;
 
     this.eventEmitter = new EventEmitter();
 

@@ -13,7 +13,7 @@ import CreditsScene from './scenes/CreditsScene';
 import Loader from './utilities/Loader';
 
 const EVENTS = {
-  QUIT: 'game:quit',
+  STOPPED: 'game:stopped',
 };
 
 /**
@@ -44,14 +44,14 @@ class Game extends Application {
     this.loader = new Loader();
     this.sound = new SoundPlayer();
     this.ticker.maxFPS = MAX_FPS;
-    this.ticker.add(this.loop.bind(this));
+    this.ticker.add(this.loop, this);
     this.resize();
   }
 
   /**
-   * Load the game assets.
+   * Start game and load assets.
    */
-  load() {
+  start() {
     const assets = {
       sound: {
         name: SOUND.EFFECTS,
@@ -64,6 +64,9 @@ class Game extends Application {
       }],
     };
 
+    this.scene = null;
+    this.ticker.start();
+
     this.loader.load(assets).then(({ sound }) => {
       this.sound.add(SOUND.EFFECTS, sound);
       this.show(Scene.TYPES.WORLD, 1);
@@ -71,10 +74,13 @@ class Game extends Application {
   }
 
   /**
-   * Unload the game assets.
+   * Stop game and unload assets.
    */
-  unload() {
+  stop() {
+    this.ticker.stop();
+    this.scene.destroy();
     this.loader.unload();
+    this.emit(EVENTS.STOPPED);
   }
 
   /**
@@ -97,7 +103,7 @@ class Game extends Application {
     const { TITLE, WORLD, CREDITS } = Scene.TYPES;
 
     switch (type) {
-      case TITLE: this.onTitleSceneComplete(index); break;
+      case TITLE: this.onTitleSceneComplete(); break;
       case WORLD: this.onWorldSceneComplete(index); break;
       case CREDITS: this.onCreditsSceneComplete(); break;
       default: break;
@@ -132,8 +138,8 @@ class Game extends Application {
    * Handle the title scene complete event.
    * @param  {Number} index The scene index.
    */
-  onTitleSceneComplete(index) {
-    this.show(Scene.TYPES.WORLD, index + 1);
+  onTitleSceneComplete() {
+    this.show(Scene.TYPES.WORLD, 1);
   }
 
   /**
@@ -161,8 +167,7 @@ class Game extends Application {
    * Handle the title scene quit event.
    */
   onTitleSceneQuit() {
-    this.scene.destroy();
-    this.emit(EVENTS.QUIT);
+    this.stop();
   }
 
   /**
@@ -194,7 +199,6 @@ class Game extends Application {
       const soundKeys = Object.keys(sound).filter(key => !key.includes(SOUND.EFFECTS));
 
       this.scene.destroy();
-
       this.loader.unload({ data: dataKeys, sound: soundKeys });
     }
 
