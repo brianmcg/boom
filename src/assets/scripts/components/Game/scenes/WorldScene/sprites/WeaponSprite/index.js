@@ -15,11 +15,8 @@ class WeaponSprite extends AnimatedSprite {
     this.width *= 2;
     this.height *= 2;
 
-    this.x = (SCREEN.WIDTH / 2) - (this.width / 2);
-    this.y = (SCREEN.HEIGHT / 2) - (this.height / 2);
-
     this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
-    this.centerY = (SCREEN.HEIGHT / 2) - (this.height / 2);
+    this.centerY = SCREEN.HEIGHT - this.height;
 
     this.x = this.centerX;
     this.y = this.centerY;
