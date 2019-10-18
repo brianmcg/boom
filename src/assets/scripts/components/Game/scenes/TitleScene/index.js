@@ -1,5 +1,5 @@
+import translate from '~/translate';
 import { parse } from './parsers';
-import { TEXT } from './text';
 import BackgroundContainer from './containers/BackgroundContainer';
 import Scene from '../Scene';
 
@@ -18,12 +18,12 @@ class TitleScene extends Scene {
     super({ type: Scene.TYPES.TITLE, ...options });
 
     this.menuItems = [{
-      label: Scene.TEXT.CONTINUE,
+      label: translate('scene.menu.continue'),
       onSelect: () => {
         this.setRunning();
       },
     }, {
-      label: Scene.TEXT.QUIT,
+      label: translate('scene.menu.quit'),
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
         this.setFadingOut();
@@ -36,7 +36,11 @@ class TitleScene extends Scene {
    * @param  {Object} assets The loaded scene assets.
    */
   create(assets) {
-    const { sprites } = parse({ assets, text: TEXT });
+    const text = {
+      prompt: translate('title.prompt.start'),
+    };
+
+    const { sprites } = parse(assets, text);
 
     this.promptContainer.addChild(sprites.prompt);
     this.mainContainer.addChild(new BackgroundContainer(sprites.background));

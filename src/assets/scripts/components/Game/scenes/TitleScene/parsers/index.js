@@ -15,7 +15,7 @@ import SparksSprite from '../sprites/SparksSprite';
  * @param  {Array}  options.text    The scene text.
  * @return {Object}                 The parsed scene data.
  */
-export const parse = ({ assets, text }) => {
+export const parse = (assets, text) => {
   const { data, textures } = assets;
   const { animations, images } = data;
 
@@ -28,7 +28,7 @@ export const parse = ({ assets, text }) => {
 
   const label = new BitmapText({
     font: FONT_SIZES.SMALL,
-    text: text.PRESS_SPACE_TO_START,
+    text: text.prompt,
     color: RED,
   });
 

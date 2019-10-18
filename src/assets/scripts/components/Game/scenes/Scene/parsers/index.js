@@ -12,7 +12,7 @@ import { WHITE, RED } from '~/constants/colors';
  * @param  {Array}  options.text    The scene text.
  * @return {Object}                 The parsed scene data.
  */
-export const parse = ({ assets, text }) => {
+export const parse = (assets, text) => {
   const { data, textures } = assets;
   const { images } = data;
 

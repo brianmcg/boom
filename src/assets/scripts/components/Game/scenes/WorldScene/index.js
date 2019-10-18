@@ -1,3 +1,4 @@
+import translate from '~/translate';
 import { Keyboard } from '~/core/input';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
@@ -11,18 +12,18 @@ class WorldScene extends Scene {
     super({ type: Scene.TYPES.WORLD, ...options });
 
     this.menuItems = [{
-      label: Scene.TEXT.CONTINUE,
+      label: translate('scene.menu.continue'),
       onSelect: () => {
         this.setRunning();
       },
     }, {
-      label: Scene.TEXT.RESTART,
+      label: translate('scene.menu.restart'),
       onSelect: () => {
         this.setStatus(Scene.EVENTS.RESTART);
         this.setFadingOut();
       },
     }, {
-      label: Scene.TEXT.QUIT,
+      label: translate('scene.menu.quit'),
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
         this.setFadingOut();

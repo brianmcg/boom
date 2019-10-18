@@ -49,3 +49,9 @@ export const DEBUG = false;
  * @type {Number}
  */
 export const DRAW_DISTANCE = TILE_SIZE * 10;
+
+/**
+ * The default language to use.
+ * @type {String}
+ */
+export const DEFAULT_LANGUAGE = 'en';

@@ -4,7 +4,6 @@ import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
 import { SOUND, DATA } from '~/constants/assets';
 import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
-import { TEXT } from './text';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
@@ -96,7 +95,7 @@ class Scene extends Container {
    */
   create(assets) {
     const text = this.menuItems.map(item => item.label);
-    const { sprites } = parse({ assets, text });
+    const { sprites } = parse(assets, text);
 
     this.menu = new MenuContainer({ sprites: sprites.menu });
     this.menu.add(this.menuItems);
@@ -339,13 +338,6 @@ class Scene extends Container {
    */
   static get EVENTS() {
     return EVENTS;
-  }
-
-  /**
-   * The scene text.
-   */
-  static get TEXT() {
-    return TEXT;
   }
 }
 

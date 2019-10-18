@@ -16,13 +16,21 @@ class CreditsScene extends Scene {
   constructor(options) {
     super({ type: Scene.TYPES.CREDITS, ...options });
 
+  // 'credits.prompt': 'Press space to continue',
+  // 'credits.scroll.end': 'The End',
+  // 'credits.scroll.coding': 'Coding',
+  // 'credits.scroll.graphics': 'Graphics',
+  // 'credits.scroll.sound': 'Sound',
+  // 'credits.scroll.screenplay': 'Script',
+  // 'credits.scroll.author': 'Brian Mcgrath',
+
     this.menuItems = [{
-      label: Scene.TEXT.CONTINUE,
+      label: translate('scene.menu.continue'),
       onSelect: () => {
         this.setRunning();
       },
     }, {
-      label: Scene.TEXT.QUIT,
+      label: translate('scene.menu.quit'),
       onSelect: () => {
         this.setStatus(Scene.EVENTS.QUIT);
         this.setFadingOut();
