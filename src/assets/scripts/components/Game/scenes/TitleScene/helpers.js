@@ -1,6 +1,9 @@
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED } from '~/constants/colors';
-import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
+import { BitmapText } from '~/core/graphics';
+import LogoSprite from './sprites/LogoSprite';
+import SmokeSprite from './sprites/SmokeSprite';
+import SparksSprite from './sprites/SparksSprite';
 
 /**
  * @module game/scenes/title-scene/helpers
@@ -15,19 +18,14 @@ import { Sprite, AnimatedSprite, BitmapText } from '~/core/graphics';
 export const parse = ({ assets, text }) => {
   const { data, textures } = assets;
   const { animations, images } = data;
+
   const smokeTextures = animations.smoke.map(image => textures[image]);
   const sparksTextures = animations.sparks.map(image => textures[image]);
-  const logo = new Sprite(textures[images.logo]);
-  const smoke = new AnimatedSprite(smokeTextures, {
-    animationSpeed: 0.2,
-    tint: RED,
-    loop: true,
-    alpha: 0.75,
-  });
-  const sparks = new AnimatedSprite(sparksTextures, {
-    animationSpeed: 0.4,
-    loop: true,
-  });
+
+  const logo = new LogoSprite(textures[images.logo]);
+  const smoke = new SmokeSprite(smokeTextures);
+  const sparks = new SparksSprite(sparksTextures);
+
   const label = new BitmapText({
     font: FONT_SIZES.SMALL,
     text: text.PRESS_SPACE_TO_START,

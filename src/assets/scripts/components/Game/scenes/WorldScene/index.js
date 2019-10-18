@@ -1,5 +1,5 @@
 import { Keyboard } from '~/core/input';
-import { parse } from './helpers';
+import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import Level from './entities/Level';
 import Scene from '../Scene';
