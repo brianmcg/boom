@@ -3,7 +3,7 @@ import { FONT_SIZES } from '~/constants/fonts';
 import { WHITE, RED } from '~/constants/colors';
 
 /**
- * @module game/scenes/scene/helpers
+ * @module game/scenes/scene/parsers
  */
 
 /**
@@ -30,6 +30,8 @@ export const parse = ({ assets, text }) => {
   const menu = { icon, labels };
 
   return {
-    sprites: { menu },
+    sprites: {
+      menu,
+    },
   };
 };

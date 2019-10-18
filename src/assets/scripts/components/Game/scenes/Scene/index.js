@@ -4,13 +4,34 @@ import { SOUNDS } from '~/constants/sounds';
 import { SCENE_PATH } from '~/constants/paths';
 import { SOUND, DATA } from '~/constants/assets';
 import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
-import { STATES, EVENTS, TYPES } from './constants';
 import { TEXT } from './text';
-import { parse } from './helpers';
+import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
+
+const STATES = {
+  LOADING: 'loading',
+  FADING_IN: 'fading:in',
+  FADING_OUT: 'fading:out',
+  PAUSED: 'paused',
+  RUNNING: 'running',
+  PROMPTING: 'prompting',
+  STOPPED: 'stopped',
+};
+
+const EVENTS = {
+  COMPLETE: 'scene:complete',
+  RESTART: 'scene:restart',
+  QUIT: 'scene:quit',
+};
+
+const TYPES = {
+  TITLE: 'title',
+  WORLD: 'world',
+  CREDITS: 'credits',
+};
 
 const { isPressed, resetPressed, KEYS } = Keyboard;
 

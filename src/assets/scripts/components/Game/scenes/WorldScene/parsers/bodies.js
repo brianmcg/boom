@@ -1,4 +1,4 @@
-import { TILE_SIZE, SCREEN } from '~/constants/config';
+import { TILE_SIZE } from '~/constants/config';
 import Sector from '../entities/Sector';
 import Level from '../entities/Level';
 import Player from '../entities/Player';

@@ -1,10 +1,10 @@
 import { AnimatedSprite, BitmapText } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED, WHITE } from '~/constants/colors';
-import { CREDITS } from './constants';
+import { CREDITS } from '../constants';
 
 /**
- * @module game/scenes/credits-scene/helpers
+ * @module game/scenes/credits-scene/parsers
  */
 
 /**

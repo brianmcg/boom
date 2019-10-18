@@ -1,4 +1,4 @@
-import { parse } from './helpers';
+import { parse } from './parsers';
 import { TEXT } from './text';
 import BackgroundContainer from './containers/BackgroundContainer';
 import Scene from '../Scene';

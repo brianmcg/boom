@@ -1,12 +1,12 @@
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED } from '~/constants/colors';
 import { BitmapText } from '~/core/graphics';
-import LogoSprite from './sprites/LogoSprite';
-import SmokeSprite from './sprites/SmokeSprite';
-import SparksSprite from './sprites/SparksSprite';
+import LogoSprite from '../sprites/LogoSprite';
+import SmokeSprite from '../sprites/SmokeSprite';
+import SparksSprite from '../sprites/SparksSprite';
 
 /**
- * @module game/scenes/title-scene/helpers
+ * @module game/scenes/title-scene/parsers
  */
 
 /**
@@ -34,8 +34,14 @@ export const parse = ({ assets, text }) => {
 
   return {
     sprites: {
-      background: { smoke, sparks, logo },
-      prompt: { label },
+      background: {
+        smoke,
+        sparks,
+        logo,
+      },
+      prompt: {
+        label,
+      },
     },
   };
 };
