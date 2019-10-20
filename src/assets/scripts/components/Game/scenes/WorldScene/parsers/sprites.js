@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Rectangle, Texture } from '~/core/graphics';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
@@ -80,8 +80,8 @@ const createWallSprites = (level, frames, textures) => {
     const texture = textures[image];
 
     for (let i = 0; i < frame.w; i += 1) {
-      const slice = new PIXI.Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[image].push(new PIXI.Texture(texture, slice));
+      const slice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
+      wallTextures[image].push(new Texture(texture, slice));
     }
   });
 
@@ -119,8 +119,8 @@ const createBackgroundSprites = (level, frames, textures) => {
     for (let i = 0; i < TILE_SIZE; i += 1) {
       const row = [];
       for (let j = 0; j < TILE_SIZE; j += 1) {
-        const pixel = new PIXI.Rectangle(frame.x + i, frame.y + j, 1, 1);
-        row.push(new PIXI.Texture(texture, pixel));
+        const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
+        row.push(new Texture(texture, pixel));
       }
       backgroundTextures[image].push(row);
     }

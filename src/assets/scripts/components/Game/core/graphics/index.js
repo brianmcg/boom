@@ -2,7 +2,13 @@
  * @module  game/core/graphics
  */
 
-import { settings, SCALE_MODES, filters } from 'pixi.js';
+import {
+  filters,
+  Rectangle,
+  SCALE_MODES,
+  settings,
+  Texture,
+} from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import BitmapText from './components/BitmapText';
 import Container from './components/Container';
@@ -70,4 +76,12 @@ export {
    * The line component.
    */
   Line,
+  /**
+   * The rectangle component.
+   */
+  Rectangle,
+  /**
+   * The texture component.
+   */
+  Texture,
 };

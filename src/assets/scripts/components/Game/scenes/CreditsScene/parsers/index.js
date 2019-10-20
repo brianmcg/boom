@@ -1,7 +1,6 @@
 import { AnimatedSprite, BitmapText } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED, WHITE } from '~/constants/colors';
-import { CREDITS } from '../constants';
 
 /**
  * @module game/scenes/credits-scene/parsers
@@ -25,7 +24,7 @@ export const parse = ({ assets, text }) => {
     alpha: 0.75,
   });
 
-  const credits = CREDITS.reduce((memo, credit) => {
+  const credits = text.credits.reduce((memo, credit) => {
     const key = new BitmapText({
       font: FONT_SIZES.MEDIUM,
       text: credit.key,
@@ -45,13 +44,13 @@ export const parse = ({ assets, text }) => {
 
   const end = new BitmapText({
     font: FONT_SIZES.LARGE,
-    text: text.END,
+    text: text.end,
     color: WHITE,
   });
 
   const label = new BitmapText({
     font: FONT_SIZES.SMALL,
-    text: text.CONTINUE,
+    text: text.continue,
     color: RED,
   });
 

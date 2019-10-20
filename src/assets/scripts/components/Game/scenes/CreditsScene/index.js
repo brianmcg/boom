@@ -1,5 +1,5 @@
+import translate from '~/translate';
 import { parse } from './parsers';
-import { TEXT } from './text';
 import ScrollContainer from './containers/ScrollContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import Scene from '../Scene';
@@ -15,14 +15,6 @@ class CreditsScene extends Scene {
    */
   constructor(options) {
     super({ type: Scene.TYPES.CREDITS, ...options });
-
-  // 'credits.prompt': 'Press space to continue',
-  // 'credits.scroll.end': 'The End',
-  // 'credits.scroll.coding': 'Coding',
-  // 'credits.scroll.graphics': 'Graphics',
-  // 'credits.scroll.sound': 'Sound',
-  // 'credits.scroll.screenplay': 'Script',
-  // 'credits.scroll.author': 'Brian Mcgrath',
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -45,7 +37,25 @@ class CreditsScene extends Scene {
   create(assets) {
     super.create(assets);
 
-    const { sprites } = parse({ assets, text: TEXT });
+    const text = {
+      credits: [{
+        key: translate('credits.scroll.coding'),
+        values: [translate('credits.scroll.author')],
+      }, {
+        key: translate('credits.scroll.graphics'),
+        values: [translate('credits.scroll.author')],
+      }, {
+        key: translate('credits.scroll.sound'),
+        values: [translate('credits.scroll.author')],
+      }, {
+        key: translate('credits.scroll.screenplay'),
+        values: [translate('credits.scroll.author')],
+      }],
+      continue: translate('credits.prompt.continue'),
+      end: translate('credits.scroll.end'),
+    };
+
+    const { sprites } = parse({ assets, text });
     const background = new BackgroundContainer(sprites.background);
     const scroll = new ScrollContainer(sprites.scroll);
 
