@@ -1,7 +1,12 @@
 import { Container } from '~/core/graphics';
 import { RED, WHITE } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
-import { SCREEN_PADDING, ICON_PADDING_TOP, ICON_PADDING_RIGHT } from './constants';
+
+const SCREEN_PADDING = 6;
+
+const ICON_PADDING_TOP = 1;
+
+const ICON_PADDING_RIGHT = 5;
 
 /**
  * A class representing a menu container.
@@ -11,16 +16,11 @@ class MenuContainer extends Container {
    * Creates a menu container.
    * @param  {Object} options.sprites The sprites.
    */
-  constructor({ sprites }) {
+  constructor({ sprites, items }) {
     super();
-    this.sprites = sprites;
-  }
 
-  /**
-   * Creates a menu container.
-   * @param  {Array}  items The menu items.
-   */
-  add(items = []) {
+    this.sprites = sprites;
+
     const { icon, labels } = this.sprites;
 
     this.currentIndex = 0;

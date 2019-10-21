@@ -97,8 +97,10 @@ class Scene extends Container {
     const text = this.menuItems.map(item => item.label);
     const { sprites } = parse(assets, text);
 
-    this.menu = new MenuContainer({ sprites: sprites.menu });
-    this.menu.add(this.menuItems);
+    this.menuContainer = new MenuContainer({
+      sprites: sprites.menu,
+      items: this.menuItems,
+    });
 
     this.setFadingIn();
   }
@@ -144,7 +146,7 @@ class Scene extends Container {
   updateRunning(delta) {
     if (isPressed(KEYS.ESC)) {
       this.setPaused();
-      this.addChild(this.menu);
+      this.addChild(this.menuContainer);
     }
 
     this.mainContainer.update(delta);
@@ -155,23 +157,23 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused(delta) {
-    // this.menu.update(delta, {
-    //   moveDown: this.menu.highlightNext(),
+    // this.menuContainer.update(delta, {
+    //   moveDown: this.menuContainer.highlightNext(),
     //   moveUp: isPressed(KEYS.UP_ARROW),
     //   select: isPressed(KEYS.ENTER),
     //   close: isPressed(KEYS.ESC),
     // });
 
     if (isPressed(KEYS.DOWN_ARROW)) {
-      this.menu.highlightNext();
+      this.menuContainer.highlightNext();
     } else if (isPressed(KEYS.UP_ARROW)) {
-      this.menu.highlightPrevious();
+      this.menuContainer.highlightPrevious();
     } else if (isPressed(KEYS.ENTER)) {
-      this.menu.select();
-      this.removeChild(this.menu);
+      this.menuContainer.select();
+      this.removeChild(this.menuContainer);
     } else if (isPressed(KEYS.ESC)) {
       this.setRunning();
-      this.removeChild(this.menu);
+      this.removeChild(this.menuContainer);
     }
 
     this.mainContainer.updatePaused(delta);
@@ -314,7 +316,7 @@ class Scene extends Container {
    */
   destroy() {
     this.mainContainer.destroy();
-    this.menu.destroy();
+    this.menuContainer.destroy();
     this.promptContainer.destroy();
     super.destroy();
   }
