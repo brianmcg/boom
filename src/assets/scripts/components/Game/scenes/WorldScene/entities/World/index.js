@@ -1,13 +1,13 @@
-import { World } from '~/core/physics';
+import { World as PhysicsWorld } from '~/core/physics';
 
 const EVENTS = {
-  COMPLETE: 'level:complete',
+  COMPLETE: 'world:complete',
 };
 
 /**
- * Class representing a level.
+ * Class representing a world.
  */
-class Level extends World {
+class World extends PhysicsWorld {
   /**
    * @param  {Player} options.player  [description]
    * @param  {Array}  options.enemies [description]
@@ -37,7 +37,7 @@ class Level extends World {
   }
 
   /**
-   * Update the level.
+   * Update the world.
    * @param  {Number} delta           The delta time value.
    * @param  {Object} options.actions The player actions.
    */
@@ -56,7 +56,7 @@ class Level extends World {
   }
 
   /**
-   * The level events.
+   * The world events.
    * @static
    * @member
    */
@@ -65,4 +65,4 @@ class Level extends World {
   }
 }
 
-export default Level;
+export default World;

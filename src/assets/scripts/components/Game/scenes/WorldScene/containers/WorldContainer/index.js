@@ -56,10 +56,10 @@ let rayAngle;
 class WorldContainer extends Container {
   /**
    * Creates a WorldContainer.
-   * @param  {Level}  options.level   The level.
+   * @param  {World}  options.world   The world.
    * @param  {Object} options.sprites The sprites object.
    */
-  constructor({ level, sprites }) {
+  constructor({ world, sprites }) {
     super();
 
     const { map, background, player } = sprites;
@@ -68,7 +68,7 @@ class WorldContainer extends Container {
     this.mapContainer = new MapContainer(map);
     this.playerContainer = new PlayerContainer(player);
 
-    this.level = level;
+    this.world = world;
     this.brightness = 0;
 
     this.addChild(this.backgroundContainer);
@@ -80,7 +80,7 @@ class WorldContainer extends Container {
    * Animate the container.
    */
   animate() {
-    const { player, bodies } = this.level;
+    const { player, bodies } = this.world;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
     const totalVisibleBodyIds = [];
@@ -141,9 +141,9 @@ class WorldContainer extends Container {
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
             pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
             pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.level.width - 1), 0);
-            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.level.height - 1), 0);
-            bottomId = this.level.getSector(gridX, gridY).bottom;
+            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
+            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+            bottomId = this.world.getSector(gridX, gridY).bottom;
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
             backgroundSprite.tint = this.calculateTint(actualDistance);
@@ -160,9 +160,9 @@ class WorldContainer extends Container {
             mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
             pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
             pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.level.width - 1), 0);
-            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.level.height - 1), 0);
-            topId = this.level.getSector(gridX, gridY).top;
+            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
+            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+            topId = this.world.getSector(gridX, gridY).top;
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
             backgroundSprite.alpha = 1;
             backgroundSprite.tint = this.calculateTint(actualDistance);

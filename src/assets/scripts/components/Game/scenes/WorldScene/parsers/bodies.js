@@ -1,6 +1,6 @@
 import { TILE_SIZE } from '~/constants/config';
 import Sector from '../entities/Sector';
-import Level from '../entities/Level';
+import World from '../entities/World';
 import Player from '../entities/Player';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
@@ -29,7 +29,7 @@ const MAP_LAYERS = {
   GAME: 6,
 };
 
-export const createLevel = (data) => {
+export const createWorld = (data) => {
   const grid = [];
   const objects = [];
   const items = [];
@@ -228,7 +228,7 @@ export const createLevel = (data) => {
     length: TILE_SIZE / 2,
   });
 
-  const level = new Level({
+  const world = new World({
     grid,
     player,
     objects,
@@ -236,5 +236,5 @@ export const createLevel = (data) => {
     enemies,
   });
 
-  return level;
+  return world;
 };

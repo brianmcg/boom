@@ -2,7 +2,7 @@ import translate from '~/translate';
 import { Keyboard } from '~/core/input';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
-import Level from './entities/Level';
+import World from './entities/World';
 import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
@@ -32,18 +32,18 @@ class WorldScene extends Scene {
   }
 
   create(resources) {
-    const { level, sprites } = parse(resources);
+    const { world, sprites } = parse(resources);
 
     super.create(resources);
 
-    this.level = level;
-    this.level.on(Level.EVENTS.COMPLETE, () => this.setPrompting());
+    this.world = world;
+    this.world.on(World.EVENTS.COMPLETE, () => this.setPrompting());
 
-    this.mainContainer.addChild(new WorldContainer({ level, sprites }));
+    this.mainContainer.addChild(new WorldContainer({ world, sprites }));
   }
 
   updateRunning(delta) {
-    this.level.update(delta, {
+    this.world.update(delta, {
       moveForward: isHeld(KEYS.UP_ARROW),
       moveBackward: isHeld(KEYS.DOWN_ARROW),
       turnLeft: isHeld(KEYS.LEFT_ARROW),

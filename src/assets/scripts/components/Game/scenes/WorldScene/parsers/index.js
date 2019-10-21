@@ -1,4 +1,4 @@
-import { createLevel } from './bodies';
+import { createWorld } from './bodies';
 import { createSprites } from './sprites';
 
 /**
@@ -7,8 +7,8 @@ import { createSprites } from './sprites';
  * @return {Object}        The parsed scene data.
  */
 export const parse = (resources) => {
-  const level = createLevel(resources.data.map);
-  const sprites = createSprites(level, resources);
+  const world = createWorld(resources.data.map);
+  const sprites = createSprites(world, resources);
 
-  return { level, sprites };
+  return { world, sprites };
 };

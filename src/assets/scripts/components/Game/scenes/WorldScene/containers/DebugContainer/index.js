@@ -6,9 +6,9 @@ import Player from '../../entities/Player';
 const SCALE = 0.25;
 
 class DebugContainer extends Container {
-  constructor({ level, sprites }) {
+  constructor({ world, sprites }) {
     super();
-    this.level = level;
+    this.world = world;
     this.bodySprites = sprites.bodySprites;
     this.raySprites = sprites.raySprites;
 
@@ -26,7 +26,7 @@ class DebugContainer extends Container {
   }
 
   animate() {
-    const { player, bodies } = this.level;
+    const { player, bodies } = this.world;
     const playerSprite = this.bodySprites[player.id];
 
     playerSprite.x = (SCREEN.WIDTH / 2) - (playerSprite.width / 2);

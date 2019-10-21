@@ -51,12 +51,12 @@ const createWeaponSprite = (player, textures, animations) => {
   return new WeaponSprite(textureCollection, player);
 };
 
-const createWallSprites = (level, frames, textures) => {
+const createWallSprites = (world, frames, textures) => {
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [];
 
-  level.grid.forEach((row) => {
+  world.grid.forEach((row) => {
     row.forEach((sector) => {
       const {
         front,
@@ -93,12 +93,12 @@ const createWallSprites = (level, frames, textures) => {
   return wallSprites;
 };
 
-const createBackgroundSprites = (level, frames, textures) => {
+const createBackgroundSprites = (world, frames, textures) => {
   const backgroundImages = [];
   const backgroundTextures = {};
   const backgroundSprites = [];
 
-  level.grid.forEach((row) => {
+  world.grid.forEach((row) => {
     row.forEach((sector) => {
       const { top, bottom } = sector;
 
@@ -137,18 +137,18 @@ const createBackgroundSprites = (level, frames, textures) => {
   return backgroundSprites;
 };
 
-const createEntitySprites = (level, textures, animations) => {
+const createEntitySprites = (world, textures, animations) => {
   const entitySprites = {};
 
-  level.items.forEach((item) => {
+  world.items.forEach((item) => {
     entitySprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
-  level.objects.forEach((object) => {
+  world.objects.forEach((object) => {
     entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
-  level.enemies.forEach((enemy) => {
+  world.enemies.forEach((enemy) => {
     entitySprites[enemy.id] = createEnemySprite({
       animations: animations.enemies[enemy.type],
       textures,
@@ -159,15 +159,15 @@ const createEntitySprites = (level, textures, animations) => {
   return entitySprites;
 };
 
-export const createSprites = (level, resources) => {
+export const createSprites = (world, resources) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
-  const { player } = level;
+  const { player } = world;
 
-  const entities = createEntitySprites(level, textures, animations);
+  const entities = createEntitySprites(world, textures, animations);
   const weapon = createWeaponSprite(player, textures, animations.weapons);
-  const walls = createWallSprites(level, frames, textures);
-  const background = createBackgroundSprites(level, frames, textures);
+  const walls = createWallSprites(world, frames, textures);
+  const background = createBackgroundSprites(world, frames, textures);
 
   return {
     player: { weapon },

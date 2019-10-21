@@ -12,9 +12,9 @@ import Door from '../entities/Door';
 import Item from '../entities/Item';
 import Amp from '../entities/Amp';
 
-export const createDebugSprites = (level) => {
+export const createDebugSprites = (world) => {
   const bodySprites = {};
-  const { bodies } = level;
+  const { bodies } = world;
 
   let color;
 
