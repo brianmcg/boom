@@ -1,18 +1,15 @@
 import { TILE_SIZE } from '~/constants/config';
-import { DEG } from '~/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
-
-const WEAPON_NAMES = ['pistol', 'double_shotgun', 'chaingun'];
 
 const EYE_HEIGHT_INCREMENT = 0.04;
 
 const MAX_EYE_HEIGHT_OFFSET = 2;
 
 const DEFAULTS = {
-  MAX_VELOCITY: TILE_SIZE / 12,
-  MAX_ROTATION_VELOCITY: DEG[3],
+  MAX_VELOCITY: TILE_SIZE / 14,
+  MAX_ROTATION_VELOCITY: 12,
   ACCELERATION: TILE_SIZE / 256,
   ROTATION_ACCELERATION: 2,
   MAX_EYE_ROTATION_VELOCITY: 128,
@@ -65,14 +62,17 @@ class Player extends AbstractActor {
     this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
     this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
 
-    this.currentWeaponIndex = 0;
+    this.currentWeaponType = Weapon.TYPES.CHAINGUN;
 
     this.actions = {};
 
-    this.weapons = WEAPON_NAMES.map(type => new Weapon({
-      type,
-      player: this,
-    }));
+    this.weapons = Object.values(Weapon.TYPES).reduce((memo, type) => ({
+      ...memo,
+      [type]: new Weapon({
+        type,
+        player: this,
+      }),
+    }), {});
   }
 
   /**
@@ -193,16 +193,39 @@ class Player extends AbstractActor {
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
-    this.world.remove(item);
+    switch (item.key) {
+      case Item.TYPES.AMMO: this.pickUpAmmo(item.value); break;
+      case Item.TYPES.HEALTH: this.pickUpHealth(item.value); break;
+      case Item.TYPES.KEY: this.pickUpKey(item.value); break;
+      case Item.TYPES.WEAPON: this.pickUpWeapon(item.value); break;
+      default: break;
+    }
 
-    // TODO: Add value;
-    // if (item instanceof Weapon) {
-    //   console.log('picked up weapon');
-    // }
+    this.world.remove(item);
+  }
+
+  pickUpAmmo(value) {
+    console.log('pickUpAmmo', value);
+    this.foo = true;
+  }
+
+  pickUpHealth(value) {
+    console.log('pickUpHealth', value);
+    this.foo = true;
+  }
+
+  pickUpKey(value) {
+    console.log('pickUpKey', value);
+    this.foo = true;
+  }
+
+  pickUpWeapon(value) {
+    console.log('pickUpWeapon', value);
+    this.foo = true;
   }
 
   get weapon() {
-    return this.weapons[this.currentWeaponIndex];
+    return this.weapons[this.currentWeaponType];
   }
 
   get eyeHeight() {

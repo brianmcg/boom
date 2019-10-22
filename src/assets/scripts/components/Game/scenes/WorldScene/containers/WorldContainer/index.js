@@ -1,4 +1,4 @@
-import { Container } from '~/core/graphics';
+import { Container, ColorMatrixFilter } from '~/core/graphics';
 import {
   DEG,
   COS,
@@ -73,6 +73,10 @@ class WorldContainer extends Container {
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
+
+    this.colorMatrixFilter = new ColorMatrixFilter();
+    this.colorMatrixFilter.enabled = false;
+    this.filters = [this.colorMatrixFilter];
   }
 
   /**

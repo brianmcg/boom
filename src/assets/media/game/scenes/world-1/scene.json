@@ -6253,7 +6253,7 @@
         "data": [23, 24, 25, 26, 0],
         "height": 1,
         "id": 2,
-        "name": "double_shotgun",
+        "name": "shotgun",
         "opacity": 1,
         "type": "tilelayer",
         "visible": false,
@@ -6697,7 +6697,7 @@
         }, {
           "name": "value",
           "type": "string",
-          "value": "doubleShotgun"
+          "value": "shotgun"
         }]
       }, {
         "id": 30,

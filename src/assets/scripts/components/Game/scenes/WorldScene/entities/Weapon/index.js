@@ -17,8 +17,10 @@ const STATES = {
   DISABLED: 'weapon:disabled',
 };
 
-const EVENTS = {
-  FIRE: 'weapon:fire',
+const TYPES = {
+  SHOTGUN: 'shotgun',
+  CHAINGUN: 'chaingun',
+  PISTOL: 'pistol',
 };
 
 class Weapon extends Item {
@@ -30,8 +32,9 @@ class Weapon extends Item {
     this.player = player;
     this.offsetYDirection = 1;
     this.timer = 0;
-    this.waitTime = 200;
-    this.power = 4;
+    this.waitTime = 100;
+    this.power = 2;
+    this.equiped = false;
 
     this.setIdle();
   }
@@ -140,8 +143,8 @@ class Weapon extends Item {
     return false;
   }
 
-  static get EVENTS() {
-    return EVENTS;
+  static get TYPES() {
+    return TYPES;
   }
 }
 

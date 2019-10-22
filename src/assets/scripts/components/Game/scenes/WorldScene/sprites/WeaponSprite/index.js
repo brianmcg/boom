@@ -1,9 +1,10 @@
 import { AnimatedSprite } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
+import Weapon from '../../entities/Weapon';
 
 class WeaponSprite extends AnimatedSprite {
   constructor(textureCollection, player) {
-    super(textureCollection[player.weapon.type], {
+    super(textureCollection[player.weapon.type || Weapon.TYPES.PISTOL], {
       animationSpeed: 0.4,
       loop: false,
       autoPlay: false,

@@ -27,16 +27,19 @@ class MainContainer extends Container {
   constructor() {
     super();
 
+    this.colorMatrixFilter = new ColorMatrixFilter();
+    this.pixelateFilter = new PixelateFilter();
+
     this.filters = [
-      new PixelateFilter(),
-      new ColorMatrixFilter(),
+      this.colorMatrixFilter,
+      this.pixelateFilter,
     ];
 
     this.disablePixelFilter();
     this.disableColorFilter();
 
     this.on('added', () => {
-      this.filters[0].size = PIXEL.MAX_SIZE * this.parent.scale.x;
+      this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
     });
   }
 
@@ -45,14 +48,14 @@ class MainContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateFadingIn(delta) {
-    let pixelSize = this.filters[0].size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
+    let pixelSize = this.pixelateFilter.size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
     if (pixelSize < PIXEL.MIN_SIZE) {
       pixelSize = PIXEL.MIN_SIZE;
       this.emit(EVENTS.FADE_IN_COMPLETE);
     }
 
-    this.filters[0].size = pixelSize;
+    this.pixelateFilter.size = pixelSize;
   }
 
   /**
@@ -61,21 +64,21 @@ class MainContainer extends Container {
    */
   updateFadingOut(delta) {
     const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
-    let pixelSize = this.filters[0].size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
+    let pixelSize = this.pixelateFilter.size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
     if (pixelSize > maxPixelSize) {
       pixelSize = maxPixelSize;
       this.emit(EVENTS.FADE_OUT_COMPLETE);
     }
 
-    this.filters[0].size = pixelSize;
+    this.pixelateFilter.size = pixelSize;
   }
 
   /**
    * Update the paused effect.
    */
   updatePaused() {
-    this.filters[0].size = PIXEL.PAUSE_SIZE * this.parent.scale.x;
+    this.pixelateFilter.size = PIXEL.PAUSE_SIZE * this.parent.scale.x;
   }
 
   setFadingIn() {
@@ -118,35 +121,35 @@ class MainContainer extends Container {
    * Enable the pixel filter.
    */
   enablePixelFilter() {
-    this.filters[0].enabled = true;
+    this.pixelateFilter.enabled = true;
   }
 
   /**
    * Disable the pixel filter.
    */
   disablePixelFilter() {
-    this.filters[0].enabled = false;
+    this.pixelateFilter.enabled = false;
   }
 
   /**
    * Enable the color filter.
    */
   enableColorFilter() {
-    this.filters[1].enabled = true;
+    this.colorMatrixFilter.enabled = true;
   }
 
   /**
    * Disable the color filter.
    */
   disableColorFilter() {
-    this.filters[1].enabled = false;
+    this.colorMatrixFilter.enabled = false;
   }
 
   /**
    * Desaturate the MainContainer.
    */
   desaturate() {
-    this.filters[1].desaturate();
+    this.colorMatrixFilter.desaturate();
   }
 }
 

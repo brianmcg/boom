@@ -1,5 +1,12 @@
 import Entity from '../Entity';
 
+const TYPES = {
+  AMMO: 'ammo',
+  HEALTH: 'health',
+  KEY: 'key',
+  WEAPON: 'weapon',
+};
+
 class Item extends Entity {
   constructor({
     key,
@@ -7,8 +14,13 @@ class Item extends Entity {
     ...other
   }) {
     super(other);
+
     this.key = key;
     this.value = value;
+  }
+
+  static get TYPES() {
+    return TYPES;
   }
 }
 

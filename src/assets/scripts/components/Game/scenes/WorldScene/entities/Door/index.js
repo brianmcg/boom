@@ -1,6 +1,22 @@
 import { DynamicBody, DynamicFlatSector } from '~/core/physics';
 import { TIME_STEP } from '~/constants/config';
-import { STATES, EVENTS, DEFAULTS } from './constants';
+
+const STATES = {
+  OPENING: 'door:opening',
+  OPENED: 'door:opened',
+  CLOSING: 'door:closing',
+  CLOSED: 'door:closed',
+};
+
+const EVENTS = {
+  LOCKED: 'door:locked',
+};
+
+const DEFAULTS = {
+  AXIS: 'x',
+  SPEED: 1.5,
+  WAIT_TIME: 2000,
+};
 
 class Door extends DynamicFlatSector {
   static get EVENTS() { return EVENTS; }
