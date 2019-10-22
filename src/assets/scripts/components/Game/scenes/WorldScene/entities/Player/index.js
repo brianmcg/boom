@@ -73,12 +73,6 @@ class Player extends AbstractActor {
       type,
       player: this,
     }));
-
-    this.weapons.forEach((weapon) => {
-      weapon.on(Weapon.EVENTS.FIRE, (power) => {
-        this.eyeRotation += power;
-      });
-    });
   }
 
   /**

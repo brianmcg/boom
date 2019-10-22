@@ -87,24 +87,27 @@ class Weapon extends Item {
   }
 
   setFiring() {
-    this.emit(EVENTS.FIRE, this.power);
-    this.state = STATES.FIRING;
+    if (this.setState(STATES.FIRING)) {
+      const { player, power } = this;
+      player.eyeRotation += power;
+      player.world.brightness = power / 10;
+    }
   }
 
   setIdle() {
-    this.state = STATES.IDLE;
+    this.setState(STATES.IDLE);
   }
 
   setDisabled() {
-    this.state = STATES.DISABLED;
+    this.setState(STATES.DISABLED);
   }
 
   setArming() {
-    this.state = STATES.ARMING;
+    this.setState(STATES.ARMING);
   }
 
   setUnarming() {
-    this.state = STATES.UNARMING;
+    this.setState(STATES.UNARMING);
   }
 
   isDisabled() {
@@ -125,6 +128,16 @@ class Weapon extends Item {
 
   isIdle() {
     return this.state === STATES.IDLE;
+  }
+
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 
   static get EVENTS() {

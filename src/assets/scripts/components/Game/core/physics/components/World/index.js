@@ -17,6 +17,7 @@ class World extends EventEmitter {
 
     this.width = this.grid.length;
     this.height = this.grid[0].length;
+    this.brightness = 0;
   }
 
   /**
@@ -55,6 +56,7 @@ class World extends EventEmitter {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
+    this.brightness = 0;
     this.updateableBodyIds.forEach(id => this.bodies[id].update(delta));
   }
 

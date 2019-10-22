@@ -69,7 +69,6 @@ class WorldContainer extends Container {
     this.playerContainer = new PlayerContainer(player);
 
     this.world = world;
-    this.brightness = 0;
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
@@ -238,7 +237,7 @@ class WorldContainer extends Container {
       intensity -= 0.1;
     }
 
-    intensity += this.brightness;
+    intensity += this.world.brightness;
     intensity -= (distance / DRAW_DISTANCE);
 
     if (intensity > 1) {
