@@ -28,18 +28,35 @@ class Weapon extends Item {
     super({ type });
 
     this.offsetX = 0;
-    this.offsetY = 0;
+    this.offsetY = 64;
     this.player = player;
     this.offsetYDirection = 1;
     this.timer = 0;
-    this.waitTime = 100;
+    this.waitTime = 300;
     this.power = 2;
     this.equiped = false;
 
-    this.setIdle();
+    this.setArming();
+  }
+
+  use() {
+    if (!this.isDisabled() && !this.isUnarming() && !this.isArming()) {
+      this.setFiring();
+    }
   }
 
   update(delta) {
+    switch (this.state) {
+      case STATES.IDLE: this.updateIdle(delta); break;
+      // case STATES.FIRING: this.updateDisabled(); break;
+      case STATES.DISABLED: this.updateDisabled(delta); break;
+      case STATES.ARMING: this.updateArming(delta); break;
+      case STATES.UNARMING: this.updateUnarming(delta); break;
+      default: break;
+    }
+  }
+
+  updateIdle(delta) {
     const { actions, velocity } = this.player;
 
     // Update x offset
@@ -67,25 +84,30 @@ class Weapon extends Item {
     if (Math.abs(this.offsetY) === MAX_MOVE_Y || Math.abs(this.offsetY) === 0) {
       this.offsetYDirection *= -1;
     }
+  }
 
-    // Update state
-    if (actions.attack) {
-      if (!this.isFiring()) {
-        this.setFiring();
-      }
-    } else if (actions.continueAttack) {
-      if (!this.isFiring() && !this.isDisabled()) {
-        this.setFiring();
-      }
+  updateDisabled(delta) {
+    this.timer += delta * TIME_STEP;
+
+    if (this.timer >= this.waitTime) {
+      this.setIdle();
+      this.timer = 0;
     }
+  }
 
-    if (this.isDisabled()) {
-      this.timer += delta * TIME_STEP;
+  updateArming(delta) {
+    this.offsetY = Math.max(this.offsetY - MAX_MOVE_X * delta, 0);
 
-      if (this.timer >= this.waitTime) {
-        this.setIdle();
-        this.timer = 0;
-      }
+    if (this.offsetY === 0) {
+      this.setIdle();
+    }
+  }
+
+  updateUnarming(delta) {
+    this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, 64);
+
+    if (this.offsetY === 64) {
+      this.player.armNextWeapon();
     }
   }
 

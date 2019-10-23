@@ -41,7 +41,14 @@ class WeaponSprite extends AnimatedSprite {
   }
 
   animate() {
-    const { weapon } = this.player;
+    const { weapon, nextWeaponType, currentWeaponType } = this.player;
+
+    if (weapon.isArming()) {
+      if (nextWeaponType === currentWeaponType) {
+        this.textures = this.textureCollection[currentWeaponType];
+        this.texture = this.textures[0];
+      }
+    }
 
     this.x = this.centerX + weapon.offsetX;
     this.y = this.centerY + weapon.offsetY;
@@ -57,7 +64,7 @@ class WeaponSprite extends AnimatedSprite {
    */
   get updateable() {
     const { weapon } = this.player;
-    return weapon.isArming() || weapon.isUnarming() || weapon.isFiring();
+    return weapon.isFiring();
   }
 }
 

@@ -62,7 +62,7 @@ class Player extends AbstractActor {
     this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
     this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
 
-    this.currentWeaponType = Weapon.TYPES.CHAINGUN;
+    this.currentWeaponType = Weapon.TYPES.PISTOL;
 
     this.actions = {};
 
@@ -89,13 +89,17 @@ class Player extends AbstractActor {
    */
   update(delta) {
     const {
-      moveForward,
-      moveBackward,
-      turnLeft,
-      turnRight,
+      armChaingun,
+      armPistol,
+      armShotgun,
+      continueAttack,
+      crouch,
       lookDown,
       lookUp,
-      crouch,
+      moveBackward,
+      moveForward,
+      turnLeft,
+      turnRight,
       use,
     } = this.actions;
 
@@ -173,6 +177,29 @@ class Player extends AbstractActor {
       );
     }
 
+    const { CHAINGUN, PISTOL, SHOTGUN } = Weapon.TYPES;
+
+    if (armChaingun) {
+      if (this.currentWeaponType !== CHAINGUN) {
+        this.nextWeaponType = CHAINGUN;
+        this.weapon.setUnarming();
+      }
+    } else if (armPistol) {
+      if (this.currentWeaponType !== PISTOL) {
+        this.nextWeaponType = PISTOL;
+        this.weapon.setUnarming();
+      }
+    } else if (armShotgun) {
+      if (this.currentWeaponType !== SHOTGUN) {
+        this.nextWeaponType = SHOTGUN;
+        this.weapon.setUnarming();
+      }
+    } else if (continueAttack) {
+      this.weapon.use();
+    }
+
+    this.weapon.update(delta);
+
     // Check interactive bodies
     this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
@@ -182,10 +209,13 @@ class Player extends AbstractActor {
       }
     });
 
-    this.weapon.update(delta);
-
     // Update parent
     super.update(delta);
+  }
+
+  armNextWeapon() {
+    this.currentWeaponType = this.nextWeaponType;
+    this.weapon.setArming();
   }
 
   /**

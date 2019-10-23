@@ -54,6 +54,9 @@ class WorldScene extends Scene {
       crouch: isHeld(KEYS.SHIFT),
       attack: isPressed(KEYS.CTRL),
       continueAttack: isHeld(KEYS.CTRL),
+      armPistol: isPressed(KEYS.NUM_1),
+      armShotgun: isPressed(KEYS.NUM_2),
+      armChaingun: isPressed(KEYS.NUM_3),
     });
 
     super.updateRunning(delta);
