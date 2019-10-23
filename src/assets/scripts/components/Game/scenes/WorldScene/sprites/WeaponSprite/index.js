@@ -2,7 +2,15 @@ import { AnimatedSprite } from '~/core/graphics';
 import { SCREEN } from '~/constants/config';
 import Weapon from '../../entities/Weapon';
 
+/**
+ * Class representing a weapon sprite.
+ */
 class WeaponSprite extends AnimatedSprite {
+  /**
+   * Creates a weapon sprite.
+   * @param  {Object} textureCollection A hashmap containing the textures.
+   * @param  {Player} player            The player.
+   */
   constructor(textureCollection, player) {
     super(textureCollection[player.weapon.type || Weapon.TYPES.PISTOL], {
       animationSpeed: 0.4,
@@ -26,37 +34,61 @@ class WeaponSprite extends AnimatedSprite {
 
     this.onComplete = () => {
       this.gotoAndStop(0);
-
-      if (player.weapon.isFiring()) {
-        player.weapon.setDisabled();
-      }
+      player.weapon.setDisabled();
     };
-    // this.y = SCREEN.HEIGHT / 2; // - 10;
   }
 
+  /**
+   * Updates the sprite.
+   * @param  {[Number} delta Te delta time.h
+   */
   update(delta) {
+    const { weapon } = this.player;
+    const { ARMING, FIRING } = Weapon.STATES;
+
+    switch (weapon.state) {
+      case FIRING: this.updateFiring(); break;
+      case ARMING: this.updateArming(); break;
+      default: break;
+    }
+
     if (this.playing) {
       super.update(delta);
     }
   }
 
-  animate() {
-    const { weapon, nextWeaponType, currentWeaponType } = this.player;
-
-    if (weapon.isArming()) {
-      if (nextWeaponType === currentWeaponType) {
-        this.textures = this.textureCollection[currentWeaponType];
-        this.texture = this.textures[0];
-      }
-    }
-
-    this.x = this.centerX + weapon.offsetX;
-    this.y = this.centerY + weapon.offsetY;
-
-    if (!this.playing && weapon.isFiring()) {
+  /**
+   * Update when weapon is in firing state.
+   */
+  updateFiring() {
+    if (!this.playing) {
       this.play();
     }
   }
+
+  /**
+   * Update when weapon is in arming state.
+   */
+  updateArming() {
+    const { nextWeaponType, currentWeaponType } = this.player;
+
+    if (nextWeaponType === currentWeaponType) {
+      this.textures = this.textureCollection[currentWeaponType];
+      this.texture = this.textures[0];
+    }
+  }
+
+  /**
+   * Animate the weapon sprite.
+   * @return {[type]} [description]
+   */
+  animate() {
+    const { weapon } = this.player;
+
+    this.x = this.centerX + weapon.offsetX;
+    this.y = this.centerY + weapon.offsetY;
+  }
+
 
   /**
    * updateable
@@ -64,7 +96,7 @@ class WeaponSprite extends AnimatedSprite {
    */
   get updateable() {
     const { weapon } = this.player;
-    return weapon.isFiring();
+    return weapon.isFiring() || weapon.isArming();
   }
 }
 

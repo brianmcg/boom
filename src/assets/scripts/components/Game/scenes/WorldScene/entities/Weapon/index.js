@@ -23,7 +23,15 @@ const TYPES = {
   PISTOL: 'pistol',
 };
 
+/**
+ * Class representing a weapon.
+ */
 class Weapon extends Item {
+  /**
+   * Creates a weapon.
+   * @param  {String} options.type   The weapon type.
+   * @param  {Player} options.player The player.
+   */
   constructor({ type, player }) {
     super({ type });
 
@@ -39,16 +47,22 @@ class Weapon extends Item {
     this.setArming();
   }
 
+  /**
+   * Use the weapon.
+   */
   use() {
     if (!this.isDisabled() && !this.isUnarming() && !this.isArming()) {
       this.setFiring();
     }
   }
 
+  /**
+   * Update the weapon.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
     switch (this.state) {
       case STATES.IDLE: this.updateIdle(delta); break;
-      // case STATES.FIRING: this.updateDisabled(); break;
       case STATES.DISABLED: this.updateDisabled(delta); break;
       case STATES.ARMING: this.updateArming(delta); break;
       case STATES.UNARMING: this.updateUnarming(delta); break;
@@ -56,6 +70,10 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Update the weapon when in an idle state.
+   * @param  {Number} delta The delta time.
+   */
   updateIdle(delta) {
     const { actions, velocity } = this.player;
 
@@ -86,6 +104,10 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Update the weapon when in an disabled state.
+   * @param  {Number} delta The delta time.
+   */
   updateDisabled(delta) {
     this.timer += delta * TIME_STEP;
 
@@ -95,6 +117,10 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Update the weapon when in an arming state.
+   * @param  {Number} delta The delta time.
+   */
   updateArming(delta) {
     this.offsetY = Math.max(this.offsetY - MAX_MOVE_X * delta, 0);
 
@@ -103,6 +129,10 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Update the weapon when in an unarming state.
+   * @param  {Number} delta The delta time.
+   */
   updateUnarming(delta) {
     this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, 64);
 
@@ -111,6 +141,9 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Set the state to firing.
+   */
   setFiring() {
     if (this.setState(STATES.FIRING)) {
       const { player, power } = this;
@@ -119,42 +152,73 @@ class Weapon extends Item {
     }
   }
 
+  /**
+   * Set the state to idle.
+   */
   setIdle() {
     this.setState(STATES.IDLE);
   }
 
+  /**
+   * Set the state to disabled.
+   */
   setDisabled() {
     this.setState(STATES.DISABLED);
   }
 
+  /**
+   * Set the state to arming.
+   */
   setArming() {
     this.setState(STATES.ARMING);
   }
 
+  /**
+   * Set the state to unarming.
+   */
   setUnarming() {
     this.setState(STATES.UNARMING);
   }
 
+  /**
+   * Is the weapon in the disabled state.
+   */
   isDisabled() {
     return this.state === STATES.DISABLED;
   }
 
+  /**
+   * Is the weapon in the firing state.
+   */
   isFiring() {
     return this.state === STATES.FIRING;
   }
 
+  /**
+   * Is the weapon in the arming state.
+   */
   isArming() {
     return this.state === STATES.ARMING;
   }
 
+  /**
+   * Is the weapon in the unarming state.
+   */
   isUnarming() {
     return this.state === STATES.UNARMING;
   }
 
+  /**
+   * Is the weapon in the idle state.
+   */
   isIdle() {
     return this.state === STATES.IDLE;
   }
 
+  /**
+   * Set the weapon state
+   * @param {String} state The state to set.
+   */
   setState(state) {
     if (this.state !== state) {
       this.state = state;
@@ -167,6 +231,10 @@ class Weapon extends Item {
 
   static get TYPES() {
     return TYPES;
+  }
+
+  static get STATES() {
+    return STATES;
   }
 }
 

@@ -6,7 +6,7 @@
  * The maximum frames per second.
  * @type {Number}
  */
-export const MAX_FPS = 60;
+export const MAX_FPS = 40;
 
 /**
  * The time step.
