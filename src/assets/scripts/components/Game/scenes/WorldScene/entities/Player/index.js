@@ -16,6 +16,24 @@ const DEFAULTS = {
   EYE_ROTATION_VELOCITY: 4,
 };
 
+const WEAPON_DEFAULTS = {
+  [Weapon.TYPES.PISTOL]: {
+    idleTime: 200,
+    power: 4,
+    equiped: true,
+  },
+  [Weapon.TYPES.SHOTGUN]: {
+    idleTime: 750,
+    power: 16,
+    equiped: true,
+  },
+  [Weapon.TYPES.CHAINGUN]: {
+    idleTime: 0,
+    power: 8,
+    equiped: true,
+  },
+};
+
 /**
  * Creates a player.
  * @extends {AbstractActor}
@@ -70,6 +88,7 @@ class Player extends AbstractActor {
       ...memo,
       [type]: new Weapon({
         type,
+        ...WEAPON_DEFAULTS[type],
         player: this,
       }),
     }), {});
@@ -179,11 +198,11 @@ class Player extends AbstractActor {
 
     // Update weapon
     if (armChaingun) {
-      this.chooseNextWeapon(Weapon.TYPES.CHAINGUN);
+      this.selectNextWeapon(Weapon.TYPES.CHAINGUN);
     } else if (armPistol) {
-      this.chooseNextWeapon(Weapon.TYPES.PISTOL);
+      this.selectNextWeapon(Weapon.TYPES.PISTOL);
     } else if (armShotgun) {
-      this.chooseNextWeapon(Weapon.TYPES.SHOTGUN);
+      this.selectNextWeapon(Weapon.TYPES.SHOTGUN);
     } else if (continueAttack) {
       this.weapon.use();
     }
@@ -203,13 +222,20 @@ class Player extends AbstractActor {
     super.update(delta);
   }
 
-  chooseNextWeapon(type) {
+  /**
+   * Select the next weapon to use.
+   * @param  {String} type The type of weapon to use.
+   */
+  selectNextWeapon(type) {
     if (this.currentWeaponType !== type) {
       this.nextWeaponType = type;
       this.weapon.setUnarming();
     }
   }
 
+  /**
+   * Arm the next selected weapon.
+   */
   armNextWeapon() {
     this.currentWeaponType = this.nextWeaponType;
     this.weapon.setArming();

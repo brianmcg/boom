@@ -29,20 +29,30 @@ const TYPES = {
 class Weapon extends Item {
   /**
    * Creates a weapon.
-   * @param  {String} options.type   The weapon type.
-   * @param  {Player} options.player The player.
+   * @param  {String}  options.type     The weapon type.
+   * @param  {Player}  options.player   The player.
+   * @param  {Number}  options.power    The power of the weapon.
+   * @param  {Boolean} options.equiped  Is the weapon equiped.
+   * @param  {Number}  options.idleTime The time to wait in idle state after firing.
    */
-  constructor({ type, player }) {
+  constructor({
+    type,
+    player,
+    power,
+    equiped,
+    idleTime,
+  }) {
     super({ type });
+
+    this.idleTime = idleTime;
+    this.power = power;
+    this.equiped = equiped;
 
     this.offsetX = 0;
     this.offsetY = TILE_SIZE;
     this.player = player;
     this.offsetYDirection = 1;
     this.timer = 0;
-    this.waitTime = 300;
-    this.power = 2;
-    this.equiped = false;
 
     this.setArming();
   }
@@ -111,7 +121,7 @@ class Weapon extends Item {
   updateDisabled(delta) {
     this.timer += delta * TIME_STEP;
 
-    if (this.timer >= this.waitTime) {
+    if (this.timer >= this.idleTime) {
       this.setIdle();
       this.timer = 0;
     }
@@ -227,6 +237,10 @@ class Weapon extends Item {
     }
 
     return false;
+  }
+
+  isAutomatic() {
+    return this.idleTime === 0;
   }
 
   static get TYPES() {
