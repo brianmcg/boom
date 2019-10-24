@@ -47,21 +47,19 @@ class WeaponSprite extends AnimatedSprite {
     const { ARMING, FIRING } = Weapon.STATES;
 
     switch (weapon.state) {
-      case FIRING: this.updateFiring(); break;
-      case ARMING: this.updateArming(); break;
+      case FIRING: this.updateFiring(delta); break;
+      case ARMING: this.updateArming(delta); break;
       default: break;
-    }
-
-    if (this.playing) {
-      super.update(delta);
     }
   }
 
   /**
    * Update when weapon is in firing state.
    */
-  updateFiring() {
-    if (!this.playing) {
+  updateFiring(delta) {
+    if (this.playing) {
+      super.update(delta);
+    } else {
       this.play();
     }
   }
@@ -75,6 +73,7 @@ class WeaponSprite extends AnimatedSprite {
     if (nextWeaponType === currentWeaponType) {
       this.textures = this.textureCollection[currentWeaponType];
       this.texture = this.textures[0];
+      this.thlayer.currentWeaponType = null;
     }
   }
 

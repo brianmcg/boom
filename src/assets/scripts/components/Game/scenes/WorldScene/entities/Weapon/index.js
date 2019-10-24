@@ -51,7 +51,7 @@ class Weapon extends Item {
    * Use the weapon.
    */
   use() {
-    if (!this.isDisabled() && !this.isUnarming() && !this.isArming()) {
+    if (this.isIdle()) {
       this.setFiring();
     }
   }
