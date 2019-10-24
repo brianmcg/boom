@@ -56,7 +56,7 @@ class World extends EventEmitter {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
-    this.brightness = 0;
+    this.brightness = Math.max(this.brightness -= 0.25 * delta, 0);
     this.updateableBodyIds.forEach(id => this.bodies[id].update(delta));
   }
 
