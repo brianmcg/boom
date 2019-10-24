@@ -1,4 +1,4 @@
-import { TIME_STEP } from '~/constants/config';
+import { TIME_STEP, TILE_SIZE } from '~/constants/config';
 import Item from '../Item';
 
 const MAX_MOVE_X = 8;
@@ -36,7 +36,7 @@ class Weapon extends Item {
     super({ type });
 
     this.offsetX = 0;
-    this.offsetY = 64;
+    this.offsetY = TILE_SIZE;
     this.player = player;
     this.offsetYDirection = 1;
     this.timer = 0;
@@ -134,9 +134,9 @@ class Weapon extends Item {
    * @param  {Number} delta The delta time.
    */
   updateUnarming(delta) {
-    this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, 64);
+    this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, TILE_SIZE);
 
-    if (this.offsetY === 64) {
+    if (this.offsetY === TILE_SIZE) {
       this.player.armNextWeapon();
     }
   }

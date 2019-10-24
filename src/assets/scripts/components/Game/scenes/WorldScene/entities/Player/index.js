@@ -177,23 +177,13 @@ class Player extends AbstractActor {
       );
     }
 
-    const { CHAINGUN, PISTOL, SHOTGUN } = Weapon.TYPES;
-
+    // Update weapon
     if (armChaingun) {
-      if (this.currentWeaponType !== CHAINGUN) {
-        this.nextWeaponType = CHAINGUN;
-        this.weapon.setUnarming();
-      }
+      this.chooseNextWeapon(Weapon.TYPES.CHAINGUN);
     } else if (armPistol) {
-      if (this.currentWeaponType !== PISTOL) {
-        this.nextWeaponType = PISTOL;
-        this.weapon.setUnarming();
-      }
+      this.chooseNextWeapon(Weapon.TYPES.PISTOL);
     } else if (armShotgun) {
-      if (this.currentWeaponType !== SHOTGUN) {
-        this.nextWeaponType = SHOTGUN;
-        this.weapon.setUnarming();
-      }
+      this.chooseNextWeapon(Weapon.TYPES.SHOTGUN);
     } else if (continueAttack) {
       this.weapon.use();
     }
@@ -211,6 +201,13 @@ class Player extends AbstractActor {
 
     // Update parent
     super.update(delta);
+  }
+
+  chooseNextWeapon(type) {
+    if (this.currentWeaponType !== type) {
+      this.nextWeaponType = type;
+      this.weapon.setUnarming();
+    }
   }
 
   armNextWeapon() {

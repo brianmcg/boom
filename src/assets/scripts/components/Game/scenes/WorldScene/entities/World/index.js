@@ -52,7 +52,8 @@ class World extends PhysicsWorld {
   }
 
   isExitSector() {
-    return this.getSector(this.player.gridX, this.player.gridY).exit;
+    const { gridX, gridY } = this.player;
+    return this.getSector(gridX, gridY).exit;
   }
 
   /**

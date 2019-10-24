@@ -32,10 +32,7 @@ class WeaponSprite extends AnimatedSprite {
 
     this.player = player;
 
-    this.onComplete = () => {
-      this.gotoAndStop(0);
-      player.weapon.setDisabled();
-    };
+    this.onComplete = this.handleOnComplete.bind(this);
   }
 
   /**
@@ -87,6 +84,20 @@ class WeaponSprite extends AnimatedSprite {
     this.y = this.centerY + weapon.offsetY;
   }
 
+  /**
+   * Handle on complete event.
+   */
+  handleOnComplete() {
+    const { weapon } = this.player;
+
+    if (weapon.isAutomatic) {
+      weapon.setIdle();
+    } else {
+      weapon.setDisabled();
+    }
+
+    this.gotoAndStop(0);
+  }
 
   /**
    * updateable
