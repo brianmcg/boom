@@ -1,69 +1,55 @@
-const EYE_HEIGHT_INCREMENT = 0.04;
+const HEIGHT_INCREMENT = 0.04;
 
-const MAX_EYE_HEIGHT_OFFSET = 2;
+const MAX_HEIGHT = 2;
 
-const MAX_EYE_ROTATION_VELOCITY = 128;
+const MAX_ROTATION = 128;
 
-const EYE_ROTATION_VELOCITY = 4;
+const ROTATION_VELOCITY = 4;
 
 class Eye {
   constructor(player) {
     this.player = player;
-
-    this.eyeHeightOffset = 0;
-    this.eyeHeightOffsetDirection = 1;
-
-    this.eyeRotation = 0;
-    this.eyeRotationVelocity = EYE_ROTATION_VELOCITY;
-    this.maxEyeRotationVelocity = MAX_EYE_ROTATION_VELOCITY;
+    this.height = 0;
+    this.heightDirection = 1;
+    this.rotation = 0;
   }
 
   update(delta) {
-    const { velocity } = this.player;
+    const { velocity, maxVelocity } = this.player;
     const { lookDown, lookUp } = this.player.actions;
 
+
+    // Update rotation
     if (lookDown) {
-      this.eyeRotation = Math.max(
-        this.eyeRotation - this.eyeRotationVelocity,
-        -this.maxEyeRotationVelocity,
-      );
+      this.rotation = Math.max(this.rotation - ROTATION_VELOCITY, -MAX_ROTATION);
     } else if (lookUp) {
-      this.eyeRotation = Math.min(
-        this.eyeRotation + this.eyeRotationVelocity,
-        this.maxEyeRotationVelocity,
-      );
-    } else if (this.eyeRotation < 0) {
-      this.eyeRotation = Math.min(this.eyeRotation + this.eyeRotationVelocity, 0);
-    } else if (this.eyeRotation > 0) {
-      this.eyeRotation = Math.max(this.eyeRotation - this.eyeRotationVelocity, 0);
+      this.rotation = Math.min(this.rotation + ROTATION_VELOCITY, MAX_ROTATION);
+    } else if (this.rotation < 0) {
+      this.rotation = Math.min(this.rotation + ROTATION_VELOCITY, 0);
+    } else if (this.rotation > 0) {
+      this.rotation = Math.max(this.rotation - ROTATION_VELOCITY, 0);
     }
 
     if (velocity) {
-      if (this.eyeHeightOffsetDirection > 0) {
-        this.eyeHeightOffset = Math.min(
-          this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * Math.abs(velocity) * delta,
-          MAX_EYE_HEIGHT_OFFSET,
+      if (this.heightDirection > 0) {
+        this.height = Math.min(
+          this.height + HEIGHT_INCREMENT * Math.abs(velocity) * delta,
+          MAX_HEIGHT,
         );
-      } else if (this.eyeHeightOffsetDirection < 0) {
-        this.eyeHeightOffset = Math.max(
-          this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * Math.abs(velocity) * delta * 2,
-          -MAX_EYE_HEIGHT_OFFSET,
+      } else if (this.heightDirection < 0) {
+        this.height = Math.max(
+          this.height - HEIGHT_INCREMENT * Math.abs(velocity) * delta * 2,
+          -MAX_HEIGHT,
         );
       }
 
-      if (Math.abs(this.eyeHeightOffset) === MAX_EYE_HEIGHT_OFFSET) {
-        this.eyeHeightOffsetDirection *= -1;
+      if (Math.abs(this.height) === MAX_HEIGHT) {
+        this.heightDirection *= -1;
       }
-    } else if (this.eyeHeightOffset > 0) {
-      this.eyeHeightOffset = Math.max(
-        this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
-        0,
-      );
-    } else if (this.eyeHeightOffset < 0) {
-      this.eyeHeightOffset = Math.min(
-        this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
-        0,
-      );
+    } else if (this.height > 0) {
+      this.height = Math.max(this.height - HEIGHT_INCREMENT * maxVelocity * delta, 0);
+    } else if (this.height < 0) {
+      this.height = Math.min(this.height + HEIGHT_INCREMENT * maxVelocity * delta, 0);
     }
   }
 }

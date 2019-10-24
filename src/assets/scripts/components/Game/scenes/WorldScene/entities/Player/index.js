@@ -2,18 +2,13 @@ import { TILE_SIZE } from '~/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
-
-const EYE_HEIGHT_INCREMENT = 0.04;
-
-const MAX_EYE_HEIGHT_OFFSET = 2;
+import Eye from './components/Eye';
 
 const DEFAULTS = {
   MAX_VELOCITY: TILE_SIZE / 14,
   MAX_ROTATION_VELOCITY: 12,
   ACCELERATION: TILE_SIZE / 256,
   ROTATION_ACCELERATION: 2,
-  MAX_EYE_ROTATION_VELOCITY: 128,
-  EYE_ROTATION_VELOCITY: 4,
 };
 
 const WEAPON_DEFAULTS = {
@@ -68,20 +63,11 @@ class Player extends AbstractActor {
     this.maxRotVelocity = maxRotVelocity;
     this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
-
     this.maxHeight = this.height;
     this.minHeight = this.height / 3 * 2;
     this.heightVelocity = 2;
-
-    this.eyeHeightOffset = 0;
-    this.eyeHeightOffsetDirection = 1;
-
-    this.eyeRotation = 0;
-    this.eyeRotationVelocity = DEFAULTS.EYE_ROTATION_VELOCITY;
-    this.maxEyeRotationVelocity = DEFAULTS.MAX_EYE_ROTATION_VELOCITY;
-
+    this.eye = new Eye(this);
     this.currentWeaponType = Weapon.TYPES.PISTOL;
-
     this.actions = {};
 
     this.weapons = Object.values(Weapon.TYPES).reduce((memo, type) => ({
@@ -113,8 +99,6 @@ class Player extends AbstractActor {
       armShotgun,
       continueAttack,
       crouch,
-      lookDown,
-      lookUp,
       moveBackward,
       moveForward,
       turnLeft,
@@ -144,56 +128,11 @@ class Player extends AbstractActor {
       this.rotVelocity = 0;
     }
 
-    // Update y axis rotation
-    if (lookDown) {
-      this.eyeRotation = Math.max(
-        this.eyeRotation - this.eyeRotationVelocity,
-        -this.maxEyeRotationVelocity,
-      );
-    } else if (lookUp) {
-      this.eyeRotation = Math.min(
-        this.eyeRotation + this.eyeRotationVelocity,
-        this.maxEyeRotationVelocity,
-      );
-    } else if (this.eyeRotation < 0) {
-      this.eyeRotation = Math.min(this.eyeRotation + this.eyeRotationVelocity, 0);
-    } else if (this.eyeRotation > 0) {
-      this.eyeRotation = Math.max(this.eyeRotation - this.eyeRotationVelocity, 0);
-    }
-
     // Update height
     if (crouch) {
       this.height = Math.max(this.height - this.heightVelocity, this.minHeight);
     } else {
       this.height = Math.min(this.height + this.heightVelocity, this.maxHeight);
-    }
-
-    if (this.velocity) {
-      if (this.eyeHeightOffsetDirection > 0) {
-        this.eyeHeightOffset = Math.min(
-          this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * Math.abs(this.velocity) * delta,
-          MAX_EYE_HEIGHT_OFFSET,
-        );
-      } else if (this.eyeHeightOffsetDirection < 0) {
-        this.eyeHeightOffset = Math.max(
-          this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * Math.abs(this.velocity) * delta * 2,
-          -MAX_EYE_HEIGHT_OFFSET,
-        );
-      }
-
-      if (Math.abs(this.eyeHeightOffset) === MAX_EYE_HEIGHT_OFFSET) {
-        this.eyeHeightOffsetDirection *= -1;
-      }
-    } else if (this.eyeHeightOffset > 0) {
-      this.eyeHeightOffset = Math.max(
-        this.eyeHeightOffset - EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
-        0,
-      );
-    } else if (this.eyeHeightOffset < 0) {
-      this.eyeHeightOffset = Math.min(
-        this.eyeHeightOffset + EYE_HEIGHT_INCREMENT * this.maxVelocity * delta,
-        0,
-      );
     }
 
     // Update weapon
@@ -208,6 +147,7 @@ class Player extends AbstractActor {
     }
 
     this.weapon.update(delta);
+    this.eye.update(delta);
 
     // Check interactive bodies
     this.world.getAdjacentBodies(this).forEach((body) => {
@@ -282,7 +222,11 @@ class Player extends AbstractActor {
   }
 
   get eyeHeight() {
-    return this.height + this.eyeHeightOffset;
+    return this.height + this.eye.height;
+  }
+
+  get eyeRotation() {
+    return this.eye.rotation;
   }
 }
 

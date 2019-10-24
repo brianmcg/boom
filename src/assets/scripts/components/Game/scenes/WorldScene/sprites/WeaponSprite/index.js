@@ -70,6 +70,7 @@ class WeaponSprite extends AnimatedSprite {
     if (nextWeaponType === currentWeaponType) {
       this.textures = this.textureCollection[currentWeaponType];
       this.texture = this.textures[0];
+      this.player.nextWeaponType = null;
     }
   }
 

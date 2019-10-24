@@ -157,7 +157,7 @@ class Weapon extends Item {
   setFiring() {
     if (this.setState(STATES.FIRING)) {
       const { player, power } = this;
-      player.eyeRotation += power;
+      player.eye.rotation += power;
       player.world.brightness = power / 10;
     }
   }
