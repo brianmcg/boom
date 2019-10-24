@@ -1,13 +1,19 @@
-import { Container } from '~/core/graphics';
+import { Container, RectangleSprite } from '~/core/graphics';
 import { RED, WHITE } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
-import { createSprites } from './helpers';
 
 const INCREMENT = 2;
 
 const INTERVAL = 10;
 
 const PADDING = 2;
+
+const createSprites = (size, number = 0) => (
+  [...Array(number)].map(() => new RectangleSprite({
+    width: size,
+    height: size,
+  }))
+);
 
 /**
  * A class representing a LoadingContainer.

@@ -31,6 +31,18 @@ class PromptContainer extends Container {
   }
 
   /**
+   * Animate the container.
+   * @return {[type]} [description]
+   */
+  animate() {
+    if (!this.counter) {
+      this.children.forEach((child) => {
+        child.visible = !child.visible;
+      });
+    }
+  }
+
+  /**
    * Add a child to the container.
    * @param {BitmapText} options.label The label to add.
    */
@@ -52,14 +64,6 @@ class PromptContainer extends Container {
    */
   setRunning() {
     this.visible = true;
-  }
-
-  animate() {
-    if (!this.counter) {
-      this.children.forEach((child) => {
-        child.visible = !child.visible;
-      });
-    }
   }
 }
 

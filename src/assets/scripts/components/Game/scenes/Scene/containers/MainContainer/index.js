@@ -17,11 +17,6 @@ const EVENTS = {
  */
 class MainContainer extends Container {
   /**
-   * The container events.
-   */
-  static get EVENTS() { return EVENTS; }
-
-  /**
    * Creates a MainContainer.
    */
   constructor() {
@@ -150,6 +145,13 @@ class MainContainer extends Container {
    */
   desaturate() {
     this.colorMatrixFilter.desaturate();
+  }
+
+  /**
+   * The container events.
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

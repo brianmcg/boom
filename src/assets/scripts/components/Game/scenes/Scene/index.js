@@ -46,17 +46,15 @@ class Scene extends Container {
    * @param  {String} options.type    The type of scene.
    * @param  {String} options.sound   The scene music.
    */
-  constructor(options) {
-    super();
-
-    const {
-      index = 0,
-      scale = 1,
-      type,
-      sound,
-    } = options;
-
+  constructor({
+    index = 0,
+    scale = 1,
+    type,
+    sound,
+  }) {
     const path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
+
+    super();
 
     this.index = index;
     this.scale = scale;
@@ -91,11 +89,11 @@ class Scene extends Container {
 
   /**
    * Create the scene.
-   * @param  {Object} assets The scene assets.
+   * @param  {Object} resources The scene resources.
    */
-  create(assets) {
+  create(resources) {
     const text = this.menuItems.map(item => item.label);
-    const { sprites } = parse(assets, text);
+    const { sprites } = parse(resources, text);
 
     this.menuContainer = new MenuContainer({
       sprites: sprites.menu,
@@ -157,13 +155,6 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused(delta) {
-    // this.menuContainer.update(delta, {
-    //   moveDown: this.menuContainer.highlightNext(),
-    //   moveUp: isPressed(KEYS.UP_ARROW),
-    //   select: isPressed(KEYS.ENTER),
-    //   close: isPressed(KEYS.ESC),
-    // });
-
     if (isPressed(KEYS.DOWN_ARROW)) {
       this.menuContainer.highlightNext();
     } else if (isPressed(KEYS.UP_ARROW)) {

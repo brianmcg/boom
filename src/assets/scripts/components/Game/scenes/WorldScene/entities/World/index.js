@@ -34,6 +34,7 @@ class World extends PhysicsWorld {
     this.objects = objects;
     this.items = items;
     this.enemies = enemies;
+    this.brightness = 0;
   }
 
   /**
@@ -42,6 +43,7 @@ class World extends PhysicsWorld {
    * @param  {Object} options.actions The player actions.
    */
   update(delta, actions) {
+    this.brightness = Math.max(this.brightness -= 0.25 * delta, 0);
     this.player.setActions(actions);
 
     super.update(delta);
