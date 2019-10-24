@@ -94,7 +94,7 @@ class WorldContainer extends Container {
     // Get initial ray angle 30 deg less than player angle
     rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
-    centerY = CAMERA_CENTER_Y + player.eyeRotation;
+    centerY = CAMERA_CENTER_Y + player.cameraRotation;
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
@@ -114,7 +114,7 @@ class WorldContainer extends Container {
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
-        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.eyeHeight)));
+        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
 
       if (distance < DRAW_DISTANCE) {
         wallSprite.height = spriteHeight;
@@ -135,7 +135,7 @@ class WorldContainer extends Container {
         backgroundSprite = background[xIndex][yIndex];
 
         if (yIndex >= wallBottomIntersection) {
-          actualDistance = player.eyeHeight / (yIndex - centerY)
+          actualDistance = player.cameraHeight / (yIndex - centerY)
             * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
@@ -154,7 +154,7 @@ class WorldContainer extends Container {
             backgroundSprite.alpha = 0;
           }
         } else if (yIndex <= wallTopIntersection) {
-          actualDistance = (TILE_SIZE - player.eyeHeight) / (centerY - yIndex)
+          actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex)
             * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
@@ -209,7 +209,7 @@ class WorldContainer extends Container {
           spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
           sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
           sprite.position.y = centerY
-            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.eyeHeight)));
+            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;

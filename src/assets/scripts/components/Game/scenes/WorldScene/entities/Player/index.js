@@ -2,7 +2,7 @@ import { TILE_SIZE } from '~/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
-import Eye from './components/Eye';
+import Camera from './components/Camera';
 
 const DEFAULTS = {
   MAX_VELOCITY: TILE_SIZE / 14,
@@ -64,28 +64,16 @@ class Player extends AbstractActor {
     this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
     this.maxHeight = this.height;
-    this.minHeight = this.height / 3 * 2;
+    this.minHeight = this.height * 0.6;
     this.heightVelocity = 2;
-    this.eye = new Eye(this);
     this.currentWeaponType = Weapon.TYPES.PISTOL;
     this.actions = {};
+    this.camera = new Camera(this);
 
     this.weapons = Object.values(Weapon.TYPES).reduce((memo, type) => ({
       ...memo,
-      [type]: new Weapon({
-        type,
-        ...WEAPON_DEFAULTS[type],
-        player: this,
-      }),
+      [type]: new Weapon({ player: this, ...WEAPON_DEFAULTS[type] }),
     }), {});
-  }
-
-  /**
-   * Set the player actions.
-   * @param {Object} actions The player actions.
-   */
-  setActions(actions = {}) {
-    this.actions = actions;
   }
 
   /**
@@ -147,7 +135,7 @@ class Player extends AbstractActor {
     }
 
     this.weapon.update(delta);
-    this.eye.update(delta);
+    this.camera.update(delta);
 
     // Check interactive bodies
     this.world.getAdjacentBodies(this).forEach((body) => {
@@ -197,36 +185,61 @@ class Player extends AbstractActor {
     this.world.remove(item);
   }
 
-  pickUpAmmo(value) {
-    console.log('pickUpAmmo', value);
+  /**
+   * Pick up ammo.
+   * @param  {Number} amount The amount of ammo.
+   */
+  pickUpAmmo(amount) {
+    console.log('pickUpAmmo', amount);
     this.foo = true;
   }
 
-  pickUpHealth(value) {
-    console.log('pickUpHealth', value);
+  /**
+   * Pick up health.
+   * @param  {Number} amount The amount of health.
+   * @return {[type]}       [description]
+   */
+  pickUpHealth(amount) {
+    console.log('pickUpHealth', amount);
     this.foo = true;
   }
 
-  pickUpKey(value) {
-    console.log('pickUpKey', value);
+  /**
+   * Pick up key.
+   * @param  {String} type The type of key.
+   */
+  pickUpKey(type) {
+    console.log('pickUpKey', type);
     this.foo = true;
   }
 
+  /**
+   * Pick up a weapon
+   * @param  {String} type  the type of weapon.
+   */
   pickUpWeapon(value) {
     console.log('pickUpWeapon', value);
     this.foo = true;
+  }
+
+  /**
+   * Set the player actions.
+   * @param {Object} actions The player actions.
+   */
+  setActions(actions = {}) {
+    this.actions = actions;
   }
 
   get weapon() {
     return this.weapons[this.currentWeaponType];
   }
 
-  get eyeHeight() {
-    return this.height + this.eye.height;
+  get cameraHeight() {
+    return this.height + this.camera.height;
   }
 
-  get eyeRotation() {
-    return this.eye.rotation;
+  get cameraRotation() {
+    return this.camera.rotation;
   }
 }
 

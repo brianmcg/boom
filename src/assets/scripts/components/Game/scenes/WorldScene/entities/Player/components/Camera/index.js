@@ -6,7 +6,7 @@ const MAX_ROTATION = 128;
 
 const ROTATION_VELOCITY = 4;
 
-class Eye {
+class Camera {
   constructor(player) {
     this.player = player;
     this.height = 0;
@@ -54,4 +54,4 @@ class Eye {
   }
 }
 
-export default Eye;
+export default Camera;
