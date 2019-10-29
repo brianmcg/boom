@@ -52,10 +52,14 @@ export const castRay = ({ rayAngle, caster }) => {
     world,
   } = caster;
 
-  const { bodies } = world;
+  const visibleBodies = {};
+  const visibleBodyIds = [];
 
-  let visibleBodyIds = world.getSector(gridX, gridY).bodies.map(body => body.id)
-    .filter(id => caster.id !== id);
+  world.getSector(gridX, gridY).bodies.forEach((body) => {
+    if (body.id !== caster.id) {
+      visibleBodies[body.id] = body;
+    }
+  });
 
   if (!rayAngle && rayAngle !== 0) {
     rayAngle = angle;
@@ -123,7 +127,11 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        visibleBodyIds = visibleBodyIds.concat(horizontalSector.bodies.map(body => body.id));
+        horizontalSector.bodies.forEach((body) => {
+          if (!visibleBodies[body.id]) {
+            visibleBodies[body.id] = body;
+          }
+        });
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
@@ -193,7 +201,11 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        visibleBodyIds = visibleBodyIds.concat(verticalSector.bodies.map(body => body.id));
+        verticalSector.bodies.forEach((body) => {
+          if (!visibleBodies[body.id]) {
+            visibleBodies[body.id] = body;
+          }
+        });
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
@@ -219,14 +231,11 @@ export const castRay = ({ rayAngle, caster }) => {
       side = horizontalSector.right;
     }
 
-    visibleBodyIds = visibleBodyIds.reduce((result, id) => {
-      if (
-        distanceBetween(caster, bodies[id]) <= distToHorizontalGridBeingHit && !result.includes(id)
-      ) {
-        result.push(id);
+    Object.values(visibleBodies).forEach((body) => {
+      if (distanceBetween(caster, body) <= distToHorizontalGridBeingHit) {
+        visibleBodyIds.push(body.id);
       }
-      return result;
-    }, []);
+    });
 
     return {
       distance: distToHorizontalGridBeingHit,
@@ -257,12 +266,11 @@ export const castRay = ({ rayAngle, caster }) => {
     side = verticalSector.back;
   }
 
-  visibleBodyIds = visibleBodyIds.reduce((result, id) => {
-    if (distanceBetween(caster, bodies[id]) <= distToVerticalGridBeingHit && !result.includes(id)) {
-      result.push(id);
+  Object.values(visibleBodies).forEach((body) => {
+    if (distanceBetween(caster, body) <= distToVerticalGridBeingHit) {
+      visibleBodyIds.push(body.id);
     }
-    return result;
-  }, []);
+  });
 
   return {
     distance: distToVerticalGridBeingHit,
