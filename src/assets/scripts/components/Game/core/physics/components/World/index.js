@@ -32,7 +32,7 @@ class World extends EventEmitter {
     const sector = this.getSector(body.gridX, body.gridY);
 
     if (sector !== body) {
-      this.getSector(body.gridX, body.gridY).addChildId(body.id);
+      sector.addBody(body);
     }
     this.bodies[body.id] = body;
   }
@@ -46,7 +46,7 @@ class World extends EventEmitter {
       this.updateableBodyIds = this.updateableBodyIds.filter(id => id !== body.id);
     }
 
-    this.getSector(body.gridX, body.gridY).removeChildId(body.id);
+    this.getSector(body.gridX, body.gridY).removeBody(body);
     delete this.bodies[body.id];
   }
 
@@ -96,9 +96,9 @@ class World extends EventEmitter {
     const sectors = this.getAdjacentSectors(body);
 
     return sectors.reduce((bodies, sector) => {
-      sector.childIds.forEach((id) => {
-        if (id !== body.id) {
-          bodies.push(this.bodies[id]);
+      sector.bodies.forEach((sectorBody) => {
+        if (sectorBody.id !== body.id) {
+          bodies.push(sectorBody);
         }
       });
 

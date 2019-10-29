@@ -54,7 +54,7 @@ export const castRay = ({ rayAngle, caster }) => {
 
   const { bodies } = world;
 
-  let visibleBodyIds = world.getSector(gridX, gridY).childIds
+  let visibleBodyIds = world.getSector(gridX, gridY).bodies.map(body => body.id)
     .filter(id => caster.id !== id);
 
   if (!rayAngle && rayAngle !== 0) {
@@ -123,7 +123,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        visibleBodyIds = visibleBodyIds.concat(horizontalSector.childIds);
+        visibleBodyIds = visibleBodyIds.concat(horizontalSector.bodies.map(body => body.id));
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
@@ -193,7 +193,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        visibleBodyIds = visibleBodyIds.concat(verticalSector.childIds);
+        visibleBodyIds = visibleBodyIds.concat(verticalSector.bodies.map(body => body.id));
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }

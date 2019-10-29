@@ -16,23 +16,23 @@ class Sector extends Body {
    */
   constructor(options) {
     super(options);
-    this.childIds = [];
+    this.bodies = [];
   }
 
   /**
    * Add a body id to the child list.
    * @param {String} id The id to add.
    */
-  addChildId(id) {
-    this.childIds.push(id);
+  addBody(body) {
+    this.bodies.push(body);
   }
 
   /**
    * Remove a body id from the child list.
    * @param  {String} id The id to remove.
    */
-  removeChildId(id) {
-    this.childIds = this.childIds.filter(childId => childId !== id);
+  removeBody(body) {
+    this.bodies = this.bodies.filter(thisBody => thisBody.id !== body.id);
   }
 }
 
