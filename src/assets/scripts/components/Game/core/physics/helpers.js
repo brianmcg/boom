@@ -44,6 +44,7 @@ export const distanceBetween = (bodyA, bodyB) => {
 
 export const castRay = ({ rayAngle, caster }) => {
   const {
+    id,
     x,
     y,
     gridX,
@@ -52,12 +53,11 @@ export const castRay = ({ rayAngle, caster }) => {
     world,
   } = caster;
 
-  const visibleBodies = {};
-  const visibleBodyIds = [];
+  const encounteredBodies = {};
 
   world.getSector(gridX, gridY).bodies.forEach((body) => {
-    if (body.id !== caster.id) {
-      visibleBodies[body.id] = body;
+    if (body.id !== id) {
+      encounteredBodies[body.id] = body;
     }
   });
 
@@ -128,8 +128,8 @@ export const castRay = ({ rayAngle, caster }) => {
         }
       } else {
         horizontalSector.bodies.forEach((body) => {
-          if (!visibleBodies[body.id]) {
-            visibleBodies[body.id] = body;
+          if (!encounteredBodies[body.id]) {
+            encounteredBodies[body.id] = body;
           }
         });
         xIntersection += distToNextXIntersection;
@@ -202,8 +202,8 @@ export const castRay = ({ rayAngle, caster }) => {
         }
       } else {
         verticalSector.bodies.forEach((body) => {
-          if (!visibleBodies[body.id]) {
-            visibleBodies[body.id] = body;
+          if (!encounteredBodies[body.id]) {
+            encounteredBodies[body.id] = body;
           }
         });
         yIntersection += distToNextYIntersection;
@@ -231,17 +231,11 @@ export const castRay = ({ rayAngle, caster }) => {
       side = horizontalSector.right;
     }
 
-    Object.values(visibleBodies).forEach((body) => {
-      if (distanceBetween(caster, body) <= distToHorizontalGridBeingHit) {
-        visibleBodyIds.push(body.id);
-      }
-    });
-
     return {
       distance: distToHorizontalGridBeingHit,
       isHorizontal: true,
       side,
-      visibleBodyIds,
+      encounteredBodies,
       sectorIntersection,
       xIntersection,
       yIntersection: horizontalGrid,
@@ -266,16 +260,10 @@ export const castRay = ({ rayAngle, caster }) => {
     side = verticalSector.back;
   }
 
-  Object.values(visibleBodies).forEach((body) => {
-    if (distanceBetween(caster, body) <= distToVerticalGridBeingHit) {
-      visibleBodyIds.push(body.id);
-    }
-  });
-
   return {
     distance: distToVerticalGridBeingHit,
     side,
-    visibleBodyIds,
+    encounteredBodies,
     sectorIntersection,
     xIntersection: verticalGrid,
     yIntersection,

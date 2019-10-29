@@ -37,8 +37,8 @@ let gridY;
 let topId;
 let bottomId;
 
-let bodyId;
-let body;
+// let bodyId;
+// let body;
 let sprite;
 let dx;
 let dy;
@@ -83,10 +83,10 @@ class WorldContainer extends Container {
    * Animate the container.
    */
   animate() {
-    const { player, bodies } = this.world;
+    const { player } = this.world;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
-    const totalVisibleBodyIds = [];
+    const totalEncounteredBodies = {};
 
     // Reset map container
     this.mapContainer.reset();
@@ -102,7 +102,7 @@ class WorldContainer extends Container {
 
       // Cast ray
       const {
-        visibleBodyIds,
+        encounteredBodies,
         distance,
         isHorizontal,
         side,
@@ -177,23 +177,12 @@ class WorldContainer extends Container {
         }
       }
 
-      // Add visible body ids to total
-      visibleBodyIds.forEach((id) => {
-        if (!totalVisibleBodyIds.includes(id)) {
-          totalVisibleBodyIds.push(id);
-        }
-      });
-
-      // Increment ray angle
+      Object.assign(totalEncounteredBodies, encounteredBodies);
       rayAngle = (rayAngle + 1) % DEG[360];
     }
 
-    // Update the visible bodies
-    for (let i = 0; i < totalVisibleBodyIds.length; i += 1) {
-      bodyId = totalVisibleBodyIds[i];
-      body = bodies[bodyId];
-      sprite = entities[bodyId];
-
+    Object.values(totalEncounteredBodies).forEach((body) => {
+      sprite = entities[body.id];
       dx = body.x - player.x;
       dy = body.y - player.y;
       actualDistance = Math.sqrt(dx * dx + dy * dy);
@@ -217,7 +206,7 @@ class WorldContainer extends Container {
           sprite.visible = true;
         }
       }
-    }
+    });
 
     super.animate();
 
