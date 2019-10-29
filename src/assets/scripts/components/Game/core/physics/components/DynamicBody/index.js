@@ -32,7 +32,7 @@ class DynamicBody extends Body {
     const bodies = this.world.getAdjacentBodies(this);
 
     // Unmark id from sector before moving
-    this.world.getSector(this.gridX, this.gridY).removeBody(this);
+    this.world.getSector(this.gridX, this.gridY).remove(this);
 
     // Update angle
     this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG[360]) % DEG[360];
@@ -66,7 +66,7 @@ class DynamicBody extends Body {
     });
 
     // Mark current sector with id
-    this.world.getSector(this.gridX, this.gridY).addBody(this);
+    this.world.getSector(this.gridX, this.gridY).add(this);
   }
 }
 

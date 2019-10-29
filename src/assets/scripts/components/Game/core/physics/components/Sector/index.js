@@ -23,7 +23,7 @@ class Sector extends Body {
    * Add a body id to the child list.
    * @param {String} id The id to add.
    */
-  addBody(body) {
+  add(body) {
     this.bodies.push(body);
   }
 
@@ -31,8 +31,8 @@ class Sector extends Body {
    * Remove a body id from the child list.
    * @param  {String} id The id to remove.
    */
-  removeBody(body) {
-    this.bodies = this.bodies.filter(thisBody => thisBody.id !== body.id);
+  remove(body) {
+    this.bodies = this.bodies.filter(b => b.id !== body.id);
   }
 }
 

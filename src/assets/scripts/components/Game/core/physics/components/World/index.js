@@ -12,7 +12,7 @@ class World extends EventEmitter {
     super();
     this.grid = grid;
     this.bodies = {};
-    this.updateableBodyIds = [];
+    this.dynamicBodies = [];
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
 
     this.width = this.grid.length;
@@ -24,17 +24,20 @@ class World extends EventEmitter {
    * @param {Body} body The body to add.
    */
   add(body) {
-    if (body.update) {
-      this.updateableBodyIds.push(body.id);
-      body.world = this;
-    }
+    if (!this.bodies[body.id]) {
+      const sector = this.getSector(body.gridX, body.gridY);
 
-    const sector = this.getSector(body.gridX, body.gridY);
+      if (sector !== body) {
+        sector.add(body);
+      }
 
-    if (sector !== body) {
-      sector.addBody(body);
+      if (body.update) {
+        this.dynamicBodies.push(body);
+        body.world = this;
+      }
+
+      this.bodies[body.id] = body;
     }
-    this.bodies[body.id] = body;
   }
 
   /**
@@ -43,10 +46,11 @@ class World extends EventEmitter {
    */
   remove(body) {
     if (body.update) {
-      this.updateableBodyIds = this.updateableBodyIds.filter(id => id !== body.id);
+      this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
     }
 
-    this.getSector(body.gridX, body.gridY).removeBody(body);
+    this.getSector(body.gridX, body.gridY).remove(body);
+
     delete this.bodies[body.id];
   }
 
@@ -55,7 +59,7 @@ class World extends EventEmitter {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
-    this.updateableBodyIds.forEach(id => this.bodies[id].update(delta));
+    this.dynamicBodies.forEach(body => body.update(delta));
   }
 
   /**
