@@ -14,9 +14,9 @@ class MapContainer extends Container {
 
     this.walls = walls;
     this.entities = entities;
-    this.hideable = Object.values(entities);
+    this.dynamicChildren = Object.values(entities);
 
-    this.hideable.forEach(entity => this.addChild(entity));
+    this.dynamicChildren.forEach(entity => this.addChild(entity));
     this.walls.forEach(wall => this.addChild(wall));
   }
 
@@ -31,9 +31,7 @@ class MapContainer extends Container {
    * Reset the map container.
    */
   reset() {
-    this.hideable.forEach((child) => {
-      child.visible = false;
-    });
+    this.dynamicChildren.forEach(child => this.removeChild(child));
   }
 }
 

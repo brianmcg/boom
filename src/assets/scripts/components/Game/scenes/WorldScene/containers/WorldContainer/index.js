@@ -8,7 +8,7 @@ import {
   castRay,
 } from '~/core/physics';
 import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
-import { GREY } from '~/constants/colors';
+import { GREY, BLACK } from '~/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
@@ -37,8 +37,6 @@ let gridY;
 let topId;
 let bottomId;
 
-// let bodyId;
-// let body;
 let sprite;
 let dx;
 let dy;
@@ -148,10 +146,9 @@ class WorldContainer extends Container {
             gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
             bottomId = this.world.getSector(gridX, gridY).bottom;
             backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
-            backgroundSprite.alpha = 1;
             backgroundSprite.tint = this.calculateTint(actualDistance);
           } else {
-            backgroundSprite.alpha = 0;
+            backgroundSprite.tint = BLACK;
           }
         } else if (yIndex <= wallTopIntersection) {
           actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex)
@@ -167,14 +164,14 @@ class WorldContainer extends Container {
             gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
             topId = this.world.getSector(gridX, gridY).top;
             backgroundSprite.changeTexture(topId, pixelX, pixelY);
-            backgroundSprite.alpha = 1;
             backgroundSprite.tint = this.calculateTint(actualDistance);
           } else {
-            backgroundSprite.alpha = 0;
+            backgroundSprite.tint = BLACK;
           }
-        } else {
-          backgroundSprite.alpha = 0;
         }
+        // else {
+        //   backgroundSprite.tint = 0;
+        // }
       }
 
       Object.assign(totalEncounteredBodies, encounteredBodies);
@@ -203,7 +200,8 @@ class WorldContainer extends Container {
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;
           sprite.tint = this.calculateTint(actualDistance);
-          sprite.visible = true;
+          // sprite.visible = true;
+          this.mapContainer.addChild(sprite);
         }
       }
     });
