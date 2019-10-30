@@ -234,14 +234,26 @@ class Weapon {
     return false;
   }
 
+  /**
+   * Is the weapon automatic.
+   * @return {Boolean} Boolean Is the weapon is automatic.
+   */
   isAutomatic() {
     return this.idleTime === 0;
   }
 
+  /**
+   * The weapon types.
+   * @static
+   */
   static get TYPES() {
     return TYPES;
   }
 
+  /**
+   * The weapon states.
+   * @static
+   */
   static get STATES() {
     return STATES;
   }

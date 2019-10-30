@@ -1,11 +1,12 @@
 import { DynamicBody } from '~/core/physics';
 
 /**
- * Creates a character
+ * Abstract class representing an actor.
  * @extends {DynamicBody}
  */
 class AbstractActor extends DynamicBody {
-  /* Creates a character.
+  /**
+   * Creates an abstract actor.
    * @param  {Number} options.x         The x coordinate of the character.
    * @param  {Number} options.y         The y coordinate of the character
    * @param  {Number} options.width     The width of the character.

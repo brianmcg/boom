@@ -6,7 +6,14 @@ const MAX_ROTATION = 128;
 
 const ROTATION_VELOCITY = 4;
 
+/**
+ * Class representing a camera.
+ */
 class Camera {
+  /**
+   * Creates a camera.
+   * @param  {Player} player The player.
+   */
   constructor(player) {
     this.player = player;
     this.height = 0;
@@ -14,10 +21,13 @@ class Camera {
     this.rotation = 0;
   }
 
+  /**
+   * Updates the camera.
+   * @param  {[type]} delta The delta time.
+   */
   update(delta) {
     const { velocity, maxVelocity } = this.player;
     const { lookDown, lookUp } = this.player.actions;
-
 
     // Update rotation
     if (lookDown) {

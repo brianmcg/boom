@@ -6,7 +6,8 @@ import { COS, SIN, DEG } from '../../constants';
  * @extends {Body}
  */
 class DynamicBody extends Body {
-  /* Creates a dynamic body.
+  /**
+   * Creates a dynamic body.
    * @param  {Number} options.x      The x coordinate of the dynamic body.
    * @param  {Number} options.y      The y coordinate of the dynamic body
    * @param  {Number} options.width  The width of the dynamic body.

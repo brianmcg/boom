@@ -230,14 +230,26 @@ class Player extends AbstractActor {
     this.actions = actions;
   }
 
+  /**
+   * Get the player weapon.
+   * @return {Weapon} The player weapon.
+   */
   get weapon() {
     return this.weapons[this.currentWeaponType];
   }
 
+  /**
+   * Get the camera height.
+   * @return {Number} The camera height.
+   */
   get cameraHeight() {
     return this.height + this.camera.height;
   }
 
+  /**
+   * Get the camera rotation.
+   * @return {Number} The camera rotation.
+   */
   get cameraRotation() {
     return this.camera.rotation;
   }

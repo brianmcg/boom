@@ -15,12 +15,14 @@ const EVENTS = {
 const DEFAULTS = {
   AXIS: 'x',
   SPEED: 1.5,
-  WAIT_TIME: 2000,
+  INTERVAL: 2000,
 };
 
+/**
+ * Class representing a door.
+ * @extends {DynamicFlatSector}
+ */
 class Door extends DynamicFlatSector {
-  static get EVENTS() { return EVENTS; }
-
   /**
    * Creates a door sector
    * @param  {Number} options.x       The x coordinate of the sector.
@@ -35,7 +37,7 @@ class Door extends DynamicFlatSector {
   constructor({
     key,
     sides,
-    waitTime = DEFAULTS.WAIT_TIME,
+    interval = DEFAULTS.INTERVAL,
     axis = DEFAULTS.AXIS,
     speed = DEFAULTS.SPEED,
     ...other
@@ -44,7 +46,7 @@ class Door extends DynamicFlatSector {
 
     this.timer = 0;
     this.key = key;
-    this.waitTime = waitTime;
+    this.interval = interval;
 
     this.closed = {
       x: this.x,
@@ -64,10 +66,14 @@ class Door extends DynamicFlatSector {
     this.top = sides.top;
   }
 
+  /**
+   * Set the door state.
+   * @param {String} state The door state.
+   */
   setState(state) {
     switch (state) {
       case STATES.OPENED: {
-        this.timer = this.waitTime;
+        this.timer = this.interval;
         break;
       }
       default: break;
@@ -76,6 +82,9 @@ class Door extends DynamicFlatSector {
     this.state = state;
   }
 
+  /**
+   * Use the door.
+   */
   use() {
     if (this.locked) {
       this.emit(EVENTS.LOCKED, this.key);
@@ -84,6 +93,10 @@ class Door extends DynamicFlatSector {
     }
   }
 
+  /**
+   * Update the door.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
     const { axis, state, speed } = this;
 
@@ -130,9 +143,21 @@ class Door extends DynamicFlatSector {
     }
   }
 
+  /**
+   * The door offset
+   * @return {Number}
+   */
   get offset() {
     const { closed, axis } = this;
     return this[axis] - closed[axis];
+  }
+
+  /**
+   * The door events.
+   * @static
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

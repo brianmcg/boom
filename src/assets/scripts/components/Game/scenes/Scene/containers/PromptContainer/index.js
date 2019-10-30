@@ -14,7 +14,7 @@ class PromptContainer extends Container {
    */
   constructor() {
     super();
-    this.counter = 0;
+    this.timer = 0;
     this.show = true;
   }
 
@@ -24,9 +24,10 @@ class PromptContainer extends Container {
    * @param  {Number} elapsedMS The elapsed time.
    */
   update(delta) {
-    this.counter += TIME_STEP * delta;
-    if (this.counter >= INTERVAL) {
-      this.counter = 0;
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= INTERVAL) {
+      this.timer = 0;
     }
   }
 
@@ -35,7 +36,7 @@ class PromptContainer extends Container {
    * @return {[type]} [description]
    */
   animate() {
-    if (!this.counter) {
+    if (!this.timer) {
       this.children.forEach((child) => {
         child.visible = !child.visible;
       });

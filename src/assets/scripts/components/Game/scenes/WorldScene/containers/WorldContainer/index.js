@@ -242,11 +242,11 @@ class WorldContainer extends Container {
     intensity -= (distance / DRAW_DISTANCE);
 
     if (intensity > 1) {
-      intensity = 1;
+      return BLACK;
     }
 
     if (intensity < 0) {
-      intensity = 0;
+      return 0;
     }
 
     return Math.round(intensity * 255) * GREY;

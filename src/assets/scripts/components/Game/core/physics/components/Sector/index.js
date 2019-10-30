@@ -12,7 +12,6 @@ class Sector extends Body {
    * @param  {Number} options.width   The width of the sector.
    * @param  {Number} options.length  The length of the sector.
    * @param  {Number} options.height  The height of the sector.
-   * @param  {Object} options.sides   The ids of the sides of the sector.
    */
   constructor(options) {
     super(options);

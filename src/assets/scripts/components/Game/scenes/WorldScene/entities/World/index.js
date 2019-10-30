@@ -61,7 +61,6 @@ class World extends PhysicsWorld {
   /**
    * The world events.
    * @static
-   * @member
    */
   static get EVENTS() {
     return EVENTS;
