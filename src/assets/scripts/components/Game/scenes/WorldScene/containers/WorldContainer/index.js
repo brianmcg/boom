@@ -48,6 +48,8 @@ let spriteX;
 let centerY;
 let rayAngle;
 
+let body;
+
 /**
  * Class representing a WorldContainer.
  */
@@ -86,12 +88,10 @@ class WorldContainer extends Container {
     const { walls, entities } = this.mapContainer;
     const totalEncounteredBodies = {};
 
-    // Reset map container
-    this.mapContainer.reset();
-
     // Get initial ray angle 30 deg less than player angle
     rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
 
+    // Get center of screen
     centerY = CAMERA_CENTER_Y + player.cameraRotation;
 
     // Iterate over screen width
@@ -133,8 +133,7 @@ class WorldContainer extends Container {
         backgroundSprite = background[xIndex][yIndex];
 
         if (yIndex >= wallBottomIntersection) {
-          actualDistance = player.cameraHeight / (yIndex - centerY)
-            * CAMERA_DISTANCE;
+          actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE > correctedDistance) {
@@ -151,8 +150,7 @@ class WorldContainer extends Container {
             backgroundSprite.tint = BLACK;
           }
         } else if (yIndex <= wallTopIntersection) {
-          actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex)
-            * CAMERA_DISTANCE;
+          actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
 
           if (DRAW_DISTANCE > correctedDistance) {
@@ -168,48 +166,60 @@ class WorldContainer extends Container {
           } else {
             backgroundSprite.tint = BLACK;
           }
+        } else {
+          backgroundSprite.tint = BLACK;
         }
-        // else {
-        //   backgroundSprite.tint = 0;
-        // }
       }
 
+      // Add to total bodies encountered
       Object.assign(totalEncounteredBodies, encounteredBodies);
+
+      // Increment ray angle
       rayAngle = (rayAngle + 1) % DEG[360];
     }
 
-    Object.values(totalEncounteredBodies).forEach((body) => {
-      sprite = entities[body.id];
-      dx = body.x - player.x;
-      dy = body.y - player.y;
-      actualDistance = Math.sqrt(dx * dx + dy * dy);
-      spriteAngle = (atan2(dy, dx) - player.angle + DEG[360]) % DEG[360];
+    // Update entity sprites
+    Object.keys(entities).forEach((id) => {
+      sprite = entities[id];
+      body = totalEncounteredBodies[id];
 
-      if (spriteAngle > DEG[270] || spriteAngle < DEG[90]) {
-        correctedDistance = COS[spriteAngle] * actualDistance;
+      if (body) {
+        dx = body.x - player.x;
+        dy = body.y - player.y;
+        actualDistance = Math.sqrt(dx * dx + dy * dy);
+        spriteAngle = (atan2(dy, dx) - player.angle + DEG[360]) % DEG[360];
 
-        if (DRAW_DISTANCE > correctedDistance) {
-          spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-          spriteWidth = TILE_SIZE * spriteScale;
-          spriteHeight = TILE_SIZE * spriteScale;
-          spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-          sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-          sprite.position.y = centerY
-            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
-          sprite.width = spriteWidth;
-          sprite.height = spriteHeight;
-          sprite.zOrder = actualDistance;
-          sprite.tint = this.calculateTint(actualDistance);
-          // sprite.visible = true;
-          this.mapContainer.addChild(sprite);
+        if (spriteAngle > DEG[270] || spriteAngle < DEG[90]) {
+          correctedDistance = COS[spriteAngle] * actualDistance;
+
+          if (DRAW_DISTANCE > correctedDistance) {
+            spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+            spriteWidth = TILE_SIZE * spriteScale;
+            spriteHeight = TILE_SIZE * spriteScale;
+            spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+            sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+            sprite.position.y = centerY
+              - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
+            sprite.width = spriteWidth;
+            sprite.height = spriteHeight;
+            sprite.zOrder = actualDistance;
+            sprite.tint = this.calculateTint(actualDistance);
+            this.mapContainer.addChild(sprite);
+          } else {
+            this.mapContainer.removeChild(sprite);
+          }
+        } else {
+          this.mapContainer.removeChild(sprite);
         }
+      } else {
+        this.mapContainer.removeChild(sprite);
       }
     });
 
-    super.animate();
-
     // Sort sprites in map container
     this.mapContainer.sort();
+
+    super.animate();
   }
 
   /**
