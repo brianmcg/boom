@@ -1,5 +1,6 @@
 import { TILE_SIZE } from '~/constants/config';
 import Sector from '../entities/Sector';
+import SwitchSector from '../entities/SwitchSector';
 import World from '../entities/World';
 import Player from '../entities/Player';
 import Door from '../entities/Door';
@@ -151,17 +152,25 @@ export const createWorld = (data) => {
           };
         }
 
-        const sector = new Sector({
-          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: TILE_SIZE,
-          height: wallImage ? TILE_SIZE : 0,
-          length: TILE_SIZE,
-          blocking: !!wallImage,
-          sides,
-        });
-
-        sector.exit = x === end.x && y === end.y;
+        const sector = x === end.x && y === end.y
+          ? new SwitchSector({
+            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+            width: TILE_SIZE,
+            height: wallImage ? TILE_SIZE : 0,
+            length: TILE_SIZE,
+            blocking: !!wallImage,
+            sides,
+          })
+          : new Sector({
+            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
+            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
+            width: TILE_SIZE,
+            height: wallImage ? TILE_SIZE : 0,
+            length: TILE_SIZE,
+            blocking: !!wallImage,
+            sides,
+          });
 
         row.push(sector);
       }

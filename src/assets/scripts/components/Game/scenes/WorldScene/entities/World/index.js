@@ -48,15 +48,15 @@ class World extends PhysicsWorld {
 
     super.update(delta);
 
-    if (this.isExitSector()) {
-      this.emit(EVENTS.COMPLETE, this.player);
-    }
+    // if (this.isExitSector()) {
+    //   this.emit(EVENTS.COMPLETE, this.player);
+    // }
   }
 
-  isExitSector() {
-    const { gridX, gridY } = this.player;
-    return this.getSector(gridX, gridY).exit;
-  }
+  // isExitSector() {
+  //   const { gridX, gridY } = this.player;
+  //   return this.getSector(gridX, gridY).exit;
+  // }
 
   /**
    * The world events.
