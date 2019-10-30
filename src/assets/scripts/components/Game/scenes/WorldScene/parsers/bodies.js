@@ -1,6 +1,6 @@
 import { TILE_SIZE } from '~/constants/config';
 import Sector from '../entities/Sector';
-import SwitchSector from '../entities/SwitchSector';
+import ExitSector from '../entities/ExitSector';
 import World from '../entities/World';
 import Player from '../entities/Player';
 import Door from '../entities/Door';
@@ -153,7 +153,7 @@ export const createWorld = (data) => {
         }
 
         const sector = x === end.x && y === end.y
-          ? new SwitchSector({
+          ? new ExitSector({
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
             width: TILE_SIZE,
