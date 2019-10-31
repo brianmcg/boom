@@ -60,7 +60,7 @@ class World extends PhysicsWorld {
   }
 
   exit() {
-    this.emit(EVENTS.EXIT, this.player);
+    this.emit(EVENTS.EXIT);
   }
 
   // isExitSector() {

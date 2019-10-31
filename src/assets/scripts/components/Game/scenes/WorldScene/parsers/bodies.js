@@ -30,7 +30,7 @@ const MAP_LAYERS = {
   GAME: 6,
 };
 
-export const createWorld = (data) => {
+export const createWorld = (data, player) => {
   const grid = [];
   const objects = [];
   const items = [];
@@ -229,13 +229,8 @@ export const createWorld = (data) => {
     grid.push(row);
   }
 
-  const player = new Player({
-    x: (TILE_SIZE * start.x) + (TILE_SIZE / 2),
-    y: (TILE_SIZE * start.y) + (TILE_SIZE / 2),
-    width: TILE_SIZE / 2,
-    height: TILE_SIZE / 2,
-    length: TILE_SIZE / 2,
-  });
+  player.x = (TILE_SIZE * start.x) + (TILE_SIZE / 2);
+  player.y = (TILE_SIZE * start.y) + (TILE_SIZE / 2);
 
   const world = new World({
     grid,

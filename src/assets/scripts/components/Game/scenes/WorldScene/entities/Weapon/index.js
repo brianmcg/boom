@@ -67,11 +67,20 @@ class Weapon {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.IDLE: this.updateIdle(delta); break;
-      case STATES.DISABLED: this.updateDisabled(delta); break;
-      case STATES.ARMING: this.updateArming(delta); break;
-      case STATES.UNARMING: this.updateUnarming(delta); break;
-      default: break;
+      case STATES.IDLE:
+        this.updateIdle(delta);
+        break;
+      case STATES.DISABLED:
+        this.updateDisabled(delta);
+        break;
+      case STATES.ARMING:
+        this.updateArming(delta);
+        break;
+      case STATES.UNARMING:
+        this.updateUnarming(delta);
+        break;
+      default:
+        break;
     }
   }
 

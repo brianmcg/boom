@@ -4,12 +4,18 @@ import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import World from './entities/World';
 import Scene from '../Scene';
+import Player from './entities/Player';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
 class WorldScene extends Scene {
-  constructor(options) {
+  constructor({
+    player = new Player(),
+    ...options
+  }) {
     super({ type: Scene.TYPES.WORLD, ...options });
+
+    this.player = player;
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -32,7 +38,7 @@ class WorldScene extends Scene {
   }
 
   create(resources) {
-    const { world, sprites } = parse(resources);
+    const { world, sprites } = parse(resources, this.player);
 
     super.create(resources);
 

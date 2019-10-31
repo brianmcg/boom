@@ -22,9 +22,9 @@ class Body extends EventEmitter {
     const {
       x = 0,
       y = 0,
-      width = 0,
-      length = 0,
-      height = 0,
+      width = TILE_SIZE / 2,
+      length = TILE_SIZE / 2,
+      height = TILE_SIZE / 2,
       blocking = true,
     } = options;
 

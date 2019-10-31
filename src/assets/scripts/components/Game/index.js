@@ -99,14 +99,21 @@ class Game extends Application {
    * @param  {String} type  The scene type.
    * @param  {Number} index The scene index.
    */
-  onSceneComplete(type, index) {
+  onSceneComplete({ type, index, player }) {
     const { TITLE, WORLD, CREDITS } = Scene.TYPES;
 
     switch (type) {
-      case TITLE: this.onTitleSceneComplete(); break;
-      case WORLD: this.onWorldSceneComplete(index); break;
-      case CREDITS: this.onCreditsSceneComplete(); break;
-      default: break;
+      case TITLE:
+        this.onTitleSceneComplete();
+        break;
+      case WORLD:
+        this.onWorldSceneComplete(index, player);
+        break;
+      case CREDITS:
+        this.onCreditsSceneComplete();
+        break;
+      default:
+        break;
     }
   }
 
@@ -115,7 +122,7 @@ class Game extends Application {
    * @param  {String} type  The scene type.
    * @param  {Number} index The scene index.
    */
-  onSceneRestart(type, index) {
+  onSceneRestart({ type, index }) {
     this.show(type, index);
   }
 
@@ -123,14 +130,21 @@ class Game extends Application {
    * Handle the scene quit event.
    * @param  {String} type  The scene type.
    */
-  onSceneQuit(type) {
+  onSceneQuit({ type }) {
     const { TITLE, WORLD, CREDITS } = Scene.TYPES;
 
     switch (type) {
-      case TITLE: this.onTitleSceneQuit(); break;
-      case WORLD: this.onWorldSceneQuit(); break;
-      case CREDITS: this.onCreditsSceneQuit(); break;
-      default: break;
+      case TITLE:
+        this.onTitleSceneQuit();
+        break;
+      case WORLD:
+        this.onWorldSceneQuit();
+        break;
+      case CREDITS:
+        this.onCreditsSceneQuit();
+        break;
+      default:
+        break;
     }
   }
 
@@ -146,11 +160,11 @@ class Game extends Application {
    * Handle the world scene complete event.
    * @param  {Number} index The scene index.
    */
-  onWorldSceneComplete(index) {
+  onWorldSceneComplete(index, player) {
     const { WORLD, CREDITS } = Scene.TYPES;
 
     if (index < NUM_LEVELS) {
-      this.show(WORLD, index + 1);
+      this.show(WORLD, index + 1, player);
     } else {
       this.show(CREDITS);
     }
@@ -189,7 +203,7 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  show(sceneType, sceneIndex = 0) {
+  show(sceneType, sceneIndex = 0, player) {
     const SceneType = this.scenes[sceneType];
     const scale = Game.maxScale;
 
@@ -207,6 +221,7 @@ class Game extends Application {
         index: sceneIndex,
         scale: { x: scale, y: scale },
         sound: this.sound,
+        player,
       });
 
       this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));

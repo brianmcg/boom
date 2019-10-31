@@ -18,7 +18,7 @@ export const TIME_STEP = 1000 / MAX_FPS;
  * The number of levels in the game.
  * @type {Number}
  */
-export const NUM_LEVELS = 1;
+export const NUM_LEVELS = 2;
 
 /**
  * Enabled the sound.

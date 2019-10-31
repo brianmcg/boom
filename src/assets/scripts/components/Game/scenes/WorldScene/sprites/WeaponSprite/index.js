@@ -44,9 +44,14 @@ class WeaponSprite extends AnimatedSprite {
     const { ARMING, FIRING } = Weapon.STATES;
 
     switch (weapon.state) {
-      case FIRING: this.updateFiring(delta); break;
-      case ARMING: this.updateArming(delta); break;
-      default: break;
+      case FIRING:
+        this.updateFiring(delta);
+        break;
+      case ARMING:
+        this.updateArming(delta);
+        break;
+      default:
+        break;
     }
   }
 

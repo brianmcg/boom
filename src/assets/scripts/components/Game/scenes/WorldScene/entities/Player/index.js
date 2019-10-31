@@ -175,11 +175,20 @@ class Player extends AbstractActor {
    */
   pickUp(item) {
     switch (item.key) {
-      case Item.TYPES.AMMO: this.pickUpAmmo(item.value); break;
-      case Item.TYPES.HEALTH: this.pickUpHealth(item.value); break;
-      case Item.TYPES.KEY: this.pickUpKey(item.value); break;
-      case Item.TYPES.WEAPON: this.pickUpWeapon(item.value); break;
-      default: break;
+      case Item.TYPES.AMMO:
+        this.pickUpAmmo(item.value);
+        break;
+      case Item.TYPES.HEALTH:
+        this.pickUpHealth(item.value);
+        break;
+      case Item.TYPES.KEY:
+        this.pickUpKey(item.value);
+        break;
+      case Item.TYPES.WEAPON:
+        this.pickUpWeapon(item.value);
+        break;
+      default:
+        break;
     }
 
     this.world.remove(item);

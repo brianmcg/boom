@@ -67,22 +67,6 @@ class Door extends DynamicFlatSector {
   }
 
   /**
-   * Set the door state.
-   * @param {String} state The door state.
-   */
-  setState(state) {
-    switch (state) {
-      case STATES.OPENED: {
-        this.timer = this.interval;
-        break;
-      }
-      default: break;
-    }
-
-    this.state = state;
-  }
-
-  /**
    * Use the door.
    */
   use() {
@@ -98,49 +82,91 @@ class Door extends DynamicFlatSector {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    const { axis, state, speed } = this;
-
-    switch (state) {
+    switch (this.state) {
       case STATES.OPENING: {
-        this[axis] += speed * delta;
-
-        if (this[axis] >= this.opened[axis]) {
-          this[axis] = this.opened[axis];
-          this.setState(STATES.OPENED);
-        }
-
+        this.updateOpening(delta);
         break;
       }
       case STATES.CLOSING: {
-        this[axis] -= speed * delta;
-
-        if (this[axis] <= this.closed[axis]) {
-          this[axis] = this.closed[axis];
-          this.setState(STATES.CLOSED);
-        }
-
+        this.updateClosing(delta);
         break;
       }
       case STATES.OPENED: {
-        if (this.timer) {
-          this.timer -= TIME_STEP * delta;
-          if (this.timer <= 0) {
-            const isBlocked = this.world.getAdjacentBodies(this)
-              .reduce((result, body) => (result || body instanceof DynamicBody), false);
-
-            if (!isBlocked) {
-              this.timer = 0;
-              this.setState(STATES.CLOSING);
-            } else {
-              this.timer = 1;
-            }
-          }
-        }
-
+        this.updateOpened(delta);
         break;
       }
-      default: break;
+      default:
+        break;
     }
+  }
+
+  /**
+   * Update the door when in opening state.
+   * @param  {Number} delta The delta time.
+   */
+  updateOpening(delta) {
+    const { axis, speed } = this;
+
+    this[axis] += speed * delta;
+
+    if (this[axis] >= this.opened[axis]) {
+      this[axis] = this.opened[axis];
+      this.setState(STATES.OPENED);
+    }
+  }
+
+  /**
+   * Update the door when in closing state.
+   * @param  {Number} delta The delta time.
+   */
+  updateClosing(delta) {
+    const { axis, speed } = this;
+
+    this[axis] -= speed * delta;
+
+    if (this[axis] <= this.closed[axis]) {
+      this[axis] = this.closed[axis];
+      this.setState(STATES.CLOSED);
+    }
+  }
+
+  /**
+   * Update the door when in opened state.
+   * @param  {Number} delta The delta time.
+   */
+  updateOpened(delta) {
+    if (this.timer) {
+      this.timer -= TIME_STEP * delta;
+
+      if (this.timer <= 0) {
+        const isBlocked = this.world.getAdjacentBodies(this)
+          .reduce((result, body) => (result || body instanceof DynamicBody), false);
+
+        if (!isBlocked) {
+          this.timer = 0;
+          this.setState(STATES.CLOSING);
+        } else {
+          this.timer = 1;
+        }
+      }
+    }
+  }
+
+  /**
+   * Set the door state.
+   * @param {String} state The door state.
+   */
+  setState(state) {
+    switch (state) {
+      case STATES.OPENED: {
+        this.timer = this.interval;
+        break;
+      }
+      default:
+        break;
+    }
+
+    this.state = state;
   }
 
   /**
