@@ -37,7 +37,7 @@ class WorldScene extends Scene {
     super.create(resources);
 
     this.world = world;
-    this.world.on(World.EVENTS.COMPLETE, () => this.setPrompting());
+    this.world.on(World.EVENTS.EXIT, () => this.setPrompting());
 
     this.mainContainer.addChild(new WorldContainer({ world, sprites }));
   }

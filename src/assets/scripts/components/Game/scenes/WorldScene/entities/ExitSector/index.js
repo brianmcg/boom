@@ -33,6 +33,7 @@ class ExitSector extends SwitchSector {
       if (this.timer >= INTERVAL) {
         this.timer = 0;
         console.log('foobar');
+        this.world.exit();
       }
     }
   }

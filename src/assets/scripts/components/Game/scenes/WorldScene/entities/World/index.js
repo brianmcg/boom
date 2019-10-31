@@ -1,7 +1,8 @@
 import { World as PhysicsWorld } from '~/core/physics';
 
 const EVENTS = {
-  COMPLETE: 'world:complete',
+  EXIT: 'world:complete',
+  ENTER: 'world:enter',
 };
 
 /**
@@ -49,8 +50,17 @@ class World extends PhysicsWorld {
     super.update(delta);
 
     // if (this.isExitSector()) {
-    //   this.emit(EVENTS.COMPLETE, this.player);
+    //   this.emit(EVENTS.EXIT, this.player);
     // }
+  }
+
+  enter(player) {
+    this.player = player;
+    this.add(player);
+  }
+
+  exit() {
+    this.emit(EVENTS.EXIT, this.player);
   }
 
   // isExitSector() {
