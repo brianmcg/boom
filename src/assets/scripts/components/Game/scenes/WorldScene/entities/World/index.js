@@ -3,7 +3,7 @@ import { TILE_SIZE } from '~/constants/config';
 import Player from '../Player';
 
 const EVENTS = {
-  EXIT: 'world:complete',
+  EXIT: 'world:exit',
   ENTER: 'world:enter',
 };
 

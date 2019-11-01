@@ -1,11 +1,18 @@
 import translate from '~/translate';
 import { Keyboard } from '~/core/input';
+import { SOUNDS } from '~/constants/sounds';
+import { SOUND } from '~/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import World from './entities/World';
 import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
+
+const STATES = {
+  ...Scene.STATES,
+  REVIEWING: 'reviewing',
+};
 
 /**
  * Class representing a world scene.
@@ -52,9 +59,21 @@ class WorldScene extends Scene {
     super.create(resources);
 
     this.world = world;
-    this.world.on(World.EVENTS.EXIT, () => this.setPrompting());
+    this.world.on(World.EVENTS.EXIT, () => this.setReviewing());
 
     this.mainContainer.addChild(new WorldContainer({ world, sprites }));
+  }
+
+  update(delta) {
+    super.update(delta);
+
+    switch (this.state) {
+      case STATES.REVIEWING:
+        this.updateReviewing(delta);
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -79,6 +98,20 @@ class WorldScene extends Scene {
     });
 
     super.updateRunning(delta);
+  }
+
+  updateReviewing(delta) {
+    // console.log(delta);
+  }
+
+  /**
+   * Set the state to reviewing.
+   */
+  setReviewing() {
+    if (this.setState(STATES.REVIEWING)) {
+      this.sound.pause();
+      this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
+    }
   }
 }
 
