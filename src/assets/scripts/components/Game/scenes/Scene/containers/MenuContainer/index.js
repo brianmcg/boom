@@ -26,16 +26,16 @@ class MenuContainer extends Container {
     this.currentIndex = 0;
     this.items = items;
 
-    if (this.items.length) {
-      this.addChild(icon);
-    }
-
     this.addChild(new RectangleSprite({
       width: SCREEN.WIDTH,
       height: SCREEN.HEIGHT,
       color: BLACK,
-      alpha: 0.6,
+      alpha: 0.8,
     }));
+
+    if (this.items.length) {
+      this.addChild(icon);
+    }
 
     this.items.forEach((item, index) => {
       const sprite = labels[item.label];

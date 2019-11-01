@@ -1,10 +1,12 @@
-import { Rectangle, Texture } from '~/core/graphics';
+import { Rectangle, Texture, BitmapText } from '~/core/graphics';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
+import { FONT_SIZES } from '~/constants/fonts';
+import { RED } from '~/constants/colors';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const { tiles } = animations.tilesets[0];
@@ -159,10 +161,17 @@ const createEntitySprites = (world, textures, animations) => {
   return entitySprites;
 };
 
-export const createSprites = (world, resources) => {
+export const createSprites = (world, resources, text) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
   const { player } = world;
+
+
+  const label = new BitmapText({
+    font: FONT_SIZES.SMALL,
+    text: text.continue,
+    color: RED,
+  });
 
   const entities = createEntitySprites(world, textures, animations);
   const weapon = createWeaponSprite(player, textures, animations.weapons);
@@ -170,8 +179,13 @@ export const createSprites = (world, resources) => {
   const background = createBackgroundSprites(world, frames, textures);
 
   return {
-    player: { weapon },
-    map: { walls, entities },
-    background,
+    world: {
+      player: { weapon },
+      map: { walls, entities },
+      background,
+    },
+    prompt: {
+      label,
+    },
   };
 };

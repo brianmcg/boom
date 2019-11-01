@@ -5,7 +5,7 @@ import Weapon from '../Weapon';
 import Camera from './components/Camera';
 
 const DEFAULTS = {
-  MAX_VELOCITY: TILE_SIZE / 14,
+  MAX_VELOCITY: TILE_SIZE / 16,
   MAX_ROTATION_VELOCITY: 12,
   ACCELERATION: TILE_SIZE / 256,
   ROTATION_ACCELERATION: 2,
@@ -13,21 +13,25 @@ const DEFAULTS = {
 
 const WEAPON_DEFAULTS = {
   [Weapon.TYPES.PISTOL]: {
-    idleTime: 200,
-    power: 8,
+    idleTime: 100,
+    power: 3,
     equiped: true,
   },
   [Weapon.TYPES.SHOTGUN]: {
-    idleTime: 750,
-    power: 16,
+    idleTime: 500,
+    power: 10,
     equiped: true,
   },
   [Weapon.TYPES.CHAINGUN]: {
     idleTime: 0,
-    power: 8,
+    power: 4,
     equiped: true,
   },
 };
+
+const MAX_RECOIL = 10;
+
+const MAX_BLAST = 0.8;
 
 /**
  * Creates a player.
@@ -199,8 +203,8 @@ class Player extends AbstractActor {
    * @param  {Number} power The power of the shot.
    */
   onFire(power) {
-    this.camera.rotation += power;
-    this.world.brightness = power / 10;
+    this.camera.rotation += Math.min(power * 2, MAX_RECOIL);
+    this.world.brightness += Math.min(power / 10, MAX_BLAST);
   }
 
   /**

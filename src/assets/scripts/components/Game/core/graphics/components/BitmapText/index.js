@@ -5,15 +5,26 @@ import { BitmapText as PixiBitmapText } from 'pixi.js';
  */
 class BitmapText extends PixiBitmapText {
   /**
-   * Creates a BitmapText
-   * @param  {Object} options The text options
+   * Creates a bitmap text.
+   * @param  {String} options.text  [description]
+   * @param  {String} options.font  [description]
+   * @param  {Number} options.color [description]
+   * @param  {Number} options.x     [description]
+   * @param  {Number} options.y     [description]
    */
-  constructor(options) {
-    const { text, font, color } = options;
-
+  constructor({
+    text,
+    font,
+    color,
+    x = 0,
+    y = 0,
+  }) {
     super(text, { font });
 
-    if (color) {
+    this.x = x;
+    this.y = y;
+
+    if (color || color === 0) {
       this.tint = color;
     }
   }

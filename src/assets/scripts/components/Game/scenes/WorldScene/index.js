@@ -6,6 +6,7 @@ import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import World from './entities/World';
 import Scene from '../Scene';
+import ReviewContainer from './containers/ReviewContainer';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
@@ -46,6 +47,12 @@ class WorldScene extends Scene {
         this.setFadingOut();
       },
     }];
+
+    this.reviewContainer = new ReviewContainer({
+      onComplete: () => {
+        this.setPrompting();
+      },
+    });
   }
 
   /**
@@ -54,14 +61,16 @@ class WorldScene extends Scene {
    * @param  {Player}  player    The game player.
    */
   create(resources, player) {
-    const { world, sprites } = parse(resources, player);
+    const text = { continue: 'Press Space to continue' };
+    const { world, sprites } = parse(resources, player, text);
 
     super.create(resources);
 
     this.world = world;
     this.world.on(World.EVENTS.EXIT, () => this.setReviewing());
 
-    this.mainContainer.addChild(new WorldContainer({ world, sprites }));
+    this.mainContainer.addChild(new WorldContainer({ world, sprites: sprites.world }));
+    this.promptContainer.addChild(sprites.prompt);
   }
 
   update(delta) {
@@ -101,7 +110,12 @@ class WorldScene extends Scene {
   }
 
   updateReviewing(delta) {
-    // console.log(delta);
+    this.updatePaused(delta);
+    this.reviewContainer.update(delta);
+  }
+
+  setPrompting() {
+    super.setPrompting();
   }
 
   /**
@@ -111,6 +125,8 @@ class WorldScene extends Scene {
     if (this.setState(STATES.REVIEWING)) {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
+      this.mainContainer.setPaused();
+      this.addChild(this.reviewContainer);
     }
   }
 }

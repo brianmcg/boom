@@ -6,9 +6,9 @@ import { createSprites } from './sprites';
  * @param  {Object} assets The scene assets.
  * @return {Object}        The parsed scene data.
  */
-export const parse = (resources, player) => {
+export const parse = (resources, player, text) => {
   const world = createWorld(resources.data.map, player);
-  const sprites = createSprites(world, resources);
+  const sprites = createSprites(world, resources, text);
 
   return { world, sprites };
 };

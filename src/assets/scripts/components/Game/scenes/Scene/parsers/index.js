@@ -25,7 +25,12 @@ export const parse = (assets, text) => {
     }),
   }), {});
 
+  const height = labels[Object.keys(labels)[0]].height;
+
   const icon = new Sprite(textures[images.menu]);
+
+  icon.height = height;
+  icon.width = height;
 
   const menu = { icon, labels };
 
