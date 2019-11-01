@@ -55,3 +55,9 @@ export const DRAW_DISTANCE = TILE_SIZE * 10;
  * @type {String}
  */
 export const DEFAULT_LANGUAGE = 'en';
+
+/**
+ * The players field of view in degrees.
+ * @type {Number}
+ */
+export const FOV = 60;

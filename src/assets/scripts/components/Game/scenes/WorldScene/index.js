@@ -4,18 +4,22 @@ import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import World from './entities/World';
 import Scene from '../Scene';
-import Player from './entities/Player';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
+/**
+ * Class representing a world scene.
+ */
 class WorldScene extends Scene {
-  constructor({
-    player = new Player(),
-    ...options
-  }) {
+  /**
+   * Create a world scene.
+   * @param  {Number} options.index   The index of the scene.
+   * @param  {Number} options.scale   The scale of the scene.
+   * @param  {String} options.type    The type of scene.
+   * @param  {String} options.sound   The scene music.
+   */
+  constructor(options) {
     super({ type: Scene.TYPES.WORLD, ...options });
-
-    this.player = player;
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -37,8 +41,13 @@ class WorldScene extends Scene {
     }];
   }
 
-  create(resources) {
-    const { world, sprites } = parse(resources, this.player);
+  /**
+   * Create the world scene.
+   * @param  {Objects} resources The scene resources.
+   * @param  {Player}  player    The game player.
+   */
+  create(resources, player) {
+    const { world, sprites } = parse(resources, player);
 
     super.create(resources);
 
@@ -48,6 +57,10 @@ class WorldScene extends Scene {
     this.mainContainer.addChild(new WorldContainer({ world, sprites }));
   }
 
+  /**
+   * Update the scene in the running state.
+   * @param  {Number} delta The delta time.
+   */
   updateRunning(delta) {
     this.world.update(delta, {
       moveForward: isHeld(KEYS.UP_ARROW),

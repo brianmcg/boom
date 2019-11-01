@@ -48,8 +48,6 @@ class Weapon {
     this.offsetY = TILE_SIZE;
     this.offsetYDirection = 1;
     this.timer = 0;
-
-    this.setArming();
   }
 
   /**
@@ -160,9 +158,7 @@ class Weapon {
    */
   setFiring() {
     if (this.setState(STATES.FIRING)) {
-      const { player, power } = this;
-      player.camera.rotation += power;
-      player.world.brightness = power / 10;
+      this.player.onFire(this.power);
     }
   }
 

@@ -14,7 +14,7 @@ const DEFAULTS = {
 const WEAPON_DEFAULTS = {
   [Weapon.TYPES.PISTOL]: {
     idleTime: 200,
-    power: 4,
+    power: 8,
     equiped: true,
   },
   [Weapon.TYPES.SHOTGUN]: {
@@ -192,6 +192,15 @@ class Player extends AbstractActor {
     }
 
     this.world.remove(item);
+  }
+
+  /**
+   * Handle fire weapon event.
+   * @param  {Number} power The power of the shot.
+   */
+  onFire(power) {
+    this.camera.rotation += power;
+    this.world.brightness = power / 10;
   }
 
   /**

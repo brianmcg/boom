@@ -1,4 +1,6 @@
 import { World as PhysicsWorld } from '~/core/physics';
+import { TILE_SIZE } from '~/constants/config';
+import Player from '../Player';
 
 const EVENTS = {
   EXIT: 'world:complete',
@@ -10,20 +12,22 @@ const EVENTS = {
  */
 class World extends PhysicsWorld {
   /**
-   * @param  {Player} options.player  [description]
-   * @param  {Array}  options.enemies [description]
-   * @param  {Array}  options.items   [description]
-   * @param  {Array}  options.objects [description]
+   * Creates a world.
+   * @param  {Player} options.player   [description]
+   * @param  {Array}  options.enemies  [description]
+   * @param  {Array}  options.objects  [description]
+   * @param  {Array}  options.items    [description]
+   * @param  {Array}  options.grid     [description]
+   * @param  {Object} options.entrance [description]
    */
-  constructor(options) {
-    const {
-      player,
-      enemies = [],
-      objects = [],
-      items = [],
-      grid = [[]],
-    } = options;
-
+  constructor({
+    player = new Player(),
+    enemies = [],
+    objects = [],
+    items = [],
+    grid = [[]],
+    entrance = {},
+  }) {
     super(grid);
 
     enemies.forEach(enemy => this.add(enemy));
@@ -36,6 +40,11 @@ class World extends PhysicsWorld {
     this.items = items;
     this.enemies = enemies;
     this.brightness = 0;
+
+    player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2);
+    player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2);
+    player.angle = 0;
+    player.weapon.setArming();
   }
 
   /**
@@ -48,25 +57,14 @@ class World extends PhysicsWorld {
     this.player.setActions(actions);
 
     super.update(delta);
-
-    // if (this.isExitSector()) {
-    //   this.emit(EVENTS.EXIT, this.player);
-    // }
   }
 
-  enter(player) {
-    this.player = player;
-    this.add(player);
-  }
-
+  /**
+   * Emit the exit event.
+   */
   exit() {
     this.emit(EVENTS.EXIT);
   }
-
-  // isExitSector() {
-  //   const { gridX, gridY } = this.player;
-  //   return this.getSector(gridX, gridY).exit;
-  // }
 
   /**
    * The world events.

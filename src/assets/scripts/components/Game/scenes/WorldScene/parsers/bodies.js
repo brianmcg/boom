@@ -229,15 +229,13 @@ export const createWorld = (data, player) => {
     grid.push(row);
   }
 
-  player.x = (TILE_SIZE * start.x) + (TILE_SIZE / 2);
-  player.y = (TILE_SIZE * start.y) + (TILE_SIZE / 2);
-
   const world = new World({
     grid,
     player,
     objects,
     items,
     enemies,
+    entrance: start,
   });
 
   return world;

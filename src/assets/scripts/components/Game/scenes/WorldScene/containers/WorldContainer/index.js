@@ -7,17 +7,31 @@ import {
   atan2,
   castRay,
 } from '~/core/physics';
-import { SCREEN, TILE_SIZE, DRAW_DISTANCE } from '~/constants/config';
+import {
+  SCREEN,
+  TILE_SIZE,
+  DRAW_DISTANCE,
+  FOV,
+} from '~/constants/config';
 import { GREY, BLACK } from '~/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
-const CAMERA_DISTANCE = SCREEN.WIDTH / 2 / TAN[DEG[30]];
+const DEG_360 = DEG[360];
+
+const DEG_270 = DEG[270];
+
+const DEG_90 = DEG[90];
+
+const HALF_FOV = DEG[FOV / 2];
 
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
+
+const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
+
 
 let wallSprite;
 let angleDifference;
@@ -36,7 +50,6 @@ let gridX;
 let gridY;
 let topId;
 let bottomId;
-
 let sprite;
 let dx;
 let dy;
@@ -44,10 +57,8 @@ let spriteAngle;
 let spriteScale;
 let spriteWidth;
 let spriteX;
-
 let centerY;
 let rayAngle;
-
 let body;
 
 /**
@@ -89,7 +100,7 @@ class WorldContainer extends Container {
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
-    rayAngle = (player.angle - DEG[30] + DEG[360]) % DEG[360];
+    rayAngle = (player.angle - HALF_FOV + DEG_360) % DEG_360;
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.cameraRotation;
@@ -108,7 +119,7 @@ class WorldContainer extends Container {
       } = castRay({ rayAngle, caster: player });
 
       // Update wall sprites
-      angleDifference = (rayAngle - player.angle + DEG[360]) % DEG[360];
+      angleDifference = (rayAngle - player.angle + DEG_360) % DEG_360;
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
@@ -175,7 +186,7 @@ class WorldContainer extends Container {
       Object.assign(totalEncounteredBodies, encounteredBodies);
 
       // Increment ray angle
-      rayAngle = (rayAngle + 1) % DEG[360];
+      rayAngle = (rayAngle + 1) % DEG_360;
     }
 
     // Update entity sprites
@@ -187,9 +198,9 @@ class WorldContainer extends Container {
         dx = body.x - player.x;
         dy = body.y - player.y;
         actualDistance = Math.sqrt(dx * dx + dy * dy);
-        spriteAngle = (atan2(dy, dx) - player.angle + DEG[360]) % DEG[360];
+        spriteAngle = (atan2(dy, dx) - player.angle + DEG_360) % DEG_360;
 
-        if (spriteAngle > DEG[270] || spriteAngle < DEG[90]) {
+        if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
           correctedDistance = COS[spriteAngle] * actualDistance;
 
           if (DRAW_DISTANCE > correctedDistance) {
@@ -242,7 +253,7 @@ class WorldContainer extends Container {
     intensity -= (distance / DRAW_DISTANCE);
 
     if (intensity > 1) {
-      return BLACK;
+      intensity = 1;
     }
 
     if (intensity < 0) {

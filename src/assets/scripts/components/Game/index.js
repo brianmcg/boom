@@ -99,15 +99,15 @@ class Game extends Application {
    * @param  {String} type  The scene type.
    * @param  {Number} index The scene index.
    */
-  onSceneComplete({ type, index, player }) {
+  onSceneComplete(scene) {
     const { TITLE, WORLD, CREDITS } = Scene.TYPES;
 
-    switch (type) {
+    switch (scene.type) {
       case TITLE:
         this.onTitleSceneComplete();
         break;
       case WORLD:
-        this.onWorldSceneComplete(index, player);
+        this.onWorldSceneComplete(scene);
         break;
       case CREDITS:
         this.onCreditsSceneComplete();
@@ -160,11 +160,11 @@ class Game extends Application {
    * Handle the world scene complete event.
    * @param  {Number} index The scene index.
    */
-  onWorldSceneComplete(index, player) {
+  onWorldSceneComplete({ index, world }) {
     const { WORLD, CREDITS } = Scene.TYPES;
 
     if (index < NUM_LEVELS) {
-      this.show(WORLD, index + 1, player);
+      this.show(WORLD, index + 1, world.player);
     } else {
       this.show(CREDITS);
     }
@@ -221,7 +221,6 @@ class Game extends Application {
         index: sceneIndex,
         scale: { x: scale, y: scale },
         sound: this.sound,
-        player,
       });
 
       this.scene.once(Scene.EVENTS.COMPLETE, this.onSceneComplete.bind(this));
@@ -232,7 +231,7 @@ class Game extends Application {
 
       this.loader.load(this.scene.assets).then(({ data, sound }) => {
         this.sound.add(SOUND.MUSIC, sound);
-        this.scene.create(data);
+        this.scene.create(data, player);
       });
     }
   }

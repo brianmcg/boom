@@ -1,4 +1,4 @@
-import { SCREEN } from '~/constants/config';
+import { SCREEN, FOV } from '~/constants/config';
 
 /**
  * @module game/core/physics/constants
@@ -13,11 +13,11 @@ const COS = [];
 const TAN = [];
 
 for (let i = 0; i <= 360; i += 1) {
-  DEG.push(Math.floor(SCREEN.WIDTH / 60 * i));
+  DEG.push(Math.floor(SCREEN.WIDTH / FOV * i));
 }
 
-for (let i = 0; i < SCREEN.WIDTH * 6; i += 1) {
-  const radian = (i * Math.PI / (SCREEN.WIDTH * 3)) + 0.00000001;
+for (let i = 0; i < DEG[360]; i += 1) {
+  const radian = (i * Math.PI / (DEG[180])) + 0.00000001;
   SIN.push(Math.sin(radian));
   COS.push(Math.cos(radian));
   TAN.push(Math.tan(radian));
