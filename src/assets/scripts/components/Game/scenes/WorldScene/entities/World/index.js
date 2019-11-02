@@ -13,29 +13,29 @@ const EVENTS = {
 class World extends PhysicsWorld {
   /**
    * Creates a world.
-   * @param  {Player} options.player   [description]
-   * @param  {Array}  options.enemies  [description]
-   * @param  {Array}  options.objects  [description]
-   * @param  {Array}  options.items    [description]
-   * @param  {Array}  options.grid     [description]
-   * @param  {Object} options.entrance [description]
+   * @param  {Player} options.player      [description]
+   * @param  {Array}  options.enemies     [description]
+   * @param  {Array}  options.obstacles   [description]
+   * @param  {Array}  options.items       [description]
+   * @param  {Array}  options.grid        [description]
+   * @param  {Object} options.entrance    [description]
    */
   constructor({
     player = new Player(),
     enemies = [],
-    objects = [],
+    obstacles = [],
     items = [],
     grid = [[]],
   }) {
     super(grid);
 
     enemies.forEach(enemy => this.add(enemy));
-    objects.forEach(object => this.add(object));
+    obstacles.forEach(object => this.add(object));
     items.forEach(item => this.add(item));
 
     this.add(player);
     this.player = player;
-    this.objects = objects;
+    this.obstacles = obstacles;
     this.items = items;
     this.enemies = enemies;
     this.brightness = 0;

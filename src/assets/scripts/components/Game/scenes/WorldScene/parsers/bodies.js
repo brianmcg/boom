@@ -32,7 +32,7 @@ const MAP_LAYERS = {
 
 export const createWorld = (data, player) => {
   const grid = [];
-  const objects = [];
+  const obstacles = [];
   const items = [];
   const enemies = [];
 
@@ -196,7 +196,7 @@ export const createWorld = (data, player) => {
         } else {
           const nonBlocking = (properties.find(prop => prop.name === 'nonBlocking') || {}).value;
 
-          objects.push(new Entity({
+          obstacles.push(new Entity({
             type: tile.image,
             x: (TILE_SIZE * x) + (TILE_SIZE / 2),
             y: (TILE_SIZE * y) + (TILE_SIZE / 2),
@@ -232,7 +232,7 @@ export const createWorld = (data, player) => {
   const world = new World({
     grid,
     player,
-    objects,
+    obstacles,
     items,
     enemies,
     entrance: start,

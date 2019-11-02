@@ -13,12 +13,12 @@ const DEFAULTS = {
 
 const WEAPON_DEFAULTS = {
   [Weapon.TYPES.PISTOL]: {
-    idleTime: 100,
+    idleTime: 50,
     power: 3,
     equiped: true,
   },
   [Weapon.TYPES.SHOTGUN]: {
-    idleTime: 500,
+    idleTime: 250,
     power: 10,
     equiped: true,
   },

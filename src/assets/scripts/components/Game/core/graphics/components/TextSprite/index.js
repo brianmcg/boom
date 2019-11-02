@@ -1,9 +1,9 @@
-import { BitmapText as PixiBitmapText } from 'pixi.js';
+import { BitmapText } from 'pixi.js';
 
 /**
  * Class representing a bitmap text.
  */
-class BitmapText extends PixiBitmapText {
+class TextSprite extends BitmapText {
   /**
    * Creates a bitmap text.
    * @param  {String} options.text  [description]
@@ -38,4 +38,4 @@ class BitmapText extends PixiBitmapText {
   }
 }
 
-export default BitmapText;
+export default TextSprite;

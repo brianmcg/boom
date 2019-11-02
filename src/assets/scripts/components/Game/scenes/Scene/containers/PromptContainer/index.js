@@ -45,7 +45,7 @@ class PromptContainer extends Container {
 
   /**
    * Add a child to the container.
-   * @param {BitmapText} options.label The label to add.
+   * @param {TextSprite} options.label The label to add.
    */
   addChild({ label }) {
     label.x = (SCREEN.WIDTH / 2) - (label.width / 2);

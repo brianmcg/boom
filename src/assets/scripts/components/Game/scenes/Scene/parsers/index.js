@@ -1,4 +1,4 @@
-import { Sprite, BitmapText } from '~/core/graphics';
+import { Sprite, TextSprite } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/fonts';
 import { WHITE, RED } from '~/constants/colors';
 
@@ -18,7 +18,7 @@ export const parse = (assets, text) => {
 
   const labels = text.reduce((memo, key, index) => ({
     ...memo,
-    [key]: new BitmapText({
+    [key]: new TextSprite({
       font: FONT_SIZES.SMALL,
       text: key,
       color: index ? WHITE : RED,

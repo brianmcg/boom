@@ -10,7 +10,7 @@ import {
   Texture,
 } from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
-import BitmapText from './components/BitmapText';
+import TextSprite from './components/TextSprite';
 import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
 import RectangleSprite from './components/RectangleSprite';
@@ -39,7 +39,7 @@ export {
   /**
    * The bitmap text component.
    */
-  BitmapText,
+  TextSprite,
   /**
    * The color matrix filter component.
    */

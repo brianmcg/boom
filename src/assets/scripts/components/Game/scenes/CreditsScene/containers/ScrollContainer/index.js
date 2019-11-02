@@ -21,7 +21,7 @@ class ScrollContainer extends Container {
   /**
    * Creates a scroll container.
    * @param  {Object}     options.credits The credits data.
-   * @param  {BitmapText} options.end     The end text.
+   * @param  {TextSprite} options.end     The end text.
    */
   constructor({ credits, end }) {
     super();

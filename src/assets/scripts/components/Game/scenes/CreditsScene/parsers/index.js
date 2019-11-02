@@ -1,4 +1,4 @@
-import { AnimatedSprite, BitmapText } from '~/core/graphics';
+import { AnimatedSprite, TextSprite } from '~/core/graphics';
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED, WHITE } from '~/constants/colors';
 
@@ -25,13 +25,13 @@ export const parse = ({ assets, text }) => {
   });
 
   const credits = text.credits.reduce((memo, credit) => {
-    const key = new BitmapText({
+    const key = new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: credit.key,
       color: RED,
     });
 
-    const values = credit.values.map(value => new BitmapText({
+    const values = credit.values.map(value => new TextSprite({
       font: FONT_SIZES.SMALL,
       text: value,
       color: WHITE,
@@ -42,13 +42,13 @@ export const parse = ({ assets, text }) => {
     return memo;
   }, []);
 
-  const end = new BitmapText({
+  const end = new TextSprite({
     font: FONT_SIZES.LARGE,
     text: text.end,
     color: WHITE,
   });
 
-  const label = new BitmapText({
+  const label = new TextSprite({
     font: FONT_SIZES.SMALL,
     text: text.continue,
     color: RED,

@@ -1,6 +1,6 @@
 import { FONT_SIZES } from '~/constants/fonts';
 import { RED } from '~/constants/colors';
-import { BitmapText } from '~/core/graphics';
+import { TextSprite } from '~/core/graphics';
 import LogoSprite from '../sprites/LogoSprite';
 import SmokeSprite from '../sprites/SmokeSprite';
 import SparksSprite from '../sprites/SparksSprite';
@@ -26,7 +26,7 @@ export const parse = (assets, text) => {
   const smoke = new SmokeSprite(smokeTextures);
   const sparks = new SparksSprite(sparksTextures);
 
-  const label = new BitmapText({
+  const label = new TextSprite({
     font: FONT_SIZES.SMALL,
     text: text.prompt,
     color: RED,

@@ -12,7 +12,7 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.weapon.type || Weapon.TYPES.PISTOL], {
+    super(textureCollection[player.currentWeaponType || Weapon.TYPES.PISTOL], {
       animationSpeed: 0.4,
       loop: false,
       autoPlay: false,

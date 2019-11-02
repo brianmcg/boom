@@ -1,4 +1,4 @@
-import { Container, RectangleSprite, BitmapText } from '~/core/graphics';
+import { Container, RectangleSprite, TextSprite } from '~/core/graphics';
 import { SCREEN, TIME_STEP } from '~/constants/config';
 import { BLACK, WHITE, RED } from '~/constants/colors';
 import { FONT_SIZES } from '~/constants/fonts';
@@ -6,6 +6,12 @@ import { FONT_SIZES } from '~/constants/fonts';
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const INTERVAL = 1000;
+
+const STATE = {
+  SHOW_TITLE: '',
+  SHOW_ENEMIES: '',
+  SHOW_ITEMS: '',
+};
 
 class ReviewContainer extends Container {
   constructor({ onComplete }) {
@@ -20,7 +26,7 @@ class ReviewContainer extends Container {
       alpha: 0.8,
     }));
 
-    this.title = new BitmapText({
+    this.title = new TextSprite({
       font: FONT_SIZES.LARGE,
       text: 'Level Complete',
       color: WHITE,
@@ -33,34 +39,34 @@ class ReviewContainer extends Container {
     this.addChild(this.title);
 
     this.stats = [{
-      name: new BitmapText({
+      name: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: 'Enemies Killed',
         color: WHITE,
       }),
-      value: new BitmapText({
+      value: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: '0 out of 10',
         color: RED,
       }),
     }, {
-      name: new BitmapText({
+      name: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: 'Items Found',
         color: WHITE,
       }),
-      value: new BitmapText({
+      value: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: '0 out of 10',
         color: RED,
       }),
     }, {
-      name: new BitmapText({
+      name: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: 'Time Taken',
         color: WHITE,
       }),
-      value: new BitmapText({
+      value: new TextSprite({
         font: FONT_SIZES.SMALL,
         text: '0 minutes',
         color: RED,

@@ -1,4 +1,4 @@
-import { Rectangle, Texture, BitmapText } from '~/core/graphics';
+import { Rectangle, Texture, TextSprite } from '~/core/graphics';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
@@ -146,7 +146,7 @@ const createEntitySprites = (world, textures, animations) => {
     entitySprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
-  world.objects.forEach((object) => {
+  world.obstacles.forEach((object) => {
     entitySprites[object.id] = new EntitySprite(textures[object.type]);
   });
 
@@ -167,7 +167,7 @@ export const createSprites = (world, resources, text) => {
   const { player } = world;
 
 
-  const label = new BitmapText({
+  const label = new TextSprite({
     font: FONT_SIZES.SMALL,
     text: text.continue,
     color: RED,
