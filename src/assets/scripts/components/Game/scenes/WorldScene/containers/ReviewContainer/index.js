@@ -1,82 +1,41 @@
-import { Container, RectangleSprite, TextSprite } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import { SCREEN, TIME_STEP } from '~/constants/config';
-import { BLACK, WHITE, RED } from '~/constants/colors';
-import { FONT_SIZES } from '~/constants/fonts';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const INTERVAL = 1000;
 
-const STATE = {
-  SHOW_TITLE: '',
-  SHOW_ENEMIES: '',
-  SHOW_ITEMS: '',
+const STATES = {
+  SHOW_TITLE: 'show:title',
+  SHOW_ENEMIES: 'show:enemies',
+  SHOW_ITEMS: 'show:items',
+  SHOW_TIME: 'show:time',
 };
 
+/**
+ * Class representing a review container.
+ */
 class ReviewContainer extends Container {
-  constructor({ onComplete }) {
+  /**
+   * Creates a review container.
+   * @param  {Function} options.onComplete  The function to call when review is complete.
+   * @param  {Object} options.sprites       The sprites for the container.
+   */
+  constructor({ onComplete, sprites }) {
     super();
 
     this.onComplete = onComplete;
 
-    this.addChild(new RectangleSprite({
-      width: SCREEN.WIDTH,
-      height: SCREEN.HEIGHT,
-      color: BLACK,
-      alpha: 0.8,
-    }));
+    this.addChild(sprites.background);
 
-    this.title = new TextSprite({
-      font: FONT_SIZES.LARGE,
-      text: 'Level Complete',
-      color: WHITE,
-    });
+    const { title, stats } = sprites;
+    const statsStartY = title.y + title.height + (TEXT_PADDING * 4);
+    const statsHeight = stats.enemies.name.height;
 
-    this.title.x = (SCREEN.WIDTH / 2) - (this.title.width / 2);
+    title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
+    title.y = TEXT_PADDING;
 
-    this.title.y = TEXT_PADDING;
-
-    this.addChild(this.title);
-
-    this.stats = [{
-      name: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: 'Enemies Killed',
-        color: WHITE,
-      }),
-      value: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: '0 out of 10',
-        color: RED,
-      }),
-    }, {
-      name: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: 'Items Found',
-        color: WHITE,
-      }),
-      value: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: '0 out of 10',
-        color: RED,
-      }),
-    }, {
-      name: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: 'Time Taken',
-        color: WHITE,
-      }),
-      value: new TextSprite({
-        font: FONT_SIZES.SMALL,
-        text: '0 minutes',
-        color: RED,
-      }),
-    }];
-
-    const statsStartY = this.title.y + this.title.height + (TEXT_PADDING * 4);
-    const statsHeight = this.stats[0].name.height;
-
-    this.stats.forEach(({ name, value }, i) => {
+    Object.values(stats).forEach(({ name, value }, i) => {
       name.x = (SCREEN.WIDTH / 2) - TEXT_PADDING - name.width;
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
       value.x = (SCREEN.WIDTH / 2) + TEXT_PADDING;
@@ -85,24 +44,144 @@ class ReviewContainer extends Container {
 
     this.timer = 0;
     this.currentIndex = 0;
+    this.sprites = sprites;
+
+    this.setShowTitle();
   }
 
+  /**
+   * Updates the containner.
+   * @param  {Number} delta the delta time.
+   */
   update(delta) {
-    this.timer += delta * TIME_STEP;
-
-    if (this.timer > INTERVAL) {
-      const stat = this.stats[this.currentIndex];
-
-      if (stat) {
-        this.addChild(stat.name);
-        this.addChild(stat.value);
-      } else {
-        this.onComplete();
-      }
-
-      this.timer = 0;
-      this.currentIndex += 1;
+    switch (this.state) {
+      case STATES.SHOW_TITLE:
+        this.updateShowTitle(delta);
+        break;
+      case STATES.SHOW_ENEMIES:
+        this.updateShowEnemies(delta);
+        break;
+      case STATES.SHOW_ITEMS:
+        this.updateShowItems(delta);
+        break;
+      case STATES.SHOW_TIME:
+        this.updateShowTime(delta);
+        break;
+      default:
+        break;
     }
+  }
+
+  /**
+   * Update the container when in the show title state.
+   * @param  {Number} delta The delta time.
+   */
+  updateShowTitle(delta) {
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= INTERVAL) {
+      this.timer = 0;
+      this.setShowEnemies();
+    }
+  }
+
+  /**
+   * Update the container when in the show enemies state.
+   * @param  {Number} delta The delta time.
+   */
+  updateShowEnemies(delta) {
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= INTERVAL) {
+      this.timer = 0;
+      this.setShowItems();
+    }
+  }
+
+  /**
+   * Update the container when in the show items state.
+   * @param  {Number} delta The delta time.
+   */
+  updateShowItems(delta) {
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= INTERVAL) {
+      this.timer = 0;
+      this.setShowTime();
+    }
+  }
+
+  /**
+   * Update the container when in the show time state.
+   * @param  {Number} delta The delta time.
+   */
+  updateShowTime(delta) {
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= INTERVAL) {
+      this.timer = 0;
+      this.onComplete();
+      this.setState(null);
+    }
+  }
+
+  /**
+   * Set the state to show title.
+   */
+  setShowTitle() {
+    if (this.setState(STATES.SHOW_TITLE)) {
+      this.addChild(this.sprites.title);
+    }
+  }
+
+  /**
+   * Set the state to show enemies.
+   */
+  setShowEnemies() {
+    const { name, value } = this.sprites.stats.enemies;
+
+    if (this.setState(STATES.SHOW_ENEMIES)) {
+      this.addChild(name);
+      this.addChild(value);
+    }
+  }
+
+  /**
+   * Set the state to show items.
+   */
+  setShowItems() {
+    const { name, value } = this.sprites.stats.items;
+
+    if (this.setState(STATES.SHOW_ITEMS)) {
+      this.addChild(name);
+      this.addChild(value);
+    }
+  }
+
+  /**
+   * Set the state to show time.
+   */
+  setShowTime() {
+    const { name, value } = this.sprites.stats.time;
+
+    if (this.setState(STATES.SHOW_TIME)) {
+      this.addChild(name);
+      this.addChild(value);
+    }
+  }
+
+  /**
+   * Set the container state.
+   * @param {String} state The container state to set.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 
   // setStats({ enemiesKilled, itemsFound, timeTake }) {

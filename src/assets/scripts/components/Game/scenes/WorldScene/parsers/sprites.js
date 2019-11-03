@@ -1,12 +1,17 @@
-import { Rectangle, Texture, TextSprite } from '~/core/graphics';
+import {
+  Rectangle,
+  Texture,
+  TextSprite,
+  RectangleSprite,
+} from '~/core/graphics';
+import { BLACK, WHITE, RED } from '~/constants/colors';
 import { TILE_SIZE, SCREEN } from '~/constants/config';
+import { FONT_SIZES } from '~/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
-import { FONT_SIZES } from '~/constants/fonts';
-import { RED } from '~/constants/colors';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const { tiles } = animations.tilesets[0];
@@ -161,17 +166,86 @@ const createEntitySprites = (world, textures, animations) => {
   return entitySprites;
 };
 
-export const createSprites = (world, resources, text) => {
-  const { textures, data } = resources;
-  const { frames, animations } = data;
-  const { player } = world;
+const createReviewSprites = (text) => {
+  const background = new RectangleSprite({
+    width: SCREEN.WIDTH,
+    height: SCREEN.HEIGHT,
+    color: BLACK,
+    alpha: 0.8,
+  });
 
+  const title = new TextSprite({
+    font: FONT_SIZES.LARGE,
+    text: text.title,
+    color: WHITE,
+  });
 
+  const enemies = {
+    name: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: text.enemies,
+      color: WHITE,
+    }),
+    value: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: '0',
+      color: RED,
+    }),
+  };
+
+  const items = {
+    name: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: text.items,
+      color: WHITE,
+    }),
+    value: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: '0',
+      color: RED,
+    }),
+  };
+
+  const time = {
+    name: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: text.time,
+      color: WHITE,
+    }),
+    value: new TextSprite({
+      font: FONT_SIZES.SMALL,
+      text: '0',
+      color: RED,
+    }),
+  };
+
+  return {
+    background,
+    title,
+    stats: {
+      enemies,
+      items,
+      time,
+    },
+  };
+};
+
+const createPromptSprites = (text) => {
   const label = new TextSprite({
     font: FONT_SIZES.SMALL,
     text: text.continue,
     color: RED,
   });
+
+  return {
+    label,
+  };
+};
+
+const createWorldSprites = (world, resources) => {
+  const { textures, data } = resources;
+  const { frames, animations } = data;
+  const { player } = world;
 
   const entities = createEntitySprites(world, textures, animations);
   const weapon = createWeaponSprite(player, textures, animations.weapons);
@@ -179,13 +253,26 @@ export const createSprites = (world, resources, text) => {
   const background = createBackgroundSprites(world, frames, textures);
 
   return {
-    world: {
-      player: { weapon },
-      map: { walls, entities },
-      background,
+    player: {
+      weapon,
     },
-    prompt: {
-      label,
+    map: {
+      walls,
+      entities,
     },
+    background,
   };
 };
+
+/**
+ * Creates the sprites for the scene.
+ * @param  {World}  world     The world.
+ * @param  {Object} resources The resources.
+ * @param  {Object} text      The text.
+ * @return {Object            The sprites for the scene.
+ */
+export const createSprites = (world, resources, text) => ({
+  world: createWorldSprites(world, resources),
+  prompt: createPromptSprites(text.prompt),
+  review: createReviewSprites(text.review),
+});

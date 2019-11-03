@@ -37,8 +37,8 @@ export const TILE_SIZE = 64;
  * @type {Object}
  */
 export const SCREEN = {
-  WIDTH: 300,
-  HEIGHT: 136,
+  WIDTH: 320,
+  HEIGHT: 137,
 };
 
 /**

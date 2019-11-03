@@ -4,7 +4,7 @@ const PIXEL = {
   MAX_SIZE: 100,
   INCREMEMENT: 4,
   MIN_SIZE: 1,
-  PAUSE_SIZE: 3,
+  PAUSE_SIZE: 10,
 };
 
 const EVENTS = {

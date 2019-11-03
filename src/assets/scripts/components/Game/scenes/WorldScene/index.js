@@ -47,12 +47,6 @@ class WorldScene extends Scene {
         this.setFadingOut();
       },
     }];
-
-    this.reviewContainer = new ReviewContainer({
-      onComplete: () => {
-        this.setPrompting();
-      },
-    });
   }
 
   /**
@@ -61,8 +55,19 @@ class WorldScene extends Scene {
    * @param  {Player}  player    The game player.
    */
   create(resources, player) {
-    const text = { continue: 'Press Space to continue' };
-    const { world, sprites } = parse(resources, player, text);
+    const text = {
+      prompt: {
+        continue: translate('scene.prompt.continue'),
+      },
+      review: {
+        title: translate('world.review.title'),
+        enemies: translate('world.review.enemies'),
+        items: translate('world.review.items'),
+        time: translate('world.review.time'),
+      },
+    };
+
+    const { world, sprites } = parse(resources, text, player);
 
     super.create(resources);
 
@@ -71,6 +76,11 @@ class WorldScene extends Scene {
 
     this.mainContainer.addChild(new WorldContainer({ world, sprites: sprites.world }));
     this.promptContainer.addChild(sprites.prompt);
+
+    this.reviewContainer = new ReviewContainer({
+      sprites: sprites.review,
+      onComplete: () => this.setPrompting(),
+    });
   }
 
   update(delta) {
@@ -114,8 +124,9 @@ class WorldScene extends Scene {
     this.reviewContainer.update(delta);
   }
 
-  setPrompting() {
-    super.setPrompting();
+  setFadingOut() {
+    super.setFadingOut();
+    this.removeChild(this.reviewContainer);
   }
 
   /**

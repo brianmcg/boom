@@ -51,7 +51,7 @@ class CreditsScene extends Scene {
         key: translate('credits.scroll.screenplay'),
         values: [translate('credits.scroll.author')],
       }],
-      continue: translate('credits.prompt.continue'),
+      continue: translate('scene.prompt.continue'),
       end: translate('credits.scroll.end'),
     };
 
