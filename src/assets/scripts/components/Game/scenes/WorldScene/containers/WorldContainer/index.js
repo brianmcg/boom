@@ -13,7 +13,7 @@ import {
   DRAW_DISTANCE,
   FOV,
 } from '~/constants/config';
-import { GREY, BLACK } from '~/constants/colors';
+import { GREY } from '~/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';

@@ -7,18 +7,26 @@ const EVENTS = {
   ENTER: 'world:enter',
 };
 
+const MAX_GUN_FLASH_AMOUNT = 0.8;
+
+const ITEM_FLASH_AMOUNT = 0.25;
+
+const GUN_FLASH_DECREMENT = 0.2;
+
+const ITEM_FLASH_DECREMENT = 0.01;
+
 /**
  * Class representing a world.
  */
 class World extends PhysicsWorld {
   /**
    * Creates a world.
-   * @param  {Player} options.player      [description]
-   * @param  {Array}  options.enemies     [description]
-   * @param  {Array}  options.obstacles   [description]
-   * @param  {Array}  options.items       [description]
-   * @param  {Array}  options.grid        [description]
-   * @param  {Object} options.entrance    [description]
+   * @param  {Player} options.player      The player.
+   * @param  {Array}  options.enemies     The enemies.
+   * @param  {Array}  options.obstacles   The obstacles.
+   * @param  {Array}  options.items       The items.
+   * @param  {Array}  options.grid        The sector grid.
+   * @param  {Object} options.entrance    The entrance coordinates.
    */
   constructor({
     player = new Player(),
@@ -45,6 +53,9 @@ class World extends PhysicsWorld {
     player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2); // 163
     player.angle = 0; // 928;
     player.weapon.setArming();
+
+    this.gunFlash = false;
+    this.itemFlash = false;
   }
 
   /**
@@ -53,10 +64,40 @@ class World extends PhysicsWorld {
    * @param  {Object} options.actions The player actions.
    */
   update(delta, actions) {
-    this.brightness = Math.max(this.brightness -= 0.2 * delta, 0);
+    if (this.gunFlash) {
+      this.brightness -= GUN_FLASH_DECREMENT * delta;
+    }
+
+    if (this.itemFlash) {
+      this.brightness -= ITEM_FLASH_DECREMENT * delta;
+    }
+
+    if (this.brightness <= 0) {
+      this.itemFlash = false;
+      this.gunFlash = false;
+      this.brightness = 0;
+    }
+
     this.player.setActions(actions);
 
     super.update(delta);
+  }
+
+  /**
+   * Set the brightness and enabled gun flash.
+   * @param {Number} power The power of the gun shot.
+   */
+  setGunFlash(power) {
+    this.brightness += Math.min(power / 10, MAX_GUN_FLASH_AMOUNT);
+    this.gunFlash = true;
+  }
+
+  /**
+   * Set the brightness and enabled item flash.
+   */
+  setItemFlash() {
+    this.brightness += ITEM_FLASH_AMOUNT;
+    this.itemFlash = true;
   }
 
   /**

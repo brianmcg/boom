@@ -1,5 +1,5 @@
-import { Container, RectangleSprite } from '~/core/graphics';
-import { RED, WHITE, BLACK } from '~/constants/colors';
+import { Container } from '~/core/graphics';
+import { RED, WHITE } from '~/constants/colors';
 import { SCREEN } from '~/constants/config';
 
 const SCREEN_PADDING = 6;
@@ -26,12 +26,7 @@ class MenuContainer extends Container {
     this.currentIndex = 0;
     this.items = items;
 
-    this.addChild(new RectangleSprite({
-      width: SCREEN.WIDTH,
-      height: SCREEN.HEIGHT,
-      color: BLACK,
-      alpha: 0.8,
-    }));
+    this.addChild(sprites.background);
 
     if (this.items.length) {
       this.addChild(icon);

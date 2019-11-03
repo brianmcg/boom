@@ -30,10 +30,6 @@ const WEAPON_DEFAULTS = {
   },
 };
 
-const MAX_RECOIL = 10;
-
-const MAX_BLAST = 0.8;
-
 const DEG_360 = DEG[360];
 
 const DEG_45 = DEG[45];
@@ -277,10 +273,22 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Handle fire weapon event.
+   * @param  {Number} power The power of the shot.
+   */
+  onFire(power) {
+    this.camera.jerkBackward(power * 2);
+    this.world.setGunFlash(power);
+  }
+
+  /**
    * Pick up an item.
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
+    this.world.setItemFlash();
+    this.world.remove(item);
+
     switch (item.key) {
       case Item.TYPES.AMMO:
         this.pickUpAmmo(item.value);
@@ -297,18 +305,6 @@ class Player extends AbstractActor {
       default:
         break;
     }
-
-    this.world.brightness += 0.25;
-    this.world.remove(item);
-  }
-
-  /**
-   * Handle fire weapon event.
-   * @param  {Number} power The power of the shot.
-   */
-  onFire(power) {
-    this.camera.rotation += Math.min(power * 2, MAX_RECOIL);
-    this.world.brightness += Math.min(power / 10, MAX_BLAST);
   }
 
   /**
@@ -316,8 +312,7 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount of ammo.
    */
   pickUpAmmo(amount) {
-    console.log('pickUpAmmo', amount);
-    this.foo = true;
+    this.pickup = amount;
   }
 
   /**
@@ -326,8 +321,7 @@ class Player extends AbstractActor {
    * @return {[type]}       [description]
    */
   pickUpHealth(amount) {
-    console.log('pickUpHealth', amount);
-    this.foo = true;
+    this.pickup = amount;
   }
 
   /**
@@ -335,17 +329,15 @@ class Player extends AbstractActor {
    * @param  {String} type The type of key.
    */
   pickUpKey(type) {
-    console.log('pickUpKey', type);
-    this.foo = true;
+    this.pickup = type;
   }
 
   /**
    * Pick up a weapon
    * @param  {String} type  the type of weapon.
    */
-  pickUpWeapon(value) {
-    console.log('pickUpWeapon', value);
-    this.foo = true;
+  pickUpWeapon(type) {
+    this.pickup = type;
   }
 
   /**

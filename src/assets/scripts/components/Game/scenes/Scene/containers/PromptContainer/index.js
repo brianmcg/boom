@@ -15,7 +15,6 @@ class PromptContainer extends Container {
   constructor() {
     super();
     this.timer = 0;
-    this.show = true;
   }
 
   /**

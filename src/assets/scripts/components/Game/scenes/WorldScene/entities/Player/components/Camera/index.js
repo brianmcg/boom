@@ -6,6 +6,8 @@ const MAX_ROTATION = 128;
 
 const ROTATION_VELOCITY = 4;
 
+const MAX_JERK = 12;
+
 /**
  * Class representing a camera.
  */
@@ -61,6 +63,22 @@ class Camera {
     } else if (this.height < 0) {
       this.height = Math.min(this.height + HEIGHT_INCREMENT * maxVelocity * delta, 0);
     }
+  }
+
+  /**
+   * Jerk the camera backwards.
+   * @param  {Number} amount The amount to jerk it.
+   */
+  jerkBackward(amount) {
+    this.rotation += Math.min(amount, MAX_JERK);
+  }
+
+  /**
+   * Jerk the camera forwards.
+   * @param  {Number} amount The amount to jerk it.
+   */
+  jerkForward(amount) {
+    this.rotation -= Math.min(amount, MAX_JERK);
   }
 }
 
