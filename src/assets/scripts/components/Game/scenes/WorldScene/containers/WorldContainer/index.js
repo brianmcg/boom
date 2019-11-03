@@ -125,16 +125,11 @@ class WorldContainer extends Container {
       spriteY = centerY
         - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
 
-      if (distance < DRAW_DISTANCE) {
-        wallSprite.height = spriteHeight;
-        wallSprite.y = spriteY;
-        wallSprite.zOrder = distance;
-        wallSprite.changeTexture(side, sectorIntersection);
-        wallSprite.tint = this.calculateTint(distance, isHorizontal);
-        wallSprite.visible = true;
-      } else {
-        wallSprite.visible = false;
-      }
+      wallSprite.height = spriteHeight;
+      wallSprite.y = spriteY;
+      wallSprite.zOrder = distance;
+      wallSprite.changeTexture(side, sectorIntersection);
+      wallSprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
       wallBottomIntersection = Math.floor(spriteY + spriteHeight);
@@ -146,39 +141,27 @@ class WorldContainer extends Container {
         if (yIndex >= wallBottomIntersection) {
           actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
-
-          if (DRAW_DISTANCE > correctedDistance) {
-            mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-            mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-            pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-            pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
-            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
-            bottomId = this.world.getSector(gridX, gridY).bottom;
-            backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
-            backgroundSprite.tint = this.calculateTint(actualDistance);
-          } else {
-            backgroundSprite.tint = BLACK;
-          }
+          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+          gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
+          gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+          bottomId = this.world.getSector(gridX, gridY).bottom;
+          backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
+          backgroundSprite.tint = this.calculateTint(actualDistance);
         } else if (yIndex <= wallTopIntersection) {
           actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
-
-          if (DRAW_DISTANCE > correctedDistance) {
-            mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-            mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-            pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-            pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-            gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
-            gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
-            topId = this.world.getSector(gridX, gridY).top;
-            backgroundSprite.changeTexture(topId, pixelX, pixelY);
-            backgroundSprite.tint = this.calculateTint(actualDistance);
-          } else {
-            backgroundSprite.tint = BLACK;
-          }
-        } else {
-          backgroundSprite.tint = BLACK;
+          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+          gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
+          gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+          topId = this.world.getSector(gridX, gridY).top;
+          backgroundSprite.changeTexture(topId, pixelX, pixelY);
+          backgroundSprite.tint = this.calculateTint(actualDistance);
         }
       }
 
@@ -238,7 +221,7 @@ class WorldContainer extends Container {
    * @param  {Number} distance The distance.
    * @param  {Number} side     The side.
    */
-  calculateTint(distance = 0, side = 0) {
+  calculateTint(distance = 0, side = false) {
     let intensity = 1;
 
     if (distance > DRAW_DISTANCE) {
@@ -246,7 +229,7 @@ class WorldContainer extends Container {
     }
 
     if (side) {
-      intensity -= 0.1;
+      intensity -= 0.2;
     }
 
     intensity += this.world.brightness;
