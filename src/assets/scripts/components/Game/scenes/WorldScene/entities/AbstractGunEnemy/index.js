@@ -1,11 +1,12 @@
 import AbstractEnemy from '../AbstractEnemy';
 
 /**
- * Class representing a mancubus enemy.
+ * Abstract class representing a gun enemy.
+ * @extends {AbstractEnemy}
  */
-class Mancubus extends AbstractEnemy {
+class AbstractGunEnemy extends AbstractEnemy {
   /**
-   * Creates an abstract enemy.
+   * Creates an abstract shooter.
    * @param  {Number} options.x         The x coordinate of the character.
    * @param  {Number} options.y         The y coordinate of the character
    * @param  {Number} options.width     The width of the character.
@@ -16,8 +17,13 @@ class Mancubus extends AbstractEnemy {
    */
   constructor(options) {
     super(options);
-    this.setIdle();
+
+    if (this.constructor === AbstractEnemy) {
+      throw new TypeError('Can not construct abstract class.');
+    }
+
+    this.setPatrolling();
   }
 }
 
-export default Mancubus;
+export default AbstractGunEnemy;

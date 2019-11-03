@@ -1,10 +1,10 @@
-import { DynamicBody } from '~/core/physics';
+import DynamicEntity from '../DynamicEntity';
 
 /**
  * Abstract class representing an actor.
- * @extends {DynamicBody}
+ * @extends {DynamicEntity}
  */
-class AbstractActor extends DynamicBody {
+class AbstractActor extends DynamicEntity {
   /**
    * Creates an abstract actor.
    * @param  {Number} options.x         The x coordinate of the character.
@@ -26,6 +26,19 @@ class AbstractActor extends DynamicBody {
     if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
+  }
+
+  /**
+   * Set the state.
+   * @param {String} state The state.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+      return true;
+    }
+
+    return false;
   }
 }
 

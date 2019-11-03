@@ -52,7 +52,7 @@ class EnemySprite extends AnimatedEntitySprite {
         frame: 0,
         loop: false,
       });
-    } else if (enemy.isFiring()) {
+    } else if (enemy.isAttacking()) {
       this.updateTextures({
         actionId: ACTIONS.SHOOTING,
         angleId: 0,

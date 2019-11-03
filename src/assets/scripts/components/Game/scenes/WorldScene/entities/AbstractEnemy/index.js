@@ -1,6 +1,17 @@
 import AbstractActor from '../AbstractActor';
 import { DEG } from '~/core/physics';
 
+const STATES = {
+  IDLE: 'enemy:idle',
+  PATROLLING: 'enemy:patrol',
+  CHASING: 'enemy:chase',
+  READY: 'enemy:ready',
+  AIMING: 'enemy:aim',
+  ATTACKING: 'enemy:fire',
+  HURT: 'enemy:hurt',
+  DEAD: 'enemy:dead',
+};
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -16,22 +27,134 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor({ type, ...options }) {
+  constructor(options) {
     super(options);
     this.velocity = 1;
     this.rotVelocity = DEG[1];
-    this.type = type;
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
   }
 
-  get angleDiff() {
-    const { player } = this.world;
-    const diff = this.angle - player.angle;
+  /**
+   * Set the enemy to the idle state.
+   */
+  setIdle() {
+    this.setState(STATES.IDLE);
+  }
 
-    return (diff + DEG[203] + DEG[360]) % DEG[360];
+  /**
+   * Set the enemy to the patrolling state.
+   */
+  setPatrolling() {
+    this.setState(STATES.PATROLLING);
+  }
+
+  /**
+   * Set the enemy to the chasing state.
+   */
+  setChasing() {
+    this.setState(STATES.CHASING);
+  }
+
+  /**
+   * Set the enemy to the ready state.
+   */
+  setReady() {
+    this.setState(STATES.READY);
+  }
+
+  /**
+   * Set the enemy to the aiming state.
+   */
+  setAiming() {
+    this.setState(STATES.AIMING);
+  }
+
+  /**
+   * Set the enemy to the attacking state.
+   */
+  setAttacking() {
+    this.setState(STATES.ATTACKING);
+  }
+
+  /**
+   * Set the enemy to the hurt state.
+   */
+  setHurt() {
+    this.setState(STATES.HURT);
+  }
+
+  /**
+   * Set the enemy to the dead state.
+   */
+  setDead() {
+    this.setState(STATES.DEAD);
+  }
+
+  /**
+   * Is the enemy in the idle state.
+   * @return {Boolean}
+   */
+  isIdle() {
+    return this.state === STATES.IDLE;
+  }
+
+  /**
+   * Is the enemy in the patrolling state.
+   * @return {Boolean}
+   */
+  isPatrolling() {
+    return this.state === STATES.PATROLLING;
+  }
+
+  /**
+   * Is the enemy in the chasing state.
+   * @return {Boolean}
+   */
+  isChasing() {
+    return this.state === STATES.CHASING;
+  }
+
+  /**
+   * Is the enemy in the ready state.
+   * @return {Boolean}
+   */
+  isReady() {
+    return this.state === STATES.READY;
+  }
+
+  /**
+   * Is the enemy in the aiming state.
+   * @return {Boolean}
+   */
+  isAiming() {
+    return this.state === STATES.AIMING;
+  }
+
+  /**
+   * Is the enemy in the attacking state.
+   * @return {Boolean}
+   */
+  isAttacking() {
+    return this.state === STATES.ATTACKING;
+  }
+
+  /**
+   * Is the enemy in the hurt state.
+   * @return {Boolean}
+   */
+  isHurt() {
+    return this.state === STATES.HURT;
+  }
+
+  /**
+   * Is the enemy in the dead state.
+   * @return {Boolean}
+   */
+  isDead() {
+    return this.state === STATES.DEAD;
   }
 }
 
