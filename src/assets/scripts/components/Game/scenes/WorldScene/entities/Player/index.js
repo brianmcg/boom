@@ -1,4 +1,5 @@
 import { TILE_SIZE } from '~/constants/config';
+import { DEG } from '~/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
@@ -32,6 +33,12 @@ const WEAPON_DEFAULTS = {
 const MAX_RECOIL = 10;
 
 const MAX_BLAST = 0.8;
+
+const DEG_360 = DEG[360];
+
+const DEG_45 = DEG[45];
+
+const DEG_90 = DEG[90];
 
 /**
  * Creates a player.
@@ -85,21 +92,38 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
+    this.updateMovement(delta);
+    this.updateHeight(delta);
+    this.updateWeapon(delta);
+    this.updateCamera(delta);
+    this.updateInteractions();
+  }
+
+  /**
+   * Update player movement.
+   * @param  {Number delta The delta time.
+   */
+  updateMovement(delta) {
+    this.maxVelocity = DEFAULTS.MAX_VELOCITY * this.height / this.maxHeight;
+
+    if (this.actions.strafe) {
+      this.updateStrafingMovement(delta);
+    } else {
+      this.updateStandardMovement(delta);
+    }
+  }
+
+  /**
+   * Update player standard movement.
+   * @param  {Number delta The delta time.
+   */
+  updateStandardMovement(delta) {
     const {
-      armChaingun,
-      armPistol,
-      armShotgun,
-      continueAttack,
-      crouch,
       moveBackward,
       moveForward,
       turnLeft,
       turnRight,
-      use,
     } = this.actions;
-
-    // Update velocity
-    this.maxVelocity = DEFAULTS.MAX_VELOCITY * this.height / this.maxHeight;
 
     if (moveForward) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
@@ -109,7 +133,6 @@ class Player extends AbstractActor {
       this.velocity = Math.max(0, this.velocity - this.acceleration);
     }
 
-    // Update rotation velocity
     if (turnLeft) {
       this.rotVelocity = Math.max(
         this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1,
@@ -120,38 +143,118 @@ class Player extends AbstractActor {
       this.rotVelocity = 0;
     }
 
-    // Update height
-    if (crouch) {
-      this.height = Math.max(this.height - this.heightVelocity, this.minHeight);
+    super.update(delta);
+  }
+
+  /**
+   * Update player strafing movement.
+   * @param  {Number delta The delta time.
+   */
+  updateStrafingMovement(delta) {
+    const previousAngle = this.angle;
+
+    const {
+      moveBackward,
+      moveForward,
+      turnLeft,
+      turnRight,
+    } = this.actions;
+
+    this.rotVelocity = 0;
+
+    if (moveForward && turnLeft) {
+      this.angle = (previousAngle - DEG_45 + DEG_360) % DEG_360;
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+    } else if (moveForward && turnRight) {
+      this.angle = (previousAngle + DEG_45) % DEG_360;
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+    } else if (!moveForward && !moveBackward && turnLeft) {
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.angle = (previousAngle - DEG_90 + DEG_360) % DEG_360;
+    } else if (!moveForward && !moveBackward && turnRight) {
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.angle = (previousAngle + DEG_90) % DEG_360;
+    } else if (moveBackward && turnLeft) {
+      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+      this.angle = (previousAngle + DEG_45) % DEG_360;
+    } else if (moveBackward && turnRight) {
+      this.angle = (previousAngle - DEG_45 + DEG_360) % DEG_360;
+      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+    } else if (moveForward) {
+      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+    } else if (moveBackward) {
+      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
     } else {
-      this.height = Math.min(this.height + this.heightVelocity, this.maxHeight);
+      this.velocity = 0;
     }
 
-    // Update weapon
+    super.update(delta);
+
+    this.angle = previousAngle;
+  }
+
+  /**
+   * Update player height.
+   * @param  {Number delta The delta time.
+   */
+  updateHeight(delta) {
+    if (this.actions.crouch) {
+      this.height = Math.max(
+        this.height - (this.heightVelocity * delta),
+        this.minHeight,
+      );
+    } else {
+      this.height = Math.min(
+        this.height + (this.heightVelocity * delta),
+        this.maxHeight,
+      );
+    }
+  }
+
+  /**
+   * Update player weapon.
+   * @param  {Number delta The delta time.
+   */
+  updateWeapon(delta) {
+    const {
+      armChaingun,
+      armPistol,
+      armShotgun,
+      attack,
+    } = this.actions;
+
     if (armChaingun) {
       this.selectNextWeapon(Weapon.TYPES.CHAINGUN);
     } else if (armPistol) {
       this.selectNextWeapon(Weapon.TYPES.PISTOL);
     } else if (armShotgun) {
       this.selectNextWeapon(Weapon.TYPES.SHOTGUN);
-    } else if (continueAttack) {
+    } else if (attack) {
       this.weapon.use();
     }
 
     this.weapon.update(delta);
-    this.camera.update(delta);
+  }
 
-    // Check interactive bodies
+  /**
+   * Update player interactions.
+   */
+  updateInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && this.collide(body)) {
         this.pickUp(body);
-      } else if (use && body.use) {
+      } else if (this.actions.use && body.use) {
         body.use();
       }
     });
+  }
 
-    // Update parent
-    super.update(delta);
+  /**
+   * Update player camera.
+   * @param  {Number delta The delta time.
+   */
+  updateCamera(delta) {
+    this.camera.update(delta);
   }
 
   /**
@@ -195,6 +298,7 @@ class Player extends AbstractActor {
         break;
     }
 
+    this.world.brightness += 0.25;
     this.world.remove(item);
   }
 

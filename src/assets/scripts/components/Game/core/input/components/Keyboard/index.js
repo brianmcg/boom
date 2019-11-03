@@ -1,4 +1,5 @@
 const KEYS = {
+  ALT: 'ALT',
   LEFT_ARROW: 'LEFT_ARROW',
   RIGHT_ARROW: 'RIGHT_ARROW',
   UP_ARROW: 'UP_ARROW',
@@ -20,6 +21,7 @@ const KEYS = {
 };
 
 const KEY_CODES = {
+  18: KEYS.ALT,
   37: KEYS.LEFT_ARROW,
   39: KEYS.RIGHT_ARROW,
   38: KEYS.UP_ARROW,

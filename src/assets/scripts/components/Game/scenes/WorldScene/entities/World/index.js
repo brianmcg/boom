@@ -26,6 +26,7 @@ class World extends PhysicsWorld {
     obstacles = [],
     items = [],
     grid = [[]],
+    entrance,
   }) {
     super(grid);
 
@@ -40,9 +41,9 @@ class World extends PhysicsWorld {
     this.enemies = enemies;
     this.brightness = 0;
 
-    player.x = 1088; // (TILE_SIZE * entrance.x) + (TILE_SIZE / 2);
-    player.y = 163; // (TILE_SIZE * entrance.y) + (TILE_SIZE / 2);
-    player.angle = 928; // 0;
+    player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2); // 1088
+    player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2); // 163
+    player.angle = 0; // 928;
     player.weapon.setArming();
   }
 
@@ -52,7 +53,7 @@ class World extends PhysicsWorld {
    * @param  {Object} options.actions The player actions.
    */
   update(delta, actions) {
-    this.brightness = Math.max(this.brightness -= 0.25 * delta, 0);
+    this.brightness = Math.max(this.brightness -= 0.2 * delta, 0);
     this.player.setActions(actions);
 
     super.update(delta);
