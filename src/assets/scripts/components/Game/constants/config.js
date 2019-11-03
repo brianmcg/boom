@@ -48,12 +48,6 @@ export const SCREEN = {
 export const DEBUG = false;
 
 /**
- * The draw distance.
- * @type {Number}
- */
-export const DRAW_DISTANCE = TILE_SIZE * 8;
-
-/**
  * The default language to use.
  * @type {String}
  */

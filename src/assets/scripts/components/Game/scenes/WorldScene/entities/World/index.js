@@ -9,11 +9,16 @@ const EVENTS = {
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
-const ITEM_FLASH_AMOUNT = 0.25;
+const ITEM_FLASH_AMOUNT = 0.35;
 
 const GUN_FLASH_DECREMENT = 0.2;
 
 const ITEM_FLASH_DECREMENT = 0.01;
+
+const DEFAULTS = {
+  BRIGHTNESS: -0.15,
+  VISIBILITY: TILE_SIZE * 16,
+};
 
 /**
  * Class representing a world.
@@ -47,7 +52,9 @@ class World extends PhysicsWorld {
     this.obstacles = obstacles;
     this.items = items;
     this.enemies = enemies;
-    this.brightness = 0;
+    this.baseBrightness = DEFAULTS.BRIGHTNESS;
+    this.brightness = DEFAULTS.BRIGHTNESS;
+    this.visibility = DEFAULTS.VISIBILITY;
 
     player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2); // 1088
     player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2); // 163
@@ -72,10 +79,10 @@ class World extends PhysicsWorld {
       this.brightness -= ITEM_FLASH_DECREMENT * delta;
     }
 
-    if (this.brightness <= 0) {
+    if (this.brightness <= this.baseBrightness) {
       this.itemFlash = false;
       this.gunFlash = false;
-      this.brightness = 0;
+      this.brightness = this.baseBrightness;
     }
 
     this.player.setActions(actions);

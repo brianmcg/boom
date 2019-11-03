@@ -11,7 +11,6 @@ import ReviewContainer from './containers/ReviewContainer';
 const { isHeld, isPressed, KEYS } = Keyboard;
 
 const STATES = {
-  ...Scene.STATES,
   REVIEWING: 'reviewing',
 };
 

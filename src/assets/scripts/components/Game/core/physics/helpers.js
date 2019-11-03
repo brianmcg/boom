@@ -26,13 +26,17 @@ let xGridIndex;
 let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
-let sectorIntersection;
-let side;
 let isVerticalDoor;
 let isHorizontalDoor;
 let horizontalSector;
 let verticalSector;
 
+/**
+ * Calculate the atan2
+ * @param  {Number} dyA The first number.
+ * @param  {Number} dxA The second number.
+ * @return {Number}     The atan2 result.
+ */
 export const atan2 = (dyA = 0, dxA = 0) => {
   const radians = Math.atan2(dyA, dxA);
   const angle = Math.round(radians * DEG_180 / Math.PI) % DEG_360;
@@ -40,6 +44,12 @@ export const atan2 = (dyA = 0, dxA = 0) => {
   return (angle < 0) ? angle + DEG_360 : angle;
 };
 
+/**
+ * Get the distance between two bodies.
+ * @param  {Body}   bodyA The first body.
+ * @param  {Body}   bodyB The second body
+ * @return {Number}       The distance result.
+ */
 export const distanceBetween = (bodyA, bodyB) => {
   const dx = bodyA.x - bodyB.x;
   const dy = bodyA.y - bodyB.y;
@@ -47,6 +57,12 @@ export const distanceBetween = (bodyA, bodyB) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+/**
+ * Cast a ray from a caster.
+ * @param  {Number}         options.rayAngle  The optional ray angle.
+ * @param  {DynamicEntity}  options.caster    The caster entity.
+ * @return {Object}                           The cast result.
+ */
 export const castRay = ({ rayAngle, caster }) => {
   const {
     x,
@@ -57,9 +73,11 @@ export const castRay = ({ rayAngle, caster }) => {
     world,
   } = caster;
 
-  const encounteredSectors = [];
-  const origin = world.getSector(gridX, gridY);
-  const sectorMap = { [origin[origin.id]]: origin };
+  const encounteredBodies = {};
+  const currentSector = world.getSector(gridX, gridY);
+  const encounteredSectors = {
+    [currentSector.id]: currentSector,
+  };
 
   if (!rayAngle && rayAngle !== 0) {
     rayAngle = angle;
@@ -127,7 +145,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        sectorMap[horizontalSector.id] = horizontalSector;
+        encounteredSectors[horizontalSector.id] = horizontalSector;
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
@@ -197,7 +215,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        sectorMap[verticalSector.id] = verticalSector;
+        encounteredSectors[verticalSector.id] = verticalSector;
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
@@ -205,71 +223,41 @@ export const castRay = ({ rayAngle, caster }) => {
   }
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-    if (isHorizontalDoor) {
-      xIntersection -= horizontalSector.offset;
-    }
-
-    xIntersection = Math.floor(xIntersection);
-
-    if (!isHorizontalDoor && rayAngle < DEG_180) {
-      sectorIntersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
-    } else {
-      sectorIntersection = xIntersection % TILE_SIZE;
-    }
-
-    if (y < horizontalSector.y) {
-      side = horizontalSector.left;
-    } else {
-      side = horizontalSector.right;
-    }
-
-    Object.values(sectorMap).forEach((sector) => {
-      if (distanceBetween(caster, sector) <= distToHorizontalGridBeingHit) {
-        encounteredSectors.push(sector);
+    Object.values(encounteredSectors).forEach((encounteredSector) => {
+      if (distanceBetween(caster, encounteredSector) <= distToHorizontalGridBeingHit) {
+        encounteredBodies[encounteredSector.id] = encounteredSector;
+        encounteredSector.bodies.forEach((body) => {
+          encounteredBodies[body.id] = body;
+        });
       }
     });
 
     return {
-      encounteredSectors,
       distance: distToHorizontalGridBeingHit,
-      yIntersection: horizontalGrid,
+      encounteredBodies,
+      isDoor: isHorizontalDoor,
       isHorizontal: true,
-      sectorIntersection,
+      sector: horizontalSector,
       xIntersection,
-      side,
+      yIntersection: horizontalGrid,
     };
   }
 
-  if (isVerticalDoor) {
-    yIntersection -= verticalSector.offset;
-  }
-
-  yIntersection = Math.floor(yIntersection);
-
-  if (!isVerticalDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {
-    sectorIntersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
-  } else {
-    sectorIntersection = yIntersection % TILE_SIZE;
-  }
-
-  if (x < verticalSector.x) {
-    side = verticalSector.front;
-  } else {
-    side = verticalSector.back;
-  }
-
-  Object.values(sectorMap).forEach((sector) => {
-    if (distanceBetween(caster, sector) <= distToVerticalGridBeingHit) {
-      encounteredSectors.push(sector);
+  Object.values(encounteredSectors).forEach((encounteredSector) => {
+    if (distanceBetween(caster, encounteredSector) <= distToVerticalGridBeingHit) {
+      encounteredBodies[encounteredSector.id] = encounteredSector;
+      encounteredSector.bodies.forEach((body) => {
+        encounteredBodies[body.id] = body;
+      });
     }
   });
 
   return {
-    encounteredSectors,
     distance: distToVerticalGridBeingHit,
+    encounteredBodies,
+    isDoor: isVerticalDoor,
+    sector: verticalSector,
     xIntersection: verticalGrid,
-    sectorIntersection,
     yIntersection,
-    side,
   };
 };

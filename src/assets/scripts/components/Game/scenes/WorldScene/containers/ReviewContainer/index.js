@@ -130,7 +130,7 @@ class ReviewContainer extends Container {
    */
   setShowTitle() {
     if (this.setState(STATES.SHOW_TITLE)) {
-      // this.addChild(this.sprites.title);
+      this.addChild(this.sprites.title);
     }
   }
 

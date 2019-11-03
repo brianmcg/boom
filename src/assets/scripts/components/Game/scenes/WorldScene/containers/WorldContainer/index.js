@@ -7,33 +7,20 @@ import {
   atan2,
   castRay,
 } from '~/core/physics';
-import {
-  SCREEN,
-  TILE_SIZE,
-  DRAW_DISTANCE,
-  FOV,
-} from '~/constants/config';
+import { SCREEN, TILE_SIZE, FOV } from '~/constants/config';
 import { GREY } from '~/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
 const DEG_90 = DEG[90];
-
-// const DEG_180 = DEG[180];
-
+const DEG_180 = DEG[180];
 const DEG_360 = DEG[360];
-
 const DEG_270 = DEG[270];
-
 const HALF_FOV = DEG[FOV / 2];
-
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
-
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
-
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
-
 
 let wallSprite;
 let angleDifference;
@@ -62,6 +49,8 @@ let spriteX;
 let centerY;
 let rayAngle;
 let body;
+let sliceIndex;
+let sectorSide;
 
 /**
  * Class representing a WorldContainer.
@@ -96,7 +85,7 @@ class WorldContainer extends Container {
    * Animate the container.
    */
   animate() {
-    const { player } = this.world;
+    const { player, visibility } = this.world;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
     const totalEncounteredBodies = {};
@@ -113,20 +102,60 @@ class WorldContainer extends Container {
 
       // Cast ray
       const {
-        encounteredSectors,
         distance,
+        encounteredBodies,
+        isDoor,
         isHorizontal,
-        side,
-        sectorIntersection,
-      } = castRay({ rayAngle, caster: player });
-
-      encounteredSectors.forEach((sector) => {
-        sector.bodies.forEach((sectorBody) => {
-          totalEncounteredBodies[sectorBody.id] = sectorBody;
-        });
+        sector,
+        xIntersection,
+        yIntersection,
+      } = castRay({
+        caster: player,
+        rayAngle,
       });
 
-      // Update wall sprites
+      // Update total encountered bodies.
+      Object.assign(totalEncounteredBodies, encounteredBodies);
+
+      // Update wall sprites.
+      if (isHorizontal) {
+        if (isDoor) {
+          sliceIndex = Math.floor(xIntersection - sector.offset);
+        } else {
+          sliceIndex = Math.floor(xIntersection);
+        }
+
+        if (!isDoor && rayAngle < DEG_180) {
+          sliceIndex = TILE_SIZE - (sliceIndex % TILE_SIZE) - 1;
+        } else {
+          sliceIndex %= TILE_SIZE;
+        }
+
+        if (player.y < sector.y) {
+          sectorSide = sector.left;
+        } else {
+          sectorSide = sector.right;
+        }
+      } else {
+        if (isDoor) {
+          sliceIndex = Math.floor(yIntersection - sector.offset);
+        } else {
+          sliceIndex = Math.floor(yIntersection);
+        }
+
+        if (!isDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {
+          sliceIndex = TILE_SIZE - (sliceIndex % TILE_SIZE) - 1;
+        } else {
+          sliceIndex %= TILE_SIZE;
+        }
+
+        if (player.x < sector.x) {
+          sectorSide = sector.front;
+        } else {
+          sectorSide = sector.back;
+        }
+      }
+
       angleDifference = (rayAngle - player.angle + DEG_360) % DEG_360;
       correctedDistance = distance * COS[angleDifference];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
@@ -136,7 +165,7 @@ class WorldContainer extends Container {
       wallSprite.height = spriteHeight;
       wallSprite.y = spriteY;
       wallSprite.zOrder = distance;
-      wallSprite.changeTexture(side, sectorIntersection);
+      wallSprite.changeTexture(sectorSide, sliceIndex);
       wallSprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
@@ -191,7 +220,7 @@ class WorldContainer extends Container {
         if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
           correctedDistance = COS[spriteAngle] * actualDistance;
 
-          if (DRAW_DISTANCE > correctedDistance) {
+          if (visibility > correctedDistance) {
             spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
             spriteWidth = TILE_SIZE * spriteScale;
             spriteHeight = TILE_SIZE * spriteScale;
@@ -223,22 +252,23 @@ class WorldContainer extends Container {
 
   /**
    * Calculate the tint.
-   * @param  {Number} distance The distance.
-   * @param  {Number} side     The side.
+   * @param  {Number}  distance The distance.
+   * @param  {Boolean} darken   Darken the sprite.
    */
-  calculateTint(distance = 0, side = false) {
+  calculateTint(distance, darken) {
+    const { brightness, visibility } = this.world;
     let intensity = 1;
 
-    if (distance > DRAW_DISTANCE) {
-      distance = DRAW_DISTANCE;
+    if (distance > visibility) {
+      distance = visibility;
     }
 
-    if (side) {
+    if (darken) {
       intensity -= 0.2;
     }
 
-    intensity += this.world.brightness;
-    intensity -= (distance / DRAW_DISTANCE);
+    intensity += brightness;
+    intensity -= (distance / visibility);
 
     if (intensity > 1) {
       intensity = 1;
