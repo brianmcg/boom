@@ -9,7 +9,7 @@ import { TILE_SIZE } from '~/constants/config';
 
 const DEG_90 = DEG[90];
 const DEG_180 = DEG[180];
-const DEG_270 = DEG[260];
+const DEG_270 = DEG[270];
 const DEG_360 = DEG[360];
 
 let horizontalGrid;
@@ -57,9 +57,9 @@ export const castRay = ({ rayAngle, caster }) => {
     world,
   } = caster;
 
-  const sector = world.getSector(gridX, gridY);
-
-  const encounteredSectors = { [sector[sector.id]]: sector };
+  const encounteredSectors = [];
+  const origin = world.getSector(gridX, gridY);
+  const sectorMap = { [origin[origin.id]]: origin };
 
   if (!rayAngle && rayAngle !== 0) {
     rayAngle = angle;
@@ -127,7 +127,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        encounteredSectors[horizontalSector.id] = horizontalSector;
+        sectorMap[horizontalSector.id] = horizontalSector;
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
@@ -197,7 +197,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        encounteredSectors[verticalSector.id] = verticalSector;
+        sectorMap[verticalSector.id] = verticalSector;
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
@@ -223,8 +223,14 @@ export const castRay = ({ rayAngle, caster }) => {
       side = horizontalSector.right;
     }
 
+    Object.values(sectorMap).forEach((sector) => {
+      if (distanceBetween(caster, sector) <= distToHorizontalGridBeingHit) {
+        encounteredSectors.push(sector);
+      }
+    });
+
     return {
-      encounteredSectors: Object.values(encounteredSectors),
+      encounteredSectors,
       distance: distToHorizontalGridBeingHit,
       yIntersection: horizontalGrid,
       isHorizontal: true,
@@ -252,8 +258,14 @@ export const castRay = ({ rayAngle, caster }) => {
     side = verticalSector.back;
   }
 
+  Object.values(sectorMap).forEach((sector) => {
+    if (distanceBetween(caster, sector) <= distToVerticalGridBeingHit) {
+      encounteredSectors.push(sector);
+    }
+  });
+
   return {
-    encounteredSectors: Object.values(encounteredSectors),
+    encounteredSectors,
     distance: distToVerticalGridBeingHit,
     xIntersection: verticalGrid,
     sectorIntersection,
