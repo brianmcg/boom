@@ -7,6 +7,11 @@ import {
 import DynamicFlatSector from './components/DynamicFlatSector';
 import { TILE_SIZE } from '~/constants/config';
 
+const DEG_90 = DEG[90];
+const DEG_180 = DEG[180];
+const DEG_270 = DEG[260];
+const DEG_360 = DEG[360];
+
 let horizontalGrid;
 let verticalGrid;
 let distToNextHorizontalGrid;
@@ -30,9 +35,9 @@ let verticalSector;
 
 export const atan2 = (dyA = 0, dxA = 0) => {
   const radians = Math.atan2(dyA, dxA);
-  const angle = Math.round(radians * DEG[180] / Math.PI) % DEG[360];
+  const angle = Math.round(radians * DEG_180 / Math.PI) % DEG_360;
 
-  return (angle < 0) ? angle + DEG[360] : angle;
+  return (angle < 0) ? angle + DEG_360 : angle;
 };
 
 export const distanceBetween = (bodyA, bodyB) => {
@@ -44,7 +49,6 @@ export const distanceBetween = (bodyA, bodyB) => {
 
 export const castRay = ({ rayAngle, caster }) => {
   const {
-    id,
     x,
     y,
     gridX,
@@ -53,19 +57,15 @@ export const castRay = ({ rayAngle, caster }) => {
     world,
   } = caster;
 
-  const encounteredBodies = {};
+  const sector = world.getSector(gridX, gridY);
 
-  world.getSector(gridX, gridY).bodies.forEach((body) => {
-    if (body.id !== id) {
-      encounteredBodies[body.id] = body;
-    }
-  });
+  const encounteredSectors = { [sector[sector.id]]: sector };
 
   if (!rayAngle && rayAngle !== 0) {
     rayAngle = angle;
   }
 
-  if (rayAngle > 0 && rayAngle < DEG[180]) {
+  if (rayAngle > 0 && rayAngle < DEG_180) {
     horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
     distToNextHorizontalGrid = TILE_SIZE;
     xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
@@ -76,10 +76,10 @@ export const castRay = ({ rayAngle, caster }) => {
     horizontalGrid -= 1;
   }
 
-  if (rayAngle === 0 || rayAngle === DEG[180]) {
+  if (rayAngle === 0 || rayAngle === DEG_180) {
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (rayAngle >= DEG[90] && rayAngle < DEG[270]) {
+    if (rayAngle >= DEG_90 && rayAngle < DEG_270) {
       distToNextXIntersection = TILE_SIZE / TAN[rayAngle];
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
@@ -127,18 +127,14 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        horizontalSector.bodies.forEach((body) => {
-          if (!encounteredBodies[body.id]) {
-            encounteredBodies[body.id] = body;
-          }
-        });
+        encounteredSectors[horizontalSector.id] = horizontalSector;
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
     }
   }
 
-  if (rayAngle < DEG[90] || rayAngle > DEG[270]) {
+  if (rayAngle < DEG_90 || rayAngle > DEG_270) {
     verticalGrid = TILE_SIZE + gridX * TILE_SIZE;
     distToNextVerticalGrid = TILE_SIZE;
     yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
@@ -149,10 +145,10 @@ export const castRay = ({ rayAngle, caster }) => {
     verticalGrid -= 1;
   }
 
-  if (rayAngle === DEG[90] || rayAngle === DEG[270]) {
+  if (rayAngle === DEG_90 || rayAngle === DEG_270) {
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (rayAngle >= 0 && rayAngle < DEG[180]) {
+    if (rayAngle >= 0 && rayAngle < DEG_180) {
       distToNextYIntersection = TILE_SIZE * TAN[rayAngle];
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
@@ -201,11 +197,7 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        verticalSector.bodies.forEach((body) => {
-          if (!encounteredBodies[body.id]) {
-            encounteredBodies[body.id] = body;
-          }
-        });
+        encounteredSectors[verticalSector.id] = verticalSector;
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
@@ -219,7 +211,7 @@ export const castRay = ({ rayAngle, caster }) => {
 
     xIntersection = Math.floor(xIntersection);
 
-    if (!isHorizontalDoor && rayAngle < DEG[180]) {
+    if (!isHorizontalDoor && rayAngle < DEG_180) {
       sectorIntersection = TILE_SIZE - (xIntersection % TILE_SIZE) - 1;
     } else {
       sectorIntersection = xIntersection % TILE_SIZE;
@@ -232,13 +224,13 @@ export const castRay = ({ rayAngle, caster }) => {
     }
 
     return {
+      encounteredSectors: Object.values(encounteredSectors),
       distance: distToHorizontalGridBeingHit,
+      yIntersection: horizontalGrid,
       isHorizontal: true,
-      side,
-      encounteredBodies,
       sectorIntersection,
       xIntersection,
-      yIntersection: horizontalGrid,
+      side,
     };
   }
 
@@ -248,7 +240,7 @@ export const castRay = ({ rayAngle, caster }) => {
 
   yIntersection = Math.floor(yIntersection);
 
-  if (!isVerticalDoor && rayAngle > DEG[90] && rayAngle < DEG[270]) {
+  if (!isVerticalDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {
     sectorIntersection = TILE_SIZE - (yIntersection % TILE_SIZE) - 1;
   } else {
     sectorIntersection = yIntersection % TILE_SIZE;
@@ -261,11 +253,11 @@ export const castRay = ({ rayAngle, caster }) => {
   }
 
   return {
+    encounteredSectors: Object.values(encounteredSectors),
     distance: distToVerticalGridBeingHit,
-    side,
-    encounteredBodies,
-    sectorIntersection,
     xIntersection: verticalGrid,
+    sectorIntersection,
     yIntersection,
+    side,
   };
 };

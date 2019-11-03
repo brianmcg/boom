@@ -18,11 +18,13 @@ import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
+const DEG_90 = DEG[90];
+
+// const DEG_180 = DEG[180];
+
 const DEG_360 = DEG[360];
 
 const DEG_270 = DEG[270];
-
-const DEG_90 = DEG[90];
 
 const HALF_FOV = DEG[FOV / 2];
 
@@ -111,12 +113,18 @@ class WorldContainer extends Container {
 
       // Cast ray
       const {
-        encounteredBodies,
+        encounteredSectors,
         distance,
         isHorizontal,
         side,
         sectorIntersection,
       } = castRay({ rayAngle, caster: player });
+
+      encounteredSectors.forEach((sector) => {
+        sector.bodies.forEach((sectorBody) => {
+          totalEncounteredBodies[sectorBody.id] = sectorBody;
+        });
+      });
 
       // Update wall sprites
       angleDifference = (rayAngle - player.angle + DEG_360) % DEG_360;
@@ -164,9 +172,6 @@ class WorldContainer extends Container {
           backgroundSprite.tint = this.calculateTint(actualDistance);
         }
       }
-
-      // Add to total bodies encountered
-      Object.assign(totalEncounteredBodies, encounteredBodies);
 
       // Increment ray angle
       rayAngle = (rayAngle + 1) % DEG_360;
