@@ -22,35 +22,32 @@ const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 
-let wallSprite;
 let angleDifference;
-let correctedDistance;
-let spriteHeight;
-let spriteY;
-let wallBottomIntersection;
-let wallTopIntersection;
-let backgroundSprite;
-let actualDistance;
+let body;
+let bottomId;
+let centerY;
+let dx;
+let dy;
+let gridX;
+let gridY;
 let mapX;
 let mapY;
 let pixelX;
 let pixelY;
-let gridX;
-let gridY;
-let topId;
-let bottomId;
+let rayAngle;
+let sectorSide;
+let sliceY;
 let sprite;
-let dx;
-let dy;
 let spriteAngle;
+let spriteHeight;
 let spriteScale;
 let spriteWidth;
 let spriteX;
-let centerY;
-let rayAngle;
-let body;
-let sliceIndex;
-let sectorSide;
+let spriteY;
+let bottomIntersection;
+let topIntersection;
+let actualDistance;
+let correctedDistance;
 
 /**
  * Class representing a WorldContainer.
@@ -98,7 +95,7 @@ class WorldContainer extends Container {
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      wallSprite = walls[xIndex];
+      sprite = walls[xIndex];
 
       // Cast ray
       const {
@@ -120,15 +117,15 @@ class WorldContainer extends Container {
       // Update wall sprites.
       if (isHorizontal) {
         if (isDoor) {
-          sliceIndex = Math.floor(xIntersection - sector.offset);
+          sliceY = Math.floor(xIntersection - sector.offset);
         } else {
-          sliceIndex = Math.floor(xIntersection);
+          sliceY = Math.floor(xIntersection);
         }
 
         if (!isDoor && rayAngle < DEG_180) {
-          sliceIndex = TILE_SIZE - (sliceIndex % TILE_SIZE) - 1;
+          sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
         } else {
-          sliceIndex %= TILE_SIZE;
+          sliceY %= TILE_SIZE;
         }
 
         if (player.y < sector.y) {
@@ -138,15 +135,15 @@ class WorldContainer extends Container {
         }
       } else {
         if (isDoor) {
-          sliceIndex = Math.floor(yIntersection - sector.offset);
+          sliceY = Math.floor(yIntersection - sector.offset);
         } else {
-          sliceIndex = Math.floor(yIntersection);
+          sliceY = Math.floor(yIntersection);
         }
 
         if (!isDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {
-          sliceIndex = TILE_SIZE - (sliceIndex % TILE_SIZE) - 1;
+          sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
         } else {
-          sliceIndex %= TILE_SIZE;
+          sliceY %= TILE_SIZE;
         }
 
         if (player.x < sector.x) {
@@ -162,20 +159,20 @@ class WorldContainer extends Container {
       spriteY = centerY
         - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
 
-      wallSprite.height = spriteHeight;
-      wallSprite.y = spriteY;
-      wallSprite.zOrder = distance;
-      wallSprite.changeTexture(sectorSide, sliceIndex);
-      wallSprite.tint = this.calculateTint(distance, isHorizontal);
+      sprite.height = spriteHeight;
+      sprite.y = spriteY;
+      sprite.zOrder = distance;
+      sprite.changeTexture(sectorSide, sliceY);
+      sprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
-      wallBottomIntersection = Math.floor(spriteY + spriteHeight);
-      wallTopIntersection = Math.floor(spriteY);
+      bottomIntersection = Math.floor(spriteY + spriteHeight);
+      topIntersection = Math.ceil(spriteY);
 
       for (let yIndex = 0; yIndex < SCREEN.HEIGHT; yIndex += 1) {
-        backgroundSprite = background[xIndex][yIndex];
+        sprite = background[xIndex][yIndex];
 
-        if (yIndex >= wallBottomIntersection) {
+        if (yIndex >= bottomIntersection) {
           actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
@@ -185,9 +182,9 @@ class WorldContainer extends Container {
           gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
           gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
           bottomId = this.world.getSector(gridX, gridY).bottom;
-          backgroundSprite.changeTexture(bottomId, pixelX, pixelY);
-          backgroundSprite.tint = this.calculateTint(actualDistance);
-        } else if (yIndex <= wallTopIntersection) {
+          sprite.changeTexture(bottomId, pixelX, pixelY);
+          sprite.tint = this.calculateTint(actualDistance);
+        } else if (yIndex <= topIntersection) {
           actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[angleDifference];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
@@ -196,9 +193,9 @@ class WorldContainer extends Container {
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
           gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
           gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
-          topId = this.world.getSector(gridX, gridY).top;
-          backgroundSprite.changeTexture(topId, pixelX, pixelY);
-          backgroundSprite.tint = this.calculateTint(actualDistance);
+          sectorSide = this.world.getSector(gridX, gridY).top;
+          sprite.changeTexture(sectorSide, pixelX, pixelY);
+          sprite.tint = this.calculateTint(actualDistance);
         }
       }
 

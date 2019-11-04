@@ -82,6 +82,10 @@ class WorldScene extends Scene {
     });
   }
 
+  /**
+   * Update the scene
+   * @param  {[delta} delta The delta time.
+   */
   update(delta) {
     super.update(delta);
 
@@ -118,14 +122,21 @@ class WorldScene extends Scene {
     super.updateRunning(delta);
   }
 
+  /**
+   * Update the scene in the reviewing state.
+   * @param  {Number} delta The delta time.
+   */
   updateReviewing(delta) {
     this.updatePaused(delta);
     this.reviewContainer.update(delta);
   }
 
+  /**
+   * Set the state to fading out.
+   */
   setFadingOut() {
     super.setFadingOut();
-    this.removeChild(this.reviewContainer);
+    this.reviewContainer.setHideText();
   }
 
   /**

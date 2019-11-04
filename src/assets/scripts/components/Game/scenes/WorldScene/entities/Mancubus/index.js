@@ -16,7 +16,7 @@ class Mancubus extends AbstractEnemy {
    */
   constructor(options) {
     super(options);
-    this.setIdle();
+    this.setPatrolling();
   }
 }
 

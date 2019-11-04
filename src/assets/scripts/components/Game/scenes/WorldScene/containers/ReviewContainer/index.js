@@ -170,6 +170,17 @@ class ReviewContainer extends Container {
     }
   }
 
+  setHideText() {
+    const { title, stats } = this.sprites;
+
+    this.removeChild(title);
+
+    Object.values(stats).forEach(({ name, value }) => {
+      this.removeChild(name);
+      this.removeChild(value);
+    });
+  }
+
   /**
    * Set the container state.
    * @param {String} state The container state to set.
