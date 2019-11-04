@@ -31,6 +31,28 @@ let isHorizontalDoor;
 let horizontalSector;
 let verticalSector;
 
+const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
+  let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
+
+  const d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
+
+  if (d === 0) {
+    return false;
+  }
+
+  const r = q / d;
+
+  q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
+
+  const s = q / d;
+
+  if (r < 0 || r > 1 || s < 0 || s > 1) {
+    return false;
+  }
+
+  return true;
+};
+
 /**
  * Calculate the atan2
  * @param  {Number} dyA The first number.
@@ -57,39 +79,59 @@ export const distanceBetween = (bodyA, bodyB) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
-  let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
-  const d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
+/**
+ * Check if two bodies are colliding.
+ * @param  {Body} bodyA The first body.
+ * @param  {Body} bodyB The second body.
+ * @return {Boolean}    Are the bodies colliding.
+ */
+export const isBodyCollision = (bodyA, bodyB) => {
+  const shapeA = bodyA.shape;
+  const shapeB = bodyB.shape;
 
-  if (d === 0) {
-    return false;
-  }
-
-  const r = q / d;
-
-  q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
-  const s = q / d;
-
-  if (r < 0 || r > 1 || s < 0 || s > 1) {
-    return false;
-  }
-
-  return true;
+  return shapeA.x < shapeB.x + shapeB.width
+    && shapeA.x + shapeA.width > shapeB.x
+    && shapeA.y < shapeB.y + shapeB.length
+    && shapeA.length + shapeA.y > shapeB.y;
 };
 
 /**
  * A collision between a ray and a body has occured.
- * @param  {Object}  p1 The first point of the ray.
- * @param  {Object}  p2 The second point of the ray..
- * @param  {Object}  r  The body.
- * @return {Boolean}      Represents whether a collision has occured.
+ * @param  {Object}  startPoint The first point of the ray.
+ * @param  {Object}  endPoint   The second point of the ray.
+ * @param  {Object}  body       The body.
+ * @return {Boolean}            Represents whether a collision has occured.
  */
-export const rayBodyCollision = (p1, p2, r) => (
-  lineIntersectsLine(p1, p2, { x: r.x, y: r.y }, { x: r.x + r.w, y: r.y })
-    || lineIntersectsLine(p1, p2, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h })
-    || lineIntersectsLine(p1, p2, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h })
-    || lineIntersectsLine(p1, p2, { x: r.x, y: r.y + r.h }, { x: r.x, y: r.y })
-);
+export const isRayCollision = (startPoint, endPoint, body) => {
+  const {
+    x,
+    y,
+    width,
+    length,
+  } = body.shape;
+
+  return lineIntersectsLine(
+    startPoint,
+    endPoint,
+    { x, y },
+    { x: x + width, y },
+  ) || lineIntersectsLine(
+    startPoint,
+    endPoint,
+    { x: x + width, y },
+    { x: x + width, y: y + length },
+  ) || lineIntersectsLine(
+    startPoint,
+    endPoint,
+    { x: x + width, y: y + length },
+    { x, y: y + length },
+  ) || lineIntersectsLine(
+    startPoint,
+    endPoint,
+    { x, y: y + length },
+    { x, y },
+  );
+};
 
 /**
  * Cast a ray from a caster.
@@ -109,10 +151,12 @@ export const castRay = ({ rayAngle, caster }) => {
   } = caster;
 
   const encounteredBodies = {};
-  const currentSector = world.getSector(gridX, gridY);
-  const encounteredSectors = {
-    [currentSector.id]: currentSector,
-  };
+
+  world.getSector(gridX, gridY).bodies.forEach((body) => {
+    if (body.id !== id) {
+      encounteredBodies[body.id] = body;
+    }
+  });
 
   if (rayAngle === undefined) {
     rayAngle = angle;
@@ -180,7 +224,11 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        encounteredSectors[horizontalSector.id] = horizontalSector;
+        horizontalSector.bodies.forEach((body) => {
+          if (body.id !== id) {
+            encounteredBodies[body.id] = body;
+          }
+        });
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
@@ -250,7 +298,11 @@ export const castRay = ({ rayAngle, caster }) => {
           break;
         }
       } else {
-        encounteredSectors[verticalSector.id] = verticalSector;
+        verticalSector.bodies.forEach((body) => {
+          if (body.id !== id) {
+            encounteredBodies[body.id] = body;
+          }
+        });
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
@@ -258,43 +310,47 @@ export const castRay = ({ rayAngle, caster }) => {
   }
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-    Object.values(encounteredSectors).forEach((encounteredSector) => {
-      if (distanceBetween(caster, encounteredSector) <= distToHorizontalGridBeingHit) {
-        encounteredSector.bodies.forEach((body) => {
-          if (body.id !== id) {
-            encounteredBodies[body.id] = body;
-          }
-        });
+    Object.values(encounteredBodies).forEach((body) => {
+      if (distanceBetween(caster, body) > distToHorizontalGridBeingHit) {
+        delete encounteredBodies[body.id];
       }
     });
 
     return {
+      startPoint: {
+        x,
+        y,
+      },
+      endPoint: {
+        x: xIntersection,
+        y: horizontalGrid,
+      },
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isDoor: isHorizontalDoor,
       isHorizontal: true,
       sector: horizontalSector,
-      xIntersection,
-      yIntersection: horizontalGrid,
     };
   }
 
-  Object.values(encounteredSectors).forEach((encounteredSector) => {
-    if (distanceBetween(caster, encounteredSector) <= distToVerticalGridBeingHit) {
-      encounteredSector.bodies.forEach((body) => {
-        if (body.id !== id) {
-          encounteredBodies[body.id] = body;
-        }
-      });
+  Object.values(encounteredBodies).forEach((body) => {
+    if (distanceBetween(caster, body) > distToVerticalGridBeingHit) {
+      delete encounteredBodies[body.id];
     }
   });
 
   return {
+    startPoint: {
+      x,
+      y,
+    },
+    endPoint: {
+      x: verticalGrid,
+      y: yIntersection,
+    },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
     isDoor: isVerticalDoor,
     sector: verticalSector,
-    xIntersection: verticalGrid,
-    yIntersection,
   };
 };

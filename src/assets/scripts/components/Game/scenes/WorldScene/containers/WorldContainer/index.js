@@ -104,8 +104,7 @@ class WorldContainer extends Container {
         isDoor,
         isHorizontal,
         sector,
-        xIntersection,
-        yIntersection,
+        endPoint,
       } = castRay({
         caster: player,
         rayAngle,
@@ -117,9 +116,9 @@ class WorldContainer extends Container {
       // Update wall sprites.
       if (isHorizontal) {
         if (isDoor) {
-          sliceY = Math.floor(xIntersection - sector.offset);
+          sliceY = Math.floor(endPoint.x - sector.offset);
         } else {
-          sliceY = Math.floor(xIntersection);
+          sliceY = Math.floor(endPoint.x);
         }
 
         if (!isDoor && rayAngle < DEG_180) {
@@ -135,9 +134,9 @@ class WorldContainer extends Container {
         }
       } else {
         if (isDoor) {
-          sliceY = Math.floor(yIntersection - sector.offset);
+          sliceY = Math.floor(endPoint.y - sector.offset);
         } else {
-          sliceY = Math.floor(yIntersection);
+          sliceY = Math.floor(endPoint.y);
         }
 
         if (!isDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {

@@ -103,6 +103,7 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the dead state.
    */
   setDead() {
+    this.blocking = false;
     this.setState(STATES.DEAD);
   }
 

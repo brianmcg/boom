@@ -1,5 +1,11 @@
 import { TILE_SIZE } from '~/constants/config';
-import { DEG, castRay, distanceBetween } from '~/core/physics';
+import {
+  DEG,
+  castRay,
+  distanceBetween,
+  isBodyCollision,
+  isRayCollision,
+} from '~/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
@@ -237,7 +243,7 @@ class Player extends AbstractActor {
    */
   updateInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
-      if (body instanceof Item && this.collide(body)) {
+      if (body instanceof Item && isBodyCollision(this, body)) {
         this.pickUp(body);
       } else if (this.actions.use && body.use) {
         body.use();
@@ -287,23 +293,27 @@ class Player extends AbstractActor {
     this.camera.jerkBackward(power * 2);
     this.world.setGunFlash(power);
 
-    const { encounteredBodies } = castRay({ caster: this });
+    const { encounteredBodies, startPoint, endPoint } = castRay({ caster: this });
     let currentClosestDistance = Number.MAX_VALUE;
-    let closestBlockingBody;
+    let actor;
 
     Object.values(encounteredBodies).forEach((body) => {
-      if (body.update) {
+      if (body instanceof AbstractActor && body.blocking) {
         const distance = distanceBetween(this, body);
 
         if (distance < currentClosestDistance) {
-          closestBlockingBody = body;
+          actor = body;
           currentClosestDistance = distance;
         }
       }
     });
 
-    if (closestBlockingBody && closestBlockingBody.setHurt) {
-      closestBlockingBody.setDead();
+    if (actor) {
+      const collision = isRayCollision(startPoint, endPoint, actor);
+
+      if (collision) {
+        actor.setDead();
+      }
     }
   }
 

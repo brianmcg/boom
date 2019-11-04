@@ -40,21 +40,6 @@ class Body extends EventEmitter {
   }
 
   /**
-   * Check if this body is colliding with another.
-   * @param  {Body}     body The other body to check.
-   * @return {Boolean}
-   */
-  collide(body) {
-    const thisShape = this.shape;
-    const otherShape = body.shape;
-
-    return thisShape.x < otherShape.x + otherShape.width
-      && thisShape.x + thisShape.width > otherShape.x
-      && thisShape.y < otherShape.y + otherShape.length
-      && thisShape.length + thisShape.y > otherShape.y;
-  }
-
-  /**
    * The grid x position.
    * @member {Number}
    */

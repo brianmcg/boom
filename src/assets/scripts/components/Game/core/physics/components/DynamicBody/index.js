@@ -1,4 +1,5 @@
 import Body from '../Body';
+import { isBodyCollision } from '../../helpers';
 import { COS, SIN, DEG } from '../../constants';
 
 /**
@@ -43,7 +44,7 @@ class DynamicBody extends Body {
 
     // Check for x axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.collide(body)) {
+      if (body.blocking && isBodyCollision(this, body)) {
         if (body.x > this.x) {
           this.x = (body.x - (body.width / 2)) - (this.width / 2);
         } else {
@@ -57,7 +58,7 @@ class DynamicBody extends Body {
 
     // Check for y axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.collide(body)) {
+      if (body.blocking && isBodyCollision(this, body)) {
         if (body.y > this.y) {
           this.y = (body.y - (body.length / 2)) - (this.length / 2);
         } else {
