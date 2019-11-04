@@ -282,38 +282,35 @@ class Player extends AbstractActor {
    * Use the current weapon.
    */
   useWeapon() {
-    this.weapon.use();
+    if (this.weapon.use()) {
+      this.camera.jerkBackward(this.weapon.power * 2);
+      this.world.setGunFlash(this.weapon.power);
+      this.attack();
+    }
   }
 
   /**
-   * Handle fire weapon event.
-   * @param  {Number} power The power of the shot.
+   * Attack in facing direction.
    */
-  onFireWeapon(power) {
-    this.camera.jerkBackward(power * 2);
-    this.world.setGunFlash(power);
-
+  attack() {
     const { encounteredBodies, startPoint, endPoint } = castRay({ caster: this });
-    let currentClosestDistance = Number.MAX_VALUE;
-    let actor;
+    let shortestDistance = Number.MAX_VALUE;
+    let nearestActor;
+    let distance;
 
     Object.values(encounteredBodies).forEach((body) => {
       if (body instanceof AbstractActor && body.blocking) {
-        const distance = distanceBetween(this, body);
+        distance = distanceBetween(this, body);
 
-        if (distance < currentClosestDistance) {
-          actor = body;
-          currentClosestDistance = distance;
+        if (distance < shortestDistance) {
+          nearestActor = body;
+          shortestDistance = distance;
         }
       }
     });
 
-    if (actor) {
-      const collision = isRayCollision(startPoint, endPoint, actor);
-
-      if (collision) {
-        actor.setDead();
-      }
+    if (nearestActor && isRayCollision(startPoint, endPoint, nearestActor)) {
+      nearestActor.setDead();
     }
   }
 
@@ -406,6 +403,10 @@ class Player extends AbstractActor {
    */
   get cameraRotation() {
     return this.camera.rotation;
+  }
+
+  get attackStrength() {
+    return this.weapon.power;
   }
 }
 

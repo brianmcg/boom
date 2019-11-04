@@ -58,3 +58,9 @@ export const DEFAULT_LANGUAGE = 'en';
  * @type {Number}
  */
 export const FOV = 60;
+
+/**
+ * The distance from the player inside which entities should update;
+ * @type {Number}
+ */
+export const UPDATE_DISTANCE = TILE_SIZE * 20;

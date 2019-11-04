@@ -55,8 +55,10 @@ class Weapon {
    */
   use() {
     if (this.isIdle()) {
-      this.setFiring();
+      return this.setFiring();
     }
+
+    return false;
   }
 
   /**
@@ -155,39 +157,42 @@ class Weapon {
 
   /**
    * Set the state to firing.
+   * @return {Boolean} Has the state changed to firing.
    */
   setFiring() {
-    if (this.setState(STATES.FIRING)) {
-      this.player.onFireWeapon(this.power);
-    }
+    return this.setState(STATES.FIRING);
   }
 
   /**
    * Set the state to idle.
+   * @return {Boolean} Has the state changed to idle.
    */
   setIdle() {
-    this.setState(STATES.IDLE);
+    return this.setState(STATES.IDLE);
   }
 
   /**
    * Set the state to disabled.
+   * @return {Boolean} Has the state changed to disabled.
    */
   setDisabled() {
-    this.setState(STATES.DISABLED);
+    return this.setState(STATES.DISABLED);
   }
 
   /**
    * Set the state to arming.
+   * @return {Boolean} Has the state changed to arming.
    */
   setArming() {
-    this.setState(STATES.ARMING);
+    return this.setState(STATES.ARMING);
   }
 
   /**
    * Set the state to unarming.
+   * @return {Boolean} Has the state changed to unarming.
    */
   setUnarming() {
-    this.setState(STATES.UNARMING);
+    return this.setState(STATES.UNARMING);
   }
 
   /**

@@ -1,5 +1,6 @@
+import { UPDATE_DISTANCE } from '~/constants/config';
+import { DEG, distanceBetween } from '~/core/physics';
 import AbstractActor from '../AbstractActor';
-import { DEG } from '~/core/physics';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -31,6 +32,7 @@ class AbstractEnemy extends AbstractActor {
     super(options);
     this.velocity = 1;
     this.rotVelocity = DEG[1];
+    this.distanceToPlayer = Number.MAX_VALUE;
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
@@ -38,16 +40,22 @@ class AbstractEnemy extends AbstractActor {
   }
 
   update(delta) {
-    switch (this.state) {
-      case STATES.DEAD:
-        this.velocity = 0;
-        break;
-      default:
-        this.velocity = 1;
-        break;
-    }
+    if (!this.isDead()) {
+      this.distanceToPlayer = distanceBetween(this, this.world.player);
 
-    super.update(delta);
+      if (this.distanceToPlayer < UPDATE_DISTANCE) {
+        switch (this.state) {
+          case STATES.DEAD:
+            this.velocity = 0;
+            break;
+          default:
+            this.velocity = 1;
+            break;
+        }
+
+        super.update(delta);
+      }
+    }
   }
 
   /**
