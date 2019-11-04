@@ -22,7 +22,7 @@ const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 
-let angleDifference;
+let spriteAngle;
 let body;
 let bottomId;
 let centerY;
@@ -38,7 +38,6 @@ let rayAngle;
 let sectorSide;
 let sliceY;
 let sprite;
-let spriteAngle;
 let spriteHeight;
 let spriteScale;
 let spriteWidth;
@@ -152,12 +151,11 @@ class WorldContainer extends Container {
         }
       }
 
-      angleDifference = (rayAngle - player.angle + DEG_360) % DEG_360;
-      correctedDistance = distance * COS[angleDifference];
+      spriteAngle = (rayAngle - player.angle + DEG_360) % DEG_360;
+      correctedDistance = distance * COS[spriteAngle];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
         - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
-
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
@@ -173,7 +171,7 @@ class WorldContainer extends Container {
 
         if (yIndex >= bottomIntersection) {
           actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[angleDifference];
+          correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
@@ -185,7 +183,7 @@ class WorldContainer extends Container {
           sprite.tint = this.calculateTint(actualDistance);
         } else if (yIndex <= topIntersection) {
           actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[angleDifference];
+          correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;

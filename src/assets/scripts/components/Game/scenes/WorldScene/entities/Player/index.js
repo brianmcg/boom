@@ -85,7 +85,10 @@ class Player extends AbstractActor {
 
     this.weapons = Object.values(Weapon.TYPES).reduce((memo, type) => ({
       ...memo,
-      [type]: new Weapon({ player: this, ...WEAPON_DEFAULTS[type] }),
+      [type]: new Weapon({
+        player: this,
+        ...WEAPON_DEFAULTS[type],
+      }),
     }), {});
   }
 
