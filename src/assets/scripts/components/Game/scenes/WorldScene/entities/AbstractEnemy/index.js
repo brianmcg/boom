@@ -37,6 +37,19 @@ class AbstractEnemy extends AbstractActor {
     }
   }
 
+  update(delta) {
+    switch (this.state) {
+      case STATES.DEAD:
+        this.velocity = 0;
+        break;
+      default:
+        this.velocity = 1;
+        break;
+    }
+
+    super.update(delta);
+  }
+
   /**
    * Set the enemy to the idle state.
    */

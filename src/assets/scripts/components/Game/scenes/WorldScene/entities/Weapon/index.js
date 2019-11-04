@@ -158,7 +158,7 @@ class Weapon {
    */
   setFiring() {
     if (this.setState(STATES.FIRING)) {
-      this.player.onFire(this.power);
+      this.player.onFireWeapon(this.power);
     }
   }
 

@@ -57,6 +57,40 @@ export const distanceBetween = (bodyA, bodyB) => {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
+  let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
+  const d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
+
+  if (d === 0) {
+    return false;
+  }
+
+  const r = q / d;
+
+  q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
+  const s = q / d;
+
+  if (r < 0 || r > 1 || s < 0 || s > 1) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * A collision between a ray and a body has occured.
+ * @param  {Object}  p1 The first point of the ray.
+ * @param  {Object}  p2 The second point of the ray..
+ * @param  {Object}  r  The body.
+ * @return {Boolean}      Represents whether a collision has occured.
+ */
+export const rayBodyCollision = (p1, p2, r) => (
+  lineIntersectsLine(p1, p2, { x: r.x, y: r.y }, { x: r.x + r.w, y: r.y })
+    || lineIntersectsLine(p1, p2, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h })
+    || lineIntersectsLine(p1, p2, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h })
+    || lineIntersectsLine(p1, p2, { x: r.x, y: r.y + r.h }, { x: r.x, y: r.y })
+);
+
 /**
  * Cast a ray from a caster.
  * @param  {Number}         options.rayAngle  The optional ray angle.
@@ -65,6 +99,7 @@ export const distanceBetween = (bodyA, bodyB) => {
  */
 export const castRay = ({ rayAngle, caster }) => {
   const {
+    id,
     x,
     y,
     gridX,
@@ -79,7 +114,7 @@ export const castRay = ({ rayAngle, caster }) => {
     [currentSector.id]: currentSector,
   };
 
-  if (!rayAngle && rayAngle !== 0) {
+  if (rayAngle === undefined) {
     rayAngle = angle;
   }
 
@@ -225,9 +260,10 @@ export const castRay = ({ rayAngle, caster }) => {
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     Object.values(encounteredSectors).forEach((encounteredSector) => {
       if (distanceBetween(caster, encounteredSector) <= distToHorizontalGridBeingHit) {
-        encounteredBodies[encounteredSector.id] = encounteredSector;
         encounteredSector.bodies.forEach((body) => {
-          encounteredBodies[body.id] = body;
+          if (body.id !== id) {
+            encounteredBodies[body.id] = body;
+          }
         });
       }
     });
@@ -245,9 +281,10 @@ export const castRay = ({ rayAngle, caster }) => {
 
   Object.values(encounteredSectors).forEach((encounteredSector) => {
     if (distanceBetween(caster, encounteredSector) <= distToVerticalGridBeingHit) {
-      encounteredBodies[encounteredSector.id] = encounteredSector;
       encounteredSector.bodies.forEach((body) => {
-        encounteredBodies[body.id] = body;
+        if (body.id !== id) {
+          encounteredBodies[body.id] = body;
+        }
       });
     }
   });

@@ -1,5 +1,5 @@
 import { TILE_SIZE } from '~/constants/config';
-import { DEG } from '~/core/physics';
+import { DEG, castRay, distanceBetween } from '~/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
@@ -226,7 +226,7 @@ class Player extends AbstractActor {
     } else if (armShotgun) {
       this.selectNextWeapon(Weapon.TYPES.SHOTGUN);
     } else if (attack) {
-      this.weapon.use();
+      this.useWeapon();
     }
 
     this.weapon.update(delta);
@@ -273,12 +273,38 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Use the current weapon.
+   */
+  useWeapon() {
+    this.weapon.use();
+  }
+
+  /**
    * Handle fire weapon event.
    * @param  {Number} power The power of the shot.
    */
-  onFire(power) {
+  onFireWeapon(power) {
     this.camera.jerkBackward(power * 2);
     this.world.setGunFlash(power);
+
+    const { encounteredBodies } = castRay({ caster: this });
+    let currentClosestDistance = Number.MAX_VALUE;
+    let closestBlockingBody;
+
+    Object.values(encounteredBodies).forEach((body) => {
+      if (body.update) {
+        const distance = distanceBetween(this, body);
+
+        if (distance < currentClosestDistance) {
+          closestBlockingBody = body;
+          currentClosestDistance = distance;
+        }
+      }
+    });
+
+    if (closestBlockingBody && closestBlockingBody.setHurt) {
+      closestBlockingBody.setDead();
+    }
   }
 
   /**
