@@ -21,7 +21,7 @@ export const parse = (assets, text) => {
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: BLACK,
-    alpha: 0.8,
+    alpha: 0.75,
   });
 
   const labels = text.reduce((memo, key, index) => ({

@@ -1,4 +1,4 @@
-import { Container, PixelateFilter, ColorMatrixFilter } from '~/core/graphics';
+import { Container, PixelateFilter } from '~/core/graphics';
 
 const PIXEL = {
   MAX_SIZE: 100,
@@ -22,20 +22,9 @@ class MainContainer extends Container {
   constructor() {
     super();
 
-    this.colorMatrixFilter = new ColorMatrixFilter();
     this.pixelateFilter = new PixelateFilter();
-
-    this.filters = [
-      this.colorMatrixFilter,
-      this.pixelateFilter,
-    ];
-
+    this.filters = [this.pixelateFilter];
     this.disablePixelFilter();
-    this.disableColorFilter();
-
-    this.on('added', () => {
-      this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
-    });
   }
 
   /**
@@ -78,17 +67,14 @@ class MainContainer extends Container {
 
   setFadingIn() {
     this.enablePixelFilter();
-    this.disableColorFilter();
   }
 
   setLoading() {
     this.disablePixelFilter();
-    this.disableColorFilter();
   }
 
   setFadingOut() {
     this.enablePixelFilter();
-    this.disableColorFilter();
   }
 
   /**
@@ -96,8 +82,6 @@ class MainContainer extends Container {
    */
   setPaused() {
     this.enablePixelFilter();
-    this.enableColorFilter();
-    this.desaturate();
     super.stop();
   }
 
@@ -106,7 +90,6 @@ class MainContainer extends Container {
    */
   setRunning() {
     this.disablePixelFilter();
-    this.disableColorFilter();
     super.play();
   }
 
@@ -122,27 +105,6 @@ class MainContainer extends Container {
    */
   disablePixelFilter() {
     this.pixelateFilter.enabled = false;
-  }
-
-  /**
-   * Enable the color filter.
-   */
-  enableColorFilter() {
-    this.colorMatrixFilter.enabled = true;
-  }
-
-  /**
-   * Disable the color filter.
-   */
-  disableColorFilter() {
-    this.colorMatrixFilter.enabled = false;
-  }
-
-  /**
-   * Desaturate the MainContainer.
-   */
-  desaturate() {
-    this.colorMatrixFilter.desaturate();
   }
 
   /**

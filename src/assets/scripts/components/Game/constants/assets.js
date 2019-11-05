@@ -8,7 +8,7 @@
  */
 export const DATA = {
   SCENE: 'scene',
-  FONT: 'main_font',
+  FONT: 'font',
 };
 
 /**

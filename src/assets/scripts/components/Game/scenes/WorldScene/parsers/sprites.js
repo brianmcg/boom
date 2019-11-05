@@ -136,7 +136,7 @@ const createBackgroundSprites = (world, frames, textures) => {
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
     const row = [];
     for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
-      row.push(new BackgroundSprite(backgroundTextures));
+      row.push(new BackgroundSprite(backgroundTextures, i, j));
     }
     backgroundSprites.push(row);
   }
@@ -171,7 +171,7 @@ const createReviewSprites = (text) => {
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: BLACK,
-    alpha: 0.9,
+    alpha: 0.85,
   });
 
   const title = new TextSprite({

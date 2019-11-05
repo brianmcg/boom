@@ -14,15 +14,13 @@ class BackgroundContainer extends ParticleContainer {
       tint: true,
     });
 
-    this.background = background;
-
-    background.forEach((row, i) => {
-      row.forEach((pixel, y) => {
-        pixel.x = i;
-        pixel.y = y;
+    background.forEach((slice) => {
+      slice.forEach((pixel) => {
         this.addChild(pixel);
       });
     });
+
+    this.background = background;
   }
 }
 

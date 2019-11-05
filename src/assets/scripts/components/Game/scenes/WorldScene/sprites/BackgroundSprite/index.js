@@ -8,8 +8,10 @@ class BackgroundSprite extends Sprite {
   /**
    * Creates a background sprite.
    */
-  constructor(textures) {
+  constructor(textures, x, y) {
     super();
+    this.x = x;
+    this.y = y;
     this.textures = textures;
     this.texture = textures[Object.keys(textures)[0]][0][0];
   }

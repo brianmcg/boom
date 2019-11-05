@@ -4,8 +4,6 @@ import { SCREEN } from '~/constants/config';
 
 const SCREEN_PADDING = 6;
 
-const ICON_PADDING_TOP = 1;
-
 const ICON_PADDING_RIGHT = 5;
 
 /**
@@ -34,25 +32,18 @@ class MenuContainer extends Container {
 
     this.items.forEach((item, index) => {
       const sprite = labels[item.label];
-
-      if (!index) {
-        icon.y = sprite.y + ICON_PADDING_TOP;
-        icon.x = sprite.x - ICON_PADDING_RIGHT - icon.width;
-      }
-
       const totalHeight = (sprite.height + SCREEN_PADDING) * this.items.length;
 
+      sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
       sprite.y = ((SCREEN.HEIGHT / 2) - (totalHeight / 2))
         + (index * sprite.height)
         + (index * SCREEN_PADDING);
 
-      sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
-
       this.addChild(sprite);
+    });
 
-      this.on('added', () => {
-        this.currentIndex = 0;
-      });
+    this.on('added', () => {
+      this.currentIndex = 0;
     });
   }
 
@@ -96,7 +87,7 @@ class MenuContainer extends Container {
 
     Object.values(labels).forEach((child, index) => {
       if (index === this.currentIndex) {
-        icon.y = child.y + ICON_PADDING_TOP;
+        icon.y = child.y;
         icon.x = child.x - ICON_PADDING_RIGHT - icon.width;
         child.setColor(RED);
       } else {

@@ -1,4 +1,4 @@
-import { Container, ColorMatrixFilter } from '~/core/graphics';
+import { Container } from '~/core/graphics';
 import {
   DEG,
   COS,
@@ -8,7 +8,7 @@ import {
   castRay,
 } from '~/core/physics';
 import { SCREEN, TILE_SIZE, FOV } from '~/constants/config';
-import { GREY } from '~/constants/colors';
+import { GREY, WHITE } from '~/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
@@ -24,7 +24,7 @@ const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 
 let spriteAngle;
 let body;
-let bottomId;
+let sectorSide;
 let centerY;
 let dx;
 let dy;
@@ -35,7 +35,6 @@ let mapY;
 let pixelX;
 let pixelY;
 let rayAngle;
-let sectorSide;
 let sliceY;
 let sprite;
 let spriteHeight;
@@ -71,17 +70,13 @@ class WorldContainer extends Container {
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
-
-    this.colorMatrixFilter = new ColorMatrixFilter();
-    this.colorMatrixFilter.enabled = false;
-    this.filters = [this.colorMatrixFilter];
   }
 
   /**
    * Animate the container.
    */
   animate() {
-    const { player, visibility } = this.world;
+    const { player } = this.world;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
     const totalEncounteredBodies = {};
@@ -178,8 +173,8 @@ class WorldContainer extends Container {
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
           gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
           gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
-          bottomId = this.world.getSector(gridX, gridY).bottom;
-          sprite.changeTexture(bottomId, pixelX, pixelY);
+          sectorSide = this.world.getSector(gridX, gridY).bottom;
+          sprite.changeTexture(sectorSide, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         } else if (yIndex <= topIntersection) {
           actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
@@ -213,23 +208,18 @@ class WorldContainer extends Container {
 
         if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
           correctedDistance = COS[spriteAngle] * actualDistance;
-
-          if (visibility > correctedDistance) {
-            spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-            spriteWidth = TILE_SIZE * spriteScale;
-            spriteHeight = TILE_SIZE * spriteScale;
-            spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-            sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-            sprite.position.y = centerY
-              - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
-            sprite.width = spriteWidth;
-            sprite.height = spriteHeight;
-            sprite.zOrder = actualDistance;
-            sprite.tint = this.calculateTint(actualDistance);
-            this.mapContainer.addChild(sprite);
-          } else {
-            this.mapContainer.removeChild(sprite);
-          }
+          spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+          spriteWidth = TILE_SIZE * spriteScale;
+          spriteHeight = TILE_SIZE * spriteScale;
+          spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+          sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+          sprite.position.y = centerY
+            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
+          sprite.width = spriteWidth;
+          sprite.height = spriteHeight;
+          sprite.zOrder = actualDistance;
+          sprite.tint = this.calculateTint(actualDistance);
+          this.mapContainer.addChild(sprite);
         } else {
           this.mapContainer.removeChild(sprite);
         }
@@ -251,25 +241,22 @@ class WorldContainer extends Container {
    */
   calculateTint(distance, darken) {
     const { brightness, visibility } = this.world;
+
     let intensity = 1;
 
-    if (distance > visibility) {
-      distance = visibility;
-    }
+    intensity += brightness;
+    intensity -= distance / visibility;
 
     if (darken) {
       intensity -= 0.2;
     }
 
-    intensity += brightness;
-    intensity -= (distance / visibility);
-
     if (intensity > 1) {
-      intensity = 1;
+      return WHITE;
     }
 
-    if (intensity < 0) {
-      return 0;
+    if (intensity < 0.1) {
+      intensity = 0.1;
     }
 
     return Math.round(intensity * 255) * GREY;
