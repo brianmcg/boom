@@ -68,18 +68,15 @@ class WorldScene extends Scene {
 
     const { world, sprites } = parse(resources, text, player);
 
-    super.create(resources);
-
     this.world = world;
-    this.world.on(World.EVENTS.EXIT, () => this.setReviewing());
+    this.world.exit = () => this.setReviewing();
 
     this.mainContainer.addChild(new WorldContainer({ world, sprites: sprites.world }));
     this.promptContainer.addChild(sprites.prompt);
 
-    this.reviewContainer = new ReviewContainer({
-      sprites: sprites.review,
-      onComplete: () => this.setPrompting(),
-    });
+    this.reviewContainer = new ReviewContainer(sprites.review);
+
+    super.create(resources);
   }
 
   /**

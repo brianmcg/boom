@@ -7,11 +7,6 @@ const PIXEL = {
   PAUSE_SIZE: 10,
 };
 
-const EVENTS = {
-  FADE_IN_COMPLETE: 'main:fadein:complete',
-  FADE_OUT_COMPLETE: 'main:fadeout:complete',
-};
-
 /**
  * A class representing a MainContainer.
  */
@@ -24,10 +19,6 @@ class MainContainer extends Container {
 
     this.pixelateFilter = new PixelateFilter();
     this.filters = [this.pixelateFilter];
-
-    this.on('added', () => {
-      this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
-    });
   }
 
   /**
@@ -39,7 +30,7 @@ class MainContainer extends Container {
 
     if (pixelSize < PIXEL.MIN_SIZE) {
       pixelSize = PIXEL.MIN_SIZE;
-      this.emit(EVENTS.FADE_IN_COMPLETE);
+      this.parent.setRunning();
     }
 
     this.pixelateFilter.size = pixelSize;
@@ -55,7 +46,7 @@ class MainContainer extends Container {
 
     if (pixelSize > maxPixelSize) {
       pixelSize = maxPixelSize;
-      this.emit(EVENTS.FADE_OUT_COMPLETE);
+      this.parent.setStopped();
     }
 
     this.pixelateFilter.size = pixelSize;
@@ -69,6 +60,7 @@ class MainContainer extends Container {
   }
 
   setFadingIn() {
+    this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
     this.enablePixelFilter();
   }
 
@@ -108,13 +100,6 @@ class MainContainer extends Container {
    */
   disablePixelFilter() {
     this.pixelateFilter.enabled = false;
-  }
-
-  /**
-   * The container events.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

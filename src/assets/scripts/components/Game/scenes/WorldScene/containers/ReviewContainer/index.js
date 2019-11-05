@@ -18,13 +18,10 @@ const STATES = {
 class ReviewContainer extends Container {
   /**
    * Creates a review container.
-   * @param  {Function} options.onComplete  The function to call when review is complete.
-   * @param  {Object} options.sprites       The sprites for the container.
+   * @param  {Object} sprites   The sprites for the container.
    */
-  constructor({ onComplete, sprites }) {
+  constructor(sprites) {
     super();
-
-    this.onComplete = onComplete;
 
     this.addChild(sprites.background);
 
@@ -33,7 +30,7 @@ class ReviewContainer extends Container {
     const statsHeight = stats.enemies.name.height;
 
     title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
-    title.y = TEXT_PADDING;
+    title.y = TEXT_PADDING * 2;
 
     Object.values(stats).forEach(({ name, value }, i) => {
       name.x = (SCREEN.WIDTH / 2) - TEXT_PADDING - name.width;
@@ -120,7 +117,7 @@ class ReviewContainer extends Container {
 
     if (this.timer >= INTERVAL) {
       this.timer = 0;
-      this.onComplete();
+      this.parent.setPrompting();
       this.setState(null);
     }
   }

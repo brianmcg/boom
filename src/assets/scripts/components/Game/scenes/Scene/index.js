@@ -76,14 +76,6 @@ class Scene extends Container {
       }],
     };
 
-    this.mainContainer.once(MainContainer.EVENTS.FADE_IN_COMPLETE, () => {
-      this.setRunning();
-    });
-
-    this.mainContainer.once(MainContainer.EVENTS.FADE_OUT_COMPLETE, () => {
-      this.setStopped();
-    });
-
     this.setLoading();
   }
 

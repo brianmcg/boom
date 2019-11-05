@@ -2,11 +2,6 @@ import { World as PhysicsWorld } from '~/core/physics';
 import { TILE_SIZE } from '~/constants/config';
 import Player from '../Player';
 
-const EVENTS = {
-  EXIT: 'world:exit',
-  ENTER: 'world:enter',
-};
-
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
 const ITEM_FLASH_AMOUNT = 0.35;
@@ -105,21 +100,6 @@ class World extends PhysicsWorld {
   setItemFlash() {
     this.brightness += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
-  }
-
-  /**
-   * Emit the exit event.
-   */
-  exit() {
-    this.emit(EVENTS.EXIT);
-  }
-
-  /**
-   * The world events.
-   * @static
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 
