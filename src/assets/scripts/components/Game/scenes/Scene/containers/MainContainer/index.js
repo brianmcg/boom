@@ -24,7 +24,10 @@ class MainContainer extends Container {
 
     this.pixelateFilter = new PixelateFilter();
     this.filters = [this.pixelateFilter];
-    this.disablePixelFilter();
+
+    this.on('added', () => {
+      this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
+    });
   }
 
   /**
