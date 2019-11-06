@@ -8,7 +8,7 @@ const game = new Game();
 manual.on(Manual.EVENTS.CLICK_START, () => {
   document.body.removeChild(manual.view);
   document.body.appendChild(game.view);
-  // TODO: Add `game.start();`
+  game.start();
 });
 
 game.on(Game.EVENTS.STOPPED, () => {
@@ -22,4 +22,5 @@ document.addEventListener('DOMContentLoaded', () => {
   game.start();
 });
 
+// TODO: Remove this
 window.game = game;

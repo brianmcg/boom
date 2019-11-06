@@ -31,7 +31,7 @@ class ReviewContainer extends Container {
     const statsHeight = stats.enemies.name.height;
     const statsStartY = title.height + (TEXT_PADDING * 6);
 
-    title.y = TEXT_PADDING * 2;
+    title.y = TEXT_PADDING * 4;
 
     [enemies, items, time].forEach(({ name, value }, i) => {
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));

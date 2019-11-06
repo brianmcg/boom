@@ -71,6 +71,7 @@ class Game extends Application {
 
     this.loader.load(assets).then(({ sound }) => {
       this.sound.add(SOUND.EFFECTS, sound);
+      // TODO: Show title scene
       this.show(Scene.TYPES.WORLD, 1);
     });
   }

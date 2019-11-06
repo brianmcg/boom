@@ -224,8 +224,8 @@ class Scene extends Container {
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
       this.sound.resume();
-      this.mainContainer.setRunning();
-      this.promptContainer.setRunning();
+      this.mainContainer.play();
+      this.promptContainer.play();
     }
   }
 
@@ -236,8 +236,8 @@ class Scene extends Container {
     if (this.setState(STATES.PAUSED)) {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
-      this.mainContainer.setPaused();
-      this.promptContainer.setPaused();
+      this.mainContainer.stop();
+      this.promptContainer.stop();
     }
   }
 

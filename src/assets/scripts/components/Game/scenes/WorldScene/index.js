@@ -143,7 +143,7 @@ class WorldScene extends Scene {
     if (this.setState(STATES.REVIEWING)) {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
-      this.mainContainer.setPaused();
+      this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }

@@ -75,7 +75,7 @@ class MainContainer extends Container {
   /**
    * Pause the MainContainer.
    */
-  setPaused() {
+  stop() {
     this.enablePixelFilter();
     super.stop();
   }
@@ -83,7 +83,7 @@ class MainContainer extends Container {
   /**
    * Resume the MainContainer.
    */
-  setRunning() {
+  play() {
     this.disablePixelFilter();
     super.play();
   }
