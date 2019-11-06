@@ -22,10 +22,16 @@ class PromptContainer extends Container {
   /**
    * Create a prompt container
    */
-  constructor() {
+  constructor(sprite) {
     super();
+
+    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
+    sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
+
     this.timer = 0;
     this.alphaValue = 0;
+
+    this.addChild(sprite);
     this.setFadingIn();
   }
 
@@ -142,17 +148,6 @@ class PromptContainer extends Container {
    */
   stop() {
     this.visible = false;
-  }
-
-  /**
-   * Add a child to the container.
-   * @param {TextSprite} options.label The label to add.
-   */
-  addChild({ label }) {
-    label.x = (SCREEN.WIDTH / 2) - (label.width / 2);
-    label.y = SCREEN.HEIGHT - label.height - PADDING;
-    super.addChild(label);
-    this.label = label;
   }
 }
 

@@ -14,11 +14,6 @@ const EVENTS = {
  */
 class ScrollContainer extends Container {
   /**
-   * The container events.
-   */
-  static get EVENTS() { return EVENTS; }
-
-  /**
    * Creates a scroll container.
    * @param  {Object}     options.credits The credits data.
    * @param  {TextSprite} options.end     The end text.
@@ -65,18 +60,35 @@ class ScrollContainer extends Container {
     }
   }
 
+  /**
+   * Play the container.
+   */
   play() {
     super.play();
     this.visible = true;
   }
 
+  /**
+   * Stop the container.
+   */
   stop() {
     super.stop();
     this.visible = false;
   }
 
+  /**
+   * Animate the container.
+   * @return {[type]} [description]
+   */
   animate() {
     this.y = this.scrollY;
+  }
+
+  /**
+   * The container events.
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

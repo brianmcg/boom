@@ -28,6 +28,8 @@ class CreditsScene extends Scene {
         this.setFadingOut();
       },
     }];
+
+    this.promptOption = translate('scene.prompt.continue');
   }
 
   /**
@@ -40,22 +42,30 @@ class CreditsScene extends Scene {
     const text = {
       credits: [{
         key: translate('credits.scroll.coding'),
-        values: [translate('credits.scroll.author')],
+        values: [
+          translate('credits.scroll.author'),
+        ],
       }, {
         key: translate('credits.scroll.graphics'),
-        values: [translate('credits.scroll.author')],
+        values: [
+          translate('credits.scroll.author'),
+        ],
       }, {
         key: translate('credits.scroll.sound'),
-        values: [translate('credits.scroll.author')],
+        values: [
+          translate('credits.scroll.author'),
+        ],
       }, {
         key: translate('credits.scroll.screenplay'),
-        values: [translate('credits.scroll.author')],
+        values: [
+          translate('credits.scroll.author'),
+        ],
       }],
-      continue: translate('scene.prompt.continue'),
       end: translate('credits.scroll.end'),
     };
 
     const { sprites } = parse({ assets, text });
+
     const background = new BackgroundContainer(sprites.background);
     const scroll = new ScrollContainer(sprites.scroll);
 
@@ -63,11 +73,14 @@ class CreditsScene extends Scene {
       this.setPrompting();
     });
 
-    this.promptContainer.addChild(sprites.prompt);
     this.mainContainer.addChild(background);
     this.mainContainer.addChild(scroll);
   }
 
+  /**
+   * Update the scene in the prompting state.
+   * @param  {delta} delta The delta time.
+   */
   updatePrompting(delta) {
     this.updateRunning(delta);
     super.updatePrompting(delta);

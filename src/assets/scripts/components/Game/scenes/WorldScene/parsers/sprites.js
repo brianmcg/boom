@@ -230,18 +230,6 @@ const createReviewSprites = (text) => {
   };
 };
 
-const createPromptSprites = (text) => {
-  const label = new TextSprite({
-    font: FONT_SIZES.SMALL,
-    text: text.continue,
-    color: RED,
-  });
-
-  return {
-    label,
-  };
-};
-
 const createWorldSprites = (world, resources) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
@@ -273,6 +261,5 @@ const createWorldSprites = (world, resources) => {
  */
 export const createSprites = (world, resources, text) => ({
   world: createWorldSprites(world, resources),
-  prompt: createPromptSprites(text.prompt),
   review: createReviewSprites(text.review),
 });

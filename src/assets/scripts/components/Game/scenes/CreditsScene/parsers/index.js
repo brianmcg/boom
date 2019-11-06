@@ -48,12 +48,6 @@ export const parse = ({ assets, text }) => {
     color: WHITE,
   });
 
-  const label = new TextSprite({
-    font: FONT_SIZES.SMALL,
-    text: text.continue,
-    color: RED,
-  });
-
   return {
     sprites: {
       background: {
@@ -62,9 +56,6 @@ export const parse = ({ assets, text }) => {
       scroll: {
         credits,
         end,
-      },
-      prompt: {
-        label,
       },
     },
   };

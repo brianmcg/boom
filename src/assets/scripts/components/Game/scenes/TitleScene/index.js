@@ -29,6 +29,8 @@ class TitleScene extends Scene {
         this.setFadingOut();
       },
     }];
+
+    this.promptOption = translate('title.prompt.start');
   }
 
   /**
@@ -36,26 +38,28 @@ class TitleScene extends Scene {
    * @param  {Object} assets The loaded scene assets.
    */
   create(assets) {
-    const text = {
-      prompt: translate('title.prompt.start'),
-    };
+    const { sprites } = parse(assets);
 
-    const { sprites } = parse(assets, text);
-
-    this.promptContainer.addChild(sprites.prompt);
     this.mainContainer.addChild(new BackgroundContainer(sprites.background));
 
     super.create(assets);
   }
 
-  setRunning() {
-    super.setRunning();
-    this.setPrompting();
-  }
-
+  /**
+   * Update the container in the prompting state.
+   * @param  {delta} delta The delta time.
+   */
   updatePrompting(delta) {
     this.updateRunning(delta);
     super.updatePrompting(delta);
+  }
+
+  /**
+   * Set the container state to running.
+   */
+  setRunning() {
+    super.setRunning();
+    this.setPrompting();
   }
 }
 

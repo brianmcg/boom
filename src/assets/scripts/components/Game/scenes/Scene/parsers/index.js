@@ -3,20 +3,15 @@ import { FONT_SIZES } from 'game/constants/fonts';
 import { WHITE, RED, BLACK } from 'game/constants/colors';
 import { SCREEN } from 'game/constants/config';
 
-/**
- * @module game/scenes/scene/parsers
- */
+const createPromptSprite = text => (
+  new TextSprite({
+    font: FONT_SIZES.SMALL,
+    text,
+    color: RED,
+  })
+);
 
-/**
- * Parses the loaded scene assets.
- * @param  {Object} options.assets  The scene assets.
- * @param  {Array}  options.text    The scene text.
- * @return {Object}                 The parsed scene data.
- */
-export const parse = (assets, text) => {
-  const { data, textures } = assets;
-  const { images } = data;
-
+const createMenuSprites = (menu, textures, images) => {
   const background = new RectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
@@ -24,7 +19,7 @@ export const parse = (assets, text) => {
     alpha: 0.75,
   });
 
-  const labels = text.reduce((memo, key, index) => ({
+  const labels = menu.reduce((memo, key, index) => ({
     ...memo,
     [key]: new TextSprite({
       font: FONT_SIZES.SMALL,
@@ -40,15 +35,27 @@ export const parse = (assets, text) => {
   icon.height = iconHeight;
   icon.width = iconHeight;
 
-  const menu = {
+  return {
     icon,
     labels,
     background,
   };
+};
+
+/**
+ * Parses the loaded scene assets.
+ * @param  {Object} options.assets  The scene assets.
+ * @param  {Array}  options.text    The scene text.
+ * @return {Object}                 The parsed scene data.
+ */
+export const parse = (assets, text) => {
+  const { data, textures } = assets;
+  const { images } = data;
 
   return {
     sprites: {
-      menu,
+      menu: createMenuSprites(text.menu, textures, images),
+      prompt: createPromptSprite(text.prompt),
     },
   };
 };

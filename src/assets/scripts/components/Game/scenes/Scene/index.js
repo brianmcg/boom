@@ -63,7 +63,6 @@ class Scene extends Container {
 
     this.loadingContainer = new LoadingContainer();
     this.mainContainer = new MainContainer();
-    this.promptContainer = new PromptContainer();
 
     this.assets = {
       sound: {
@@ -84,13 +83,19 @@ class Scene extends Container {
    * @param  {Object} resources The scene resources.
    */
   create(resources) {
-    const text = this.menuItems.map(item => item.label);
+    const text = {
+      menu: this.menuItems.map(item => item.label),
+      prompt: this.promptOption,
+    };
+
     const { sprites } = parse(resources, text);
 
     this.menuContainer = new MenuContainer({
       sprites: sprites.menu,
       items: this.menuItems,
     });
+
+    this.promptContainer = new PromptContainer(sprites.prompt);
 
     this.setFadingIn();
   }
