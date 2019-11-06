@@ -1,3 +1,4 @@
+import { TILE_SIZE } from 'game/constants/config';
 import {
   DEG,
   TAN,
@@ -5,7 +6,6 @@ import {
   SIN,
 } from './constants';
 import DynamicFlatSector from './components/DynamicFlatSector';
-import { TILE_SIZE } from '~/constants/config';
 
 const DEG_90 = DEG[90];
 const DEG_180 = DEG[180];

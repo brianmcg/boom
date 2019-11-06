@@ -1,10 +1,9 @@
-import translate from '~/translate';
-import { Keyboard } from '~/core/input';
-import { SOUNDS } from '~/constants/sounds';
-import { SOUND } from '~/constants/assets';
+import translate from 'root/translate';
+import { Keyboard } from 'game/core/input';
+import { SOUNDS } from 'game/constants/sounds';
+import { SOUND } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
-import World from './entities/World';
 import Scene from '../Scene';
 import ReviewContainer from './containers/ReviewContainer';
 

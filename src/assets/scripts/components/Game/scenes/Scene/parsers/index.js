@@ -1,7 +1,7 @@
-import { Sprite, TextSprite, RectangleSprite } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/fonts';
-import { WHITE, RED, BLACK } from '~/constants/colors';
-import { SCREEN } from '~/constants/config';
+import { Sprite, TextSprite, RectangleSprite } from 'game/core/graphics';
+import { FONT_SIZES } from 'game/constants/fonts';
+import { WHITE, RED, BLACK } from 'game/constants/colors';
+import { SCREEN } from 'game/constants/config';
 
 /**
  * @module game/scenes/scene/parsers

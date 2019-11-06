@@ -1,5 +1,5 @@
-import { World as PhysicsWorld } from '~/core/physics';
-import { TILE_SIZE } from '~/constants/config';
+import { World as PhysicsWorld } from 'game/core/physics';
+import { TILE_SIZE } from 'game/constants/config';
 import Player from '../Player';
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;

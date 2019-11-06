@@ -1,4 +1,4 @@
-import { DEG } from '~/core/physics';
+import { DEG } from 'game/core/physics';
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
 const ACTIONS = {

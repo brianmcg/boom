@@ -1,5 +1,5 @@
-import { AnimatedSprite } from '~/core/graphics';
-import { RED } from '~/constants/colors';
+import { AnimatedSprite } from 'game/core/graphics';
+import { RED } from 'game/constants/colors';
 
 class SmokeSprite extends AnimatedSprite {
   constructor(textures) {

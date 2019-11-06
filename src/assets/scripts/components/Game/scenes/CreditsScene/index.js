@@ -1,4 +1,4 @@
-import translate from '~/translate';
+import translate from 'root/translate';
 import { parse } from './parsers';
 import ScrollContainer from './containers/ScrollContainer';
 import BackgroundContainer from './containers/BackgroundContainer';

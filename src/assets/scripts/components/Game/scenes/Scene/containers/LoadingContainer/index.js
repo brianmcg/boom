@@ -1,6 +1,6 @@
-import { Container, RectangleSprite } from '~/core/graphics';
-import { RED, WHITE } from '~/constants/colors';
-import { SCREEN } from '~/constants/config';
+import { Container, RectangleSprite } from 'game/core/graphics';
+import { RED, WHITE } from 'game/constants/colors';
+import { SCREEN } from 'game/constants/config';
 
 const INCREMENT = 2;
 

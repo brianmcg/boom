@@ -1,4 +1,4 @@
-import { Container } from '~/core/graphics';
+import { Container } from 'game/core/graphics';
 
 /**
  * Class representing an map container.

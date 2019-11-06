@@ -1,4 +1,4 @@
-import { Sector as PhysicsSector } from '~/core/physics';
+import { Sector as PhysicsSector } from 'game/core/physics';
 
 /**
  * Class representing a game sector.

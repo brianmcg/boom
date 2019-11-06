@@ -1,5 +1,5 @@
-import { DynamicBody, DynamicFlatSector } from '~/core/physics';
-import { TIME_STEP } from '~/constants/config';
+import { DynamicBody, DynamicFlatSector } from 'game/core/physics';
+import { TIME_STEP } from 'game/constants/config';
 
 const STATES = {
   OPENING: 'door:opening',

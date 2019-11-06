@@ -1,6 +1,6 @@
-import { GraphicsLoader } from '~/core/graphics';
-import { SoundLoader } from '~/core/audio';
-import { DATA } from '~/constants/assets';
+import { GraphicsLoader } from 'game/core/graphics';
+import { SoundLoader } from 'game/core/audio';
+import { DATA } from 'game/constants/assets';
 /**
  * Class representing a Loader.
  */

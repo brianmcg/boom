@@ -1,5 +1,5 @@
-import { ParticleContainer } from '~/core/graphics';
-import { SCREEN } from '~/constants/config';
+import { ParticleContainer } from 'game/core/graphics';
+import { SCREEN } from 'game/constants/config';
 
 /**
  * Class representing a background container.

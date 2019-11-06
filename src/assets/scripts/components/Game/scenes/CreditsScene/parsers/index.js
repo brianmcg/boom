@@ -1,6 +1,6 @@
-import { AnimatedSprite, TextSprite } from '~/core/graphics';
-import { FONT_SIZES } from '~/constants/fonts';
-import { RED, WHITE } from '~/constants/colors';
+import { AnimatedSprite, TextSprite } from 'game/core/graphics';
+import { FONT_SIZES } from 'game/constants/fonts';
+import { RED, WHITE } from 'game/constants/colors';
 
 /**
  * @module game/scenes/credits-scene/parsers

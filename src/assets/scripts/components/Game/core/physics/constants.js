@@ -1,4 +1,4 @@
-import { SCREEN, FOV } from '~/constants/config';
+import { SCREEN, FOV } from 'game/constants/config';
 
 /**
  * @module game/core/physics/constants

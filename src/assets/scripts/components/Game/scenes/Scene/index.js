@@ -1,9 +1,9 @@
-import { Keyboard } from '~/core/input';
-import { Container } from '~/core/graphics';
-import { SOUNDS } from '~/constants/sounds';
-import { SCENE_PATH } from '~/constants/paths';
-import { SOUND, DATA } from '~/constants/assets';
-import { SCENE_SOUND, SCENE_DATA } from '~/constants/files';
+import { Keyboard } from 'game/core/input';
+import { Container } from 'game/core/graphics';
+import { SOUNDS } from 'game/constants/sounds';
+import { SCENE_PATH } from 'game/constants/paths';
+import { SOUND, DATA } from 'game/constants/assets';
+import { SCENE_SOUND, SCENE_DATA } from 'game/constants/files';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';

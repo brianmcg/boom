@@ -1,4 +1,4 @@
-import { Container, PixelateFilter } from '~/core/graphics';
+import { Container, PixelateFilter } from 'game/core/graphics';
 
 const PIXEL = {
   MAX_SIZE: 100,

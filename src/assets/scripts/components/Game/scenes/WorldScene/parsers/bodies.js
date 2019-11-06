@@ -1,8 +1,7 @@
-import { TILE_SIZE } from '~/constants/config';
+import { TILE_SIZE } from 'game/constants/config';
 import Sector from '../entities/Sector';
 import ExitSector from '../entities/ExitSector';
 import World from '../entities/World';
-import Player from '../entities/Player';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
 import Item from '../entities/Item';

@@ -1,4 +1,4 @@
-import translate from '~/translate';
+import translate from 'root/translate';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import Scene from '../Scene';

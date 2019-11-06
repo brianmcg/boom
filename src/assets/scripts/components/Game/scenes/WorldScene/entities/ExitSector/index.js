@@ -1,4 +1,4 @@
-import { TIME_STEP } from '~/constants/config';
+import { TIME_STEP } from 'game/constants/config';
 import SwitchSector from '../SwitchSector';
 
 const INTERVAL = 1000;

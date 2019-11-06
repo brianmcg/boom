@@ -1,4 +1,4 @@
-import { TIME_STEP, TILE_SIZE } from '~/constants/config';
+import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const MAX_MOVE_X = 8;
 

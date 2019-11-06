@@ -1,4 +1,4 @@
-import { EventEmitter } from '~/core/graphics';
+import { EventEmitter } from 'game/core/graphics';
 
 /**
  * Class representing a world.

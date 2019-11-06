@@ -1,4 +1,4 @@
-import { Container } from '~/core/graphics';
+import { Container } from 'game/core/graphics';
 import {
   DEG,
   COS,
@@ -6,9 +6,9 @@ import {
   SIN,
   atan2,
   castRay,
-} from '~/core/physics';
-import { SCREEN, TILE_SIZE, FOV } from '~/constants/config';
-import { GREY, WHITE } from '~/constants/colors';
+} from 'game/core/physics';
+import { SCREEN, TILE_SIZE, FOV } from 'game/constants/config';
+import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';

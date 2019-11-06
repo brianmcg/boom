@@ -1,11 +1,11 @@
-import { TILE_SIZE } from '~/constants/config';
+import { TILE_SIZE } from 'game/constants/config';
 import {
   DEG,
   castRay,
   distanceBetween,
   isBodyCollision,
   isRayCollision,
-} from '~/core/physics';
+} from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';

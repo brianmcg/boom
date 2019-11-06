@@ -1,4 +1,4 @@
-import { AnimatedSprite } from '~/core/graphics';
+import { AnimatedSprite } from 'game/core/graphics';
 
 /**
  * Class representing an AnimatedSprite.

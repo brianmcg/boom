@@ -1,12 +1,12 @@
-import { SCREEN } from '~/constants/config';
+import { SCREEN } from 'game/constants/config';
 import {
   BROWN,
   RED,
   YELLOW,
   BLUE,
   WHITE,
-} from '~/constants/colors';
-import { RectangleSprite, Line } from '~/core/graphics';
+} from 'game/constants/colors';
+import { RectangleSprite, Line } from 'game/core/graphics';
 import Player from '../entities/Player';
 import Door from '../entities/Door';
 import Item from '../entities/Item';

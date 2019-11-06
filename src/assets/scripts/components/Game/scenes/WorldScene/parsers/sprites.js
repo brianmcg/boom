@@ -3,10 +3,10 @@ import {
   Texture,
   TextSprite,
   RectangleSprite,
-} from '~/core/graphics';
-import { BLACK, WHITE, RED } from '~/constants/colors';
-import { TILE_SIZE, SCREEN } from '~/constants/config';
-import { FONT_SIZES } from '~/constants/fonts';
+} from 'game/core/graphics';
+import { BLACK, WHITE, RED } from 'game/constants/colors';
+import { TILE_SIZE, SCREEN } from 'game/constants/config';
+import { FONT_SIZES } from 'game/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';

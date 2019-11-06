@@ -1,4 +1,4 @@
-import { Sprite } from '~/core/graphics';
+import { Sprite } from 'game/core/graphics';
 
 class LogoSprite extends Sprite {
   constructor(texture) {

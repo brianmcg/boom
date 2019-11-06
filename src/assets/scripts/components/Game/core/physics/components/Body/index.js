@@ -1,5 +1,5 @@
-import { EventEmitter } from '~/core/graphics';
-import { TILE_SIZE } from '~/constants/config';
+import { EventEmitter } from 'game/core/graphics';
+import { TILE_SIZE } from 'game/constants/config';
 
 let idCount = 0;
 

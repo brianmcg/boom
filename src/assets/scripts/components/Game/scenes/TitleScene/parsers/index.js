@@ -1,6 +1,6 @@
-import { FONT_SIZES } from '~/constants/fonts';
-import { RED } from '~/constants/colors';
-import { TextSprite } from '~/core/graphics';
+import { FONT_SIZES } from 'game/constants/fonts';
+import { RED } from 'game/constants/colors';
+import { TextSprite } from 'game/core/graphics';
 import LogoSprite from '../sprites/LogoSprite';
 import SmokeSprite from '../sprites/SmokeSprite';
 import SparksSprite from '../sprites/SparksSprite';

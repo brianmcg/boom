@@ -1,6 +1,6 @@
-import { Container } from '~/core/graphics';
-import { RED, WHITE } from '~/constants/colors';
-import { SCREEN } from '~/constants/config';
+import { Container } from 'game/core/graphics';
+import { RED, WHITE } from 'game/constants/colors';
+import { SCREEN } from 'game/constants/config';
 
 const SCREEN_PADDING = 6;
 

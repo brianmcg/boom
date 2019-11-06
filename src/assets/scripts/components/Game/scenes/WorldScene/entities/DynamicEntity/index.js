@@ -1,4 +1,4 @@
-import { DynamicBody, DEG } from '~/core/physics';
+import { DynamicBody, DEG } from 'game/core/physics';
 
 const DEG_203 = DEG[203];
 

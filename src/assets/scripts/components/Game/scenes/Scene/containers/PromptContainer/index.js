@@ -1,5 +1,5 @@
-import { Container } from '~/core/graphics';
-import { SCREEN, TIME_STEP } from '~/constants/config';
+import { Container } from 'game/core/graphics';
+import { SCREEN, TIME_STEP } from 'game/constants/config';
 
 const INTERVAL = 500;
 
