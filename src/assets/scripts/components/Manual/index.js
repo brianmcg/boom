@@ -1,5 +1,5 @@
+import translate from 'root/translate';
 import './styles/index.scss';
-import { KEYS, TITLE, BUTTON_TEXT } from './constants';
 import Table from './components/Table';
 import Button from './components/Button';
 
@@ -17,8 +17,41 @@ class GameManual {
   constructor() {
     const content = document.createElement('div');
     const span = document.createElement('span');
-    const text = document.createTextNode(TITLE);
-    const table = new Table(KEYS);
+    const text = document.createTextNode(translate('manual.title'));
+    const table = new Table({
+      cols: [
+        'action',
+        'key',
+      ],
+      rows: [{
+        action: translate('manual.action.forward'),
+        key: translate('manual.input.up'),
+      }, {
+        action: translate('manual.action.backward'),
+        key: translate('manual.input.down'),
+      }, {
+        action: translate('manual.action.left'),
+        key: translate('lmanual.input.left'),
+      }, {
+        action: translate('manual.action.right'),
+        key: translate('manual.input.right'),
+      }, {
+        action: translate('manual.action.use'),
+        key: translate('manual.input.space'),
+      }, {
+        action: translate('manual.action.attack'),
+        key: translate('manual.input.ctrl'),
+      }, {
+        action: translate('manual.action.crouch'),
+        key: translate('manual.input.shift'),
+      }, {
+        action: translate('manual.action.strafe'),
+        key: translate('manual.input.alt'),
+      }, {
+        action: translate('manual.action.menu'),
+        key: translate('manual.input.escape'),
+      }],
+    });
 
     content.setAttribute('class', 'content');
     span.setAttribute('class', 'title');
@@ -26,7 +59,7 @@ class GameManual {
     span.appendChild(text);
     content.appendChild(span);
 
-    this.button = new Button(BUTTON_TEXT);
+    this.button = new Button(translate('manual.play'));
 
     this.view = document.createElement('div');
     this.view.setAttribute('class', 'container');

@@ -19,7 +19,6 @@ export default {
   'manual.input.escape': 'escape',
   'manual.title': 'Goon Controls',
   'manual.play': 'Click to play',
-
   'scene.menu.continue': 'Continue',
   'scene.menu.restart': 'Restart',
   'scene.menu.quit': 'Quit',
