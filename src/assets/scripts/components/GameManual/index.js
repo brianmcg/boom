@@ -12,11 +12,6 @@ const EVENTS = {
  */
 class GameManual {
   /**
-   * The events class property.
-   */
-  static get EVENTS() { return EVENTS; }
-
-  /**
    * Creates a game manual.
    */
   constructor() {
@@ -49,6 +44,13 @@ class GameManual {
   on(event, callback) {
     const [, nodeName, eventName] = event.split(':');
     this[nodeName].view.addEventListener(eventName, callback);
+  }
+
+  /**
+   * The events class property.
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

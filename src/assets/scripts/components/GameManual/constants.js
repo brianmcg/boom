@@ -33,6 +33,9 @@ export const KEYS = {
     action: 'crouch',
     key: 'shift',
   }, {
+    action: 'strafe',
+    key: 'alt',
+  }, {
     action: 'menu',
     key: 'escape',
   }],
