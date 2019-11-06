@@ -41,6 +41,8 @@ class Game extends Application {
       top: '50%',
     };
 
+    this.frameCount = 0;
+    this.timer = 0;
     this.loader = new Loader();
     this.sound = new SoundPlayer();
     this.ticker.maxFPS = MAX_FPS;
@@ -88,6 +90,19 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
+    // NOTE: Uncomment below to log frame count.
+    //
+    // this.timer += this.ticker.elapsedMS;
+    // this.frameCount += 1;
+
+    // if (this.timer >= 1000) {
+    //   console.log(this.frameCount);
+    //   this.timer = this.timer - 1000;
+    //   this.frameCount = 0;
+    // }
+    //
+    // NOTE
+
     if (this.scene) {
       this.scene.update(delta);
       this.scene.animate();

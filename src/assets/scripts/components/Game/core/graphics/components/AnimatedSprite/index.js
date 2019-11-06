@@ -46,7 +46,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
    * @type {Boolean} Is the sprite updateable
    */
   get updateable() {
-    return this.visible && this.playing;
+    return this.playing;
   }
 }
 

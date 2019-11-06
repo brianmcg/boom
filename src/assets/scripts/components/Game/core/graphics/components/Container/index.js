@@ -70,7 +70,7 @@ class Container extends PixiContainer {
    * Animate the container children.
    */
   animate() {
-    this.animateableChildren.forEach(child => child.visible && child.animate());
+    this.animateableChildren.forEach(child => child.animate());
   }
 
   /**
@@ -94,7 +94,7 @@ class Container extends PixiContainer {
    * @type {Boolean} Is the container updateable
    */
   get updateable() {
-    return this.visible && this.playing;
+    return this.playing;
   }
 }
 

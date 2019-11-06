@@ -76,7 +76,7 @@ class WorldContainer extends Container {
    * Animate the container.
    */
   animate() {
-    const { player } = this.world;
+    const { player, maxSectorX, maxSectorY } = this.world;
     const { background } = this.backgroundContainer;
     const { walls, entities } = this.mapContainer;
     const totalEncounteredBodies = {};
@@ -171,8 +171,12 @@ class WorldContainer extends Container {
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
-          gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+          gridX = Math.floor(mapX / TILE_SIZE);
+          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+          gridX = (gridX < 0) ? 0 : gridX;
+          gridY = Math.floor(mapY / TILE_SIZE);
+          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+          gridY = (gridY < 0) ? 0 : gridY;
           sectorSide = this.world.getSector(gridX, gridY).bottom;
           sprite.changeTexture(sectorSide, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
@@ -183,8 +187,12 @@ class WorldContainer extends Container {
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.max(Math.min(Math.floor(mapX / TILE_SIZE), this.world.width - 1), 0);
-          gridY = Math.max(Math.min(Math.floor(mapY / TILE_SIZE), this.world.height - 1), 0);
+          gridX = Math.floor(mapX / TILE_SIZE);
+          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+          gridX = (gridX < 0) ? 0 : gridX;
+          gridY = Math.floor(mapY / TILE_SIZE);
+          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+          gridY = (gridY < 0) ? 0 : gridY;
           sectorSide = this.world.getSector(gridX, gridY).top;
           sprite.changeTexture(sectorSide, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
@@ -255,8 +263,8 @@ class WorldContainer extends Container {
       return WHITE;
     }
 
-    if (intensity < 0.1) {
-      intensity = 0.1;
+    if (intensity < 0.15) {
+      intensity = 0.15;
     }
 
     return Math.round(intensity * 255) * GREY;

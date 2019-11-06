@@ -17,6 +17,9 @@ class World extends EventEmitter {
 
     this.width = this.grid.length;
     this.height = this.grid[0].length;
+
+    this.maxSectorX = this.height - 1;
+    this.maxSectorY = this.width - 1;
   }
 
   /**
