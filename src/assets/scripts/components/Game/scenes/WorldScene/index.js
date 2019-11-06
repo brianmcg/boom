@@ -70,6 +70,7 @@ class WorldScene extends Scene {
 
     this.world = world;
     this.world.exit = () => this.setReviewing();
+    this.world.index = this.index;
 
     this.mainContainer.addChild(new WorldContainer({ world, sprites: sprites.world }));
     this.promptContainer.addChild(sprites.prompt);
@@ -144,6 +145,7 @@ class WorldScene extends Scene {
       this.sound.pause();
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
       this.mainContainer.setPaused();
+      this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
   }

@@ -324,6 +324,7 @@ class Player extends AbstractActor {
   pickUp(item) {
     this.world.setItemFlash();
     this.world.remove(item);
+    item.found = true;
 
     switch (item.key) {
       case Item.TYPES.AMMO:

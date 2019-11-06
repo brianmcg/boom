@@ -1,4 +1,5 @@
 import { Container } from '~/core/graphics';
+import { formatMS } from '~/core/date';
 import { SCREEN, TIME_STEP } from '~/constants/config';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
@@ -26,16 +27,14 @@ class ReviewContainer extends Container {
     this.addChild(sprites.background);
 
     const { title, stats } = sprites;
-    const statsStartY = title.y + title.height + (TEXT_PADDING * 4);
+    const { enemies, items, time } = stats;
     const statsHeight = stats.enemies.name.height;
+    const statsStartY = title.height + (TEXT_PADDING * 6);
 
-    title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
     title.y = TEXT_PADDING * 2;
 
-    Object.values(stats).forEach(({ name, value }, i) => {
-      name.x = (SCREEN.WIDTH / 2) - TEXT_PADDING - name.width;
+    [enemies, items, time].forEach(({ name, value }, i) => {
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
-      value.x = (SCREEN.WIDTH / 2) + TEXT_PADDING;
       value.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
     });
 
@@ -192,9 +191,37 @@ class ReviewContainer extends Container {
     return false;
   }
 
-  // setStats({ enemiesKilled, itemsFound, timeTake }) {
+  /**
+   * Set the statistics text.
+   * @param {Number} options.enemiesKilled The number of enemies killed.
+   * @param {Number} options.enemiesTotal  The total number of enemies.
+   * @param {Number} options.itemsFound    The number of items found.
+   * @param {Number} options.itemsTotal    The total number of items.
+   * @param {Number} options.timeTaken     The time since the world was created.
+   */
+  setStatistics({
+    levelNumber,
+    enemiesKilled,
+    enemiesTotal,
+    itemsFound,
+    itemsTotal,
+    timeTaken,
+  }) {
+    const { title, stats } = this.sprites;
+    const { enemies, items, time } = stats;
 
-  // }
+    title.text = title.text.replace('LEVEL_NUMBER', levelNumber);
+    title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
+
+    time.value.text = formatMS(timeTaken);
+    enemies.value.text = `${Math.round(enemiesKilled / enemiesTotal * 100)}%`;
+    items.value.text = `${Math.round(itemsFound / itemsTotal * 100)}%`;
+
+    [enemies, items, time].forEach(({ name, value }) => {
+      name.x = (SCREEN.WIDTH / 2) - TEXT_PADDING - name.width;
+      value.x = (SCREEN.WIDTH / 2) + TEXT_PADDING;
+    });
+  }
 }
 
 export default ReviewContainer;

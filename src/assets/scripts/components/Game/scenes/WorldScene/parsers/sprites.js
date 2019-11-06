@@ -175,7 +175,7 @@ const createReviewSprites = (text) => {
   });
 
   const title = new TextSprite({
-    font: FONT_SIZES.LARGE,
+    font: FONT_SIZES.MEDIUM,
     text: text.title,
     color: WHITE,
   });

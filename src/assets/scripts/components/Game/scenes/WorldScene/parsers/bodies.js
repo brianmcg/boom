@@ -39,7 +39,7 @@ export const createWorld = (data, player) => {
   const mapWidth = data.layers[MAP_LAYERS.WALLS].width;
   const mapHeight = data.layers[MAP_LAYERS.WALLS].height;
   const { tiles } = data.tilesets[0];
-  const start = {};
+  const start = { angle: 0 };
   const end = {};
 
   data.layers[MAP_LAYERS.GAME].objects.forEach((object) => {

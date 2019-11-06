@@ -4,7 +4,7 @@ export default {
   'scene.menu.quit': 'Quit',
   'title.prompt.start': 'Press space to start',
   'scene.prompt.continue': 'Press space to continue',
-  'world.review.title': 'Level Complete',
+  'world.review.title': 'Completed Level LEVEL_NUMBER',
   'world.review.enemies': 'Enemies killed',
   'world.review.items': 'Items found',
   'world.review.time': 'Time taken',

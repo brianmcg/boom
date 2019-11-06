@@ -29,6 +29,7 @@ class World extends PhysicsWorld {
    * @param  {Object} options.entrance    The entrance coordinates.
    */
   constructor({
+    index,
     player = new Player(),
     enemies = [],
     obstacles = [],
@@ -43,21 +44,30 @@ class World extends PhysicsWorld {
     items.forEach(item => this.add(item));
 
     this.add(player);
+
+    player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2);
+    player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2);
+    player.angle = entrance.angle;
+    player.weapon.setArming();
+
+    // player.x = 1088;
+    // player.y = 163;
+    // player.angle = 928;
+
     this.player = player;
-    this.obstacles = obstacles;
     this.items = items;
     this.enemies = enemies;
+    this.obstacles = obstacles;
+
     this.baseBrightness = DEFAULTS.BRIGHTNESS;
     this.brightness = DEFAULTS.BRIGHTNESS;
     this.visibility = DEFAULTS.VISIBILITY;
 
-    player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2); // 1088
-    player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2); // 163
-    player.angle = 0; // 928;
-    player.weapon.setArming();
-
     this.gunFlash = false;
     this.itemFlash = false;
+
+    this.index = index;
+    this.startTime = performance.now();
   }
 
   /**
@@ -100,6 +110,21 @@ class World extends PhysicsWorld {
   setItemFlash() {
     this.brightness += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
+  }
+
+  /**
+   * Get the world statistics
+   * @return {Object} Info about the world to date.
+   */
+  getStatistics() {
+    return {
+      levelNumber: this.index,
+      timeTaken: performance.now() - this.startTime,
+      itemsFound: this.items.filter(item => item.found).length,
+      itemsTotal: this.items.length,
+      enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
+      enemiesTotal: this.enemies.length,
+    };
   }
 }
 
