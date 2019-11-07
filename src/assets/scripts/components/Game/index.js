@@ -72,7 +72,7 @@ class Game extends Application {
     this.loader.load(assets).then(({ sound }) => {
       this.sound.add(SOUND.EFFECTS, sound);
       // TODO: Show title scene
-      this.show(Scene.TYPES.WORLD, 1);
+      this.show(Scene.TYPES.TITLE);
     });
   }
 
@@ -91,18 +91,18 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
-    // NOTE: Uncomment below to log frame count.
-    //
-    // this.timer += this.ticker.elapsedMS;
-    // this.frameCount += 1;
+    // NOTE: Uncomment below to log frame rate.
 
-    // if (this.timer >= 1000) {
-    //   console.log(this.frameCount);
-    //   this.timer = this.timer - 1000;
-    //   this.frameCount = 0;
-    // }
-    //
-    // NOTE
+    /*
+    this.timer += this.ticker.elapsedMS;
+    this.frameCount += 1;
+
+    if (this.timer >= 1000) {
+      console.log(this.frameCount);
+      this.timer = this.timer - 1000;
+      this.frameCount = 0;
+    }
+    */
 
     if (this.scene) {
       this.scene.update(delta);

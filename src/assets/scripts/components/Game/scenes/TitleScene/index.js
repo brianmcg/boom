@@ -1,6 +1,7 @@
 import translate from 'root/translate';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
+import ForegroundContainer from './containers/ForegroundContainer';
 import Scene from '../Scene';
 
 /**
@@ -41,6 +42,7 @@ class TitleScene extends Scene {
     const { sprites } = parse(assets);
 
     this.mainContainer.addChild(new BackgroundContainer(sprites.background));
+    this.mainContainer.addChild(new ForegroundContainer(sprites.foreground));
 
     super.create(assets);
   }

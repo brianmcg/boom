@@ -24,6 +24,8 @@ export const parse = (assets) => {
       background: {
         smoke: new SmokeSprite(smokeTextures),
         sparks: new SparksSprite(sparksTextures),
+      },
+      foreground: {
         logo: new LogoSprite(textures[images.logo]),
       },
     },
