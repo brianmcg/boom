@@ -143,7 +143,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingIn(delta) {
-    this.mainContainer.updateFadingIn(delta);
+    this.mainContainer.updateFadeInEffect(delta);
   }
 
   /**
@@ -176,7 +176,7 @@ class Scene extends Container {
       this.removeChild(this.menuContainer);
     }
 
-    this.mainContainer.updatePaused(delta);
+    this.mainContainer.updatePauseEffect(delta);
   }
 
   /**
@@ -197,7 +197,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingOut(delta) {
-    this.mainContainer.updateFadingOut(delta);
+    this.mainContainer.updateFadeOutEffect(delta);
   }
 
   /**
@@ -206,7 +206,6 @@ class Scene extends Container {
   setLoading() {
     if (this.setState(STATES.LOADING)) {
       this.addChild(this.loadingContainer);
-      this.mainContainer.setLoading();
     }
   }
 
@@ -217,9 +216,9 @@ class Scene extends Container {
     if (this.setState(STATES.FADING_IN)) {
       this.removeChild(this.loadingContainer);
       this.addChild(this.mainContainer);
-      this.sound.play(SOUND.MUSIC);
-      this.mainContainer.setFadingIn();
+      this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
+      this.sound.play(SOUND.MUSIC);
     }
   }
 
@@ -262,7 +261,7 @@ class Scene extends Container {
     if (this.setState(STATES.FADING_OUT)) {
       this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
       this.sound.fade(SOUND.MUSIC);
-      this.mainContainer.setFadingOut();
+      this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
     }
   }

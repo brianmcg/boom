@@ -22,10 +22,26 @@ class MainContainer extends Container {
   }
 
   /**
+   * Initialize the fade in effect.
+   */
+  initFadeInEffect() {
+    this.enablePixelFilter();
+    this.setPixelSize(PIXEL.MAX_SIZE);
+  }
+
+  /**
+   * Initialize the fade out effect.
+   * @return {[type]} [description]
+   */
+  initFadeOutEffect() {
+    this.enablePixelFilter();
+  }
+
+  /**
    * Update the fade in effect.
    * @param  {Number} delta The delta time.
    */
-  updateFadingIn(delta) {
+  updateFadeInEffect(delta) {
     let pixelSize = this.pixelateFilter.size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
     if (pixelSize < PIXEL.MIN_SIZE) {
@@ -40,7 +56,7 @@ class MainContainer extends Container {
    * Update the fade out effect.
    * @param  {Number} delta The delta time.
    */
-  updateFadingOut(delta) {
+  updateFadeOutEffect(delta) {
     const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
     let pixelSize = this.pixelateFilter.size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
 
@@ -55,37 +71,16 @@ class MainContainer extends Container {
   /**
    * Update the paused effect.
    */
-  updatePaused() {
-    this.pixelateFilter.size = PIXEL.PAUSE_SIZE * this.parent.scale.x;
-  }
-
-  setFadingIn() {
-    this.pixelateFilter.size = PIXEL.MAX_SIZE * this.parent.scale.x;
-    this.enablePixelFilter();
-  }
-
-  setLoading() {
-    this.disablePixelFilter();
-  }
-
-  setFadingOut() {
-    this.enablePixelFilter();
+  updatePauseEffect() {
+    this.setPixelSize(PIXEL.PAUSE_SIZE);
   }
 
   /**
-   * Pause the MainContainer.
+   * Set the pixel size.
+   * @param {Number} value The value to set.
    */
-  stop() {
-    this.enablePixelFilter();
-    super.stop();
-  }
-
-  /**
-   * Resume the MainContainer.
-   */
-  play() {
-    this.disablePixelFilter();
-    super.play();
+  setPixelSize(value) {
+    this.pixelateFilter.size = value * this.parent.scale.x;
   }
 
   /**
@@ -100,6 +95,22 @@ class MainContainer extends Container {
    */
   disablePixelFilter() {
     this.pixelateFilter.enabled = false;
+  }
+
+  /**
+   * Pause the container.
+   */
+  stop() {
+    this.enablePixelFilter();
+    super.stop();
+  }
+
+  /**
+   * Resume the container.
+   */
+  play() {
+    this.disablePixelFilter();
+    super.play();
   }
 }
 
