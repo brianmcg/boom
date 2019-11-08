@@ -85,6 +85,27 @@ class CreditsScene extends Scene {
     this.updateRunning(delta);
     super.updatePrompting(delta);
   }
+
+  /**
+   * Complete the scene.
+   */
+  complete() {
+    this.game.show(Scene.TYPES.TITLE);
+  }
+
+  /**
+   * Restart the scene.
+   */
+  restart() {
+    this.game.show(Scene.TYPES.CREDITS);
+  }
+
+  /**
+   * Quit the scene.
+   */
+  quit() {
+    this.game.show(Scene.TYPES.TITLE);
+  }
 }
 
 export default CreditsScene;

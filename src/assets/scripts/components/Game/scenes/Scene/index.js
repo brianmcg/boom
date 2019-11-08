@@ -50,7 +50,7 @@ class Scene extends Container {
     index = 0,
     scale = 1,
     type,
-    sound,
+    game,
   }) {
     const path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
 
@@ -59,7 +59,7 @@ class Scene extends Container {
     this.index = index;
     this.scale = scale;
     this.type = type;
-    this.sound = sound;
+    this.game = game;
 
     this.loadingContainer = new LoadingContainer();
     this.mainContainer = new MainContainer();
@@ -218,7 +218,7 @@ class Scene extends Container {
       this.addChild(this.mainContainer);
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
-      this.sound.play(SOUND.MUSIC);
+      this.game.sound.play(SOUND.MUSIC);
     }
   }
 
@@ -227,7 +227,7 @@ class Scene extends Container {
    */
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
-      this.sound.resume();
+      this.game.sound.resume();
       this.mainContainer.play();
       this.promptContainer.play();
     }
@@ -238,8 +238,8 @@ class Scene extends Container {
    */
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
-      this.sound.pause();
-      this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
+      this.game.sound.pause();
+      this.game.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -259,8 +259,8 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-      this.sound.fade(SOUND.MUSIC);
+      this.game.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
+      this.game.sound.fade(SOUND.MUSIC);
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
     }
@@ -271,8 +271,11 @@ class Scene extends Container {
    */
   setStopped() {
     if (this.setState(STATES.STOPPED)) {
-      if (this.status) {
-        this.emit(this.status, this);
+      switch (this.status) {
+        case EVENTS.COMPLETE: this.complete(); break;
+        case EVENTS.RESTART: this.restart(); break;
+        case EVENTS.QUIT: this.quit(); break;
+        default: break;
       }
     }
   }

@@ -63,6 +63,27 @@ class TitleScene extends Scene {
     super.setRunning();
     this.setPrompting();
   }
+
+  /**
+   * Complete the scene.
+   */
+  complete() {
+    this.game.show(Scene.TYPES.WORLD, 1);
+  }
+
+  /**
+   * Restart the scene.
+   */
+  restart() {
+    this.game.show(Scene.TYPES.TITLE);
+  }
+
+  /**
+   * Quit the scene.
+   */
+  quit() {
+    this.game.stop();
+  }
 }
 
 export default TitleScene;

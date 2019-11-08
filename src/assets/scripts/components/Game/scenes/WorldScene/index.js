@@ -149,6 +149,31 @@ class WorldScene extends Scene {
       this.addChild(this.reviewContainer);
     }
   }
+
+  /**
+   * Complete the scene.
+   */
+  complete() {
+    if (this.index < this.game.numLevels) {
+      this.game.show(Scene.TYPES.WORLD, this.index + 1, this.world.player);
+    } else {
+      this.game.show(Scene.TYPES.CREDITS);
+    }
+  }
+
+  /**
+   * Restart the scene.
+   */
+  restart() {
+    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player);
+  }
+
+  /**
+   * Quit the scene.
+   */
+  quit() {
+    this.game.show(Scene.TYPES.TITLE);
+  }
 }
 
 export default WorldScene;
