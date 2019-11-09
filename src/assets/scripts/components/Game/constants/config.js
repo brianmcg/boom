@@ -64,3 +64,9 @@ export const FOV = 60;
  * @type {Number}
  */
 export const UPDATE_DISTANCE = TILE_SIZE * 20;
+
+/**
+ * The max distance a sound can travel.
+ * @type {Number}
+ */
+export const MAX_SOUND_DISTANCE = 1000;

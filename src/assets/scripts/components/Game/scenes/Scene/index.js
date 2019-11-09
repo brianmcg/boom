@@ -1,9 +1,12 @@
 import { Keyboard } from 'game/core/input';
 import { Container } from 'game/core/graphics';
 import { SOUNDS } from 'game/constants/sounds';
-import { SCENE_PATH } from 'game/constants/paths';
-import { SOUND, DATA } from 'game/constants/assets';
-import { SCENE_SOUND, SCENE_DATA } from 'game/constants/files';
+import {
+  GAME_SOUNDS,
+  SCENE_MUSIC,
+  SCENE_GRAPHICS,
+  SCENE_PATH,
+} from 'game/constants/assets';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
@@ -66,13 +69,13 @@ class Scene extends Container {
 
     this.assets = {
       sound: {
-        name: SOUND.MUSIC,
-        src: `${SCENE_PATH}/${path}/${SCENE_SOUND}`,
+        name: SCENE_MUSIC,
+        src: `${SCENE_PATH}/${path}/${SCENE_MUSIC}`,
       },
-      data: [{
-        name: DATA.SCENE,
-        src: `${SCENE_PATH}/${path}/${SCENE_DATA}`,
-      }],
+      graphics: {
+        name: SCENE_GRAPHICS,
+        src: `${SCENE_PATH}/${path}/${SCENE_GRAPHICS}`,
+      },
     };
 
     this.setLoading();
@@ -218,7 +221,7 @@ class Scene extends Container {
       this.addChild(this.mainContainer);
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
-      this.game.sound.play(SOUND.MUSIC);
+      this.game.sound.play(SCENE_MUSIC);
     }
   }
 
@@ -239,7 +242,7 @@ class Scene extends Container {
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
       this.game.sound.pause();
-      this.game.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_PISTOL);
+      this.game.sound.play(GAME_SOUNDS, SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -259,8 +262,8 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.game.sound.play(SOUND.EFFECTS, SOUNDS.WEAPON_DOUBLE_SHOTGUN);
-      this.game.sound.fade(SOUND.MUSIC);
+      this.game.sound.play(GAME_SOUNDS, SOUNDS.WEAPON_SHOTGUN);
+      this.game.sound.fade(SCENE_MUSIC);
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
     }

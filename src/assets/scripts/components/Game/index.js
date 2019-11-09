@@ -2,10 +2,13 @@ import { Application } from './core/graphics';
 import { SoundPlayer } from './core/audio';
 import { BLACK } from './constants/colors';
 import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
-import { GAME_PATH } from './constants/paths';
 import { SOUND_SPRITE } from './constants/sounds';
-import { GAME_SOUND, GAME_DATA } from './constants/files';
-import { SOUND, DATA } from './constants/assets';
+import {
+  GAME_PATH,
+  GAME_SOUNDS,
+  GAME_FONT,
+  SCENE_MUSIC,
+} from './constants/assets';
 import Scene from './scenes/Scene';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -57,21 +60,21 @@ class Game extends Application {
   start() {
     const assets = {
       sound: {
-        name: SOUND.EFFECTS,
-        src: `${GAME_PATH}/${GAME_SOUND}`,
+        name: GAME_SOUNDS.NAME,
+        src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
         sprite: SOUND_SPRITE,
       },
-      data: [{
-        name: DATA.FONT,
-        src: `${GAME_PATH}/${GAME_DATA}`,
-      }],
+      graphics: {
+        name: GAME_FONT.NAME,
+        src: `${GAME_PATH}/${GAME_FONT.FILE}`,
+      },
     };
 
     this.scene = null;
     this.ticker.start();
 
     this.loader.load(assets).then(({ sound }) => {
-      this.sound.add(SOUND.EFFECTS, sound);
+      this.sound.add(GAME_SOUNDS.NAME, sound);
       this.show(Scene.TYPES.TITLE);
     });
   }
@@ -120,12 +123,12 @@ class Game extends Application {
     const scale = Game.maxScale;
 
     if (this.scene) {
-      const { sound, data } = this.loader.cache;
-      const dataKeys = Object.keys(data).filter(key => !key.includes(DATA.FONT));
-      const soundKeys = Object.keys(sound).filter(key => !key.includes(SOUND.EFFECTS));
+      const { sound, graphics } = this.loader.cache;
+      const graphicsKeys = Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME));
+      const soundKeys = Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME));
 
       this.scene.destroy();
-      this.loader.unload({ data: dataKeys, sound: soundKeys });
+      this.loader.unload({ graphics: graphicsKeys, sound: soundKeys });
     }
 
     if (SceneType) {
@@ -137,9 +140,9 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.loader.load(this.scene.assets).then(({ data, sound }) => {
-        this.sound.add(SOUND.MUSIC, sound);
-        this.scene.create(data, player);
+      this.loader.load(this.scene.assets).then(({ graphics, sound }) => {
+        this.sound.add(SCENE_MUSIC, sound);
+        this.scene.create(graphics, player);
       });
     }
   }

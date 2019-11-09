@@ -1,21 +1,46 @@
 /**
- * @module  game/constants/assets
+ * The path to the game asset directory.
+ * @type {String}
  */
+export const GAME_PATH = 'assets/media/game';
 
 /**
- * The types of resources.
+ * The path to the scene asset directory.
+ * @type {String}
+ */
+export const SCENE_PATH = 'assets/media/game/scenes';
+
+/**
+ * The game sound properties.
  * @type {Object}
  */
-export const DATA = {
-  SCENE: 'scene',
-  FONT: 'font',
+export const GAME_SOUNDS = {
+  NAME: 'sounds',
+  FILE: 'sounds.mp3',
+  SPRITE: 'sounds.json',
 };
 
 /**
- * The types of sounds.
+ * The game font.
  * @type {Object}
  */
-export const SOUND = {
-  EFFECTS: 'sounds',
-  MUSIC: 'scene',
+export const GAME_FONT = {
+  NAME: 'font',
+  FILE: 'font.xml',
+  IMAGES: [
+    'font_1.png',
+    'font_2.png',
+  ],
 };
+
+/**
+ * The scene music file name.
+ * @type {String}
+ */
+export const SCENE_MUSIC = 'scene.mp3';
+
+/**
+ * The scene graphics.
+ * @type {String}
+ */
+export const SCENE_GRAPHICS = 'scene.json';

@@ -1,4 +1,4 @@
-const MAX_DISTANCE = 1000;
+import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 
 /**
  * Class representing a sound player.
@@ -45,9 +45,10 @@ class SoundPlayer {
       const id = sound.play(name);
 
       if (distance) {
-        const volume = distance > MAX_DISTANCE ? 0 : 1 - distance / MAX_DISTANCE;
+        const volume = distance > MAX_SOUND_DISTANCE ? 0 : 1 - distance / MAX_SOUND_DISTANCE;
         sound.volume(volume, id);
       }
+
 
       this.ids[type].push(id);
     }
