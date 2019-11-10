@@ -7,7 +7,7 @@ import {
 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
-import Weapon from '../Weapon';
+import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 
 const DEG_360 = DEG[360];
@@ -389,5 +389,7 @@ class Player extends AbstractActor {
     return this.weapon.power;
   }
 }
+
+export { Weapon };
 
 export default Player;

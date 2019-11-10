@@ -1,6 +1,6 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
-import Weapon from '../../entities/Weapon';
+import { Weapon } from '../../entities/Player';
 
 /**
  * Class representing a weapon sprite.
@@ -12,7 +12,7 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.currentWeaponType || Weapon.TYPES.PISTOL], {
+    super(textureCollection[player.currentWeaponType], {
       animationSpeed: 0.4,
       loop: false,
       autoPlay: false,
