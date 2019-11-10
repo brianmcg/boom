@@ -3,12 +3,20 @@ import { createSprites } from './sprites';
 
 /**
  * Parses the loaded scene assets.
- * @param  {Object} assets The scene assets.
- * @return {Object}        The parsed scene data.
+ * @param  {Object} options.graphics  The scene graphics.
+ * @param  {Object} options.data      The scene data.
+ * @param  {Object} options.text      The scene text.
+ * @param  {Player} options.player    The player.
+ * @return {Object}                   The parsed scene data.
  */
-export const parse = (resources, text, player) => {
-  const world = createWorld(resources.data.map, player);
-  const sprites = createSprites(world, resources, text);
+export const parse = ({
+  graphics,
+  data,
+  text,
+  player,
+}) => {
+  const world = createWorld(data, player);
+  const sprites = createSprites(world, graphics, text);
 
   return {
     world,

@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { Keyboard } from 'game/core/input';
 import { SOUNDS } from 'game/constants/sounds';
-import { GAME_SOUNDS } from 'game/constants/assets';
+import { GAME_SOUNDS, SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import Scene from '../Scene';
@@ -26,6 +26,14 @@ class WorldScene extends Scene {
    */
   constructor(options) {
     super({ type: Scene.TYPES.WORLD, ...options });
+
+    this.assets = {
+      ...this.assets,
+      data: {
+        name: SCENE_MAP,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MAP}`,
+      },
+    };
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -54,7 +62,7 @@ class WorldScene extends Scene {
    * @param  {Objects} resources The scene resources.
    * @param  {Player}  player    The game player.
    */
-  create(resources, player) {
+  create({ graphics, data, player }) {
     const text = {
       review: {
         title: translate('world.review.title'),
@@ -64,7 +72,12 @@ class WorldScene extends Scene {
       },
     };
 
-    const { world, sprites } = parse(resources, text, player);
+    const { world, sprites } = parse({
+      graphics,
+      data,
+      player,
+      text,
+    });
 
     this.mainContainer.addChild(new WorldContainer({
       world,
@@ -77,7 +90,7 @@ class WorldScene extends Scene {
     this.world.exit = () => this.setReviewing();
     this.world.index = this.index;
 
-    super.create(resources);
+    super.create({ graphics });
   }
 
   /**

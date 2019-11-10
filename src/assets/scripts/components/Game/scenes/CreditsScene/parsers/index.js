@@ -8,12 +8,12 @@ import { RED, WHITE } from 'game/constants/colors';
 
 /**
  * Parses the loaded scene assets.
- * @param  {Object} options.assets  The scene assets.
- * @param  {Array}  options.text    The scene text.
- * @return {Object}                 The parsed scene data.
+ * @param  {Object} options.graphics  The scene graphics.
+ * @param  {Array}  options.text      The scene text.
+ * @return {Object}                   The parsed scene data.
  */
-export const parse = ({ assets, text }) => {
-  const { data, textures } = assets;
+export const parse = ({ graphics, text }) => {
+  const { data, textures } = graphics;
   const { animations } = data;
   const smokeTextures = animations.smoke.map(image => textures[image]);
 

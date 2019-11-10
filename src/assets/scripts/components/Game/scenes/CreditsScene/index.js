@@ -33,11 +33,11 @@ class CreditsScene extends Scene {
   }
 
   /**
-   * Create the TitleScene assets.
-   * @param  {Object} assets The loaded scene assets.
+   * Create the TitleScene options.
+   * @param  {Object} options The loaded scene options.
    */
-  create(assets) {
-    super.create(assets);
+  create(options) {
+    super.create(options);
 
     const text = {
       credits: [{
@@ -64,7 +64,10 @@ class CreditsScene extends Scene {
       end: translate('credits.scroll.end'),
     };
 
-    const { sprites } = parse({ assets, text });
+    const { sprites } = parse({
+      ...options,
+      text,
+    });
 
     const background = new BackgroundContainer(sprites.background);
     const scroll = new ScrollContainer(sprites.scroll);

@@ -55,8 +55,6 @@ class Scene extends Container {
     type,
     game,
   }) {
-    const path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
-
     super();
 
     this.index = index;
@@ -67,14 +65,16 @@ class Scene extends Container {
     this.loadingContainer = new LoadingContainer();
     this.mainContainer = new MainContainer();
 
+    this.path = `${type}${type === TYPES.WORLD ? `-${index}` : ''}`;
+
     this.assets = {
       sound: {
         name: SCENE_MUSIC,
-        src: `${SCENE_PATH}/${path}/${SCENE_MUSIC}`,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`,
       },
       graphics: {
         name: SCENE_GRAPHICS,
-        src: `${SCENE_PATH}/${path}/${SCENE_GRAPHICS}`,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_GRAPHICS}`,
       },
     };
 
@@ -83,15 +83,15 @@ class Scene extends Container {
 
   /**
    * Create the scene.
-   * @param  {Object} resources The scene resources.
+   * @param  {Object} options.graphics The scene graphics.
    */
-  create(resources) {
+  create({ graphics }) {
     const text = {
       menu: this.menuItems.map(item => item.label),
       prompt: this.promptOption,
     };
 
-    const { sprites } = parse(resources, text);
+    const { sprites } = parse({ graphics, text });
 
     this.menuContainer = new MenuContainer({
       sprites: sprites.menu,

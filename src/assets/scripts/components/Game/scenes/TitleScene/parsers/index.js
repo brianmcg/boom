@@ -7,13 +7,12 @@ import SparksSprite from '../sprites/SparksSprite';
  */
 
 /**
- * Parses the loaded scene assets.
- * @param  {Object} options.assets  The scene assets.
- * @param  {Array}  options.text    The scene text.
- * @return {Object}                 The parsed scene data.
+ * Parses the loaded scene resources.
+ * @param  {Object} options.graphics    The scene graphics.
+ * @return {Object}                     The parsed scene data.
  */
-export const parse = (assets) => {
-  const { data, textures } = assets;
+export const parse = ({ graphics }) => {
+  const { data, textures } = graphics;
   const { animations, images } = data;
 
   const smokeTextures = animations.smoke.map(image => textures[image]);

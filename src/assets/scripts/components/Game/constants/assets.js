@@ -44,3 +44,9 @@ export const SCENE_MUSIC = 'scene.mp3';
  * @type {String}
  */
 export const SCENE_GRAPHICS = 'scene.json';
+
+/**
+ * The scene map file name.
+ * @type {String}
+ */
+export const SCENE_MAP = 'map.json';

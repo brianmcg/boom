@@ -126,9 +126,15 @@ class Game extends Application {
       const { sound, graphics } = this.loader.cache;
       const graphicsKeys = Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME));
       const soundKeys = Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME));
+      const dataKeys = [];
 
       this.scene.destroy();
-      this.loader.unload({ graphics: graphicsKeys, sound: soundKeys });
+
+      this.loader.unload({
+        graphics: graphicsKeys,
+        sound: soundKeys,
+        data: dataKeys,
+      });
     }
 
     if (SceneType) {
@@ -140,9 +146,16 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.loader.load(this.scene.assets).then(({ graphics, sound }) => {
+      this.loader.load(this.scene.assets).then((resources) => {
+        const { graphics, sound, data } = resources;
+
         this.sound.add(SCENE_MUSIC, sound);
-        this.scene.create(graphics, player);
+
+        this.scene.create({
+          graphics,
+          data,
+          player
+        });
       });
     }
   }

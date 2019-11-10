@@ -7,8 +7,7 @@ class DataLoader {
     if (options) {
       const { name, src } = options;
       const response = await fetch(src);
-      const json = await response.json();
-      const data = JSON.stringify(json);
+      const data = await response.json();
 
       this.cache[name] = data;
 
