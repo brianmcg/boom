@@ -1,7 +1,7 @@
 import { Application } from './core/graphics';
 import { SoundPlayer } from './core/audio';
 import { BLACK } from './constants/colors';
-import { NUM_LEVELS, SCREEN, MAX_FPS } from './constants/config';
+import { SCREEN, MAX_FPS } from './constants/config';
 import { SOUND_SPRITE } from './constants/sounds';
 import {
   GAME_PATH,
@@ -51,7 +51,6 @@ class Game extends Application {
     this.sound = new SoundPlayer();
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
-    this.numbLevels = NUM_LEVELS;
     this.resize();
   }
 

@@ -1,4 +1,5 @@
 {
+  "numLevels": 2,
   "stats": {
     "player": {
       "acceleration": 0.25,

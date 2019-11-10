@@ -170,7 +170,7 @@ class WorldScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    if (this.index < this.game.numLevels) {
+    if (this.index < this.game.data.numLevels) {
       this.game.show(Scene.TYPES.WORLD, this.index + 1, this.world.player);
     } else {
       this.game.show(Scene.TYPES.CREDITS);
