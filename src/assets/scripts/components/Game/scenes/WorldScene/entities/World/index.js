@@ -1,6 +1,5 @@
 import { World as PhysicsWorld } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
-import Player from '../Player';
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
@@ -30,7 +29,7 @@ class World extends PhysicsWorld {
    */
   constructor({
     index,
-    player = new Player(),
+    player,
     enemies = [],
     obstacles = [],
     items = [],

@@ -1,4 +1,3 @@
-import { TILE_SIZE } from 'game/constants/config';
 import {
   DEG,
   castRay,
@@ -10,31 +9,6 @@ import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from '../Weapon';
 import Camera from './components/Camera';
-
-const DEFAULTS = {
-  MAX_VELOCITY: TILE_SIZE / 16,
-  MAX_ROTATION_VELOCITY: 12,
-  ACCELERATION: TILE_SIZE / 256,
-  ROTATION_ACCELERATION: 2,
-};
-
-const WEAPON_DEFAULTS = {
-  [Weapon.TYPES.PISTOL]: {
-    idleTime: 50,
-    power: 3,
-    equiped: true,
-  },
-  [Weapon.TYPES.SHOTGUN]: {
-    idleTime: 250,
-    power: 10,
-    equiped: true,
-  },
-  [Weapon.TYPES.CHAINGUN]: {
-    idleTime: 0,
-    power: 4,
-    equiped: true,
-  },
-};
 
 const DEG_360 = DEG[360];
 
@@ -63,16 +37,18 @@ class Player extends AbstractActor {
    */
   constructor(options = {}) {
     const {
-      maxVelocity = DEFAULTS.MAX_VELOCITY,
-      maxRotVelocity = DEFAULTS.MAX_ROTATION_VELOCITY,
-      acceleration = DEFAULTS.ACCELERATION,
-      rotAcceleration = DEFAULTS.ROTATION_ACCELERATION,
+      maxVelocity,
+      maxRotVelocity,
+      acceleration,
+      rotAcceleration,
+      weapons,
       ...other
     } = options;
 
     super(other);
 
     this.maxVelocity = maxVelocity;
+    this.baseMaxVelocity = maxVelocity;
     this.maxRotVelocity = maxRotVelocity;
     this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
@@ -83,11 +59,11 @@ class Player extends AbstractActor {
     this.actions = {};
     this.camera = new Camera(this);
 
-    this.weapons = Object.values(Weapon.TYPES).reduce((memo, type) => ({
+    this.weapons = Object.keys(weapons).reduce((memo, type) => ({
       ...memo,
       [type]: new Weapon({
         player: this,
-        ...WEAPON_DEFAULTS[type],
+        ...weapons[type],
       }),
     }), {});
   }
@@ -109,7 +85,7 @@ class Player extends AbstractActor {
    * @param  {Number delta The delta time.
    */
   updateMovement(delta) {
-    this.maxVelocity = DEFAULTS.MAX_VELOCITY * this.height / this.maxHeight;
+    this.maxVelocity = this.baseMaxVelocity * this.height / this.maxHeight;
 
     if (this.actions.strafe) {
       this.updateStrafingMovement(delta);

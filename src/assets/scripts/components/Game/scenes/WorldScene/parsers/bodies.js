@@ -8,6 +8,7 @@ import Item from '../entities/Item';
 import Amp from '../entities/Amp';
 import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
+import Player from '../entities/Player';
 
 const SECTOR_TYPES = {
   START: 'start',
@@ -29,7 +30,7 @@ const MAP_LAYERS = {
   GAME: 6,
 };
 
-export const createWorld = (data, player) => {
+export const createWorld = (data, stats, player) => {
   const grid = [];
   const obstacles = [];
   const items = [];
@@ -220,12 +221,17 @@ export const createWorld = (data, player) => {
             width: TILE_SIZE / 2,
             height: TILE_SIZE / 2,
             length: TILE_SIZE / 2,
+            ...stats.enemies[type],
           }));
         }
       }
     }
 
     grid.push(row);
+  }
+
+  if (!player) {
+    player = new Player(stats.player);
   }
 
   const world = new World({

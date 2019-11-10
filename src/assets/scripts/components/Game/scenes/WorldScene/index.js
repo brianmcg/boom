@@ -72,11 +72,14 @@ class WorldScene extends Scene {
       },
     };
 
+    const { stats } = this.game.data;
+
     const { world, sprites } = parse({
       graphics,
       data,
       player,
       text,
+      stats,
     });
 
     this.mainContainer.addChild(new WorldContainer({

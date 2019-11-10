@@ -6,6 +6,7 @@ import { SOUND_SPRITE } from './constants/sounds';
 import {
   GAME_PATH,
   GAME_SOUNDS,
+  GAME_DATA,
   GAME_FONT,
   SCENE_MUSIC,
 } from './constants/assets';
@@ -68,12 +69,17 @@ class Game extends Application {
         name: GAME_FONT.NAME,
         src: `${GAME_PATH}/${GAME_FONT.FILE}`,
       },
+      data: {
+        name: GAME_DATA,
+        src: `${GAME_PATH}/${GAME_DATA}`,
+      },
     };
 
     this.scene = null;
     this.ticker.start();
 
-    this.loader.load(assets).then(({ sound }) => {
+    this.loader.load(assets).then(({ sound, data }) => {
+      this.data = data;
       this.sound.add(GAME_SOUNDS.NAME, sound);
       this.show(Scene.TYPES.TITLE);
     });
@@ -154,7 +160,7 @@ class Game extends Application {
         this.scene.create({
           graphics,
           data,
-          player
+          player,
         });
       });
     }

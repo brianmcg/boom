@@ -28,10 +28,10 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor(options) {
+  constructor({ velocity, rotVelocity, ...options }) {
     super(options);
-    this.velocity = 1;
-    this.rotVelocity = DEG[1];
+    this.velocity = velocity;
+    this.rotVelocity = rotVelocity;
     this.distanceToPlayer = Number.MAX_VALUE;
 
     if (this.constructor === AbstractEnemy) {

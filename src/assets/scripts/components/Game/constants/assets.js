@@ -34,6 +34,12 @@ export const GAME_FONT = {
 };
 
 /**
+ * The game data.
+ * @type {String}
+ */
+export const GAME_DATA = 'data.json';
+
+/**
  * The scene music file name.
  * @type {String}
  */

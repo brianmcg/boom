@@ -7,6 +7,7 @@ import { createSprites } from './sprites';
  * @param  {Object} options.data      The scene data.
  * @param  {Object} options.text      The scene text.
  * @param  {Player} options.player    The player.
+ * @param  {Object} options.stats     The world stats.
  * @return {Object}                   The parsed scene data.
  */
 export const parse = ({
@@ -14,8 +15,9 @@ export const parse = ({
   data,
   text,
   player,
+  stats,
 }) => {
-  const world = createWorld(data, player);
+  const world = createWorld(data, stats, player);
   const sprites = createSprites(world, graphics, text);
 
   return {

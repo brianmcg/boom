@@ -1,0 +1,47 @@
+{
+  "stats": {
+    "player": {
+      "acceleration": 0.25,
+      "maxRotVelocity": 12,
+      "maxVelocity": 4,
+      "rotAcceleration": 2,
+      "weapons": {
+        "pistol": {
+          "idleTime": 50,
+          "power": 3,
+          "equiped": true,
+          "maxAmmo": 100,
+          "ammo": 10
+        },
+        "shotgun": {
+          "idleTime": 300,
+          "power": 10,
+          "equiped": true,
+          "maxAmmo": 100,
+          "ammo": 10
+        },
+        "chaingun": {
+          "idleTime": 0,
+          "power": 4,
+          "equiped": true,
+          "maxAmmo": 100,
+          "ammo": 10
+        }
+      }
+    },
+    "enemies": {
+      "amp": {
+        "velocity": 1,
+        "rotVelocity": 5
+      },
+      "zombie": {
+        "velocity": 1,
+        "rotVelocity": 5
+      },
+      "mancubus": {
+        "velocity": 1,
+        "rotVelocity": 5
+      }
+    }
+  }
+}
