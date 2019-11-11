@@ -13,11 +13,16 @@ class RectangleSprite extends Sprite {
    */
   constructor({
     color,
+    x = 0,
+    y = 0,
     width = 10,
     height = 10,
     alpha = 1,
   }) {
     super();
+
+    this.x = x;
+    this.y = y;
     this.texture = Texture.WHITE;
     this.width = width;
     this.height = height;

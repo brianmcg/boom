@@ -27,10 +27,6 @@ export const GAME_SOUNDS = {
 export const GAME_FONT = {
   NAME: 'font',
   FILE: 'font.xml',
-  IMAGES: [
-    'font_1.png',
-    'font_2.png',
-  ],
 };
 
 /**
