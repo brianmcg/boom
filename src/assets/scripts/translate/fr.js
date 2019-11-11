@@ -13,5 +13,5 @@ export default {
   'credits.scroll.graphics': '[FR] Graphics',
   'credits.scroll.sound': '[FR] Sound',
   'credits.scroll.screenplay': '[FR] Script',
-  'credits.scroll.author': '[FR] Brian Mcgrath',
+  'credits.scroll.author': '[FR] Brian McGrath',
 };

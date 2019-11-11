@@ -1,7 +1,8 @@
-import { Sprite, TextSprite, RectangleSprite } from 'game/core/graphics';
+import { TextSprite, RectangleSprite } from 'game/core/graphics';
 import { FONT_SIZES } from 'game/constants/fonts';
 import { WHITE, RED, BLACK } from 'game/constants/colors';
 import { SCREEN } from 'game/constants/config';
+import MenuSprite from '../sprites/MenuSprite';
 
 const createPromptSprite = text => (
   new TextSprite({
@@ -11,7 +12,7 @@ const createPromptSprite = text => (
   })
 );
 
-const createMenuSprites = (menu, textures, images) => {
+const createMenuSprites = (menu, textures, animations) => {
   const background = new RectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
@@ -29,8 +30,8 @@ const createMenuSprites = (menu, textures, images) => {
   }), {});
 
   const iconHeight = labels[Object.keys(labels)[0]].height;
-
-  const icon = new Sprite(textures[images.menu]);
+  const menuTextures = animations.menu.map(image => textures[image]);
+  const icon = new MenuSprite(menuTextures);
 
   icon.height = iconHeight;
   icon.width = iconHeight;
@@ -50,11 +51,11 @@ const createMenuSprites = (menu, textures, images) => {
  */
 export const parse = ({ graphics, text }) => {
   const { data, textures } = graphics;
-  const { images } = data;
+  const { animations } = data;
 
   return {
     sprites: {
-      menu: createMenuSprites(text.menu, textures, images),
+      menu: createMenuSprites(text.menu, textures, animations),
       prompt: createPromptSprite(text.prompt),
     },
   };

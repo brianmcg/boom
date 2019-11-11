@@ -33,5 +33,5 @@ export default {
   'credits.scroll.graphics': 'Graphics',
   'credits.scroll.sound': 'Sound',
   'credits.scroll.screenplay': 'Script',
-  'credits.scroll.author': 'Brian Mcgrath',
+  'credits.scroll.author': 'Brian McGrath',
 };
