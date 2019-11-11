@@ -19,7 +19,9 @@ class BackgroundContainer extends Container {
     sparks.width = SCREEN.WIDTH;
     sparks.height = SCREEN.HEIGHT;
 
+    this.addChild(smoke);
     this.addChild(sparks);
+
 
     this.filters = [new PixelateFilter()];
     this.filters[0].enabled = false;

@@ -175,19 +175,19 @@ const createReviewSprites = (text) => {
   });
 
   const title = new TextSprite({
-    font: FONT_SIZES.MEDIUM,
+    font: FONT_SIZES.LARGE,
     text: text.title,
     color: WHITE,
   });
 
   const enemies = {
     name: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: text.enemies,
       color: WHITE,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
     }),
@@ -195,12 +195,12 @@ const createReviewSprites = (text) => {
 
   const items = {
     name: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: text.items,
       color: WHITE,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
     }),
@@ -208,12 +208,12 @@ const createReviewSprites = (text) => {
 
   const time = {
     name: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: text.time,
       color: WHITE,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.SMALL,
+      font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
     }),
