@@ -26,22 +26,10 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
 };
 
 const createWeaponSprite = (player, textures, animations) => {
-  const { tiles } = animations.tilesets[0];
-  const textureCollection = {};
-
-  animations.layers.forEach((layer) => {
-    const layerTextures = [];
-
-    layer.data.forEach((item) => {
-      if (item) {
-        const { image } = tiles.find(t => t.id === item - 1);
-
-        layerTextures.push(textures[image]);
-      }
-    });
-
-    textureCollection[layer.name] = layerTextures;
-  });
+  const textureCollection = Object.keys(player.weapons).reduce((memo, key) => ({
+    ...memo,
+    [key]: animations[key].map(image => textures[image]),
+  }), {});
 
   return new WeaponSprite(textureCollection, player);
 };
@@ -224,7 +212,7 @@ const createWorldSprites = (world, resources) => {
   const { player } = world;
 
   const entities = createEntitySprites(world, textures, animations);
-  const weapon = createWeaponSprite(player, textures, animations.weapons);
+  const weapon = createWeaponSprite(player, textures, animations);
   const walls = createWallSprites(world, frames, textures);
   const background = createBackgroundSprites(world, frames, textures);
 

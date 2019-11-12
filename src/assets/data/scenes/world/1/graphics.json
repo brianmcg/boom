@@ -1260,6 +1260,106 @@
         "h": 64
       }
     },
+    "chaingun_01.png": {
+      "frame": {
+        "x": 133,
+        "y": 527,
+        "w": 29,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 17,
+        "y": 52,
+        "w": 29,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "chaingun_02.png": {
+      "frame": {
+        "x": 932,
+        "y": 438,
+        "w": 37,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 13,
+        "y": 40,
+        "w": 37,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "chaingun_03.png": {
+      "frame": {
+        "x": 661,
+        "y": 620,
+        "w": 40,
+        "h": 33
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 11,
+        "y": 31,
+        "w": 40,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "chaingun_04.png": {
+      "frame": {
+        "x": 611,
+        "y": 565,
+        "w": 41,
+        "h": 33
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 11,
+        "y": 31,
+        "w": 41,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "chaingun_05.png": {
+      "frame": {
+        "x": 932,
+        "y": 438,
+        "w": 37,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 13,
+        "y": 40,
+        "w": 37,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
     "hud_keys_01.png": {
       "frame": {
         "x": 316,
@@ -3120,6 +3220,186 @@
         "h": 64
       }
     },
+    "pistol_01.png": {
+      "frame": {
+        "x": 874,
+        "y": 608,
+        "w": 23,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 44,
+        "w": 23,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "pistol_02.png": {
+      "frame": {
+        "x": 788,
+        "y": 623,
+        "w": 23,
+        "h": 28
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 36,
+        "w": 23,
+        "h": 28
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "pistol_03.png": {
+      "frame": {
+        "x": 668,
+        "y": 322,
+        "w": 24,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 19,
+        "y": 32,
+        "w": 24,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "pistol_04.png": {
+      "frame": {
+        "x": 932,
+        "y": 464,
+        "w": 25,
+        "h": 27
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 17,
+        "y": 37,
+        "w": 25,
+        "h": 27
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "pistol_05.png": {
+      "frame": {
+        "x": 838,
+        "y": 621,
+        "w": 21,
+        "h": 23
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 41,
+        "w": 21,
+        "h": 23
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "shotgun_01.png": {
+      "frame": {
+        "x": 813,
+        "y": 623,
+        "w": 23,
+        "h": 25
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 39,
+        "w": 23,
+        "h": 25
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "shotgun_02.png": {
+      "frame": {
+        "x": 874,
+        "y": 574,
+        "w": 23,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 32,
+        "w": 23,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "shotgun_03.png": {
+      "frame": {
+        "x": 899,
+        "y": 585,
+        "w": 25,
+        "h": 25
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 39,
+        "w": 25,
+        "h": 25
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
+    "shotgun_04.png": {
+      "frame": {
+        "x": 899,
+        "y": 612,
+        "w": 25,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 40,
+        "w": 25,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 64
+      }
+    },
     "walls_01.png": {
       "frame": {
         "x": 1,
@@ -3960,286 +4240,6 @@
         "h": 64
       }
     },
-    "weapons_01.png": {
-      "frame": {
-        "x": 874,
-        "y": 608,
-        "w": 23,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 20,
-        "y": 44,
-        "w": 23,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_02.png": {
-      "frame": {
-        "x": 788,
-        "y": 623,
-        "w": 23,
-        "h": 28
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 20,
-        "y": 36,
-        "w": 23,
-        "h": 28
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_03.png": {
-      "frame": {
-        "x": 668,
-        "y": 322,
-        "w": 24,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 19,
-        "y": 32,
-        "w": 24,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_04.png": {
-      "frame": {
-        "x": 932,
-        "y": 464,
-        "w": 25,
-        "h": 27
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 17,
-        "y": 37,
-        "w": 25,
-        "h": 27
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_05.png": {
-      "frame": {
-        "x": 838,
-        "y": 621,
-        "w": 21,
-        "h": 23
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 21,
-        "y": 41,
-        "w": 21,
-        "h": 23
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_06.png": {
-      "frame": {
-        "x": 813,
-        "y": 623,
-        "w": 23,
-        "h": 25
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 21,
-        "y": 39,
-        "w": 23,
-        "h": 25
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_07.png": {
-      "frame": {
-        "x": 874,
-        "y": 574,
-        "w": 23,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 21,
-        "y": 32,
-        "w": 23,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_08.png": {
-      "frame": {
-        "x": 899,
-        "y": 585,
-        "w": 25,
-        "h": 25
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 20,
-        "y": 39,
-        "w": 25,
-        "h": 25
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_09.png": {
-      "frame": {
-        "x": 899,
-        "y": 612,
-        "w": 25,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 20,
-        "y": 40,
-        "w": 25,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_11.png": {
-      "frame": {
-        "x": 133,
-        "y": 527,
-        "w": 29,
-        "h": 12
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 17,
-        "y": 52,
-        "w": 29,
-        "h": 12
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_12.png": {
-      "frame": {
-        "x": 932,
-        "y": 438,
-        "w": 37,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 13,
-        "y": 40,
-        "w": 37,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_13.png": {
-      "frame": {
-        "x": 661,
-        "y": 620,
-        "w": 40,
-        "h": 33
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 11,
-        "y": 31,
-        "w": 40,
-        "h": 33
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_14.png": {
-      "frame": {
-        "x": 611,
-        "y": 565,
-        "w": 41,
-        "h": 33
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 11,
-        "y": 31,
-        "w": 41,
-        "h": 33
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
-    "weapons_15.png": {
-      "frame": {
-        "x": 932,
-        "y": 438,
-        "w": 37,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 13,
-        "y": 40,
-        "w": 37,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 64
-      }
-    },
     "zombie_01.png": {
       "frame": {
         "x": 205,
@@ -5022,140 +5022,6 @@
     }
   },
   "animations": {
-    "weapons": {
-      "height": 1,
-      "infinite": false,
-      "layers": [{
-        "data": [18, 19, 20, 21, 22],
-        "height": 1,
-        "id": 1,
-        "name": "pistol",
-        "opacity": 1,
-        "type": "tilelayer",
-        "visible": false,
-        "width": 5,
-        "x": 0,
-        "y": 0
-      }, {
-        "data": [23, 24, 25, 26, 0],
-        "height": 1,
-        "id": 2,
-        "name": "shotgun",
-        "opacity": 1,
-        "type": "tilelayer",
-        "visible": false,
-        "width": 5,
-        "x": 0,
-        "y": 0
-      }, {
-        "data": [27, 28, 29, 30, 31],
-        "height": 1,
-        "id": 3,
-        "name": "chaingun",
-        "opacity": 1,
-        "type": "tilelayer",
-        "visible": true,
-        "width": 5,
-        "x": 0,
-        "y": 0
-      }],
-      "nextlayerid": 4,
-      "nextobjectid": 1,
-      "orientation": "orthogonal",
-      "renderorder": "right-down",
-      "tiledversion": "1.2.4",
-      "tileheight": 64,
-      "tilesets": [{
-        "columns": 0,
-        "firstgid": 1,
-        "grid": {
-          "height": 1,
-          "orientation": "orthogonal",
-          "width": 1
-        },
-        "margin": 0,
-        "name": "tileset",
-        "spacing": 0,
-        "tilecount": 14,
-        "tileheight": 64,
-        "tiles": [{
-          "id": 17,
-          "image": "weapons_01.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 18,
-          "image": "weapons_02.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 19,
-          "image": "weapons_03.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 20,
-          "image": "weapons_04.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 21,
-          "image": "weapons_05.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 22,
-          "image": "weapons_06.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 23,
-          "image": "weapons_07.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 24,
-          "image": "weapons_08.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 25,
-          "image": "weapons_09.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 26,
-          "image": "weapons_11.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 27,
-          "image": "weapons_12.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 28,
-          "image": "weapons_13.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 29,
-          "image": "weapons_14.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }, {
-          "id": 30,
-          "image": "weapons_15.png",
-          "imageheight": 64,
-          "imagewidth": 64
-        }],
-        "tilewidth": 64
-      }],
-      "tilewidth": 64,
-      "type": "map",
-      "version": 1.2,
-      "width": 5
-    },
     "amp": {
       "standing": {
         "0": ["amp_01.png"],
@@ -5193,6 +5059,7 @@
     "backgrounds": ["backgrounds_01.png", "backgrounds_02.png"],
     "blood": ["blood_01.png", "blood_02.png", "blood_03.png", "blood_04.png", "blood_05.png", "blood_06.png", "blood_07.png", "blood_08.png"],
     "brain_pod": ["brain_pod_01.png", "brain_pod_02.png", "brain_pod_03.png", "brain_pod_04.png", "brain_pod_05.png", "brain_pod_06.png", "brain_pod_07.png", "brain_pod_08.png", "brain_pod_09.png", "brain_pod_10.png", "brain_pod_11.png", "brain_pod_12.png", "brain_pod_13.png", "brain_pod_15.png"],
+    "chaingun": ["chaingun_01.png", "chaingun_02.png", "chaingun_03.png", "chaingun_04.png", "chaingun_05.png"],
     "hud_keys": ["hud_keys_01.png", "hud_keys_02.png", "hud_keys_03.png"],
     "mancubus": {
       "standing": {
@@ -5230,6 +5097,8 @@
     },
     "menu": ["menu_01.png", "menu_02.png"],
     "objects": ["objects_01.png", "objects_02.png", "objects_03.png", "objects_04.png", "objects_05.png", "objects_06.png", "objects_07.png", "objects_08.png", "objects_09.png", "objects_10.png", "objects_11.png", "objects_12.png", "objects_13.png", "objects_14.png", "objects_15.png", "objects_16.png", "objects_17.png", "objects_18.png", "objects_19.png", "objects_20.png", "objects_21.png", "objects_22.png", "objects_23.png", "objects_24.png", "objects_25.png", "objects_26.png", "objects_27.png", "objects_28.png", "objects_29.png", "objects_30.png", "objects_31.png", "objects_32.png", "objects_33.png", "objects_34.png", "objects_35.png", "objects_36.png", "objects_37.png", "objects_38.png", "objects_39.png", "objects_40.png", "objects_41.png", "objects_42.png"],
+    "pistol": ["pistol_01.png", "pistol_02.png", "pistol_03.png", "pistol_04.png", "pistol_05.png"],
+    "shotgun": ["shotgun_01.png", "shotgun_02.png", "shotgun_03.png", "shotgun_04.png"],
     "walls": ["walls_01.png", "walls_02.png", "walls_03.png", "walls_04.png", "walls_05.png", "walls_06.png", "walls_07.png", "walls_08.png", "walls_09.png", "walls_10.png", "walls_11.png", "walls_12.png", "walls_13.png", "walls_14.png", "walls_15.png", "walls_16.png", "walls_17.png", "walls_18.png", "walls_19.png", "walls_20.png", "walls_21.png", "walls_22.png", "walls_23.png", "walls_24.png", "walls_25.png", "walls_26.png", "walls_27.png", "walls_28.png", "walls_29.png", "walls_30.png", "walls_31.png", "walls_32.png", "walls_33.png", "walls_34.png", "walls_35.png", "walls_36.png", "walls_37.png", "walls_38.png", "walls_39.png", "walls_40.png", "walls_41.png", "walls_42.png"],
     "zombie": {
       "standing": {
@@ -5276,6 +5145,6 @@
       "h": 655
     },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:123a9b83caa645034fb1b0a71d836cc2:4a4ae92bbe52303ee54640ac90292319:0ad5bcd83439bd26b442526c1aa60ce5$"
+    "smartupdate": "$TexturePacker:SmartUpdate:0a4ed29a2081b04bb0dfff660a4c4662:62e43813791f5119b26d97b956fe7534:0ad5bcd83439bd26b442526c1aa60ce5$"
   }
 }
