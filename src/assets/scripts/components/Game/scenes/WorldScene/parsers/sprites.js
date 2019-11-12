@@ -14,25 +14,19 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
-  const { tiles } = animations.tilesets[0];
-  const textureCollection = {};
+  const textureCollection = Object.keys(animations).reduce((animationsMemo, state) => {
 
-  animations.layers.forEach((layer) => {
-    textureCollection[layer.name] = {};
-    for (let y = 0; y < layer.height; y += 1) {
-      const layerTextures = [];
-      for (let x = 0; x < layer.width; x += 1) {
-        const item = layer.data[(y * layer.width) + x];
-        if (item) {
-          const tile = tiles.find(t => t.id === item - 1);
-          layerTextures.push(textures[tile.image]);
-        }
+    Object.keys(animations[state]).forEach((angle) => {
+      if (!animationsMemo[state]) {
+        animationsMemo[state] = {};
       }
-      if (!textures.length) {
-        textureCollection[layer.name][y] = layerTextures;
-      }
-    }
-  });
+      animationsMemo[state][angle] = animations[state][angle].map((image) => {
+        return textures[image];
+      });
+    });
+
+    return animationsMemo;
+  }, {});
 
   return new EnemySprite(enemy, textureCollection);
 };
@@ -157,7 +151,7 @@ const createEntitySprites = (world, textures, animations) => {
 
   world.enemies.forEach((enemy) => {
     entitySprites[enemy.id] = createEnemySprite({
-      animations: animations.enemies[enemy.type],
+      animations: animations[enemy.type],
       textures,
       enemy,
     });

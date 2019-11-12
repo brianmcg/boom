@@ -5022,927 +5022,6 @@
     }
   },
   "animations": {
-    "backgrounds": ["backgrounds_01.png", "backgrounds_02.png"],
-    "blood": ["blood_01.png", "blood_02.png", "blood_03.png", "blood_04.png", "blood_05.png", "blood_06.png", "blood_07.png", "blood_08.png"],
-    "brain_pod": ["brain_pod_01.png", "brain_pod_02.png", "brain_pod_03.png", "brain_pod_04.png", "brain_pod_05.png", "brain_pod_06.png", "brain_pod_07.png", "brain_pod_08.png", "brain_pod_09.png", "brain_pod_10.png", "brain_pod_11.png", "brain_pod_12.png", "brain_pod_13.png", "brain_pod_15.png"],
-    "hud_keys": ["hud_keys_01.png", "hud_keys_02.png", "hud_keys_03.png"],
-    "menu": ["menu_01.png", "menu_02.png"],
-    "objects": ["objects_01.png", "objects_02.png", "objects_03.png", "objects_04.png", "objects_05.png", "objects_06.png", "objects_07.png", "objects_08.png", "objects_09.png", "objects_10.png", "objects_11.png", "objects_12.png", "objects_13.png", "objects_14.png", "objects_15.png", "objects_16.png", "objects_17.png", "objects_18.png", "objects_19.png", "objects_20.png", "objects_21.png", "objects_22.png", "objects_23.png", "objects_24.png", "objects_25.png", "objects_26.png", "objects_27.png", "objects_28.png", "objects_29.png", "objects_30.png", "objects_31.png", "objects_32.png", "objects_33.png", "objects_34.png", "objects_35.png", "objects_36.png", "objects_37.png", "objects_38.png", "objects_39.png", "objects_40.png", "objects_41.png", "objects_42.png"],
-    "walls": ["walls_01.png", "walls_02.png", "walls_03.png", "walls_04.png", "walls_05.png", "walls_06.png", "walls_07.png", "walls_08.png", "walls_09.png", "walls_10.png", "walls_11.png", "walls_12.png", "walls_13.png", "walls_14.png", "walls_15.png", "walls_16.png", "walls_17.png", "walls_18.png", "walls_19.png", "walls_20.png", "walls_21.png", "walls_22.png", "walls_23.png", "walls_24.png", "walls_25.png", "walls_26.png", "walls_27.png", "walls_28.png", "walls_29.png", "walls_30.png", "walls_31.png", "walls_32.png", "walls_33.png", "walls_34.png", "walls_35.png", "walls_36.png", "walls_37.png", "walls_38.png", "walls_39.png", "walls_40.png", "walls_41.png", "walls_42.png"],
-    "weapons": ["weapons_01.png", "weapons_02.png", "weapons_03.png", "weapons_04.png", "weapons_05.png", "weapons_06.png", "weapons_07.png", "weapons_08.png", "weapons_09.png", "weapons_11.png", "weapons_12.png", "weapons_13.png", "weapons_14.png", "weapons_15.png"],
-    "enemies": {
-      "amp": {
-        "height": 8,
-        "infinite": false,
-        "layers": [{
-          "data": [1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 9, 0, 0, 0, 0, 14, 0, 0, 0, 0, 17, 0, 0, 0, 0, 21, 0, 0, 0, 0, 25, 0, 0, 0, 0, 29, 0, 0, 0, 0],
-          "height": 8,
-          "id": 1,
-          "name": "standing",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": true,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [1, 2, 3, 4, 0, 5, 6, 7, 8, 0, 9, 10, 11, 12, 0, 13, 14, 15, 16, 0, 17, 18, 19, 20, 0, 21, 22, 23, 24, 0, 25, 26, 27, 28, 0, 29, 30, 31, 32, 0],
-          "height": 8,
-          "id": 2,
-          "name": "moving",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [35, 36, 37, 38, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 3,
-          "name": "dying",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 4,
-          "name": "attacking",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 5,
-          "name": "hurting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [34, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 6,
-          "name": "shooting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }],
-        "nextlayerid": 7,
-        "nextobjectid": 1,
-        "orientation": "orthogonal",
-        "renderorder": "right-down",
-        "tiledversion": "1.2.4",
-        "tileheight": 64,
-        "tilesets": [{
-          "columns": 0,
-          "firstgid": 1,
-          "grid": {
-            "height": 1,
-            "orientation": "orthogonal",
-            "width": 1
-          },
-          "margin": 0,
-          "name": "tileset",
-          "spacing": 0,
-          "tilecount": 39,
-          "tileheight": 64,
-          "tiles": [{
-            "id": 0,
-            "image": "amp_01.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 1,
-            "image": "amp_02.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 2,
-            "image": "amp_03.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 3,
-            "image": "amp_04.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 4,
-            "image": "amp_05.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 5,
-            "image": "amp_06.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 6,
-            "image": "amp_07.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 7,
-            "image": "amp_08.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 8,
-            "image": "amp_09.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 9,
-            "image": "amp_10.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 10,
-            "image": "amp_11.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 11,
-            "image": "amp_12.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 12,
-            "image": "amp_13.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 13,
-            "image": "amp_14.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 14,
-            "image": "amp_15.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 15,
-            "image": "amp_16.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 16,
-            "image": "amp_17.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 17,
-            "image": "amp_18.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 18,
-            "image": "amp_19.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 19,
-            "image": "amp_20.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 20,
-            "image": "amp_21.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 21,
-            "image": "amp_22.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 22,
-            "image": "amp_23.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 23,
-            "image": "amp_24.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 24,
-            "image": "amp_25.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 25,
-            "image": "amp_26.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 26,
-            "image": "amp_27.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 27,
-            "image": "amp_28.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 28,
-            "image": "amp_29.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 29,
-            "image": "amp_30.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 30,
-            "image": "amp_31.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 31,
-            "image": "amp_32.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 32,
-            "image": "amp_33.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 33,
-            "image": "amp_34.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 34,
-            "image": "amp_35.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 35,
-            "image": "amp_36.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 36,
-            "image": "amp_37.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 37,
-            "image": "amp_38.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 38,
-            "image": "amp_39.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }],
-          "tilewidth": 64
-        }],
-        "tilewidth": 64,
-        "type": "map",
-        "version": 1.2,
-        "width": 5
-      },
-      "zombie": {
-        "height": 8,
-        "infinite": false,
-        "layers": [{
-          "data": [1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 9, 0, 0, 0, 0, 13, 0, 0, 0, 0, 17, 0, 0, 0, 0, 21, 0, 0, 0, 0, 25, 0, 0, 0, 0, 29, 0, 0, 0, 0],
-          "height": 8,
-          "id": 1,
-          "name": "standing",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [1, 2, 3, 4, 0, 5, 6, 7, 8, 0, 9, 10, 11, 12, 0, 13, 14, 15, 16, 0, 17, 18, 19, 20, 0, 21, 22, 23, 24, 0, 25, 26, 27, 28, 0, 29, 30, 31, 32, 0],
-          "height": 8,
-          "id": 2,
-          "name": "moving",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [36, 37, 38, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 3,
-          "name": "dying",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [35, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 4,
-          "name": "attacking",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 5,
-          "name": "hurting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [34, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 6,
-          "name": "shooting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": true,
-          "width": 5,
-          "x": 0,
-          "y": 0
-        }],
-        "nextlayerid": 7,
-        "nextobjectid": 1,
-        "orientation": "orthogonal",
-        "renderorder": "right-down",
-        "tiledversion": "1.2.4",
-        "tileheight": 64,
-        "tilesets": [{
-          "columns": 0,
-          "firstgid": 1,
-          "grid": {
-            "height": 1,
-            "orientation": "orthogonal",
-            "width": 1
-          },
-          "margin": 0,
-          "name": "tileset",
-          "spacing": 0,
-          "tilecount": 39,
-          "tileheight": 64,
-          "tiles": [{
-            "id": 0,
-            "image": "zombie_01.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 1,
-            "image": "zombie_02.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 2,
-            "image": "zombie_03.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 3,
-            "image": "zombie_04.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 4,
-            "image": "zombie_05.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 5,
-            "image": "zombie_06.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 6,
-            "image": "zombie_07.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 7,
-            "image": "zombie_08.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 8,
-            "image": "zombie_09.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 9,
-            "image": "zombie_10.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 10,
-            "image": "zombie_11.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 11,
-            "image": "zombie_12.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 12,
-            "image": "zombie_13.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 13,
-            "image": "zombie_14.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 14,
-            "image": "zombie_15.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 15,
-            "image": "zombie_16.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 16,
-            "image": "zombie_17.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 17,
-            "image": "zombie_18.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 18,
-            "image": "zombie_19.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 19,
-            "image": "zombie_20.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 20,
-            "image": "zombie_21.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 21,
-            "image": "zombie_22.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 22,
-            "image": "zombie_23.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 23,
-            "image": "zombie_24.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 24,
-            "image": "zombie_25.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 25,
-            "image": "zombie_26.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 26,
-            "image": "zombie_27.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 27,
-            "image": "zombie_28.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 28,
-            "image": "zombie_29.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 29,
-            "image": "zombie_30.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 30,
-            "image": "zombie_31.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 31,
-            "image": "zombie_32.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 32,
-            "image": "zombie_33.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 33,
-            "image": "zombie_34.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 34,
-            "image": "zombie_35.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 35,
-            "image": "zombie_36.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 36,
-            "image": "zombie_37.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 37,
-            "image": "zombie_38.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 38,
-            "image": "zombie_39.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }],
-          "tilewidth": 64
-        }],
-        "tilewidth": 64,
-        "type": "map",
-        "version": 1.2,
-        "width": 5
-      },
-      "mancubus": {
-        "height": 8,
-        "infinite": false,
-        "layers": [{
-          "data": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 1,
-          "name": "standing",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": true,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 0, 0, 0, 0, 0, 0, 13, 14, 15, 16, 0, 0, 0, 0, 0, 0, 17, 18, 19, 20, 0, 0, 0, 0, 0, 0, 21, 22, 23, 24, 0, 0, 0, 0, 0, 0, 25, 26, 27, 28, 0, 0, 0, 0, 0, 0, 29, 30, 31, 32, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 2,
-          "name": "moving",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 3,
-          "name": "dying",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [35, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 4,
-          "name": "attacking",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 5,
-          "name": "hurting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }, {
-          "data": [34, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          "height": 8,
-          "id": 6,
-          "name": "shooting",
-          "opacity": 1,
-          "type": "tilelayer",
-          "visible": false,
-          "width": 10,
-          "x": 0,
-          "y": 0
-        }],
-        "nextlayerid": 7,
-        "nextobjectid": 1,
-        "orientation": "orthogonal",
-        "renderorder": "right-down",
-        "tiledversion": "1.2.4",
-        "tileheight": 64,
-        "tilesets": [{
-          "columns": 0,
-          "firstgid": 1,
-          "grid": {
-            "height": 1,
-            "orientation": "orthogonal",
-            "width": 1
-          },
-          "margin": 0,
-          "name": "tileset",
-          "spacing": 0,
-          "tilecount": 46,
-          "tileheight": 64,
-          "tiles": [{
-            "id": 0,
-            "image": "mancubus_01.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 1,
-            "image": "mancubus_02.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 2,
-            "image": "mancubus_03.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 3,
-            "image": "mancubus_04.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 4,
-            "image": "mancubus_05.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 5,
-            "image": "mancubus_06.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 6,
-            "image": "mancubus_07.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 7,
-            "image": "mancubus_08.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 8,
-            "image": "mancubus_09.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 9,
-            "image": "mancubus_10.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 10,
-            "image": "mancubus_11.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 11,
-            "image": "mancubus_12.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 12,
-            "image": "mancubus_13.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 13,
-            "image": "mancubus_14.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 14,
-            "image": "mancubus_15.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 15,
-            "image": "mancubus_16.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 16,
-            "image": "mancubus_17.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 17,
-            "image": "mancubus_18.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 18,
-            "image": "mancubus_19.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 19,
-            "image": "mancubus_20.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 20,
-            "image": "mancubus_21.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 21,
-            "image": "mancubus_22.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 22,
-            "image": "mancubus_23.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 23,
-            "image": "mancubus_24.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 24,
-            "image": "mancubus_25.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 25,
-            "image": "mancubus_26.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 26,
-            "image": "mancubus_27.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 27,
-            "image": "mancubus_28.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 28,
-            "image": "mancubus_29.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 29,
-            "image": "mancubus_30.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 30,
-            "image": "mancubus_31.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 31,
-            "image": "mancubus_32.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 32,
-            "image": "mancubus_33.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 33,
-            "image": "mancubus_34.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 34,
-            "image": "mancubus_35.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 35,
-            "image": "mancubus_36.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 36,
-            "image": "mancubus_37.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 37,
-            "image": "mancubus_38.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 38,
-            "image": "mancubus_39.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 39,
-            "image": "mancubus_40.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 40,
-            "image": "mancubus_41.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 41,
-            "image": "mancubus_42.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 42,
-            "image": "mancubus_43.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 43,
-            "image": "mancubus_44.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 44,
-            "image": "mancubus_45.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }, {
-            "id": 45,
-            "image": "mancubus_46.png",
-            "imageheight": 64,
-            "imagewidth": 64
-          }],
-          "tilewidth": 64
-        }],
-        "tilewidth": 64,
-        "type": "map",
-        "version": 1.2,
-        "width": 10
-      }
-    },
     "weapons": {
       "height": 1,
       "infinite": false,
@@ -6076,6 +5155,115 @@
       "type": "map",
       "version": 1.2,
       "width": 5
+    },
+    "amp": {
+      "standing": {
+        "0": ["amp_01.png"],
+        "1": ["amp_05.png"],
+        "2": ["amp_09.png"],
+        "3": ["amp_14.png"],
+        "4": ["amp_17.png"],
+        "5": ["amp_21.png"],
+        "6": ["amp_25.png"],
+        "7": ["amp_29.png"]
+      },
+      "moving": {
+        "0": ["amp_01.png", "amp_02.png", "amp_03.png", "amp_04.png"],
+        "1": ["amp_05.png", "amp_06.png", "amp_07.png", "amp_08.png"],
+        "2": ["amp_09.png", "amp_10.png", "amp_11.png", "amp_12.png"],
+        "3": ["amp_13.png", "amp_14.png", "amp_15.png", "amp_16.png"],
+        "4": ["amp_17.png", "amp_18.png", "amp_19.png", "amp_20.png"],
+        "5": ["amp_21.png", "amp_22.png", "amp_23.png", "amp_24.png"],
+        "6": ["amp_25.png", "amp_26.png", "amp_27.png", "amp_28.png"],
+        "7": ["amp_29.png", "amp_30.png", "amp_31.png", "amp_32.png"]
+      },
+      "dying": {
+        "0": ["amp_35.png", "amp_36.png", "amp_37.png", "amp_38.png", "amp_39.png"]
+      },
+      "attacking": {
+        "0": ["amp_33.png"]
+      },
+      "hurting": {
+        "0": ["amp_35.png"]
+      },
+      "shooting": {
+        "0": ["amp_34.png", "amp_33.png"]
+      }
+    },
+    "backgrounds": ["backgrounds_01.png", "backgrounds_02.png"],
+    "blood": ["blood_01.png", "blood_02.png", "blood_03.png", "blood_04.png", "blood_05.png", "blood_06.png", "blood_07.png", "blood_08.png"],
+    "brain_pod": ["brain_pod_01.png", "brain_pod_02.png", "brain_pod_03.png", "brain_pod_04.png", "brain_pod_05.png", "brain_pod_06.png", "brain_pod_07.png", "brain_pod_08.png", "brain_pod_09.png", "brain_pod_10.png", "brain_pod_11.png", "brain_pod_12.png", "brain_pod_13.png", "brain_pod_15.png"],
+    "hud_keys": ["hud_keys_01.png", "hud_keys_02.png", "hud_keys_03.png"],
+    "mancubus": {
+      "standing": {
+        "0": ["mancubus_01.png"],
+        "1": ["mancubus_05.png"],
+        "2": ["mancubus_09.png"],
+        "3": ["mancubus_13.png"],
+        "4": ["mancubus_17.png"],
+        "5": ["mancubus_21.png"],
+        "6": ["mancubus_25.png"],
+        "7": ["mancubus_29.png"]
+      },
+      "moving": {
+        "0": ["mancubus_01.png", "mancubus_02.png", "mancubus_03.png", "mancubus_04.png"],
+        "1": ["mancubus_05.png", "mancubus_06.png", "mancubus_07.png", "mancubus_08.png"],
+        "2": ["mancubus_09.png", "mancubus_10.png", "mancubus_11.png", "mancubus_12.png"],
+        "3": ["mancubus_13.png", "mancubus_14.png", "mancubus_15.png", "mancubus_16.png"],
+        "4": ["mancubus_17.png", "mancubus_18.png", "mancubus_19.png", "mancubus_20.png"],
+        "5": ["mancubus_21.png", "mancubus_22.png", "mancubus_23.png", "mancubus_24.png"],
+        "6": ["mancubus_25.png", "mancubus_26.png", "mancubus_27.png", "mancubus_28.png"],
+        "7": ["mancubus_29.png", "mancubus_30.png", "mancubus_31.png", "mancubus_32.png"]
+      },
+      "dying": {
+        "0": ["mancubus_37.png", "mancubus_38.png", "mancubus_39.png", "mancubus_40.png", "mancubus_41.png", "mancubus_42.png", "mancubus_43.png", "mancubus_44.png", "mancubus_45.png", "mancubus_46.png"]
+      },
+      "attacking": {
+        "0": ["mancubus_35.png", "mancubus_33.png"]
+      },
+      "hurting": {
+        "0": ["mancubus_36.png"]
+      },
+      "shooting": {
+        "0": ["mancubus_34.png", "mancubus_33.png"]
+      }
+    },
+    "menu": ["menu_01.png", "menu_02.png"],
+    "objects": ["objects_01.png", "objects_02.png", "objects_03.png", "objects_04.png", "objects_05.png", "objects_06.png", "objects_07.png", "objects_08.png", "objects_09.png", "objects_10.png", "objects_11.png", "objects_12.png", "objects_13.png", "objects_14.png", "objects_15.png", "objects_16.png", "objects_17.png", "objects_18.png", "objects_19.png", "objects_20.png", "objects_21.png", "objects_22.png", "objects_23.png", "objects_24.png", "objects_25.png", "objects_26.png", "objects_27.png", "objects_28.png", "objects_29.png", "objects_30.png", "objects_31.png", "objects_32.png", "objects_33.png", "objects_34.png", "objects_35.png", "objects_36.png", "objects_37.png", "objects_38.png", "objects_39.png", "objects_40.png", "objects_41.png", "objects_42.png"],
+    "walls": ["walls_01.png", "walls_02.png", "walls_03.png", "walls_04.png", "walls_05.png", "walls_06.png", "walls_07.png", "walls_08.png", "walls_09.png", "walls_10.png", "walls_11.png", "walls_12.png", "walls_13.png", "walls_14.png", "walls_15.png", "walls_16.png", "walls_17.png", "walls_18.png", "walls_19.png", "walls_20.png", "walls_21.png", "walls_22.png", "walls_23.png", "walls_24.png", "walls_25.png", "walls_26.png", "walls_27.png", "walls_28.png", "walls_29.png", "walls_30.png", "walls_31.png", "walls_32.png", "walls_33.png", "walls_34.png", "walls_35.png", "walls_36.png", "walls_37.png", "walls_38.png", "walls_39.png", "walls_40.png", "walls_41.png", "walls_42.png"],
+    "zombie": {
+      "standing": {
+        "0": ["zombie_01.png"],
+        "1": ["zombie_05.png"],
+        "2": ["zombie_09.png"],
+        "3": ["zombie_13.png"],
+        "4": ["zombie_17.png"],
+        "5": ["zombie_21.png"],
+        "6": ["zombie_25.png"],
+        "7": ["zombie_29.png"]
+      },
+      "moving": {
+        "0": ["zombie_01.png", "zombie_02.png", "zombie_03.png", "zombie_04.png"],
+        "1": ["zombie_05.png", "zombie_06.png", "zombie_07.png", "zombie_08.png"],
+        "2": ["zombie_09.png", "zombie_10.png", "zombie_11.png", "zombie_12.png"],
+        "3": ["zombie_13.png", "zombie_14.png", "zombie_15.png", "zombie_16.png"],
+        "4": ["zombie_17.png", "zombie_18.png", "zombie_19.png", "zombie_20.png"],
+        "5": ["zombie_21.png", "zombie_22.png", "zombie_23.png", "zombie_24.png"],
+        "6": ["zombie_25.png", "zombie_26.png", "zombie_27.png", "zombie_28.png"],
+        "7": ["zombie_29.png", "zombie_30.png", "zombie_31.png", "zombie_32.png"]
+      },
+      "dying": {
+        "0": ["zombie_36.png", "zombie_37.png", "zombie_38.png", "zombie_39.png"]
+      },
+      "attacking": {
+        "0": ["zombie_35.png", "zombie_33.png"]
+      },
+      "hurting": {
+        "0": ["zombie_35.png"]
+      },
+      "shooting": {
+        "0": ["zombie_34.png", "zombie_33.png"]
+      }
     }
   },
   "meta": {
@@ -6088,6 +5276,6 @@
       "h": 655
     },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:0e1455f1e135f971c6be0d062837161f:b0d34adc56145ecfb003955fc87a0d0d:7b91a8826a9bc3439ffa7d4d7997cca3$"
+    "smartupdate": "$TexturePacker:SmartUpdate:123a9b83caa645034fb1b0a71d836cc2:4a4ae92bbe52303ee54640ac90292319:0ad5bcd83439bd26b442526c1aa60ce5$"
   }
 }
