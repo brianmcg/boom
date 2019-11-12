@@ -2,13 +2,13 @@
  * The path to the game asset directory.
  * @type {String}
  */
-export const GAME_PATH = 'assets/media/game';
+export const GAME_PATH = 'assets/data';
 
 /**
  * The path to the scene asset directory.
  * @type {String}
  */
-export const SCENE_PATH = 'assets/media/game/scenes';
+export const SCENE_PATH = `${GAME_PATH}/scenes`;
 
 /**
  * The game sound properties.
@@ -39,13 +39,13 @@ export const GAME_DATA = 'data.json';
  * The scene music file name.
  * @type {String}
  */
-export const SCENE_MUSIC = 'scene.mp3';
+export const SCENE_MUSIC = 'music.mp3';
 
 /**
  * The scene graphics.
  * @type {String}
  */
-export const SCENE_GRAPHICS = 'scene.json';
+export const SCENE_GRAPHICS = 'graphics.json';
 
 /**
  * The scene map file name.

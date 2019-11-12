@@ -100,15 +100,8 @@ module.exports = {
       dry: false,
     }),
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'src/assets/manifest'),
-      to: path.resolve(__dirname, 'dist/assets/manifest'),
-    }, {
-      from: path.resolve(__dirname, 'src/assets/fonts'),
-      to: path.resolve(__dirname, 'dist/assets/fonts'),
-    }, {
-      from: path.resolve(__dirname, 'src/assets/media'),
-      to: path.resolve(__dirname, 'dist/assets/media'),
-
+      from: path.resolve(__dirname, 'src/assets'),
+      to: path.resolve(__dirname, 'dist/assets'),
     }]),
     new MiniCssExtractPlugin({
       filename: 'assets/styles/[name].[chunkhash].min.css',
