@@ -100,8 +100,8 @@ module.exports = {
       dry: false,
     }),
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'src/assets/images'),
-      to: path.resolve(__dirname, 'dist/assets/images'),
+      from: path.resolve(__dirname, 'src/assets/manifest'),
+      to: path.resolve(__dirname, 'dist/assets/manifest'),
 
     }, {
       from: path.resolve(__dirname, 'src/assets/media'),

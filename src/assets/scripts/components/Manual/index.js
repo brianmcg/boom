@@ -31,7 +31,7 @@ class GameManual {
         key: translate('manual.input.down'),
       }, {
         action: translate('manual.action.left'),
-        key: translate('lmanual.input.left'),
+        key: translate('manual.input.left'),
       }, {
         action: translate('manual.action.right'),
         key: translate('manual.input.right'),
