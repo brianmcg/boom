@@ -14,19 +14,13 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
-  const textureCollection = Object.keys(animations).reduce((animationsMemo, state) => {
-
-    Object.keys(animations[state]).forEach((angle) => {
-      if (!animationsMemo[state]) {
-        animationsMemo[state] = {};
-      }
-      animationsMemo[state][angle] = animations[state][angle].map((image) => {
-        return textures[image];
-      });
-    });
-
-    return animationsMemo;
-  }, {});
+  const textureCollection = Object.keys(animations).reduce((animationsMemo, state) => ({
+    ...animationsMemo,
+    [state]: Object.keys(animations[state]).reduce((stateMemo, angle) => ({
+      ...stateMemo,
+      [angle]: animations[state][angle].map(image => textures[image]),
+    }), {}),
+  }), {});
 
   return new EnemySprite(enemy, textureCollection);
 };
