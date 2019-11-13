@@ -2,7 +2,6 @@ import { Application } from './core/graphics';
 import { SoundPlayer } from './core/audio';
 import { BLACK } from './constants/colors';
 import { SCREEN, MAX_FPS } from './constants/config';
-import { SOUND_SPRITE } from './constants/sounds';
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -62,7 +61,7 @@ class Game extends Application {
       sound: {
         name: GAME_SOUNDS.NAME,
         src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
-        sprite: SOUND_SPRITE,
+        spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
       },
       graphics: {
         name: GAME_FONT.NAME,

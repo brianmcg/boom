@@ -14,8 +14,8 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
-  const textureCollection = Object.keys(animations).reduce((animationsMemo, state) => ({
-    ...animationsMemo,
+  const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
+    ...animationMemo,
     [state]: Object.keys(animations[state]).reduce((stateMemo, angle) => ({
       ...stateMemo,
       [angle]: animations[state][angle].map(image => textures[image]),
@@ -25,7 +25,7 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   return new EnemySprite(enemy, textureCollection);
 };
 
-const createWeaponSprite = (player, textures, animations) => {
+const createWeaponSprite = ({ animations, textures, player }) => {
   const textureCollection = Object.keys(player.weapons).reduce((memo, key) => ({
     ...memo,
     [key]: animations[key].map(image => textures[image]),
@@ -34,7 +34,7 @@ const createWeaponSprite = (player, textures, animations) => {
   return new WeaponSprite(textureCollection, player);
 };
 
-const createWallSprites = (world, frames, textures) => {
+const createWallSprites = ({ world, frames, textures }) => {
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [];
@@ -76,7 +76,7 @@ const createWallSprites = (world, frames, textures) => {
   return wallSprites;
 };
 
-const createBackgroundSprites = (world, frames, textures) => {
+const createBackgroundSprites = ({ world, frames, textures }) => {
   const backgroundImages = [];
   const backgroundTextures = {};
   const backgroundSprites = [];
@@ -120,7 +120,7 @@ const createBackgroundSprites = (world, frames, textures) => {
   return backgroundSprites;
 };
 
-const createEntitySprites = (world, textures, animations) => {
+const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
@@ -211,10 +211,29 @@ const createWorldSprites = (world, resources) => {
   const { frames, animations } = data;
   const { player } = world;
 
-  const entities = createEntitySprites(world, textures, animations);
-  const weapon = createWeaponSprite(player, textures, animations);
-  const walls = createWallSprites(world, frames, textures);
-  const background = createBackgroundSprites(world, frames, textures);
+  const entities = createEntitySprites({
+    animations,
+    textures,
+    world,
+  });
+
+  const weapon = createWeaponSprite({
+    animations,
+    textures,
+    player,
+  });
+
+  const walls = createWallSprites({
+    frames,
+    textures,
+    world,
+  });
+
+  const background = createBackgroundSprites({
+    frames,
+    textures,
+    world,
+  });
 
   return {
     player: {
