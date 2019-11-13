@@ -242,7 +242,7 @@ class Scene extends Container {
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
       this.game.sound.pause();
-      this.game.sound.play(GAME_SOUNDS, SOUNDS.WEAPON_PISTOL);
+      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -262,7 +262,7 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.game.sound.play(GAME_SOUNDS, SOUNDS.WEAPON_SHOTGUN);
+      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_SHOTGUN);
       this.game.sound.fade(SCENE_MUSIC);
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
