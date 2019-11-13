@@ -15,7 +15,7 @@ class SoundLoader {
    * Load a sound
    * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.sprite     The sound sprite data.
+   * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
   load({ name, src, spriteSrc }) {
@@ -30,7 +30,7 @@ class SoundLoader {
    * Load the sound sprite.
    * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.sprite     The sound sprite data.
+   * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
   loadSprite({ name, src, spriteSrc }) {
