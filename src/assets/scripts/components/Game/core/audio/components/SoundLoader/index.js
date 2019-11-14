@@ -15,12 +15,12 @@ class SoundLoader {
    * Load a sound
    * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.sprite     The sound sprite data.
+   * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
-  load({ name, src, sprite }) {
-    if (sprite) {
-      return this.loadSprite({ name, src, sprite });
+  load({ name, src, spriteSrc }) {
+    if (spriteSrc) {
+      return this.loadSprite({ name, src, spriteSrc });
     }
 
     return this.loadSrc({ name, src });
@@ -30,14 +30,18 @@ class SoundLoader {
    * Load the sound sprite.
    * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.sprite     The sound sprite data.
+   * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
-  loadSprite({ name, src, sprite }) {
+  loadSprite({ name, src, spriteSrc }) {
     return new Promise((resolve) => {
-      const sound = new Sound({ src: [src], sprite });
-      this.cache[name] = sound;
-      sound.onload = resolve(sound);
+      fetch(spriteSrc).then((response) => {
+        response.json().then((sprite) => {
+          const sound = new Sound({ src: [src], sprite });
+          this.cache[name] = sound;
+          sound.onload = resolve(sound);
+        });
+      });
     });
   }
 
