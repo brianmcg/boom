@@ -88,10 +88,8 @@ class WorldScene extends Scene {
     }));
 
     this.reviewContainer = new ReviewContainer(sprites.review);
-
     this.world = world;
-    this.world.exit = () => this.setReviewing();
-    this.world.index = this.index;
+    this.world.scene = this;
 
     super.create({ graphics });
   }

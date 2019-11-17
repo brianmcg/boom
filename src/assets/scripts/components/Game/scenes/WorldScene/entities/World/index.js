@@ -35,6 +35,7 @@ class World extends PhysicsWorld {
     items = [],
     grid = [[]],
     entrance,
+    exit,
   }) {
     super(grid);
 
@@ -42,16 +43,10 @@ class World extends PhysicsWorld {
     obstacles.forEach(object => this.add(object));
     items.forEach(item => this.add(item));
 
+    this.exit = exit;
+    this.entrance = entrance;
+
     this.addPlayer(player);
-
-    player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2);
-    player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2);
-    player.angle = 0; //  entrance.angle;
-    player.weapon.setArming();
-
-    // player.x = 1088;
-    // player.y = 163;
-    // player.angle = 928;
 
     this.player = player;
     this.items = items;
@@ -75,6 +70,9 @@ class World extends PhysicsWorld {
    * @param  {Object} options.actions The player actions.
    */
   update(delta, actions) {
+    const { gridX, gridY } = this.player;
+    const { x, y } = this.exit;
+
     if (this.gunFlash) {
       this.brightness -= GUN_FLASH_DECREMENT * delta;
     }
@@ -91,7 +89,20 @@ class World extends PhysicsWorld {
 
     this.player.setActions(actions);
 
+    if (x === gridX && y === gridY) {
+      this.scene.setReviewing();
+    }
+
     super.update(delta);
+  }
+
+  addPlayer(player) {
+    super.add(player);
+
+    player.x = (TILE_SIZE * this.entrance.x) + (TILE_SIZE / 2);
+    player.y = (TILE_SIZE * this.entrance.y) + (TILE_SIZE / 2);
+    player.angle = 0;
+    player.weapon.setArming();
   }
 
   /**
@@ -117,23 +128,13 @@ class World extends PhysicsWorld {
    */
   getStatistics() {
     return {
-      levelNumber: this.index,
+      levelNumber: this.scene.index,
       timeTaken: performance.now() - this.startTime,
       itemsFound: this.items.filter(item => item.found).length,
       itemsTotal: this.items.length,
       enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
       enemiesTotal: this.enemies.length,
     };
-  }
-
-  addPlayer(player) {
-    super.add(player);
-
-
-  }
-
-  getEntrance() {
-
   }
 }
 

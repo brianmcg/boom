@@ -28,7 +28,10 @@ class Item extends Entity {
     value,
     ...other
   }) {
-    super(other);
+    super({
+      ...other,
+      blocking: false,
+    });
 
     this.key = key;
     this.value = value;

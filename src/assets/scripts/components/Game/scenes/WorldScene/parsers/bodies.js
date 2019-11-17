@@ -1,6 +1,5 @@
 import { TILE_SIZE } from 'game/constants/config';
 import Sector from '../entities/Sector';
-import ExitSector from '../entities/ExitSector';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
@@ -10,7 +9,11 @@ import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
 import Player from '../entities/Player';
 
-const ENEMY_TYPES = [Amp, Zombie, Mancubus].reduce((result, enemy) => ({
+const ENEMIES = [
+  Amp,
+  Zombie,
+  Mancubus,
+].reduce((result, enemy) => ({
   ...result,
   [enemy.name.toLowerCase()]: enemy,
 }), {});
@@ -30,18 +33,6 @@ const createSector = (sector) => {
     });
   }
 
-  if (sector.exit) {
-    return new ExitSector({
-      x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
-      blocking: sector.blocking,
-      sides: sector.sides,
-      width: TILE_SIZE,
-      height: sector.blocking ? TILE_SIZE : 0,
-      length: TILE_SIZE,
-    });
-  }
-
   return new Sector({
     x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
     y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
@@ -50,7 +41,6 @@ const createSector = (sector) => {
     width: TILE_SIZE,
     height: sector.blocking ? TILE_SIZE : 0,
     length: TILE_SIZE,
-    entrance: sector.entrance,
   });
 };
 
@@ -85,7 +75,6 @@ export const createWorld = (data, stats, player) => {
       type: item.type,
       x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),
-      blocking: item.blocking,
       width: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
       height: TILE_SIZE / 2,
@@ -94,7 +83,7 @@ export const createWorld = (data, stats, player) => {
 
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
-    new ENEMY_TYPES[enemy.name]({
+    new ENEMIES[enemy.name]({
       type: enemy.type,
       x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),

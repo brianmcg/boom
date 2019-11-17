@@ -82,11 +82,10 @@ class World extends EventEmitter {
    */
   getAdjacentSectors(body, radius = 1) {
     const sectors = [];
-    const x = body.gridX;
-    const y = body.gridY;
+    const { gridX, gridY } = body;
 
-    for (let i = x - radius; i <= x + radius; i += 1) {
-      for (let j = y - radius; j <= y + radius; j += 1) {
+    for (let i = gridX - radius; i <= gridX + radius; i += 1) {
+      for (let j = gridY - radius; j <= gridY + radius; j += 1) {
         sectors.push(this.getSector(i, j));
       }
     }
