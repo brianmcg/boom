@@ -10,225 +10,100 @@ import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
 import Player from '../entities/Player';
 
-const SECTOR_TYPES = {
-  START: 'start',
-  END: 'end',
-};
-
 const ENEMY_TYPES = [Amp, Zombie, Mancubus].reduce((result, enemy) => ({
   ...result,
   [enemy.name.toLowerCase()]: enemy,
 }), {});
 
-const MAP_LAYERS = {
-  FLOOR: 0,
-  WALLS: 1,
-  DOORS: 2,
-  ITEMS: 3,
-  ENEMIES: 4,
-  ROOF: 5,
-  GAME: 6,
+const createSector = (sector) => {
+  if (sector.door) {
+    return new Door({
+      x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
+      width: TILE_SIZE,
+      height: TILE_SIZE,
+      length: TILE_SIZE,
+      axis: sector.axis,
+      blocking: sector.blocking,
+      sides: sector.sides,
+      key: sector.key,
+    });
+  }
+
+  if (sector.exit) {
+    return new ExitSector({
+      x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
+      blocking: sector.blocking,
+      sides: sector.sides,
+      width: TILE_SIZE,
+      height: sector.blocking ? TILE_SIZE : 0,
+      length: TILE_SIZE,
+    });
+  }
+
+  return new Sector({
+    x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
+    y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
+    blocking: sector.blocking,
+    sides: sector.sides,
+    width: TILE_SIZE,
+    height: sector.blocking ? TILE_SIZE : 0,
+    length: TILE_SIZE,
+    entrance: sector.entrance,
+  });
 };
 
+
 export const createWorld = (data, stats, player) => {
-  const grid = [];
-  const obstacles = [];
-  const items = [];
-  const enemies = [];
+  const { entrance, exit } = data;
 
-  const mapWidth = data.layers[MAP_LAYERS.WALLS].width;
-  const mapHeight = data.layers[MAP_LAYERS.WALLS].height;
-  const { tiles } = data.tilesets[0];
-  const start = { angle: 0 };
-  const end = {};
+  const grid = data.grid.reduce((rows, row) => ([
+    ...rows,
+    row.reduce((sectors, sector) => ([
+      ...sectors,
+      createSector(sector),
+    ]), []),
+  ]), []);
 
-  data.layers[MAP_LAYERS.GAME].objects.forEach((object) => {
-    if (object.name === SECTOR_TYPES.START) {
-      start.x = Math.floor(object.x / TILE_SIZE);
-      start.y = Math.floor(object.y / TILE_SIZE);
-    }
-    if (object.name === SECTOR_TYPES.END) {
-      end.x = Math.floor(object.x / TILE_SIZE);
-      end.y = Math.floor(object.y / TILE_SIZE);
-    }
-  });
+  const obstacles = data.obstacles.reduce((memo, obstacle) => ([
+    ...memo,
+    new Entity({
+      type: obstacle.type,
+      x: (TILE_SIZE * obstacle.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * obstacle.y) + (TILE_SIZE / 2),
+      blocking: obstacle.blocking,
+      height: TILE_SIZE,
+      width: TILE_SIZE / 2,
+      length: TILE_SIZE / 2,
+    }),
+  ]), []);
 
-  for (let y = 0; y < mapHeight; y += 1) {
-    const row = [];
+  const items = data.items.reduce((memo, item) => ([
+    ...memo,
+    new Item({
+      type: item.type,
+      x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),
+      blocking: item.blocking,
+      width: TILE_SIZE / 2,
+      length: TILE_SIZE / 2,
+      height: TILE_SIZE / 2,
+    }),
+  ]), []);
 
-    for (let x = 0; x < mapWidth; x += 1) {
-      const index = (y * mapWidth) + x;
-      const floorValue = data.layers[MAP_LAYERS.FLOOR].data[index];
-      const wallValue = data.layers[MAP_LAYERS.WALLS].data[index];
-      const doorValue = data.layers[MAP_LAYERS.DOORS].data[index];
-      const itemValue = data.layers[MAP_LAYERS.ITEMS].data[index];
-      const enemyValue = data.layers[MAP_LAYERS.ENEMIES].data[index];
-      const roofValue = data.layers[MAP_LAYERS.ROOF].data[index];
-
-      let wallImage;
-      let doorImage;
-      let properties;
-      let sides;
-      let doorAxisX;
-      let floorImage;
-      let roofImage;
-
-      if (floorValue) {
-        floorImage = tiles.find(t => t.id === floorValue - 1).image;
-      }
-
-      if (roofValue) {
-        roofImage = tiles.find(t => t.id === roofValue - 1).image;
-      }
-
-      if (wallValue) {
-        wallImage = tiles.find(tile => tile.id === wallValue - 1).image;
-
-        if (doorValue) {
-          doorImage = tiles.find(tile => tile.id === doorValue - 1).image;
-        }
-      }
-
-      if (doorValue) {
-        const tile = tiles.find(t => t.id === doorValue - 1);
-        doorImage = tile.image;
-        doorAxisX = data.layers[MAP_LAYERS.DOORS].data[index - 1]
-          || data.layers[MAP_LAYERS.DOORS].data[index + 1];
-      }
-
-      if (!!doorImage && !wallImage) {
-        const tile = tiles.find(t => t.id === doorValue - 1);
-        properties = tile.properties || [];
-
-        const key = (properties.find(prop => prop.name === 'key') || {}).value;
-
-        row.push(new Door({
-          x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-          y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-          width: TILE_SIZE,
-          height: TILE_SIZE,
-          length: TILE_SIZE,
-          axis: doorAxisX ? 'x' : 'y',
-          blocking: !!doorImage,
-          sides: {
-            front: doorImage,
-            left: doorImage,
-            back: doorImage,
-            right: doorImage,
-            bottom: floorImage,
-            top: roofImage,
-          },
-          key,
-        }));
-      } else {
-        if (doorImage) {
-          if (doorAxisX) {
-            sides = {
-              front: doorImage,
-              left: wallImage,
-              back: doorImage,
-              right: wallImage,
-              bottom: floorImage,
-              top: roofImage,
-            };
-          } else {
-            sides = {
-              front: wallImage,
-              left: doorImage,
-              back: wallImage,
-              right: doorImage,
-              bottom: floorImage,
-              top: roofImage,
-            };
-          }
-        } else {
-          sides = {
-            front: wallImage,
-            left: wallImage,
-            back: wallImage,
-            right: wallImage,
-            bottom: floorImage,
-            top: roofImage,
-          };
-        }
-
-        const sector = x === end.x && y === end.y
-          ? new ExitSector({
-            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-            width: TILE_SIZE,
-            height: wallImage ? TILE_SIZE : 0,
-            length: TILE_SIZE,
-            blocking: !!wallImage,
-            sides,
-          })
-          : new Sector({
-            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-            width: TILE_SIZE,
-            height: wallImage ? TILE_SIZE : 0,
-            length: TILE_SIZE,
-            blocking: !!wallImage,
-            sides,
-          });
-
-        row.push(sector);
-      }
-
-      if (itemValue) {
-        const tile = tiles.find(t => t.id === itemValue - 1);
-        properties = tile.properties || [];
-
-        const key = (properties.find(prop => prop.name === 'key') || {}).value;
-        const { value } = properties.find(prop => prop.name === 'value') || {};
-
-        if (key) {
-          items.push(new Item({
-            type: tile.image,
-            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-            width: TILE_SIZE / 2,
-            length: TILE_SIZE / 2,
-            blocking: false,
-            key,
-            value,
-          }));
-        } else {
-          const nonBlocking = (properties.find(prop => prop.name === 'nonBlocking') || {}).value;
-
-          obstacles.push(new Entity({
-            type: tile.image,
-            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-            width: TILE_SIZE / 2,
-            height: TILE_SIZE / 2,
-            length: TILE_SIZE / 2,
-            blocking: !nonBlocking,
-          }));
-        }
-      }
-
-      if (enemyValue) {
-        const { image } = tiles.find(t => t.id === enemyValue - 1);
-        const type = image.split('_')[0];
-        const EnemyType = ENEMY_TYPES[type];
-
-        if (EnemyType) {
-          enemies.push(new EnemyType({
-            type,
-            x: (TILE_SIZE * x) + (TILE_SIZE / 2),
-            y: (TILE_SIZE * y) + (TILE_SIZE / 2),
-            width: TILE_SIZE / 2,
-            height: TILE_SIZE / 2,
-            length: TILE_SIZE / 2,
-            ...stats.enemies[type],
-          }));
-        }
-      }
-    }
-
-    grid.push(row);
-  }
+  const enemies = data.enemies.reduce((memo, enemy) => ([
+    ...memo,
+    new ENEMY_TYPES[enemy.name]({
+      type: enemy.type,
+      x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
+      width: TILE_SIZE / 2,
+      height: TILE_SIZE / 2,
+      length: TILE_SIZE / 2,
+      ...stats.enemies[enemy.name],
+    }),
+  ]), []);
 
   if (!player) {
     player = new Player(stats.player);
@@ -240,7 +115,8 @@ export const createWorld = (data, stats, player) => {
     obstacles,
     items,
     enemies,
-    entrance: start,
+    entrance,
+    exit,
   });
 
   return world;

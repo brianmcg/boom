@@ -15,8 +15,8 @@ class World extends EventEmitter {
     this.dynamicBodies = [];
     this.grid.forEach(row => row.forEach(sector => this.add(sector)));
 
-    this.width = this.grid.length;
-    this.height = this.grid[0].length;
+    this.width = this.grid[0].length;
+    this.height = this.grid.length;
 
     this.maxSectorX = this.height - 1;
     this.maxSectorY = this.width - 1;

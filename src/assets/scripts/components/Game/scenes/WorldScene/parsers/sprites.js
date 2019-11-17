@@ -133,7 +133,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
 
   world.enemies.forEach((enemy) => {
     entitySprites[enemy.id] = createEnemySprite({
-      animations: animations[enemy.type],
+      animations: animations[enemy.name.toLowerCase()],
       textures,
       enemy,
     });

@@ -42,11 +42,11 @@ class World extends PhysicsWorld {
     obstacles.forEach(object => this.add(object));
     items.forEach(item => this.add(item));
 
-    this.add(player);
+    this.addPlayer(player);
 
     player.x = (TILE_SIZE * entrance.x) + (TILE_SIZE / 2);
     player.y = (TILE_SIZE * entrance.y) + (TILE_SIZE / 2);
-    player.angle = entrance.angle;
+    player.angle = 0; //  entrance.angle;
     player.weapon.setArming();
 
     // player.x = 1088;
@@ -124,6 +124,16 @@ class World extends PhysicsWorld {
       enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
       enemiesTotal: this.enemies.length,
     };
+  }
+
+  addPlayer(player) {
+    super.add(player);
+
+
+  }
+
+  getEntrance() {
+
   }
 }
 
