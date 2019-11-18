@@ -12,7 +12,6 @@ class EntitySprite extends Sprite {
   constructor(texture) {
     super(texture);
     this.zOrder = Number.MAX_VALUE;
-    this.hideOnAnimate = true;
   }
 }
 

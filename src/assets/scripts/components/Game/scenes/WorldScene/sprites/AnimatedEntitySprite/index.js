@@ -13,10 +13,12 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Boolean} options.loop           The sprite loop.
    * @param  {Boolean} options.autoPlay       The sprite auto play.
    */
-  constructor(...options) {
-    super(...options);
+  constructor(textures) {
+    super(textures, {
+      animationSpeed: 0.2,
+      loop: true,
+    });
 
-    this.hideOnAnimate = true;
     this.zOrder = Number.MAX_VALUE;
   }
 }

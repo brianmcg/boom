@@ -9,7 +9,7 @@ import { TILE_SIZE, SCREEN } from 'game/constants/config';
 import { FONT_SIZES } from 'game/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
-// import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
+import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
@@ -129,12 +129,12 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.obstacles.forEach((object) => {
-    // if (object.animated) {
-    //   const [name] = object.type.split('.png');
-    //   const foo = animations[name];
-    //   console.log(name, foo);
-    // }
-    entitySprites[object.id] = new EntitySprite(textures[object.type]);
+    if (object.animated) {
+      const animationTextures = animations[object.type].map(t => textures[t]);
+      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
+    } else {
+      entitySprites[object.id] = new EntitySprite(textures[object.type]);
+    }
   });
 
   world.enemies.forEach((enemy) => {
