@@ -14,9 +14,10 @@ class Entity extends Body {
    * @param  {Number} options.height The height of the body.
    * @param  {String} options.type   The type of entity.
    */
-  constructor({ type, ...other }) {
+  constructor({ type, animated, ...other }) {
     super(other);
     this.type = type;
+    this.animated = animated;
   }
 }
 

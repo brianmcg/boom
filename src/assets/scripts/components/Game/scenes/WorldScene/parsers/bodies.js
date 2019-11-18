@@ -66,6 +66,7 @@ export const createWorld = (data, stats, player) => {
       height: TILE_SIZE,
       width: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
+      animated: obstacle.animated,
     }),
   ]), []);
 
