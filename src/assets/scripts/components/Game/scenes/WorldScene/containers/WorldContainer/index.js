@@ -161,42 +161,42 @@ class WorldContainer extends Container {
       bottomIntersection = Math.floor(spriteY + spriteHeight);
       topIntersection = Math.ceil(spriteY);
 
-      for (let yIndex = 0; yIndex < SCREEN.HEIGHT; yIndex += 1) {
+      for (let yIndex = 0; yIndex <= topIntersection; yIndex += 1) {
         sprite = background[xIndex][yIndex];
+        actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
+        correctedDistance = actualDistance / COS[spriteAngle];
+        mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+        mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+        pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+        pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+        gridX = Math.floor(mapX / TILE_SIZE);
+        gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+        gridX = (gridX < 0) ? 0 : gridX;
+        gridY = Math.floor(mapY / TILE_SIZE);
+        gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+        gridY = (gridY < 0) ? 0 : gridY;
+        sectorSide = this.world.getSector(gridX, gridY).top;
+        sprite.changeTexture(sectorSide, pixelX, pixelY);
+        sprite.tint = this.calculateTint(actualDistance);
+      }
 
-        if (yIndex >= bottomIntersection) {
-          actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[spriteAngle];
-          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.floor(mapX / TILE_SIZE);
-          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
-          gridX = (gridX < 0) ? 0 : gridX;
-          gridY = Math.floor(mapY / TILE_SIZE);
-          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
-          gridY = (gridY < 0) ? 0 : gridY;
-          sectorSide = this.world.getSector(gridX, gridY).bottom;
-          sprite.changeTexture(sectorSide, pixelX, pixelY);
-          sprite.tint = this.calculateTint(actualDistance);
-        } else if (yIndex <= topIntersection) {
-          actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[spriteAngle];
-          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.floor(mapX / TILE_SIZE);
-          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
-          gridX = (gridX < 0) ? 0 : gridX;
-          gridY = Math.floor(mapY / TILE_SIZE);
-          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
-          gridY = (gridY < 0) ? 0 : gridY;
-          sectorSide = this.world.getSector(gridX, gridY).top;
-          sprite.changeTexture(sectorSide, pixelX, pixelY);
-          sprite.tint = this.calculateTint(actualDistance);
-        }
+      for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex += 1) {
+        sprite = background[xIndex][yIndex];
+        actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
+        correctedDistance = actualDistance / COS[spriteAngle];
+        mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
+        mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+        pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
+        pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
+        gridX = Math.floor(mapX / TILE_SIZE);
+        gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+        gridX = (gridX < 0) ? 0 : gridX;
+        gridY = Math.floor(mapY / TILE_SIZE);
+        gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+        gridY = (gridY < 0) ? 0 : gridY;
+        sectorSide = this.world.getSector(gridX, gridY).bottom;
+        sprite.changeTexture(sectorSide, pixelX, pixelY);
+        sprite.tint = this.calculateTint(actualDistance);
       }
 
       // Increment ray angle
