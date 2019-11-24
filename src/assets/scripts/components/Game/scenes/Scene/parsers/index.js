@@ -30,7 +30,7 @@ const createMenuSprites = (menu, textures, animations) => {
   }), {});
 
   const iconHeight = labels[Object.keys(labels)[0]].height;
-  const menuTextures = animations.menu.map(image => textures[image]);
+  const menuTextures = animations.skull.map(image => textures[image]);
   const icon = new MenuSprite(menuTextures);
 
   icon.height = iconHeight;

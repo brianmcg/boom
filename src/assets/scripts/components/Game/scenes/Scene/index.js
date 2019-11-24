@@ -180,6 +180,7 @@ class Scene extends Container {
     }
 
     this.mainContainer.updatePauseEffect(delta);
+    this.menuContainer.update(delta);
   }
 
   /**

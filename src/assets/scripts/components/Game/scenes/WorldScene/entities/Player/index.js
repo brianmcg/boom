@@ -55,7 +55,7 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.minHeight = this.height * 0.6;
     this.heightVelocity = 2;
-    this.currentWeaponType = Weapon.TYPES.PISTOL;
+    this.currentWeaponType = Weapon.TYPES.SHOTGUN;
     this.actions = {};
     this.camera = new Camera(this);
 

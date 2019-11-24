@@ -11,7 +11,7 @@ const ITEM_FLASH_DECREMENT = 0.01;
 
 const DEFAULTS = {
   BRIGHTNESS: -0.15,
-  VISIBILITY: TILE_SIZE * 12,
+  VISIBILITY: TILE_SIZE * 16,
 };
 
 /**
@@ -102,7 +102,10 @@ class World extends PhysicsWorld {
     player.x = (TILE_SIZE * this.entrance.x) + (TILE_SIZE / 2);
     player.y = (TILE_SIZE * this.entrance.y) + (TILE_SIZE / 2);
     player.angle = 0;
+    player.velocity = 0;
     player.weapon.setArming();
+    player.actions.use = true;
+    player.updateInteractions();
   }
 
   /**

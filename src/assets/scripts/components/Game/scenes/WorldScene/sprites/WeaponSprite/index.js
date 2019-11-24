@@ -20,18 +20,13 @@ class WeaponSprite extends AnimatedSprite {
 
     this.currentWeaponTextures = player.weapon.type;
     this.textureCollection = textureCollection;
-
-    this.width *= 2;
-    this.height *= 2;
-
-    this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
-    this.centerY = SCREEN.HEIGHT - this.height;
-
     this.x = this.centerX;
     this.y = this.centerY;
-
+    this.width *= 0.75;
+    this.height *= 0.75;
+    this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
+    this.centerY = SCREEN.HEIGHT - this.height;
     this.player = player;
-
     this.onComplete = this.handleOnComplete.bind(this);
   }
 
@@ -95,6 +90,7 @@ class WeaponSprite extends AnimatedSprite {
    */
   handleOnComplete() {
     const { weapon } = this.player;
+    debugger;
 
     if (weapon.isAutomatic()) {
       weapon.setIdle();

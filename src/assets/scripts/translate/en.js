@@ -17,7 +17,7 @@ export default {
   'manual.input.alt': 'alt',
   'manual.action.menu': 'menu',
   'manual.input.escape': 'escape',
-  'manual.title': 'Goon Controls',
+  'manual.title': 'Boom Controls',
   'manual.play': 'click to play',
   'scene.menu.continue': 'Continue',
   'scene.menu.restart': 'Restart',

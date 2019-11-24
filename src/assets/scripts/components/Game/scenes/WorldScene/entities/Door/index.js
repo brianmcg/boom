@@ -14,7 +14,7 @@ const EVENTS = {
 
 const DEFAULTS = {
   AXIS: 'x',
-  SPEED: 1.5,
+  SPEED: 3,
   INTERVAL: 2000,
 };
 

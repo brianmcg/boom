@@ -6,6 +6,8 @@ const SCREEN_PADDING = 6;
 
 const ICON_PADDING_RIGHT = 5;
 
+const ICON_PADDING_TOP = 1;
+
 /**
  * A class representing a menu container.
  */
@@ -87,7 +89,7 @@ class MenuContainer extends Container {
 
     Object.values(labels).forEach((child, index) => {
       if (index === this.currentIndex) {
-        icon.y = child.y;
+        icon.y = child.y + ICON_PADDING_TOP;
         icon.x = child.x - ICON_PADDING_RIGHT - icon.width;
         child.setColor(RED);
       } else {

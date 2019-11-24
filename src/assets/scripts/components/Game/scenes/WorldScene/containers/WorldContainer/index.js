@@ -263,8 +263,8 @@ class WorldContainer extends Container {
       return WHITE;
     }
 
-    if (intensity < 0.15) {
-      intensity = 0.15;
+    if (intensity < 0) {
+      intensity = 0;
     }
 
     return Math.round(intensity * 255) * GREY;
