@@ -90,7 +90,6 @@ class WeaponSprite extends AnimatedSprite {
    */
   handleOnComplete() {
     const { weapon } = this.player;
-    debugger;
 
     if (weapon.isAutomatic()) {
       weapon.setIdle();
