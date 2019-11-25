@@ -6,7 +6,7 @@
  * The maximum frames per second.
  * @type {Number}
  */
-export const MAX_FPS = 60;
+export const MAX_FPS = 45;
 
 /**
  * The time step.
@@ -31,8 +31,8 @@ export const TILE_SIZE = 64;
  * @type {Object}
  */
 export const SCREEN = {
-  WIDTH: 300,
-  HEIGHT: 129,
+  WIDTH: 250,
+  HEIGHT: 140,
 };
 
 /**

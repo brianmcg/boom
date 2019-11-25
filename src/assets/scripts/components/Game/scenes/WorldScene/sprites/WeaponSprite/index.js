@@ -2,6 +2,8 @@ import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
 import { Weapon } from '../../entities/Player';
 
+const HEIGHT_RATIO = SCREEN.HEIGHT / 172;
+
 /**
  * Class representing a weapon sprite.
  */
@@ -22,8 +24,8 @@ class WeaponSprite extends AnimatedSprite {
     this.textureCollection = textureCollection;
     this.x = this.centerX;
     this.y = this.centerY;
-    this.width *= 0.75;
-    this.height *= 0.75;
+    this.width *= HEIGHT_RATIO;
+    this.height *= HEIGHT_RATIO;
     this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
     this.centerY = SCREEN.HEIGHT - this.height;
     this.player = player;

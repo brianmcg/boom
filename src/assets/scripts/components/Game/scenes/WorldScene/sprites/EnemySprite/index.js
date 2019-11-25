@@ -10,6 +10,8 @@ const ACTIONS = {
   STANDING: 'standing',
 };
 
+const MAX_ANGLE_ID = 7;
+
 /**
  * Class representing an EnemySprite.
  * @extends {AnimatedEntitySprite}
@@ -105,9 +107,9 @@ class EnemySprite extends AnimatedEntitySprite {
   }) {
     if (this.actionId !== actionId || this.angleId !== angleId) {
       this.loop = loop;
-      this.angleId = angleId;
+      this.angleId = angleId > MAX_ANGLE_ID ? MAX_ANGLE_ID : angleId;
       this.actionId = actionId;
-      this.textures = this.textureCollection[actionId][angleId];
+      this.textures = this.textureCollection[this.actionId][this.angleId];
       this.texture = this.textures[frame];
       this.gotoAndPlay(frame);
     }

@@ -3,7 +3,7 @@
   "stats": {
     "player": {
       "acceleration": 0.25,
-      "maxRotVelocity": 12,
+      "maxRotVelocity": 10,
       "maxVelocity": 4,
       "rotAcceleration": 2,
       "weapons": {
