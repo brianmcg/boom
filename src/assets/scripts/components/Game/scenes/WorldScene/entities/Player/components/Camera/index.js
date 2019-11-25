@@ -2,11 +2,19 @@ const HEIGHT_INCREMENT = 0.04;
 
 const MAX_HEIGHT = 2;
 
-const MAX_ROTATION = 128;
-
 const ROTATION_VELOCITY = 4;
 
-const MAX_JERK = 12;
+const MAX_RECOIL = 12;
+
+const MIN_RECOIL = 1;
+
+const RECOIL_FADE = 0.25;
+
+const MAX_SHAKE = 12;
+
+const MIN_SHAKE = 1;
+
+const SHAKE_FADE = 0.25;
 
 /**
  * Class representing a camera.
@@ -20,7 +28,11 @@ class Camera {
     this.player = player;
     this.height = 0;
     this.heightDirection = 1;
-    this.rotation = 0;
+    this.rotationY = 0;
+    this.rotationX = 0;
+    this.shakeDirection = 1;
+    this.recoil = 0;
+    this.shake = 0;
   }
 
   /**
@@ -29,17 +41,25 @@ class Camera {
    */
   update(delta) {
     const { velocity, maxVelocity } = this.player;
-    const { lookDown, lookUp } = this.player.actions;
 
-    // Update rotation
-    if (lookDown) {
-      this.rotation = Math.max(this.rotation - ROTATION_VELOCITY, -MAX_ROTATION);
-    } else if (lookUp) {
-      this.rotation = Math.min(this.rotation + ROTATION_VELOCITY, MAX_ROTATION);
-    } else if (this.rotation < 0) {
-      this.rotation = Math.min(this.rotation + ROTATION_VELOCITY, 0);
-    } else if (this.rotation > 0) {
-      this.rotation = Math.max(this.rotation - ROTATION_VELOCITY, 0);
+    if (this.recoil) {
+      this.rotationY += this.recoil;
+      this.recoil *= RECOIL_FADE;
+
+      if (this.recoil < MIN_RECOIL) {
+        this.recoil = 0;
+      }
+    } else {
+      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+    }
+
+    if (this.shake) {
+      this.rotationX += this.shake * this.shakeDirection;
+      this.shake *= SHAKE_FADE;
+
+      if (Math.abs(this.shake) > MAX_SHAKE) {
+        this.shakeDirection *= -1;
+      }
     }
 
     if (velocity) {
@@ -65,12 +85,16 @@ class Camera {
     }
   }
 
+  jolt(amount) {
+    this.rotationX = Math.min(amount, MAX_SHAKE);
+  }
+
   /**
    * Jerk the camera backwards.
    * @param  {Number} amount The amount to jerk it.
    */
   jerkBackward(amount) {
-    this.rotation += Math.min(amount, MAX_JERK);
+    this.recoil = Math.min(amount, MAX_RECOIL);
   }
 
   /**
@@ -78,8 +102,21 @@ class Camera {
    * @param  {Number} amount The amount to jerk it.
    */
   jerkForward(amount) {
-    this.rotation -= Math.min(amount, MAX_JERK);
+    this.rotationY -= Math.min(amount, MAX_RECOIL);
   }
 }
 
 export default Camera;
+
+// const { lookDown, lookUp } = this.player.actions;
+
+// Update rotation
+// if (lookDown) {
+//   this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, -MAX_ROTATION);
+// } else if (lookUp) {
+//   this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, MAX_ROTATION);
+// } else if (this.rotationY < 0) {
+//   this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, 0);
+// } else if (this.rotationY > 0) {
+//   this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+// }

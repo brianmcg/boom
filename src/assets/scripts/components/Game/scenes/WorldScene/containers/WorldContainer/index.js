@@ -82,10 +82,10 @@ class WorldContainer extends Container {
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
-    rayAngle = (player.angle - HALF_FOV + DEG_360) % DEG_360;
+    rayAngle = (player.angle + player.cameraRotationX - HALF_FOV + DEG_360) % DEG_360;
 
     // Get center of screen
-    centerY = CAMERA_CENTER_Y + player.cameraRotation;
+    centerY = CAMERA_CENTER_Y + player.cameraRotationY;
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {

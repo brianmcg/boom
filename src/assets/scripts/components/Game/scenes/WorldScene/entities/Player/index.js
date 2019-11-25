@@ -381,8 +381,16 @@ class Player extends AbstractActor {
    * Get the camera rotation.
    * @return {Number} The camera rotation.
    */
-  get cameraRotation() {
-    return this.camera.rotation;
+  get cameraRotationY() {
+    return this.camera.rotationY;
+  }
+
+  /**
+   * Get the camera shake value.
+   * @return {[type]} [description]
+   */
+  get cameraRotationX() {
+    return this.camera.rotationX;
   }
 
   get attackStrength() {

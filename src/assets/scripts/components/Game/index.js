@@ -79,7 +79,7 @@ class Game extends Application {
     this.loader.load(assets).then(({ sound, data }) => {
       this.data = data;
       this.sound.add(GAME_SOUNDS.NAME, sound);
-      this.show(Scene.TYPES.TITLE);
+      this.show(Scene.TYPES.WORLD, 1);
     });
   }
 
@@ -212,3 +212,5 @@ class Game extends Application {
 }
 
 export default Game;
+
+// game.scene.mainContainer.children[0].world.player.camera.jolt(10)
