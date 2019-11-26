@@ -1,5 +1,5 @@
 import { UPDATE_DISTANCE } from 'game/constants/config';
-import { DEG, distanceBetween } from 'game/core/physics';
+import { distanceBetween } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
