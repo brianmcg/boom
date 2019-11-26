@@ -18,7 +18,7 @@ const ENEMIES = [
   [enemy.name.toLowerCase()]: enemy,
 }), {});
 
-const createSector = (sector) => {
+const createSector = (sector, stats) => {
   if (sector.door) {
     return new Door({
       x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
@@ -30,6 +30,7 @@ const createSector = (sector) => {
       blocking: sector.blocking,
       sides: sector.sides,
       key: sector.key,
+      ...stats.door,
     });
   }
 
@@ -52,7 +53,7 @@ export const createWorld = (data, stats, player) => {
     ...rows,
     row.reduce((sectors, sector) => ([
       ...sectors,
-      createSector(sector),
+      createSector(sector, stats),
     ]), []),
   ]), []);
 

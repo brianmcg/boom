@@ -46,6 +46,10 @@
         "velocity": 1,
         "rotVelocity": 5
       }
+    },
+    "door": {
+      "speed": 4,
+      "interval": 2000
     }
   }
 }

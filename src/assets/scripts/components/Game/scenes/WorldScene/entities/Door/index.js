@@ -12,12 +12,6 @@ const EVENTS = {
   LOCKED: 'door:locked',
 };
 
-const DEFAULTS = {
-  AXIS: 'x',
-  SPEED: 4,
-  INTERVAL: 2000,
-};
-
 /**
  * Class representing a door.
  * @extends {DynamicFlatSector}
@@ -37,12 +31,11 @@ class Door extends DynamicFlatSector {
   constructor({
     key,
     sides,
-    interval = DEFAULTS.INTERVAL,
-    axis = DEFAULTS.AXIS,
-    speed = DEFAULTS.SPEED,
+    interval,
+    axis,
     ...other
   }) {
-    super({ ...other, axis, speed });
+    super({ ...other, axis });
 
     this.timer = 0;
     this.key = key;
@@ -55,7 +48,7 @@ class Door extends DynamicFlatSector {
 
     this.opened = {
       ...this.closed,
-      [this.axis]: this[this.axis] + this.length,
+      [axis]: this[axis] + this.length,
     };
 
     this.front = sides.front;
