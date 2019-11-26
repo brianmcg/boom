@@ -42,6 +42,7 @@ class Player extends AbstractActor {
       acceleration,
       rotAcceleration,
       weapons,
+      camera,
       ...other
     } = options;
 
@@ -57,7 +58,8 @@ class Player extends AbstractActor {
     this.heightVelocity = 2;
     this.currentWeaponType = Weapon.TYPES.SHOTGUN;
     this.actions = {};
-    this.camera = new Camera(this);
+
+    this.camera = new Camera({ player: this, ...camera });
 
     this.weapons = Object.keys(weapons).reduce((memo, type) => ({
       ...memo,

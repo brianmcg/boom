@@ -31,6 +31,18 @@
           "ammo": 10,
           "recoil": 5
         }
+      },
+      "camera": {
+        "heightIncrement": 0.04,
+        "maxHeight": 2,
+        "recoilVelocity": 4,
+        "maxRecoilAmount": 12,
+        "minRecoilAmount": 1,
+        "recoilFade": 0.2,
+        "maxShakeAmount": 10,
+        "minShakeAmount": 1,
+        "shakeFade": 0.65,
+        "maxRotationY": 120
       }
     },
     "enemies": {

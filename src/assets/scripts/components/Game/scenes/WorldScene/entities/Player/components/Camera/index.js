@@ -1,20 +1,5 @@
 import { DEG } from 'game/core/physics';
 
-const HEIGHT_INCREMENT = 0.04;
-const MAX_HEIGHT = 2;
-
-const ROTATION_VELOCITY = 4;
-
-const MAX_RECOIL_AMOUNT = 12;
-const MIN_RECOIL_AMOUNT = 1;
-const RECOIL_FADE = 0.2;
-
-const MAX_SHAKE_AMOUNT = 10;
-const MIN_SHAKE_AMOUNT = 1;
-const SHAKE_FADE = 0.65;
-
-const MAX_ROTATION = 120;
-
 const DEG_360 = DEG[360];
 
 /**
@@ -25,17 +10,36 @@ class Camera {
    * Creates a camera.
    * @param  {Player} player The player.
    */
-  constructor(player) {
+  constructor({
+    player,
+    heightIncrement,
+    maxHeight,
+    recoilVelocity,
+    maxRecoilAmount,
+    minRecoilAmount,
+    recoilFade,
+    maxShakeAmount,
+    minShakeAmount,
+    shakeFade,
+    maxRotationY,
+  }) {
     this.player = player;
+    this.heightIncrement = heightIncrement;
+    this.maxHeight = maxHeight;
+    this.recoilVelocity = recoilVelocity;
+    this.maxRecoilAmount = maxRecoilAmount;
+    this.minRecoilAmount = minRecoilAmount;
+    this.recoilFade = recoilFade;
+    this.maxShakeAmount = maxShakeAmount;
+    this.minShakeAmount = minShakeAmount;
+    this.shakeFade = shakeFade;
+    this.maxRotationY = maxRotationY;
 
     this.height = 0;
     this.heightDirection = 1;
-
     this.rotationY = 0;
     this.rotationX = 0;
-
     this.recoilAmount = 0;
-
     this.shakeDirection = 1;
     this.shakeAmount = 0;
     this.shakeEdge = 0;
@@ -58,23 +62,23 @@ class Camera {
     if (velocity) {
       if (this.heightDirection > 0) {
         this.height = Math.min(
-          this.height + HEIGHT_INCREMENT * Math.abs(velocity) * delta,
-          MAX_HEIGHT,
+          this.height + this.heightIncrement * Math.abs(velocity) * delta,
+          this.maxHeight,
         );
       } else if (this.heightDirection < 0) {
         this.height = Math.max(
-          this.height - HEIGHT_INCREMENT * Math.abs(velocity) * delta * 2,
-          -MAX_HEIGHT,
+          this.height - this.heightIncrement * Math.abs(velocity) * delta * 2,
+          -this.maxHeight,
         );
       }
 
-      if (Math.abs(this.height) === MAX_HEIGHT) {
+      if (Math.abs(this.height) === this.maxHeight) {
         this.heightDirection *= -1;
       }
     } else if (this.height > 0) {
-      this.height = Math.max(this.height - HEIGHT_INCREMENT * maxVelocity * delta, 0);
+      this.height = Math.max(this.height - this.heightIncrement * maxVelocity * delta, 0);
     } else if (this.height < 0) {
-      this.height = Math.min(this.height + HEIGHT_INCREMENT * maxVelocity * delta, 0);
+      this.height = Math.min(this.height + this.heightIncrement * maxVelocity * delta, 0);
     }
   }
 
@@ -85,13 +89,13 @@ class Camera {
     const { lookDown, lookUp } = this.player.actions;
 
     if (lookDown) {
-      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, -MAX_ROTATION);
+      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, -this.maxRotationY);
     } else if (lookUp) {
-      this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, MAX_ROTATION);
+      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, this.maxRotationY);
     } else if (this.rotationY < 0) {
-      this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, 0);
+      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, 0);
     } else if (this.rotationY > 0) {
-      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, 0);
     }
   }
 
@@ -101,13 +105,13 @@ class Camera {
   updateRecoil() {
     if (this.recoilAmount) {
       this.rotationY += this.recoilAmount;
-      this.recoilAmount *= RECOIL_FADE;
+      this.recoilAmount *= this.recoilFade;
 
-      if (this.recoilAmount < MIN_RECOIL_AMOUNT) {
+      if (this.recoilAmount < this.minRecoilAmount) {
         this.recoilAmount = 0;
       }
     } else {
-      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, 0);
     }
   }
 
@@ -122,10 +126,10 @@ class Camera {
         this.shakeDirection = -1;
       } else if (this.shakeDirection === -1 && this.rotationX < -this.shakeEdge) {
         this.shakeDirection = 1;
-        this.shakeEdge *= SHAKE_FADE;
+        this.shakeEdge *= this.shakeFade;
       }
 
-      if (this.shakeEdge < MIN_SHAKE_AMOUNT) {
+      if (this.shakeEdge < this.minShakeAmount) {
         this.shakeDirection = 1;
         this.shakeEdge = 0;
         this.rotationX = 0;
@@ -139,7 +143,7 @@ class Camera {
    * @param {Number} amount The amount to shake.
    */
   setShake(amount) {
-    this.shakeAmount = Math.min(MAX_SHAKE_AMOUNT, amount);
+    this.shakeAmount = Math.min(this.maxShakeAmount, amount);
     this.shakeEdge = this.shakeAmount - 1;
   }
 
@@ -148,7 +152,7 @@ class Camera {
    * @param  {Number} amount The amount to recoil.
    */
   setRecoil(amount) {
-    this.recoilAmount = Math.min(MAX_RECOIL_AMOUNT, amount);
+    this.recoilAmount = Math.min(this.maxRecoilAmount, amount);
   }
 }
 
