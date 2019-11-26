@@ -262,7 +262,7 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      this.camera.jerkBackward(this.weapon.power * 2);
+      this.camera.setRecoil(this.weapon.recoil);
       this.world.setGunFlash(this.weapon.power);
       this.attack();
     }
@@ -362,6 +362,14 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Shake the player.
+   * @param  {Number} amount The amount to shake.
+   */
+  shake(amount) {
+    this.camera.setShake(amount);
+  }
+
+  /**
    * Get the player weapon.
    * @return {Weapon} The player weapon.
    */
@@ -378,21 +386,25 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Get the camera rotation.
-   * @return {Number} The camera rotation.
+   * Get the view angle on the y axis.
+   * @return {Number} The view angle.
    */
-  get cameraRotationY() {
+  get viewAngleY() {
     return this.camera.rotationY;
   }
 
   /**
-   * Get the camera shake value.
-   * @return {[type]} [description]
+   * Get the view angle on the x axis.
+   * @return {Number} The view angle.
    */
-  get cameraRotationX() {
-    return this.camera.rotationX;
+  get viewAngleX() {
+    return (this.angle + this.camera.rotationX + DEG_360) % DEG_360;
   }
 
+  /**
+   * Get the attack strength of the current weapon.
+   * @return {Number} The strength of the current weapon.
+   */
   get attackStrength() {
     return this.weapon.power;
   }

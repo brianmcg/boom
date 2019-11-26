@@ -212,5 +212,3 @@ class Game extends Application {
 }
 
 export default Game;
-
-// game.scene.mainContainer.children[0].world.player.camera.jolt(10)

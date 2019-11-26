@@ -1,20 +1,21 @@
-const HEIGHT_INCREMENT = 0.04;
+import { DEG } from 'game/core/physics';
 
+const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 2;
 
 const ROTATION_VELOCITY = 4;
 
-const MAX_RECOIL = 12;
+const MAX_RECOIL_AMOUNT = 12;
+const MIN_RECOIL_AMOUNT = 1;
+const RECOIL_FADE = 0.2;
 
-const MIN_RECOIL = 1;
+const MAX_SHAKE_AMOUNT = 10;
+const MIN_SHAKE_AMOUNT = 1;
+const SHAKE_FADE = 0.65;
 
-const RECOIL_FADE = 0.25;
+const MAX_ROTATION = 120;
 
-const MAX_SHAKE = 12;
-
-const MIN_SHAKE = 1;
-
-const SHAKE_FADE = 0.25;
+const DEG_360 = DEG[360];
 
 /**
  * Class representing a camera.
@@ -26,13 +27,18 @@ class Camera {
    */
   constructor(player) {
     this.player = player;
+
     this.height = 0;
     this.heightDirection = 1;
+
     this.rotationY = 0;
     this.rotationX = 0;
+
+    this.recoilAmount = 0;
+
     this.shakeDirection = 1;
-    this.recoil = 0;
-    this.shake = 0;
+    this.shakeAmount = 0;
+    this.shakeEdge = 0;
   }
 
   /**
@@ -40,27 +46,14 @@ class Camera {
    * @param  {[type]} delta The delta time.
    */
   update(delta) {
+    this.updateHeight(delta);
+    this.updateRotation(delta);
+    this.updateRecoil(delta);
+    this.updateShake(delta);
+  }
+
+  updateHeight(delta) {
     const { velocity, maxVelocity } = this.player;
-
-    if (this.recoil) {
-      this.rotationY += this.recoil;
-      this.recoil *= RECOIL_FADE;
-
-      if (this.recoil < MIN_RECOIL) {
-        this.recoil = 0;
-      }
-    } else {
-      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
-    }
-
-    if (this.shake) {
-      this.rotationX += this.shake * this.shakeDirection;
-      this.shake *= SHAKE_FADE;
-
-      if (Math.abs(this.shake) > MAX_SHAKE) {
-        this.shakeDirection *= -1;
-      }
-    }
 
     if (velocity) {
       if (this.heightDirection > 0) {
@@ -85,38 +78,78 @@ class Camera {
     }
   }
 
-  jolt(amount) {
-    this.rotationX = Math.min(amount, MAX_SHAKE);
+  /**
+   * Update the rotation according to player actions.
+   */
+  updateRotation() {
+    const { lookDown, lookUp } = this.player.actions;
+
+    if (lookDown) {
+      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, -MAX_ROTATION);
+    } else if (lookUp) {
+      this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, MAX_ROTATION);
+    } else if (this.rotationY < 0) {
+      this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, 0);
+    } else if (this.rotationY > 0) {
+      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+    }
   }
 
   /**
-   * Jerk the camera backwards.
-   * @param  {Number} amount The amount to jerk it.
+   * Update the recoil effect.
    */
-  jerkBackward(amount) {
-    this.recoil = Math.min(amount, MAX_RECOIL);
+  updateRecoil() {
+    if (this.recoilAmount) {
+      this.rotationY += this.recoilAmount;
+      this.recoilAmount *= RECOIL_FADE;
+
+      if (this.recoilAmount < MIN_RECOIL_AMOUNT) {
+        this.recoilAmount = 0;
+      }
+    } else {
+      this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
+    }
   }
 
   /**
-   * Jerk the camera forwards.
-   * @param  {Number} amount The amount to jerk it.
+   * Update the shake effect.
    */
-  jerkForward(amount) {
-    this.rotationY -= Math.min(amount, MAX_RECOIL);
+  updateShake() {
+    if (this.shakeAmount) {
+      this.rotationX = (this.rotationX + this.shakeAmount * this.shakeDirection) % DEG_360;
+
+      if (this.shakeDirection === 1 && this.rotationX > this.shakeEdge) {
+        this.shakeDirection = -1;
+      } else if (this.shakeDirection === -1 && this.rotationX < -this.shakeEdge) {
+        this.shakeDirection = 1;
+        this.shakeEdge *= SHAKE_FADE;
+      }
+
+      if (this.shakeEdge < MIN_SHAKE_AMOUNT) {
+        this.shakeDirection = 1;
+        this.shakeEdge = 0;
+        this.rotationX = 0;
+        this.shakeAmount = 0;
+      }
+    }
+  }
+
+  /**
+   * Set shake amount.
+   * @param {Number} amount The amount to shake.
+   */
+  setShake(amount) {
+    this.shakeAmount = Math.min(MAX_SHAKE_AMOUNT, amount);
+    this.shakeEdge = this.shakeAmount - 1;
+  }
+
+  /**
+   * Set the recoil amount.
+   * @param  {Number} amount The amount to recoil.
+   */
+  setRecoil(amount) {
+    this.recoilAmount = Math.min(MAX_RECOIL_AMOUNT, amount);
   }
 }
 
 export default Camera;
-
-// const { lookDown, lookUp } = this.player.actions;
-
-// Update rotation
-// if (lookDown) {
-//   this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, -MAX_ROTATION);
-// } else if (lookUp) {
-//   this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, MAX_ROTATION);
-// } else if (this.rotationY < 0) {
-//   this.rotationY = Math.min(this.rotationY + ROTATION_VELOCITY, 0);
-// } else if (this.rotationY > 0) {
-//   this.rotationY = Math.max(this.rotationY - ROTATION_VELOCITY, 0);
-// }

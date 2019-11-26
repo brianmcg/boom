@@ -82,10 +82,10 @@ class WorldContainer extends Container {
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
-    rayAngle = (player.angle + player.cameraRotationX - HALF_FOV + DEG_360) % DEG_360;
+    rayAngle = (player.viewAngleX - HALF_FOV + DEG_360) % DEG_360;
 
     // Get center of screen
-    centerY = CAMERA_CENTER_Y + player.cameraRotationY;
+    centerY = CAMERA_CENTER_Y + player.viewAngleY;
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
@@ -146,7 +146,7 @@ class WorldContainer extends Container {
         }
       }
 
-      spriteAngle = (rayAngle - player.angle + DEG_360) % DEG_360;
+      spriteAngle = (rayAngle - player.viewAngleX + DEG_360) % DEG_360;
       correctedDistance = distance * COS[spriteAngle];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
@@ -218,7 +218,7 @@ class WorldContainer extends Container {
         dx = body.x - player.x;
         dy = body.y - player.y;
         actualDistance = Math.sqrt(dx * dx + dy * dy);
-        spriteAngle = (atan2(dy, dx) - player.angle + DEG_360) % DEG_360;
+        spriteAngle = (atan2(dy, dx) - player.viewAngleX + DEG_360) % DEG_360;
 
         if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
           correctedDistance = COS[spriteAngle] * actualDistance;

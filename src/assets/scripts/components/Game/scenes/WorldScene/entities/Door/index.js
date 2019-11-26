@@ -14,7 +14,7 @@ const EVENTS = {
 
 const DEFAULTS = {
   AXIS: 'x',
-  SPEED: 3,
+  SPEED: 4,
   INTERVAL: 2000,
 };
 
@@ -73,7 +73,7 @@ class Door extends DynamicFlatSector {
     if (this.locked) {
       this.emit(EVENTS.LOCKED, this.key);
     } else {
-      this.setState(STATES.OPENING);
+      this.setOpening();
     }
   }
 
@@ -111,7 +111,7 @@ class Door extends DynamicFlatSector {
 
     if (this[axis] >= this.opened[axis]) {
       this[axis] = this.opened[axis];
-      this.setState(STATES.OPENED);
+      this.setOpened();
     }
   }
 
@@ -126,7 +126,7 @@ class Door extends DynamicFlatSector {
 
     if (this[axis] <= this.closed[axis]) {
       this[axis] = this.closed[axis];
-      this.setState(STATES.CLOSED);
+      this.setClosed();
     }
   }
 
@@ -144,7 +144,7 @@ class Door extends DynamicFlatSector {
 
         if (!isBlocked) {
           this.timer = 0;
-          this.setState(STATES.CLOSING);
+          this.setClosing();
         } else {
           this.timer = 1;
         }
@@ -153,20 +153,50 @@ class Door extends DynamicFlatSector {
   }
 
   /**
+   * Set the door to the opening state.
+   */
+  setOpening() {
+    this.setState(STATES.OPENING);
+  }
+
+  /**
+   * Set the door to the opened state.
+   */
+  setOpened() {
+    const { player } = this.world;
+
+    if (this.setState(STATES.OPENED)) {
+      player.shake(this.speed);
+      this.timer = this.interval;
+    }
+  }
+
+  /**
+   * Set the door to the closing state.
+   */
+  setClosing() {
+    this.setState(STATES.CLOSING);
+  }
+
+  /**
+   * Set the door to the closed state.
+   */
+  setClosed() {
+    this.setState(STATES.CLOSED);
+  }
+
+  /**
    * Set the door state.
    * @param {String} state The door state.
    */
   setState(state) {
-    switch (state) {
-      case STATES.OPENED: {
-        this.timer = this.interval;
-        break;
-      }
-      default:
-        break;
+    const stateChanged = this.state !== state;
+
+    if (stateChanged) {
+      this.state = state;
     }
 
-    this.state = state;
+    return stateChanged;
   }
 
   /**

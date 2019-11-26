@@ -12,21 +12,24 @@
           "power": 3,
           "equiped": true,
           "maxAmmo": 100,
-          "ammo": 10
+          "ammo": 10,
+          "recoil": 4
         },
         "shotgun": {
           "idleTime": 300,
           "power": 10,
           "equiped": true,
           "maxAmmo": 100,
-          "ammo": 10
+          "ammo": 10,
+          "recoil": 15
         },
         "chaingun": {
           "idleTime": 0,
           "power": 4,
           "equiped": true,
           "maxAmmo": 100,
-          "ammo": 10
+          "ammo": 10,
+          "recoil": 5
         }
       }
     },

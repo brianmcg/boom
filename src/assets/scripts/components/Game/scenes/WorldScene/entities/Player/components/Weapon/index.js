@@ -38,6 +38,7 @@ class Weapon {
     power,
     equiped,
     idleTime,
+    recoil,
   }) {
     this.idleTime = idleTime;
     this.power = power;
@@ -48,6 +49,7 @@ class Weapon {
     this.offsetY = TILE_SIZE;
     this.offsetYDirection = 1;
     this.timer = 0;
+    this.recoil = recoil;
   }
 
   /**
