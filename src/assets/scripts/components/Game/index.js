@@ -100,16 +100,14 @@ class Game extends Application {
   loop(delta) {
     // NOTE: Uncomment below to log frame rate.
 
-    /*
-    this.timer += this.ticker.elapsedMS;
-    this.frameCount += 1;
+    // this.timer += this.ticker.elapsedMS;
+    // this.frameCount += 1;
 
-    if (this.timer >= 1000) {
-      console.log(this.frameCount);
-      this.timer = this.timer - 1000;
-      this.frameCount = 0;
-    }
-    */
+    // if (this.timer >= 1000) {
+    //   console.log(this.frameCount);
+    //   this.timer = this.timer - 1000;
+    //   this.frameCount = 0;
+    // }
 
     if (this.scene) {
       this.scene.update(delta);

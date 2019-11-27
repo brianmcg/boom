@@ -63,7 +63,7 @@ class WorldContainer extends Container {
 
     this.backgroundContainer = new BackgroundContainer(background);
     this.mapContainer = new MapContainer(map);
-    this.playerContainer = new PlayerContainer(player);
+    this.playerContainer = new PlayerContainer(world.player, player);
 
     this.world = world;
 

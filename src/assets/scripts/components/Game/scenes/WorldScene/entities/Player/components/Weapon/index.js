@@ -39,6 +39,8 @@ class Weapon {
     equiped,
     idleTime,
     recoil,
+    ammo,
+    maxAmmo,
   }) {
     this.idleTime = idleTime;
     this.power = power;
@@ -50,13 +52,15 @@ class Weapon {
     this.offsetYDirection = 1;
     this.timer = 0;
     this.recoil = recoil;
+    this.ammo = ammo;
+    this.maxAmmo = maxAmmo;
   }
 
   /**
    * Use the weapon.
    */
   use() {
-    if (this.isIdle()) {
+    if (this.isIdle() && this.ammo) {
       return this.setFiring();
     }
 
@@ -162,7 +166,13 @@ class Weapon {
    * @return {Boolean} Has the state changed to firing.
    */
   setFiring() {
-    return this.setState(STATES.FIRING);
+    const stateChanged = this.setState(STATES.FIRING);
+
+    if (stateChanged) {
+      this.ammo -= 1;
+    }
+
+    return stateChanged;
   }
 
   /**

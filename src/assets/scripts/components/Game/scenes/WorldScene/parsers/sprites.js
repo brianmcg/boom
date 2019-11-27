@@ -3,6 +3,7 @@ import {
   Texture,
   TextSprite,
   RectangleSprite,
+  Sprite,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { TILE_SIZE, SCREEN } from 'game/constants/config';
@@ -212,6 +213,37 @@ const createReviewSprites = (text) => {
   };
 };
 
+const createHudSprites = (textures) => {
+  const health = {
+    icon: new Sprite(textures.health, {
+      alpha: 0.4,
+    }),
+    amount: new TextSprite({
+      font: FONT_SIZES.MEDIUM,
+      text: '100',
+      color: WHITE,
+      alpha: 0.4,
+    }),
+  };
+
+  const ammo = {
+    icon: new Sprite(textures.ammo, {
+      alpha: 0.4,
+    }),
+    amount: new TextSprite({
+      font: FONT_SIZES.MEDIUM,
+      text: '100',
+      color: WHITE,
+      alpha: 0.4,
+    }),
+  };
+
+  return {
+    health,
+    ammo,
+  };
+};
+
 const createWorldSprites = (world, resources) => {
   const { textures, data } = resources;
   const { frames, animations } = data;
@@ -241,9 +273,12 @@ const createWorldSprites = (world, resources) => {
     world,
   });
 
+  const hud = createHudSprites(textures);
+
   return {
     player: {
       weapon,
+      hud,
     },
     map: {
       walls,

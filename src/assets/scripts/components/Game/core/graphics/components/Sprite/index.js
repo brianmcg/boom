@@ -5,12 +5,14 @@ import { Sprite as PixiSprite } from 'pixi.js';
  */
 class Sprite extends PixiSprite {
   /**
-   * The sprite color
-   * @param  {Number} value The color to set.
-   * @member
+   * Creates a sprite.
+   * @param  {Texture} texture      The sprite texture.
+   * @param  {Number} options.alpha The alpha value.
    */
-  set color(value) {
-    this.tint = value;
+  constructor(texture, { alpha = 1 } = {}) {
+    super(texture);
+
+    this.alpha = alpha;
   }
 }
 

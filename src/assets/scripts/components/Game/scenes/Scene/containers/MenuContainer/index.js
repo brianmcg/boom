@@ -91,9 +91,9 @@ class MenuContainer extends Container {
       if (index === this.currentIndex) {
         icon.y = child.y + ICON_PADDING_TOP;
         icon.x = child.x - ICON_PADDING_RIGHT - icon.width;
-        child.setColor(RED);
+        child.tint = RED;
       } else {
-        child.setColor(WHITE);
+        child.tint = WHITE;
       }
     });
   }

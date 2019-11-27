@@ -157,9 +157,10 @@ class Door extends DynamicFlatSector {
    */
   setOpened() {
     const { player } = this.world;
+    const force = this.speed * 0.75;
 
     if (this.setState(STATES.OPENED)) {
-      player.shake(this.speed);
+      player.shake(force);
       this.timer = this.interval;
     }
   }

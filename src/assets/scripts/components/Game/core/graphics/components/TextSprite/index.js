@@ -6,11 +6,12 @@ import { BitmapText } from 'pixi.js';
 class TextSprite extends BitmapText {
   /**
    * Creates a bitmap text.
-   * @param  {String} options.text  [description]
-   * @param  {String} options.font  [description]
-   * @param  {Number} options.color [description]
-   * @param  {Number} options.x     [description]
-   * @param  {Number} options.y     [description]
+   * @param  {String} options.text  The text.
+   * @param  {String} options.font  The font.
+   * @param  {Number} options.color The color.
+   * @param  {Number} options.x     The x xoordinate.
+   * @param  {Number} options.y     The y coordinate.
+   * @param  {Number} alpha         The alpha value.
    */
   constructor({
     text,
@@ -18,23 +19,17 @@ class TextSprite extends BitmapText {
     color,
     x = 0,
     y = 0,
+    alpha = 1,
   }) {
     super(text, { font });
 
     this.x = x;
     this.y = y;
+    this.alpha = alpha;
 
     if (color || color === 0) {
       this.tint = color;
     }
-  }
-
-  /**
-   * The the color of the bitmap text.
-   * @param {Number} color A hex number representing the color.
-   */
-  setColor(color) {
-    this.tint = color;
   }
 }
 
