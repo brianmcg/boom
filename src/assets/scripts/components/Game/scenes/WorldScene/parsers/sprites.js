@@ -216,25 +216,21 @@ const createReviewSprites = (text) => {
 const createHudSprites = (textures) => {
   const health = {
     icon: new Sprite(textures.health, {
-      alpha: 0.4,
     }),
     amount: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '100',
       color: WHITE,
-      alpha: 0.4,
     }),
   };
 
   const ammo = {
     icon: new Sprite(textures.ammo, {
-      alpha: 0.4,
     }),
     amount: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '100',
       color: WHITE,
-      alpha: 0.4,
     }),
   };
 

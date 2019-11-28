@@ -2,7 +2,7 @@ import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const MAX_MOVE_X = 8;
 
-const MAX_MOVE_Y = 4;
+const MAX_MOVE_Y = 6;
 
 const MOVE_AMOUNT_X = 0.4;
 

@@ -11,7 +11,7 @@
           "idleTime": 50,
           "power": 3,
           "equiped": true,
-          "ammo": 20,
+          "ammo": 90,
           "maxAmmo": 100,
           "recoil": 4
         },
@@ -19,7 +19,7 @@
           "idleTime": 300,
           "power": 10,
           "equiped": true,
-          "ammo": 10,
+          "ammo": 40,
           "maxAmmo": 60,
           "recoil": 15
         },
@@ -27,7 +27,7 @@
           "idleTime": 0,
           "power": 4,
           "equiped": true,
-          "ammo": 50,
+          "ammo": 200,
           "maxAmmo": 200,
           "recoil": 5
         }
