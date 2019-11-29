@@ -8,7 +8,7 @@
       "rotAcceleration": 2,
       "weapons": {
         "pistol": {
-          "idleTime": 50,
+          "idleTime": 20,
           "power": 3,
           "equiped": true,
           "ammo": 90,
