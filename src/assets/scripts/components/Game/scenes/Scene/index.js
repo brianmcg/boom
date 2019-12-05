@@ -222,7 +222,8 @@ class Scene extends Container {
       this.addChild(this.mainContainer);
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
-      this.game.sound.play(SCENE_MUSIC);
+      // TODO: Enabled music
+      // this.game.sound.play(SCENE_MUSIC);
     }
   }
 
