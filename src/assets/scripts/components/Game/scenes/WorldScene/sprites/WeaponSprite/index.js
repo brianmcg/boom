@@ -2,7 +2,7 @@ import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
 import { Weapon } from '../../entities/Player';
 
-const HEIGHT_RATIO = SCREEN.HEIGHT / 172;
+const HEIGHT_RATIO = SCREEN.HEIGHT / 190;
 
 /**
  * Class representing a weapon sprite.
@@ -15,7 +15,7 @@ class WeaponSprite extends AnimatedSprite {
    */
   constructor(textureCollection, player) {
     super(textureCollection[player.currentWeaponType], {
-      animationSpeed: 0.4,
+      animationSpeed: 0.25,
       loop: false,
       autoPlay: false,
     });
