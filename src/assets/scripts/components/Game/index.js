@@ -56,8 +56,8 @@ class Game extends Application {
   /**
    * Start game and load assets.
    */
-  start() {
-    const assets = {
+  async start() {
+    const { sound, data } = await this.loader.load({
       sound: {
         name: GAME_SOUNDS.NAME,
         src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
@@ -71,16 +71,15 @@ class Game extends Application {
         name: GAME_DATA,
         src: `${GAME_PATH}/${GAME_DATA}`,
       },
-    };
+    });
 
     this.scene = null;
-    this.ticker.start();
+    this.data = data;
 
-    this.loader.load(assets).then(({ sound, data }) => {
-      this.data = data;
-      this.sound.add(GAME_SOUNDS.NAME, sound);
-      this.show(Scene.TYPES.WORLD, 1);
-    });
+    this.ticker.start();
+    this.sound.add(GAME_SOUNDS.NAME, sound);
+
+    this.show(Scene.TYPES.WORLD, 1);
   }
 
   /**
@@ -120,7 +119,7 @@ class Game extends Application {
    * @param  {String} sceneType  The scene type.
    * @param  {Number} sceneIndex The scene index.
    */
-  show(sceneType, sceneIndex = 0, player) {
+  async show(sceneType, sceneIndex = 0, player) {
     const SceneType = this.scenes[sceneType];
     const scale = Game.maxScale;
 
@@ -148,16 +147,14 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
-      this.loader.load(this.scene.assets).then((resources) => {
-        const { graphics, sound, data } = resources;
+      const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
-        this.sound.add(SCENE_MUSIC, sound);
+      this.sound.add(SCENE_MUSIC, sound);
 
-        this.scene.create({
-          graphics,
-          data,
-          player,
-        });
+      this.scene.create({
+        graphics,
+        data,
+        player,
       });
     }
   }

@@ -225,9 +225,7 @@ export const castRay = ({ rayAngle, caster }) => {
         }
       } else {
         horizontalSector.bodies.forEach((body) => {
-          if (body.id !== id) {
-            encounteredBodies[body.id] = body;
-          }
+          encounteredBodies[body.id] = body;
         });
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
@@ -299,9 +297,7 @@ export const castRay = ({ rayAngle, caster }) => {
         }
       } else {
         verticalSector.bodies.forEach((body) => {
-          if (body.id !== id) {
-            encounteredBodies[body.id] = body;
-          }
+          encounteredBodies[body.id] = body;
         });
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
