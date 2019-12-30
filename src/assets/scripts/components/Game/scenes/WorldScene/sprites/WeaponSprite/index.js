@@ -34,7 +34,7 @@ class WeaponSprite extends AnimatedSprite {
 
   /**
    * Updates the sprite.
-   * @param  {[Number} delta Te delta time.h
+   * @param  {Number} delta The delta time.
    */
   update(delta) {
     const { weapon } = this.player;
@@ -78,7 +78,6 @@ class WeaponSprite extends AnimatedSprite {
 
   /**
    * Animate the weapon sprite.
-   * @return {[type]} [description]
    */
   animate() {
     const { weapon } = this.player;
@@ -93,13 +92,13 @@ class WeaponSprite extends AnimatedSprite {
   handleOnComplete() {
     const { weapon } = this.player;
 
+    this.gotoAndStop(0);
+
     if (weapon.isAutomatic()) {
       weapon.setIdle();
     } else {
       weapon.setDisabled();
     }
-
-    this.gotoAndStop(0);
   }
 
   /**
@@ -108,6 +107,7 @@ class WeaponSprite extends AnimatedSprite {
    */
   get updateable() {
     const { weapon } = this.player;
+
     return weapon.isFiring() || weapon.isArming();
   }
 }
