@@ -21,8 +21,6 @@ class AbstractGunEnemy extends AbstractEnemy {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
-
-    this.setPatrolling();
   }
 }
 

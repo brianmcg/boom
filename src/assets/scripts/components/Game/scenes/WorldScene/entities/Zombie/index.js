@@ -1,9 +1,9 @@
-import AbstractEnemy from '../AbstractEnemy';
+import AbstractGunEnemy from '../AbstractGunEnemy';
 
 /**
  * Class representing a zombie enemy.
  */
-class Zombie extends AbstractEnemy {
+class Zombie extends AbstractGunEnemy {
   /**
    * Creates an abstract enemy.
    * @param  {Number} options.x         The x coordinate of the character.
@@ -16,7 +16,6 @@ class Zombie extends AbstractEnemy {
    */
   constructor(options) {
     super(options);
-    this.setPatrolling();
   }
 }
 

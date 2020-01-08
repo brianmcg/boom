@@ -28,33 +28,34 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor({ velocity, rotVelocity, ...options }) {
+  constructor(options) {
     super(options);
-    this.velocity = velocity;
-    this.rotVelocity = rotVelocity;
-    this.distanceToPlayer = Number.MAX_VALUE;
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
+
+    this.distanceToPlayer = Number.MAX_VALUE;
+
+    this.setPatrolling();
   }
 
   update(delta) {
-    if (!this.isDead()) {
-      this.distanceToPlayer = distanceBetween(this, this.world.player);
+    if (this.isDead()) return;
 
-      if (this.distanceToPlayer < UPDATE_DISTANCE) {
-        switch (this.state) {
-          case STATES.DEAD:
-            this.velocity = 0;
-            break;
-          default:
-            this.velocity = 1;
-            break;
-        }
+    this.distanceToPlayer = distanceBetween(this, this.world.player);
 
-        super.update(delta);
+    if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      switch (this.state) {
+        case STATES.DEAD:
+          this.velocity = 0;
+          break;
+        default:
+          this.velocity = 1;
+          break;
       }
+
+      super.update(delta);
     }
   }
 
