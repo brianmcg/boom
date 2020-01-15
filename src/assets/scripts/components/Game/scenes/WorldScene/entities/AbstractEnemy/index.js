@@ -28,40 +28,121 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor({ velocity, rotVelocity, ...options }) {
+  constructor(options) {
     super(options);
-    this.velocity = velocity;
-    this.rotVelocity = rotVelocity;
-    this.distanceToPlayer = Number.MAX_VALUE;
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
+
+    this.distanceToPlayer = Number.MAX_VALUE;
+
+    this.setPatrolling();
   }
 
+  /**
+   * Update the enemy.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
-    if (!this.isDead()) {
-      this.distanceToPlayer = distanceBetween(this, this.world.player);
+    if (this.isDead()) return;
 
-      if (this.distanceToPlayer < UPDATE_DISTANCE) {
-        switch (this.state) {
-          case STATES.DEAD:
-            this.velocity = 0;
-            break;
-          default:
-            this.velocity = 1;
-            break;
-        }
+    this.distanceToPlayer = distanceBetween(this, this.world.player);
 
-        super.update(delta);
+    if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      switch (this.state) {
+        case STATES.IDLE:
+          this.updateIdle(delta);
+          break;
+        case STATES.PATROLLING:
+          this.updatePatrolling(delta);
+          break;
+        case STATES.CHASING:
+          this.updateChasing(delta);
+          break;
+        case STATES.READY:
+          this.updateReady(delta);
+          break;
+        case STATES.AIMING:
+          this.updateAiming(delta);
+          break;
+        case STATES.ATTACKING:
+          this.updateAttacking(delta);
+          break;
+        case STATES.HURT:
+          this.updateHurt(delta);
+          break;
+        case STATES.DEAD:
+          break;
+        default:
+          break;
       }
+
+      super.update(delta);
     }
+  }
+
+  /**
+   * Update enemy in idle state
+   * @param  {Number} delta The delta time.
+   */
+  updateIdle(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in patrolling state
+   * @param  {Number} delta The delta time.
+   */
+  updatePatrolling(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in chasing state
+   * @param  {Number} delta The delta time.
+   */
+  updateChasing(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in ready state
+   * @param  {Number} delta The delta time.
+   */
+  updateReady(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in aiming state
+   * @param  {Number} delta The delta time.
+   */
+  updateAiming(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in attacking state
+   * @param  {Number} delta The delta time.
+   */
+  updateAttacking(delta) {
+    this.placeholder = delta;
+  }
+
+  /**
+   * Update enemy in hurt state
+   * @param  {Number} delta The delta time.
+   */
+  updateHurt(delta) {
+    this.placeholder = delta;
   }
 
   /**
    * Set the enemy to the idle state.
    */
   setIdle() {
+    this.velocity = 0;
     this.setState(STATES.IDLE);
   }
 
@@ -69,6 +150,7 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the patrolling state.
    */
   setPatrolling() {
+    this.velocity = 1;
     this.setState(STATES.PATROLLING);
   }
 
@@ -112,6 +194,7 @@ class AbstractEnemy extends AbstractActor {
    */
   setDead() {
     this.blocking = false;
+    this.velocity = 0;
     this.setState(STATES.DEAD);
   }
 

@@ -16,7 +16,6 @@ class Amp extends AbstractGunEnemy {
    */
   constructor(options) {
     super(options);
-    this.setPatrolling();
   }
 }
 
