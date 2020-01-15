@@ -22,7 +22,6 @@ class BackgroundContainer extends Container {
     this.addChild(smoke);
     this.addChild(sparks);
 
-
     this.filters = [new PixelateFilter()];
     this.filters[0].enabled = false;
     this.filters[0].size = 10;
