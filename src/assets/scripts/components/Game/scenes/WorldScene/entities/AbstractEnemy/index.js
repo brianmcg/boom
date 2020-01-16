@@ -26,9 +26,11 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
   constructor({
+    maxVelocity = 1,
     attackDistance = 250,
     attackTime = 1000,
     hurtTime = 1000,
+    acceleration = 1,
     ...other
   }) {
     super(other);
@@ -40,6 +42,8 @@ class AbstractEnemy extends AbstractActor {
     this.attackDistance = attackDistance;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
+    this.maxVelocity = maxVelocity;
+    this.acceleration = acceleration;
 
     this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;
@@ -60,7 +64,7 @@ class AbstractEnemy extends AbstractActor {
     this.distanceToPlayer = distanceBetween(this, player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
-      this.turnToFace(player);
+      this.face(player);
 
       switch (this.state) {
         case STATES.IDLE:
@@ -139,14 +143,18 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy angle to face a body.
    * @param  {Body} body The body to face.
    */
-  turnToFace(body) {
+  face(body) {
     const dx = body.x - this.x;
     const dy = body.y - this.y;
 
     this.angle = atan2(dy, dx);
   }
 
-  hurt(amount) {
+  /**
+   * Hit the enemy
+   * @param  {Number} amount The amount of hit points.
+   */
+  hit(amount) {
     this.health -= amount;
 
     if (this.health > 0) {
@@ -168,8 +176,8 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the idle state.
    */
   setChasing() {
+    this.velocity = Math.min(this.maxVelocity, this.maxVelocity + this.acceleration);
     this.setState(STATES.CHASING);
-    this.velocity = 1;
   }
 
   /**
@@ -192,8 +200,8 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the dead state.
    */
   setDead() {
-    this.blocking = false;
     this.velocity = 0;
+    this.blocking = false;
     this.setState(STATES.DEAD);
   }
 

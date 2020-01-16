@@ -291,7 +291,7 @@ class Player extends AbstractActor {
     });
 
     if (nearestActor && isRayCollision(startPoint, endPoint, nearestActor)) {
-      nearestActor.hurt(10);
+      nearestActor.hit(this.weapon.power);
     }
   }
 
@@ -401,14 +401,6 @@ class Player extends AbstractActor {
    */
   get viewAngleX() {
     return (this.angle + this.camera.rotationX + DEG_360) % DEG_360;
-  }
-
-  /**
-   * Get the attack strength of the current weapon.
-   * @return {Number} The strength of the current weapon.
-   */
-  get attackStrength() {
-    return this.weapon.power;
   }
 }
 

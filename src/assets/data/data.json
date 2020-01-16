@@ -17,7 +17,7 @@
         },
         "shotgun": {
           "idleTime": 300,
-          "power": 10,
+          "power": 15,
           "equiped": true,
           "ammo": 40,
           "maxAmmo": 60,
@@ -47,23 +47,26 @@
     },
     "enemies": {
       "amp": {
-        "velocity": 1,
+        "acceleration": 0.2,
+        "maxVelocity": 2,
         "rotVelocity": 0,
         "attackDistance": 128,
         "attackTime": 1000,
-        "hurtTime": 500,
+        "hurtTime": 200,
         "maxHealth": 10
       },
       "zombie": {
-        "velocity": 1,
+        "acceleration": 0.2,
+        "maxVelocity": 1,
         "rotVelocity": 0,
         "attackDistance": 192,
         "attackTime": 250,
         "hurtTime": 500,
-        "maxHealth": 50
+        "maxHealth": 30
       },
       "mancubus": {
-        "velocity": 1,
+        "acceleration": 0.2,
+        "maxVelocity": 1,
         "rotVelocity": 0,
         "attackDistance": 128,
         "attackTime": 1000,
