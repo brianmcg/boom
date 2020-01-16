@@ -291,7 +291,7 @@ class Player extends AbstractActor {
     });
 
     if (nearestActor && isRayCollision(startPoint, endPoint, nearestActor)) {
-      nearestActor.setDead();
+      nearestActor.hurt(10);
     }
   }
 

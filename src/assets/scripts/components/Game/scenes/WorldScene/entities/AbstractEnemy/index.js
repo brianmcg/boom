@@ -1,4 +1,4 @@
-import { UPDATE_DISTANCE } from 'game/constants/config';
+import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
 import { distanceBetween, atan2, castRay } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
@@ -25,14 +25,25 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor(options) {
-    super(options);
+  constructor({
+    attackDistance = 250,
+    attackTime = 1000,
+    hurtTime = 1000,
+    ...other
+  }) {
+    super(other);
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.attackDistance = attackDistance;
+    this.attackTime = attackTime;
+    this.hurtTime = hurtTime;
+
     this.distanceToPlayer = Number.MAX_VALUE;
+    this.attackTimer = 0;
+    this.hurtTimer = 0;
 
     this.setIdle();
   }
@@ -44,9 +55,13 @@ class AbstractEnemy extends AbstractActor {
   update(delta) {
     if (this.isDead()) return;
 
-    this.distanceToPlayer = distanceBetween(this, this.world.player);
+    const { player } = this.world;
+
+    this.distanceToPlayer = distanceBetween(this, player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      this.turnToFace(player);
+
       switch (this.state) {
         case STATES.IDLE:
           this.updateIdle(delta);
@@ -72,18 +87,15 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    * @param  {Number} delta The delta time.
    */
-  updateIdle(delta) {
-    const { player } = this.world;
-
-    const dx = player.x - this.x;
-    const dy = player.y - this.y;
-
-    this.angle = atan2(dy, dx);
-
+  updateIdle() {
     const { distance } = castRay({ caster: this });
 
     if (distance > this.distanceToPlayer) {
-      this.setChasing();
+      if (this.distanceToPlayer <= this.attackDistance) {
+        this.setAttacking();
+      } else {
+        this.setChasing();
+      }
     }
   }
 
@@ -91,8 +103,10 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in chasing state
    * @param  {Number} delta The delta time.
    */
-  updateChasing(delta) {
-    this.velocity = 1;
+  updateChasing() {
+    if (this.distanceToPlayer < this.attackDistance) {
+      this.setAttacking();
+    }
   }
 
   /**
@@ -100,7 +114,12 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAttacking(delta) {
-    this.velocity = 0;
+    this.attackTimer += TIME_STEP * delta;
+
+    if (this.attackTimer >= this.attackTime) {
+      this.attackTimer = 0;
+      this.setIdle();
+    }
   }
 
   /**
@@ -108,7 +127,33 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateHurt(delta) {
-    this.velocity = 0;
+    this.hurtTimer += TIME_STEP * delta;
+
+    if (this.hurtTimer >= this.hurtTime) {
+      this.hurtTimer = 0;
+      this.setIdle();
+    }
+  }
+
+  /**
+   * Set the enemy angle to face a body.
+   * @param  {Body} body The body to face.
+   */
+  turnToFace(body) {
+    const dx = body.x - this.x;
+    const dy = body.y - this.y;
+
+    this.angle = atan2(dy, dx);
+  }
+
+  hurt(amount) {
+    this.health -= amount;
+
+    if (this.health > 0) {
+      this.setHurt();
+    } else {
+      this.setDead();
+    }
   }
 
   /**
@@ -120,9 +165,18 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Set the enemy to the idle state.
+   */
+  setChasing() {
+    this.setState(STATES.CHASING);
+    this.velocity = 1;
+  }
+
+  /**
    * Set the enemy to the attacking state.
    */
   setAttacking() {
+    this.velocity = 0;
     this.setState(STATES.ATTACKING);
   }
 
@@ -130,6 +184,7 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the hurt state.
    */
   setHurt() {
+    this.velocity = 0;
     this.setState(STATES.HURT);
   }
 
