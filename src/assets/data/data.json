@@ -48,15 +48,15 @@
     "enemies": {
       "amp": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0
       },
       "zombie": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0
       },
       "mancubus": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0
       }
     },
     "door": {

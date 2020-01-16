@@ -1,13 +1,10 @@
 import { UPDATE_DISTANCE } from 'game/constants/config';
-import { distanceBetween } from 'game/core/physics';
+import { distanceBetween, atan2, castRay } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
   IDLE: 'enemy:idle',
-  PATROLLING: 'enemy:patrol',
   CHASING: 'enemy:chase',
-  READY: 'enemy:ready',
-  AIMING: 'enemy:aim',
   ATTACKING: 'enemy:fire',
   HURT: 'enemy:hurt',
   DEAD: 'enemy:dead',
@@ -37,7 +34,7 @@ class AbstractEnemy extends AbstractActor {
 
     this.distanceToPlayer = Number.MAX_VALUE;
 
-    this.setPatrolling();
+    this.setIdle();
   }
 
   /**
@@ -54,25 +51,14 @@ class AbstractEnemy extends AbstractActor {
         case STATES.IDLE:
           this.updateIdle(delta);
           break;
-        case STATES.PATROLLING:
-          this.updatePatrolling(delta);
-          break;
         case STATES.CHASING:
           this.updateChasing(delta);
-          break;
-        case STATES.READY:
-          this.updateReady(delta);
-          break;
-        case STATES.AIMING:
-          this.updateAiming(delta);
           break;
         case STATES.ATTACKING:
           this.updateAttacking(delta);
           break;
         case STATES.HURT:
           this.updateHurt(delta);
-          break;
-        case STATES.DEAD:
           break;
         default:
           break;
@@ -87,15 +73,18 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateIdle(delta) {
-    this.placeholder = delta;
-  }
+    const { player } = this.world;
 
-  /**
-   * Update enemy in patrolling state
-   * @param  {Number} delta The delta time.
-   */
-  updatePatrolling(delta) {
-    this.placeholder = delta;
+    const dx = player.x - this.x;
+    const dy = player.y - this.y;
+
+    this.angle = atan2(dy, dx);
+
+    const { distance } = castRay({ caster: this });
+
+    if (distance > this.distanceToPlayer) {
+      this.setChasing();
+    }
   }
 
   /**
@@ -103,23 +92,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateChasing(delta) {
-    this.placeholder = delta;
-  }
-
-  /**
-   * Update enemy in ready state
-   * @param  {Number} delta The delta time.
-   */
-  updateReady(delta) {
-    this.placeholder = delta;
-  }
-
-  /**
-   * Update enemy in aiming state
-   * @param  {Number} delta The delta time.
-   */
-  updateAiming(delta) {
-    this.placeholder = delta;
+    this.velocity = 1;
   }
 
   /**
@@ -127,7 +100,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAttacking(delta) {
-    this.placeholder = delta;
+    this.velocity = 0;
   }
 
   /**
@@ -135,7 +108,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateHurt(delta) {
-    this.placeholder = delta;
+    this.velocity = 0;
   }
 
   /**
@@ -144,35 +117,6 @@ class AbstractEnemy extends AbstractActor {
   setIdle() {
     this.velocity = 0;
     this.setState(STATES.IDLE);
-  }
-
-  /**
-   * Set the enemy to the patrolling state.
-   */
-  setPatrolling() {
-    this.velocity = 1;
-    this.setState(STATES.PATROLLING);
-  }
-
-  /**
-   * Set the enemy to the chasing state.
-   */
-  setChasing() {
-    this.setState(STATES.CHASING);
-  }
-
-  /**
-   * Set the enemy to the ready state.
-   */
-  setReady() {
-    this.setState(STATES.READY);
-  }
-
-  /**
-   * Set the enemy to the aiming state.
-   */
-  setAiming() {
-    this.setState(STATES.AIMING);
   }
 
   /**
@@ -207,35 +151,11 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Is the enemy in the patrolling state.
-   * @return {Boolean}
-   */
-  isPatrolling() {
-    return this.state === STATES.PATROLLING;
-  }
-
-  /**
    * Is the enemy in the chasing state.
    * @return {Boolean}
    */
   isChasing() {
     return this.state === STATES.CHASING;
-  }
-
-  /**
-   * Is the enemy in the ready state.
-   * @return {Boolean}
-   */
-  isReady() {
-    return this.state === STATES.READY;
-  }
-
-  /**
-   * Is the enemy in the aiming state.
-   * @return {Boolean}
-   */
-  isAiming() {
-    return this.state === STATES.AIMING;
   }
 
   /**
