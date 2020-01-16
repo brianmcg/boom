@@ -1,13 +1,10 @@
-import { UPDATE_DISTANCE } from 'game/constants/config';
-import { distanceBetween } from 'game/core/physics';
+import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
+import { distanceBetween, atan2, castRay } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
   IDLE: 'enemy:idle',
-  PATROLLING: 'enemy:patrol',
   CHASING: 'enemy:chase',
-  READY: 'enemy:ready',
-  AIMING: 'enemy:aim',
   ATTACKING: 'enemy:fire',
   HURT: 'enemy:hurt',
   DEAD: 'enemy:dead',
@@ -28,16 +25,27 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle     The angle of the character.
    * @param  {Number} options.maxHealth The maximum health of the character.
    */
-  constructor(options) {
-    super(options);
+  constructor({
+    attackDistance = 250,
+    attackTime = 1000,
+    hurtTime = 1000,
+    ...other
+  }) {
+    super(other);
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.distanceToPlayer = Number.MAX_VALUE;
+    this.attackDistance = attackDistance;
+    this.attackTime = attackTime;
+    this.hurtTime = hurtTime;
 
-    this.setPatrolling();
+    this.distanceToPlayer = Number.MAX_VALUE;
+    this.attackTimer = 0;
+    this.hurtTimer = 0;
+
+    this.setIdle();
   }
 
   /**
@@ -47,32 +55,25 @@ class AbstractEnemy extends AbstractActor {
   update(delta) {
     if (this.isDead()) return;
 
-    this.distanceToPlayer = distanceBetween(this, this.world.player);
+    const { player } = this.world;
+
+    this.distanceToPlayer = distanceBetween(this, player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      this.turnToFace(player);
+
       switch (this.state) {
         case STATES.IDLE:
           this.updateIdle(delta);
           break;
-        case STATES.PATROLLING:
-          this.updatePatrolling(delta);
-          break;
         case STATES.CHASING:
           this.updateChasing(delta);
-          break;
-        case STATES.READY:
-          this.updateReady(delta);
-          break;
-        case STATES.AIMING:
-          this.updateAiming(delta);
           break;
         case STATES.ATTACKING:
           this.updateAttacking(delta);
           break;
         case STATES.HURT:
           this.updateHurt(delta);
-          break;
-        case STATES.DEAD:
           break;
         default:
           break;
@@ -86,40 +87,26 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    * @param  {Number} delta The delta time.
    */
-  updateIdle(delta) {
-    this.placeholder = delta;
-  }
+  updateIdle() {
+    const { distance } = castRay({ caster: this });
 
-  /**
-   * Update enemy in patrolling state
-   * @param  {Number} delta The delta time.
-   */
-  updatePatrolling(delta) {
-    this.placeholder = delta;
+    if (distance > this.distanceToPlayer) {
+      if (this.distanceToPlayer <= this.attackDistance) {
+        this.setAttacking();
+      } else {
+        this.setChasing();
+      }
+    }
   }
 
   /**
    * Update enemy in chasing state
    * @param  {Number} delta The delta time.
    */
-  updateChasing(delta) {
-    this.placeholder = delta;
-  }
-
-  /**
-   * Update enemy in ready state
-   * @param  {Number} delta The delta time.
-   */
-  updateReady(delta) {
-    this.placeholder = delta;
-  }
-
-  /**
-   * Update enemy in aiming state
-   * @param  {Number} delta The delta time.
-   */
-  updateAiming(delta) {
-    this.placeholder = delta;
+  updateChasing() {
+    if (this.distanceToPlayer < this.attackDistance) {
+      this.setAttacking();
+    }
   }
 
   /**
@@ -127,7 +114,12 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAttacking(delta) {
-    this.placeholder = delta;
+    this.attackTimer += TIME_STEP * delta;
+
+    if (this.attackTimer >= this.attackTime) {
+      this.attackTimer = 0;
+      this.setIdle();
+    }
   }
 
   /**
@@ -135,7 +127,33 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateHurt(delta) {
-    this.placeholder = delta;
+    this.hurtTimer += TIME_STEP * delta;
+
+    if (this.hurtTimer >= this.hurtTime) {
+      this.hurtTimer = 0;
+      this.setIdle();
+    }
+  }
+
+  /**
+   * Set the enemy angle to face a body.
+   * @param  {Body} body The body to face.
+   */
+  turnToFace(body) {
+    const dx = body.x - this.x;
+    const dy = body.y - this.y;
+
+    this.angle = atan2(dy, dx);
+  }
+
+  hurt(amount) {
+    this.health -= amount;
+
+    if (this.health > 0) {
+      this.setHurt();
+    } else {
+      this.setDead();
+    }
   }
 
   /**
@@ -147,38 +165,18 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Set the enemy to the patrolling state.
-   */
-  setPatrolling() {
-    this.velocity = 1;
-    this.setState(STATES.PATROLLING);
-  }
-
-  /**
-   * Set the enemy to the chasing state.
+   * Set the enemy to the idle state.
    */
   setChasing() {
     this.setState(STATES.CHASING);
-  }
-
-  /**
-   * Set the enemy to the ready state.
-   */
-  setReady() {
-    this.setState(STATES.READY);
-  }
-
-  /**
-   * Set the enemy to the aiming state.
-   */
-  setAiming() {
-    this.setState(STATES.AIMING);
+    this.velocity = 1;
   }
 
   /**
    * Set the enemy to the attacking state.
    */
   setAttacking() {
+    this.velocity = 0;
     this.setState(STATES.ATTACKING);
   }
 
@@ -186,6 +184,7 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the hurt state.
    */
   setHurt() {
+    this.velocity = 0;
     this.setState(STATES.HURT);
   }
 
@@ -207,35 +206,11 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Is the enemy in the patrolling state.
-   * @return {Boolean}
-   */
-  isPatrolling() {
-    return this.state === STATES.PATROLLING;
-  }
-
-  /**
    * Is the enemy in the chasing state.
    * @return {Boolean}
    */
   isChasing() {
     return this.state === STATES.CHASING;
-  }
-
-  /**
-   * Is the enemy in the ready state.
-   * @return {Boolean}
-   */
-  isReady() {
-    return this.state === STATES.READY;
-  }
-
-  /**
-   * Is the enemy in the aiming state.
-   * @return {Boolean}
-   */
-  isAiming() {
-    return this.state === STATES.AIMING;
   }
 
   /**

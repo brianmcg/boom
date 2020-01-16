@@ -13,12 +13,12 @@ const ACTIONS = {
 const MAX_ANGLE_ID = 7;
 
 /**
- * Class representing an EnemySprite.
+ * Class representing an OrthogonalEnemySprite.
  * @extends {AnimatedEntitySprite}
  */
-class EnemySprite extends AnimatedEntitySprite {
+class OrthogonalEnemySprite extends AnimatedEntitySprite {
   /**
-   * Creates an EnemySprite.
+   * Creates an OrthogonalEnemySprite.
    * @param  {Enemy}  enemy             The enemy.
    * @param  {Array}  textureCollection The textures for the sprite.
    */
@@ -61,7 +61,21 @@ class EnemySprite extends AnimatedEntitySprite {
         frame: 0,
         loop: false,
       });
-    } else if (enemy.isChasing()) {
+    } else if (enemy.isReady()) {
+      this.updateTextures({
+        actionId: ACTIONS.ATTACKING,
+        angleId: 0,
+        frame: 0,
+        loop: false,
+      });
+    } else if (enemy.isAiming()) {
+      this.updateTextures({
+        actionId: ACTIONS.ATTACKING,
+        angleId: 0,
+        frame: 0,
+        loop: false,
+      });
+    } else if (enemy.isPatrolling() || enemy.isChasing()) {
       this.updateTextures({
         actionId: ACTIONS.MOVING,
         angleId: Math.floor(enemy.angleDiff / DEG[45]),
@@ -102,4 +116,4 @@ class EnemySprite extends AnimatedEntitySprite {
   }
 }
 
-export default EnemySprite;
+export default OrthogonalEnemySprite;

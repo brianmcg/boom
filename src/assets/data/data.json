@@ -48,15 +48,27 @@
     "enemies": {
       "amp": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0,
+        "attackDistance": 128,
+        "attackTime": 1000,
+        "hurtTime": 500,
+        "maxHealth": 10
       },
       "zombie": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0,
+        "attackDistance": 192,
+        "attackTime": 250,
+        "hurtTime": 500,
+        "maxHealth": 50
       },
       "mancubus": {
         "velocity": 1,
-        "rotVelocity": 5
+        "rotVelocity": 0,
+        "attackDistance": 128,
+        "attackTime": 1000,
+        "hurtTime": 500,
+        "maxHealth": 100
       }
     },
     "door": {
