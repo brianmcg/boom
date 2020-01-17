@@ -2,7 +2,7 @@ import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
 /**
  * Class representing an AnimatedSprite.
- * @extends {PixiAnimatedSprite}
+ * @extends {PIXI.Sprite}
  */
 class AnimatedSprite extends PixiAnimatedSprite {
   /**
@@ -14,15 +14,13 @@ class AnimatedSprite extends PixiAnimatedSprite {
    * @param  {Boolean} options.loop           The sprite loop.
    * @param  {Boolean} options.autoPlay       The sprite auto play.
    */
-  constructor(textures, options) {
-    const {
-      animationSpeed = 1,
-      tint,
-      alpha = 1,
-      loop = false,
-      autoPlay = true,
-    } = options;
-
+  constructor(textures, {
+    animationSpeed = 1,
+    tint,
+    alpha = 1,
+    loop = false,
+    autoPlay = true,
+  }) {
     super(textures, false);
 
     this.autoPlay = autoPlay;
@@ -42,10 +40,10 @@ class AnimatedSprite extends PixiAnimatedSprite {
   }
 
   /**
-   * updateable
-   * @type {Boolean} Is the sprite updateable
+   * Check id the sprite should be updated.
+   * @return {Boolean} Should sprite be updated.
    */
-  get updateable() {
+  isUpdateable() {
     return this.visible;
   }
 }

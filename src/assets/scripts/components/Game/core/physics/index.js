@@ -44,22 +44,18 @@ export {
   DynamicFlatSector,
   /**
    * The cosine table.
-   * @const
    */
   COS,
   /**
    * The sin table.
-   * @const
    */
   SIN,
   /**
    * The tan table.
-   * @const
    */
   TAN,
   /**
    * The degrees table.
-   * @const
    */
   DEG,
   /**

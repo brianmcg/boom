@@ -10,23 +10,22 @@ let idCount = 0;
 class Body extends EventEmitter {
   /**
    * Creates a body.
-   * @param  {Number} options.x      The x coordinate of the body.
-   * @param  {Number} options.y      The y coordinate of the body
-   * @param  {Number} options.width  The width of the body.
-   * @param  {Number} options.length The length of the body.
-   * @param  {Number} options.height The height of the body.
+   * @param  {Number}  options.x         The x coordinate of the body.
+   * @param  {Number}  options.y         The y coordinate of the body
+   * @param  {Number}  options.width     The width of the body.
+   * @param  {Number}  options.length    The length of the body.
+   * @param  {Number}  options.height    The height of the body.
+   * @param  {Boolean} options.blocking. Is the body blocking.
    */
-  constructor(options = {}) {
+  constructor({
+    x = 0,
+    y = 0,
+    width = TILE_SIZE / 2,
+    length = TILE_SIZE / 2,
+    height = TILE_SIZE / 2,
+    blocking = true,
+  } = {}) {
     super();
-
-    const {
-      x = 0,
-      y = 0,
-      width = TILE_SIZE / 2,
-      length = TILE_SIZE / 2,
-      height = TILE_SIZE / 2,
-      blocking = true,
-    } = options;
 
     idCount += 1;
 

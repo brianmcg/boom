@@ -3,11 +3,15 @@ import EventEmitter from '../EventEmitter';
 
 /**
  * Class representing an application.
+ * @extends {PIXI.Application}
  */
 class Application extends PixiApplication {
   /**
    * Creates and application
-   * @param  {Object} options The application options.
+   * @param  {Number}   width                   The width of the screen.
+   * @param  {Number}   height                  The height of the screen.
+   * @param  {Number}   options.backgroundColor A hex value representing the color.
+   * @param  {Boolean}  options.autoStart       Should the application auto start.
    */
   constructor(...options) {
     super({
@@ -28,6 +32,8 @@ class Application extends PixiApplication {
 
   /**
    * Resize the application.
+   * @param  {Number} width  The new width.
+   * @param  {Number} height The new height.
    */
   resize(width, height) {
     this.renderer.resize(width, height);

@@ -44,15 +44,18 @@ class Loader {
 
   /**
    * Reset the loader
-   * @param  {Array} options.graphics  The graphics to unload.
-   * @param  {Array} options.sound The sounds to unload.
+   * @param  {Array} options.graphics   The graphics to unload.
+   * @param  {Array} options.sound      The sounds to unload.
    */
   unload({ graphics, sound } = {}) {
     this.graphicsLoader.unload(graphics);
     this.soundLoader.unload(sound);
   }
 
-
+  /**
+   * The loader cache
+   * @member
+   */
   get cache() {
     return {
       graphics: this.graphicsLoader.cache,

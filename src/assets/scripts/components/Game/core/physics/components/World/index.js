@@ -96,7 +96,7 @@ class World extends EventEmitter {
   /**
    * Get the bodies surrounding a given body.
    * @param  {Body}   body The body to check.
-   * @return {Array}       The bodies surroung the body.
+   * @return {Array}       The bodies surrounding the body.
    */
   getAdjacentBodies(body) {
     const sectors = this.getAdjacentSectors(body);

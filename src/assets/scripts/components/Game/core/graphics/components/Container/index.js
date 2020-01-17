@@ -2,6 +2,7 @@ import { Container as PixiContainer } from 'pixi.js';
 
 /**
  * Class representing a Container.
+ * @extends {PIXI.Container}
  */
 class Container extends PixiContainer {
   /**
@@ -17,7 +18,7 @@ class Container extends PixiContainer {
 
   /**
    * Add a child to the container.
-   * @param {Object}  child          The child to add.
+   * @param {Object}  child   The child to add.
    */
   addChild(child) {
     super.addChild(child);
@@ -63,7 +64,7 @@ class Container extends PixiContainer {
    * @param  {Object} options The update options.
    */
   update(delta) {
-    this.playableChildren.forEach(child => child.updateable && child.update(delta));
+    this.playableChildren.forEach(child => child.isUpdateable() && child.update(delta));
   }
 
   /**
@@ -90,10 +91,10 @@ class Container extends PixiContainer {
   }
 
   /**
-   * updateable
-   * @type {Boolean} Is the container updateable
+   * Check id the container should be updated.
+   * @return {Boolean} Should container be updated.
    */
-  get updateable() {
+  isUpdateable() {
     return this.playing;
   }
 }

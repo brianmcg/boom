@@ -1,9 +1,5 @@
 import { SCREEN, FOV } from 'game/constants/config';
 
-/**
- * @module game/core/physics/constants
- */
-
 const DEG = [];
 
 const SIN = [];

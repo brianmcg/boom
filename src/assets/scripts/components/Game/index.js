@@ -44,12 +44,15 @@ class Game extends Application {
       top: '50%',
     };
 
-    this.frameCount = 0;
-    this.timer = 0;
     this.loader = new Loader();
     this.sound = new SoundPlayer();
+
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
+
+    this.frameCount = 0;
+    this.timer = 0;
+
     this.resize();
   }
 
@@ -79,7 +82,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.show(Scene.TYPES.WORLD, 1);
+    this.show(Scene.TYPES.TITLE);
   }
 
   /**
@@ -116,8 +119,9 @@ class Game extends Application {
 
   /**
    * Show a scene.
-   * @param  {String} sceneType  The scene type.
-   * @param  {Number} sceneIndex The scene index.
+   * @param  {String} sceneType   The scene type.
+   * @param  {Number} sceneIndex  The scene index.
+   * @param  {Player} player      The player.
    */
   async show(sceneType, sceneIndex = 0, player) {
     const SceneType = this.scenes[sceneType];
@@ -161,8 +165,6 @@ class Game extends Application {
 
   /**
    * Resize the game
-   * @param  {Number} width  The given width.
-   * @param  {Number} height The given height.
    */
   resize() {
     const scale = Game.maxScale;

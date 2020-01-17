@@ -1,5 +1,9 @@
 /**
- * Formats millieseconds in hh:mm:ss.
+ * @module  game/core/date
+ */
+
+/**
+ * Formats milliseconds in hh:mm:ss.
  * @param  {Number} ms The time in milliseconds
  * @return {String}    The time formatted in hh:mm:ss.
  */

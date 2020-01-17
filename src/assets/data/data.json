@@ -52,7 +52,6 @@
       "amp": {
         "acceleration": 0.2,
         "maxVelocity": 2,
-        "rotVelocity": 0,
         "attackDistance": 128,
         "attackTime": 1000,
         "hurtTime": 200,
@@ -61,7 +60,6 @@
       "zombie": {
         "acceleration": 0.2,
         "maxVelocity": 1,
-        "rotVelocity": 0,
         "attackDistance": 192,
         "attackTime": 250,
         "hurtTime": 500,
@@ -70,7 +68,6 @@
       "mancubus": {
         "acceleration": 0.2,
         "maxVelocity": 1,
-        "rotVelocity": 0,
         "attackDistance": 128,
         "attackTime": 1000,
         "hurtTime": 500,

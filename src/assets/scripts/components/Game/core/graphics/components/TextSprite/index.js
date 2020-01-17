@@ -11,7 +11,7 @@ class TextSprite extends BitmapText {
    * @param  {Number} options.color The color.
    * @param  {Number} options.x     The x xoordinate.
    * @param  {Number} options.y     The y coordinate.
-   * @param  {Number} alpha         The alpha value.
+   * @param  {Number} options.alpha The alpha value.
    */
   constructor({
     text,

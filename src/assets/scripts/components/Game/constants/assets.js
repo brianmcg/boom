@@ -1,4 +1,8 @@
 /**
+ * @module  game/constants/assets
+ */
+
+/**
  * The path to the game asset directory.
  * @type {String}
  */

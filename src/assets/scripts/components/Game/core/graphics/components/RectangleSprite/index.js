@@ -7,6 +7,8 @@ class RectangleSprite extends Sprite {
   /**
    * Creates a RectangleSprite.
    * @param  {Number} options.color   The sprite color.
+   * @param  {Number} options.x       The x coordinate.
+   * @param  {Number} options.y       The y coordinate.
    * @param  {Number} options.width   The sprite width.
    * @param  {Number} options.heigth  The sprite height.
    * @param  {Number} options.alpha   The sprite alpha value.

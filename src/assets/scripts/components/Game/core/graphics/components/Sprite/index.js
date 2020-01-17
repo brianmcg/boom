@@ -2,6 +2,7 @@ import { Sprite as PixiSprite } from 'pixi.js';
 
 /**
  * Class representing a sprite.
+ * @extends {PIXI.Sprite}
  */
 class Sprite extends PixiSprite {
   /**
