@@ -13,7 +13,8 @@
           "equiped": true,
           "ammo": 90,
           "maxAmmo": 100,
-          "recoil": 4
+          "recoil": 4,
+          "range": 1
         },
         "shotgun": {
           "idleTime": 300,
@@ -21,7 +22,8 @@
           "equiped": true,
           "ammo": 40,
           "maxAmmo": 60,
-          "recoil": 15
+          "recoil": 15,
+          "range": 2
         },
         "chaingun": {
           "idleTime": 0,
@@ -29,7 +31,8 @@
           "equiped": true,
           "ammo": 200,
           "maxAmmo": 200,
-          "recoil": 5
+          "recoil": 5,
+          "range": 1
         }
       },
       "camera": {

@@ -32,6 +32,10 @@ class Weapon {
    * @param  {Number}  options.power    The power of the weapon.
    * @param  {Boolean} options.equiped  Is the weapon equiped.
    * @param  {Number}  options.idleTime The time to wait in idle state after firing.
+   * @param  {Number}  options.recoil   The recoil of the weapon.
+   * @param  {Number}  options.ammo     The ammount of ammo the weapon has.
+   * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
+   * @param  {Number}  options.range    The range of the weapon.
    */
   constructor({
     player,
@@ -41,19 +45,21 @@ class Weapon {
     recoil,
     ammo,
     maxAmmo,
+    range,
   }) {
     this.idleTime = idleTime;
     this.power = power;
     this.equiped = equiped;
     this.player = player;
-
-    this.offsetX = 0;
     this.offsetY = TILE_SIZE;
-    this.offsetYDirection = 1;
-    this.timer = 0;
     this.recoil = recoil;
     this.ammo = ammo;
     this.maxAmmo = maxAmmo;
+    this.range = range;
+
+    this.offsetX = 0;
+    this.offsetYDirection = 1;
+    this.timer = 0;
   }
 
   /**

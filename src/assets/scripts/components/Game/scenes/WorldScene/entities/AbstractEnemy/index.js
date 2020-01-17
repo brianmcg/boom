@@ -17,17 +17,22 @@ const STATES = {
 class AbstractEnemy extends AbstractActor {
   /**
    * Creates an abstract enemy.
-   * @param  {Number} options.x         The x coordinate of the character.
-   * @param  {Number} options.y         The y coordinate of the character
-   * @param  {Number} options.width     The width of the character.
-   * @param  {Number} options.length    The length of the character.
-   * @param  {Number} options.height    The height of the character.
-   * @param  {Number} options.angle     The angle of the character.
-   * @param  {Number} options.maxHealth The maximum health of the character.
+   * @param  {Number} options.x               The x coordinate of the character.
+   * @param  {Number} options.y               The y coordinate of the character
+   * @param  {Number} options.width           The width of the character.
+   * @param  {Number} options.length          The length of the character.
+   * @param  {Number} options.height          The height of the character.
+   * @param  {Number} options.angle           The angle of the character.
+   * @param  {Number} options.maxHealth       The maximum health of the character.
+   * @param  {Number} options.maxVelocity     The maximum velocity of the enemy.
+   * @param  {Number} options.attackRange     The attack range of the enemy.
+   * @param  {Number} options.attackTime      The time between attacks.
+   * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
+   * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
   constructor({
     maxVelocity = 1,
-    attackDistance = 250,
+    attackRange = 250,
     attackTime = 1000,
     hurtTime = 1000,
     acceleration = 1,
@@ -39,7 +44,7 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.attackDistance = attackDistance;
+    this.attackRange = attackRange;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.maxVelocity = maxVelocity;
@@ -89,13 +94,12 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in idle state
-   * @param  {Number} delta The delta time.
    */
   updateIdle() {
     const { distance } = castRay({ caster: this });
 
     if (distance > this.distanceToPlayer) {
-      if (this.distanceToPlayer <= this.attackDistance) {
+      if (this.distanceToPlayer <= this.attackRange) {
         this.setAttacking();
       } else {
         this.setChasing();
@@ -105,10 +109,9 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in chasing state
-   * @param  {Number} delta The delta time.
    */
   updateChasing() {
-    if (this.distanceToPlayer < this.attackDistance) {
+    if (this.distanceToPlayer <= this.attackRange) {
       this.setAttacking();
     }
   }

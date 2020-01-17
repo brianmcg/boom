@@ -34,6 +34,8 @@ class Player extends AbstractActor {
    * @param  {Number} options.maxRotVelocity  The maximum rotation velocity of the player.
    * @param  {Number} options.acceleration    The acceleration of the player.
    * @param  {Number} options.rotAcceleration The rotation acceleration of the player.
+   * @param  {Array}  options.weapons         The player weapons data.
+   * @param  {Camera} options.camera          The player camera.
    */
   constructor(options = {}) {
     const {
@@ -276,21 +278,18 @@ class Player extends AbstractActor {
   attack() {
     const { startPoint, endPoint } = castRay({ caster: this });
     const { enemies } = this.world;
-    const { power } = this.weapon;
-    const range = Math.max(1, Math.round(power / 8));
+    const { power, range } = this.weapon;
 
-    const encounteredEnemies = enemies
-      .reduce((memo, enemy) => (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)
-        ? [...memo, enemy]
-        : memo), [])
-      .sort((enemyA, enemyB) => {
-        if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) return 1;
-        if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) return -1;
-        return 0;
-      });
+    const collisions = enemies.reduce((memo, enemy) => {
+      if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) return [...memo, enemy];
+      return memo;
+    }, []).sort((enemyA, enemyB) => {
+      if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) return 1;
+      if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) return -1;
+      return 0;
+    });
 
-    [...Array(range)]
-      .forEach((u, i) => encounteredEnemies[i] && encounteredEnemies[i].hit(power));
+    [...Array(range)].forEach((_, i) => collisions[i] && collisions[i].hit(power));
   }
 
   /**
