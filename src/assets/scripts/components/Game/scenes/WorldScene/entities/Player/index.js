@@ -274,25 +274,23 @@ class Player extends AbstractActor {
    * Attack in facing direction.
    */
   attack() {
-    const { encounteredBodies, startPoint, endPoint } = castRay({ caster: this });
-    let shortestDistance = Number.MAX_VALUE;
-    let nearestActor;
-    let distance;
+    const { startPoint, endPoint } = castRay({ caster: this });
+    const { enemies } = this.world;
+    const { power } = this.weapon;
+    const range = Math.max(1, Math.round(power / 8));
 
-    Object.values(encounteredBodies).forEach((body) => {
-      if (body instanceof AbstractActor && body.blocking) {
-        distance = distanceBetween(this, body);
+    const encounteredEnemies = enemies
+      .reduce((memo, enemy) => (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)
+        ? [...memo, enemy]
+        : memo), [])
+      .sort((enemyA, enemyB) => {
+        if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) return 1;
+        if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) return -1;
+        return 0;
+      });
 
-        if (distance < shortestDistance) {
-          nearestActor = body;
-          shortestDistance = distance;
-        }
-      }
-    });
-
-    if (nearestActor && isRayCollision(startPoint, endPoint, nearestActor)) {
-      nearestActor.hit(this.weapon.power);
-    }
+    [...Array(range)]
+      .forEach((u, i) => encounteredEnemies[i] && encounteredEnemies[i].hit(power));
   }
 
   /**
