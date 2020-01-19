@@ -9,11 +9,6 @@ const GUN_FLASH_DECREMENT = 0.2;
 
 const ITEM_FLASH_DECREMENT = 0.01;
 
-const DEFAULTS = {
-  BRIGHTNESS: -0.15,
-  VISIBILITY: TILE_SIZE * 16,
-};
-
 /**
  * Class representing a world.
  */
@@ -36,6 +31,8 @@ class World extends PhysicsWorld {
     grid = [[]],
     entrance,
     exit,
+    visibility,
+    brightness,
   }) {
     super(grid);
 
@@ -53,9 +50,9 @@ class World extends PhysicsWorld {
     this.enemies = enemies;
     this.obstacles = obstacles;
 
-    this.baseBrightness = DEFAULTS.BRIGHTNESS;
-    this.brightness = DEFAULTS.BRIGHTNESS;
-    this.visibility = DEFAULTS.VISIBILITY;
+    this.baseBrightness = brightness;
+    this.brightness = brightness;
+    this.visibility = visibility;
 
     this.gunFlash = false;
     this.itemFlash = false;

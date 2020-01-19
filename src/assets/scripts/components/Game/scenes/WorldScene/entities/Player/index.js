@@ -59,7 +59,6 @@ class Player extends AbstractActor {
     this.heightVelocity = 2;
     this.currentWeaponType = Weapon.TYPES.PISTOL;
     this.actions = {};
-    this.visionImpaired = false;
     this.vision = 1;
 
     this.camera = new Camera({ player: this, ...camera });
@@ -236,18 +235,15 @@ class Player extends AbstractActor {
     });
   }
 
+  /**
+   * Update the player vision.
+   * @param  {Number} delta The delta time.
+   */
   updateVision(delta) {
-    if (this.visionImpaired) {
-      this.vision -= 0.08 * delta;
-
-      if (this.vision <= 0.75) {
-        this.vision = 0.75;
-        this.visionImpaired = false;
-      }
-    } else if (this.vision !== 1) {
+    if (this.vision < 1) {
       this.vision += 0.08 * delta;
 
-      if (this.vision >= 1) {
+      if (this.vision > 1) {
         this.vision = 1;
       }
     }
@@ -326,8 +322,8 @@ class Player extends AbstractActor {
    */
   hurt(amount) {
     this.health -= amount;
-    this.camera.setShake(amount * 0.5);
-    this.visionImpaired = true;
+    this.camera.setShake(amount * 0.3);
+    this.vision = 0.75;
   }
 
   /**

@@ -48,6 +48,7 @@ const createSector = (sector, stats) => {
 
 export const createWorld = (data, stats, player) => {
   const { entrance, exit } = data;
+  const { visibility, brightness } = stats.world;
 
   const grid = data.grid.reduce((rows, row) => ([
     ...rows,
@@ -108,6 +109,8 @@ export const createWorld = (data, stats, player) => {
     enemies,
     entrance,
     exit,
+    visibility,
+    brightness,
   });
 
   return world;
