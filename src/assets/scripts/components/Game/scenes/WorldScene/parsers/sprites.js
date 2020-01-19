@@ -234,7 +234,15 @@ const createHudSprites = (textures) => {
     }),
   };
 
+  const foreground = new RectangleSprite({
+    width: SCREEN.WIDTH,
+    height: SCREEN.HEIGHT,
+    color: RED,
+    alpha: 0,
+  });
+
   return {
+    foreground,
     health,
     ammo,
   };

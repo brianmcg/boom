@@ -55,7 +55,8 @@
         "attackDistance": 128,
         "attackTime": 1000,
         "hurtTime": 200,
-        "maxHealth": 10
+        "maxHealth": 10,
+        "attackPower": 10
       },
       "zombie": {
         "acceleration": 0.2,
@@ -63,7 +64,8 @@
         "attackDistance": 192,
         "attackTime": 250,
         "hurtTime": 500,
-        "maxHealth": 30
+        "maxHealth": 30,
+        "attackPower": 10
       },
       "mancubus": {
         "acceleration": 0.2,
@@ -71,7 +73,8 @@
         "attackDistance": 128,
         "attackTime": 1000,
         "hurtTime": 500,
-        "maxHealth": 100
+        "maxHealth": 100,
+        "attackPower": 10
       }
     },
     "door": {

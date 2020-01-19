@@ -1,5 +1,10 @@
 import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
-import { distanceBetween, atan2, castRay } from 'game/core/physics';
+import {
+  distanceBetween,
+  atan2,
+  castRay,
+  isRayCollision,
+} from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -36,6 +41,7 @@ class AbstractEnemy extends AbstractActor {
     attackTime = 1000,
     hurtTime = 1000,
     acceleration = 1,
+    attackPower = 1,
     ...other
   }) {
     super(other);
@@ -53,6 +59,7 @@ class AbstractEnemy extends AbstractActor {
     this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;
     this.hurtTimer = 0;
+    this.attackPower = attackPower;
 
     this.setIdle();
   }
@@ -143,6 +150,21 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Attack a target.
+   */
+  attack() {
+    const { player } = this.world;
+
+    const { startPoint, endPoint } = castRay({
+      caster: this,
+    });
+
+    if (isRayCollision(startPoint, endPoint, player)) {
+      player.hurt(this.attackPower);
+    }
+  }
+
+  /**
    * Set the enemy angle to face a body.
    * @param  {Body} body The body to face.
    */
@@ -189,6 +211,7 @@ class AbstractEnemy extends AbstractActor {
   setAttacking() {
     this.velocity = 0;
     this.setState(STATES.ATTACKING);
+    this.attack();
   }
 
   /**

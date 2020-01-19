@@ -1,7 +1,6 @@
 import {
   DEG,
   castRay,
-  distanceBetween,
   isBodyCollision,
   isRayCollision,
 } from 'game/core/physics';
@@ -60,6 +59,8 @@ class Player extends AbstractActor {
     this.heightVelocity = 2;
     this.currentWeaponType = Weapon.TYPES.PISTOL;
     this.actions = {};
+    this.visionImpaired = false;
+    this.vision = 1;
 
     this.camera = new Camera({ player: this, ...camera });
 
@@ -81,7 +82,8 @@ class Player extends AbstractActor {
     this.updateHeight(delta);
     this.updateWeapon(delta);
     this.updateCamera(delta);
-    this.updateInteractions();
+    this.updateInteractions(delta);
+    this.updateVision(delta);
   }
 
   /**
@@ -234,6 +236,23 @@ class Player extends AbstractActor {
     });
   }
 
+  updateVision(delta) {
+    if (this.visionImpaired) {
+      this.vision -= 0.08 * delta;
+
+      if (this.vision <= 0.75) {
+        this.vision = 0.75;
+        this.visionImpaired = false;
+      }
+    } else if (this.vision !== 1) {
+      this.vision += 0.08 * delta;
+
+      if (this.vision >= 1) {
+        this.vision = 1;
+      }
+    }
+  }
+
   /**
    * Update player camera.
    * @param  {Number delta The delta time.
@@ -281,15 +300,34 @@ class Player extends AbstractActor {
     const { power, range } = this.weapon;
 
     const collisions = enemies.reduce((memo, enemy) => {
-      if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) return [...memo, enemy];
+      if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) {
+        return [...memo, enemy];
+      }
+
       return memo;
     }, []).sort((enemyA, enemyB) => {
-      if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) return 1;
-      if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) return -1;
+      if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) {
+        return 1;
+      }
+
+      if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) {
+        return -1;
+      }
+
       return 0;
     });
 
-    [...Array(range)].forEach((_, i) => collisions[i] && collisions[i].hit(power));
+    range.forEach((_, i) => collisions[i] && collisions[i].hit(power));
+  }
+
+  /**
+   * Hurt the player.
+   * @param  {Number} amount The amount to hurt the player.
+   */
+  hurt(amount) {
+    this.health -= amount;
+    this.camera.setShake(amount * 0.5);
+    this.visionImpaired = true;
   }
 
   /**

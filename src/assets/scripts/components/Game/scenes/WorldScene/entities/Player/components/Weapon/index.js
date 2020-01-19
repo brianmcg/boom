@@ -55,7 +55,7 @@ class Weapon {
     this.recoil = recoil;
     this.ammo = ammo;
     this.maxAmmo = maxAmmo;
-    this.range = range;
+    this.range = [...Array(range)];
 
     this.offsetX = 0;
     this.offsetYDirection = 1;
