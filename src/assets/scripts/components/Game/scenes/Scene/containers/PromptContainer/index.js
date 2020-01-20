@@ -20,7 +20,8 @@ const STATES = {
  */
 class PromptContainer extends Container {
   /**
-   * Create a prompt container
+   * Create a prompt container.
+   * @param {TextSprite} sprite The prompt text sprite.
    */
   constructor(sprite) {
     super();

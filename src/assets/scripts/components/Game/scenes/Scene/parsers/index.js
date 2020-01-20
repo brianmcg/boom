@@ -2,7 +2,7 @@ import { TextSprite, RectangleSprite } from 'game/core/graphics';
 import { FONT_SIZES } from 'game/constants/fonts';
 import { WHITE, RED, BLACK } from 'game/constants/colors';
 import { SCREEN } from 'game/constants/config';
-import MenuSprite from '../sprites/MenuSprite';
+import MenuIconSprite from '../sprites/MenuIconSprite';
 
 const createPromptSprite = text => (
   new TextSprite({
@@ -31,7 +31,7 @@ const createMenuSprites = (menu, textures, animations) => {
 
   const iconHeight = labels[Object.keys(labels)[0]].height;
   const menuTextures = animations.skull.map(image => textures[image]);
-  const icon = new MenuSprite(menuTextures);
+  const icon = new MenuIconSprite(menuTextures);
 
   icon.height = iconHeight;
   icon.width = iconHeight;

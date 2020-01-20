@@ -31,7 +31,6 @@ class MainContainer extends Container {
 
   /**
    * Initialize the fade out effect.
-   * @return {[type]} [description]
    */
   initFadeOutEffect() {
     this.enablePixelFilter();

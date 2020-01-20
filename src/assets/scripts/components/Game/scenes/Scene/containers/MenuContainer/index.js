@@ -15,6 +15,7 @@ class MenuContainer extends Container {
   /**
    * Creates a menu container.
    * @param  {Object} options.sprites The sprites.
+   * @param  {Array}  options.items   The menu items.
    */
   constructor({ sprites, items }) {
     super();
@@ -84,6 +85,9 @@ class MenuContainer extends Container {
     }
   }
 
+  /**
+   * Animate the container.
+   */
   animate() {
     const { icon, labels } = this.sprites;
 
