@@ -4,8 +4,8 @@ import { SOUNDS } from 'game/constants/sounds';
 import { GAME_SOUNDS, SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
-import Scene from '../Scene';
 import ReviewContainer from './containers/ReviewContainer';
+import Scene from '../Scene';
 
 const { isHeld, isPressed, KEYS } = Keyboard;
 
@@ -59,8 +59,9 @@ class WorldScene extends Scene {
 
   /**
    * Create the world scene.
-   * @param  {Objects} resources The scene resources.
-   * @param  {Player}  player    The game player.
+   * @param  {Object} options.graphics The scene graphics.
+   * @param  {Object} options.data     The scene data.
+   * @param  {Player} options.player   The player.
    */
   create({ graphics, data, player }) {
     const text = {

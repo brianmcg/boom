@@ -36,16 +36,16 @@ class TitleScene extends Scene {
   }
 
   /**
-   * Create the TitleScene assets.
-   * @param  {Object} assets The loaded scene assets.
+   * Create the TitleScene options.
+   * @param  {Object} options.graphics The scene graphics.
    */
-  create(assets) {
-    const { sprites } = parse(assets);
+  create(options) {
+    const { sprites } = parse(options);
 
     this.mainContainer.addChild(new BackgroundContainer(sprites.background));
     this.mainContainer.addChild(new ForegroundContainer(sprites.foreground));
 
-    super.create(assets);
+    super.create(options);
   }
 
   /**

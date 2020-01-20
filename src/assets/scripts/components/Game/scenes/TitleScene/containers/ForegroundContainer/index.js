@@ -7,7 +7,7 @@ import { SCREEN } from 'game/constants/config';
 class ForegroundContainer extends Container {
   /**
    * Creates a foreground container.
-   * @param  {Sprite}         options.logo   A logo logo.
+   * @param  {LogoSprite}         options.logo   The logo sprite.
    */
   constructor({ logo }) {
     const ratio = logo.height / (SCREEN.HEIGHT / 1.5);

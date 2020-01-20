@@ -1,19 +1,19 @@
 import { AnimatedSprite } from 'game/core/graphics';
 
 /**
- * Class representing a sparks sprite.
+ * Creates a menu icon sprite.
  */
-class SparksSprite extends AnimatedSprite {
+class MenuIconSprite extends AnimatedSprite {
   /**
-   * Creates a sparks sprite.
+   * Creates a menu icon sprite.
    * @param  {Array}  textures The sprite textures.
    */
   constructor(textures = []) {
     super(textures, {
-      animationSpeed: 0.4,
+      animationSpeed: 0.2,
       loop: true,
     });
   }
 }
 
-export default SparksSprite;
+export default MenuIconSprite;

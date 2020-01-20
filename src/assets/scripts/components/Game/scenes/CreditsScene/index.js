@@ -35,8 +35,8 @@ class CreditsScene extends Scene {
   }
 
   /**
-   * Create the TitleScene options.
-   * @param  {Object} options The loaded scene options.
+   * Create the credits scene.
+   * @param  {Object} options.graphics The scene graphics.
    */
   create(options) {
     super.create(options);

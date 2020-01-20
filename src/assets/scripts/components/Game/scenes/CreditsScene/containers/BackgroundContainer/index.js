@@ -7,7 +7,7 @@ import { SCREEN } from 'game/constants/config';
 class BackgroundContainer extends Container {
   /**
    * Creates a background container.
-   * @param  {Object} options.smoke The smoke sprite.
+   * @param  {AnimatedSprite} options.smoke The smoke sprite.
    */
   constructor({ smoke }) {
     super();
