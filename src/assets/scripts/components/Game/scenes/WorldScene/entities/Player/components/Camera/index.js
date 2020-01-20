@@ -40,6 +40,7 @@ class Camera {
     this.rotationY = 0;
     this.rotationX = 0;
     this.recoilAmount = 0;
+    this.recoilDirection = 1;
     this.shakeDirection = 1;
     this.shakeAmount = 0;
     this.shakeEdge = 0;
@@ -104,14 +105,16 @@ class Camera {
    */
   updateRecoil() {
     if (this.recoilAmount) {
-      this.rotationY += this.recoilAmount;
+      this.rotationY += this.recoilAmount * this.recoilDirection;
       this.recoilAmount *= this.recoilFade;
 
       if (this.recoilAmount < this.minRecoilAmount) {
         this.recoilAmount = 0;
       }
-    } else {
+    } else if (this.recoilDirection > 0) {
       this.rotationY = Math.max(this.rotationY - this.recoilVelocity, 0);
+    } else if (this.recoilDirection < 0) {
+      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, 0);
     }
   }
 
@@ -149,9 +152,11 @@ class Camera {
 
   /**
    * Set the recoil amount.
-   * @param  {Number} amount The amount to recoil.
+   * @param {Number}  amount       The recoil amount.
+   * @param {Boolean} options.down Is the recoil downwards.
    */
-  setRecoil(amount) {
+  setRecoil(amount, { down } = {}) {
+    this.recoilDirection = down ? -1 : 1;
     this.recoilAmount = Math.min(this.maxRecoilAmount, amount);
   }
 }

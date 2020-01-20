@@ -159,7 +159,7 @@ class AbstractEnemy extends AbstractActor {
       caster: this,
     });
 
-    if (isRayCollision(startPoint, endPoint, player)) {
+    if (!player.isDead() && isRayCollision(startPoint, endPoint, player)) {
       player.hurt(this.attackPower);
     }
   }
@@ -201,7 +201,11 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the idle state.
    */
   setChasing() {
-    this.velocity = Math.min(this.maxVelocity, this.maxVelocity + this.acceleration);
+    this.velocity = Math.min(
+      this.maxVelocity,
+      this.maxVelocity + this.acceleration,
+    );
+
     this.setState(STATES.CHASING);
   }
 

@@ -162,7 +162,7 @@ class Weapon {
   updateUnarming(delta) {
     this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, TILE_SIZE);
 
-    if (this.offsetY === TILE_SIZE) {
+    if (this.offsetY === TILE_SIZE && !this.player.isDead()) {
       this.player.armNextWeapon();
     }
   }

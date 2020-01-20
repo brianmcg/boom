@@ -15,6 +15,11 @@ const DEG_45 = DEG[45];
 
 const DEG_90 = DEG[90];
 
+const STATES = {
+  DEFAULT: 'player:default',
+  DEAD: 'player:dead',
+};
+
 /**
  * Creates a player.
  * @extends {AbstractActor}
@@ -77,12 +82,52 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
+    switch (this.state) {
+      case STATES.DEAD:
+        this.updateDead(delta);
+        break;
+      default:
+        this.updateDefault(delta);
+        break;
+    }
+  }
+
+  /**
+   * Update the player in the default state.
+   * @param  {Number} delta The delta time value.
+   */
+  updateDefault(delta) {
     this.updateMovement(delta);
     this.updateHeight(delta);
     this.updateWeapon(delta);
     this.updateCamera(delta);
     this.updateInteractions(delta);
     this.updateVision(delta);
+  }
+
+  /**
+   * Update the player in the dead state.
+   * @param  {Number} delta The delta time value.
+   */
+  updateDead(delta) {
+    this.updateHeight(delta);
+    this.updateVisionDead(delta);
+    this.updateCameraDead(delta);
+    this.updateWeaponDead(delta);
+  }
+
+  /**
+   * Update the player vision in standard state.
+   * @param  {Number} delta The delta time.
+   */
+  updateVision(delta) {
+    if (this.vision < 1) {
+      this.vision += 0.04 * delta;
+
+      if (this.vision > 1) {
+        this.vision = 1;
+      }
+    }
   }
 
   /**
@@ -184,7 +229,7 @@ class Player extends AbstractActor {
    * @param  {Number delta The delta time.
    */
   updateHeight(delta) {
-    if (this.actions.crouch) {
+    if (this.actions.crouch || this.isDead()) {
       this.height = Math.max(
         this.height - (this.heightVelocity * delta),
         this.minHeight,
@@ -236,25 +281,44 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Update the player vision.
-   * @param  {Number} delta The delta time.
-   */
-  updateVision(delta) {
-    if (this.vision < 1) {
-      this.vision += 0.08 * delta;
-
-      if (this.vision > 1) {
-        this.vision = 1;
-      }
-    }
-  }
-
-  /**
    * Update player camera.
    * @param  {Number delta The delta time.
    */
   updateCamera(delta) {
     this.camera.update(delta);
+  }
+
+  /**
+   * Update the player vision in dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updateVisionDead(delta) {
+    this.vision -= 0.005 * delta;
+
+    if (this.vision < 0) {
+      this.vision = 0;
+      this.world.scene.setPrompting();
+    }
+  }
+
+  /**
+   * Update the camera vision in dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updateCameraDead(delta) {
+    this.camera.rotationY += 12 * delta;
+
+    if (this.camera.rotationY > this.camera.maxRotationY) {
+      this.camera.rotation = this.camera.maxRotationY;
+    }
+  }
+
+  /**
+   * Update the weapon in the dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updateWeaponDead(delta) {
+    this.weapon.update(delta);
   }
 
   /**
@@ -322,8 +386,16 @@ class Player extends AbstractActor {
    */
   hurt(amount) {
     this.health -= amount;
-    this.camera.setShake(amount * 0.3);
     this.vision = 0.75;
+    this.camera.setShake(amount * 0.3);
+    this.camera.setRecoil(amount * 2, {
+      down: true,
+    });
+
+    if (this.health <= 0) {
+      this.health = 0;
+      this.setDead();
+    }
   }
 
   /**
@@ -400,6 +472,22 @@ class Player extends AbstractActor {
    */
   shake(amount) {
     this.camera.setShake(amount);
+  }
+
+  /**
+   * Set the player to the dead state.
+   */
+  setDead() {
+    this.weapon.setUnarming();
+    this.setState(STATES.DEAD);
+  }
+
+  /**
+   * Is the player in the dead state.
+   * @return {Boolean} Is the player dead.
+   */
+  isDead() {
+    return this.state === STATES.DEAD;
   }
 
   /**
