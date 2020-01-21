@@ -110,7 +110,7 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   updateDead(delta) {
-    this.updateHeight(delta);
+    this.updateHeightDead(delta);
     this.updateVisionDead(delta);
     this.updateCameraDead(delta);
     this.updateWeaponDead(delta);
@@ -229,7 +229,7 @@ class Player extends AbstractActor {
    * @param  {Number delta The delta time.
    */
   updateHeight(delta) {
-    if (this.actions.crouch || this.isDead()) {
+    if (this.actions.crouch) {
       this.height = Math.max(
         this.height - (this.heightVelocity * delta),
         this.minHeight,
@@ -297,7 +297,7 @@ class Player extends AbstractActor {
 
     if (this.vision < 0) {
       this.vision = 0;
-      this.world.scene.setPrompting();
+      this.world.scene.setPlayerDead();
     }
   }
 
@@ -319,6 +319,17 @@ class Player extends AbstractActor {
    */
   updateWeaponDead(delta) {
     this.weapon.update(delta);
+  }
+
+  /**
+   * Update height in dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updateHeightDead(delta) {
+    this.height = Math.max(
+      this.height - (this.heightVelocity * delta),
+      this.minHeight,
+    );
   }
 
   /**

@@ -10,7 +10,8 @@ import Scene from '../Scene';
 const { isHeld, isPressed, KEYS } = Keyboard;
 
 const STATES = {
-  REVIEWING: 'reviewing',
+  REVIEWING: 'world:scene:reviewing',
+  PLAYER_DEAD: 'world:scene:player:dead',
 };
 
 /**
@@ -106,6 +107,9 @@ class WorldScene extends Scene {
       case STATES.REVIEWING:
         this.updateReviewing(delta);
         break;
+      case STATES.PLAYER_DEAD:
+        this.updatePlayerDead(delta);
+        break;
       default:
         break;
     }
@@ -131,7 +135,7 @@ class WorldScene extends Scene {
         armShotgun: isPressed(KEYS.NUM_2),
         armChaingun: isPressed(KEYS.NUM_3),
         strafe: isHeld(KEYS.SHIFT),
-      }
+      },
     });
 
     super.updateRunning(delta);
@@ -144,6 +148,15 @@ class WorldScene extends Scene {
   updateReviewing(delta) {
     this.updatePaused(delta);
     this.reviewContainer.update(delta);
+  }
+
+  /**
+   * Update the scene in the player dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updatePlayerDead(delta) {
+    // TODO: Implement logic for restarting level.
+    this.tmp = delta;
   }
 
   /**
@@ -165,6 +178,13 @@ class WorldScene extends Scene {
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
+  }
+
+  /**
+   * Set the state to player dead.
+   */
+  setPlayerDead() {
+    this.setState(STATES.PLAYER_DEAD);
   }
 
   /**
