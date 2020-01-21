@@ -12,6 +12,10 @@ import Door from '../entities/Door';
 import Item from '../entities/Item';
 import Amp from '../entities/Amp';
 
+/**
+ * Create the debug container sprites.
+ * @param  {World} world  The world.
+ */
 export const createDebugSprites = (world) => {
   const bodySprites = {};
   const { bodies } = world;

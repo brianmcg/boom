@@ -8,7 +8,17 @@ const DEG_360 = DEG[360];
 class Camera {
   /**
    * Creates a camera.
-   * @param  {Player} player The player.
+   * @param  {Player} options.player          The player.
+   * @param  {Number} options.heightIncrement The amount to increment the height by.
+   * @param  {Number} options.maxHeight       The maximum height.
+   * @param  {Number} options.recoilVelocity  The velocity of the recoil.
+   * @param  {Number} options.maxRecoilAmount The maximum recoil amount.
+   * @param  {Number} options.minRecoilAmount The minimum recoil amount.
+   * @param  {Number} options.recoilFade      The amount by which the recoil effect fades.
+   * @param  {Number} options.maxShakeAmount  The maximum shake amount.
+   * @param  {Number} options.minShakeAmount  The minimum shake amount.
+   * @param  {Number} options.shakeFade       The amount by which the shake effect fades.
+   * @param  {Number} options.maxRotationY    The maximum y axis rotation.
    */
   constructor({
     player,
@@ -48,7 +58,7 @@ class Camera {
 
   /**
    * Updates the camera.
-   * @param  {[type]} delta The delta time.
+   * @param  {Number} delta The delta time.
    */
   update(delta) {
     this.updateHeight(delta);
@@ -57,6 +67,10 @@ class Camera {
     this.updateShake(delta);
   }
 
+  /**
+   * Update the camera height.
+   * @param  {Number} delta The delta time.
+   */
   updateHeight(delta) {
     const { velocity, maxVelocity } = this.player;
 

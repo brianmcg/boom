@@ -5,7 +5,15 @@ import Player from '../../entities/Player';
 
 const SCALE = 0.25;
 
+/**
+ * Class representing a debug container.
+ */
 class DebugContainer extends Container {
+  /**
+   * Creates a debug container.
+   * @param  {World}  options.world    The world to render.
+   * @param  {Object} options.sprites  The container sprites.
+   */
   constructor({ world, sprites }) {
     super();
     this.world = world;
@@ -25,6 +33,9 @@ class DebugContainer extends Container {
     });
   }
 
+  /**
+   * Animate the container.
+   */
   animate() {
     const { player, bodies } = this.world;
     const playerSprite = this.bodySprites[player.id];

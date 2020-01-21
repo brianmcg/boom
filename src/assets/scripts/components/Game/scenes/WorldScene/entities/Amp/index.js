@@ -1,8 +1,11 @@
 import AbstractGunEnemy from '../AbstractGunEnemy';
 
 /**
- * Class representing an imp enemy.
+ * Class representing an amp enemy.
  */
-class Amp extends AbstractGunEnemy {}
+class Amp extends AbstractGunEnemy {
+  // TODO: Implement amp AI.
+  // update(delta) {}
+}
 
 export default Amp;

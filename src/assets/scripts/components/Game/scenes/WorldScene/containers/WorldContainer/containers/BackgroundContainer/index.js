@@ -7,6 +7,7 @@ import { SCREEN } from 'game/constants/config';
 class BackgroundContainer extends ParticleContainer {
   /**
    * Creates a background container.
+   * @param  {Array} background The background sprites.
    */
   constructor(background) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT, {

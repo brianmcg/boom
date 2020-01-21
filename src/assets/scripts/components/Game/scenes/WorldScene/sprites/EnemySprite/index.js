@@ -12,6 +12,8 @@ const ACTIONS = {
 
 const MAX_ANGLE_ID = 7;
 
+const DEG_45 = DEG[45];
+
 /**
  * Class representing an EnemySprite.
  * @extends {AnimatedEntitySprite}
@@ -64,14 +66,14 @@ class EnemySprite extends AnimatedEntitySprite {
     } else if (enemy.isChasing()) {
       this.updateTextures({
         actionId: ACTIONS.MOVING,
-        angleId: Math.floor(enemy.angleDiff / DEG[45]),
+        angleId: Math.floor(enemy.getAngleDiff() / DEG_45),
         frame: this.currentFrame,
         loop: true,
       });
     } else {
       this.updateTextures({
         actionId: ACTIONS.STANDING,
-        angleId: Math.floor(enemy.angleDiff / DEG[45]),
+        angleId: Math.floor(enemy.getAngleDiff() / DEG_45),
         frame: 0,
         loop: false,
       });

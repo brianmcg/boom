@@ -9,7 +9,8 @@ const HUD_PADDING = SCREEN.HEIGHT / 16;
 class PlayerContainer extends Container {
   /**
    * Creates a PlayerContainer.
-   * @param  {WeaponSprite} options.weapon The weapon sprite.
+   * @param  {Player} player  The player.
+   * @param  {Object} sprites The container sprites.
    */
   constructor(player, sprites) {
     super();
@@ -42,6 +43,10 @@ class PlayerContainer extends Container {
     this.sprites = sprites;
   }
 
+  /**
+   * Update the container.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
     const { hud, weapon } = this.sprites;
     const { ammo, health, foreground } = hud;

@@ -117,19 +117,21 @@ class WorldScene extends Scene {
    */
   updateRunning(delta) {
     this.world.update(delta, {
-      moveForward: isHeld(KEYS.UP_ARROW),
-      moveBackward: isHeld(KEYS.DOWN_ARROW),
-      turnLeft: isHeld(KEYS.LEFT_ARROW),
-      turnRight: isHeld(KEYS.RIGHT_ARROW),
-      use: isPressed(KEYS.SPACE),
-      lookDown: isHeld(KEYS.COMMA),
-      lookUp: isHeld(KEYS.PERIOD),
-      crouch: isHeld(KEYS.ALT),
-      attack: isHeld(KEYS.CTRL),
-      armPistol: isPressed(KEYS.NUM_1),
-      armShotgun: isPressed(KEYS.NUM_2),
-      armChaingun: isPressed(KEYS.NUM_3),
-      strafe: isHeld(KEYS.SHIFT),
+      actions: {
+        moveForward: isHeld(KEYS.UP_ARROW),
+        moveBackward: isHeld(KEYS.DOWN_ARROW),
+        turnLeft: isHeld(KEYS.LEFT_ARROW),
+        turnRight: isHeld(KEYS.RIGHT_ARROW),
+        use: isPressed(KEYS.SPACE),
+        lookDown: isHeld(KEYS.COMMA),
+        lookUp: isHeld(KEYS.PERIOD),
+        crouch: isHeld(KEYS.ALT),
+        attack: isHeld(KEYS.CTRL),
+        armPistol: isPressed(KEYS.NUM_1),
+        armShotgun: isPressed(KEYS.NUM_2),
+        armChaingun: isPressed(KEYS.NUM_3),
+        strafe: isHeld(KEYS.SHIFT),
+      }
     });
 
     super.updateRunning(delta);

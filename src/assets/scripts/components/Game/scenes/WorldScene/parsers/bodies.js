@@ -45,7 +45,13 @@ const createSector = (sector, stats) => {
   });
 };
 
-
+/**
+ * Create a world.
+ * @param  {Object} data   The world data.
+ * @param  {Object} stats  The world stats.
+ * @param  {Player} player The player.
+ * @return {World}         The created world.
+ */
 export const createWorld = (data, stats, player) => {
   const { entrance, exit } = data;
   const { visibility, brightness } = stats.world;
@@ -101,7 +107,7 @@ export const createWorld = (data, stats, player) => {
     player = new Player(stats.player);
   }
 
-  const world = new World({
+  return new World({
     grid,
     player,
     obstacles,
@@ -112,6 +118,4 @@ export const createWorld = (data, stats, player) => {
     visibility,
     brightness,
   });
-
-  return world;
 };

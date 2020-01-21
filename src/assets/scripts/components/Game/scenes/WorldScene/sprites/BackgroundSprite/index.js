@@ -7,6 +7,9 @@ import { Sprite } from 'game/core/graphics';
 class BackgroundSprite extends Sprite {
   /**
    * Creates a background sprite.
+   * @param  {Array}  textures The sprite textures.
+   * @param  {Number} x        The x cordinate of the sprite.
+   * @param  {Number} y        The y coordinate of the sprite.
    */
   constructor(textures, x, y) {
     super();

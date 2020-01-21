@@ -54,6 +54,7 @@ class WeaponSprite extends AnimatedSprite {
 
   /**
    * Update when weapon is in firing state.
+   * @param  {Number} delta The delta time.
    */
   updateFiring(delta) {
     if (this.playing) {

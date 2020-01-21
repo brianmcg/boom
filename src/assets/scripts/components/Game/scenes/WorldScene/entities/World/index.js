@@ -15,12 +15,17 @@ const ITEM_FLASH_DECREMENT = 0.01;
 class World extends PhysicsWorld {
   /**
    * Creates a world.
+   * @param  {[type]} options.index       The index of the world.
    * @param  {Player} options.player      The player.
    * @param  {Array}  options.enemies     The enemies.
    * @param  {Array}  options.obstacles   The obstacles.
    * @param  {Array}  options.items       The items.
    * @param  {Array}  options.grid        The sector grid.
    * @param  {Object} options.entrance    The entrance coordinates.
+   * @param  {Object} options.exit        The exit coordinates.
+   * @param  {Number} options.visibility  The visibility of the world.
+   * @param  {Number} options.brightness  The brightness of the world.
+
    */
   constructor({
     index,
@@ -63,10 +68,10 @@ class World extends PhysicsWorld {
 
   /**
    * Update the world.
-   * @param  {Number} delta           The delta time value.
-   * @param  {Object} options.actions The player actions.
+   * @param  {Number} delta            The delta time value.
+   * @param  {Object} options.actions  The player actions.
    */
-  update(delta, actions) {
+  update(delta, { actions }) {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
 
@@ -93,6 +98,10 @@ class World extends PhysicsWorld {
     super.update(delta);
   }
 
+  /**
+   * Add the player to the world.
+   * @param {Player} player The player.
+   */
   addPlayer(player) {
     super.add(player);
 

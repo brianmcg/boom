@@ -7,7 +7,7 @@ import { Sprite } from 'game/core/graphics';
 class EntitySprite extends Sprite {
   /**
    * Creates an EntitySprite.
-   * @param  {String} image The name of the image.
+   * @param  {Texture} texture The sprite texture.
    */
   constructor(texture) {
     super(texture);

@@ -24,9 +24,7 @@ class ReviewContainer extends Container {
   constructor(sprites) {
     super();
 
-    this.addChild(sprites.background);
-
-    const { title, stats } = sprites;
+    const { title, stats, background } = sprites;
     const { enemies, items, time } = stats;
     const statsHeight = stats.enemies.name.height;
     const statsStartY = title.height + (TEXT_PADDING * 8);
@@ -42,6 +40,7 @@ class ReviewContainer extends Container {
     this.currentIndex = 0;
     this.sprites = sprites;
 
+    this.addChild(background);
     this.setShowTitle();
   }
 
