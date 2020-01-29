@@ -2,7 +2,7 @@
  * @module  game/core/input
  */
 
-import Keyboard from './components/Keyboard';
+import Keyboard, { KEYS } from './components/Keyboard';
 import Mouse from './components/Mouse';
 
 export {
@@ -14,4 +14,8 @@ export {
    * The mouse component.
    */
   Mouse,
+  /**
+   * The game keys.
+   */
+  KEYS,
 };

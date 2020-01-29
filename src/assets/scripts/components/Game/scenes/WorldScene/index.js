@@ -1,13 +1,11 @@
 import translate from 'root/translate';
-import { Keyboard } from 'game/core/input';
+import { KEYS } from 'game/core/input';
 import { SOUNDS } from 'game/constants/sounds';
 import { GAME_SOUNDS, SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import ReviewContainer from './containers/ReviewContainer';
 import Scene from '../Scene';
-
-const { isHeld, isPressed, KEYS } = Keyboard;
 
 const STATES = {
   REVIEWING: 'world:scene:reviewing',
@@ -122,19 +120,19 @@ class WorldScene extends Scene {
   updateRunning(delta) {
     this.world.update(delta, {
       actions: {
-        moveForward: isHeld(KEYS.UP_ARROW),
-        moveBackward: isHeld(KEYS.DOWN_ARROW),
-        turnLeft: isHeld(KEYS.LEFT_ARROW),
-        turnRight: isHeld(KEYS.RIGHT_ARROW),
-        use: isPressed(KEYS.SPACE),
-        lookDown: isHeld(KEYS.COMMA),
-        lookUp: isHeld(KEYS.PERIOD),
-        crouch: isHeld(KEYS.ALT),
-        attack: isHeld(KEYS.CTRL),
-        armPistol: isPressed(KEYS.NUM_1),
-        armShotgun: isPressed(KEYS.NUM_2),
-        armChaingun: isPressed(KEYS.NUM_3),
-        strafe: isHeld(KEYS.SHIFT),
+        moveForward: this.game.isKeyHeld(KEYS.UP_ARROW),
+        moveBackward: this.game.isKeyHeld(KEYS.DOWN_ARROW),
+        turnLeft: this.game.isKeyHeld(KEYS.LEFT_ARROW),
+        turnRight: this.game.isKeyHeld(KEYS.RIGHT_ARROW),
+        use: this.game.isKeyPressed(KEYS.SPACE),
+        lookDown: this.game.isKeyHeld(KEYS.COMMA),
+        lookUp: this.game.isKeyHeld(KEYS.PERIOD),
+        crouch: this.game.isKeyHeld(KEYS.ALT),
+        attack: this.game.isKeyHeld(KEYS.CTRL),
+        armPistol: this.game.isKeyPressed(KEYS.NUM_1),
+        armShotgun: this.game.isKeyPressed(KEYS.NUM_2),
+        armChaingun: this.game.isKeyPressed(KEYS.NUM_3),
+        strafe: this.game.isKeyHeld(KEYS.SHIFT),
       },
     });
 

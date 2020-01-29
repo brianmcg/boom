@@ -1,5 +1,6 @@
 import { Application } from './core/graphics';
 import { SoundPlayer } from './core/audio';
+import { Keyboard } from './core/input';
 import { BLACK } from './constants/colors';
 import { SCREEN, MAX_FPS } from './constants/config';
 import {
@@ -46,6 +47,7 @@ class Game extends Application {
 
     this.loader = new Loader();
     this.sound = new SoundPlayer();
+    this.keyboard = new Keyboard();
 
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
@@ -114,6 +116,7 @@ class Game extends Application {
     if (this.scene) {
       this.scene.update(delta);
       this.scene.animate();
+      this.keyboard.update();
     }
   }
 
@@ -180,6 +183,24 @@ class Game extends Application {
     }
 
     super.resize(scaledWidth, scaledHeight);
+  }
+
+  /**
+   * Is a key pressed on the keyboard.
+   * @param  {String}  key The key.
+   * @return {Boolean}
+   */
+  isKeyPressed(key) {
+    return this.keyboard.pressed[key];
+  }
+
+  /**
+   * Is a key held on the keyboard.
+   * @param  {String}  key The key.
+   * @return {Boolean}
+   */
+  isKeyHeld(key) {
+    return this.keyboard.held[key];
   }
 
   /**
