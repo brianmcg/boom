@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { KEYS } from 'game/core/input';
 import { SOUNDS } from 'game/constants/sounds';
-import { GAME_SOUNDS, SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
+import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import ReviewContainer from './containers/ReviewContainer';
@@ -170,8 +170,8 @@ class WorldScene extends Scene {
    */
   setReviewing() {
     if (this.setState(STATES.REVIEWING)) {
-      this.game.sound.pause();
-      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_PISTOL);
+      this.game.pauseSounds();
+      this.game.playSound(SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);

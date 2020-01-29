@@ -1,12 +1,7 @@
 import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
 import { SOUNDS } from 'game/constants/sounds';
-import {
-  GAME_SOUNDS,
-  SCENE_MUSIC,
-  SCENE_GRAPHICS,
-  SCENE_PATH,
-} from 'game/constants/assets';
+import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
@@ -207,7 +202,7 @@ class Scene extends Container {
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
       // TODO: Enabled music
-      // this.game.sound.play(SCENE_MUSIC);
+      // this.game.playMusic();
     }
   }
 
@@ -216,7 +211,7 @@ class Scene extends Container {
    */
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
-      this.game.sound.resume();
+      this.game.resumeSounds();
       this.mainContainer.play();
       this.promptContainer.play();
     }
@@ -227,8 +222,8 @@ class Scene extends Container {
    */
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
-      this.game.sound.pause();
-      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_PISTOL);
+      this.game.pauseSounds();
+      this.game.playSound(SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -248,8 +243,8 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_SHOTGUN);
-      this.game.sound.fade(SCENE_MUSIC);
+      this.game.playSound(SOUNDS.WEAPON_SHOTGUN);
+      this.game.fadeMusic();
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
     }

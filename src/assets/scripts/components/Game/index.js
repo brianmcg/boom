@@ -186,6 +186,42 @@ class Game extends Application {
   }
 
   /**
+   * Play a game sound.
+   * @param  {String} name The name of the sound to play.
+   */
+  playSound(name) {
+    this.sound.play(GAME_SOUNDS.NAME, name);
+  }
+
+  /**
+   * Play the scene music.
+   */
+  playMusic() {
+    this.sound.play(SCENE_MUSIC);
+  }
+
+  /**
+   * Fade out the scene music.
+   */
+  fadeMusic() {
+    this.sound.fade(SCENE_MUSIC);
+  }
+
+  /**
+   * Pause all the playing sounds.
+   */
+  pauseSounds() {
+    this.sound.pause();
+  }
+
+  /**
+   * Resume all the paused sounds.
+   */
+  resumeSounds() {
+    this.sound.resume();
+  }
+
+  /**
    * Is a key pressed on the keyboard.
    * @param  {String}  key The key.
    * @return {Boolean}

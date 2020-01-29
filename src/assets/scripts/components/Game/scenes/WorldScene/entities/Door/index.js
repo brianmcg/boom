@@ -6,9 +6,6 @@ const STATES = {
   OPENED: 'door:opened',
   CLOSING: 'door:closing',
   CLOSED: 'door:closed',
-};
-
-const EVENTS = {
   LOCKED: 'door:locked',
 };
 
@@ -57,15 +54,15 @@ class Door extends DynamicFlatSector {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+
+    this.setClosed();
   }
 
   /**
    * Use the door.
    */
   use() {
-    if (this.locked) {
-      this.emit(EVENTS.LOCKED, this.key);
-    } else {
+    if (this.isClosed()) {
       this.setOpening();
     }
   }
@@ -180,6 +177,38 @@ class Door extends DynamicFlatSector {
   }
 
   /**
+   * Is the door opening.
+   * @return {Boolean}
+   */
+  isOpening() {
+    return this.state === STATES.OPENING;
+  }
+
+  /**
+   * Is the door opened.
+   * @return {Boolean}
+   */
+  isOpened() {
+    return this.state === STATES.OPENED;
+  }
+
+  /**
+   * Is the door closing.
+   * @return {Boolean}
+   */
+  isClosing() {
+    return this.state === STATES.CLOSING;
+  }
+
+  /**
+   * Is the door closed.
+   * @return {Boolean}
+   */
+  isClosed() {
+    return this.state === STATES.CLOSED;
+  }
+
+  /**
    * Set the door state.
    * @param {String} state The door state.
    */
@@ -200,14 +229,6 @@ class Door extends DynamicFlatSector {
   get offset() {
     const { closed, axis } = this;
     return this[axis] - closed[axis];
-  }
-
-  /**
-   * The door events.
-   * @static
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 
