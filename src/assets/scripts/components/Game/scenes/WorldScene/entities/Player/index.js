@@ -26,7 +26,7 @@ const STATES = {
  */
 class Player extends AbstractActor {
   /**
-   *  Creates a player.
+   * Creates a player.
    * @param  {Number} options.x               The x coordinate of the player.
    * @param  {Number} options.y               The y coordinate of the player
    * @param  {Number} options.width           The width of the player.
