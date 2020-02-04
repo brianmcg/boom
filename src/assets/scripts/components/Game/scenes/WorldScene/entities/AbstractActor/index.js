@@ -1,9 +1,4 @@
-import { DEG } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
-
-const DEG_202 = DEG[202];
-
-const DEG_360 = DEG[360];
 
 /**
  * Abstract class representing an actor.
@@ -31,29 +26,6 @@ class AbstractActor extends DynamicEntity {
 
     this.health = maxHealth;
     this.maxHealth = maxHealth;
-  }
-
-  /**
-   * Set the state.
-   * @param {String} state The state.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * Get the difference between actor angle and player angle.
-   * @return {Number} The difference in angle.
-   */
-  getAngleDiff() {
-    const { player } = this.world;
-
-    return (this.angle - player.angle + DEG_202 + DEG_360) % DEG_360;
   }
 }
 

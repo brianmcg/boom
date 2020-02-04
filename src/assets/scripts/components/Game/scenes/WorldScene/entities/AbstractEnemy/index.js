@@ -1,10 +1,5 @@
 import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
-import {
-  distanceBetween,
-  atan2,
-  castRay,
-  isRayCollision,
-} from 'game/core/physics';
+import { distanceBetween, atan2, castRay } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -153,14 +148,8 @@ class AbstractEnemy extends AbstractActor {
    * Attack a target.
    */
   attack() {
-    const { player } = this.world;
-
-    const { startPoint, endPoint } = castRay({
-      caster: this,
-    });
-
-    if (!player.isDead() && isRayCollision(startPoint, endPoint, player)) {
-      player.hurt(this.attackPower);
+    if (this.constructor === AbstractEnemy) {
+      throw new TypeError('You have to implement the method attack.');
     }
   }
 

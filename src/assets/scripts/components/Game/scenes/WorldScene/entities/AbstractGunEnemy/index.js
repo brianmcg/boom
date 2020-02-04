@@ -1,3 +1,4 @@
+import { castRay, isRayCollision } from 'game/core/physics';
 import AbstractEnemy from '../AbstractEnemy';
 
 /**
@@ -24,6 +25,21 @@ class AbstractGunEnemy extends AbstractEnemy {
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
+    }
+  }
+
+  /**
+   * Attack a target.
+   */
+  attack() {
+    const { player } = this.world;
+
+    const { startPoint, endPoint } = castRay({
+      caster: this,
+    });
+
+    if (!player.isDead() && isRayCollision(startPoint, endPoint, player)) {
+      player.hurt(this.attackPower);
     }
   }
 }

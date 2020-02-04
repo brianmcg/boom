@@ -1,12 +1,7 @@
-import { Keyboard } from 'game/core/input';
+import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
 import { SOUNDS } from 'game/constants/sounds';
-import {
-  GAME_SOUNDS,
-  SCENE_MUSIC,
-  SCENE_GRAPHICS,
-  SCENE_PATH,
-} from 'game/constants/assets';
+import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
@@ -34,8 +29,6 @@ const TYPES = {
   WORLD: 'world',
   CREDITS: 'credits',
 };
-
-const { isPressed, resetPressed, KEYS } = Keyboard;
 
 /**
  * Class representing a scene.
@@ -109,28 +102,14 @@ class Scene extends Container {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.LOADING:
-        this.updateLoading(delta);
-        break;
-      case STATES.FADING_IN:
-        this.updateFadingIn(delta);
-        break;
-      case STATES.RUNNING:
-        this.updateRunning(delta);
-        break;
-      case STATES.PAUSED:
-        this.updatePaused(delta);
-        break;
-      case STATES.PROMPTING:
-        this.updatePrompting(delta);
-        break;
-      case STATES.FADING_OUT:
-        this.updateFadingOut(delta);
-        break;
+      case STATES.LOADING: this.updateLoading(delta); break;
+      case STATES.FADING_IN: this.updateFadingIn(delta); break;
+      case STATES.RUNNING: this.updateRunning(delta); break;
+      case STATES.PAUSED: this.updatePaused(delta); break;
+      case STATES.PROMPTING: this.updatePrompting(delta); break;
+      case STATES.FADING_OUT: this.updateFadingOut(delta); break;
       default: break;
     }
-
-    resetPressed();
   }
 
   /**
@@ -154,7 +133,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateRunning(delta) {
-    if (isPressed(KEYS.ESC)) {
+    if (this.game.isKeyPressed(KEYS.ESC)) {
       this.setPaused();
       this.addChild(this.menuContainer);
     }
@@ -167,14 +146,14 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused(delta) {
-    if (isPressed(KEYS.DOWN_ARROW)) {
+    if (this.game.isKeyPressed(KEYS.DOWN_ARROW)) {
       this.menuContainer.highlightNext();
-    } else if (isPressed(KEYS.UP_ARROW)) {
+    } else if (this.game.isKeyPressed(KEYS.UP_ARROW)) {
       this.menuContainer.highlightPrevious();
-    } else if (isPressed(KEYS.ENTER)) {
+    } else if (this.game.isKeyPressed(KEYS.ENTER)) {
       this.menuContainer.select();
       this.removeChild(this.menuContainer);
-    } else if (isPressed(KEYS.ESC)) {
+    } else if (this.game.isKeyPressed(KEYS.ESC)) {
       this.setRunning();
       this.removeChild(this.menuContainer);
     }
@@ -188,7 +167,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePrompting(delta) {
-    if (isPressed(KEYS.SPACE)) {
+    if (this.game.isKeyPressed(KEYS.SPACE)) {
       this.setStatus(Scene.EVENTS.COMPLETE);
       this.setFadingOut();
     }
@@ -223,7 +202,7 @@ class Scene extends Container {
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
       // TODO: Enabled music
-      // this.game.sound.play(SCENE_MUSIC);
+      // this.game.playMusic();
     }
   }
 
@@ -232,7 +211,7 @@ class Scene extends Container {
    */
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
-      this.game.sound.resume();
+      this.game.resumeSounds();
       this.mainContainer.play();
       this.promptContainer.play();
     }
@@ -243,8 +222,8 @@ class Scene extends Container {
    */
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
-      this.game.sound.pause();
-      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_PISTOL);
+      this.game.pauseSounds();
+      this.game.playSound(SOUNDS.WEAPON_PISTOL);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -264,8 +243,8 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.game.sound.play(GAME_SOUNDS.NAME, SOUNDS.WEAPON_SHOTGUN);
-      this.game.sound.fade(SCENE_MUSIC);
+      this.game.playSound(SOUNDS.WEAPON_SHOTGUN);
+      this.game.fadeMusic();
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);
     }

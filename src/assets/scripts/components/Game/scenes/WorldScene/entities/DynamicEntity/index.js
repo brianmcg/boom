@@ -1,4 +1,8 @@
-import { DynamicBody } from 'game/core/physics';
+import { DynamicBody, DEG } from 'game/core/physics';
+
+const DEG_202 = DEG[202];
+
+const DEG_360 = DEG[360];
 
 /**
  * Class representing a dynamic entity.
@@ -19,6 +23,30 @@ class DynamicEntity extends DynamicBody {
   constructor({ type, ...other }) {
     super(other);
     this.type = type;
+  }
+
+  /**
+   * Set the state.
+   * @param {String} state The state.
+   */
+  setState(state) {
+    const isChanged = this.state !== state;
+
+    if (isChanged) {
+      this.state = state;
+    }
+
+    return isChanged;
+  }
+
+  /**
+   * Get the difference between entity angle and player angle.
+   * @return {Number} The difference in angle.
+   */
+  getAngleDiff() {
+    const { player } = this.world;
+
+    return (this.angle - player.angle + DEG_202 + DEG_360) % DEG_360;
   }
 }
 
