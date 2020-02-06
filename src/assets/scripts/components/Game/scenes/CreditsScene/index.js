@@ -11,7 +11,6 @@ class CreditsScene extends Scene {
   /**
    * Creates a CreditsScene.
    * @param  {Number} options.index   The index of the scene.
-   * @param  {Number} options.scale   The scale of the scene.
    * @param  {String} options.type    The type of scene.
    * @param  {String} options.game    The game running the scene.
    */

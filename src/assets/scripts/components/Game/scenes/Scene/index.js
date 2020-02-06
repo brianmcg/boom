@@ -38,20 +38,17 @@ class Scene extends Container {
   /**
    * Create a Scene.
    * @param  {Number} options.index   The index of the scene.
-   * @param  {Number} options.scale   The scale of the scene.
    * @param  {String} options.type    The type of scene.
    * @param  {String} options.game    The game running the scene.
    */
   constructor({
     index = 0,
-    scale = 1,
     type,
     game,
   }) {
     super();
 
     this.index = index;
-    this.scale = scale;
     this.type = type;
     this.game = game;
 

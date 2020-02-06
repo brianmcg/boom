@@ -18,6 +18,7 @@ import Loader from './utilities/Loader';
 
 const EVENTS = {
   STOPPED: 'game:stopped',
+  STARTED: 'game:started',
 };
 
 /**
@@ -54,8 +55,6 @@ class Game extends Application {
 
     this.frameCount = 0;
     this.timer = 0;
-
-    this.resize();
   }
 
   /**
@@ -85,6 +84,7 @@ class Game extends Application {
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
     this.show(Scene.TYPES.WORLD, 1);
+    this.emit(EVENTS.STARTED);
   }
 
   /**
@@ -102,11 +102,10 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
-    // NOTE: Uncomment below to log frame rate.
+    // NOTE: Uncomment below code to log frame rate.
 
     // this.timer += this.ticker.elapsedMS;
     // this.frameCount += 1;
-
     // if (this.timer >= 1000) {
     //   console.log(this.frameCount);
     //   this.timer = this.timer - 1000;
@@ -128,7 +127,6 @@ class Game extends Application {
    */
   async show(sceneType, sceneIndex = 0, player) {
     const SceneType = this.scenes[sceneType];
-    const scale = Game.maxScale;
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
@@ -148,9 +146,10 @@ class Game extends Application {
     if (SceneType) {
       this.scene = new SceneType({
         index: sceneIndex,
-        scale: { x: scale, y: scale },
         game: this,
       });
+
+      this.resize();
 
       this.stage.addChild(this.scene);
 
@@ -170,7 +169,17 @@ class Game extends Application {
    * Resize the game
    */
   resize() {
-    const scale = Game.maxScale;
+    const windowWidth = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+
+    const windowHeight = window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+
+    const widthRatio = windowWidth / SCREEN.WIDTH;
+    const heightRatio = windowHeight / SCREEN.HEIGHT;
+    const scale = Math.floor(Math.min(widthRatio, heightRatio)) || 1;
     const scaledWidth = SCREEN.WIDTH * scale;
     const scaledHeight = SCREEN.HEIGHT * scale;
 
@@ -237,24 +246,6 @@ class Game extends Application {
    */
   isKeyHeld(key) {
     return this.keyboard.held[key];
-  }
-
-  /**
-   * The maximum scale factor given window size.
-   */
-  static get maxScale() {
-    const windowWidth = window.innerWidth
-      || document.documentElement.clientWidth
-      || document.body.clientWidth;
-
-    const windowHeight = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
-
-    const widthRatio = windowWidth / SCREEN.WIDTH;
-    const heightRatio = windowHeight / SCREEN.HEIGHT;
-
-    return Math.floor(Math.min(widthRatio, heightRatio)) || 1;
   }
 
   /**
