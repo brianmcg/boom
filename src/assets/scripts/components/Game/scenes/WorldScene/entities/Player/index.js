@@ -16,7 +16,8 @@ const DEG_45 = DEG[45];
 const DEG_90 = DEG[90];
 
 const STATES = {
-  DEFAULT: 'player:default',
+  ALIVE: 'player:alive',
+  DYING: 'player:dying',
   DEAD: 'player:dead',
 };
 
@@ -43,12 +44,13 @@ class Player extends AbstractActor {
    */
   constructor(options = {}) {
     const {
-      maxVelocity,
-      maxRotVelocity,
-      acceleration,
-      rotAcceleration,
-      weapons,
-      camera,
+      maxVelocity = 1,
+      maxRotVelocity = 1,
+      acceleration = 0,
+      rotAcceleration = 0,
+      weapons = {},
+      camera = {},
+      currentWeaponType = Weapon.TYPES.PISTOL,
       ...other
     } = options;
 
@@ -62,7 +64,7 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.minHeight = this.height * 0.6;
     this.heightVelocity = 2;
-    this.currentWeaponType = Weapon.TYPES.PISTOL;
+    this.currentWeaponType = currentWeaponType;
     this.actions = {};
     this.vision = 1;
 
@@ -75,6 +77,10 @@ class Player extends AbstractActor {
         ...weapons[type],
       }),
     }), {});
+
+    this.prevProps = Object.assign({}, this.props);
+
+    this.setAlive();
   }
 
   /**
@@ -83,11 +89,16 @@ class Player extends AbstractActor {
    */
   update(delta) {
     switch (this.state) {
+      case STATES.ALIVE:
+        this.updateAlive(delta);
+        break;
+      case STATES.DYING:
+        this.updateDying(delta);
+        break;
       case STATES.DEAD:
         this.updateDead(delta);
         break;
       default:
-        this.updateDefault(delta);
         break;
     }
   }
@@ -96,7 +107,7 @@ class Player extends AbstractActor {
    * Update the player in the default state.
    * @param  {Number} delta The delta time value.
    */
-  updateDefault(delta) {
+  updateAlive(delta) {
     this.updateMovement(delta);
     this.updateHeight(delta);
     this.updateWeapon(delta);
@@ -109,11 +120,15 @@ class Player extends AbstractActor {
    * Update the player in the dead state.
    * @param  {Number} delta The delta time value.
    */
-  updateDead(delta) {
+  updateDying(delta) {
     this.updateHeightDead(delta);
     this.updateVisionDead(delta);
     this.updateCameraDead(delta);
     this.updateWeaponDead(delta);
+  }
+
+  updateDead(delta) {
+    this.foo = delta;
   }
 
   /**
@@ -356,39 +371,33 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      this.camera.setRecoil(this.weapon.recoil);
-      this.world.setGunFlash(this.weapon.power);
-      this.attack();
+      const { startPoint, endPoint } = castRay({ caster: this });
+      const { enemies } = this.world;
+      const { power, range, recoil } = this.weapon;
+
+      const collisions = enemies.reduce((memo, enemy) => {
+        if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) {
+          return [...memo, enemy];
+        }
+
+        return memo;
+      }, []).sort((enemyA, enemyB) => {
+        if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) {
+          return 1;
+        }
+
+        if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      range.forEach((_, i) => collisions[i] && collisions[i].hit(power));
+
+      this.camera.setRecoil(recoil);
+      this.world.setGunFlash(power);
     }
-  }
-
-  /**
-   * Attack in facing direction.
-   */
-  attack() {
-    const { startPoint, endPoint } = castRay({ caster: this });
-    const { enemies } = this.world;
-    const { power, range } = this.weapon;
-
-    const collisions = enemies.reduce((memo, enemy) => {
-      if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) {
-        return [...memo, enemy];
-      }
-
-      return memo;
-    }, []).sort((enemyA, enemyB) => {
-      if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) {
-        return 1;
-      }
-
-      if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    range.forEach((_, i) => collisions[i] && collisions[i].hit(power));
   }
 
   /**
@@ -405,7 +414,7 @@ class Player extends AbstractActor {
 
     if (this.health <= 0) {
       this.health = 0;
-      this.setDead();
+      this.setDying();
     }
   }
 
@@ -416,7 +425,8 @@ class Player extends AbstractActor {
   pickUp(item) {
     this.world.setItemFlash();
     this.world.remove(item);
-    item.found = true;
+
+    item.setFound();
 
     switch (item.key) {
       case Item.TYPES.AMMO:
@@ -485,12 +495,45 @@ class Player extends AbstractActor {
     this.camera.setShake(amount);
   }
 
+  setAlive() {
+    const stateChanged = this.setState(STATES.ALIVE);
+
+    if (stateChanged) {
+      this.alive = true;
+    }
+
+    return stateChanged;
+  }
+
+  isAlive() {
+    return this.state === STATES.ALIVE;
+  }
+
+  setDying() {
+    const stateChanged = this.setState(STATES.DYING);
+
+    if (stateChanged) {
+      this.dying = true;
+    }
+
+    return stateChanged;
+  }
+
+  isDying() {
+    return this.state === STATES.DYING;
+  }
+
   /**
    * Set the player to the dead state.
    */
   setDead() {
-    this.weapon.setUnarming();
-    this.setState(STATES.DEAD);
+    const stateChanged = this.setState(STATES.DEAD);
+
+    if (stateChanged) {
+      this.weapon.setUnarming();
+    }
+
+    return stateChanged;
   }
 
   /**
@@ -499,6 +542,11 @@ class Player extends AbstractActor {
    */
   isDead() {
     return this.state === STATES.DEAD;
+  }
+
+  get props() {
+    const { weapons, currentWeaponType, health } = this;
+    return { weapons, currentWeaponType, health };
   }
 
   /**

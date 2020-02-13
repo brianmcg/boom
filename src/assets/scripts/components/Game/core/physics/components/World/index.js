@@ -1,5 +1,10 @@
 import { EventEmitter } from 'game/core/graphics';
 
+const EVENTS = {
+  BODY_ADDED: 'world:body:added',
+  BODY_REMOVED: 'world:body:removed',
+};
+
 /**
  * Class representing a world.
  */
@@ -40,6 +45,8 @@ class World extends EventEmitter {
       }
 
       this.bodies[body.id] = body;
+
+      this.emit(EVENTS.BODY_ADDED, body);
     }
   }
 
@@ -55,6 +62,8 @@ class World extends EventEmitter {
     this.getSector(body.gridX, body.gridY).remove(body);
 
     delete this.bodies[body.id];
+
+    this.emit(EVENTS.BODY_REMOVED, body);
   }
 
   /**

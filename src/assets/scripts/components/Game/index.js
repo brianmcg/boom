@@ -125,7 +125,7 @@ class Game extends Application {
    * @param  {Number} sceneIndex  The scene index.
    * @param  {Player} player      The player.
    */
-  async show(sceneType, sceneIndex = 0, player) {
+  async show(sceneType, sceneIndex = 0, playerProps) {
     const SceneType = this.scenes[sceneType];
 
     if (this.scene) {
@@ -155,12 +155,19 @@ class Game extends Application {
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
+      const stats = {
+        ...this.data.stats,
+        player: {
+          ...this.data.stats.player,
+          ...playerProps,
+        },
+      };
+
       this.sound.add(SCENE_MUSIC, sound);
 
       this.scene.create({
         graphics,
-        data,
-        player,
+        data: { ...data, stats },
       });
     }
   }

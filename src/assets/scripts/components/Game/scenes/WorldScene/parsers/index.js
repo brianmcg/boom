@@ -14,10 +14,8 @@ export const parse = ({
   graphics,
   data,
   text,
-  player,
-  stats,
 }) => {
-  const world = createWorld(data, stats, player);
+  const world = createWorld(data);
   const sprites = createSprites(world, graphics, text);
 
   return {

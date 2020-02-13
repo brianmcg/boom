@@ -1,10 +1,10 @@
 import Entity from '../Entity';
 
 const TYPES = {
-  AMMO: 'ammo',
-  HEALTH: 'health',
-  KEY: 'key',
-  WEAPON: 'weapon',
+  AMMO: 'item:ammo',
+  HEALTH: 'item:health',
+  KEY: 'item:key',
+  WEAPON: 'item:weapon',
 };
 
 /**
@@ -23,18 +23,16 @@ class Item extends Entity {
    * @param  {String} options.key    The item key.
    * @param  {String} options.value  The item value.
    */
-  constructor({
-    key,
-    value,
-    ...other
-  }) {
-    super({
-      ...other,
-      blocking: false,
-    });
+  constructor({ key, value, ...other }) {
+    super({ blocking: false, ...other });
 
     this.key = key;
     this.value = value;
+    this.found = false;
+  }
+
+  setFound() {
+    this.found = true;
   }
 
   /**

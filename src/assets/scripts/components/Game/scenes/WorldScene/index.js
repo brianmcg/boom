@@ -59,9 +59,8 @@ class WorldScene extends Scene {
    * Create the world scene.
    * @param  {Object} options.graphics The scene graphics.
    * @param  {Object} options.data     The scene data.
-   * @param  {Player} options.player   The player.
    */
-  create({ graphics, data, player }) {
+  create({ graphics, data }) {
     const text = {
       review: {
         title: translate('world.review.title'),
@@ -71,14 +70,10 @@ class WorldScene extends Scene {
       },
     };
 
-    const { stats } = this.game.data;
-
     const { world, sprites } = parse({
       graphics,
       data,
-      player,
       text,
-      stats,
     });
 
     this.mainContainer.addChild(new WorldContainer({
@@ -189,7 +184,7 @@ class WorldScene extends Scene {
    */
   complete() {
     if (this.index < this.game.data.numLevels) {
-      this.game.show(Scene.TYPES.WORLD, this.index + 1, this.world.player);
+      this.game.show(Scene.TYPES.WORLD, this.index + 1, this.world.player.props);
     } else {
       this.game.show(Scene.TYPES.CREDITS);
     }
@@ -199,7 +194,7 @@ class WorldScene extends Scene {
    * Restart the scene.
    */
   restart() {
-    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player);
+    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player.prevProps);
   }
 
   /**

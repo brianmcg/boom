@@ -48,12 +48,10 @@ const createSector = (sector, stats) => {
 /**
  * Create a world.
  * @param  {Object} data   The world data.
- * @param  {Object} stats  The world stats.
- * @param  {Player} player The player.
  * @return {World}         The created world.
  */
-export const createWorld = (data, stats, player) => {
-  const { entrance, exit } = data;
+export const createWorld = (data) => {
+  const { entrance, exit, stats } = data;
   const { visibility, brightness } = stats.world;
 
   const grid = data.grid.reduce((rows, row) => ([
@@ -103,9 +101,7 @@ export const createWorld = (data, stats, player) => {
     }),
   ]), []);
 
-  if (!player) {
-    player = new Player(stats.player);
-  }
+  const player = new Player(stats.player);
 
   return new World({
     grid,
