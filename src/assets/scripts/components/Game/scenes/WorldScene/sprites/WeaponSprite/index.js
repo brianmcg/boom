@@ -20,7 +20,6 @@ class WeaponSprite extends AnimatedSprite {
       autoPlay: false,
     });
 
-    this.currentWeaponTextures = player.weapon.type;
     this.textureCollection = textureCollection;
     this.x = this.centerX;
     this.y = this.centerY;

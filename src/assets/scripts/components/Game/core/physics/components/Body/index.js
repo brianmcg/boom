@@ -1,6 +1,11 @@
 import { EventEmitter } from 'game/core/graphics';
 import { TILE_SIZE } from 'game/constants/config';
 
+const EVENTS = {
+  ADDED: 'body:added',
+  REMOVED: 'body:removed',
+};
+
 let idCount = 0;
 
 /**
@@ -73,6 +78,10 @@ class Body extends EventEmitter {
    */
   get name() {
     return this.constructor.name;
+  }
+
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

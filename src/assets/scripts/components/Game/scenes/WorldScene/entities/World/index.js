@@ -48,7 +48,7 @@ class World extends PhysicsWorld {
     this.exit = exit;
     this.entrance = entrance;
 
-    this.addPlayer(player);
+    this.add(player);
 
     this.player = player;
     this.items = items;
@@ -98,21 +98,21 @@ class World extends PhysicsWorld {
     super.update(delta);
   }
 
-  /**
-   * Add the player to the world.
-   * @param {Player} player The player.
-   */
-  addPlayer(player) {
-    super.add(player);
+  // /**
+  //  * Add the player to the world.
+  //  * @param {Player} player The player.
+  //  */
+  // addPlayer(player) {
+  //   super.add(player);
 
-    player.x = (TILE_SIZE * this.entrance.x) + (TILE_SIZE / 2);
-    player.y = (TILE_SIZE * this.entrance.y) + (TILE_SIZE / 2);
-    player.angle = 0;
-    player.velocity = 0;
-    player.weapon.setArming();
-    player.actions.use = true;
-    player.updateInteractions();
-  }
+  //   player.x = (TILE_SIZE * this.entrance.x) + (TILE_SIZE / 2);
+  //   player.y = (TILE_SIZE * this.entrance.y) + (TILE_SIZE / 2);
+  //   player.angle = 0;
+  //   player.velocity = 0;
+  //   player.weapon.setArming();
+  //   player.actions.use = true;
+  //   player.updateInteractions();
+  // }
 
   /**
    * Set the brightness and enabled gun flash.

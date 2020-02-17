@@ -1,9 +1,11 @@
 import {
+  Body,
   DEG,
   castRay,
   isBodyCollision,
   isRayCollision,
 } from 'game/core/physics';
+import { TILE_SIZE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from './components/Weapon';
@@ -56,6 +58,8 @@ class Player extends AbstractActor {
 
     super(other);
 
+    console.log({ currentWeaponType });
+
     this.maxVelocity = maxVelocity;
     this.baseMaxVelocity = maxVelocity;
     this.maxRotVelocity = maxRotVelocity;
@@ -65,6 +69,7 @@ class Player extends AbstractActor {
     this.minHeight = this.height * 0.6;
     this.heightVelocity = 2;
     this.currentWeaponType = currentWeaponType;
+    this.nextWeaponType = null;
     this.actions = {};
     this.vision = 1;
 
@@ -79,6 +84,18 @@ class Player extends AbstractActor {
     }), {});
 
     this.prevProps = Object.assign({}, this.props);
+
+    this.on(Body.EVENTS.ADDED, () => {
+      const { x, y } = this.world.entrance;
+
+      this.x = (TILE_SIZE * x) + (TILE_SIZE / 2);
+      this.y = (TILE_SIZE * y) + (TILE_SIZE / 2);
+      this.angle = 0;
+      this.velocity = 0;
+      this.weapon.setArming();
+      this.actions.use = true;
+      this.updateInteractions();
+    });
 
     this.setAlive();
   }
@@ -352,6 +369,8 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectNextWeapon(type) {
+    console.log('selectNextWeapon', type);
+    console.log('currentWeaponType', this.currentWeaponType);
     if (this.currentWeaponType !== type) {
       this.nextWeaponType = type;
       this.weapon.setUnarming();
