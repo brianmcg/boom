@@ -1,4 +1,5 @@
 import { World as PhysicsWorld } from 'game/core/physics';
+import Player from '../Player';
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
@@ -46,6 +47,10 @@ class World extends PhysicsWorld {
 
     this.exit = exit;
     this.entrance = entrance;
+
+    player.on(Player.EVENTS.DEATH, () => {
+      console.log('player:dead');
+    });
 
     this.add(player);
 
@@ -98,22 +103,6 @@ class World extends PhysicsWorld {
 
     super.update(delta);
   }
-
-  // /**
-  //  * Add the player to the world.
-  //  * @param {Player} player The player.
-  //  */
-  // addPlayer(player) {
-  //   super.add(player);
-
-  //   player.x = (TILE_SIZE * this.entrance.x) + (TILE_SIZE / 2);
-  //   player.y = (TILE_SIZE * this.entrance.y) + (TILE_SIZE / 2);
-  //   player.angle = 0;
-  //   player.velocity = 0;
-  //   player.weapon.setArming();
-  //   player.actions.use = true;
-  //   player.updateInteractions();
-  // }
 
   /**
    * Set the brightness and enabled gun flash.

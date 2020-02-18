@@ -23,6 +23,10 @@ const STATES = {
   DEAD: 'player:dead',
 };
 
+const EVENTS = {
+  DEATH: 'player:death',
+};
+
 /**
  * Creates a player.
  * @extends {AbstractActor}
@@ -333,7 +337,7 @@ class Player extends AbstractActor {
 
     if (this.vision < 0) {
       this.vision = 0;
-      this.world.scene.setPlayerDead();
+      this.setDead();
     }
   }
 
@@ -554,6 +558,7 @@ class Player extends AbstractActor {
     const stateChanged = this.setState(STATES.DEAD);
 
     if (stateChanged) {
+      this.emit(EVENTS.DEATH);
       this.weapon.setUnarming();
     }
 
@@ -611,6 +616,14 @@ class Player extends AbstractActor {
    */
   get viewAngleX() {
     return (this.angle + this.camera.rotationX + DEG_360) % DEG_360;
+  }
+
+  /**
+   * The player events.
+   * @static
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

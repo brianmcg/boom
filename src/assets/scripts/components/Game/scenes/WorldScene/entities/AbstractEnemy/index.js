@@ -99,8 +99,9 @@ class AbstractEnemy extends AbstractActor {
    */
   updateIdle() {
     const { distance } = castRay({ caster: this });
+    const { player } = this.world;
 
-    if (distance > this.distanceToPlayer) {
+    if (player.isAlive() && distance > this.distanceToPlayer) {
       if (this.distanceToPlayer <= this.attackRange) {
         this.setAttacking();
       } else {

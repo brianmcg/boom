@@ -173,13 +173,6 @@ class WorldScene extends Scene {
   }
 
   /**
-   * Set the state to player dead.
-   */
-  setPlayerDead() {
-    this.setState(STATES.PLAYER_DEAD);
-  }
-
-  /**
    * Complete the scene.
    */
   complete() {
