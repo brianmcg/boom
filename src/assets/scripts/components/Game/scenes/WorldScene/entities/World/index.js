@@ -41,18 +41,8 @@ class World extends PhysicsWorld {
   }) {
     super(grid);
 
-    enemies.forEach(enemy => this.add(enemy));
-    obstacles.forEach(object => this.add(object));
-    items.forEach(item => this.add(item));
-
     this.exit = exit;
     this.entrance = entrance;
-
-    player.on(Player.EVENTS.DEATH, () => {
-      console.log('player:dead');
-    });
-
-    this.add(player);
 
     this.player = player;
     this.items = items;
@@ -70,6 +60,14 @@ class World extends PhysicsWorld {
     this.startTime = performance.now();
 
     this.startingProps = Object.assign({}, this.props);
+
+    enemies.forEach(enemy => this.add(enemy));
+    obstacles.forEach(object => this.add(object));
+    items.forEach(item => this.add(item));
+
+    player.on(Player.EVENTS.DEATH, this.restart.bind(this));
+
+    this.add(player);
   }
 
   /**
@@ -102,6 +100,13 @@ class World extends PhysicsWorld {
     }
 
     super.update(delta);
+  }
+
+  /**
+   * Restart the world scene.
+   */
+  restart() {
+    this.scene.restart();
   }
 
   /**
