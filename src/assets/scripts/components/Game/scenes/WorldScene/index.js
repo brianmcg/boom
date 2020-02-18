@@ -194,7 +194,7 @@ class WorldScene extends Scene {
    * Restart the scene.
    */
   restart() {
-    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player.prevProps);
+    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player.startingProps);
   }
 
   /**

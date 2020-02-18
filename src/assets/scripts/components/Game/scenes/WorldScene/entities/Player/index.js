@@ -37,6 +37,7 @@ class Player extends AbstractActor {
    * @param  {Number} options.height          The height of the player.
    * @param  {Number} options.angle           The angle of the player.
    * @param  {Number} options.maxHealth       The maximum health of the player.
+   * @param  {Number}  options.health         The current health of the player.
    * @param  {Number} options.maxVelocity     The maximum velocity of the player.
    * @param  {Number} options.maxRotVelocity  The maximum rotation velocity of the player.
    * @param  {Number} options.acceleration    The acceleration of the player.
@@ -81,7 +82,7 @@ class Player extends AbstractActor {
       }),
     }), {});
 
-    this.prevProps = Object.assign({}, this.props);
+    this.startingProps = Object.assign({}, this.props);
 
     this.on(Body.EVENTS.ADDED, () => {
       const { x, y } = this.world.entrance;
@@ -566,7 +567,15 @@ class Player extends AbstractActor {
 
   get props() {
     const { weapons, currentWeaponType, health } = this;
-    return { weapons, currentWeaponType, health };
+
+    return {
+      weapons: Object.keys(weapons).reduce((memo, key) => ({
+        ...memo,
+        [key]: weapons[key].props,
+      }), {}),
+      currentWeaponType,
+      health,
+    };
   }
 
   /**

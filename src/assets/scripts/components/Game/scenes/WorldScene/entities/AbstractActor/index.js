@@ -15,16 +15,17 @@ class AbstractActor extends DynamicEntity {
    * @param  {Number}  options.angle     The angle of the character.
    * @param  {Boolean} options.blocking  Is the dynamic entity blocking.
    * @param  {String}  options.type      The type of entity.
-   * @param  {Number}  options.maxHealth The maximum health of the character.
+   * @param  {Number}  options.health    The current health of the actor.
+   * @param  {Number}  options.maxHealth The maximum health of the actor.
    */
-  constructor({ maxHealth = 100, ...other }) {
+  constructor({ maxHealth = 100, health, ...other }) {
     super(other);
 
     if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.health = maxHealth;
+    this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;
   }
 }

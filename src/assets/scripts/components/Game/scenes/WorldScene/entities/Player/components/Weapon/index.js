@@ -1,4 +1,4 @@
-import { EventEmitter } from 'game/core/graphics';
+import { Body } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const MAX_MOVE_X = 8;
@@ -31,7 +31,7 @@ const EVENTS = {
 /**
  * Class representing a weapon.
  */
-class Weapon extends EventEmitter {
+class Weapon extends Body {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player   The player.
@@ -69,7 +69,7 @@ class Weapon extends EventEmitter {
     this.offsetYDirection = 1;
     this.timer = 0;
 
-    this.setIdle();
+    this.setUnarmed();
   }
 
   /**
@@ -299,6 +299,26 @@ class Weapon extends EventEmitter {
    */
   isAutomatic() {
     return this.idleTime === 0;
+  }
+
+  get props() {
+    const {
+      power,
+      idleTime,
+      recoil,
+      ammo,
+      maxAmmo,
+      range,
+    } = this;
+
+    return {
+      power,
+      idleTime,
+      recoil,
+      ammo,
+      maxAmmo,
+      range,
+    };
   }
 
   /**

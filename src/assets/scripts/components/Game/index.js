@@ -155,10 +155,10 @@ class Game extends Application {
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
-      const stats = {
-        ...this.data.stats,
+      const props = {
+        ...this.data.props,
         player: {
-          ...this.data.stats.player,
+          ...this.data.props.player,
           ...playerProps,
         },
       };
@@ -167,7 +167,7 @@ class Game extends Application {
 
       this.scene.create({
         graphics,
-        data: { ...data, stats },
+        data: { ...data, props },
       });
     }
   }
