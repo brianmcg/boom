@@ -368,9 +368,9 @@ class Player extends AbstractActor {
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
    */
-  selectNextWeapon(type) {
-    if (this.currentWeaponType !== type) {
-      this.nextWeaponType = type;
+  selectNextWeapon(nextWeaponType) {
+    if (this.currentWeaponType !== nextWeaponType) {
+      this.nextWeaponType = nextWeaponType;
       this.weapon.setUnarming();
     }
   }

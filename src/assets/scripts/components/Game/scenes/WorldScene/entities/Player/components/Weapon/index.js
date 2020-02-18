@@ -1,3 +1,4 @@
+import { EventEmitter } from 'game/core/graphics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const MAX_MOVE_X = 8;
@@ -23,10 +24,14 @@ const TYPES = {
   PISTOL: 'pistol',
 };
 
+const EVENTS = {
+  STATE_CHANGE: 'weapon:state:change',
+};
+
 /**
  * Class representing a weapon.
  */
-class Weapon {
+class Weapon extends EventEmitter {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player   The player.
@@ -48,6 +53,8 @@ class Weapon {
     maxAmmo,
     range,
   }) {
+    super();
+
     this.idleTime = idleTime;
     this.power = power;
     this.equiped = equiped;
@@ -278,6 +285,7 @@ class Weapon {
   setState(state) {
     if (this.state !== state) {
       this.state = state;
+      this.emit(EVENTS.STATE_CHANGE, state);
 
       return true;
     }
@@ -307,6 +315,14 @@ class Weapon {
    */
   static get STATES() {
     return STATES;
+  }
+
+  /**
+   * The weapon events.
+   * @static
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 

@@ -29,6 +29,15 @@ class WeaponSprite extends AnimatedSprite {
     this.centerY = SCREEN.HEIGHT - this.height;
     this.player = player;
     this.onComplete = this.handleOnComplete.bind(this);
+
+    Object.values(this.player.weapons).forEach((weapon) => {
+      weapon.on(Weapon.EVENTS.STATE_CHANGE, () => {
+        if (weapon.isArming()) {
+          this.textures = this.textureCollection[this.player.currentWeaponType];
+          this.texture = this.textures[0];
+        }
+      });
+    });
   }
 
   /**
@@ -36,42 +45,12 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    const { weapon } = this.player;
-    const { ARMING, FIRING } = Weapon.STATES;
-
-    switch (weapon.state) {
-      case FIRING:
-        this.updateFiring(delta);
-        break;
-      case ARMING:
-        this.updateArming(delta);
-        break;
-      default:
-        break;
-    }
-  }
-
-  /**
-   * Update when weapon is in firing state.
-   * @param  {Number} delta The delta time.
-   */
-  updateFiring(delta) {
-    if (this.playing) {
-      super.update(delta);
-    } else {
-      this.play();
-    }
-  }
-
-  /**
-   * Update when weapon is in arming state.
-   */
-  updateArming() {
-    const { currentWeaponType } = this.player;
-
-    if (this.textures !== this.textureCollection[currentWeaponType]) {
-      this.textures = this.textureCollection[currentWeaponType];
-      this.texture = this.textures[0];
+    if (this.player.weapon.isFiring()) {
+      if (this.playing) {
+        super.update(delta);
+      } else {
+        this.play();
+      }
     }
   }
 
@@ -106,7 +85,6 @@ class WeaponSprite extends AnimatedSprite {
    */
   isUpdateable() {
     const { weapon } = this.player;
-
     return weapon.isFiring() || weapon.isArming();
   }
 }
