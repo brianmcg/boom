@@ -67,12 +67,11 @@ class WeaponSprite extends AnimatedSprite {
    * Update when weapon is in arming state.
    */
   updateArming() {
-    const { nextWeaponType, currentWeaponType } = this.player;
+    const { currentWeaponType } = this.player;
 
-    if (nextWeaponType === currentWeaponType) {
+    if (this.textures !== this.textureCollection[currentWeaponType]) {
       this.textures = this.textureCollection[currentWeaponType];
       this.texture = this.textures[0];
-      this.player.nextWeaponType = null;
     }
   }
 

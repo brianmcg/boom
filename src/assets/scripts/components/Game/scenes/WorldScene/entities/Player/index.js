@@ -58,8 +58,6 @@ class Player extends AbstractActor {
 
     super(other);
 
-    console.log({ currentWeaponType });
-
     this.maxVelocity = maxVelocity;
     this.baseMaxVelocity = maxVelocity;
     this.maxRotVelocity = maxRotVelocity;
@@ -286,7 +284,9 @@ class Player extends AbstractActor {
       attack,
     } = this.actions;
 
-    if (armChaingun) {
+    if (this.weapon.isUnarmed()) {
+      this.armNextWeapon();
+    } else if (armChaingun) {
       this.selectNextWeapon(Weapon.TYPES.CHAINGUN);
     } else if (armPistol) {
       this.selectNextWeapon(Weapon.TYPES.PISTOL);
@@ -369,8 +369,6 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectNextWeapon(type) {
-    console.log('selectNextWeapon', type);
-    console.log('currentWeaponType', this.currentWeaponType);
     if (this.currentWeaponType !== type) {
       this.nextWeaponType = type;
       this.weapon.setUnarming();
@@ -381,8 +379,11 @@ class Player extends AbstractActor {
    * Arm the next selected weapon.
    */
   armNextWeapon() {
-    this.currentWeaponType = this.nextWeaponType;
-    this.weapon.setArming();
+    if (this.currentWeaponType !== this.nextWeaponType) {
+      this.currentWeaponType = this.nextWeaponType;
+      this.nextWeaponType = null;
+      this.weapon.setArming();
+    }
   }
 
   /**

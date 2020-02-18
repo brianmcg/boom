@@ -12,6 +12,7 @@ const STATES = {
   FIRING: 'weapon:firing',
   ARMING: 'weapon:arming',
   UNARMING: 'weapon:unarming',
+  UNARMED: 'weapon:unarmed',
   IDLE: 'weapon:idle',
   DISABLED: 'weapon:disabled',
 };
@@ -60,6 +61,8 @@ class Weapon {
     this.offsetX = 0;
     this.offsetYDirection = 1;
     this.timer = 0;
+
+    this.setIdle();
   }
 
   /**
@@ -150,7 +153,7 @@ class Weapon {
   updateArming(delta) {
     this.offsetY = Math.max(this.offsetY - MAX_MOVE_X * delta, 0);
 
-    if (this.offsetY === 0) {
+    if (this.offsetY <= 0) {
       this.setIdle();
     }
   }
@@ -162,9 +165,17 @@ class Weapon {
   updateUnarming(delta) {
     this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, TILE_SIZE);
 
-    if (this.offsetY === TILE_SIZE && !this.player.isDead()) {
-      this.player.armNextWeapon();
+    if (!this.player.isDead() && this.offsetY >= TILE_SIZE) {
+      this.setUnarmed();
     }
+  }
+
+  /**
+   * Set the state to idle.
+   * @return {Boolean} Has the state changed to idle.
+   */
+  setIdle() {
+    return this.setState(STATES.IDLE);
   }
 
   /**
@@ -179,14 +190,6 @@ class Weapon {
     }
 
     return stateChanged;
-  }
-
-  /**
-   * Set the state to idle.
-   * @return {Boolean} Has the state changed to idle.
-   */
-  setIdle() {
-    return this.setState(STATES.IDLE);
   }
 
   /**
@@ -214,21 +217,39 @@ class Weapon {
   }
 
   /**
-   * Is the weapon in the disabled state.
+   * Set the state to unarmed.
    */
-  isDisabled() {
-    return this.state === STATES.DISABLED;
+  setUnarmed() {
+    return this.setState(STATES.UNARMED);
+  }
+
+  /**
+   * Is the weapon in the idle state.
+   * @return {Boolean}
+   */
+  isIdle() {
+    return this.state === STATES.IDLE;
   }
 
   /**
    * Is the weapon in the firing state.
+   * @return {Boolean}
    */
   isFiring() {
     return this.state === STATES.FIRING;
   }
 
   /**
+   * Is the weapon in the disabled state.
+   * @return {Boolean}
+   */
+  isDisabled() {
+    return this.state === STATES.DISABLED;
+  }
+
+  /**
    * Is the weapon in the arming state.
+   * @return {Boolean}
    */
   isArming() {
     return this.state === STATES.ARMING;
@@ -236,16 +257,18 @@ class Weapon {
 
   /**
    * Is the weapon in the unarming state.
+   * @return {Boolean}
    */
   isUnarming() {
     return this.state === STATES.UNARMING;
   }
 
   /**
-   * Is the weapon in the idle state.
+   * Is the weapon in the unarmed state.
+   * @return {Boolean}
    */
-  isIdle() {
-    return this.state === STATES.IDLE;
+  isUnarmed() {
+    return this.state === STATES.UNARMED;
   }
 
   /**
