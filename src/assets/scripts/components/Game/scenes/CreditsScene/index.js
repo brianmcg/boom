@@ -94,21 +94,21 @@ class CreditsScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    this.game.show(Scene.TYPES.TITLE);
+    this.game.show({ type: Scene.TYPES.TITLE });
   }
 
   /**
    * Restart the scene.
    */
   restart() {
-    this.game.show(Scene.TYPES.CREDITS);
+    this.game.show({ type: Scene.TYPES.CREDITS });
   }
 
   /**
    * Quit the scene.
    */
   quit() {
-    this.game.show(Scene.TYPES.TITLE);
+    this.game.show({ type: Scene.TYPES.TITLE });
   }
 }
 

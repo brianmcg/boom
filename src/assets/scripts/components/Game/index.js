@@ -83,7 +83,8 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.show(Scene.TYPES.WORLD, 1);
+    this.show({ type: Scene.TYPES.WORLD, index: 1 });
+
     this.emit(EVENTS.STARTED);
   }
 
@@ -120,13 +121,13 @@ class Game extends Application {
   }
 
   /**
-   * Show a scene.
-   * @param  {String} sceneType   The scene type.
-   * @param  {Number} sceneIndex  The scene index.
-   * @param  {Player} player      The player.
-   */
-  async show(sceneType, sceneIndex = 0, playerProps) {
-    const SceneType = this.scenes[sceneType];
+    * Show the scene.
+    * @param  {String} options.type  The scene type.
+    * @param  {Number} options.index The scene index.
+    * @param  {Object} options.props Optional extra props.
+    */
+  async show({ type, index = 0, props = {} } = {}) {
+    const SceneType = this.scenes[type];
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
@@ -145,7 +146,7 @@ class Game extends Application {
 
     if (SceneType) {
       this.scene = new SceneType({
-        index: sceneIndex,
+        index,
         game: this,
       });
 
@@ -155,20 +156,23 @@ class Game extends Application {
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
-      const props = {
-        ...this.data.props,
-        player: {
-          ...this.data.props.player,
-          ...playerProps,
+      const options = {
+        graphics,
+        data: {
+          ...data,
+          props: {
+            ...this.data.props,
+            player: {
+              ...this.data.props.player,
+              ...props.player,
+            },
+          },
         },
       };
 
       this.sound.add(SCENE_MUSIC, sound);
 
-      this.scene.create({
-        graphics,
-        data: { ...data, props },
-      });
+      this.scene.create(options);
     }
   }
 

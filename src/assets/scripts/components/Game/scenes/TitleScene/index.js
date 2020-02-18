@@ -68,14 +68,14 @@ class TitleScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    this.game.show(Scene.TYPES.WORLD, 1);
+    this.game.show({ type: Scene.TYPES.WORLD, index: 1 });
   }
 
   /**
    * Restart the scene.
    */
   restart() {
-    this.game.show(Scene.TYPES.TITLE);
+    this.game.show({ type: Scene.TYPES.TITLE });
   }
 
   /**

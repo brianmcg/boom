@@ -184,9 +184,15 @@ class WorldScene extends Scene {
    */
   complete() {
     if (this.index < this.game.data.numLevels) {
-      this.game.show(Scene.TYPES.WORLD, this.index + 1, this.world.player.props);
+      this.game.show({
+        type: Scene.TYPES.WORLD,
+        index: this.index + 1,
+        props: this.world.props,
+      });
     } else {
-      this.game.show(Scene.TYPES.CREDITS);
+      this.game.show({
+        type: Scene.TYPES.CREDITS,
+      });
     }
   }
 
@@ -194,14 +200,18 @@ class WorldScene extends Scene {
    * Restart the scene.
    */
   restart() {
-    this.game.show(Scene.TYPES.WORLD, this.index, this.world.player.startingProps);
+    this.game.show({
+      type: Scene.TYPES.WORLD,
+      index: this.index,
+      props: this.world.startingProps,
+    });
   }
 
   /**
    * Quit the scene.
    */
   quit() {
-    this.game.show(Scene.TYPES.TITLE);
+    this.game.show({ type: Scene.TYPES.TITLE });
   }
 }
 

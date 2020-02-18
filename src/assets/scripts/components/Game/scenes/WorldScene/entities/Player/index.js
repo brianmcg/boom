@@ -82,21 +82,24 @@ class Player extends AbstractActor {
       }),
     }), {});
 
-    this.startingProps = Object.assign({}, this.props);
-
-    this.on(Body.EVENTS.ADDED, () => {
-      const { x, y } = this.world.entrance;
-
-      this.x = (TILE_SIZE * x) + (TILE_SIZE / 2);
-      this.y = (TILE_SIZE * y) + (TILE_SIZE / 2);
-      this.angle = 0;
-      this.velocity = 0;
-      this.weapon.setArming();
-      this.actions.use = true;
-      this.updateInteractions();
-    });
+    this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
     this.setAlive();
+  }
+
+  /**
+   * Handle the added to world event.
+   */
+  onAdded() {
+    const { x, y } = this.world.entrance;
+
+    this.x = (TILE_SIZE * x) + (TILE_SIZE / 2);
+    this.y = (TILE_SIZE * y) + (TILE_SIZE / 2);
+    this.angle = 0;
+    this.velocity = 0;
+    this.weapon.setArming();
+    this.actions.use = true;
+    this.updateInteractions();
   }
 
   /**

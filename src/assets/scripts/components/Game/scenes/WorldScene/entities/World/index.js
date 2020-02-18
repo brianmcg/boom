@@ -1,5 +1,4 @@
 import { World as PhysicsWorld } from 'game/core/physics';
-import { TILE_SIZE } from 'game/constants/config';
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
@@ -64,6 +63,8 @@ class World extends PhysicsWorld {
 
     this.index = index;
     this.startTime = performance.now();
+
+    this.startingProps = Object.assign({}, this.props);
   }
 
   /**
@@ -144,6 +145,10 @@ class World extends PhysicsWorld {
       enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
       enemiesTotal: this.enemies.length,
     };
+  }
+
+  get props() {
+    return { player: this.player.props };
   }
 }
 
