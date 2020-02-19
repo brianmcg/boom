@@ -364,15 +364,15 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateDyingView(delta) {
-    const { rotationY, maxRotationY } = this.camera;
+    const { pitch, maxPitch } = this.camera;
 
-    let newRotationY = rotationY + (10 * delta);
+    let newRotationY = pitch + (10 * delta);
 
-    if (newRotationY >= maxRotationY) {
-      newRotationY = maxRotationY;
+    if (newRotationY >= maxPitch) {
+      newRotationY = maxPitch;
     }
 
-    this.camera.rotationY = newRotationY;
+    this.camera.pitch = newRotationY;
   }
 
   /**
@@ -630,16 +630,16 @@ class Player extends AbstractActor {
    * Get the view angle on the y axis.
    * @return {Number} The view angle.
    */
-  get viewAngleY() {
-    return this.camera.rotationY;
+  get viewPitch() {
+    return this.camera.pitch;
   }
 
   /**
    * Get the view angle on the x axis.
    * @return {Number} The view angle.
    */
-  get viewAngleX() {
-    return (this.angle + this.camera.rotationX + DEG_360) % DEG_360;
+  get viewYaw() {
+    return (this.angle + this.camera.yaw + DEG_360) % DEG_360;
   }
 
   /**

@@ -35,14 +35,14 @@
       "camera": {
         "heightIncrement": 0.04,
         "maxHeight": 2,
-        "recoilVelocity": 4,
+        "pitchVelocity": 4,
         "maxRecoilAmount": 12,
         "minRecoilAmount": 1,
         "recoilFade": 0.2,
         "maxShakeAmount": 10,
         "minShakeAmount": 1,
         "shakeFade": 0.65,
-        "maxRotationY": 196
+        "maxPitch": 196
       }
     },
     "enemies": {

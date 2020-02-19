@@ -99,13 +99,26 @@ class Scene extends Container {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.LOADING: this.updateLoading(delta); break;
-      case STATES.FADING_IN: this.updateFadingIn(delta); break;
-      case STATES.RUNNING: this.updateRunning(delta); break;
-      case STATES.PAUSED: this.updatePaused(delta); break;
-      case STATES.PROMPTING: this.updatePrompting(delta); break;
-      case STATES.FADING_OUT: this.updateFadingOut(delta); break;
-      default: break;
+      case STATES.LOADING:
+        this.updateLoading(delta);
+        break;
+      case STATES.FADING_IN:
+        this.updateFadingIn(delta);
+        break;
+      case STATES.RUNNING:
+        this.updateRunning(delta);
+        break;
+      case STATES.PAUSED:
+        this.updatePaused(delta);
+        break;
+      case STATES.PROMPTING:
+        this.updatePrompting(delta);
+        break;
+      case STATES.FADING_OUT:
+        this.updateFadingOut(delta);
+        break;
+      default:
+        break;
     }
   }
 
@@ -252,10 +265,17 @@ class Scene extends Container {
   setStopped() {
     if (this.setState(STATES.STOPPED)) {
       switch (this.stopEvent) {
-        case EVENTS.COMPLETE: this.complete(); break;
-        case EVENTS.RESTART: this.restart(); break;
-        case EVENTS.QUIT: this.quit(); break;
-        default: break;
+        case EVENTS.COMPLETE:
+          this.complete();
+          break;
+        case EVENTS.RESTART:
+          this.restart();
+          break;
+        case EVENTS.QUIT:
+          this.quit();
+          break;
+        default:
+          break;
       }
     }
   }

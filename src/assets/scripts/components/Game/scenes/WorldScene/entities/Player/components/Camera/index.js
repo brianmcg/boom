@@ -11,44 +11,44 @@ class Camera {
    * @param  {Player} options.player          The player.
    * @param  {Number} options.heightIncrement The amount to increment the height by.
    * @param  {Number} options.maxHeight       The maximum height.
-   * @param  {Number} options.recoilVelocity  The velocity of the recoil.
+   * @param  {Number} options.pitchVelocity   The velocity of the recoil.
    * @param  {Number} options.maxRecoilAmount The maximum recoil amount.
    * @param  {Number} options.minRecoilAmount The minimum recoil amount.
    * @param  {Number} options.recoilFade      The amount by which the recoil effect fades.
    * @param  {Number} options.maxShakeAmount  The maximum shake amount.
    * @param  {Number} options.minShakeAmount  The minimum shake amount.
    * @param  {Number} options.shakeFade       The amount by which the shake effect fades.
-   * @param  {Number} options.maxRotationY    The maximum y axis rotation.
+   * @param  {Number} options.maxPitch        The maximum y axis rotation.
    */
   constructor({
     player,
     heightIncrement,
     maxHeight,
-    recoilVelocity,
+    pitchVelocity,
     maxRecoilAmount,
     minRecoilAmount,
     recoilFade,
     maxShakeAmount,
     minShakeAmount,
     shakeFade,
-    maxRotationY,
+    maxPitch,
   }) {
     this.player = player;
     this.heightIncrement = heightIncrement;
     this.maxHeight = maxHeight;
-    this.recoilVelocity = recoilVelocity;
+    this.pitchVelocity = pitchVelocity;
+    this.maxPitch = maxPitch;
     this.maxRecoilAmount = maxRecoilAmount;
     this.minRecoilAmount = minRecoilAmount;
     this.recoilFade = recoilFade;
     this.maxShakeAmount = maxShakeAmount;
     this.minShakeAmount = minShakeAmount;
     this.shakeFade = shakeFade;
-    this.maxRotationY = maxRotationY;
 
     this.height = 0;
     this.heightDirection = 1;
-    this.rotationY = 0;
-    this.rotationX = 0;
+    this.pitch = 0;
+    this.yaw = 0;
     this.recoilAmount = 0;
     this.recoilDirection = 1;
     this.shakeDirection = 1;
@@ -62,9 +62,8 @@ class Camera {
    */
   update(delta) {
     this.updateHeight(delta);
-    this.updateRotation(delta);
-    this.updateRecoil(delta);
-    this.updateShake(delta);
+    this.updatePitch(delta);
+    this.updateYaw(delta);
   }
 
   /**
@@ -100,48 +99,43 @@ class Camera {
   /**
    * Update the rotation according to player actions.
    */
-  updateRotation() {
+  updatePitch() {
     const { lookDown, lookUp } = this.player.actions;
 
     if (lookDown) {
-      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, -this.maxRotationY);
+      this.pitch = Math.max(this.pitch - this.pitchVelocity, -this.maxPitch);
     } else if (lookUp) {
-      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, this.maxRotationY);
-    } else if (this.rotationY < 0) {
-      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, 0);
-    } else if (this.rotationY > 0) {
-      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, 0);
+      this.pitch = Math.min(this.pitch + this.pitchVelocity, this.maxPitch);
+    } else if (this.pitch < 0) {
+      this.pitch = Math.min(this.pitch + this.pitchVelocity, 0);
+    } else if (this.pitch > 0) {
+      this.pitch = Math.max(this.pitch - this.pitchVelocity, 0);
     }
-  }
 
-  /**
-   * Update the recoil effect.
-   */
-  updateRecoil() {
     if (this.recoilAmount) {
-      this.rotationY += this.recoilAmount * this.recoilDirection;
+      this.pitch += this.recoilAmount * this.recoilDirection;
       this.recoilAmount *= this.recoilFade;
 
       if (this.recoilAmount < this.minRecoilAmount) {
         this.recoilAmount = 0;
       }
     } else if (this.recoilDirection > 0) {
-      this.rotationY = Math.max(this.rotationY - this.recoilVelocity, 0);
+      this.pitch = Math.max(this.pitch - this.pitchVelocity, 0);
     } else if (this.recoilDirection < 0) {
-      this.rotationY = Math.min(this.rotationY + this.recoilVelocity, 0);
+      this.pitch = Math.min(this.pitch + this.pitchVelocity, 0);
     }
   }
 
   /**
    * Update the shake effect.
    */
-  updateShake() {
+  updateYaw() {
     if (this.shakeAmount) {
-      this.rotationX = (this.rotationX + this.shakeAmount * this.shakeDirection) % DEG_360;
+      this.yaw = (this.yaw + this.shakeAmount * this.shakeDirection) % DEG_360;
 
-      if (this.shakeDirection === 1 && this.rotationX > this.shakeEdge) {
+      if (this.shakeDirection === 1 && this.yaw > this.shakeEdge) {
         this.shakeDirection = -1;
-      } else if (this.shakeDirection === -1 && this.rotationX < -this.shakeEdge) {
+      } else if (this.shakeDirection === -1 && this.yaw < -this.shakeEdge) {
         this.shakeDirection = 1;
         this.shakeEdge *= this.shakeFade;
       }
@@ -149,7 +143,7 @@ class Camera {
       if (this.shakeEdge < this.minShakeAmount) {
         this.shakeDirection = 1;
         this.shakeEdge = 0;
-        this.rotationX = 0;
+        this.yaw = 0;
         this.shakeAmount = 0;
       }
     }
