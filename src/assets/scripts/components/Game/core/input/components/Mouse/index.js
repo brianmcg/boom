@@ -11,14 +11,16 @@ class Mouse {
       || element.mozRequestPointerLock
       || element.webkitRequestPointerLock;
 
-    this.element = element;
+    document.exitPointerLock = document.exitPointerLock
+      || document.mozExitPointerLock
+      || document.webkitExitPointerLock;
 
     document.addEventListener('pointerlockchange', this.onChange.bind(this), false);
     document.addEventListener('mozpointerlockchange', this.onChange.bind(this), false);
     document.addEventListener('webkitpointerlockchange', this.onChange.bind(this), false);
 
+    this.element = element;
     this.onMove = this.onMove.bind(this);
-
     this.x = 0;
     this.y = 0;
   }
@@ -59,10 +61,21 @@ class Mouse {
   }
 
   /**
-   * Lock the mouse.
+   * Lock the mouse pointer.
    */
-  lock() {
-    this.element.requestPointerLock();
+  lockPointer() {
+    if (!this.isPointerLocked()) {
+      this.element.requestPointerLock();
+    }
+  }
+
+  /**
+   * Unlock the mouse pointer.
+   */
+  unlockPointer() {
+    if (this.isPointerLocked()) {
+      document.exitPointerLock();
+    }
   }
 
   /**

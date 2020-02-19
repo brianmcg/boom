@@ -208,6 +208,13 @@ class Game extends Application {
   }
 
   /**
+   * Lock the mouse pointer.
+   */
+  lockMousePointer() {
+    this.mouse.lockPointer();
+  }
+
+  /**
    * Play a game sound.
    * @param  {String} name The name of the sound to play.
    */
