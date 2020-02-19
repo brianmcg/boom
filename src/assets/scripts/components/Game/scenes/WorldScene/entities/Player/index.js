@@ -495,7 +495,6 @@ class Player extends AbstractActor {
   /**
    * Pick up health.
    * @param  {Number} amount The amount of health.
-   * @return {[type]}       [description]
    */
   pickUpHealth(amount) {
     this.pickup = amount;
@@ -638,8 +637,8 @@ class Player extends AbstractActor {
    * Get the view angle on the x axis.
    * @return {Number} The view angle.
    */
-  get viewYaw() {
-    return (this.angle + this.camera.yaw + DEG_360) % DEG_360;
+  get viewAngle() {
+    return (this.angle + this.camera.angle + DEG_360) % DEG_360;
   }
 
   /**

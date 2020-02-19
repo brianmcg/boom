@@ -48,7 +48,7 @@ class Camera {
     this.height = 0;
     this.heightDirection = 1;
     this.pitch = 0;
-    this.yaw = 0;
+    this.angle = 0;
     this.recoilAmount = 0;
     this.recoilDirection = 1;
     this.shakeDirection = 1;
@@ -131,11 +131,11 @@ class Camera {
    */
   updateYaw() {
     if (this.shakeAmount) {
-      this.yaw = (this.yaw + this.shakeAmount * this.shakeDirection) % DEG_360;
+      this.angle = (this.angle + this.shakeAmount * this.shakeDirection) % DEG_360;
 
-      if (this.shakeDirection === 1 && this.yaw > this.shakeEdge) {
+      if (this.shakeDirection === 1 && this.angle > this.shakeEdge) {
         this.shakeDirection = -1;
-      } else if (this.shakeDirection === -1 && this.yaw < -this.shakeEdge) {
+      } else if (this.shakeDirection === -1 && this.angle < -this.shakeEdge) {
         this.shakeDirection = 1;
         this.shakeEdge *= this.shakeFade;
       }
@@ -143,7 +143,7 @@ class Camera {
       if (this.shakeEdge < this.minShakeAmount) {
         this.shakeDirection = 1;
         this.shakeEdge = 0;
-        this.yaw = 0;
+        this.angle = 0;
         this.shakeAmount = 0;
       }
     }

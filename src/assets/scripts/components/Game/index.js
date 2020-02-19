@@ -1,6 +1,6 @@
 import { Application } from './core/graphics';
 import { SoundPlayer } from './core/audio';
-import { Keyboard } from './core/input';
+import { Keyboard, Mouse } from './core/input';
 import { BLACK } from './constants/colors';
 import { SCREEN, MAX_FPS } from './constants/config';
 import {
@@ -49,6 +49,7 @@ class Game extends Application {
     this.loader = new Loader();
     this.sound = new SoundPlayer();
     this.keyboard = new Keyboard();
+    this.mouse = new Mouse(this.view);
 
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
@@ -117,6 +118,7 @@ class Game extends Application {
       this.scene.update(delta);
       this.scene.animate();
       this.keyboard.update();
+      this.mouse.update();
     }
   }
 
@@ -257,6 +259,22 @@ class Game extends Application {
    */
   isKeyHeld(key) {
     return this.keyboard.held[key];
+  }
+
+  /**
+   * Get the mouse x position.
+   * @return {Number} The mouse x position.
+   */
+  getMouseX() {
+    return this.mouse.x;
+  }
+
+  /**
+   * Get the mouse y position.
+   * @return {Number} The mouse y position.
+   */
+  getMouseY() {
+    return this.mouse.y;
   }
 
   /**

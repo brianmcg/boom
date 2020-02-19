@@ -115,6 +115,7 @@ class WorldScene extends Scene {
         armShotgun: this.game.isKeyPressed(KEYS.NUM_2),
         armChaingun: this.game.isKeyPressed(KEYS.NUM_3),
         strafe: this.game.isKeyHeld(KEYS.SHIFT),
+        moveX: this.game.getMouseX(),
       },
     });
 

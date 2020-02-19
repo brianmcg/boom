@@ -8,6 +8,7 @@ const game = new Game();
 manual.on(Manual.EVENTS.CLICK_START, () => {
   document.body.removeChild(manual.view);
   document.body.appendChild(game.view);
+  // game.mouse.lock();
   game.start();
 });
 
@@ -17,10 +18,7 @@ game.on(Game.EVENTS.STOPPED, () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // TODO: Show manual amd remove `game.start();`
-  document.body.appendChild(game.view);
-  game.start();
+  document.body.appendChild(manual.view);
 });
 
-// TODO: Remove this
 window.game = game;
