@@ -25,6 +25,7 @@ const STATES = {
 
 const EVENTS = {
   DEATH: 'player:death',
+  ARM_WEAPON: 'player:arm:weapon',
 };
 
 /**
@@ -79,13 +80,22 @@ class Player extends AbstractActor {
 
     this.camera = new Camera({ player: this, ...camera });
 
-    this.weapons = Object.keys(weapons).reduce((memo, type) => ({
-      ...memo,
-      [type]: new Weapon({
+    this.weapons = Object.keys(weapons).reduce((memo, type) => {
+      const weapon = new Weapon({
         player: this,
         ...weapons[type],
-      }),
-    }), {});
+        type,
+      });
+
+      weapon.on(Weapon.EVENTS.ARMING, () => {
+        this.emit(EVENTS.ARM_WEAPON, weapon.type);
+      });
+
+      return {
+        ...memo,
+        [type]: weapon,
+      };
+    }, {});
 
     this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
@@ -528,13 +538,7 @@ class Player extends AbstractActor {
    * @return {Boolean}
    */
   setAlive() {
-    const stateChanged = this.setState(STATES.ALIVE);
-
-    if (stateChanged) {
-      this.alive = true;
-    }
-
-    return stateChanged;
+    return this.setState(STATES.ALIVE);
   }
 
   /**
@@ -575,7 +579,6 @@ class Player extends AbstractActor {
     const stateChanged = this.setState(STATES.DEAD);
 
     if (stateChanged) {
-      this.weapon.setUnarming();
       this.emit(EVENTS.DEATH);
     }
 
@@ -619,7 +622,7 @@ class Player extends AbstractActor {
    * Get the camera height.
    * @return {Number} The camera height.
    */
-  get cameraHeight() {
+  get viewHeight() {
     return this.height + this.camera.height;
   }
 
@@ -647,7 +650,5 @@ class Player extends AbstractActor {
     return EVENTS;
   }
 }
-
-export { Weapon };
 
 export default Player;

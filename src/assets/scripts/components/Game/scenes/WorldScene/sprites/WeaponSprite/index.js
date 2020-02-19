@@ -1,6 +1,6 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
-import { Weapon } from '../../entities/Player';
+import Player from '../../entities/Player';
 
 const HEIGHT_RATIO = SCREEN.HEIGHT / 190;
 
@@ -30,13 +30,9 @@ class WeaponSprite extends AnimatedSprite {
     this.player = player;
     this.onComplete = this.handleOnComplete.bind(this);
 
-    Object.values(this.player.weapons).forEach((weapon) => {
-      weapon.on(Weapon.EVENTS.STATE_CHANGE, () => {
-        if (weapon.isArming()) {
-          this.textures = this.textureCollection[this.player.currentWeaponType];
-          this.texture = this.textures[0];
-        }
-      });
+    this.player.on(Player.EVENTS.ARM_WEAPON, (weaponType) => {
+      this.textures = this.textureCollection[weaponType];
+      this.texture = this.textures[0];
     });
   }
 

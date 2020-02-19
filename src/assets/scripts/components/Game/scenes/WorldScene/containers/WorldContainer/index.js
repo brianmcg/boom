@@ -150,7 +150,7 @@ class WorldContainer extends Container {
       correctedDistance = distance * COS[spriteAngle];
       spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
-        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
+        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
@@ -165,7 +165,7 @@ class WorldContainer extends Container {
         sprite = background[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (TILE_SIZE - player.cameraHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
+          actualDistance = (TILE_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
@@ -187,7 +187,7 @@ class WorldContainer extends Container {
         sprite = background[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = player.cameraHeight / (yIndex - centerY) * CAMERA_DISTANCE;
+          actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
@@ -228,7 +228,7 @@ class WorldContainer extends Container {
           spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
           sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
           sprite.position.y = centerY
-            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.cameraHeight)));
+            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;

@@ -1,5 +1,5 @@
-import { Body } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
+import Entity from '../../../Entity';
 
 const MAX_MOVE_X = 8;
 
@@ -25,13 +25,13 @@ const TYPES = {
 };
 
 const EVENTS = {
-  STATE_CHANGE: 'weapon:state:change',
+  ARMING: 'weapon:arming',
 };
 
 /**
  * Class representing a weapon.
  */
-class Weapon extends Body {
+class Weapon extends Entity {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player   The player.
@@ -42,6 +42,7 @@ class Weapon extends Body {
    * @param  {Number}  options.ammo     The ammount of ammo the weapon has.
    * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
    * @param  {Number}  options.range    The range of the weapon.
+   * @param  {String}  options.type     The weapon type.
    */
   constructor({
     player,
@@ -52,8 +53,9 @@ class Weapon extends Body {
     ammo,
     maxAmmo,
     range,
+    ...other
   }) {
-    super();
+    super(other);
 
     this.idleTime = idleTime;
     this.power = power;
@@ -212,6 +214,12 @@ class Weapon extends Body {
    * @return {Boolean} Has the state changed to arming.
    */
   setArming() {
+    const stateChange = this.setState(STATES.ARMING);
+
+    if (stateChange) {
+      this.emit(EVENTS.ARMING);
+    }
+
     return this.setState(STATES.ARMING);
   }
 
@@ -285,7 +293,6 @@ class Weapon extends Body {
   setState(state) {
     if (this.state !== state) {
       this.state = state;
-      this.emit(EVENTS.STATE_CHANGE, state);
 
       return true;
     }
