@@ -8,8 +8,8 @@ import ReviewContainer from './containers/ReviewContainer';
 import Scene from '../Scene';
 
 const STATES = {
+  STANDARD: 'world:scene.standard',
   REVIEWING: 'world:scene:reviewing',
-  PLAYER_DEAD: 'world:scene:player:dead',
 };
 
 /**
@@ -35,21 +35,13 @@ class WorldScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: () => {
-        this.setRunning();
-      },
+      onSelect: this.setRunning.bind(this),
     }, {
       label: translate('scene.menu.restart'),
-      onSelect: () => {
-        this.setStatus(Scene.EVENTS.RESTART);
-        this.setFadingOut();
-      },
+      onSelect: this.triggerRestart.bind(this),
     }, {
       label: translate('scene.menu.quit'),
-      onSelect: () => {
-        this.setStatus(Scene.EVENTS.QUIT);
-        this.setFadingOut();
-      },
+      onSelect: this.triggerQuit.bind(this),
     }];
 
     this.promptOption = translate('scene.prompt.continue');
@@ -93,16 +85,12 @@ class WorldScene extends Scene {
    * @param  {[delta} delta The delta time.
    */
   update(delta) {
-    super.update(delta);
-
     switch (this.state) {
       case STATES.REVIEWING:
         this.updateReviewing(delta);
         break;
-      case STATES.PLAYER_DEAD:
-        this.updatePlayerDead(delta);
-        break;
       default:
+        super.update(delta);
         break;
     }
   }
@@ -140,15 +128,6 @@ class WorldScene extends Scene {
   updateReviewing(delta) {
     this.updatePaused(delta);
     this.reviewContainer.update(delta);
-  }
-
-  /**
-   * Update the scene in the player dead state.
-   * @param  {Number} delta The delta time.
-   */
-  updatePlayerDead(delta) {
-    // TODO: Implement logic for restarting level.
-    this.tmp = delta;
   }
 
   /**

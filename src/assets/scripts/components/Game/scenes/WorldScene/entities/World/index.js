@@ -106,7 +106,7 @@ class World extends PhysicsWorld {
    * Restart the world scene.
    */
   restart() {
-    this.scene.restart();
+    this.scene.triggerRestart();
   }
 
   /**

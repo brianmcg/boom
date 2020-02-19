@@ -165,8 +165,7 @@ class Scene extends Container {
    */
   updatePrompting(delta) {
     if (this.game.isKeyPressed(KEYS.SPACE)) {
-      this.setStatus(Scene.EVENTS.COMPLETE);
-      this.setFadingOut();
+      this.triggerComplete();
     }
 
     this.promptContainer.update(delta);
@@ -259,6 +258,30 @@ class Scene extends Container {
         default: break;
       }
     }
+  }
+
+  /**
+   * Trigger the complete event.
+   */
+  triggerComplete() {
+    this.setStatus(EVENTS.COMPLETE);
+    this.setFadingOut();
+  }
+
+  /**
+   * Trigger the restart event.
+   */
+  triggerRestart() {
+    this.setStatus(EVENTS.RESTART);
+    this.setFadingOut();
+  }
+
+  /**
+   * Trigger the quit event.
+   */
+  triggerQuit() {
+    this.setStatus(EVENTS.QUIT);
+    this.setFadingOut();
   }
 
   /**

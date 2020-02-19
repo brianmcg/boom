@@ -19,15 +19,10 @@ class CreditsScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: () => {
-        this.setRunning();
-      },
+      onSelect: this.setRunning.bind(this),
     }, {
       label: translate('scene.menu.quit'),
-      onSelect: () => {
-        this.setStatus(Scene.EVENTS.QUIT);
-        this.setFadingOut();
-      },
+      onSelect: this.triggerQuit.bind(this),
     }];
 
     this.promptOption = translate('scene.prompt.continue');

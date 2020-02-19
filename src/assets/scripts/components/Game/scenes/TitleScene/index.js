@@ -25,10 +25,7 @@ class TitleScene extends Scene {
       },
     }, {
       label: translate('scene.menu.quit'),
-      onSelect: () => {
-        this.setStatus(Scene.EVENTS.QUIT);
-        this.setFadingOut();
-      },
+      onSelect: this.triggerQuit.bind(this),
     }];
 
     this.promptOption = translate('title.prompt.start');

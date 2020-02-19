@@ -42,7 +42,7 @@
         "maxShakeAmount": 10,
         "minShakeAmount": 1,
         "shakeFade": 0.65,
-        "maxRotationY": 120
+        "maxRotationY": 196
       }
     },
     "enemies": {
