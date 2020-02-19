@@ -126,7 +126,7 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show({ type, index = 0, props = {} } = {}) {
+  async show({ type, index = 0, startingProps = {} } = {}) {
     const SceneType = this.scenes[type];
 
     if (this.scene) {
@@ -156,23 +156,23 @@ class Game extends Application {
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
-      const options = {
-        graphics,
-        data: {
-          ...data,
-          props: {
-            ...this.data.props,
-            player: {
-              ...this.data.props.player,
-              ...props.player,
-            },
-          },
+      const props = {
+        ...this.data.props,
+        player: {
+          ...this.data.props.player,
+          ...startingProps.player,
         },
       };
 
       this.sound.add(SCENE_MUSIC, sound);
 
-      this.scene.create(options);
+      this.scene.create({
+        graphics,
+        data: {
+          ...data,
+          props,
+        },
+      });
     }
   }
 

@@ -142,7 +142,7 @@ class Player extends AbstractActor {
     this.updateAliveMovement(delta);
     this.updateAliveHeight(delta);
     this.updateAliveVision(delta);
-    this.updateAliveCamera(delta);
+    this.updateAliveView(delta);
     this.updateAliveWeapon(delta);
     this.updateAliveInteractions(delta);
   }
@@ -154,7 +154,7 @@ class Player extends AbstractActor {
   updateDying(delta) {
     this.updateDyingHeight(delta);
     this.updateDyingVision(delta);
-    this.updateDyingCamera(delta);
+    this.updateDyingView(delta);
     this.updateDyingWeapon(delta);
   }
 
@@ -208,7 +208,7 @@ class Player extends AbstractActor {
    * Update player camera.
    * @param  {Number delta The delta time.
    */
-  updateAliveCamera(delta) {
+  updateAliveView(delta) {
     this.camera.update(delta);
   }
 
@@ -363,7 +363,7 @@ class Player extends AbstractActor {
    * Update the camera vision in dead state.
    * @param  {Number} delta The delta time.
    */
-  updateDyingCamera(delta) {
+  updateDyingView(delta) {
     const { rotationY, maxRotationY } = this.camera;
 
     let newRotationY = rotationY + (10 * delta);

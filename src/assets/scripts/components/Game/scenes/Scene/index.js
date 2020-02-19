@@ -251,7 +251,7 @@ class Scene extends Container {
    */
   setStopped() {
     if (this.setState(STATES.STOPPED)) {
-      switch (this.status) {
+      switch (this.stopEvent) {
         case EVENTS.COMPLETE: this.complete(); break;
         case EVENTS.RESTART: this.restart(); break;
         case EVENTS.QUIT: this.quit(); break;
@@ -264,7 +264,7 @@ class Scene extends Container {
    * Trigger the complete event.
    */
   triggerComplete() {
-    this.setStatus(EVENTS.COMPLETE);
+    this.setStopEvent(EVENTS.COMPLETE);
     this.setFadingOut();
   }
 
@@ -272,7 +272,7 @@ class Scene extends Container {
    * Trigger the restart event.
    */
   triggerRestart() {
-    this.setStatus(EVENTS.RESTART);
+    this.setStopEvent(EVENTS.RESTART);
     this.setFadingOut();
   }
 
@@ -280,7 +280,7 @@ class Scene extends Container {
    * Trigger the quit event.
    */
   triggerQuit() {
-    this.setStatus(EVENTS.QUIT);
+    this.setStopEvent(EVENTS.QUIT);
     this.setFadingOut();
   }
 
@@ -310,11 +310,11 @@ class Scene extends Container {
   }
 
   /**
-   * Set the scene status.
-   * @param {String} status The new status.
+   * Set the event to emit when stopped.
+   * @param {String} stopEvent The new stopEvent.
    */
-  setStatus(status) {
-    this.status = status;
+  setStopEvent(stopEvent) {
+    this.stopEvent = stopEvent;
   }
 
   /**
