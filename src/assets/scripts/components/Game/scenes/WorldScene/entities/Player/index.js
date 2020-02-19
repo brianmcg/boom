@@ -354,10 +354,15 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateDyingCamera(delta) {
-    this.camera.rotationY = Math.min(
-      this.camera.rotationY + (8 * delta),
-      this.camera.maxRotationY,
-    );
+    const { rotationY, maxRotationY } = this.camera;
+
+    let newRotationY = rotationY + (10 * delta);
+
+    if (newRotationY >= maxRotationY) {
+      newRotationY = maxRotationY;
+    }
+
+    this.camera.rotationY = newRotationY;
   }
 
   /**
@@ -430,7 +435,6 @@ class Player extends AbstractActor {
    */
   hurt(amount) {
     this.health -= amount;
-    this.vision = 0.75;
     this.camera.setShake(amount * 0.3);
     this.camera.setRecoil(amount * 2, {
       down: true,

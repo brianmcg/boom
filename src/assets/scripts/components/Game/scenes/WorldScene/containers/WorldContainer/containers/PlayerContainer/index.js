@@ -16,7 +16,7 @@ class PlayerContainer extends Container {
     super();
 
     const { weapon, hud } = sprites;
-    const { health, ammo, foreground } = hud;
+    const { health, ammo } = hud;
 
     health.icon.height = health.amount.height;
     health.icon.width = health.amount.height;
@@ -37,7 +37,7 @@ class PlayerContainer extends Container {
     this.addChild(weapon);
     this.addChild(health.icon);
     this.addChild(health.amount);
-    this.addChild(foreground);
+    // this.addChild(foreground);
 
     this.player = player;
     this.sprites = sprites;
@@ -49,12 +49,12 @@ class PlayerContainer extends Container {
    */
   update(delta) {
     const { hud, weapon } = this.sprites;
-    const { ammo, health, foreground } = hud;
+    const { ammo, health } = hud;
 
     health.amount.text = this.player.health;
     ammo.amount.text = this.player.weapon.ammo;
     ammo.amount.x = ammo.icon.x - ammo.amount.width - (HUD_PADDING / 2);
-    foreground.alpha = 1 - this.player.vision;
+    // foreground.alpha = 1 - this.player.vision;
 
     weapon.update(delta);
   }
