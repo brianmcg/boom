@@ -472,7 +472,7 @@ class Player extends AbstractActor {
 
     item.setFound();
 
-    switch (item.name.toLowerCase()) {
+    switch (item.name) {
       case Item.TYPES.AMMO:
         this.pickUpAmmo(item);
         break;
@@ -495,7 +495,6 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount of ammo.
    */
   pickUpAmmo(ammo) {
-    console.log(ammo);
     this.pickup = ammo;
   }
 
@@ -504,7 +503,7 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount of health.
    */
   pickUpHealth(health) {
-    this.health += parseInt(health.amount, 10);
+    this.health += health.amount;
 
     if (this.health > this.maxHealth) {
       this.health = this.maxHealth;
@@ -524,8 +523,7 @@ class Player extends AbstractActor {
    * @param  {String} type  the type of weapon.
    */
   pickUpWeapon(weapon) {
-    console.log(weapon);
-    this.pickup = weapon;
+    const pickup = this.weapons[weapon.type];
   }
 
   /**

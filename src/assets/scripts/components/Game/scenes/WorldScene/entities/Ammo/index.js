@@ -15,10 +15,10 @@ class Ammo extends Item {
    * @param  {Number} options.amount  The amount of ammo.
    * @param  {String} options.weapon  The weapon the ammo is for.
    */
-  constructor({ amount = 0, weapon, ...other }) {
+  constructor({ amount = 0, type, ...other }) {
     super(other);
     this.amount = amount;
-    this.weapon = weapon;
+    this.type = type;
   }
 }
 

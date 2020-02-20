@@ -1,8 +1,9 @@
 import Item from '../Item';
 
 class Weapon extends Item {
-  constructor(...other) {
+  constructor({ type, ...other }) {
     super(other);
+    this.type = type;
   }
 }
 
