@@ -8,6 +8,10 @@ import Amp from '../entities/Amp';
 import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
 import Player from '../entities/Player';
+import Key from '../entities/Key';
+import Ammo from '../entities/Ammo';
+import Health from '../entities/Health';
+import Weapon from '../entities/Weapon';
 
 const ENEMIES = [
   Amp,
@@ -16,6 +20,16 @@ const ENEMIES = [
 ].reduce((result, enemy) => ({
   ...result,
   [enemy.name.toLowerCase()]: enemy,
+}), {});
+
+const ITEMS = [
+  Key,
+  Ammo,
+  Health,
+  Weapon,
+].reduce((result, item) => ({
+  ...result,
+  [item.name.toLowerCase()]: item,
 }), {});
 
 const createSector = (sector, props) => {
@@ -78,7 +92,8 @@ export const createWorld = (data) => {
 
   const items = data.items.reduce((memo, item) => ([
     ...memo,
-    new Item({
+    new ITEMS[item.name]({
+      ...item,
       texture: item.type,
       x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),

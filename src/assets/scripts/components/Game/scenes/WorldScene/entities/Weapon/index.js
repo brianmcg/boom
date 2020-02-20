@@ -1,8 +1,8 @@
 import Item from '../Item';
 
 class Weapon extends Item {
-  constructor() {
-
+  constructor(...other) {
+    super(other);
   }
 }
 
