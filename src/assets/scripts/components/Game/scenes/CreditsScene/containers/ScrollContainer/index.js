@@ -78,7 +78,6 @@ class ScrollContainer extends Container {
 
   /**
    * Animate the container.
-   * @return {[type]} [description]
    */
   animate() {
     this.y = this.scrollY;

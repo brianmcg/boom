@@ -15,7 +15,7 @@ const ITEM_FLASH_DECREMENT = 0.01;
 class World extends PhysicsWorld {
   /**
    * Creates a world.
-   * @param  {[type]} options.index       The index of the world.
+   * @param  {Number} options.index       The index of the world.
    * @param  {Player} options.player      The player.
    * @param  {Array}  options.enemies     The enemies.
    * @param  {Array}  options.obstacles   The obstacles.
