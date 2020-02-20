@@ -10,6 +10,7 @@ import AbstractActor from '../AbstractActor';
 import Item from '../Item';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
+import Key from '../Key';
 
 const DEG_360 = DEG[360];
 
@@ -80,21 +81,24 @@ class Player extends AbstractActor {
 
     this.camera = new Camera({ player: this, ...camera });
 
-    this.weapons = Object.keys(weapons).reduce((memo, type) => {
+    this.weapons = Object.keys(weapons).reduce((memo, texture) => {
       const weapon = new Weapon({
         player: this,
-        ...weapons[type],
+        ...weapons[texture],
+        texture,
       });
 
       weapon.on(Weapon.EVENTS.ARMING, () => {
-        this.emit(EVENTS.ARM_WEAPON, weapon.type);
+        this.emit(EVENTS.ARM_WEAPON, weapon.texture);
       });
 
       return {
         ...memo,
-        [type]: weapon,
+        [texture]: weapon,
       };
     }, {});
+
+    this.keys = Object.values(Key.TYPES).map(type => ({ type, equiped: false }));
 
     this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
@@ -465,18 +469,18 @@ class Player extends AbstractActor {
 
     item.setFound();
 
-    switch (item.key) {
+    switch (item.name.toLowerCase()) {
       case Item.TYPES.AMMO:
-        this.pickUpAmmo(item.value);
+        this.pickUpAmmo(item);
         break;
       case Item.TYPES.HEALTH:
-        this.pickUpHealth(item.value);
+        this.pickUpHealth(item);
         break;
       case Item.TYPES.KEY:
-        this.pickUpKey(item.value);
+        this.pickUpKey(item);
         break;
       case Item.TYPES.WEAPON:
-        this.pickUpWeapon(item.value);
+        this.pickUpWeapon(item);
         break;
       default:
         break;
@@ -487,32 +491,36 @@ class Player extends AbstractActor {
    * Pick up ammo.
    * @param  {Number} amount The amount of ammo.
    */
-  pickUpAmmo(amount) {
-    this.pickup = amount;
+  pickUpAmmo(ammo) {
+    console.log(ammo);
+    this.pickup = ammo;
   }
 
   /**
    * Pick up health.
    * @param  {Number} amount The amount of health.
    */
-  pickUpHealth(amount) {
-    this.pickup = amount;
+  pickUpHealth(health) {
+    console.log(health);
+    this.pickup = health;
   }
 
   /**
    * Pick up key.
    * @param  {String} type The type of key.
    */
-  pickUpKey(type) {
-    this.pickup = type;
+  pickUpKey(key) {
+    console.log(key);
+    this.pickup = key;
   }
 
   /**
    * Pick up a weapon
    * @param  {String} type  the type of weapon.
    */
-  pickUpWeapon(type) {
-    this.pickup = type;
+  pickUpWeapon(weapon) {
+    console.log(weapon);
+    this.pickup = weapon;
   }
 
   /**

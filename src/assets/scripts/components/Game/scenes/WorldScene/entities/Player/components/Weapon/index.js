@@ -160,9 +160,10 @@ class Weapon extends Entity {
    * @param  {Number} delta The delta time.
    */
   updateArming(delta) {
-    this.offsetY = Math.max(this.offsetY - MAX_MOVE_X * delta, 0);
+    this.offsetY -= MAX_MOVE_X * delta;
 
     if (this.offsetY <= 0) {
+      this.offsetY = 0;
       this.setIdle();
     }
   }
@@ -172,10 +173,14 @@ class Weapon extends Entity {
    * @param  {Number} delta The delta time.
    */
   updateUnarming(delta) {
-    this.offsetY = Math.min(this.offsetY + MAX_MOVE_X * delta, TILE_SIZE);
+    this.offsetY += MAX_MOVE_X * delta;
 
-    if (!this.player.isDead() && this.offsetY >= TILE_SIZE) {
-      this.setUnarmed();
+    if (this.offsetY >= TILE_SIZE) {
+      this.offsetY = TILE_SIZE;
+
+      if (this.player.isAlive()) {
+        this.setUnarmed();
+      }
     }
   }
 

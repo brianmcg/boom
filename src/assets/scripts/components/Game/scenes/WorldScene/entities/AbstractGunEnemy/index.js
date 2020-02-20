@@ -38,7 +38,7 @@ class AbstractGunEnemy extends AbstractEnemy {
       caster: this,
     });
 
-    if (!player.isDead() && isRayCollision(startPoint, endPoint, player)) {
+    if (isRayCollision(startPoint, endPoint, player)) {
       player.hurt(this.attackPower);
     }
   }

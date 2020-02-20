@@ -3,7 +3,6 @@ import Sector from '../entities/Sector';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
-import Item from '../entities/Item';
 import Amp from '../entities/Amp';
 import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
@@ -79,7 +78,7 @@ export const createWorld = (data) => {
   const obstacles = data.obstacles.reduce((memo, obstacle) => ([
     ...memo,
     new Entity({
-      texture: obstacle.type,
+      texture: obstacle.texture,
       x: (TILE_SIZE * obstacle.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * obstacle.y) + (TILE_SIZE / 2),
       blocking: obstacle.blocking,
@@ -94,7 +93,7 @@ export const createWorld = (data) => {
     ...memo,
     new ITEMS[item.name]({
       ...item,
-      texture: item.type,
+      texture: item.texture,
       x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,
@@ -106,7 +105,6 @@ export const createWorld = (data) => {
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
     new ENEMIES[enemy.name]({
-      texture: enemy.type,
       x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,

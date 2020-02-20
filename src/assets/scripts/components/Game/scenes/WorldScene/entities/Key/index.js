@@ -1,5 +1,11 @@
 import Item from '../Item';
 
+const TYPES = {
+  RED: 'red',
+  BLUE: 'blue',
+  YELLOW: 'yellow',
+};
+
 /**
  * Class representing a key.
  */
@@ -17,6 +23,10 @@ class Key extends Item {
   constructor({ color, ...other }) {
     super(other);
     this.color = color;
+  }
+
+  static get TYPES() {
+    return TYPES;
   }
 }
 
