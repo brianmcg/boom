@@ -18,11 +18,11 @@ class DynamicEntity extends DynamicBody {
    * @param  {Number}  options.height   The height of the dynamic entity.
    * @param  {Number}  options.angle    The angle of the dynamic entity.
    * @param  {Boolean} options.blocking Is the dynamic entity blocking.
-   * @param  {String}  options.type     The type of entity.
+   * @param  {String}  options.texture  The texture of entity.
    */
-  constructor({ type, ...other }) {
+  constructor({ texture, ...other }) {
     super(other);
-    this.type = type;
+    this.texture = texture;
   }
 
   /**

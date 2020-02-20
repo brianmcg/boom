@@ -14,12 +14,12 @@ const TYPES = {
 class Item extends Entity {
   /**
    * Creates an item.
-   * @param  {Number} options.x      The x coordinate of the body.
-   * @param  {Number} options.y      The y coordinate of the body
-   * @param  {Number} options.width  The width of the body.
-   * @param  {Number} options.length The length of the body.
-   * @param  {Number} options.height The height of the body.
-   * @param  {String} options.type   The type of entity.
+   * @param  {Number} options.x       The x coordinate of the body.
+   * @param  {Number} options.y       The y coordinate of the body
+   * @param  {Number} options.width   The width of the body.
+   * @param  {Number} options.length  The length of the body.
+   * @param  {Number} options.height  The height of the body.
+   * @param  {String} options.texture The texture of entity.
    */
   constructor({ key, value, ...other }) {
     super({ blocking: false, ...other });

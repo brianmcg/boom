@@ -65,7 +65,7 @@ export const createWorld = (data) => {
   const obstacles = data.obstacles.reduce((memo, obstacle) => ([
     ...memo,
     new Entity({
-      type: obstacle.type,
+      texture: obstacle.type,
       x: (TILE_SIZE * obstacle.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * obstacle.y) + (TILE_SIZE / 2),
       blocking: obstacle.blocking,
@@ -79,7 +79,7 @@ export const createWorld = (data) => {
   const items = data.items.reduce((memo, item) => ([
     ...memo,
     new Item({
-      type: item.type,
+      texture: item.type,
       x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,
@@ -91,7 +91,7 @@ export const createWorld = (data) => {
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
     new ENEMIES[enemy.name]({
-      type: enemy.type,
+      texture: enemy.type,
       x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,

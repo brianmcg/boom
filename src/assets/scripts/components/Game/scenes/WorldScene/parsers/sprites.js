@@ -126,15 +126,15 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.type]);
+    entitySprites[item.id] = new EntitySprite(textures[item.texture]);
   });
 
   world.obstacles.forEach((object) => {
     if (object.animated) {
-      const animationTextures = animations[object.type].map(t => textures[t]);
+      const animationTextures = animations[object.texture].map(t => textures[t]);
       entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.type]);
+      entitySprites[object.id] = new EntitySprite(textures[object.texture]);
     }
   });
 

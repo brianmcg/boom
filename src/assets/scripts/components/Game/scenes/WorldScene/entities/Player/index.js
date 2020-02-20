@@ -84,7 +84,6 @@ class Player extends AbstractActor {
       const weapon = new Weapon({
         player: this,
         ...weapons[type],
-        type,
       });
 
       weapon.on(Weapon.EVENTS.ARMING, () => {

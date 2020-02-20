@@ -42,7 +42,7 @@ class Weapon extends Entity {
    * @param  {Number}  options.ammo     The ammount of ammo the weapon has.
    * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
    * @param  {Number}  options.range    The range of the weapon.
-   * @param  {String}  options.type     The weapon type.
+   * @param  {String}  options.texture  The weapon texture.
    */
   constructor({
     player,
