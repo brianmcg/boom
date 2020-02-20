@@ -16,7 +16,7 @@ class Entity extends Body {
    * @param  {Boolean} options.animated Is the entity animated.
    * @param  {String}  options.texture  The texture of entity.
    */
-  constructor({ texture, animated, ...other }) {
+  constructor({ texture, animated = false, ...other }) {
     super(other);
     this.texture = texture;
     this.animated = animated;

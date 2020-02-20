@@ -98,7 +98,10 @@ class Player extends AbstractActor {
       };
     }, {});
 
-    this.keys = Object.values(Key.TYPES).map(type => ({ type, equiped: false }));
+    this.keys = Object.values(Key.TYPES).reduce((memo, type) => ({
+      ...memo,
+      [type]: false,
+    }), {});
 
     this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
@@ -501,8 +504,11 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount of health.
    */
   pickUpHealth(health) {
-    console.log(health);
-    this.pickup = health;
+    this.health += parseInt(health.amount, 10);
+
+    if (this.health > this.maxHealth) {
+      this.health = this.maxHealth;
+    }
   }
 
   /**
@@ -510,8 +516,7 @@ class Player extends AbstractActor {
    * @param  {String} type The type of key.
    */
   pickUpKey(key) {
-    console.log(key);
-    this.pickup = key;
+    this.keys[key.color] = true;
   }
 
   /**

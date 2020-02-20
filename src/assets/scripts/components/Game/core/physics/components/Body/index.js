@@ -77,7 +77,7 @@ class Body extends EventEmitter {
    * @member {String}
    */
   get name() {
-    return this.constructor.name;
+    return this.constructor.name.toLowerCase();
   }
 
   static get EVENTS() {

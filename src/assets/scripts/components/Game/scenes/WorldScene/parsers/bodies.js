@@ -85,7 +85,7 @@ export const createWorld = (data) => {
       height: TILE_SIZE,
       width: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
-      animated: obstacle.animated,
+      animated: !!obstacle.animated,
     }),
   ]), []);
 
