@@ -230,14 +230,16 @@ class Player extends AbstractActor {
       attack,
     } = this.actions;
 
+    const { CHAINGUN, PISTOL, SHOTGUN } = Weapon.TYPES;
+
     if (this.weapon.isUnarmed()) {
       this.armNextWeapon();
     } else if (armChaingun) {
-      this.selectNextWeapon(Weapon.TYPES.CHAINGUN);
+      this.selectNextWeapon(CHAINGUN);
     } else if (armPistol) {
-      this.selectNextWeapon(Weapon.TYPES.PISTOL);
+      this.selectNextWeapon(PISTOL);
     } else if (armShotgun) {
-      this.selectNextWeapon(Weapon.TYPES.SHOTGUN);
+      this.selectNextWeapon(SHOTGUN);
     } else if (attack) {
       this.useWeapon();
     }
@@ -394,7 +396,7 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectNextWeapon(nextWeaponType) {
-    if (this.currentWeaponType !== nextWeaponType) {
+    if (this.isEquiped(nextWeaponType) && this.currentWeaponType !== nextWeaponType) {
       this.nextWeaponType = nextWeaponType;
       this.weapon.setUnarming();
     }
@@ -522,8 +524,15 @@ class Player extends AbstractActor {
    * Pick up a weapon
    * @param  {String} type  the type of weapon.
    */
-  pickUpWeapon(weapon) {
-    const pickup = this.weapons[weapon.type];
+  pickUpWeapon(type) {
+    const weapon = this.weapons[type];
+
+    if (!this.isEquiped(type)) {
+      weapon.equiped = true;
+      this.selectNextWeapon(type);
+    } else {
+      weapon.ammo += weapon.maxAmmo / 2;
+    }
   }
 
   /**
@@ -548,6 +557,15 @@ class Player extends AbstractActor {
    */
   setAlive() {
     return this.setState(STATES.ALIVE);
+  }
+
+  /**
+   * Is the weapon equiped.
+   * @param  {String}  type The weapon type.
+   * @return {Boolean}
+   */
+  isEquiped(type) {
+    return this.weapons[type].equiped;
   }
 
   /**

@@ -8,6 +8,7 @@
       "rotAcceleration": 2,
       "weapons": {
         "pistol": {
+          "equiped": true,
           "idleTime": 20,
           "power": 3,
           "ammo": 90,
@@ -16,6 +17,7 @@
           "range": 1
         },
         "shotgun": {
+          "equiped": false,
           "idleTime": 300,
           "power": 15,
           "ammo": 40,
@@ -24,6 +26,7 @@
           "range": 2
         },
         "chaingun": {
+          "equiped": false,
           "idleTime": 0,
           "power": 4,
           "ammo": 200,
