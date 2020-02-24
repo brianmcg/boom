@@ -102,10 +102,12 @@ class WorldScene extends Scene {
   updateRunning(delta) {
     this.world.update(delta, {
       actions: {
-        moveForward: this.game.isKeyHeld(KEYS.UP_ARROW),
-        moveBackward: this.game.isKeyHeld(KEYS.DOWN_ARROW),
+        moveForward: this.game.isKeyHeld(KEYS.UP_ARROW) || this.game.isKeyHeld(KEYS.W),
+        moveBackward: this.game.isKeyHeld(KEYS.DOWN_ARROW) || this.game.isKeyHeld(KEYS.S),
         turnLeft: this.game.isKeyHeld(KEYS.LEFT_ARROW),
         turnRight: this.game.isKeyHeld(KEYS.RIGHT_ARROW),
+        strafeLeft: this.game.isKeyHeld(KEYS.A),
+        strafeRight: this.game.isKeyHeld(KEYS.D),
         use: this.game.isKeyPressed(KEYS.SPACE),
         lookDown: this.game.isKeyHeld(KEYS.COMMA),
         lookUp: this.game.isKeyHeld(KEYS.PERIOD),
@@ -115,7 +117,8 @@ class WorldScene extends Scene {
         armShotgun: this.game.isKeyPressed(KEYS.NUM_2),
         armChaingun: this.game.isKeyPressed(KEYS.NUM_3),
         strafe: this.game.isKeyHeld(KEYS.SHIFT),
-        moveX: this.game.getMouseX(),
+        angleChange: this.game.getMouseX(),
+        pitchChange: this.game.getMouseY(),
       },
     });
 

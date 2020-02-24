@@ -18,6 +18,10 @@ export const KEYS = {
   END: 'END',
   PERIOD: 'PERIOD',
   COMMA: 'COMMA',
+  W: 'W',
+  A: 'A',
+  S: 'S',
+  D: 'D',
 };
 
 const KEY_CODES = {
@@ -35,11 +39,15 @@ const KEY_CODES = {
   50: KEYS.NUM_2,
   51: KEYS.NUM_3,
   52: KEYS.NUM_4,
-  87: KEYS.PG_UP,
-  83: KEYS.PG_DOWN,
+  105: KEYS.PG_UP,
+  99: KEYS.PG_DOWN,
   97: KEYS.END,
   188: KEYS.COMMA,
   190: KEYS.PERIOD,
+  87: KEYS.W,
+  83: KEYS.S,
+  65: KEYS.A,
+  68: KEYS.D,
 };
 
 /**
