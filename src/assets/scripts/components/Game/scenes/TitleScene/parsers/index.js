@@ -1,5 +1,5 @@
 import { SCREEN } from 'game/constants/config';
-import { DARK_RED } from 'game/constants/colors';
+import { BLACK } from 'game/constants/colors';
 import { RectangleSprite } from 'game/core/graphics';
 import LogoSprite from '../sprites/LogoSprite';
 import SmokeSprite from '../sprites/SmokeSprite';
@@ -26,7 +26,7 @@ export const parse = ({ graphics }) => {
         background: new RectangleSprite({
           width: SCREEN.WIDTH,
           height: SCREEN.HEIGHT,
-          color: DARK_RED,
+          color: BLACK,
         }),
         smoke: new SmokeSprite(smokeTextures),
       },
