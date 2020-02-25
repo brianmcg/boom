@@ -63,6 +63,8 @@ class PlayerContainer extends Container {
    * Stop the container.
    */
   stop() {
+    super.stop();
+
     const { health, ammo } = this.sprites.hud;
 
     Object.values(health).forEach(sprite => sprite.hide());
@@ -73,6 +75,8 @@ class PlayerContainer extends Container {
    * Play the container.
    */
   play() {
+    super.play();
+
     const { health, ammo } = this.sprites.hud;
 
     Object.values(health).forEach(sprite => sprite.show());
