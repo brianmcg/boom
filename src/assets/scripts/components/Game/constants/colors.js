@@ -21,6 +21,12 @@ export const GREY = 0x010101;
 export const RED = 0xBC0000;
 
 /**
+ * Hex value for dark red.
+ * @type {Number}
+ */
+export const DARK_RED = 0x260000;
+
+/**
  * Hex value for white.
  * @type {Number}
  */

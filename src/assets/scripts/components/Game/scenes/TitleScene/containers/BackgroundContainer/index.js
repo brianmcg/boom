@@ -1,5 +1,4 @@
 import { Container, PixelateFilter } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
 
 /**
  * Class representing a background container.
@@ -7,20 +6,14 @@ import { SCREEN } from 'game/constants/config';
 class BackgroundContainer extends Container {
   /**
    * Creates a background container.
-   * @param  {SmokeSprite}  options.smoke  A smoke sprite.
-   * @param  {SparksSprite} options.sparks A sparks sprite.
-=   */
-  constructor({ smoke, sparks }) {
+   * @param  {SmokeSprite}     options.smoke         A smoke sprite.
+   * @param  {RectangleSprite} options.background A sparks sprite.
+   */
+  constructor({ smoke, background }) {
     super();
 
-    smoke.width = SCREEN.WIDTH;
-    smoke.height = SCREEN.HEIGHT;
-
-    sparks.width = SCREEN.WIDTH;
-    sparks.height = SCREEN.HEIGHT;
-
-    // this.addChild(smoke);
-    this.addChild(sparks);
+    this.addChild(background);
+    this.addChild(smoke);
 
     this.filters = [new PixelateFilter()];
     this.filters[0].enabled = false;

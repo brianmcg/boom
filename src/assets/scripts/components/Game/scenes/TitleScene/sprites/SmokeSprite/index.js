@@ -1,5 +1,5 @@
 import { AnimatedSprite } from 'game/core/graphics';
-import { RED } from 'game/constants/colors';
+import { SCREEN } from 'game/constants/config';
 
 /**
  * Class representing a smoke sprite.
@@ -8,16 +8,15 @@ class SmokeSprite extends AnimatedSprite {
   /**
    * Creates a smoke sprite.
    * @param  {Array}  textures      The sprite textures.
-   * @param  {Number} options.alpha The alpha value.
    */
-  constructor(textures = [], { alpha = 1 } = {}) {
+  constructor(textures = []) {
     super(textures, {
-      animationSpeed: 0.2,
-      tint: RED,
+      animationSpeed: 0.25,
       loop: true,
     });
 
-    this.alpha = alpha;
+    this.x = (SCREEN.WIDTH / 2) - this.width / 2;
+    this.y = SCREEN.HEIGHT - this.height;
   }
 }
 

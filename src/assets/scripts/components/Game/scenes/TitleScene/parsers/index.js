@@ -1,6 +1,8 @@
+import { SCREEN } from 'game/constants/config';
+import { DARK_RED } from 'game/constants/colors';
+import { RectangleSprite } from 'game/core/graphics';
 import LogoSprite from '../sprites/LogoSprite';
 import SmokeSprite from '../sprites/SmokeSprite';
-import SparksSprite from '../sprites/SparksSprite';
 
 /**
  * @module game/scenes/title-scene/parsers
@@ -16,14 +18,17 @@ export const parse = ({ graphics }) => {
   const { animations } = data;
 
   const smokeTextures = animations.smoke.map(image => textures[image]);
-  const sparksTextures = animations.sparks.map(image => textures[image]);
   const logoTextures = animations.logo.map(image => textures[image]);
 
   return {
     sprites: {
       background: {
+        background: new RectangleSprite({
+          width: SCREEN.WIDTH,
+          height: SCREEN.HEIGHT,
+          color: DARK_RED,
+        }),
         smoke: new SmokeSprite(smokeTextures),
-        sparks: new SparksSprite(sparksTextures),
       },
       foreground: {
         logo: new LogoSprite(logoTextures),
