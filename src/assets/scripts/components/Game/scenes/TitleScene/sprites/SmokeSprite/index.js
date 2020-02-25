@@ -11,7 +11,7 @@ class SmokeSprite extends AnimatedSprite {
    */
   constructor(textures = []) {
     super(textures, {
-      animationSpeed: 0.25,
+      animationSpeed: 0.3,
       loop: true,
     });
 
