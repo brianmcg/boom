@@ -10,7 +10,7 @@ class ForegroundContainer extends Container {
    * @param  {LogoSprite}         options.logo   The logo sprite.
    */
   constructor({ logo }) {
-    const ratio = logo.height / (SCREEN.HEIGHT / 1.5);
+    const ratio = logo.height / (SCREEN.HEIGHT / 2);
 
     super();
 

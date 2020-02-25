@@ -22,7 +22,7 @@ export const parse = ({ graphics }) => {
   return {
     sprites: {
       background: {
-        smoke: new SmokeSprite(smokeTextures, { alpha: 0.8 }),
+        smoke: new SmokeSprite(smokeTextures),
         sparks: new SparksSprite(sparksTextures),
       },
       foreground: {

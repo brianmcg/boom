@@ -1,13 +1,13 @@
 import { Container } from 'game/core/graphics';
 import { SCREEN, TIME_STEP } from 'game/constants/config';
 
-const FADE_IN_DIVISOR = 10;
-
-const STATIC_INTERVAL = 750;
-
-const FADE_OUT_DIVISOR = 25;
+const STATIC_INTERVAL = 100;
 
 const PADDING = 8;
+
+const MAX_RATIO = 1.15;
+
+const RATIO_DIVISOR = 0.0075;
 
 const STATES = {
   FADING_IN: 'prompt:fading:in',
@@ -29,11 +29,16 @@ class PromptContainer extends Container {
     sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
     sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
 
+    this.minHeight = sprite.height;
+    this.minWidth = sprite.width;
+
+    this.ratio = 1;
     this.timer = 0;
-    this.alphaValue = 0;
 
     this.addChild(sprite);
     this.setFadingIn();
+
+    this.sprite = sprite;
   }
 
   /**
@@ -61,10 +66,11 @@ class PromptContainer extends Container {
    * @param  {Number} delta     The delta time.
    */
   updateFadingIn(delta) {
-    this.alphaValue += delta / FADE_IN_DIVISOR;
+    this.ratio += delta * RATIO_DIVISOR;
 
-    if (this.alphaValue > 1) {
-      this.alphaValue = 1;
+    if (this.ratio >= MAX_RATIO) {
+      this.ratio = MAX_RATIO;
+
       this.setStatic();
     }
   }
@@ -87,10 +93,11 @@ class PromptContainer extends Container {
    * @param  {Number} delta     The delta time.
    */
   updateFadingOut(delta) {
-    this.alphaValue -= delta / FADE_OUT_DIVISOR;
+    this.ratio -= delta * RATIO_DIVISOR * 1.5;
 
-    if (this.alphaValue < 0) {
-      this.alphaValue = 0;
+    if (this.ratio <= 1) {
+      this.ratio = 1;
+
       this.setFadingIn();
     }
   }
@@ -99,7 +106,18 @@ class PromptContainer extends Container {
    * Animate the container.
    */
   animate() {
-    this.alpha = this.alphaValue;
+    const {
+      sprite,
+      minWidth,
+      minHeight,
+      ratio,
+    } = this;
+
+    sprite.width = minWidth * ratio;
+    sprite.height = minHeight * ratio;
+
+    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
+    sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
   }
 
   /**
