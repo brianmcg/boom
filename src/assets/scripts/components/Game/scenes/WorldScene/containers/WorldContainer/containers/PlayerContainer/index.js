@@ -58,6 +58,26 @@ class PlayerContainer extends Container {
 
     weapon.update(delta);
   }
+
+  /**
+   * Stop the container.
+   */
+  stop() {
+    const { health, ammo } = this.sprites.hud;
+
+    Object.values(health).forEach(sprite => sprite.hide());
+    Object.values(ammo).forEach(sprite => sprite.hide());
+  }
+
+  /**
+   * Play the container.
+   */
+  play() {
+    const { health, ammo } = this.sprites.hud;
+
+    Object.values(health).forEach(sprite => sprite.show());
+    Object.values(ammo).forEach(sprite => sprite.show());
+  }
 }
 
 export default PlayerContainer;

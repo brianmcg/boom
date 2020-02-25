@@ -31,6 +31,20 @@ class TextSprite extends BitmapText {
       this.tint = color;
     }
   }
+
+  /**
+   * Hide the sprite.
+   */
+  hide() {
+    this.visible = false;
+  }
+
+  /**
+   * Show the sprite.
+   */
+  show() {
+    this.visible = true;
+  }
 }
 
 export default TextSprite;

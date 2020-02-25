@@ -15,6 +15,20 @@ class Sprite extends PixiSprite {
 
     this.alpha = alpha;
   }
+
+  /**
+   * Hide the sprite.
+   */
+  hide() {
+    this.visible = false;
+  }
+
+  /**
+   * Show the sprite.
+   */
+  show() {
+    this.visible = true;
+  }
 }
 
 export default Sprite;
