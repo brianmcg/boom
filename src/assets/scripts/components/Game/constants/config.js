@@ -24,7 +24,7 @@ export const SOUND_ENABLED = false;
  * The size of mao tile.
  * @type {Number}
  */
-export const TILE_SIZE = 64;
+export const TILE_SIZE = 32;
 
 /**
  * The screen dimensions.

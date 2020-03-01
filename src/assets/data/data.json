@@ -2,9 +2,9 @@
   "numLevels": 2,
   "props": {
     "player": {
-      "acceleration": 0.25,
+      "acceleration": 0.12,
       "maxRotVelocity": 10,
-      "maxVelocity": 4,
+      "maxVelocity": 2,
       "rotAcceleration": 2,
       "weapons": {
         "pistol": {
@@ -52,25 +52,25 @@
       "amp": {
         "acceleration": 0.2,
         "maxVelocity": 2,
-        "attackDistance": 128,
+        "attackRange": 64,
         "attackTime": 1000,
         "hurtTime": 200,
-        "maxHealth": 10,
-        "attackPower": 10
+        "maxHealth": 5,
+        "attackPower": 5
       },
       "zombie": {
         "acceleration": 0.2,
         "maxVelocity": 1,
-        "attackDistance": 192,
+        "attackRange": 100,
         "attackTime": 250,
         "hurtTime": 500,
-        "maxHealth": 30,
-        "attackPower": 10
+        "maxHealth": 20,
+        "attackPower": 2
       },
       "mancubus": {
         "acceleration": 0.2,
         "maxVelocity": 1,
-        "attackDistance": 128,
+        "attackRange": 128,
         "attackTime": 1000,
         "hurtTime": 500,
         "maxHealth": 100,
@@ -78,7 +78,7 @@
       }
     },
     "door": {
-      "speed": 4,
+      "speed": 2,
       "interval": 2000
     },
     "world": {
