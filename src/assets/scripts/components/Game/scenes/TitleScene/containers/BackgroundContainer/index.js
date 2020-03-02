@@ -15,8 +15,8 @@ class BackgroundContainer extends Container {
     this.addChild(background);
     // this.addChild(smoke);
 
-    this.filters = [new PixelateFilter()];
-    this.filters[0].enabled = false;
+    // this.filters = [new PixelateFilter()];
+    // this.filters[0].enabled = false;
 
     // this.on('added', () => {
     //   this.filters[0].size = 20 * this.parent.scale.x;

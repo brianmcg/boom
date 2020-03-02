@@ -45,19 +45,19 @@ class LogoSprite extends AnimatedSprite {
     }
   }
 
-  /**
-   * Play the sprite.
-   */
-  play() {
-    this.visible = true;
-  }
+  // /**
+  //  * Play the sprite.
+  //  */
+  // play() {
+  //   this.visible = true;
+  // }
 
-  /**
-   * Stop the sprite.
-   */
-  stop() {
-    this.visible = false;
-  }
+  // /**
+  //  * Stop the sprite.
+  //  */
+  // stop() {
+  //   this.visible = false;
+  // }
 }
 
 export default LogoSprite;
