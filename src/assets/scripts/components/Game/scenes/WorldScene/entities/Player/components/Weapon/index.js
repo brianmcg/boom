@@ -86,6 +86,34 @@ class Weapon extends Entity {
   }
 
   /**
+   * Set the weapon  equiped value.
+   * @param {Boolean} value The boolean value.
+   */
+  setEquiped(value) {
+    this.equiped = value;
+  }
+
+  /**
+   * Is the weapon equiped.
+   * @return {Boolean} The boolean value.
+   */
+  isEquiped() {
+    return this.equiped;
+  }
+
+  /**
+   * Add ammo to the weapon.
+   * @param {Number} amount The amount of ammo to add.
+   */
+  addAmmo(amount = 0) {
+    this.ammo += amount;
+
+    if (this.ammo > this.maxAmmo) {
+      this.ammo = this.maxAmmo;
+    }
+  }
+
+  /**
    * Update the weapon.
    * @param  {Number} delta The delta time.
    */

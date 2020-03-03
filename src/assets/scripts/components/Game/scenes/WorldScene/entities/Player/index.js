@@ -522,16 +522,16 @@ class Player extends AbstractActor {
 
   /**
    * Pick up a weapon
-   * @param  {String} type  the type of weapon.
+   * @param  {Weapon} type  The weapon.
    */
-  pickUpWeapon(type) {
+  pickUpWeapon({ type }) {
     const weapon = this.weapons[type];
 
     if (!this.isEquiped(type)) {
-      weapon.equiped = true;
+      weapon.setEquiped(true);
       this.selectNextWeapon(type);
     } else {
-      weapon.ammo += weapon.maxAmmo / 2;
+      weapon.addAmmo(weapon.maxAmmo / 2);
     }
   }
 
