@@ -103,14 +103,21 @@ class Weapon extends Entity {
 
   /**
    * Add ammo to the weapon.
-   * @param {Number} amount The amount of ammo to add.
+   * @param  {Number}  amount The amount of ammo to add.
+   * @return {Boolean} Representing add ammo success.
    */
   addAmmo(amount = 0) {
-    this.ammo += amount;
+    if (this.ammo < this.maxAmmo) {
+      this.ammo += amount;
 
-    if (this.ammo > this.maxAmmo) {
-      this.ammo = this.maxAmmo;
+      if (this.ammo > this.maxAmmo) {
+        this.ammo = this.maxAmmo;
+      }
+
+      return true;
     }
+
+    return false;
   }
 
   /**

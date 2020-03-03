@@ -253,7 +253,11 @@ class Player extends AbstractActor {
   updateAliveInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
       if (body instanceof Item && isBodyCollision(this, body)) {
-        this.pickUp(body);
+        if (this.pickUp(body)) {
+          this.world.setItemFlash();
+          this.world.remove(body);
+          body.setFound();
+        }
       } else if (this.actions.use && body.use) {
         body.use();
       }
@@ -396,7 +400,9 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectNextWeapon(nextWeaponType) {
-    if (this.isEquiped(nextWeaponType) && this.currentWeaponType !== nextWeaponType) {
+    const weapon = this.weapons[nextWeaponType];
+
+    if (weapon.isEquiped() && this.currentWeaponType !== nextWeaponType) {
       this.nextWeaponType = nextWeaponType;
       this.weapon.setUnarming();
     }
@@ -469,55 +475,18 @@ class Player extends AbstractActor {
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
-    this.world.setItemFlash();
-    this.world.remove(item);
-
-    item.setFound();
-
     switch (item.name) {
       case Item.TYPES.AMMO:
-        this.pickUpAmmo(item);
-        break;
+        return this.pickUpAmmo(item);
       case Item.TYPES.HEALTH:
-        this.pickUpHealth(item);
-        break;
+        return this.pickUpHealth(item);
       case Item.TYPES.KEY:
-        this.pickUpKey(item);
-        break;
+        return this.pickUpKey(item);
       case Item.TYPES.WEAPON:
-        this.pickUpWeapon(item);
-        break;
+        return this.pickUpWeapon(item);
       default:
-        break;
+        return false;
     }
-  }
-
-  /**
-   * Pick up ammo.
-   * @param  {Number} amount The amount of ammo.
-   */
-  pickUpAmmo(ammo) {
-    this.pickup = ammo;
-  }
-
-  /**
-   * Pick up health.
-   * @param  {Number} amount The amount of health.
-   */
-  pickUpHealth(health) {
-    this.health += health.amount;
-
-    if (this.health > this.maxHealth) {
-      this.health = this.maxHealth;
-    }
-  }
-
-  /**
-   * Pick up key.
-   * @param  {String} type The type of key.
-   */
-  pickUpKey(key) {
-    this.keys[key.color] = true;
   }
 
   /**
@@ -527,12 +496,59 @@ class Player extends AbstractActor {
   pickUpWeapon({ type }) {
     const weapon = this.weapons[type];
 
-    if (!this.isEquiped(type)) {
+    if (!weapon.isEquiped()) {
       weapon.setEquiped(true);
       this.selectNextWeapon(type);
-    } else {
-      weapon.addAmmo(weapon.maxAmmo / 2);
+
+      return true;
     }
+
+    return this.pickUpAmmo({
+      type,
+      amount: Math.round(weapon.maxAmmo / 2),
+    });
+  }
+
+  /**
+   * Pick up ammo.
+   * @param  {Ammo} amount The amount of ammo.
+   */
+  pickUpAmmo({ type, amount }) {
+    const weapon = this.weapons[type];
+
+    if (weapon.isEquiped()) {
+      return weapon.addAmmo(amount);
+    }
+
+    return false;
+  }
+
+  /**
+   * Pick up health.
+   * @param  {Number} amount The amount of health.
+   */
+  pickUpHealth(health) {
+    if (this.health < this.maxHealth) {
+      this.health += health.amount;
+
+      if (this.health > this.maxHealth) {
+        this.health = this.maxHealth;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Pick up key.
+   * @param  {String} type The type of key.
+   */
+  pickUpKey(key) {
+    this.keys[key.color] = true;
+
+    return true;
   }
 
   /**
@@ -557,15 +573,6 @@ class Player extends AbstractActor {
    */
   setAlive() {
     return this.setState(STATES.ALIVE);
-  }
-
-  /**
-   * Is the weapon equiped.
-   * @param  {String}  type The weapon type.
-   * @return {Boolean}
-   */
-  isEquiped(type) {
-    return this.weapons[type].equiped;
   }
 
   /**

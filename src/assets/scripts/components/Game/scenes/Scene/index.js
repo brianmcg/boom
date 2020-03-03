@@ -55,7 +55,7 @@ class Scene extends Container {
     this.loadingContainer = new LoadingContainer();
     this.mainContainer = new MainContainer();
 
-    this.path = `${type}${type === TYPES.WORLD ? `/${index}` : ''}`;
+    this.path = `${type}${index ? `/${index}` : ''}`;
 
     this.assets = {
       sound: {
