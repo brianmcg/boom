@@ -321,6 +321,9 @@ export const castRay = ({ rayAngle, caster }) => {
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
+      side: caster.y < horizontalSector.y
+        ? horizontalSector.left
+        : horizontalSector.right,
       sector: horizontalSector,
     };
   }
@@ -342,6 +345,9 @@ export const castRay = ({ rayAngle, caster }) => {
     },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
+    side: caster.x < verticalSector.x
+      ? verticalSector.front
+      : verticalSector.back,
     sector: verticalSector,
   };
 };

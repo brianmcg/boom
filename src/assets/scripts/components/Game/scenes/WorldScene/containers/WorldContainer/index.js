@@ -14,7 +14,6 @@ import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
 const DEG_90 = DEG[90];
-const DEG_180 = DEG[180];
 const DEG_360 = DEG[360];
 const DEG_270 = DEG[270];
 const HALF_FOV = DEG[FOV / 2];
@@ -24,7 +23,6 @@ const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 
 let spriteAngle;
 let body;
-let sectorSide;
 let centerY;
 let dx;
 let dy;
@@ -98,6 +96,7 @@ class WorldContainer extends Container {
         isHorizontal,
         sector,
         endPoint,
+        side,
       } = castRay({
         caster: player,
         rayAngle,
@@ -108,42 +107,12 @@ class WorldContainer extends Container {
 
       // Update wall sprites.
       if (isHorizontal) {
-        if (sector.offset) {
-          sliceY = Math.floor(endPoint.x - sector.offset.x);
-        } else {
-          sliceY = Math.floor(endPoint.x);
-        }
-
-        if (!sector.offset && rayAngle < DEG_180) {
-          sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
-        } else {
-          sliceY %= TILE_SIZE;
-        }
-
-        if (player.y < sector.y) {
-          sectorSide = sector.left;
-        } else {
-          sectorSide = sector.right;
-        }
+        sliceY = sector.offset ? endPoint.x - sector.offset.x : endPoint.x;
       } else {
-        if (sector.offset) {
-          sliceY = Math.floor(endPoint.y - sector.offset.y);
-        } else {
-          sliceY = Math.floor(endPoint.y);
-        }
-
-        if (!sector.offset && rayAngle > DEG_90 && rayAngle < DEG_270) {
-          sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
-        } else {
-          sliceY %= TILE_SIZE;
-        }
-
-        if (player.x < sector.x) {
-          sectorSide = sector.front;
-        } else {
-          sectorSide = sector.back;
-        }
+        sliceY = sector.offset ? endPoint.y - sector.offset.y : endPoint.y;
       }
+
+      sliceY = TILE_SIZE - (Math.floor(sliceY) % TILE_SIZE) - 1;
 
       spriteAngle = (rayAngle - player.viewAngle + DEG_360) % DEG_360;
       correctedDistance = distance * COS[spriteAngle];
@@ -153,7 +122,7 @@ class WorldContainer extends Container {
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
-      sprite.changeTexture(sectorSide, sliceY);
+      sprite.changeTexture(side, sliceY);
       sprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
@@ -176,8 +145,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / TILE_SIZE);
           gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sectorSide = this.world.getSector(gridX, gridY).top;
-          sprite.changeTexture(sectorSide, pixelX, pixelY);
+          sprite.changeTexture(this.world.getSector(gridX, gridY).top, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -198,8 +166,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / TILE_SIZE);
           gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sectorSide = this.world.getSector(gridX, gridY).bottom;
-          sprite.changeTexture(sectorSide, pixelX, pixelY);
+          sprite.changeTexture(this.world.getSector(gridX, gridY).bottom, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
