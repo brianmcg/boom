@@ -1,5 +1,5 @@
-import { DynamicBody, DynamicFlatSector } from 'game/core/physics';
-import { TIME_STEP } from 'game/constants/config';
+import { DynamicBody, DynamicSector } from 'game/core/physics';
+import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const STATES = {
   OPENING: 'door:opening',
@@ -11,9 +11,9 @@ const STATES = {
 
 /**
  * Class representing a door.
- * @extends {DynamicFlatSector}
+ * @extends {DynamicSector}
  */
-class Door extends DynamicFlatSector {
+class Door extends DynamicSector {
   /**
    * Creates a door sector
    * @param  {Number} options.x       The x coordinate of the sector.
@@ -38,15 +38,13 @@ class Door extends DynamicFlatSector {
     this.key = key;
     this.interval = interval;
 
-    this.closed = {
-      x: this.x,
-      y: this.y,
-    };
+    if (axis === DynamicSector.AXES.X) {
+      this.offset.y = TILE_SIZE / 2;
+    }
 
-    this.opened = {
-      ...this.closed,
-      [axis]: this[axis] + this.length,
-    };
+    if (axis === DynamicSector.AXES.Y) {
+      this.offset.x = TILE_SIZE / 2;
+    }
 
     this.front = sides.front;
     this.left = sides.left;
@@ -97,10 +95,10 @@ class Door extends DynamicFlatSector {
   updateOpening(delta) {
     const { axis, speed } = this;
 
-    this[axis] += speed * delta;
+    this.offset[axis] += speed * delta;
 
-    if (this[axis] >= this.opened[axis]) {
-      this[axis] = this.opened[axis];
+    if (this.offset[axis] > TILE_SIZE) {
+      this.offset[axis] = TILE_SIZE;
       this.setOpened();
     }
   }
@@ -112,10 +110,10 @@ class Door extends DynamicFlatSector {
   updateClosing(delta) {
     const { axis, speed } = this;
 
-    this[axis] -= speed * delta;
+    this.offset[axis] -= speed * delta;
 
-    if (this[axis] <= this.closed[axis]) {
-      this[axis] = this.closed[axis];
+    if (this.offset[axis] < 0) {
+      this.offset[axis] = 0;
       this.setClosed();
     }
   }
@@ -157,6 +155,7 @@ class Door extends DynamicFlatSector {
     const force = this.speed * 2;
 
     if (this.setState(STATES.OPENED)) {
+      this.blocking = false;
       player.shake(force);
       this.timer = this.interval;
     }
@@ -166,6 +165,7 @@ class Door extends DynamicFlatSector {
    * Set the door to the closing state.
    */
   setClosing() {
+    this.blocking = true;
     this.setState(STATES.CLOSING);
   }
 
@@ -220,15 +220,6 @@ class Door extends DynamicFlatSector {
     }
 
     return stateChanged;
-  }
-
-  /**
-   * The door offset
-   * @return {Number}
-   */
-  get offset() {
-    const { closed, axis } = this;
-    return this[axis] - closed[axis];
   }
 }
 

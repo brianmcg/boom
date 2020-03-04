@@ -1,9 +1,14 @@
-import FlatSector from '../FlatSector';
+import Sector from '../Sector';
+
+const AXES = {
+  X: 'x',
+  Y: 'y',
+};
 
 /**
  * Class representing a dynamic flat sector.
  */
-class DynamicFlatSector extends FlatSector {
+class DynamicSector extends Sector {
   /**
    * @param  {Number}  options.x         The x coordinate of the sector.
    * @param  {Number}  options.y         The y coordinate of the sector
@@ -14,10 +19,24 @@ class DynamicFlatSector extends FlatSector {
    * @param  {String}  options.axis      The axis of the sector.
    * @param  {Number}  options.speed     The speed of the sector.
    */
-  constructor({ speed, ...other }) {
+  constructor({ speed, axis, ...other }) {
     super(other);
+
     this.speed = speed;
+    this.axis = axis;
+
+    this.offset = {
+      x: 0,
+      y: 0,
+    };
+  }
+
+  /**
+   * The axes class property.
+   */
+  static get AXES() {
+    return AXES;
   }
 }
 
-export default DynamicFlatSector;
+export default DynamicSector;

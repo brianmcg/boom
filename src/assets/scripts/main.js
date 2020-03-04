@@ -17,7 +17,8 @@ game.on(Game.EVENTS.STOPPED, () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.appendChild(manual.view);
+  document.body.appendChild(game.view);
+  game.start();
 });
 
 window.game = game;

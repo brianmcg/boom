@@ -95,7 +95,6 @@ class WorldContainer extends Container {
       const {
         distance,
         encounteredBodies,
-        isDoor,
         isHorizontal,
         sector,
         endPoint,
@@ -109,13 +108,13 @@ class WorldContainer extends Container {
 
       // Update wall sprites.
       if (isHorizontal) {
-        if (isDoor) {
-          sliceY = Math.floor(endPoint.x - sector.offset);
+        if (sector.offset) {
+          sliceY = Math.floor(endPoint.x - sector.offset.x);
         } else {
           sliceY = Math.floor(endPoint.x);
         }
 
-        if (!isDoor && rayAngle < DEG_180) {
+        if (!sector.offset && rayAngle < DEG_180) {
           sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
         } else {
           sliceY %= TILE_SIZE;
@@ -127,13 +126,13 @@ class WorldContainer extends Container {
           sectorSide = sector.right;
         }
       } else {
-        if (isDoor) {
-          sliceY = Math.floor(endPoint.y - sector.offset);
+        if (sector.offset) {
+          sliceY = Math.floor(endPoint.y - sector.offset.y);
         } else {
           sliceY = Math.floor(endPoint.y);
         }
 
-        if (!isDoor && rayAngle > DEG_90 && rayAngle < DEG_270) {
+        if (!sector.offset && rayAngle > DEG_90 && rayAngle < DEG_270) {
           sliceY = TILE_SIZE - (sliceY % TILE_SIZE) - 1;
         } else {
           sliceY %= TILE_SIZE;

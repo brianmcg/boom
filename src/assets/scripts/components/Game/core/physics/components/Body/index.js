@@ -80,6 +80,9 @@ class Body extends EventEmitter {
     return this.constructor.name.toLowerCase();
   }
 
+  /**
+   * The events class property.
+   */
   static get EVENTS() {
     return EVENTS;
   }

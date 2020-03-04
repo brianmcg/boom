@@ -5,7 +5,6 @@ import {
   COS,
   SIN,
 } from './constants';
-import DynamicFlatSector from './components/DynamicFlatSector';
 
 const DEG_90 = DEG[90];
 const DEG_180 = DEG[180];
@@ -26,10 +25,9 @@ let xGridIndex;
 let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
-let isVerticalDoor;
-let isHorizontalDoor;
 let horizontalSector;
 let verticalSector;
+let offsetRatio;
 
 const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
@@ -205,12 +203,12 @@ export const castRay = ({ rayAngle, caster }) => {
       horizontalSector = world.getSector(xGridIndex, yGridIndex);
 
       if (horizontalSector.blocking) {
-        isHorizontalDoor = horizontalSector instanceof DynamicFlatSector;
-        if (isHorizontalDoor) {
-          xOffsetDist = distToNextXIntersection / 2;
-          yOffsetDist = distToNextHorizontalGrid / 2;
+        if (horizontalSector.axis) {
+          offsetRatio = TILE_SIZE / horizontalSector.offset.y;
+          xOffsetDist = distToNextXIntersection / offsetRatio;
+          yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
-          if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalSector.offset) {
+          if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalSector.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
             distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
@@ -276,13 +274,12 @@ export const castRay = ({ rayAngle, caster }) => {
       verticalSector = world.getSector(xGridIndex, yGridIndex);
 
       if (verticalSector.blocking) {
-        isVerticalDoor = verticalSector instanceof DynamicFlatSector;
+        if (verticalSector.axis) {
+          offsetRatio = TILE_SIZE / verticalSector.offset.x;
+          yOffsetDist = distToNextYIntersection / offsetRatio;
+          xOffsetDist = distToNextVerticalGrid / offsetRatio;
 
-        if (isVerticalDoor) {
-          yOffsetDist = distToNextYIntersection / 2;
-          xOffsetDist = distToNextVerticalGrid / 2;
-
-          if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalSector.offset) {
+          if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalSector.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
             distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
@@ -323,7 +320,6 @@ export const castRay = ({ rayAngle, caster }) => {
       },
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
-      isDoor: isHorizontalDoor,
       isHorizontal: true,
       sector: horizontalSector,
     };
@@ -346,7 +342,6 @@ export const castRay = ({ rayAngle, caster }) => {
     },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
-    isDoor: isVerticalDoor,
     sector: verticalSector,
   };
 };

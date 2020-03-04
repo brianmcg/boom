@@ -2,7 +2,7 @@ import Body from './components/Body';
 import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Sector from './components/Sector';
-import DynamicFlatSector from './components/DynamicFlatSector';
+import DynamicSector from './components/DynamicSector';
 import {
   distanceBetween,
   castRay,
@@ -41,7 +41,7 @@ export {
   /**
    * The flat sector component.
    */
-  DynamicFlatSector,
+  DynamicSector,
   /**
    * The cosine table.
    */

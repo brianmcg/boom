@@ -84,7 +84,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.show({ type: Scene.TYPES.TITLE });
+    this.show({ type: Scene.TYPES.WORLD, index: 1 });
 
     this.emit(EVENTS.STARTED);
   }
