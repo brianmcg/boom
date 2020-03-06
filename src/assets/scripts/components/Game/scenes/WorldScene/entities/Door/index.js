@@ -152,7 +152,7 @@ class Door extends DynamicSector {
    */
   setOpened() {
     const { player } = this.world;
-    const force = this.speed * 2;
+    const force = this.speed * 1.5;
 
     if (this.setState(STATES.OPENED)) {
       this.blocking = false;
