@@ -11,6 +11,7 @@ import Item from '../Item';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Key from '../Key';
+import Message from './components/Message';
 
 const DEG_360 = DEG[360];
 
@@ -27,6 +28,8 @@ const STATES = {
 const EVENTS = {
   DEATH: 'player:death',
   ARM_WEAPON: 'player:arm:weapon',
+  MESSAGE_ADDED: 'player:message:added',
+  MESSAGE_REMOVED: 'player:message:removed',
 };
 
 /**
@@ -73,7 +76,7 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
-    this.heightVelocity = 2;
+    this.heightVelocity = TILE_SIZE / 32;
     this.currentWeaponType = currentWeaponType;
     this.nextWeaponType = null;
     this.actions = {};
@@ -103,6 +106,8 @@ class Player extends AbstractActor {
       [type]: false,
     }), {});
 
+    this.messages = [];
+
     this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
     this.setAlive();
@@ -128,6 +133,8 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
+    this.updateMessages(delta);
+
     switch (this.state) {
       case STATES.ALIVE:
         this.updateAlive(delta);
@@ -137,6 +144,21 @@ class Player extends AbstractActor {
         break;
       default:
         break;
+    }
+  }
+
+  /**
+   * Update the messages.
+   * @param  {Number} delta The delta time.
+   */
+  updateMessages(delta) {
+    const initialLength = this.messages.length;
+
+    this.messages.forEach(message => message.update(delta));
+    this.messages = this.messages.filter(message => message.timer);
+
+    if (this.messages.length < initialLength) {
+      this.emit(EVENTS.MESSAGE_REMOVED);
     }
   }
 
@@ -184,7 +206,7 @@ class Player extends AbstractActor {
    */
   updateAliveVision(delta) {
     if (this.vision < 1) {
-      this.vision += 0.04 * delta;
+      this.vision += 0.02 * delta;
 
       if (this.vision > 1) {
         this.vision = 1;
@@ -363,7 +385,7 @@ class Player extends AbstractActor {
    */
   updateDyingVision(delta) {
     if (this.vision < 1) {
-      this.vision += 0.1 * delta;
+      this.vision += 0.01 * delta;
 
       if (this.vision > 1) {
         this.vision = 1;
@@ -393,6 +415,15 @@ class Player extends AbstractActor {
    */
   updateDyingWeapon(delta) {
     this.weapon.update(delta);
+  }
+
+  /**
+   * Add a player message.
+   * @param {String} text The text of the message.
+   */
+  addMessage(text) {
+    this.messages = [new Message(text), ...this.messages];
+    this.emit(EVENTS.MESSAGE_ADDED);
   }
 
   /**
@@ -458,9 +489,10 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount to hurt the player.
    */
   hurt(amount) {
+    this.vision = 0.6;
     this.health -= amount;
-    this.camera.setShake(amount * 0.3);
-    this.camera.setRecoil(amount * 2, {
+    this.camera.setShake(amount);
+    this.camera.setRecoil(amount * 6, {
       down: true,
     });
 

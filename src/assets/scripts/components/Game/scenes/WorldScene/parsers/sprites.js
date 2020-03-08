@@ -14,6 +14,7 @@ import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
+import HudKeySprite from '../sprites/HudKeySprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -213,10 +214,9 @@ const createReviewSprites = (text) => {
   };
 };
 
-const createHudSprites = (textures) => {
+const createHudSprites = (world, textures) => {
   const health = {
-    icon: new Sprite(textures.health, {
-    }),
+    icon: new Sprite(textures.health),
     amount: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '100',
@@ -225,14 +225,32 @@ const createHudSprites = (textures) => {
   };
 
   const ammo = {
-    icon: new Sprite(textures.ammo, {
-    }),
+    icon: new Sprite(textures.ammo),
     amount: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '100',
       color: WHITE,
     }),
   };
+
+  const keys = world.items.reduce((memo, item) => {
+    if (item.color) {
+      return {
+        ...memo,
+        [item.color]: new HudKeySprite(textures[item.texture], {
+          key: item,
+        }),
+      };
+    }
+
+    return memo;
+  }, {});
+
+  const message = new TextSprite({
+    font: FONT_SIZES.SMALL,
+    text: '',
+    color: RED,
+  });
 
   const foreground = new RectangleSprite({
     width: SCREEN.WIDTH,
@@ -245,6 +263,8 @@ const createHudSprites = (textures) => {
     foreground,
     health,
     ammo,
+    keys,
+    message,
   };
 };
 
@@ -277,7 +297,7 @@ const createWorldSprites = (world, resources) => {
     world,
   });
 
-  const hud = createHudSprites(textures);
+  const hud = createHudSprites(world, textures);
 
   return {
     player: {

@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import { DynamicBody, DynamicSector } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
@@ -60,6 +61,22 @@ class Door extends DynamicSector {
    * Use the door.
    */
   use() {
+    const { player } = this.world;
+
+    if (this.key) {
+      if (player.keys[this.key]) {
+        this.open();
+      } else {
+        const color = translate(`world.color.${this.key}`);
+        const message = translate('world.door.locked').replace('COLOR', color);
+        player.addMessage(message);
+      }
+    } else {
+      this.open();
+    }
+  }
+
+  open() {
     if (this.isClosed()) {
       this.setOpening();
     }

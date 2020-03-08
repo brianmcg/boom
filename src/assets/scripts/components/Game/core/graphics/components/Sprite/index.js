@@ -29,6 +29,38 @@ class Sprite extends PixiSprite {
   show() {
     this.visible = true;
   }
+
+  /**
+   * The frame width.
+   * @return {Number}
+   */
+  get frameWidth() {
+    return this.texture.frame.width;
+  }
+
+  /**
+   * The frame height.
+   * @return {Number}
+   */
+  get frameHeight() {
+    return this.texture.frame.height;
+  }
+
+  /**
+   * The frame x coordinate.
+   * @return {Number}
+   */
+  get frameX() {
+    return this.x - ((this.width - this.frameWidth + 1) / 2);
+  }
+
+  /**
+   * The frame y coordinate.
+   * @return {Number}
+   */
+  get frameY() {
+    return this.y - (this.height - this.frameHeight) - 1;
+  }
 }
 
 export default Sprite;

@@ -7,6 +7,10 @@ const TYPES = {
   WEAPON: 'weapon',
 };
 
+const EVENTS = {
+  FOUND: 'item:found',
+};
+
 /**
  * Class representing an item.
  * @extends {Entity}
@@ -27,6 +31,7 @@ class Item extends Entity {
   }
 
   setFound() {
+    this.emit(EVENTS.FOUND);
     this.found = true;
   }
 
@@ -36,6 +41,14 @@ class Item extends Entity {
    */
   static get TYPES() {
     return TYPES;
+  }
+
+  /**
+   * The item events.
+   * @static
+   */
+  static get EVENTS() {
+    return EVENTS;
   }
 }
 
