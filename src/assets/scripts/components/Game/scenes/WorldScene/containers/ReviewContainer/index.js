@@ -199,7 +199,6 @@ class ReviewContainer extends Container {
    * @param {Number} options.timeTaken     The time since the world was created.
    */
   setStatistics({
-    levelNumber,
     enemiesKilled,
     enemiesTotal,
     itemsFound,
@@ -209,7 +208,6 @@ class ReviewContainer extends Container {
     const { title, stats } = this.sprites;
     const { enemies, items, time } = stats;
 
-    title.text = title.text.replace('LEVEL_NUMBER', levelNumber);
     title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
 
     time.value.text = formatMS(timeTaken);

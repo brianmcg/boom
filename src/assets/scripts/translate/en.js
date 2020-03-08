@@ -1,41 +1,121 @@
 export default {
-  'manual.action.forward': 'forward',
-  'manual.input.up': 'up arrow',
-  'manual.action.backward': 'backward',
-  'manual.input.down': 'down arrow',
-  'manual.action.left': 'left',
-  'manual.input.left': 'left arrow',
-  'manual.action.right': 'right',
-  'manual.input.right': 'right arrow',
-  'manual.action.use': 'use',
-  'manual.input.space': 'space',
-  'manual.action.attack': 'attack',
-  'manual.input.ctrl': 'ctrl',
-  'manual.action.crouch': 'crouch',
-  'manual.input.shift': 'shift',
-  'manual.action.strafe': 'strafe',
-  'manual.input.alt': 'alt',
-  'manual.action.menu': 'menu',
-  'manual.input.escape': 'escape',
-  'manual.title': 'Boom Controls',
-  'manual.play': 'click to play',
-  'scene.menu.continue': 'Continue',
-  'scene.menu.restart': 'Restart',
-  'scene.menu.quit': 'Quit',
-  'scene.prompt.continue': 'Press space to continue',
-  'title.prompt.start': 'Press space to start',
-  'world.review.title': 'Level LEVEL_NUMBER',
-  'world.review.enemies': 'Kills',
-  'world.review.items': 'Items',
-  'world.review.time': 'Time',
-  'world.door.locked': 'COLOR key required',
-  'world.color.yellow': 'Yellow',
-  'world.color.blue': 'Blue',
-  'world.color.red': 'Red',
-  'credits.scroll.end': 'The End',
-  'credits.scroll.coding': 'Coding',
-  'credits.scroll.graphics': 'Graphics',
-  'credits.scroll.sound': 'Sound',
-  'credits.scroll.screenplay': 'Script',
-  'credits.scroll.author': 'Brian McGrath',
+  'manual.action.forward': {
+    text: 'forward',
+  },
+  'manual.input.up': {
+    text: 'up arrow',
+  },
+  'manual.action.backward': {
+    text: 'backward',
+  },
+  'manual.input.down': {
+    text: 'down arrow',
+  },
+  'manual.action.left': {
+    text: 'left',
+  },
+  'manual.input.left': {
+    text: 'left arrow',
+  },
+  'manual.action.right': {
+    text: 'right',
+  },
+  'manual.input.right': {
+    text: 'right arrow',
+  },
+  'manual.action.use': {
+    text: 'use',
+  },
+  'manual.input.space': {
+    text: 'space',
+  },
+  'manual.action.attack': {
+    text: 'attack',
+  },
+  'manual.input.ctrl': {
+    text: 'ctrl',
+  },
+  'manual.action.crouch': {
+    text: 'crouch',
+  },
+  'manual.input.shift': {
+    text: 'shift',
+  },
+  'manual.action.strafe': {
+    text: 'strafe',
+  },
+  'manual.input.alt': {
+    text: 'alt',
+  },
+  'manual.action.menu': {
+    text: 'menu',
+  },
+  'manual.input.escape': {
+    text: 'escape',
+  },
+  'manual.title': {
+    text: 'Boom Controls',
+  },
+  'manual.play': {
+    text: 'click to play',
+  },
+  'scene.menu.continue': {
+    text: 'Continue',
+  },
+  'scene.menu.restart': {
+    text: 'Restart',
+  },
+  'scene.menu.quit': {
+    text: 'Quit',
+  },
+  'scene.prompt.continue': {
+    text: 'Press space to continue',
+  },
+  'title.prompt.start': {
+    text: 'Press space to start',
+  },
+  'world.review.title': {
+    text: 'Level INDEX',
+    keys: ['index'],
+  },
+  'world.review.enemies': {
+    text: 'Kills',
+  },
+  'world.review.items': {
+    text: 'Items',
+  },
+  'world.review.time': {
+    text: 'Time',
+  },
+  'world.door.locked': {
+    text: 'COLOR key required',
+    keys: ['color'],
+  },
+  'world.color.yellow': {
+    text: 'Yellow',
+  },
+  'world.color.blue': {
+    text: 'Blue',
+  },
+  'world.color.red': {
+    text: 'Red',
+  },
+  'credits.scroll.end': {
+    text: 'The End',
+  },
+  'credits.scroll.coding': {
+    text: 'Coding',
+  },
+  'credits.scroll.graphics': {
+    text: 'Graphics',
+  },
+  'credits.scroll.sound': {
+    text: 'Sound',
+  },
+  'credits.scroll.screenplay': {
+    text: 'Script',
+  },
+  'credits.scroll.author': {
+    text: 'Brian McGrath',
+  },
 };

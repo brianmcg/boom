@@ -132,7 +132,6 @@ class World extends PhysicsWorld {
    */
   getStatistics() {
     return {
-      levelNumber: this.scene.index,
       timeTaken: performance.now() - this.startTime,
       itemsFound: this.items.filter(item => item.found).length,
       itemsTotal: this.items.length,
@@ -141,6 +140,10 @@ class World extends PhysicsWorld {
     };
   }
 
+  /**
+   * The world properties.
+   * @return {Object}
+   */
   get props() {
     return { player: this.player.props };
   }

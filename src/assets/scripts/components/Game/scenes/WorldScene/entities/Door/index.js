@@ -67,9 +67,9 @@ class Door extends DynamicSector {
       if (player.keys[this.key]) {
         this.open();
       } else {
-        const color = translate(`world.color.${this.key}`);
-        const message = translate('world.door.locked').replace('COLOR', color);
-        player.addMessage(message);
+        player.addMessage(translate('world.door.locked', {
+          color: translate(`world.color.${this.key}`),
+        }));
       }
     } else {
       this.open();

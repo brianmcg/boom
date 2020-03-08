@@ -55,7 +55,9 @@ class WorldScene extends Scene {
   create({ graphics, data }) {
     const text = {
       review: {
-        title: translate('world.review.title'),
+        title: translate('world.review.title', {
+          index: this.index,
+        }),
         enemies: translate('world.review.enemies'),
         items: translate('world.review.items'),
         time: translate('world.review.time'),
