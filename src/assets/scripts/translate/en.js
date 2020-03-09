@@ -74,7 +74,7 @@ export default {
   'title.prompt.start': {
     text: 'Press space to start',
   },
-  'world.review.title': {
+  'world.title': {
     text: 'Level INDEX',
     keys: ['index'],
   },
