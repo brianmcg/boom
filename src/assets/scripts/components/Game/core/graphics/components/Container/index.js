@@ -90,6 +90,14 @@ class Container extends PixiContainer {
     this.playableChildren.forEach(child => child.autoPlay && child.stop());
   }
 
+  show() {
+    this.visible = true;
+  }
+
+  hide() {
+    this.visible = false;
+  }
+
   /**
    * Check id the container should be updated.
    * @return {Boolean} Should container be updated.

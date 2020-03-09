@@ -215,23 +215,21 @@ const createReviewSprites = (text) => {
 };
 
 const createHudSprites = (world, textures) => {
-  const health = {
-    icon: new Sprite(textures.health),
-    amount: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
-      text: '100',
-      color: WHITE,
-    }),
-  };
+  const healthIcon = new Sprite(textures.health);
 
-  const ammo = {
-    icon: new Sprite(textures.ammo),
-    amount: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
-      text: '100',
-      color: WHITE,
-    }),
-  };
+  const healthAmount = new TextSprite({
+    font: FONT_SIZES.MEDIUM,
+    text: '100',
+    color: WHITE,
+  });
+
+  const ammoIcon = new Sprite(textures.ammo);
+
+  const ammoAmount = new TextSprite({
+    font: FONT_SIZES.MEDIUM,
+    text: '100',
+    color: WHITE,
+  });
 
   const keys = world.items.reduce((memo, item) => {
     if (item.color) {
@@ -261,8 +259,10 @@ const createHudSprites = (world, textures) => {
 
   return {
     foreground,
-    health,
-    ammo,
+    healthIcon,
+    healthAmount,
+    ammoIcon,
+    ammoAmount,
     keys,
     message,
   };

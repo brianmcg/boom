@@ -1,5 +1,6 @@
 import { EventEmitter } from 'game/core/graphics';
 import { TILE_SIZE } from 'game/constants/config';
+import { isBodyCollision, isRayCollision, castRay } from '../../helpers';
 
 const EVENTS = {
   ADDED: 'body:added',
@@ -41,6 +42,33 @@ class Body extends EventEmitter {
     this.length = length;
     this.height = height;
     this.blocking = blocking;
+  }
+
+  /**
+   * Check for collision with another body.
+   * @param  {Body}    body The other body.
+   * @return {Boolean}      Collision has occurred.
+   */
+  bodyCollision(body) {
+    return isBodyCollision(this, body);
+  }
+
+  /**
+   * Check for collision with a ray.
+   * @param  {Object} ray The ray.
+   * @return {Boolean}    Collision has occurred.
+   */
+  rayCollision(ray) {
+    return isRayCollision(this, ray);
+  }
+
+  /**
+   * Cast a ray.
+   * @param  {Number} rayAngle  Optional ray angle.
+   * @return {Ray}              The resulting ray.
+   */
+  castRay(rayAngle) {
+    return castRay(this, rayAngle);
   }
 
   /**

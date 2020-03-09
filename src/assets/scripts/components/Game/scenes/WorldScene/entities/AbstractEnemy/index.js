@@ -1,5 +1,5 @@
 import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
-import { distanceBetween, atan2, castRay } from 'game/core/physics';
+import { distanceBetween, atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -98,7 +98,7 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    */
   updateIdle() {
-    const { distance } = castRay({ caster: this });
+    const { distance } = this.castRay();
     const { player } = this.world;
 
     if (player.isAlive() && distance > this.distanceToPlayer) {

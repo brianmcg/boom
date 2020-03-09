@@ -5,7 +5,6 @@ import {
   TAN,
   SIN,
   atan2,
-  castRay,
 } from 'game/core/physics';
 import { SCREEN, TILE_SIZE, FOV } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
@@ -97,10 +96,7 @@ class WorldContainer extends Container {
         sector,
         endPoint,
         side,
-      } = castRay({
-        caster: player,
-        rayAngle,
-      });
+      } = player.castRay(rayAngle);
 
       // Update total encountered bodies.
       Object.assign(totalEncounteredBodies, encounteredBodies);

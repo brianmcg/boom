@@ -54,7 +54,7 @@
         "maxVelocity": 2,
         "attackRange": 64,
         "attackTime": 1000,
-        "hurtTime": 200,
+        "hurtTime": 400,
         "maxHealth": 5,
         "attackPower": 5
       },

@@ -100,7 +100,7 @@ export const isBodyCollision = (bodyA, bodyB) => {
  * @param  {Object}  body       The body.
  * @return {Boolean}            Represents whether a collision has occured.
  */
-export const isRayCollision = (startPoint, endPoint, body) => {
+export const isRayCollision = (body, { startPoint, endPoint }) => {
   const {
     x,
     y,
@@ -137,7 +137,7 @@ export const isRayCollision = (startPoint, endPoint, body) => {
  * @param  {DynamicEntity}  options.caster    The caster entity.
  * @return {Object}                           The cast result.
  */
-export const castRay = ({ rayAngle, caster }) => {
+export const castRay = (caster, rayAngle) => {
   const {
     id,
     x,

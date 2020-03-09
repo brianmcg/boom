@@ -1,11 +1,5 @@
 import translate from 'root/translate';
-import {
-  Body,
-  DEG,
-  castRay,
-  isBodyCollision,
-  isRayCollision,
-} from 'game/core/physics';
+import { Body, DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
@@ -287,7 +281,7 @@ class Player extends AbstractActor {
   }
 
   updateItemInteraction(item) {
-    if (isBodyCollision(this, item)) {
+    if (this.bodyCollision(item)) {
       if (item.setColliding()) {
         if (this.pickUp(item)) {
           this.world.setItemFlash();
@@ -479,12 +473,12 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      const { startPoint, endPoint } = castRay({ caster: this });
+      const ray = this.castRay();
       const { enemies } = this.world;
       const { power, range, recoil } = this.weapon;
 
       const collisions = enemies.reduce((memo, enemy) => {
-        if (!enemy.isDead() && isRayCollision(startPoint, endPoint, enemy)) {
+        if (!enemy.isDead() && enemy.rayCollision(ray)) {
           return [...memo, enemy];
         }
 

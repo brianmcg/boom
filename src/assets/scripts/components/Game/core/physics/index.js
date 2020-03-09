@@ -3,13 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Sector from './components/Sector';
 import DynamicSector from './components/DynamicSector';
-import {
-  distanceBetween,
-  castRay,
-  atan2,
-  isRayCollision,
-  isBodyCollision,
-} from './helpers';
+import { distanceBetween, atan2 } from './helpers';
 import {
   COS,
   SIN,
@@ -66,16 +60,4 @@ export {
    * The distance function.
    */
   distanceBetween,
-  /**
-   * The cast ray function.
-   */
-  castRay,
-  /**
-   * The is ray collision function,
-   */
-  isRayCollision,
-  /**
-   * The is body collision function.
-   */
-  isBodyCollision,
 };

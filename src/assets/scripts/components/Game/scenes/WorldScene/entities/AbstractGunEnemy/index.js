@@ -1,4 +1,3 @@
-import { castRay, isRayCollision } from 'game/core/physics';
 import AbstractEnemy from '../AbstractEnemy';
 
 /**
@@ -33,12 +32,9 @@ class AbstractGunEnemy extends AbstractEnemy {
    */
   attack() {
     const { player } = this.world;
+    const ray = this.castRay();
 
-    const { startPoint, endPoint } = castRay({
-      caster: this,
-    });
-
-    if (isRayCollision(startPoint, endPoint, player)) {
+    if (player.rayCollision(ray)) {
       player.hurt(this.attackPower);
     }
   }
