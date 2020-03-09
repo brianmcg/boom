@@ -45,6 +45,10 @@ class WorldScene extends Scene {
     }];
 
     this.promptOption = translate('scene.prompt.continue');
+
+    this.title = translate('world.title', {
+      index: this.index,
+    });
   }
 
   /**
@@ -55,7 +59,7 @@ class WorldScene extends Scene {
   create({ graphics, data }) {
     const text = {
       review: {
-        title: translate('world.review.title', {
+        title: translate('world.title', {
           index: this.index,
         }),
         enemies: translate('world.review.enemies'),
@@ -155,6 +159,14 @@ class WorldScene extends Scene {
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
+  }
+
+  /**
+   * Set the state to running;
+   */
+  setRunning() {
+    super.setRunning();
+    this.world.player.addMessage(this.title);
   }
 
   /**
