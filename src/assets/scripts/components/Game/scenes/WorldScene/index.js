@@ -166,7 +166,11 @@ class WorldScene extends Scene {
    */
   setRunning() {
     super.setRunning();
-    this.world.player.addMessage(this.title);
+
+    if (!this.started) {
+      this.started = true;
+      this.world.player.addMessage(this.title);
+    }
   }
 
   /**
