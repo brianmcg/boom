@@ -1,5 +1,5 @@
 import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
-import { distanceBetween, atan2 } from 'game/core/physics';
+import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -68,7 +68,7 @@ class AbstractEnemy extends AbstractActor {
 
     const { player } = this.world;
 
-    this.distanceToPlayer = distanceBetween(this, player);
+    this.distanceToPlayer = this.distanceTo(player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       this.face(player);

@@ -1,6 +1,11 @@
 import { EventEmitter } from 'game/core/graphics';
 import { TILE_SIZE } from 'game/constants/config';
-import { isBodyCollision, isRayCollision, castRay } from '../../helpers';
+import {
+  isBodyCollision,
+  isRayCollision,
+  castRay,
+  distanceBetween
+} from '../../helpers';
 
 const EVENTS = {
   ADDED: 'body:added',
@@ -69,6 +74,15 @@ class Body extends EventEmitter {
    */
   castRay(rayAngle) {
     return castRay(this, rayAngle);
+  }
+
+  /**
+   * Get the distance to another body.
+   * @param  {Body} body The other body.
+   * @return {Boolean}   The distance result.
+   */
+  distanceTo(body) {
+    return distanceBetween(this, body);
   }
 
   /**

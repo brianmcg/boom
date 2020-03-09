@@ -3,7 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Sector from './components/Sector';
 import DynamicSector from './components/DynamicSector';
-import { distanceBetween, atan2 } from './helpers';
+import { atan2 } from './helpers';
 import {
   COS,
   SIN,
@@ -56,8 +56,4 @@ export {
    * The atan2 function.
    */
   atan2,
-  /**
-   * The distance function.
-   */
-  distanceBetween,
 };

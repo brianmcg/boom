@@ -39,7 +39,6 @@ class Weapon extends Entity {
    * @param  {Boolean} options.equiped  Is the weapon equiped.
    * @param  {Number}  options.idleTime The time to wait in idle state after firing.
    * @param  {Number}  options.recoil   The recoil of the weapon.
-   * @param  {Number}  options.ammo     The ammount of ammo the weapon has.
    * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
    * @param  {Number}  options.range    The range of the weapon.
    * @param  {String}  options.texture  The weapon texture.
@@ -50,7 +49,6 @@ class Weapon extends Entity {
     equiped,
     idleTime,
     recoil,
-    ammo,
     maxAmmo,
     range,
     ...other
@@ -63,7 +61,7 @@ class Weapon extends Entity {
     this.player = player;
     this.offsetY = TILE_SIZE;
     this.recoil = recoil;
-    this.ammo = ammo;
+    this.ammo = maxAmmo / 2;
     this.maxAmmo = maxAmmo;
     this.range = [...Array(range)];
 
