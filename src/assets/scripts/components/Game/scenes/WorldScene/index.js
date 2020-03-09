@@ -207,6 +207,14 @@ class WorldScene extends Scene {
   quit() {
     this.game.show({ type: Scene.TYPES.TITLE });
   }
+
+  /**
+   * Destroy the scene.
+   */
+  destroy(...options) {
+    this.world.destroy();
+    super.destroy(options);
+  }
 }
 
 export default WorldScene;

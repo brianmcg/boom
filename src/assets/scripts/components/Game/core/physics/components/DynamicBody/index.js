@@ -2,6 +2,8 @@ import Body from '../Body';
 import { isBodyCollision } from '../../helpers';
 import { COS, SIN, DEG } from '../../constants';
 
+const DEG_360 = DEG[360];
+
 /**
  * Class representing a dynamic body.
  * @extends {Body}
@@ -37,7 +39,7 @@ class DynamicBody extends Body {
     this.world.getSector(this.gridX, this.gridY).remove(this);
 
     // Update angle
-    this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG[360]) % DEG[360];
+    this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG_360) % DEG_360;
 
     // Update x coordinate
     this.x += COS[this.angle] * this.velocity * delta;

@@ -25,7 +25,6 @@ class World extends PhysicsWorld {
    * @param  {Object} options.exit        The exit coordinates.
    * @param  {Number} options.visibility  The visibility of the world.
    * @param  {Number} options.brightness  The brightness of the world.
-
    */
   constructor({
     player,

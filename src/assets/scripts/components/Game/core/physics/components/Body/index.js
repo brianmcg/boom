@@ -44,6 +44,21 @@ class Body extends EventEmitter {
   }
 
   /**
+   * Is the body updateable
+   * @return {Boolean} [description]
+   */
+  isUpdateable() {
+    return !!this.update;
+  }
+
+  /**
+   * Destroy the body.
+   */
+  destroy() {
+    this.removeAllListeners();
+  }
+
+  /**
    * The grid x position.
    * @member {Number}
    */

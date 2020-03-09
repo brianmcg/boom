@@ -35,7 +35,7 @@ class World extends EventEmitter {
         sector.add(body);
       }
 
-      if (body.update) {
+      if (body.isUpdateable()) {
         this.dynamicBodies.push(body);
         body.world = this;
       }
@@ -51,9 +51,7 @@ class World extends EventEmitter {
    * @param {Body} body The body to remove.
    */
   remove(body) {
-    if (body.update) {
-      this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
-    }
+    this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
 
     this.getSector(body.gridX, body.gridY).remove(body);
 
@@ -119,6 +117,14 @@ class World extends EventEmitter {
 
       return bodies;
     }, []);
+  }
+
+  /**
+   * Destroy the world.
+   */
+  destroy() {
+    this.removeAllListeners();
+    Object.values(this.bodies).forEach(body => body.destroy());
   }
 }
 
