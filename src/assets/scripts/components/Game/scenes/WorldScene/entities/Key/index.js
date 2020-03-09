@@ -25,7 +25,7 @@ class Key extends Item {
     super(other);
     this.color = color;
 
-    this.translation = translate('world.item.key', {
+    this.title = translate('world.item.key', {
       color: translate(`world.color.${color}`),
     });
   }

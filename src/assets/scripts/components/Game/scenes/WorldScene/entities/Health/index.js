@@ -18,7 +18,7 @@ class Health extends Item {
   constructor({ amount = 0, ...other }) {
     super(other);
     this.amount = amount;
-    this.translation = translate('world.item.health');
+    this.title = translate('world.item.health');
   }
 }
 

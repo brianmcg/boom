@@ -91,8 +91,8 @@ export default {
     text: 'COLOR key required',
     keys: ['color'],
   },
-  'world.player.pickup': {
-    text: 'Picked up ITEM',
+  'world.player.cannot.pickup': {
+    text: 'Cannot pick up ITEM',
     keys: ['item'],
   },
   'world.item.key': {

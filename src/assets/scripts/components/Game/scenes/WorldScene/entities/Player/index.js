@@ -111,6 +111,8 @@ class Player extends AbstractActor {
 
     this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
 
+    this.itemCollisionIds = [];
+
     this.setAlive();
   }
 
@@ -280,9 +282,11 @@ class Player extends AbstractActor {
           this.world.setItemFlash();
           this.world.remove(body);
           body.setFound();
-          this.addMessage(translate('world.player.pickup', {
-            item: body.translation,
+        } else if (!this.itemCollisionIds.includes(body.id)) {
+          this.addMessage(translate('world.player.cannot.pickup', {
+            item: body.title,
           }));
+          this.itemCollisionIds.push(body.id);
         }
       } else if (this.actions.use && body.use) {
         body.use();

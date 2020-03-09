@@ -20,7 +20,7 @@ class Ammo extends Item {
     super(other);
     this.amount = amount;
     this.type = type;
-    this.translation = translate('world.item.ammo', {
+    this.title = translate('world.item.ammo', {
       weapon: translate(`world.item.${type}`),
     });
   }
