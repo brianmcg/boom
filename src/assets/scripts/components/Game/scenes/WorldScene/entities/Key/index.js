@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import Item from '../Item';
 
 const TYPES = {
@@ -23,6 +24,10 @@ class Key extends Item {
   constructor({ color, ...other }) {
     super(other);
     this.color = color;
+
+    this.translation = translate('world.item.key', {
+      color: translate(`world.color.${color}`),
+    });
   }
 
   static get TYPES() {

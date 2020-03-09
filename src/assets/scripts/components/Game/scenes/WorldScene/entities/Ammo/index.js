@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import Item from '../Item';
 
 /**
@@ -19,6 +20,9 @@ class Ammo extends Item {
     super(other);
     this.amount = amount;
     this.type = type;
+    this.translation = translate('world.item.ammo', {
+      weapon: translate(`world.item.${type}`),
+    });
   }
 }
 

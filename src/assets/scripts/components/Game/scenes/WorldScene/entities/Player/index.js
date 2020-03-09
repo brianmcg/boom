@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import {
   Body,
   DEG,
@@ -279,6 +280,9 @@ class Player extends AbstractActor {
           this.world.setItemFlash();
           this.world.remove(body);
           body.setFound();
+          this.addMessage(translate('world.player.pickup', {
+            item: body.translation,
+          }));
         }
       } else if (this.actions.use && body.use) {
         body.use();

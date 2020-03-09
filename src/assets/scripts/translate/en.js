@@ -91,6 +91,30 @@ export default {
     text: 'COLOR key required',
     keys: ['color'],
   },
+  'world.player.pickup': {
+    text: 'Picked up ITEM',
+    keys: ['item'],
+  },
+  'world.item.key': {
+    text: 'COLOR Key',
+    keys: ['color'],
+  },
+  'world.item.ammo': {
+    text: 'WEAPON Ammo',
+    keys: ['weapon'],
+  },
+  'world.item.health': {
+    text: 'Health',
+  },
+  'world.item.pistol': {
+    text: 'Pistol',
+  },
+  'world.item.shotgun': {
+    text: 'Shotgun',
+  },
+  'world.item.chaingun': {
+    text: 'Chaingun',
+  },
   'world.color.yellow': {
     text: 'Yellow',
   },

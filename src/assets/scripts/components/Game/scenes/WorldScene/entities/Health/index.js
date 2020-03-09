@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import Item from '../Item';
 
 /**
@@ -17,6 +18,7 @@ class Health extends Item {
   constructor({ amount = 0, ...other }) {
     super(other);
     this.amount = amount;
+    this.translation = translate('world.item.health');
   }
 }
 
