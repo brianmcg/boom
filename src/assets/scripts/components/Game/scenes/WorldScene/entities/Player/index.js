@@ -9,6 +9,7 @@ import {
 import { TILE_SIZE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
+import Door from '../Door';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Key from '../Key';
@@ -277,21 +278,36 @@ class Player extends AbstractActor {
    */
   updateAliveInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
-      if (body instanceof Item && isBodyCollision(this, body)) {
-        if (this.pickUp(body)) {
-          this.world.setItemFlash();
-          this.world.remove(body);
-          body.setFound();
-        } else if (!this.itemCollisionIds.includes(body.id)) {
-          this.addMessage(translate('world.player.cannot.pickup', {
-            item: body.title,
-          }));
-          this.itemCollisionIds.push(body.id);
-        }
-      } else if (this.actions.use && body.use) {
-        body.use();
+      if (body instanceof Item) {
+        this.updateItemInteraction(body);
+      } else if (body instanceof Door) {
+        this.updateDoorInteraction(body);
       }
     });
+  }
+
+  updateItemInteraction(item) {
+    if (isBodyCollision(this, item)) {
+      if (item.setColliding()) {
+        if (this.pickUp(item)) {
+          this.world.setItemFlash();
+          this.world.remove(item);
+          item.setRemoved();
+        } else {
+          this.addMessage(translate('world.player.cannot.pickup', {
+            item: item.title,
+          }));
+        }
+      }
+    } else {
+      item.setIdle();
+    }
+  }
+
+  updateDoorInteraction(door) {
+    if (this.actions.use) {
+      door.use();
+    }
   }
 
   /**

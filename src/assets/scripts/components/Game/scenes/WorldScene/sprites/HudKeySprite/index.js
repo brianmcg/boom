@@ -1,5 +1,5 @@
 import { Sprite } from 'game/core/graphics';
-import Item from '../../entities/Item';
+import { Body } from 'game/core/physics';
 
 class HudKeySprite extends Sprite {
   constructor(texture, { key } = {}) {
@@ -7,7 +7,7 @@ class HudKeySprite extends Sprite {
 
     this.hide();
 
-    key.on(Item.EVENTS.FOUND, this.show.bind(this));
+    key.on(Body.EVENTS.REMOVED, this.show.bind(this));
   }
 }
 

@@ -7,8 +7,10 @@ const TYPES = {
   WEAPON: 'weapon',
 };
 
-const EVENTS = {
-  FOUND: 'item:found',
+const STATES = {
+  IDLE: 'item:idle',
+  COLLIDING: 'item:colliding',
+  REMOVED: 'item:removed',
 };
 
 /**
@@ -27,12 +29,55 @@ class Item extends Entity {
    */
   constructor({ key, value, ...other }) {
     super({ blocking: false, ...other });
-    this.found = false;
+    this.setIdle();
   }
 
-  setFound() {
-    this.emit(EVENTS.FOUND);
-    this.found = true;
+  /**
+   * Set to the idle state.
+   * @return {Boolean} state change successful.
+   */
+  setIdle() {
+    return this.setState(STATES.IDLE);
+  }
+
+  /**
+   * Set to the colliding state.
+   * @return {Boolean} state change successful.
+   */
+  setColliding() {
+    return this.setState(STATES.COLLIDING);
+  }
+
+  /**
+   * Set to the removed state.
+   * @return {Boolean} state change successful.
+   */
+  setRemoved() {
+    return this.setState(STATES.REMOVED);
+  }
+
+  /**
+   * Is the item in the idle state.
+   * @return {Boolean}
+   */
+  isIdle() {
+    return this.state === STATES.IDLE;
+  }
+
+  /**
+   * Is the item in the colliding state.
+   * @return {Boolean}
+   */
+  isColliding() {
+    return this.state === STATES.COLLIDING;
+  }
+
+  /**
+   * Is the item in the removed state.
+   * @return {Boolean}
+   */
+  isRemoved() {
+    return this.state === STATES.REMOVED;
   }
 
   /**
@@ -41,14 +86,6 @@ class Item extends Entity {
    */
   static get TYPES() {
     return TYPES;
-  }
-
-  /**
-   * The item events.
-   * @static
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 
