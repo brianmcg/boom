@@ -18,12 +18,6 @@ const STATES = {
   DISABLED: 'weapon:disabled',
 };
 
-const TYPES = {
-  SHOTGUN: 'shotgun',
-  CHAINGUN: 'chaingun',
-  PISTOL: 'pistol',
-};
-
 const EVENTS = {
   ARMING: 'weapon:arming',
 };
@@ -372,14 +366,6 @@ class Weapon extends Entity {
       maxAmmo,
       range,
     };
-  }
-
-  /**
-   * The weapon types.
-   * @static
-   */
-  static get TYPES() {
-    return TYPES;
   }
 }
 

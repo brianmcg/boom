@@ -56,3 +56,54 @@ export const SCENE_GRAPHICS = 'graphics.json';
  * @type {String}
  */
 export const SCENE_MAP = 'map.json';
+
+/**
+ * The weapon names
+ * @type {Object}
+ */
+export const WEAPON_NAMES = {
+  PISTOL: 'pistol',
+  SHOTGUN: 'shotgun',
+  CHAINGUN: 'chaingun',
+};
+
+/**
+ * The key colors.
+ * @type {Object}
+ */
+export const KEY_COLORS = {
+  YELLOW: 'yellow',
+  BLUE: 'blue',
+  RED: 'red',
+};
+
+/**
+ * The item names.
+ * @type {Object}
+ */
+export const ITEM_NAMES = {
+  HEALTH: 'health',
+  AMMO: 'ammo',
+  KEY: 'key',
+  WEAPON: 'weapon',
+};
+
+/**
+ * The enemy names.
+ * @type {Object}
+ */
+export const ENEMY_NAMES = {
+  AMP: 'amp',
+  ZOMBIE: 'zombie',
+  MANCUBUS: 'mancubus',
+};
+
+/**
+ * The scene names.
+ * @type {Object}
+ */
+export const SCENE_NAMES = {
+  TITLE: 'title',
+  WORLD: 'world',
+  CREDITS: 'credits',
+};

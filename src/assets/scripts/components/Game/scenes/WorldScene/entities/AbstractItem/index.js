@@ -1,12 +1,5 @@
 import Entity from '../Entity';
 
-const TYPES = {
-  AMMO: 'ammo',
-  HEALTH: 'health',
-  KEY: 'key',
-  WEAPON: 'weapon',
-};
-
 const STATES = {
   IDLE: 'item:idle',
   COLLIDING: 'item:colliding',
@@ -17,7 +10,7 @@ const STATES = {
  * Class representing an item.
  * @extends {Entity}
  */
-class Item extends Entity {
+class AbstractItem extends Entity {
   /**
    * Creates an item.
    * @param  {Number} options.x       The x coordinate of the body.
@@ -29,7 +22,12 @@ class Item extends Entity {
    */
   constructor({ key, value, ...other }) {
     super({ blocking: false, ...other });
+
     this.setIdle();
+
+    if (this.constructor === AbstractItem) {
+      throw new TypeError('Can not construct abstract class.');
+    }
   }
 
   /**
@@ -79,14 +77,6 @@ class Item extends Entity {
   isRemoved() {
     return this.state === STATES.REMOVED;
   }
-
-  /**
-   * The item types.
-   * @static
-   */
-  static get TYPES() {
-    return TYPES;
-  }
 }
 
-export default Item;
+export default AbstractItem;

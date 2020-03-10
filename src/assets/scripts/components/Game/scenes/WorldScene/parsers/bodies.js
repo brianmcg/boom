@@ -1,3 +1,4 @@
+import { ITEM_NAMES, ENEMY_NAMES } from 'game/constants/assets';
 import { TILE_SIZE } from 'game/constants/config';
 import Sector from '../entities/Sector';
 import World from '../entities/World';
@@ -7,29 +8,23 @@ import Amp from '../entities/Amp';
 import Zombie from '../entities/Zombie';
 import Mancubus from '../entities/Mancubus';
 import Player from '../entities/Player';
-import Key from '../entities/Key';
-import Ammo from '../entities/Ammo';
-import Health from '../entities/Health';
-import Weapon from '../entities/Weapon';
+import KeyItem from '../entities/KeyItem';
+import AmmoItem from '../entities/AmmoItem';
+import HealthItem from '../entities/HealthItem';
+import WeaponItem from '../entities/WeaponItem';
 
-const ENEMIES = [
-  Amp,
-  Zombie,
-  Mancubus,
-].reduce((result, enemy) => ({
-  ...result,
-  [enemy.name.toLowerCase()]: enemy,
-}), {});
+const ITEMS = {
+  [ITEM_NAMES.KEY]: KeyItem,
+  [ITEM_NAMES.AMMO]: AmmoItem,
+  [ITEM_NAMES.HEALTH]: HealthItem,
+  [ITEM_NAMES.WEAPON]: WeaponItem,
+};
 
-const ITEMS = [
-  Key,
-  Ammo,
-  Health,
-  Weapon,
-].reduce((result, item) => ({
-  ...result,
-  [item.name.toLowerCase()]: item,
-}), {});
+const ENEMIES = {
+  [ENEMY_NAMES.AMP]: Amp,
+  [ENEMY_NAMES.ZOMBIE]: Zombie,
+  [ENEMY_NAMES.MANCUBUS]: Mancubus,
+};
 
 const createSector = (sector, props) => {
   if (sector.door) {

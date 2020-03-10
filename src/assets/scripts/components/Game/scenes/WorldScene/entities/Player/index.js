@@ -1,12 +1,12 @@
 import translate from 'root/translate';
 import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
+import { ITEM_NAMES, KEY_COLORS, WEAPON_NAMES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
-import Item from '../Item';
+import AbstractItem from '../AbstractItem';
 import Door from '../Door';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
-import Key from '../Key';
 import Message from './components/Message';
 
 const DEG_360 = DEG[360];
@@ -58,7 +58,7 @@ class Player extends AbstractActor {
       rotAcceleration = 0,
       weapons = {},
       camera = {},
-      currentWeaponType = Weapon.TYPES.PISTOL,
+      currentWeaponType = WEAPON_NAMES.PISTOL,
       ...other
     } = options;
 
@@ -95,7 +95,7 @@ class Player extends AbstractActor {
       };
     }, {});
 
-    this.keys = Object.values(Key.TYPES).reduce((memo, type) => ({
+    this.keys = Object.values(KEY_COLORS).reduce((memo, type) => ({
       ...memo,
       [type]: false,
     }), {});
@@ -278,7 +278,7 @@ class Player extends AbstractActor {
       attack,
     } = this.actions;
 
-    const { CHAINGUN, PISTOL, SHOTGUN } = Weapon.TYPES;
+    const { CHAINGUN, PISTOL, SHOTGUN } = WEAPON_NAMES;
 
     if (this.weapon.isUnarmed()) {
       this.armNextWeapon();
@@ -300,7 +300,7 @@ class Player extends AbstractActor {
    */
   updateAliveInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
-      if (body instanceof Item) {
+      if (body instanceof AbstractItem) {
         this.updateItemInteraction(body);
       } else if (body instanceof Door) {
         this.updateDoorInteraction(body);
@@ -562,13 +562,13 @@ class Player extends AbstractActor {
    */
   pickUp(item) {
     switch (item.name) {
-      case Item.TYPES.AMMO:
+      case ITEM_NAMES.AMMO:
         return this.pickUpAmmo(item);
-      case Item.TYPES.HEALTH:
+      case ITEM_NAMES.HEALTH:
         return this.pickUpHealth(item);
-      case Item.TYPES.KEY:
+      case ITEM_NAMES.KEY:
         return this.pickUpKey(item);
-      case Item.TYPES.WEAPON:
+      case ITEM_NAMES.WEAPON:
         return this.pickUpWeapon(item);
       default:
         return false;
