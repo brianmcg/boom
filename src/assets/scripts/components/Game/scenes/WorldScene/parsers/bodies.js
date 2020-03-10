@@ -106,7 +106,6 @@ export const createWorld = (data) => {
       height: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
       ...props.enemies[enemy.type],
-      type: enemy.type,
     }),
   ]), []);
 

@@ -1,4 +1,5 @@
 import translate from 'root/translate';
+import { ITEM_TYPES } from 'game/constants/assets';
 import AbstractItem from '../AbstractItem';
 
 /**
@@ -14,13 +15,12 @@ class KeyItem extends AbstractItem {
    * @param  {Number} options.height  The height of the item.
    * @param  {String} options.texture The texture of item.
    * @param  {String} options.color   The color of the key.
-   * @param  {String} options.type    The item type.
    */
   constructor({ color, ...other }) {
     super(other);
 
+    this.type = ITEM_TYPES.KEY;
     this.color = color;
-
     this.title = translate('world.item.key', {
       color: translate(`world.color.${color}`),
     });

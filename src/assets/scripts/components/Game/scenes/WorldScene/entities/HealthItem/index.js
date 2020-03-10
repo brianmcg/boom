@@ -1,6 +1,6 @@
 import translate from 'root/translate';
+import { ITEM_TYPES } from 'game/constants/assets';
 import AbstractItem from '../AbstractItem';
-
 /**
  * Class representing a health item.
  */
@@ -14,11 +14,11 @@ class HealthItem extends AbstractItem {
    * @param  {Number} options.height  The height of the item.
    * @param  {String} options.texture The texture of item.
    * @param  {Number} options.amount  The amount of health.
-   * @param  {String} options.type    The item type.
    */
   constructor({ amount = 0, ...other }) {
     super(other);
 
+    this.type = ITEM_TYPES.HEALTH;
     this.amount = amount;
     this.title = translate('world.item.health');
   }
