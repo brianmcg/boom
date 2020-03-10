@@ -19,7 +19,7 @@ import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import EventEmitter from './components/EventEmitter';
 import ParticleContainer from './components/ParticleContainer';
-import Line from './components/Line';
+import LineGraphic from './components/LineGraphic';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -75,7 +75,7 @@ export {
   /**
    * The line component.
    */
-  Line,
+  LineGraphic,
   /**
    * The rectangle component.
    */

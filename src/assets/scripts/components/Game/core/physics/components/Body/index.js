@@ -40,6 +40,7 @@ class Body extends EventEmitter {
 
     idCount += 1;
 
+    this.name = this.constructor.name.toLowerCase();
     this.id = `${this.name}_${idCount}`;
     this.x = x;
     this.y = y;
@@ -151,14 +152,6 @@ class Body extends EventEmitter {
       width: this.width,
       length: this.length,
     };
-  }
-
-  /**
-   * The name of the class.
-   * @member {String}
-   */
-  get name() {
-    return this.constructor.name.toLowerCase();
   }
 }
 

@@ -10,10 +10,7 @@ class BackgroundContainer extends ParticleContainer {
    * @param  {Array} background The background sprites.
    */
   constructor(background) {
-    super(SCREEN.WIDTH * SCREEN.HEIGHT, {
-      uvs: true,
-      tint: true,
-    });
+    super(SCREEN.WIDTH * SCREEN.HEIGHT);
 
     background.forEach((slice) => {
       slice.forEach((pixel) => {

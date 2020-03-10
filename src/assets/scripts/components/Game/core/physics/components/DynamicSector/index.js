@@ -24,11 +24,7 @@ class DynamicSector extends Sector {
 
     this.speed = speed;
     this.axis = axis;
-
-    this.offset = {
-      x: 0,
-      y: 0,
-    };
+    this.offset = { x: 0, y: 0 };
   }
 
   /**

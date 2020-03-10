@@ -20,7 +20,7 @@ class Sector extends Body {
   }
 
   /**
-   * Add a body to the child list.
+   * Add a body.
    * @param {Body} body The body to add.
    */
   add(body) {
@@ -28,7 +28,7 @@ class Sector extends Body {
   }
 
   /**
-   * Remove a body from the child list.
+   * Remove a body.
    * @param  {Body} body The body to remove.
    */
   remove(body) {

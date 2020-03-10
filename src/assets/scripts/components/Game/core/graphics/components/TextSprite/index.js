@@ -33,17 +33,17 @@ class TextSprite extends BitmapText {
   }
 
   /**
-   * Hide the sprite.
-   */
-  hide() {
-    this.visible = false;
-  }
-
-  /**
    * Show the sprite.
    */
   show() {
     this.visible = true;
+  }
+
+  /**
+   * Hide the sprite.
+   */
+  hide() {
+    this.visible = false;
   }
 }
 

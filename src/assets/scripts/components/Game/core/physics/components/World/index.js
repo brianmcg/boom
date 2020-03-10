@@ -10,6 +10,7 @@ class World extends EventEmitter {
    */
   constructor(grid = [[]]) {
     super();
+    
     this.grid = grid;
     this.bodies = {};
     this.dynamicBodies = [];
