@@ -16,7 +16,7 @@ class TitleScene extends Scene {
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super({ type: Scene.TYPES.TITLE, ...options });
+    super(options);
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -65,14 +65,14 @@ class TitleScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    this.game.show({ type: Scene.TYPES.WORLD, index: 1 });
+    this.game.showWorldScene({ index: 1 });
   }
 
   /**
    * Restart the scene.
    */
   restart() {
-    this.game.show({ type: Scene.TYPES.TITLE });
+    this.game.showTitleScene();
   }
 
   /**

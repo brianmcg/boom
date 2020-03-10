@@ -15,7 +15,7 @@ class CreditsScene extends Scene {
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super({ type: Scene.TYPES.CREDITS, ...options });
+    super(options);
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
@@ -89,21 +89,21 @@ class CreditsScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    this.game.show({ type: Scene.TYPES.TITLE });
+    this.game.showTitleScene();
   }
 
   /**
    * Restart the scene.
    */
   restart() {
-    this.game.show({ type: Scene.TYPES.CREDITS });
+    this.game.showCreditsScene();
   }
 
   /**
    * Quit the scene.
    */
   quit() {
-    this.game.show({ type: Scene.TYPES.TITLE });
+    this.game.showTitleScene();
   }
 }
 

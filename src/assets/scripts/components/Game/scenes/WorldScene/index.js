@@ -23,7 +23,7 @@ class WorldScene extends Scene {
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super({ type: Scene.TYPES.WORLD, ...options });
+    super(options);
 
     this.assets = {
       ...this.assets,
@@ -178,15 +178,12 @@ class WorldScene extends Scene {
    */
   complete() {
     if (this.index < this.game.data.numLevels) {
-      this.game.show({
-        type: Scene.TYPES.WORLD,
+      this.game.showWorldScene({
         index: this.index + 1,
         props: this.world.props,
       });
     } else {
-      this.game.show({
-        type: Scene.TYPES.CREDITS,
-      });
+      this.game.showCreditsScene();
     }
   }
 
@@ -194,8 +191,7 @@ class WorldScene extends Scene {
    * Restart the scene.
    */
   restart() {
-    this.game.show({
-      type: Scene.TYPES.WORLD,
+    this.game.showWorldScene({
       index: this.index,
       props: this.world.startingProps,
     });
@@ -205,7 +201,7 @@ class WorldScene extends Scene {
    * Quit the scene.
    */
   quit() {
-    this.game.show({ type: Scene.TYPES.TITLE });
+    this.game.showTitleScene();
   }
 
   /**

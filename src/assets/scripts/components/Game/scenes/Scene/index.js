@@ -24,12 +24,6 @@ const EVENTS = {
   QUIT: 'scene:quit',
 };
 
-const TYPES = {
-  TITLE: 'title',
-  WORLD: 'world',
-  CREDITS: 'credits',
-};
-
 /**
  * Class representing a scene.
  * @class
@@ -345,20 +339,6 @@ class Scene extends Container {
     this.menuContainer.destroy();
     this.promptContainer.destroy();
     super.destroy();
-  }
-
-  /**
-   * The scene types class property.
-   */
-  static get TYPES() {
-    return TYPES;
-  }
-
-  /**
-   * The scene states class property.
-   */
-  static get STATES() {
-    return STATES;
   }
 }
 
