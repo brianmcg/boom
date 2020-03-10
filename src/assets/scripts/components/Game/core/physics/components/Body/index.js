@@ -4,7 +4,7 @@ import {
   isBodyCollision,
   isRayCollision,
   castRay,
-  distanceBetween
+  distanceBetween,
 } from '../../helpers';
 
 const EVENTS = {
@@ -48,6 +48,38 @@ class Body extends EventEmitter {
     this.height = height;
     this.blocking = blocking;
   }
+
+
+  /**
+   * Emit the added event.
+   */
+  emitAddedEvent() {
+    this.emit(EVENTS.ADDED);
+  }
+
+  /**
+   * Emit the removed event.
+   */
+  emitRemovedEvent() {
+    this.emit(EVENTS.REMOVED);
+  }
+
+  /**
+   * Add a callback for the added event.
+   * @param  {Function} callback The callback function.
+   */
+  onAddedEvent(callback) {
+    this.on(EVENTS.ADDED, callback);
+  }
+
+  /**
+   * Add a callback for the removed event.
+   * @param  {Function} callback The callback function.
+   */
+  onRemovedEvent(callback) {
+    this.on(EVENTS.REMOVED, callback);
+  }
+
 
   /**
    * Check for collision with another body.
@@ -127,13 +159,6 @@ class Body extends EventEmitter {
    */
   get name() {
     return this.constructor.name.toLowerCase();
-  }
-
-  /**
-   * The events class property.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

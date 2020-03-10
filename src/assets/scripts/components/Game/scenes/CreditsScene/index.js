@@ -66,11 +66,11 @@ class CreditsScene extends Scene {
     });
 
     const background = new BackgroundContainer(sprites.background);
-    const scroll = new ScrollContainer(sprites.scroll);
 
-    scroll.once(ScrollContainer.EVENTS.SCROLL_COMPLETE, () => {
-      this.setPrompting();
+    const scroll = new ScrollContainer(sprites.scroll, {
+      onComplete: () => this.setPrompting(),
     });
+
 
     this.mainContainer.addChild(background);
     this.mainContainer.addChild(scroll);

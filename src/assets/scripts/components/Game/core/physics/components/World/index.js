@@ -1,5 +1,4 @@
 import { EventEmitter } from 'game/core/graphics';
-import Body from '../Body';
 
 /**
  * Class representing a world.
@@ -42,7 +41,7 @@ class World extends EventEmitter {
 
       this.bodies[body.id] = body;
 
-      body.emit(Body.EVENTS.ADDED, body);
+      body.emitAddedEvent();
     }
   }
 
@@ -59,7 +58,7 @@ class World extends EventEmitter {
 
     delete this.bodies[body.id];
 
-    body.emit(Body.EVENTS.REMOVED, body);
+    body.emitRemovedEvent();
   }
 
   /**

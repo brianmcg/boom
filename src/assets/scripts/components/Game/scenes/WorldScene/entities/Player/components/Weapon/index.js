@@ -73,6 +73,14 @@ class Weapon extends Entity {
   }
 
   /**
+   * Add a callback for the arming event.
+   * @param  {Function} callback The callback function.
+   */
+  onArmingEvent(callback) {
+    this.on(EVENTS.ARMING, callback);
+  }
+
+  /**
    * Use the weapon.
    */
   use() {
@@ -380,14 +388,6 @@ class Weapon extends Entity {
    */
   static get STATES() {
     return STATES;
-  }
-
-  /**
-   * The weapon events.
-   * @static
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

@@ -1,6 +1,5 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
-import Player from '../../entities/Player';
 
 const HEIGHT_RATIO = SCREEN.HEIGHT / 190;
 
@@ -30,7 +29,7 @@ class WeaponSprite extends AnimatedSprite {
     this.player = player;
     this.onComplete = this.handleOnComplete.bind(this);
 
-    this.player.on(Player.EVENTS.ARM_WEAPON, (weaponType) => {
+    this.player.onArmWeaponEvent((weaponType) => {
       this.textures = this.textureCollection[weaponType];
       this.texture = this.textures[0];
     });

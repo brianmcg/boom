@@ -5,10 +5,6 @@ const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const SCROLL_SPEED = SCREEN.HEIGHT / 280;
 
-const EVENTS = {
-  SCROLL_COMPLETE: 'scroll:complete',
-};
-
 /**
  * Class representing a scroll container.
  */
@@ -18,7 +14,7 @@ class ScrollContainer extends Container {
    * @param  {Object}     options.credits The credits data.
    * @param  {TextSprite} options.end     The end text.
    */
-  constructor({ credits, end }) {
+  constructor({ credits, end }, { onComplete }) {
     super();
 
     let y = 0;
@@ -42,6 +38,8 @@ class ScrollContainer extends Container {
     this.scrollY = SCREEN.HEIGHT;
 
     this.addChild(end);
+
+    this.onComplete = onComplete;
   }
 
   /**
@@ -56,7 +54,7 @@ class ScrollContainer extends Container {
 
     if (this.scrollY <= yEnd) {
       this.scrollY = yEnd;
-      this.emit(EVENTS.SCROLL_COMPLETE);
+      this.onComplete();
     }
   }
 
@@ -81,13 +79,6 @@ class ScrollContainer extends Container {
    */
   animate() {
     this.y = this.scrollY;
-  }
-
-  /**
-   * The container events.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

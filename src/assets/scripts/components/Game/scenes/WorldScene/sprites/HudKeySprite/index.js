@@ -1,5 +1,4 @@
 import { Sprite } from 'game/core/graphics';
-import { Body } from 'game/core/physics';
 
 /**
  * Class representing a hud key sprite.
@@ -15,7 +14,7 @@ class HudKeySprite extends Sprite {
 
     this.hide();
 
-    key.on(Body.EVENTS.REMOVED, this.show.bind(this));
+    key.onRemovedEvent(this.show.bind(this));
   }
 }
 

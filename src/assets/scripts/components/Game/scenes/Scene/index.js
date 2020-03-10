@@ -360,13 +360,6 @@ class Scene extends Container {
   static get STATES() {
     return STATES;
   }
-
-  /**
-   * The scene events class property.
-   */
-  static get EVENTS() {
-    return EVENTS;
-  }
 }
 
 export default Scene;

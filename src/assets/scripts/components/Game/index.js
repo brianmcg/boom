@@ -59,6 +59,14 @@ class Game extends Application {
   }
 
   /**
+   * Add a callback to the stopped event.
+   * @param  {Function} callback The callback function.
+   */
+  onStoppedEvent(callback) {
+    this.on(EVENTS.STOPPED, callback);
+  }
+
+  /**
    * Start game and load assets.
    */
   async start() {
@@ -282,13 +290,6 @@ class Game extends Application {
    */
   getMouseY() {
     return this.mouse.y;
-  }
-
-  /**
-   * The events class property.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

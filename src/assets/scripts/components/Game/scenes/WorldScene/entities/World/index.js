@@ -1,5 +1,4 @@
 import { World as PhysicsWorld } from 'game/core/physics';
-import Player from '../Player';
 
 const MAX_GUN_FLASH_AMOUNT = 0.8;
 
@@ -62,7 +61,9 @@ class World extends PhysicsWorld {
     obstacles.forEach(object => this.add(object));
     items.forEach(item => this.add(item));
 
-    player.on(Player.EVENTS.DEATH, this.restart.bind(this));
+    player.onPlayerDeathEvent(this.restart.bind(this));
+
+    this.openEntranceDoor();
 
     this.add(player);
   }
@@ -104,6 +105,17 @@ class World extends PhysicsWorld {
    */
   restart() {
     this.scene.triggerRestart();
+  }
+
+  /**
+   * Open the entrance door.
+   */
+  openEntranceDoor() {
+    const { x, y } = this.entrance;
+    const entrance = this.getSector(x, y);
+    const door = this.getAdjacentSectors(entrance).find(sector => sector.open);
+
+    door.open();
   }
 
   /**

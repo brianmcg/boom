@@ -1,6 +1,5 @@
 import { Container } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
-import Player from '../../../../../../entities/Player';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
 
@@ -51,15 +50,9 @@ class HudContainer extends Container {
     this.player = player;
     this.sprites = sprites;
 
-    player.on(Player.EVENTS.MESSAGE_ADDED, () => {
-      this.addChild(message);
-    });
+    player.onMessageAddedEvent(() => this.addChild(message));
 
-    player.on(Player.EVENTS.MESSAGE_REMOVED, () => {
-      if (!player.messages.length) {
-        this.removeChild(message);
-      }
-    });
+    player.onMessageRemovedEvent(() => !player.hasMessages() && this.removeChild(message));
   }
 
   /**
@@ -95,17 +88,19 @@ class HudContainer extends Container {
   }
 
   /**
-   * Stop the container.
-   */
-  stop() {
-    this.hide();
-  }
-
-  /**
    * Play the container.
    */
   play() {
+    super.play();
     this.show();
+  }
+
+  /**
+   * Stop the container.
+   */
+  stop() {
+    super.stop();
+    this.hide();
   }
 }
 

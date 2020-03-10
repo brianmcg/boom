@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { Body, DEG } from 'game/core/physics';
+import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Item from '../Item';
@@ -87,9 +87,7 @@ class Player extends AbstractActor {
         texture,
       });
 
-      weapon.on(Weapon.EVENTS.ARMING, () => {
-        this.emit(EVENTS.ARM_WEAPON, weapon.texture);
-      });
+      weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.texture));
 
       return {
         ...memo,
@@ -104,7 +102,7 @@ class Player extends AbstractActor {
 
     this.messages = [];
 
-    this.on(Body.EVENTS.ADDED, this.onAdded.bind(this));
+    this.onAddedEvent(this.initialize.bind(this));
 
     this.itemCollisionIds = [];
 
@@ -114,7 +112,7 @@ class Player extends AbstractActor {
   /**
    * Handle the added to world event.
    */
-  onAdded() {
+  initialize() {
     const { x, y } = this.world.entrance;
 
     this.x = (TILE_SIZE * x) + (TILE_SIZE / 2);
@@ -122,8 +120,38 @@ class Player extends AbstractActor {
     this.angle = 0;
     this.velocity = 0;
     this.weapon.setArming();
-    this.actions.use = true;
-    this.updateAliveInteractions();
+  }
+
+  /**
+   * Add a callback for the message added event.
+   * @param  {Function} callback The callback function.
+   */
+  onMessageAddedEvent(callback) {
+    this.on(EVENTS.MESSAGE_ADDED, callback);
+  }
+
+  /**
+   * Add a callback for the message removed event.
+   * @param  {Function} callback The callback function.
+   */
+  onMessageRemovedEvent(callback) {
+    this.on(EVENTS.MESSAGE_REMOVED, callback);
+  }
+
+  /**
+   * Add a callback for the player death event.
+   * @param  {Function} callback The callback function.
+   */
+  onPlayerDeathEvent(callback) {
+    this.on(EVENTS.DEATH, callback);
+  }
+
+  /**
+   * Add a callback for the arm weapon event.
+   * @param  {Function} callback The callback function.
+   */
+  onArmWeaponEvent(callback) {
+    this.on(EVENTS.ARM_WEAPON, callback);
   }
 
   /**
@@ -445,6 +473,14 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Check if the player has messages.
+   * @return {Boolean}
+   */
+  hasMessages() {
+    return !!this.messages.length;
+  }
+
+  /**
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
    */
@@ -724,14 +760,6 @@ class Player extends AbstractActor {
    */
   get viewAngle() {
     return (this.angle + this.camera.angle + DEG_360) % DEG_360;
-  }
-
-  /**
-   * The player events.
-   * @static
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 

@@ -70,6 +70,14 @@ class GameManual {
   }
 
   /**
+   * Add a callback to the click start event.
+   * @param  {Function} callback The callback function.
+   */
+  onClickStartEvent(callback) {
+    this.on(EVENTS.CLICK_START, callback);
+  }
+
+  /**
    * Adds an event listener to the game manual.
    * @param  {Event}    event    The event to add.
    * @param  {Function} callback The callback to trigger.
@@ -77,13 +85,6 @@ class GameManual {
   on(event, callback) {
     const [, nodeName, eventName] = event.split(':');
     this[nodeName].view.addEventListener(eventName, callback);
-  }
-
-  /**
-   * The events class property.
-   */
-  static get EVENTS() {
-    return EVENTS;
   }
 }
 
