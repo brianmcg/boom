@@ -29,6 +29,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.attackTime      The time between attacks.
    * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
+   * @param  {String} options.type            The enemy type.
    */
   constructor({
     maxVelocity = 1,
@@ -37,6 +38,7 @@ class AbstractEnemy extends AbstractActor {
     hurtTime = 1000,
     acceleration = 1,
     attackPower = 1,
+    type,
     ...other
   }) {
     super(other);
@@ -50,6 +52,7 @@ class AbstractEnemy extends AbstractActor {
     this.hurtTime = hurtTime;
     this.maxVelocity = maxVelocity;
     this.acceleration = acceleration;
+    this.type = type;
 
     this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;

@@ -14,6 +14,11 @@ const EVENTS = {
 
 let idCount = 0;
 
+const generateId = (body) => {
+  idCount += 1;
+  return `${body.constructor.name}_${idCount}`;
+};
+
 /**
  * Class representing a body.
  * @extends {EventEmitter}
@@ -38,10 +43,7 @@ class Body extends EventEmitter {
   } = {}) {
     super();
 
-    idCount += 1;
-
-    this.name = this.constructor.name.toLowerCase();
-    this.id = `${this.name}_${idCount}`;
+    this.id = generateId(this);
     this.x = x;
     this.y = y;
     this.width = width;

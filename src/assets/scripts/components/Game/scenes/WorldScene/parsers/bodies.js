@@ -1,4 +1,4 @@
-import { ITEM_NAMES, ENEMY_NAMES } from 'game/constants/assets';
+import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { TILE_SIZE } from 'game/constants/config';
 import Sector from '../entities/Sector';
 import World from '../entities/World';
@@ -14,16 +14,16 @@ import HealthItem from '../entities/HealthItem';
 import WeaponItem from '../entities/WeaponItem';
 
 const ITEMS = {
-  [ITEM_NAMES.KEY]: KeyItem,
-  [ITEM_NAMES.AMMO]: AmmoItem,
-  [ITEM_NAMES.HEALTH]: HealthItem,
-  [ITEM_NAMES.WEAPON]: WeaponItem,
+  [ITEM_TYPES.KEY]: KeyItem,
+  [ITEM_TYPES.AMMO]: AmmoItem,
+  [ITEM_TYPES.HEALTH]: HealthItem,
+  [ITEM_TYPES.WEAPON]: WeaponItem,
 };
 
 const ENEMIES = {
-  [ENEMY_NAMES.AMP]: Amp,
-  [ENEMY_NAMES.ZOMBIE]: Zombie,
-  [ENEMY_NAMES.MANCUBUS]: Mancubus,
+  [ENEMY_TYPES.AMP]: Amp,
+  [ENEMY_TYPES.ZOMBIE]: Zombie,
+  [ENEMY_TYPES.MANCUBUS]: Mancubus,
 };
 
 const createSector = (sector, props) => {
@@ -86,7 +86,7 @@ export const createWorld = (data) => {
 
   const items = data.items.reduce((memo, item) => ([
     ...memo,
-    new ITEMS[item.name]({
+    new ITEMS[item.type]({
       ...item,
       texture: item.texture,
       x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
@@ -99,13 +99,14 @@ export const createWorld = (data) => {
 
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
-    new ENEMIES[enemy.name]({
+    new ENEMIES[enemy.type]({
       x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,
       height: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
-      ...props.enemies[enemy.name],
+      ...props.enemies[enemy.type],
+      type: enemy.type,
     }),
   ]), []);
 

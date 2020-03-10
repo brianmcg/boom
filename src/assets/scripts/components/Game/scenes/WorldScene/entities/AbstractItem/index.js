@@ -19,9 +19,12 @@ class AbstractItem extends Entity {
    * @param  {Number} options.length  The length of the body.
    * @param  {Number} options.height  The height of the body.
    * @param  {String} options.texture The texture of entity.
+   * @param  {String} options.type    The item type.
    */
-  constructor({ key, value, ...other }) {
+  constructor({ type, ...other }) {
     super({ blocking: false, ...other });
+
+    this.type = type;
 
     this.setIdle();
 

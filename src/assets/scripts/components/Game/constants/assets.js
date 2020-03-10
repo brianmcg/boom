@@ -58,13 +58,45 @@ export const SCENE_GRAPHICS = 'graphics.json';
 export const SCENE_MAP = 'map.json';
 
 /**
- * The weapon names
+ * The scene types.
  * @type {Object}
  */
-export const WEAPON_NAMES = {
+export const SCENE_TYPES = {
+  TITLE: 'title',
+  WORLD: 'world',
+  CREDITS: 'credits',
+};
+
+
+/**
+ * The weapon types
+ * @type {Object}
+ */
+export const WEAPON_TYPES = {
   PISTOL: 'pistol',
   SHOTGUN: 'shotgun',
   CHAINGUN: 'chaingun',
+};
+
+/**
+ * The item types.
+ * @type {Object}
+ */
+export const ITEM_TYPES = {
+  HEALTH: 'health',
+  AMMO: 'ammo',
+  KEY: 'key',
+  WEAPON: 'weapon',
+};
+
+/**
+ * The enemy types.
+ * @type {Object}
+ */
+export const ENEMY_TYPES = {
+  AMP: 'amp',
+  ZOMBIE: 'zombie',
+  MANCUBUS: 'mancubus',
 };
 
 /**
@@ -75,35 +107,4 @@ export const KEY_COLORS = {
   YELLOW: 'yellow',
   BLUE: 'blue',
   RED: 'red',
-};
-
-/**
- * The item names.
- * @type {Object}
- */
-export const ITEM_NAMES = {
-  HEALTH: 'health',
-  AMMO: 'ammo',
-  KEY: 'key',
-  WEAPON: 'weapon',
-};
-
-/**
- * The enemy names.
- * @type {Object}
- */
-export const ENEMY_NAMES = {
-  AMP: 'amp',
-  ZOMBIE: 'zombie',
-  MANCUBUS: 'mancubus',
-};
-
-/**
- * The scene names.
- * @type {Object}
- */
-export const SCENE_NAMES = {
-  TITLE: 'title',
-  WORLD: 'world',
-  CREDITS: 'credits',
 };

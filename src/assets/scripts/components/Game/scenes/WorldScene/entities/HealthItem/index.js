@@ -14,6 +14,7 @@ class HealthItem extends AbstractItem {
    * @param  {Number} options.height  The height of the item.
    * @param  {String} options.texture The texture of item.
    * @param  {Number} options.amount  The amount of health.
+   * @param  {String} options.type    The item type.
    */
   constructor({ amount = 0, ...other }) {
     super(other);

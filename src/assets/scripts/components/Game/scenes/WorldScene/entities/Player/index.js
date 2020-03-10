@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
-import { ITEM_NAMES, KEY_COLORS, WEAPON_NAMES } from 'game/constants/assets';
+import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import Door from '../Door';
@@ -58,7 +58,7 @@ class Player extends AbstractActor {
       rotAcceleration = 0,
       weapons = {},
       camera = {},
-      currentWeaponType = WEAPON_NAMES.PISTOL,
+      currentWeaponType = WEAPON_TYPES.PISTOL,
       ...other
     } = options;
 
@@ -278,7 +278,7 @@ class Player extends AbstractActor {
       attack,
     } = this.actions;
 
-    const { CHAINGUN, PISTOL, SHOTGUN } = WEAPON_NAMES;
+    const { CHAINGUN, PISTOL, SHOTGUN } = WEAPON_TYPES;
 
     if (this.weapon.isUnarmed()) {
       this.armNextWeapon();
@@ -561,14 +561,14 @@ class Player extends AbstractActor {
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
-    switch (item.name) {
-      case ITEM_NAMES.AMMO:
+    switch (item.type) {
+      case ITEM_TYPES.AMMO:
         return this.pickUpAmmo(item);
-      case ITEM_NAMES.HEALTH:
+      case ITEM_TYPES.HEALTH:
         return this.pickUpHealth(item);
-      case ITEM_NAMES.KEY:
+      case ITEM_TYPES.KEY:
         return this.pickUpKey(item);
-      case ITEM_NAMES.WEAPON:
+      case ITEM_TYPES.WEAPON:
         return this.pickUpWeapon(item);
       default:
         return false;
@@ -579,19 +579,19 @@ class Player extends AbstractActor {
    * Pick up a weapon
    * @param  {Weapon} type  The weapon.
    */
-  pickUpWeapon({ type }) {
-    const weapon = this.weapons[type];
+  pickUpWeapon({ weapon }) {
+    const pickedUpWeapon = this.weapons[weapon];
 
-    if (!weapon.isEquiped()) {
-      weapon.setEquiped(true);
-      this.selectNextWeapon(type);
+    if (!pickedUpWeapon.isEquiped()) {
+      pickedUpWeapon.setEquiped(true);
+      this.selectNextWeapon(weapon);
 
       return true;
     }
 
     return this.pickUpAmmo({
-      type,
-      amount: Math.round(weapon.maxAmmo / 2),
+      weapon,
+      amount: Math.round(pickedUpWeapon.maxAmmo / 2),
     });
   }
 
@@ -599,11 +599,11 @@ class Player extends AbstractActor {
    * Pick up ammo.
    * @param  {Ammo} amount The amount of ammo.
    */
-  pickUpAmmo({ type, amount }) {
-    const weapon = this.weapons[type];
+  pickUpAmmo({ weapon, amount }) {
+    const weaponToRefill = this.weapons[weapon];
 
-    if (weapon.isEquiped()) {
-      return weapon.addAmmo(amount);
+    if (weaponToRefill.isEquiped()) {
+      return weaponToRefill.addAmmo(amount);
     }
 
     return false;

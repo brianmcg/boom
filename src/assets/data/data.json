@@ -1,5 +1,5 @@
 {
-  "numLevels": 2,
+  "numLevels": 1,
   "props": {
     "player": {
       "acceleration": 0.12,

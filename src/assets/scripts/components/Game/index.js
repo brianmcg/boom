@@ -9,7 +9,7 @@ import {
   GAME_DATA,
   GAME_FONT,
   SCENE_MUSIC,
-  SCENE_NAMES,
+  SCENE_TYPES,
 } from './constants/assets';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -22,9 +22,9 @@ const EVENTS = {
 };
 
 const SCENES = {
-  [SCENE_NAMES.TITLE]: TitleScene,
-  [SCENE_NAMES.WORLD]: WorldScene,
-  [SCENE_NAMES.CREDITS]: CreditsScene,
+  [SCENE_TYPES.TITLE]: TitleScene,
+  [SCENE_TYPES.WORLD]: WorldScene,
+  [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
 /**
@@ -92,7 +92,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.show({ type: SCENE_NAMES.WORLD, index: 1 });
+    this.show({ type: SCENE_TYPES.WORLD, index: 1 });
 
     this.emit(EVENTS.STARTED);
   }
@@ -134,21 +134,21 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show({ type: SCENE_NAMES.TITLE });
+    this.show({ type: SCENE_TYPES.TITLE });
   }
 
   /**
    * Show the world scene.
    */
   showWorldScene(options) {
-    this.show({ type: SCENE_NAMES.WORLD, ...options });
+    this.show({ type: SCENE_TYPES.WORLD, ...options });
   }
 
   /**
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show({ type: SCENE_NAMES.TITLE });
+    this.show({ type: SCENE_TYPES.TITLE });
   }
 
   /**

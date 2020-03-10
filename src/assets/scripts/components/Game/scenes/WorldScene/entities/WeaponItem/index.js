@@ -13,12 +13,14 @@ class WeaponItem extends AbstractItem {
    * @param  {Number} options.length  The length of the item.
    * @param  {Number} options.height  The height of the item.
    * @param  {String} options.texture The texture of item.
+   * @param  {String} options.weapon  The weapon this item contains.
+   * @param  {String} options.type    The item type.
    */
-  constructor({ type, ...other }) {
+  constructor({ weapon, ...other }) {
     super(other);
 
-    this.type = type;
-    this.title = translate(`world.item.${type}`);
+    this.weapon = weapon;
+    this.title = translate(`world.item.${weapon}`);
   }
 }
 
