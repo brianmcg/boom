@@ -39,11 +39,11 @@ class Door extends DynamicSector {
     this.key = key;
     this.interval = interval;
 
-    if (axis === DynamicSector.AXES.X) {
+    if (this.isHorizontal()) {
       this.offset.y = TILE_SIZE / 2;
     }
 
-    if (axis === DynamicSector.AXES.Y) {
+    if (this.isVertical()) {
       this.offset.x = TILE_SIZE / 2;
     }
 

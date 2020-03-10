@@ -10,6 +10,7 @@ const AXES = {
  */
 class DynamicSector extends Sector {
   /**
+   * Creates a dynamic sector.
    * @param  {Number}  options.x         The x coordinate of the sector.
    * @param  {Number}  options.y         The y coordinate of the sector
    * @param  {Number}  options.width     The width of the sector.
@@ -28,10 +29,19 @@ class DynamicSector extends Sector {
   }
 
   /**
-   * The axes class property.
+   * Is the axis horizontal.
+   * @return  {Boolean}
    */
-  static get AXES() {
-    return AXES;
+  isHorizontal() {
+    return this.axis === AXES.X;
+  }
+
+  /**
+   * Is the axis vertical.
+   * @return  {Boolean}
+   */
+  isVertical() {
+    return this.axis === AXES.Y;
   }
 }
 

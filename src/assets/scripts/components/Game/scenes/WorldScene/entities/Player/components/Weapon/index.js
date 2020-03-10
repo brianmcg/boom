@@ -381,14 +381,6 @@ class Weapon extends Entity {
   static get TYPES() {
     return TYPES;
   }
-
-  /**
-   * The weapon states.
-   * @static
-   */
-  static get STATES() {
-    return STATES;
-  }
 }
 
 export default Weapon;
