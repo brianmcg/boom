@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { KEYS } from 'game/core/input';
 import { SOUNDS } from 'game/constants/sounds';
-import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
+import { SCENE_PATH, SCENE_MAP, SCENE_TYPES } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
 import ReviewContainer from './containers/ReviewContainer';
@@ -19,11 +19,13 @@ class WorldScene extends Scene {
   /**
    * Create a world scene.
    * @param  {Number} options.index   The index of the scene.
-   * @param  {String} options.type    The type of scene.
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super(options);
+    super({
+      ...options,
+      type: SCENE_TYPES.WORLD,
+    });
 
     this.assets = {
       ...this.assets,

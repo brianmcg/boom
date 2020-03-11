@@ -11,8 +11,12 @@ class BackgroundContainer extends Container {
    */
   constructor({ smoke }) {
     super();
-    smoke.width = SCREEN.WIDTH;
-    smoke.height = SCREEN.HEIGHT;
+
+    const ratio = SCREEN.HEIGHT / smoke.height;
+    smoke.width *= ratio;
+    smoke.height *= ratio;
+
+    smoke.x = (SCREEN.WIDTH - smoke.width) / 2;
     this.addChild(smoke);
   }
 }

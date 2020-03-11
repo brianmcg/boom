@@ -1,4 +1,5 @@
 import translate from 'root/translate';
+import { SCENE_TYPES } from 'game/constants/assets';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';
@@ -12,11 +13,13 @@ class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
    * @param  {Number} options.index   The index of the scene.
-   * @param  {String} options.type    The type of scene.
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super(options);
+    super({
+      ...options,
+      type: SCENE_TYPES.TITLE,
+    });
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),

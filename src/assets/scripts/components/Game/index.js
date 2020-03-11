@@ -92,7 +92,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.show({ type: SCENE_TYPES.WORLD, index: 1 });
+    this.showTitleScene();
 
     this.emit(EVENTS.STARTED);
   }
@@ -148,7 +148,7 @@ class Game extends Application {
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show({ type: SCENE_TYPES.TITLE });
+    this.show({ type: SCENE_TYPES.CREDITS });
   }
 
   /**
@@ -177,7 +177,6 @@ class Game extends Application {
 
     if (SceneType) {
       this.scene = new SceneType({
-        type,
         index,
         game: this,
       });

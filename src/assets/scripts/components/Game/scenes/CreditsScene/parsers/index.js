@@ -19,9 +19,8 @@ export const parse = ({ graphics, text }) => {
 
   const smoke = new AnimatedSprite(smokeTextures, {
     animationSpeed: 0.2,
-    tint: RED,
     loop: true,
-    alpha: 0.75,
+    alpha: 0.5,
   });
 
   const credits = text.credits.reduce((memo, credit) => {
