@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { DynamicBody, DynamicSector } from 'game/core/physics';
+import { DynamicSector } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const STATES = {
@@ -53,6 +53,7 @@ class Door extends DynamicSector {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+    this.isDoor = true;
 
     this.setClosed();
   }
@@ -145,7 +146,7 @@ class Door extends DynamicSector {
 
       if (this.timer <= 0) {
         const isBlocked = this.world.getAdjacentBodies(this)
-          .reduce((result, body) => (result || body instanceof DynamicBody), false);
+          .some(body => body.isDynamicBody);
 
         if (!isBlocked) {
           this.timer = 0;

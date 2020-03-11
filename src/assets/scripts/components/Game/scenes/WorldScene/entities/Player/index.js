@@ -3,8 +3,6 @@ import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
 import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
-import AbstractItem from '../AbstractItem';
-import Door from '../Door';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Message from './components/Message';
@@ -300,9 +298,9 @@ class Player extends AbstractActor {
    */
   updateAliveInteractions() {
     this.world.getAdjacentBodies(this).forEach((body) => {
-      if (body instanceof AbstractItem) {
+      if (body.isItem) {
         this.updateItemInteraction(body);
-      } else if (body instanceof Door) {
+      } else if (body.isDoor) {
         this.updateDoorInteraction(body);
       }
     });

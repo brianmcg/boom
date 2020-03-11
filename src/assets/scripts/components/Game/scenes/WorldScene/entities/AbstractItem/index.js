@@ -25,6 +25,8 @@ class AbstractItem extends Entity {
 
     this.setIdle();
 
+    this.isItem = true;
+
     if (this.constructor === AbstractItem) {
       throw new TypeError('Can not construct abstract class.');
     }
