@@ -34,7 +34,7 @@ class Loader {
         loadedData,
       ]) => {
         resolve({
-          graphics: loadedGraphics[graphics.name],
+          graphics: loadedGraphics,
           sound: loadedSound,
           data: loadedData,
         });

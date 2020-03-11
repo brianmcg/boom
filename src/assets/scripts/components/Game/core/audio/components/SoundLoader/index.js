@@ -37,7 +37,7 @@ class SoundLoader {
     return new Promise((resolve) => {
       fetch(spriteSrc).then((response) => {
         response.json().then((sprite) => {
-          const sound = new Sound({ src: [src], sprite });
+          const sound = new Sound({ src, sprite });
           this.cache[name] = sound;
           sound.onload = resolve(sound);
         });
@@ -53,7 +53,7 @@ class SoundLoader {
    */
   loadSrc({ name, src }) {
     return new Promise((resolve) => {
-      const sound = new Sound({ src: [src] });
+      const sound = new Sound({ src });
       this.cache[name] = sound;
       sound.onload = resolve(sound);
     });

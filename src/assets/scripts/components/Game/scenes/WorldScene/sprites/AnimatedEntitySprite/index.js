@@ -10,7 +10,6 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Number}  options.animationSpeed The sprite animationSpeed.
    * @param  {Number}  options.tint           The sprite tint.
    * @param  {Number}  options.alpha          The sprite alpha.
-   * @param  {Boolean} options.loop           The sprite loop.
    * @param  {Boolean} options.autoPlay       The sprite auto play.
    */
   constructor(textures) {
