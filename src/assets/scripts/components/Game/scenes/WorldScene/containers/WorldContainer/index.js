@@ -43,6 +43,7 @@ let bottomIntersection;
 let topIntersection;
 let actualDistance;
 let correctedDistance;
+let stain;
 
 /**
  * Class representing a WorldContainer.
@@ -98,6 +99,8 @@ class WorldContainer extends Container {
         side,
       } = player.castRay(rayAngle);
 
+      stain = side.isStained ? side.stain : 0;
+
       // Update total encountered bodies.
       Object.assign(totalEncounteredBodies, encounteredBodies);
 
@@ -118,7 +121,7 @@ class WorldContainer extends Container {
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
-      sprite.changeTexture(side.texture, sliceY, side.stain);
+      sprite.changeTexture(side.texture, sliceY, stain);
       sprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites

@@ -13,6 +13,8 @@ const DEG_45 = DEG[45];
 
 const DEG_90 = DEG[90];
 
+const WALL_STAIN_DISTANCE = TILE_SIZE * 1.5;
+
 const STATES = {
   ALIVE: 'player:alive',
   DYING: 'player:dying',
@@ -529,7 +531,17 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      range.forEach((_, i) => collisions[i] && collisions[i].hit(power));
+      range.forEach((_, i) => {
+        const enemy = collisions[i];
+
+        if (enemy) {
+          enemy.hit(power);
+
+          if (ray.distance - enemy.distanceToPlayer < WALL_STAIN_DISTANCE) {
+            ray.side.isStained = true;
+          }
+        }
+      });
 
       this.camera.setRecoil(recoil);
       this.world.setGunFlash(power);

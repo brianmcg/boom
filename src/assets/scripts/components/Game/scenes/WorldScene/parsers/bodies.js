@@ -34,6 +34,7 @@ const createSector = ({ sector, props, graphics }) => {
     [key]: {
       texture: sector.sides[key],
       stain: Math.floor(Math.random() * bloodAnimations.length) + 1,
+      isStained: false,
     },
   }), {});
 
