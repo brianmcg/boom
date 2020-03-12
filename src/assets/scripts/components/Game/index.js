@@ -92,7 +92,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.showTitleScene();
+    this.showWorldScene();
 
     this.emit(EVENTS.STARTED);
   }
@@ -157,7 +157,7 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show({ type, index = 0, startingProps = {} } = {}) {
+  async show({ type, index = 1, startingProps = {} } = {}) {
     const SceneType = SCENES[type];
 
     if (this.scene) {

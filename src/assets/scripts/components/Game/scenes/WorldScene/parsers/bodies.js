@@ -1,4 +1,4 @@
-import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
+import { ITEM_TYPES, ENEMY_TYPES, EFFECT_TYPES } from 'game/constants/assets';
 import { TILE_SIZE } from 'game/constants/config';
 import Sector from '../entities/Sector';
 import World from '../entities/World';
@@ -26,7 +26,17 @@ const ENEMIES = {
   [ENEMY_TYPES.MANCUBUS]: Mancubus,
 };
 
-const createSector = (sector, props) => {
+const createSector = ({ sector, props, graphics }) => {
+  const { animations } = graphics.data;
+  const bloodAnimations = animations[EFFECT_TYPES.BLOOD];
+  const sides = Object.keys(sector.sides).reduce((memo, key) => ({
+    ...memo,
+    [key]: {
+      texture: sector.sides[key],
+      stain: Math.floor(Math.random() * bloodAnimations.length) + 1,
+    },
+  }), {});
+
   if (sector.door) {
     return new Door({
       x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
@@ -36,7 +46,7 @@ const createSector = (sector, props) => {
       length: TILE_SIZE,
       axis: sector.axis,
       blocking: sector.blocking,
-      sides: sector.sides,
+      sides,
       key: sector.key,
       ...props.door,
     });
@@ -46,7 +56,7 @@ const createSector = (sector, props) => {
     x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
     y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
     blocking: sector.blocking,
-    sides: sector.sides,
+    sides,
     width: TILE_SIZE,
     height: sector.blocking ? TILE_SIZE : 0,
     length: TILE_SIZE,
@@ -58,7 +68,7 @@ const createSector = (sector, props) => {
  * @param  {Object} data   The world data.
  * @return {World}         The created world.
  */
-export const createWorld = (data) => {
+export const createWorld = ({ data, graphics }) => {
   const { entrance, exit, props } = data;
   const { visibility, brightness } = props.world;
 
@@ -66,7 +76,7 @@ export const createWorld = (data) => {
     ...rows,
     row.reduce((sectors, sector) => ([
       ...sectors,
-      createSector(sector, props),
+      createSector({ sector, props, graphics }),
     ]), []),
   ]), []);
 

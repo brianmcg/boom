@@ -36,7 +36,7 @@ class Scene extends Container {
    * @param  {String} options.game    The game running the scene.
    */
   constructor({
-    index = 0,
+    index,
     type,
     game,
   }) {

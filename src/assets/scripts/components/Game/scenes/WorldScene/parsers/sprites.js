@@ -1,13 +1,16 @@
 import {
   Rectangle,
   Texture,
+  RenderTexture,
   TextSprite,
   RectangleSprite,
   Sprite,
+  Container,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { TILE_SIZE, SCREEN } from 'game/constants/config';
 import { FONT_SIZES } from 'game/constants/fonts';
+import { EFFECT_TYPES } from 'game/constants/assets';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
@@ -37,10 +40,18 @@ const createWeaponSprite = ({ animations, textures, player }) => {
   return new WeaponSprite(textureCollection, player);
 };
 
-const createWallSprites = ({ world, frames, textures }) => {
+const createWallSprites = ({
+  world,
+  frames,
+  animations,
+  textures,
+  renderer,
+}) => {
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [];
+  const bloodAnimations = animations[EFFECT_TYPES.BLOOD];
+  const stainedContainer = new Container();
 
   world.grid.forEach((row) => {
     row.forEach((sector) => {
@@ -52,8 +63,8 @@ const createWallSprites = ({ world, frames, textures }) => {
       } = sector;
 
       [front, left, back, right].forEach((side) => {
-        if (side && !wallImages.includes(side)) {
-          wallImages.push(side);
+        if (side && !wallImages.includes(side.texture)) {
+          wallImages.push(side.texture);
         }
       });
     });
@@ -65,9 +76,24 @@ const createWallSprites = ({ world, frames, textures }) => {
     const { frame } = frames[image];
     const texture = textures[image];
 
+    const stainedTextures = bloodAnimations.map((animation) => {
+      const stainedTexture = RenderTexture.create(TILE_SIZE, TILE_SIZE);
+      const bloodTexture = textures[animation];
+      stainedContainer.removeChildren();
+      stainedContainer.addChild(new Sprite(texture));
+      stainedContainer.addChild(new Sprite(bloodTexture));
+      renderer.render(stainedContainer, stainedTexture);
+      return stainedTexture;
+    });
+
     for (let i = 0; i < frame.w; i += 1) {
-      const slice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[image].push(new Texture(texture, slice));
+      const stainedSlice = new Rectangle(i, 0, 1, frame.h);
+      const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
+
+      wallTextures[image].push([
+        new Texture(texture, clearSlice),
+        ...stainedTextures.map(stainedTexture => new Texture(stainedTexture, stainedSlice)),
+      ]);
     }
   });
 
@@ -89,8 +115,8 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
       const { top, bottom } = sector;
 
       [top, bottom].forEach((side) => {
-        if (side && !backgroundImages.includes(side)) {
-          backgroundImages.push(side);
+        if (side && !backgroundImages.includes(side.texture)) {
+          backgroundImages.push(side.texture);
         }
       });
     });
@@ -268,8 +294,8 @@ const createHudSprites = (world, textures) => {
   };
 };
 
-const createWorldSprites = (world, resources) => {
-  const { textures, data } = resources;
+const createWorldSprites = ({ world, graphics, renderer }) => {
+  const { textures, data } = graphics;
   const { frames, animations } = data;
   const { player } = world;
 
@@ -286,9 +312,11 @@ const createWorldSprites = (world, resources) => {
   });
 
   const walls = createWallSprites({
+    animations,
     frames,
     textures,
     world,
+    renderer,
   });
 
   const background = createBackgroundSprites({
@@ -314,12 +342,18 @@ const createWorldSprites = (world, resources) => {
 
 /**
  * Creates the sprites for the scene.
- * @param  {World}  world     The world.
- * @param  {Object} resources The resources.
- * @param  {Object} text      The text.
- * @return {Object            The sprites for the scene.
+ * @param  {World}  options.world     The world.
+ * @param  {Object} options.graphics  The graphics.
+ * @param  {Object} options.text      The text.
+ * @param  {Object} options.renderer  The text.
+ * @return {Object}                   The sprites for the scene.
  */
-export const createSprites = (world, resources, text) => ({
-  world: createWorldSprites(world, resources),
+export const createSprites = ({
+  world,
+  graphics,
+  text,
+  renderer,
+}) => ({
+  world: createWorldSprites({ world, graphics, renderer }),
   review: createReviewSprites(text.review),
 });

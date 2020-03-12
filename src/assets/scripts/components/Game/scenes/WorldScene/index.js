@@ -59,6 +59,8 @@ class WorldScene extends Scene {
    * @param  {Object} options.data     The scene data.
    */
   create({ graphics, data }) {
+    const { renderer } = this.game;
+
     const text = {
       review: {
         title: translate('world.title', {
@@ -71,6 +73,7 @@ class WorldScene extends Scene {
     };
 
     const { world, sprites } = parse({
+      renderer,
       graphics,
       data,
       text,

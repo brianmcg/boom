@@ -8,6 +8,7 @@ import {
   SCALE_MODES,
   settings,
   Texture,
+  RenderTexture,
 } from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import TextSprite from './components/TextSprite';
@@ -84,4 +85,8 @@ export {
    * The texture component.
    */
   Texture,
+  /**
+   * The render texture component.
+   */
+  RenderTexture,
 };

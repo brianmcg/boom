@@ -1,5 +1,10 @@
 import { Sprite } from 'game/core/graphics';
 
+const TYPES = {
+  CLEAR: 'clear',
+  STAINED: 'stained',
+};
+
 /**
  * Class representing an WallSprite.
  * @extends {Sprite}
@@ -13,6 +18,7 @@ class WallSprite extends Sprite {
   constructor(textures, index) {
     super();
     this.x = index;
+
     this.textures = textures;
     this.zOrder = Number.MAX_VALUE;
   }
@@ -22,8 +28,9 @@ class WallSprite extends Sprite {
    * @param  {String}  image  The name of the image.
    * @param  {Number}  offset The index of the slice.
    */
-  changeTexture(image, offset) {
-    this.texture = this.textures[image][offset];
+  changeTexture(image, offset, type) {
+    // const type = stained ? TYPES.STAINED : TYPES.CLEAR;
+    this.texture = this.textures[image][offset][type];
   }
 }
 

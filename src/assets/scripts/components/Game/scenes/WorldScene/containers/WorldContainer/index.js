@@ -118,7 +118,7 @@ class WorldContainer extends Container {
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
-      sprite.changeTexture(side, sliceY);
+      sprite.changeTexture(side.texture, sliceY, side.stain);
       sprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
@@ -141,7 +141,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / TILE_SIZE);
           gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getSector(gridX, gridY).top, pixelX, pixelY);
+          sprite.changeTexture(this.world.getSector(gridX, gridY).top.texture, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -162,7 +162,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / TILE_SIZE);
           gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getSector(gridX, gridY).bottom, pixelX, pixelY);
+          sprite.changeTexture(this.world.getSector(gridX, gridY).bottom.texture, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }

@@ -12,9 +12,19 @@ export const parse = ({
   graphics,
   data,
   text,
+  renderer,
 }) => {
-  const world = createWorld(data);
-  const sprites = createSprites(world, graphics, text);
+  const world = createWorld({
+    data,
+    graphics,
+  });
+
+  const sprites = createSprites({
+    world,
+    graphics,
+    text,
+    renderer,
+  });
 
   return {
     world,

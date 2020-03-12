@@ -108,3 +108,11 @@ export const KEY_COLORS = {
   BLUE: 'blue',
   RED: 'red',
 };
+
+/**
+ * The effect types.
+ * @type {Object}
+ */
+export const EFFECT_TYPES = {
+  BLOOD: 'blood',
+};
