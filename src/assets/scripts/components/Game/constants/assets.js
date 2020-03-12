@@ -114,5 +114,5 @@ export const KEY_COLORS = {
  * @type {Object}
  */
 export const EFFECT_TYPES = {
-  BLOOD: 'blood',
+  SPATTER: 'spatter',
 };

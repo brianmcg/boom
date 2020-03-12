@@ -26,15 +26,12 @@ const ENEMIES = {
   [ENEMY_TYPES.MANCUBUS]: Mancubus,
 };
 
-const createSector = ({ sector, props, graphics }) => {
-  const { animations } = graphics.data;
-  const bloodAnimations = animations[EFFECT_TYPES.BLOOD];
+const createSector = ({ sector, props }) => {
   const sides = Object.keys(sector.sides).reduce((memo, key) => ({
     ...memo,
     [key]: {
       texture: sector.sides[key],
-      stain: Math.floor(Math.random() * bloodAnimations.length) + 1,
-      isStained: false,
+      spatter: 0,
     },
   }), {});
 
@@ -72,12 +69,14 @@ const createSector = ({ sector, props, graphics }) => {
 export const createWorld = ({ data, graphics }) => {
   const { entrance, exit, props } = data;
   const { visibility, brightness } = props.world;
+  const { animations } = graphics.data;
+  const spatters = animations[EFFECT_TYPES.SPATTER].length;
 
   const grid = data.grid.reduce((rows, row) => ([
     ...rows,
     row.reduce((sectors, sector) => ([
       ...sectors,
-      createSector({ sector, props, graphics }),
+      createSector({ sector, props }),
     ]), []),
   ]), []);
 
@@ -117,6 +116,7 @@ export const createWorld = ({ data, graphics }) => {
       height: TILE_SIZE / 2,
       length: TILE_SIZE / 2,
       ...props.enemies[enemy.type],
+      spatters,
     }),
   ]), []);
 

@@ -38,6 +38,7 @@ class AbstractEnemy extends AbstractActor {
     acceleration = 1,
     attackPower = 1,
     type,
+    spatters,
     ...other
   }) {
     super(other);
@@ -46,6 +47,7 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.spatters = spatters;
     this.attackRange = attackRange;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
@@ -74,22 +76,22 @@ class AbstractEnemy extends AbstractActor {
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       this.face(player);
 
-      switch (this.state) {
-        case STATES.IDLE:
-          this.updateIdle(delta);
-          break;
-        case STATES.CHASING:
-          this.updateChasing(delta);
-          break;
-        case STATES.ATTACKING:
-          this.updateAttacking(delta);
-          break;
-        case STATES.HURT:
-          this.updateHurt(delta);
-          break;
-        default:
-          break;
-      }
+      // switch (this.state) {
+      //   case STATES.IDLE:
+      //     this.updateIdle(delta);
+      //     break;
+      //   case STATES.CHASING:
+      //     this.updateChasing(delta);
+      //     break;
+      //   case STATES.ATTACKING:
+      //     this.updateAttacking(delta);
+      //     break;
+      //   case STATES.HURT:
+      //     this.updateHurt(delta);
+      //     break;
+      //   default:
+      //     break;
+      // }
 
       super.update(delta);
     }
@@ -178,6 +180,14 @@ class AbstractEnemy extends AbstractActor {
     } else {
       this.setDead();
     }
+  }
+
+  /**
+   * Get the type of blood spatter.
+   * @return {Number} The type of blood spatter.
+   */
+  spatter() {
+    return Math.floor(Math.random() * this.spatters) + 1;
   }
 
   /**

@@ -538,7 +538,7 @@ class Player extends AbstractActor {
           enemy.hit(power);
 
           if (ray.distance - enemy.distanceToPlayer < WALL_STAIN_DISTANCE) {
-            ray.side.isStained = true;
+            ray.side.spatter = enemy.spatter();
           }
         }
       });

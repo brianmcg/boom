@@ -50,8 +50,8 @@ const createWallSprites = ({
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [];
-  const bloodAnimations = animations[EFFECT_TYPES.BLOOD];
-  const stainedContainer = new Container();
+  const spatters = animations[EFFECT_TYPES.SPATTER];
+  const spatterContainer = new Container();
 
   world.grid.forEach((row) => {
     row.forEach((sector) => {
@@ -74,25 +74,25 @@ const createWallSprites = ({
     wallTextures[image] = [];
 
     const { frame } = frames[image];
-    const texture = textures[image];
+    const wallTexture = textures[image];
 
-    const stainedTextures = bloodAnimations.map((animation) => {
-      const stainedTexture = RenderTexture.create(TILE_SIZE, TILE_SIZE);
+    const spatterTextures = spatters.map((animation) => {
+      const spatterTexture = RenderTexture.create(TILE_SIZE, TILE_SIZE);
       const bloodTexture = textures[animation];
-      stainedContainer.removeChildren();
-      stainedContainer.addChild(new Sprite(texture));
-      stainedContainer.addChild(new Sprite(bloodTexture));
-      renderer.render(stainedContainer, stainedTexture);
-      return stainedTexture;
+      spatterContainer.removeChildren();
+      spatterContainer.addChild(new Sprite(wallTexture));
+      spatterContainer.addChild(new Sprite(bloodTexture));
+      renderer.render(spatterContainer, spatterTexture);
+      return spatterTexture;
     });
 
     for (let i = 0; i < frame.w; i += 1) {
-      const stainedSlice = new Rectangle(i, 0, 1, frame.h);
+      const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
 
       wallTextures[image].push([
-        new Texture(texture, clearSlice),
-        ...stainedTextures.map(stainedTexture => new Texture(stainedTexture, stainedSlice)),
+        new Texture(wallTexture, clearSlice),
+        ...spatterTextures.map(texture => new Texture(texture, spatteredSlice)),
       ]);
     }
   });
