@@ -542,11 +542,6 @@ class Player extends AbstractActor {
         side,
       } = this.castRay();
 
-      this.world.bullets.push({
-        ...this.bullets.shift(),
-        ...endPoint,
-      });
-
       const collisions = enemies.reduce((memo, enemy) => {
         if (!enemy.isDead() && enemy.rayCollision({ startPoint, endPoint })) {
           return [...memo, enemy];
@@ -564,6 +559,17 @@ class Player extends AbstractActor {
 
         return 0;
       });
+
+      const bullet = collisions.length ? {
+        ...this.bullets.shift(),
+        x: collisions[0].x,
+        y: collisions[0].y,
+      } : {
+        ...this.bullets.shift(),
+        ...endPoint,
+      };
+
+      this.world.bullets.push(bullet);
 
       range.forEach((_, i) => {
         const enemy = collisions[i];

@@ -72,7 +72,7 @@ class HudContainer extends Container {
     const { messages } = this.player;
 
     Object.values(keys).forEach((key) => {
-      if (key.isActive()) {
+      if (!key.isInactive()) {
         key.update(delta);
       }
     });

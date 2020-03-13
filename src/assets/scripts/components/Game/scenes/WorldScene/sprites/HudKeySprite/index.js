@@ -1,13 +1,16 @@
 import { Sprite } from 'game/core/graphics';
 
 const STATES = {
-  ACTIVE: 'key:active',
   INACTIVE: 'key:inactive',
+  EQUIPPING: 'key:equipping',
+  USING: 'key:using',
 };
 
 const FULL_ROTATION = Math.PI * 2;
 
 const ROTATION_INCREMENT = 0.3;
+
+const SCALE_INCREMENT = 0.075;
 
 /**
  * Class representing a hud keyCard sprite.
@@ -16,17 +19,19 @@ class HudKeySprite extends Sprite {
   /**
    * Creates a hud keyCard sprite
    * @param  {Texture} texture     The sprite texture.
-   * @param  {Key}     options.keyCard The keyCard entity.
+   * @param  {KeyCard}     options.keyCard The keyCard entity.
    */
   constructor(texture, { keyCard } = {}) {
     super(texture);
 
-    this.hide();
     this.anchor.set(0.5);
+    this.scaleFactor = 0;
+
+    this.hide();
     this.setInactive();
 
-    keyCard.onEquipEvent(this.show.bind(this));
-    keyCard.onUseEvent(this.setActive.bind(this));
+    keyCard.onEquipEvent(this.setEquipping.bind(this));
+    keyCard.onUseEvent(this.setUsing.bind(this));
   }
 
   /**
@@ -34,6 +39,23 @@ class HudKeySprite extends Sprite {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
+    switch (this.state) {
+      case STATES.USING:
+        this.updateUsing(delta);
+        break;
+      case STATES.EQUIPPING:
+        this.updateEquipping(delta);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Update when in using state.
+   * @param  {Number} delta The delta time.
+   */
+  updateUsing(delta) {
     this.rotation += ROTATION_INCREMENT * delta;
 
     if (this.rotation >= FULL_ROTATION) {
@@ -43,11 +65,19 @@ class HudKeySprite extends Sprite {
   }
 
   /**
-   * Set the state to active.
-   * @return {Boolean} State change successfull.
+   * Update when in equipping state.
+   * @param  {Number} delta The delta time.
    */
-  setActive() {
-    return this.setState(STATES.ACTIVE);
+  updateEquipping(delta) {
+    this.scaleFactor += SCALE_INCREMENT * delta;
+
+    if (this.scaleFactor >= 1) {
+      this.scaleFactor = 1;
+      this.setInactive();
+    }
+
+    this.scale.x = this.scaleFactor;
+    this.scale.y = this.scaleFactor;
   }
 
   /**
@@ -59,11 +89,26 @@ class HudKeySprite extends Sprite {
   }
 
   /**
-   * Is the state active.
-   * @return {Boolean} The state is active.
+   * Set the state to equipping.
+   * @return {Boolean} State change successfull.
    */
-  isActive() {
-    return this.state === STATES.ACTIVE;
+  setEquipping() {
+    const stateChange = this.setState(STATES.EQUIPPING);
+
+    if (stateChange) {
+      this.scaleFactor = 0;
+      this.show();
+    }
+
+    return stateChange;
+  }
+
+  /**
+   * Set the state to using.
+   * @return {Boolean} State change successfull.
+   */
+  setUsing() {
+    return this.setState(STATES.USING);
   }
 
   /**
@@ -72,6 +117,22 @@ class HudKeySprite extends Sprite {
    */
   isInactive() {
     return this.state === STATES.INACTIVE;
+  }
+
+  /**
+   * Is the state equipping.
+   * @return {Boolean} The state is active.
+   */
+  isEquipping() {
+    return this.state === STATES.EQUIPPING;
+  }
+
+  /**
+   * Is the state using.
+   * @return {Boolean} The state is active.
+   */
+  isUsing() {
+    return this.state === STATES.USING;
   }
 
   /**
