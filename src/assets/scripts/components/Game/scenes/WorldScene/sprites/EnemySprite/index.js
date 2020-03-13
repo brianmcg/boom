@@ -1,18 +1,14 @@
-import { DEG } from 'game/core/physics';
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
 const ACTIONS = {
-  ATTACKING: 'attacking',
-  DYING: 'dying',
-  HURTING: 'hurting',
+  IDLE: 'idle',
   MOVING: 'moving',
-  SHOOTING: 'shooting',
-  STANDING: 'standing',
+  AIMING: 'aiming',
+  ATTACKING: 'attacking',
+  HURTING: 'hurting',
+  DYING: 'dying',
+  DEAD: 'dead',
 };
-
-const MAX_ANGLE_ID = 7;
-
-const DEG_45 = DEG[45];
 
 /**
  * Class representing an EnemySprite.
@@ -25,14 +21,13 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
-    super(textureCollection[ACTIONS.MOVING][0], {
+    super(textureCollection[ACTIONS.IDLE], {
       animationSpeed: 0.125,
       loop: true,
     });
 
     this.enemy = enemy;
-    this.angleId = 0;
-    this.actionId = ACTIONS.MOVING;
+    this.actionId = ACTIONS.IDLE;
     this.textureCollection = textureCollection;
   }
 
@@ -42,64 +37,33 @@ class EnemySprite extends AnimatedEntitySprite {
   animate() {
     const { enemy } = this;
 
-    if (enemy.isDead()) {
-      this.updateTextures({
-        actionId: ACTIONS.DYING,
-        angleId: 0,
-        frame: 0,
-        loop: false,
-      });
-    } else if (enemy.isHurt()) {
-      this.updateTextures({
-        actionId: ACTIONS.HURTING,
-        angleId: 0,
-        frame: 0,
-        loop: false,
-      });
+    if (enemy.isIdle()) {
+      this.updateTextures({ actionId: ACTIONS.IDLE });
+    } else if (enemy.isMoving()) {
+      this.updateTextures({ actionId: ACTIONS.MOVING, loop: true });
+    } else if (enemy.isAiming()) {
+      this.updateTextures({ actionId: ACTIONS.AIMING });
     } else if (enemy.isAttacking()) {
-      this.updateTextures({
-        actionId: ACTIONS.SHOOTING,
-        angleId: 0,
-        frame: 0,
-        loop: false,
-      });
-    } else if (enemy.isChasing()) {
-      this.updateTextures({
-        actionId: ACTIONS.MOVING,
-        angleId: Math.floor(enemy.getAngleDiff() / DEG_45),
-        frame: this.currentFrame,
-        loop: true,
-      });
+      this.updateTextures({ actionId: ACTIONS.ATTACKING });
+    } else if (enemy.isHurting()) {
+      this.updateTextures({ actionId: ACTIONS.HURTING });
     } else {
-      this.updateTextures({
-        actionId: ACTIONS.STANDING,
-        angleId: Math.floor(enemy.getAngleDiff() / DEG_45),
-        frame: 0,
-        loop: false,
-      });
+      this.updateTextures({ actionId: ACTIONS.DEAD });
     }
   }
 
   /**
    * Update the sprite textures.
    * @param  {String}   options.actionId The id of the action.
-   * @param  {String}   options.angleId  The id of the angle.
-   * @param  {Number}   options.frame    The frame number.
    * @param  {Boolean}  options.loop     The loop options.
    */
-  updateTextures({
-    actionId,
-    angleId,
-    frame,
-    loop,
-  }) {
-    if (this.actionId !== actionId || this.angleId !== angleId) {
+  updateTextures({ actionId, loop }) {
+    if (this.actionId !== actionId) {
       this.loop = loop;
-      this.angleId = angleId > MAX_ANGLE_ID ? MAX_ANGLE_ID : angleId;
       this.actionId = actionId;
-      this.textures = this.textureCollection[this.actionId][this.angleId];
-      this.texture = this.textures[frame];
-      this.gotoAndPlay(frame);
+      this.textures = this.textureCollection[this.actionId];
+      this.texture = this.textures[0];
+      this.gotoAndPlay(0);
     }
   }
 }

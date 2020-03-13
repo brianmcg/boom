@@ -4,9 +4,10 @@ import AbstractActor from '../AbstractActor';
 
 const STATES = {
   IDLE: 'enemy:idle',
-  CHASING: 'enemy:chase',
-  ATTACKING: 'enemy:fire',
-  HURT: 'enemy:hurt',
+  MOVING: 'enemy:moving',
+  AIMING: 'enemy:aiming',
+  ATTACKING: 'enemy:attacking',
+  HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
 };
 
@@ -80,14 +81,14 @@ class AbstractEnemy extends AbstractActor {
       //   case STATES.IDLE:
       //     this.updateIdle(delta);
       //     break;
-      //   case STATES.CHASING:
-      //     this.updateChasing(delta);
+      //   case STATES.MOVING:
+      //     this.updateMoving(delta);
       //     break;
       //   case STATES.ATTACKING:
       //     this.updateAttacking(delta);
       //     break;
       //   case STATES.HURT:
-      //     this.updateHurt(delta);
+      //     this.updateHurting(delta);
       //     break;
       //   default:
       //     break;
@@ -108,7 +109,7 @@ class AbstractEnemy extends AbstractActor {
       if (this.distanceToPlayer <= this.attackRange) {
         this.setAttacking();
       } else {
-        this.setChasing();
+        this.setMoving();
       }
     }
   }
@@ -116,7 +117,7 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Update enemy in chasing state
    */
-  updateChasing() {
+  updateMoving() {
     if (this.distanceToPlayer <= this.attackRange) {
       this.setAttacking();
     }
@@ -139,7 +140,7 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in hurt state
    * @param  {Number} delta The delta time.
    */
-  updateHurt(delta) {
+  updateHurting(delta) {
     this.hurtTimer += TIME_STEP * delta;
 
     if (this.hurtTimer >= this.hurtTime) {
@@ -176,7 +177,7 @@ class AbstractEnemy extends AbstractActor {
     this.health -= amount;
 
     if (this.health > 0) {
-      this.setHurt();
+      this.setHurting();
     } else {
       this.setDead();
     }
@@ -199,32 +200,39 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Set the enemy to the idle state.
+   * Set the enemy to the moving state.
    */
-  setChasing() {
+  setMoving() {
     this.velocity = Math.min(
       this.maxVelocity,
       this.maxVelocity + this.acceleration,
     );
 
-    this.setState(STATES.CHASING);
+    this.setState(STATES.MOVING);
+  }
+
+  /**
+   * Set the enemy to the aiming state.
+   */
+  setAiming() {
+    this.velocity = 0;
+    this.setState(STATES.AIMING);
   }
 
   /**
    * Set the enemy to the attacking state.
    */
   setAttacking() {
-    this.velocity = 0;
     this.setState(STATES.ATTACKING);
     this.attack();
   }
 
   /**
-   * Set the enemy to the hurt state.
+   * Set the enemy to the hurting state.
    */
-  setHurt() {
+  setHurting() {
     this.velocity = 0;
-    this.setState(STATES.HURT);
+    this.setState(STATES.HURTING);
   }
 
   /**
@@ -248,8 +256,16 @@ class AbstractEnemy extends AbstractActor {
    * Is the enemy in the chasing state.
    * @return {Boolean}
    */
-  isChasing() {
-    return this.state === STATES.CHASING;
+  isMoving() {
+    return this.state === STATES.MOVING;
+  }
+
+  /**
+   * Is the enemy in the aiming state.
+   * @return {Boolean}
+   */
+  isAiming() {
+    return this.state === STATES.AIMING;
   }
 
   /**
@@ -264,8 +280,8 @@ class AbstractEnemy extends AbstractActor {
    * Is the enemy in the hurt state.
    * @return {Boolean}
    */
-  isHurt() {
-    return this.state === STATES.HURT;
+  isHurting() {
+    return this.state === STATES.HURTING;
   }
 
   /**

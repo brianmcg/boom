@@ -46,7 +46,7 @@
       }
     },
     "enemies": {
-      "amp": {
+      "grunt": {
         "acceleration": 0.2,
         "maxVelocity": 2,
         "attackRange": 64,
@@ -54,24 +54,6 @@
         "hurtTime": 400,
         "maxHealth": 5,
         "attackPower": 5
-      },
-      "zombie": {
-        "acceleration": 0.2,
-        "maxVelocity": 1,
-        "attackRange": 100,
-        "attackTime": 250,
-        "hurtTime": 500,
-        "maxHealth": 20,
-        "attackPower": 2
-      },
-      "mancubus": {
-        "acceleration": 0.2,
-        "maxVelocity": 1,
-        "attackRange": 128,
-        "attackTime": 1000,
-        "hurtTime": 500,
-        "maxHealth": 100,
-        "attackPower": 10
       }
     },
     "door": {

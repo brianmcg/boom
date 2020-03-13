@@ -23,10 +23,7 @@ import BulletSprite from '../sprites/BulletSprite';
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
     ...animationMemo,
-    [state]: Object.keys(animations[state]).reduce((stateMemo, angle) => ({
-      ...stateMemo,
-      [angle]: animations[state][angle].map(image => textures[image]),
-    }), {}),
+    [state]: animations[state].map(image => textures[image]),
   }), {});
 
   return new EnemySprite(enemy, textureCollection);

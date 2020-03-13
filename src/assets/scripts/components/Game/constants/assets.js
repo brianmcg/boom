@@ -94,9 +94,7 @@ export const ITEM_TYPES = {
  * @type {Object}
  */
 export const ENEMY_TYPES = {
-  AMP: 'amp',
-  ZOMBIE: 'zombie',
-  MANCUBUS: 'mancubus',
+  GRUNT: 'grunt',
 };
 
 /**

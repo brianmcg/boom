@@ -2,11 +2,11 @@ import { ENEMY_TYPES } from 'game/constants/assets';
 import AbstractGunEnemy from '../AbstractGunEnemy';
 
 /**
- * Class representing a mancubus enemy.
+ * Class representing an amp enemy.
  */
-class Mancubus extends AbstractGunEnemy {
+class Grunt extends AbstractGunEnemy {
   /**
-   * Creates a mancubus enemy.
+   * Creates an amp enemy.
    * @param  {Number} options.x               The x coordinate of the character.
    * @param  {Number} options.y               The y coordinate of the character
    * @param  {Number} options.width           The width of the character.
@@ -23,8 +23,8 @@ class Mancubus extends AbstractGunEnemy {
   constructor(options) {
     super(options);
 
-    this.type = ENEMY_TYPES.MANCUBUS;
+    this.type = ENEMY_TYPES.GRUNT;
   }
 }
 
-export default Mancubus;
+export default Grunt;

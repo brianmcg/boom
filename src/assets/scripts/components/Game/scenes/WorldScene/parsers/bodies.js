@@ -4,9 +4,7 @@ import Sector from '../entities/Sector';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
-import Amp from '../entities/Amp';
-import Zombie from '../entities/Zombie';
-import Mancubus from '../entities/Mancubus';
+import Grunt from '../entities/Grunt';
 import Player from '../entities/Player';
 import KeyItem from '../entities/KeyItem';
 import AmmoItem from '../entities/AmmoItem';
@@ -21,9 +19,7 @@ const ITEMS = {
 };
 
 const ENEMIES = {
-  [ENEMY_TYPES.AMP]: Amp,
-  [ENEMY_TYPES.ZOMBIE]: Zombie,
-  [ENEMY_TYPES.MANCUBUS]: Mancubus,
+  [ENEMY_TYPES.GRUNT]: Grunt,
 };
 
 const createSector = ({ sector, props }) => {

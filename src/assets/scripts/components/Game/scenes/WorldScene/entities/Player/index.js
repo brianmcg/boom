@@ -342,8 +342,9 @@ class Player extends AbstractActor {
       if (door.keyCard) {
         const keyCard = this.keyCards[door.keyCard];
         if (keyCard.isEquiped()) {
-          keyCard.use();
-          door.open();
+          if (door.open()) {
+            keyCard.use();
+          }
         } else {
           this.addMessage(translate('world.door.locked', {
             color: translate(`world.color.${door.keyCard}`),
