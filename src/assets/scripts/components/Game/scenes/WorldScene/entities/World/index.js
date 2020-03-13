@@ -123,7 +123,7 @@ class World extends PhysicsWorld {
    * @param {Number} power The power of the gun shot.
    */
   setGunFlash(power) {
-    this.brightness += Math.min(power / 10, MAX_GUN_FLASH_AMOUNT);
+    this.brightness += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
     this.gunFlash = true;
   }
 

@@ -10,7 +10,7 @@ class World extends EventEmitter {
    */
   constructor(grid = [[]]) {
     super();
-    
+
     this.grid = grid;
     this.bodies = {};
     this.dynamicBodies = [];
@@ -21,6 +21,8 @@ class World extends EventEmitter {
 
     this.maxSectorY = this.height - 1;
     this.maxSectorX = this.width - 1;
+
+    this.bullets = [];
   }
 
   /**

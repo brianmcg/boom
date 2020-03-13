@@ -18,6 +18,7 @@ import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 import HudKeySprite from '../sprites/HudKeySprite';
+import BulletSprite from '../sprites/BulletSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -148,6 +149,20 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
 
   return backgroundSprites;
 };
+
+const createBulletSprites = ({ animations, textures, world }) => {
+  const bulletTextures = animations[EFFECT_TYPES.BULLET].map(t => textures[t]);
+  const { bullets } = world.player;
+
+  return bullets.map(bullet => new BulletSprite(bulletTextures, {
+    world,
+    bullet,
+  }));
+};
+
+const createEffectsSprites = ({ animations, textures, world }) => ({
+  bullets: createBulletSprites({ animations, textures, world }),
+});
 
 const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
@@ -327,6 +342,8 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
   const hud = createHudSprites(world, textures);
 
+  const effects = createEffectsSprites({ animations, textures, world });
+
   return {
     player: {
       weapon,
@@ -335,6 +352,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     map: {
       walls,
       entities,
+      effects,
     },
     background,
   };

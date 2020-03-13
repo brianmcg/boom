@@ -115,4 +115,5 @@ export const KEY_COLORS = {
  */
 export const EFFECT_TYPES = {
   SPATTER: 'spatter',
+  BULLET: 'bullet',
 };

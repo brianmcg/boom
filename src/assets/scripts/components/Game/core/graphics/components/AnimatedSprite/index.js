@@ -20,7 +20,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
     alpha = 1,
     loop = false,
     autoPlay = true,
-  }) {
+  } = {}) {
     super(textures, false);
 
     this.autoPlay = autoPlay;

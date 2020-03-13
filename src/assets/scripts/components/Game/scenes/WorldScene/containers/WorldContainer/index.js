@@ -73,9 +73,17 @@ class WorldContainer extends Container {
    * Animate the container.
    */
   animate() {
-    const { player, maxSectorX, maxSectorY } = this.world;
+    const {
+      player,
+      maxSectorX,
+      maxSectorY,
+      bullets,
+    } = this.world;
+
+    this.mapContainer.reset();
+
     const { background } = this.backgroundContainer;
-    const { walls, entities } = this.mapContainer;
+    const { walls, entities, effects } = this.mapContainer;
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
@@ -83,6 +91,32 @@ class WorldContainer extends Container {
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
+
+    // Add bullet effects.
+    bullets.forEach(({ index, x, y }) => {
+      sprite = effects.bullets[index];
+      dx = x - player.x;
+      dy = y - player.y;
+      spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
+      actualDistance = Math.sqrt(dx * dx + dy * dy) - 4;
+      correctedDistance = COS[spriteAngle] * actualDistance;
+      spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+      spriteWidth = TILE_SIZE * spriteScale;
+      spriteHeight = TILE_SIZE * spriteScale;
+      spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+      sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+      sprite.y = centerY
+        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
+      sprite.width = spriteWidth;
+      sprite.height = spriteHeight;
+      sprite.zOrder = actualDistance - 4;
+      sprite.tint = this.calculateTint(actualDistance);
+
+      if (!sprite.parent) {
+        this.mapContainer.addChild(sprite);
+      }
+    });
+
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
@@ -181,17 +215,17 @@ class WorldContainer extends Container {
       if (body) {
         dx = body.x - player.x;
         dy = body.y - player.y;
-        actualDistance = Math.sqrt(dx * dx + dy * dy);
         spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
 
         if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
+          actualDistance = Math.sqrt(dx * dx + dy * dy);
           correctedDistance = COS[spriteAngle] * actualDistance;
           spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
           spriteWidth = TILE_SIZE * spriteScale;
           spriteHeight = TILE_SIZE * spriteScale;
           spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-          sprite.position.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-          sprite.position.y = centerY
+          sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+          sprite.y = centerY
             - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;

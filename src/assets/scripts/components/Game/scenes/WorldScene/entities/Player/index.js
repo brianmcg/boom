@@ -13,7 +13,7 @@ const DEG_45 = DEG[45];
 
 const DEG_90 = DEG[90];
 
-const WALL_STAIN_DISTANCE = TILE_SIZE * 1.5;
+const SPATTER_DISTANCE = TILE_SIZE * 1.5;
 
 const STATES = {
   ALIVE: 'player:alive',
@@ -105,6 +105,8 @@ class Player extends AbstractActor {
     this.onAddedEvent(this.initialize.bind(this));
 
     this.itemCollisionIds = [];
+
+    this.bullets = [...Array(10).keys()].map(index => ({ index }));
 
     this.setAlive();
   }
@@ -509,12 +511,23 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      const ray = this.castRay();
       const { enemies } = this.world;
       const { power, range, recoil } = this.weapon;
 
+      const {
+        startPoint,
+        endPoint,
+        distance,
+        side,
+      } = this.castRay();
+
+      this.world.bullets.push({
+        ...this.bullets.shift(),
+        ...endPoint,
+      });
+
       const collisions = enemies.reduce((memo, enemy) => {
-        if (!enemy.isDead() && enemy.rayCollision(ray)) {
+        if (!enemy.isDead() && enemy.rayCollision({ startPoint, endPoint })) {
           return [...memo, enemy];
         }
 
@@ -537,8 +550,8 @@ class Player extends AbstractActor {
         if (enemy) {
           enemy.hit(power);
 
-          if (ray.distance - enemy.distanceToPlayer < WALL_STAIN_DISTANCE) {
-            ray.side.spatter = enemy.spatter();
+          if (distance - enemy.distanceToPlayer < SPATTER_DISTANCE) {
+            side.spatter = enemy.spatter();
           }
         }
       });
