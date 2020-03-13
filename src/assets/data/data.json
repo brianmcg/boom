@@ -79,7 +79,7 @@
       "interval": 2000
     },
     "world": {
-      "brightness": -0.15,
+      "brightness": -0.25,
       "visibility": 500
     }
   }
