@@ -139,9 +139,10 @@ class Game extends Application {
 
   /**
    * Show the world scene.
+   * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene(options) {
-    this.show({ type: SCENE_TYPES.WORLD, ...options });
+  showWorldScene({ index = 1 } = {}) {
+    this.show({ type: SCENE_TYPES.WORLD, index });
   }
 
   /**
@@ -157,7 +158,7 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show({ type, index = 1, startingProps = {} } = {}) {
+  async show({ type, index, startingProps = {} } = {}) {
     const SceneType = SCENES[type];
 
     if (this.scene) {
