@@ -19,6 +19,7 @@ const HALF_FOV = DEG[FOV / 2];
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
+const BULLET_OFFSET = TILE_SIZE / 8;
 
 let spriteAngle;
 let body;
@@ -98,7 +99,7 @@ class WorldContainer extends Container {
       dx = x - player.x;
       dy = y - player.y;
       spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
-      actualDistance = Math.sqrt(dx * dx + dy * dy) - 4;
+      actualDistance = Math.sqrt(dx * dx + dy * dy);
       correctedDistance = COS[spriteAngle] * actualDistance;
       spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
       spriteWidth = TILE_SIZE * spriteScale;
@@ -109,7 +110,7 @@ class WorldContainer extends Container {
         - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
       sprite.width = spriteWidth;
       sprite.height = spriteHeight;
-      sprite.zOrder = actualDistance - 4;
+      sprite.zOrder = actualDistance - BULLET_OFFSET;
       sprite.tint = this.calculateTint(actualDistance);
 
       if (!sprite.parent) {

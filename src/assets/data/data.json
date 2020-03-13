@@ -80,7 +80,7 @@
     },
     "world": {
       "brightness": -0.25,
-      "visibility": 500
+      "visibility": 1000
     }
   }
 }

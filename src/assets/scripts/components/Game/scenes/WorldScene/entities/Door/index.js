@@ -36,7 +36,7 @@ class Door extends DynamicSector {
     super({ ...other, axis });
 
     this.timer = 0;
-    this.key = key;
+    this.keyCard = key;
     this.interval = interval;
 
     if (this.isHorizontal()) {
@@ -59,28 +59,15 @@ class Door extends DynamicSector {
   }
 
   /**
-   * Use the door.
+   * Open the door.
+   * @return {Booleam}
    */
-  use() {
-    const { player } = this.world;
-
-    if (this.key) {
-      if (player.keys[this.key]) {
-        this.open();
-      } else {
-        player.addMessage(translate('world.door.locked', {
-          color: translate(`world.color.${this.key}`),
-        }));
-      }
-    } else {
-      this.open();
-    }
-  }
-
   open() {
     if (this.isClosed()) {
-      this.setOpening();
+      return this.setOpening();
     }
+
+    return false;
   }
 
   /**

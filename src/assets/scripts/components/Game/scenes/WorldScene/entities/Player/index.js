@@ -6,6 +6,7 @@ import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Message from './components/Message';
+import KeyCard from './components/KeyCard';
 
 const DEG_360 = DEG[360];
 
@@ -80,6 +81,11 @@ class Player extends AbstractActor {
 
     this.camera = new Camera({ player: this, ...camera });
 
+    this.keyCards = Object.values(KEY_COLORS).reduce((memo, color) => ({
+      ...memo,
+      [color]: new KeyCard(color),
+    }), {});
+
     this.weapons = Object.keys(weapons).reduce((memo, texture) => {
       const weapon = new Weapon({
         player: this,
@@ -94,11 +100,6 @@ class Player extends AbstractActor {
         [texture]: weapon,
       };
     }, {});
-
-    this.keys = Object.values(KEY_COLORS).reduce((memo, type) => ({
-      ...memo,
-      [type]: false,
-    }), {});
 
     this.messages = [];
 
@@ -310,6 +311,10 @@ class Player extends AbstractActor {
     });
   }
 
+  /**
+   * Update item interaction.
+   * @param  {Item} item The item.
+   */
   updateItemInteraction(item) {
     if (this.bodyCollision(item)) {
       if (item.setColliding()) {
@@ -328,9 +333,25 @@ class Player extends AbstractActor {
     }
   }
 
+  /**
+   * Update door interaction.
+   * @param  {Door} door The door.
+   */
   updateDoorInteraction(door) {
     if (this.actions.use) {
-      door.use();
+      if (door.keyCard) {
+        const keyCard = this.keyCards[door.keyCard];
+        if (keyCard.isEquiped()) {
+          keyCard.use();
+          door.open();
+        } else {
+          this.addMessage(translate('world.door.locked', {
+            color: translate(`world.color.${door.keyCard}`),
+          }));
+        }
+      } else {
+        door.open();
+      }
     }
   }
 
@@ -655,7 +676,7 @@ class Player extends AbstractActor {
    * @param  {String} type The type of key.
    */
   pickUpKey(key) {
-    this.keys[key.color] = true;
+    this.keyCards[key.color].equip();
 
     return true;
   }

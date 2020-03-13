@@ -255,7 +255,9 @@ const createReviewSprites = (text) => {
   };
 };
 
-const createHudSprites = (world, textures) => {
+const createHudSprites = ({ world, textures }) => {
+  const { keyCards } = world.player;
+
   const healthIcon = new Sprite(textures.health);
 
   const healthAmount = new TextSprite({
@@ -274,16 +276,19 @@ const createHudSprites = (world, textures) => {
 
   const keys = world.items.reduce((memo, item) => {
     if (item.color) {
-      return {
+      const { baseTexture, frame } = textures[item.texture];
+      const keyTexture = new Texture(baseTexture, frame);
+
+      return [
         ...memo,
-        [item.color]: new HudKeySprite(textures[item.texture], {
-          key: item,
+        new HudKeySprite(keyTexture, {
+          keyCard: keyCards[item.color],
         }),
-      };
+      ];
     }
 
     return memo;
-  }, {});
+  }, []);
 
   const message = new TextSprite({
     font: FONT_SIZES.SMALL,
@@ -340,7 +345,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     world,
   });
 
-  const hud = createHudSprites(world, textures);
+  const hud = createHudSprites({ world, textures });
 
   const effects = createEffectsSprites({ animations, textures, world });
 

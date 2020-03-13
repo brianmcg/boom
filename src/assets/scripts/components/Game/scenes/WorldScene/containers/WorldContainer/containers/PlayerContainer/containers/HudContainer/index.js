@@ -41,9 +41,9 @@ class HudContainer extends Container {
     this.addChild(healthAmount);
     this.addChild(foreground);
 
-    Object.values(keys).forEach((sprite, i) => {
-      sprite.x = sprite.frameX + HUD_PADDING + ((ICON_PADDING + sprite.frameWidth) * i);
-      sprite.y = sprite.frameY + HUD_PADDING;
+    keys.forEach((sprite, i) => {
+      sprite.x = HUD_PADDING + (sprite.width / 2) + ((ICON_PADDING + sprite.width) * i) - 1;
+      sprite.y = HUD_PADDING + (sprite.height / 2) - 1;
       this.addChild(sprite);
     });
 
@@ -59,16 +59,23 @@ class HudContainer extends Container {
    * Update the container.
    * @param  {Number} delta The delta time.
    */
-  update() {
+  update(delta) {
     const {
       healthAmount,
       ammoIcon,
       ammoAmount,
       foreground,
       message,
+      keys,
     } = this.sprites;
 
     const { messages } = this.player;
+
+    Object.values(keys).forEach((key) => {
+      if (key.isActive()) {
+        key.update(delta);
+      }
+    });
 
     // Update health.
     healthAmount.text = this.player.health;
