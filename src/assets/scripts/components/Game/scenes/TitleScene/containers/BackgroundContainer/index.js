@@ -1,4 +1,4 @@
-import { Container, PixelateFilter } from 'game/core/graphics';
+import { Container } from 'game/core/graphics';
 
 /**
  * Class representing a background container.
@@ -9,18 +9,11 @@ class BackgroundContainer extends Container {
    * @param  {SmokeSprite}     options.smoke         A smoke sprite.
    * @param  {RectangleSprite} options.background A sparks sprite.
    */
-  constructor({ smoke, background }) {
+  constructor({ sparks, background }) {
     super();
 
     this.addChild(background);
-    // this.addChild(smoke);
-
-    // this.filters = [new PixelateFilter()];
-    // this.filters[0].enabled = false;
-
-    // this.on('added', () => {
-    //   this.filters[0].size = 20 * this.parent.scale.x;
-    // });
+    this.addChild(sparks);
   }
 }
 

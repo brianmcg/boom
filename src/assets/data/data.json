@@ -34,7 +34,7 @@
       },
       "camera": {
         "heightIncrement": 0.04,
-        "maxHeight": 2,
+        "maxHeight": 1,
         "pitchVelocity": 4,
         "maxRecoilAmount": 12,
         "minRecoilAmount": 1,
