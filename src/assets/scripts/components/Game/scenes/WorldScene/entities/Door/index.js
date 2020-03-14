@@ -149,7 +149,7 @@ class Door extends DynamicSector {
    * Set the door to the opening state.
    */
   setOpening() {
-    this.setState(STATES.OPENING);
+    return this.setState(STATES.OPENING);
   }
 
   /**

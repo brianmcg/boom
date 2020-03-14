@@ -341,6 +341,7 @@ class Player extends AbstractActor {
     if (this.actions.use) {
       if (door.keyCard) {
         const keyCard = this.keyCards[door.keyCard];
+
         if (keyCard.isEquiped()) {
           if (door.open()) {
             keyCard.use();
