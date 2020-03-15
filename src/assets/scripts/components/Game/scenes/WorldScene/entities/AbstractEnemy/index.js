@@ -77,22 +77,25 @@ class AbstractEnemy extends AbstractActor {
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       this.face(player);
 
-      // switch (this.state) {
-      //   case STATES.IDLE:
-      //     this.updateIdle(delta);
-      //     break;
-      //   case STATES.MOVING:
-      //     this.updateMoving(delta);
-      //     break;
-      //   case STATES.ATTACKING:
-      //     this.updateAttacking(delta);
-      //     break;
-      //   case STATES.HURT:
-      //     this.updateHurting(delta);
-      //     break;
-      //   default:
-      //     break;
-      // }
+      switch (this.state) {
+        case STATES.IDLE:
+          this.updateIdle(delta);
+          break;
+        case STATES.MOVING:
+          this.updateMoving(delta);
+          break;
+        case STATES.AIMING:
+          this.updateAiming(delta);
+          break;
+        case STATES.ATTACKING:
+          this.updateAttacking(delta);
+          break;
+        case STATES.HURTING:
+          this.updateHurting(delta);
+          break;
+        default:
+          break;
+      }
 
       super.update(delta);
     }
@@ -102,12 +105,9 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    */
   updateIdle() {
-    const { distance } = this.castRay();
-    const { player } = this.world;
-
-    if (player.isAlive() && distance > this.distanceToPlayer) {
+    if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.attackRange) {
-        this.setAttacking();
+        this.setAiming();
       } else {
         this.setMoving();
       }
@@ -118,7 +118,24 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in chasing state
    */
   updateMoving() {
-    if (this.distanceToPlayer <= this.attackRange) {
+    if (this.findPlayer()) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        this.setAiming();
+      }
+    } else {
+      this.setIdle();
+    }
+  }
+
+  /**
+   * Update enemy in aiming state
+   * @param  {Number} delta The delta time.
+   */
+  updateAiming(delta) {
+    this.attackTimer += TIME_STEP * delta;
+
+    if (this.attackTimer >= this.attackTime) {
+      this.attackTimer = 0;
       this.setAttacking();
     }
   }
@@ -132,7 +149,17 @@ class AbstractEnemy extends AbstractActor {
 
     if (this.attackTimer >= this.attackTime) {
       this.attackTimer = 0;
-      this.setIdle();
+
+      if (this.findPlayer()) {
+        if (this.distanceToPlayer <= this.attackRange) {
+          this.setAiming();
+          this.setAttacking();
+        } else {
+          this.setMoving();
+        }
+      } else {
+        this.setIdle();
+      }
     }
   }
 
@@ -147,6 +174,17 @@ class AbstractEnemy extends AbstractActor {
       this.hurtTimer = 0;
       this.setIdle();
     }
+  }
+
+  /**
+   * Try and locate the player
+   * @return {Boolean} Was the player located.
+   */
+  findPlayer() {
+    const { distance } = this.castRay();
+    const { player } = this.world;
+
+    return player.isAlive() && distance > this.distanceToPlayer;
   }
 
   /**
@@ -189,6 +227,54 @@ class AbstractEnemy extends AbstractActor {
    */
   spatter() {
     return Math.floor(Math.random() * this.spatters) + 1;
+  }
+
+  /**
+   * Add a callback to the idle state change.
+   * @param  {Function} callback The callback function.
+   */
+  onIdle(callback) {
+    this.on(STATES.IDLE, callback);
+  }
+
+  /**
+   * Add a callback to the idle moving change.
+   * @param  {Function} callback The callback function.
+   */
+  onMoving(callback) {
+    this.on(STATES.MOVING, callback);
+  }
+
+  /**
+   * Add a callback to the idle aiming change.
+   * @param  {Function} callback The callback function.
+   */
+  onAiming(callback) {
+    this.on(STATES.AIMING, callback);
+  }
+
+  /**
+   * Add a callback to the idle attacking change.
+   * @param  {Function} callback The callback function.
+   */
+  onAttacking(callback) {
+    this.on(STATES.ATTACKING, callback);
+  }
+
+  /**
+   * Add a callback to the idle hurting change.
+   * @param  {Function} callback The callback function.
+   */
+  onHurting(callback) {
+    this.on(STATES.HURTING, callback);
+  }
+
+  /**
+   * Add a callback to the idle dead change.
+   * @param  {Function} callback The callback function.
+   */
+  onDead(callback) {
+    this.on(STATES.DEAD, callback);
   }
 
   /**
@@ -290,6 +376,16 @@ class AbstractEnemy extends AbstractActor {
    */
   isDead() {
     return this.state === STATES.DEAD;
+  }
+
+  /**
+   * Set the state.
+   * @param {String} state The new state.
+   */
+  setState(state) {
+    if (super.setState(state)) {
+      this.emit(state);
+    }
   }
 }
 

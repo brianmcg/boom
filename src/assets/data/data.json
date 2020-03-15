@@ -48,9 +48,9 @@
     "enemies": {
       "grunt": {
         "acceleration": 0.2,
-        "maxVelocity": 2,
-        "attackRange": 64,
-        "attackTime": 1000,
+        "maxVelocity": 1,
+        "attackRange": 100,
+        "attackTime": 2000,
         "hurtTime": 400,
         "maxHealth": 5,
         "attackPower": 5

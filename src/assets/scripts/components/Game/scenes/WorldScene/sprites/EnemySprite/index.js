@@ -1,6 +1,6 @@
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
-const ACTIONS = {
+const STATES = {
   IDLE: 'idle',
   MOVING: 'moving',
   AIMING: 'aiming',
@@ -21,50 +21,30 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
-    super(textureCollection[ACTIONS.IDLE], {
+    super(textureCollection[STATES.IDLE], {
       animationSpeed: 0.125,
       loop: true,
     });
 
-    this.enemy = enemy;
-    this.actionId = ACTIONS.IDLE;
+    enemy.onIdle(() => this.setAnimation(STATES.IDLE));
+    enemy.onMoving(() => this.setAnimation(STATES.MOVING, true));
+    enemy.onAiming(() => this.setAnimation(STATES.AIMING));
+    enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
+    enemy.onHurting(() => this.setAnimation(STATES.HURTING));
+    enemy.onDead(() => this.setAnimation(STATES.DEAD));
+
     this.textureCollection = textureCollection;
   }
 
   /**
-   * Animate the sprite.
+   * Set the animation.
+   * @param {String}  state The animation state
+   * @param {Boolean} loop  Should the animation loop.
    */
-  animate() {
-    const { enemy } = this;
-
-    if (enemy.isIdle()) {
-      this.updateTextures({ actionId: ACTIONS.IDLE });
-    } else if (enemy.isMoving()) {
-      this.updateTextures({ actionId: ACTIONS.MOVING, loop: true });
-    } else if (enemy.isAiming()) {
-      this.updateTextures({ actionId: ACTIONS.AIMING });
-    } else if (enemy.isAttacking()) {
-      this.updateTextures({ actionId: ACTIONS.ATTACKING });
-    } else if (enemy.isHurting()) {
-      this.updateTextures({ actionId: ACTIONS.HURTING });
-    } else {
-      this.updateTextures({ actionId: ACTIONS.DEAD });
-    }
-  }
-
-  /**
-   * Update the sprite textures.
-   * @param  {String}   options.actionId The id of the action.
-   * @param  {Boolean}  options.loop     The loop options.
-   */
-  updateTextures({ actionId, loop }) {
-    if (this.actionId !== actionId) {
-      this.loop = loop;
-      this.actionId = actionId;
-      this.textures = this.textureCollection[this.actionId];
-      this.texture = this.textures[0];
-      this.gotoAndPlay(0);
-    }
+  setAnimation(state, loop = false) {
+    this.textures = this.textureCollection[state];
+    this.loop = loop;
+    this.gotoAndPlay(0);
   }
 }
 
