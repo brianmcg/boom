@@ -132,11 +132,20 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAiming(delta) {
-    this.attackTimer += TIME_STEP * delta;
+    if (this.findPlayer()) {
+      this.attackTimer += TIME_STEP * delta;
 
-    if (this.attackTimer >= this.attackTime) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        if (this.attackTimer >= this.attackTime) {
+          this.attackTimer = 0;
+          this.setAttacking();
+        }
+      } else {
+        this.setMoving();
+      }
+    } else {
       this.attackTimer = 0;
-      this.setAttacking();
+      this.setIdle();
     }
   }
 
@@ -145,21 +154,21 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAttacking(delta) {
-    this.attackTimer += TIME_STEP * delta;
+    if (this.findPlayer()) {
+      this.attackTimer += TIME_STEP * delta;
 
-    if (this.attackTimer >= this.attackTime) {
-      this.attackTimer = 0;
-
-      if (this.findPlayer()) {
-        if (this.distanceToPlayer <= this.attackRange) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        if (this.attackTimer >= this.attackTime) {
+          this.attackTimer = 0;
           this.setAiming();
           this.setAttacking();
-        } else {
-          this.setMoving();
         }
       } else {
-        this.setIdle();
+        this.setMoving();
       }
+    } else {
+      this.attackTimer = 0;
+      this.setIdle();
     }
   }
 
