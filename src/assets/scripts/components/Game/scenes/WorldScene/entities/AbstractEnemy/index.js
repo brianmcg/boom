@@ -1,15 +1,19 @@
-import { UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
+import { UPDATE_DISTANCE, TIME_STEP, TILE_SIZE } from 'game/constants/config';
 import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
   IDLE: 'enemy:idle',
+  ALERTED: 'enemy:alerted',
+  PATROLLING: 'enemy:patrolling',
   MOVING: 'enemy:moving',
   AIMING: 'enemy:aiming',
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
 };
+
+const WAYPOINT_SIZE = TILE_SIZE / 4;
 
 /**
  * Abstract class representing an enemy.
@@ -29,15 +33,21 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.attackRange     The attack range of the enemy.
    * @param  {Number} options.attackTime      The time between attacks.
    * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
+   * @param  {Number} options.aimTime         The time before attacking.
+   * @param  {Number} options.alerTime        The time before attacking adter alert.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
+   * @param  {Number} options.clipSize        The amount of ammo in a clip.
    */
   constructor({
     maxVelocity = 1,
     attackRange = 250,
     attackTime = 1000,
     hurtTime = 1000,
+    aimTime = 1000,
+    alertTime = 1000,
     acceleration = 1,
     attackPower = 1,
+    clipSize = 1,
     type,
     spatters,
     ...other
@@ -51,14 +61,21 @@ class AbstractEnemy extends AbstractActor {
     this.spatters = spatters;
     this.attackRange = attackRange;
     this.attackTime = attackTime;
+
+    this.aimTime = aimTime;
     this.hurtTime = hurtTime;
+    this.alertTime = alertTime;
     this.maxVelocity = maxVelocity;
     this.acceleration = acceleration;
+    this.attackPower = attackPower;
+    this.clipSize = clipSize;
+    this.ammo = clipSize;
 
     this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;
     this.hurtTimer = 0;
-    this.attackPower = attackPower;
+    this.aimTimer = 0;
+    this.alertTimer = 0;
 
     this.setIdle();
   }
@@ -80,6 +97,12 @@ class AbstractEnemy extends AbstractActor {
       switch (this.state) {
         case STATES.IDLE:
           this.updateIdle(delta);
+          break;
+        case STATES.ALERTED:
+          this.updateAlerted(delta);
+          break;
+        case STATES.PATROLLING:
+          this.updatePatrolling(delta);
           break;
         case STATES.MOVING:
           this.updateMoving(delta);
@@ -106,11 +129,41 @@ class AbstractEnemy extends AbstractActor {
    */
   updateIdle() {
     if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
-        this.setAiming();
-      } else {
-        this.setMoving();
+      this.setAlerted();
+    }
+  }
+
+  /**
+   * Update enemy in the alerted state.
+   * @param  {Number} delta The delta time.
+   */
+  updateAlerted(delta) {
+    if (this.findPlayer()) {
+      this.alertTimer += TIME_STEP * delta;
+
+      if (this.alertTimer >= this.alertTime) {
+        if (this.distanceToPlayer <= this.attackRange) {
+          this.setAiming();
+        } else {
+          this.setMoving();
+        }
       }
+    } else {
+      this.setPatrolling();
+    }
+  }
+
+  /**
+   * Update the enemy in the patrolling state.
+   */
+  updatePatrolling() {
+    if (
+      Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
+        && Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
+    ) {
+      this.setMoving();
+    } else {
+      this.face(this.waypoint);
     }
   }
 
@@ -123,7 +176,7 @@ class AbstractEnemy extends AbstractActor {
         this.setAiming();
       }
     } else {
-      this.setIdle();
+      this.setPatrolling();
     }
   }
 
@@ -133,19 +186,17 @@ class AbstractEnemy extends AbstractActor {
    */
   updateAiming(delta) {
     if (this.findPlayer()) {
-      this.attackTimer += TIME_STEP * delta;
+      this.aimTimer += TIME_STEP * delta;
 
       if (this.distanceToPlayer <= this.attackRange) {
-        if (this.attackTimer >= this.attackTime) {
-          this.attackTimer = 0;
+        if (this.aimTimer >= this.aimTime) {
           this.setAttacking();
         }
       } else {
         this.setMoving();
       }
     } else {
-      this.attackTimer = 0;
-      this.setIdle();
+      this.setPatrolling();
     }
   }
 
@@ -159,16 +210,21 @@ class AbstractEnemy extends AbstractActor {
 
       if (this.distanceToPlayer <= this.attackRange) {
         if (this.attackTimer >= this.attackTime) {
-          this.attackTimer = 0;
           this.setAiming();
           this.setAttacking();
+
+          this.ammo -= 1;
+
+          if (this.ammo === 0) {
+            this.ammo = this.clipSize;
+            this.setPatrolling();
+          }
         }
       } else {
         this.setMoving();
       }
     } else {
-      this.attackTimer = 0;
-      this.setIdle();
+      this.setPatrolling();
     }
   }
 
@@ -180,8 +236,7 @@ class AbstractEnemy extends AbstractActor {
     this.hurtTimer += TIME_STEP * delta;
 
     if (this.hurtTimer >= this.hurtTime) {
-      this.hurtTimer = 0;
-      this.setIdle();
+      this.setPatrolling();
     }
   }
 
@@ -247,6 +302,22 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Add a callback to the alerted state change.
+   * @param  {Function} callback The callback function.
+   */
+  onAlerted(callback) {
+    this.on(STATES.ALERTED, callback);
+  }
+
+  /**
+   * Add a callback to the patrolling state change.
+   * @param  {Function} callback The callback function.
+   */
+  onPatrolling(callback) {
+    this.on(STATES.PATROLLING, callback);
+  }
+
+  /**
    * Add a callback to the idle moving change.
    * @param  {Function} callback The callback function.
    */
@@ -288,14 +359,45 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Set the enemy to the idle state.
+   * @return {Boolean}  State change successful.
    */
   setIdle() {
     this.velocity = 0;
-    this.setState(STATES.IDLE);
+    return this.setState(STATES.IDLE);
+  }
+
+  /**
+   * Set the enemy to the alerted state.
+   * @return {Boolean}  State change successful.
+   */
+  setAlerted() {
+    return this.setState(STATES.ALERTED);
+  }
+
+  /**
+   * Set the enemy to the patrolling state.
+   * @return {Boolean}  State change successful.
+   */
+  setPatrolling() {
+    const sectors = this.world.getAdjacentSectors(this)
+      .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
+
+    if (sectors.length) {
+      const index = Math.floor(Math.random() * sectors.length);
+      const sector = sectors[index];
+      this.waypoint = sector;
+    } else {
+      this.waypoint = this.world.getSector(this.gridX, this.gridY);
+    }
+
+    this.velocity = this.maxVelocity;
+
+    return this.setState(STATES.PATROLLING);
   }
 
   /**
    * Set the enemy to the moving state.
+   * @return {Boolean}  State change successful.
    */
   setMoving() {
     this.velocity = Math.min(
@@ -303,40 +405,44 @@ class AbstractEnemy extends AbstractActor {
       this.maxVelocity + this.acceleration,
     );
 
-    this.setState(STATES.MOVING);
+    return this.setState(STATES.MOVING);
   }
 
   /**
    * Set the enemy to the aiming state.
+   * @return {Boolean}  State change successful.
    */
   setAiming() {
     this.velocity = 0;
-    this.setState(STATES.AIMING);
+    return this.setState(STATES.AIMING);
   }
 
   /**
    * Set the enemy to the attacking state.
+   * @return {Boolean}  State change successful.
    */
   setAttacking() {
-    this.setState(STATES.ATTACKING);
     this.attack();
+    return this.setState(STATES.ATTACKING);
   }
 
   /**
    * Set the enemy to the hurting state.
+   * @return {Boolean}  State change successful.
    */
   setHurting() {
     this.velocity = 0;
-    this.setState(STATES.HURTING);
+    return this.setState(STATES.HURTING);
   }
 
   /**
    * Set the enemy to the dead state.
+   * @return {Boolean}  State change successful.
    */
   setDead() {
     this.velocity = 0;
     this.blocking = false;
-    this.setState(STATES.DEAD);
+    return this.setState(STATES.DEAD);
   }
 
   /**
@@ -345,6 +451,22 @@ class AbstractEnemy extends AbstractActor {
    */
   isIdle() {
     return this.state === STATES.IDLE;
+  }
+
+  /**
+   * Is the enemy in the alerted state.
+   * @return {Boolean}
+   */
+  isAlerted() {
+    return this.state === STATES.ALERTED;
+  }
+
+  /**
+   * Is the enemy in the patrolling state.
+   * @return {Boolean} [description]
+   */
+  isPatrolling() {
+    return this.state === STATES.PATROLLING;
   }
 
   /**
@@ -393,6 +515,10 @@ class AbstractEnemy extends AbstractActor {
    */
   setState(state) {
     if (super.setState(state)) {
+      this.attackTimer = 0;
+      this.hurtTimer = 0;
+      this.aimTimer = 0;
+      this.alertTimer = 0;
       this.emit(state);
     }
   }

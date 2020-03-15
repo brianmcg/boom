@@ -27,6 +27,8 @@ class EnemySprite extends AnimatedEntitySprite {
     });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
+    enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
+    enemy.onPatrolling(() => this.setAnimation(STATES.MOVING, true));
     enemy.onMoving(() => this.setAnimation(STATES.MOVING, true));
     enemy.onAiming(() => this.setAnimation(STATES.AIMING));
     enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));

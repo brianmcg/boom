@@ -49,11 +49,14 @@
       "grunt": {
         "acceleration": 0.2,
         "maxVelocity": 1,
-        "attackRange": 100,
-        "attackTime": 2000,
+        "attackRange": 160,
+        "attackTime": 500,
+        "alertTime": 500,
+        "aimTime": 200,
         "hurtTime": 400,
         "maxHealth": 5,
-        "attackPower": 5
+        "attackPower": 5,
+        "clipSize": 3
       }
     },
     "door": {
