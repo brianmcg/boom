@@ -186,9 +186,9 @@ class AbstractEnemy extends AbstractActor {
    */
   updateAiming(delta) {
     if (this.findPlayer()) {
-      this.aimTimer += TIME_STEP * delta;
-
       if (this.distanceToPlayer <= this.attackRange) {
+        this.aimTimer += TIME_STEP * delta;
+
         if (this.aimTimer >= this.aimTime) {
           this.setAttacking();
 
@@ -213,9 +213,9 @@ class AbstractEnemy extends AbstractActor {
    */
   updateAttacking(delta) {
     if (this.findPlayer()) {
-      this.attackTimer += TIME_STEP * delta;
-
       if (this.distanceToPlayer <= this.attackRange) {
+        this.attackTimer += TIME_STEP * delta;
+
         if (this.attackTimer >= this.attackTime) {
           this.setAiming();
           this.setAttacking();
