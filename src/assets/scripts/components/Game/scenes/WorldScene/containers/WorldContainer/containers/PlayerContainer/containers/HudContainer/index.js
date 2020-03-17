@@ -41,10 +41,19 @@ class HudContainer extends Container {
     this.addChild(healthAmount);
     this.addChild(foreground);
 
-    keys.forEach((sprite, i) => {
-      sprite.x = HUD_PADDING + (sprite.width / 2) + ((ICON_PADDING + sprite.width) * i) - 1;
-      sprite.y = HUD_PADDING + (sprite.height / 2) - 1;
-      this.addChild(sprite);
+    Object.values(player.keyCards).forEach((keyCard) => {
+      keyCard.onUseEvent(() => {
+        keys[keyCard.color].setUsing();
+      });
+
+      keyCard.onEquipEvent(() => {
+        const sprite = keys[keyCard.color];
+        const index = Object.values(player.keyCards).filter(k => k.equiped).length - 1;
+        sprite.x = HUD_PADDING + (sprite.width / 2) + ((ICON_PADDING + sprite.width) * index) - 1;
+        sprite.y = HUD_PADDING + (sprite.height / 2) - 1;
+        sprite.setEquipping();
+        this.addChild(sprite);
+      });
     });
 
     this.player = player;

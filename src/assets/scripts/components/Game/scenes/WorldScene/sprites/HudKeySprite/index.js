@@ -19,9 +19,8 @@ class HudKeySprite extends Sprite {
   /**
    * Creates a hud keyCard sprite
    * @param  {Texture} texture     The sprite texture.
-   * @param  {KeyCard}     options.keyCard The keyCard entity.
    */
-  constructor(texture, { keyCard } = {}) {
+  constructor(texture) {
     super(texture);
 
     this.anchor.set(0.5);
@@ -29,9 +28,6 @@ class HudKeySprite extends Sprite {
 
     this.hide();
     this.setInactive();
-
-    keyCard.onEquipEvent(this.setEquipping.bind(this));
-    keyCard.onUseEvent(this.setUsing.bind(this));
   }
 
   /**

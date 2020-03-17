@@ -191,6 +191,13 @@ class AbstractEnemy extends AbstractActor {
       if (this.distanceToPlayer <= this.attackRange) {
         if (this.aimTimer >= this.aimTime) {
           this.setAttacking();
+
+          this.ammo -= 1;
+
+          if (this.ammo === 0) {
+            this.ammo = this.clipSize;
+            this.setPatrolling();
+          }
         }
       } else {
         this.setMoving();

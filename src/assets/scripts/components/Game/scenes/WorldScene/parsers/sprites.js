@@ -276,16 +276,14 @@ const createHudSprites = ({ world, textures }) => {
       const { baseTexture, frame } = textures[item.texture];
       const keyTexture = new Texture(baseTexture, frame);
 
-      return [
+      return {
         ...memo,
-        new HudKeySprite(keyTexture, {
-          keyCard: keyCards[item.color],
-        }),
-      ];
+        [item.color]: new HudKeySprite(keyTexture),
+      };
     }
 
     return memo;
-  }, []);
+  }, {});
 
   const message = new TextSprite({
     font: FONT_SIZES.SMALL,

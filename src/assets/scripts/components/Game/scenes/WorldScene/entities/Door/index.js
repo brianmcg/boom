@@ -132,10 +132,10 @@ class Door extends DynamicSector {
       this.timer -= TIME_STEP * delta;
 
       if (this.timer <= 0) {
-        const isBlocked = this.world.getAdjacentBodies(this)
-          .some(body => body.isDynamicBody);
+        const blocked = this.world.getAdjacentBodies(this).some(body => body.isPlayer)
+          || this.bodies.some(b => b.isDynamicBody);
 
-        if (!isBlocked) {
+        if (!blocked) {
           this.timer = 0;
           this.setClosing();
         } else {

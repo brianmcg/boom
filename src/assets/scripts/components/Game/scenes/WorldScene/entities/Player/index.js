@@ -103,11 +103,11 @@ class Player extends AbstractActor {
 
     this.messages = [];
 
-    this.onAddedEvent(this.initialize.bind(this));
-
-    this.itemCollisionIds = [];
-
     this.bullets = [...Array(10).keys()].map(index => ({ index }));
+
+    this.isPlayer = true;
+
+    this.onAddedEvent(this.initialize.bind(this));
 
     this.setAlive();
   }
@@ -580,7 +580,9 @@ class Player extends AbstractActor {
           enemy.hit(power);
 
           if (distance - enemy.distanceToPlayer < SPATTER_DISTANCE) {
-            side.spatter = enemy.spatter();
+            if (!side.spatter) {
+              side.spatter = enemy.spatter();
+            }
           }
         }
       });
