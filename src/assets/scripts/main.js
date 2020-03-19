@@ -18,8 +18,7 @@ game.onStoppedEvent(() => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.appendChild(game.view);
-  game.start();
+  document.body.appendChild(manual.view);
 });
 
 window.game = game;
