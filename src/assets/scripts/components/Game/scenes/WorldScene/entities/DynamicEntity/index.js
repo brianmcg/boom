@@ -1,8 +1,6 @@
-import { DynamicBody, DEG } from 'game/core/physics';
+import { DynamicBody } from 'game/core/physics';
 
-const DEG_202 = DEG[202];
-
-const DEG_360 = DEG[360];
+const EMIT_SOUND_EVENT = 'entity:emit:sound';
 
 /**
  * Class representing a dynamic entity.
@@ -22,7 +20,24 @@ class DynamicEntity extends DynamicBody {
    */
   constructor({ texture, ...other }) {
     super(other);
+
     this.texture = texture;
+  }
+
+  /**
+   * Add a callback to the sound event.
+   * @param  {Function} callback The callback function.
+   */
+  onSound(callback) {
+    this.on(EMIT_SOUND_EVENT, callback);
+  }
+
+  /**
+   * Emit a sound event.
+   * @param  {String} id The id of the sound.
+   */
+  emitSound(id) {
+    this.emit(EMIT_SOUND_EVENT, id);
   }
 
   /**
@@ -37,16 +52,6 @@ class DynamicEntity extends DynamicBody {
     }
 
     return isChanged;
-  }
-
-  /**
-   * Get the difference between entity angle and player angle.
-   * @return {Number} The difference in angle.
-   */
-  getAngleDiff() {
-    const { player } = this.world;
-
-    return (this.angle - player.angle + DEG_202 + DEG_360) % DEG_360;
   }
 }
 

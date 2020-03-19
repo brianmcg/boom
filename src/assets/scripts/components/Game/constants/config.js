@@ -18,7 +18,7 @@ export const TIME_STEP = 1000 / MAX_FPS;
  * Enabled the sound.
  * @type {Boolean}
  */
-export const SOUND_ENABLED = false;
+export const SOUND_ENABLED = true;
 
 /**
  * The size of mao tile.

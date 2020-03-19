@@ -2,6 +2,7 @@ import translate from 'root/translate';
 import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
 import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
+import { SOUNDS } from 'game/constants/sounds';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -534,6 +535,7 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
+      this.emitSound(SOUNDS.WEAPON_PISTOL);
       const { enemies } = this.world;
       const { power, range, recoil } = this.weapon;
 

@@ -57,11 +57,18 @@ class World extends PhysicsWorld {
 
     this.startingProps = Object.assign({}, this.props);
 
-    enemies.forEach(enemy => this.add(enemy));
+    enemies.forEach((enemy) => {
+      enemy.onSound(id => this.scene.playSound(id));
+      this.add(enemy);
+    });
+
     obstacles.forEach(object => this.add(object));
+
     items.forEach(item => this.add(item));
 
     player.onPlayerDeathEvent(this.restart.bind(this));
+
+    player.onSound(id => this.scene.playSound(id));
 
     this.openEntranceDoor();
 

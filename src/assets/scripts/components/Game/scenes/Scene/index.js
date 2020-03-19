@@ -233,6 +233,14 @@ class Scene extends Container {
   }
 
   /**
+   * Play a sound.
+   * @param  {String} id The sound id.
+   */
+  playSound(id) {
+    this.game.playSound(id);
+  }
+
+  /**
    * Handle a state change to prompting.
    */
   setPrompting() {
