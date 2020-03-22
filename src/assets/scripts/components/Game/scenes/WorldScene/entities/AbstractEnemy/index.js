@@ -378,7 +378,11 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAlerted() {
-    return this.setState(STATES.ALERTED);
+    const stateChanged = this.setState(STATES.ALERTED);
+
+    if (stateChanged) {
+      this.emitSound(this.sounds.alert);
+    }
   }
 
   /**
@@ -443,7 +447,7 @@ class AbstractEnemy extends AbstractActor {
     if (stateChange) {
       this.velocity = 0;
 
-      this.emitSound(this.sounds.hurt, {
+      this.emitSound(this.sounds.pain, {
         distance: this.distanceToPlayer,
       });
     }

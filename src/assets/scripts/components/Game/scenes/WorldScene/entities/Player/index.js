@@ -533,7 +533,7 @@ class Player extends AbstractActor {
    * Arm weapon.
    */
   armWeapon() {
-    this.emitSound(this.sounds.armWeapon);
+    this.emitSound(this.sounds.weapon);
     this.weapon.setArming();
   }
 
@@ -619,9 +619,7 @@ class Player extends AbstractActor {
         down: true,
       });
 
-      this.emitSound(this.sounds.hurt, {
-        overlay: false,
-      });
+      this.emitSound(this.sounds.pain);
     }
   }
 
@@ -672,7 +670,7 @@ class Player extends AbstractActor {
     const weaponToRefill = this.weapons[weapon];
 
     if (weaponToRefill.isEquiped()) {
-      this.emitSound(this.sounds.itemPickup);
+      this.emitSound(this.sounds.item);
       return weaponToRefill.addAmmo(amount);
     }
 
@@ -691,7 +689,7 @@ class Player extends AbstractActor {
         this.health = this.maxHealth;
       }
 
-      this.emitSound(this.sounds.itemPickup);
+      this.emitSound(this.sounds.item);
 
       return true;
     }
@@ -704,7 +702,7 @@ class Player extends AbstractActor {
    * @param  {String} type The type of key.
    */
   pickUpKey(key) {
-    this.emitSound(this.sounds.itemPickup);
+    this.emitSound(this.sounds.item);
     this.keyCards[key.color].equip();
 
     return true;
