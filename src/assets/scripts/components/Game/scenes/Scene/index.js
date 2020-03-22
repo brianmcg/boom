@@ -140,8 +140,7 @@ class Scene extends Container {
    */
   updateRunning(delta) {
     if (this.game.isKeyPressed(KEYS.ESC)) {
-      this.setPaused();
-      this.addChild(this.menuContainer);
+      this.showMenu();
     }
 
     this.mainContainer.update(delta);
@@ -153,22 +152,59 @@ class Scene extends Container {
    */
   updatePaused(delta) {
     if (this.game.isKeyPressed(KEYS.DOWN_ARROW)) {
-      this.playSound(this.sounds.highlight);
-      this.menuContainer.highlightNext();
+      this.menuHighlightNext();
     } else if (this.game.isKeyPressed(KEYS.UP_ARROW)) {
-      this.playSound(this.sounds.highlight);
-      this.menuContainer.highlightPrevious();
+      this.menuHighlightPrevious();
     } else if (this.game.isKeyPressed(KEYS.ENTER)) {
-      this.menuContainer.select();
-      this.removeChild(this.menuContainer);
+      this.menuSelect();
     } else if (this.game.isKeyPressed(KEYS.ESC)) {
-      this.playSound(this.sounds.pause);
-      this.setRunning();
-      this.removeChild(this.menuContainer);
+      this.hideMenu();
     }
 
     this.mainContainer.updatePauseEffect(delta);
     this.menuContainer.update(delta);
+  }
+
+  /**
+   * Highlight the next menu item.
+   */
+  menuHighlightNext() {
+    this.playSound(this.sounds.highlight);
+    this.menuContainer.highlightNext();
+  }
+
+  /**
+   * Highlight the previous menu item.
+   */
+  menuHighlightPrevious() {
+    this.playSound(this.sounds.highlight);
+    this.menuContainer.highlightPrevious();
+  }
+
+  /**
+   * Select the next menu item.
+   */
+  menuSelect() {
+    this.menuContainer.select();
+    this.removeChild(this.menuContainer);
+  }
+
+  /**
+   * Show the menu.
+   */
+  showMenu() {
+    this.setPaused();
+    this.playSound(this.sounds.pause);
+    this.addChild(this.menuContainer);
+  }
+
+  /**
+   * Hide the menu.
+   */
+  hideMenu() {
+    this.setRunning();
+    this.playSound(this.sounds.pause);
+    this.removeChild(this.menuContainer);
   }
 
   /**
@@ -231,7 +267,6 @@ class Scene extends Container {
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
       this.game.pauseSounds();
-      this.playSound(this.sounds.pause);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }

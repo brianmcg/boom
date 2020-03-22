@@ -36,7 +36,7 @@ class WorldScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: this.setRunning.bind(this),
+      onSelect: this.hideMenu.bind(this),
     }, {
       label: translate('scene.menu.restart'),
       onSelect: this.triggerRestart.bind(this),
@@ -159,7 +159,7 @@ class WorldScene extends Scene {
   setReviewing() {
     if (this.setState(STATES.REVIEWING)) {
       this.game.pauseSounds();
-      this.playSound(this.game.data[this.type].sounds.pause);
+      this.playSound(this.sounds.pause);
       this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);

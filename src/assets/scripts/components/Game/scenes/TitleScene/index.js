@@ -23,9 +23,7 @@ class TitleScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: () => {
-        this.setRunning();
-      },
+      onSelect: this.hideMenu.bind(this),
     }, {
       label: translate('scene.menu.quit'),
       onSelect: this.triggerQuit.bind(this),
