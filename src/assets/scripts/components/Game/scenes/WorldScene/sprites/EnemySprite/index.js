@@ -22,7 +22,7 @@ class EnemySprite extends AnimatedEntitySprite {
    */
   constructor(enemy, textureCollection = []) {
     super(textureCollection[STATES.IDLE], {
-      animationSpeed: 0.125,
+      animationSpeed: 0.005,
       loop: true,
     });
 
