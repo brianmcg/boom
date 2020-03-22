@@ -381,7 +381,9 @@ class AbstractEnemy extends AbstractActor {
     const stateChanged = this.setState(STATES.ALERTED);
 
     if (stateChanged) {
-      this.emitSound(this.sounds.alert);
+      this.emitSound(this.sounds.alert, {
+        distance: this.distanceToPlayer,
+      });
     }
   }
 

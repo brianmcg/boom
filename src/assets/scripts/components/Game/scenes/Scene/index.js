@@ -1,6 +1,5 @@
 import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
-import { SOUNDS } from 'game/constants/sounds';
 import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
 import LoadingContainer from './containers/LoadingContainer';
@@ -68,14 +67,17 @@ class Scene extends Container {
   /**
    * Create the scene.
    * @param  {Object} options.graphics The scene graphics.
+   * @param  {Object} options.sounds   The scene sounds.
    */
-  create({ graphics }) {
+  create({ graphics, sounds }) {
     const text = {
       menu: this.menuItems.map(item => item.label),
       prompt: this.promptOption,
     };
 
     const { sprites } = parse({ graphics, text });
+
+    this.sounds = sounds;
 
     this.menuContainer = new MenuContainer({
       sprites: sprites.menu,
@@ -151,13 +153,16 @@ class Scene extends Container {
    */
   updatePaused(delta) {
     if (this.game.isKeyPressed(KEYS.DOWN_ARROW)) {
+      this.playSound(this.sounds.highlight);
       this.menuContainer.highlightNext();
     } else if (this.game.isKeyPressed(KEYS.UP_ARROW)) {
+      this.playSound(this.sounds.highlight);
       this.menuContainer.highlightPrevious();
     } else if (this.game.isKeyPressed(KEYS.ENTER)) {
       this.menuContainer.select();
       this.removeChild(this.menuContainer);
     } else if (this.game.isKeyPressed(KEYS.ESC)) {
+      this.playSound(this.sounds.pause);
       this.setRunning();
       this.removeChild(this.menuContainer);
     }
@@ -226,7 +231,7 @@ class Scene extends Container {
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
       this.game.pauseSounds();
-      this.game.playSound(SOUNDS.WEAPON_PISTOL);
+      this.playSound(this.sounds.pause);
       this.mainContainer.stop();
       this.promptContainer.stop();
     }
@@ -256,7 +261,7 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
-      this.game.playSound(SOUNDS.WEAPON_SHOTGUN);
+      this.playSound(this.sounds.complete);
       this.game.fadeMusic();
       this.mainContainer.initFadeOutEffect();
       this.removeChild(this.promptContainer);

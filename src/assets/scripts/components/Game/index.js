@@ -92,7 +92,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.showWorldScene();
+    this.showTitleScene();
 
     this.emit(EVENTS.STARTED);
   }
@@ -188,10 +188,14 @@ class Game extends Application {
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
+      const sceneProps = this.data[type].props || {};
+
+      const sounds = this.data[type].sounds || {};
+
       const props = {
-        ...this.data.props,
+        ...sceneProps,
         player: {
-          ...this.data.props.player,
+          ...sceneProps.player,
           ...startingProps.player,
         },
       };
@@ -199,6 +203,7 @@ class Game extends Application {
       this.sound.add(SCENE_MUSIC, sound);
 
       this.scene.create({
+        sounds,
         graphics,
         data: {
           ...data,

@@ -1,6 +1,5 @@
 import translate from 'root/translate';
 import { KEYS } from 'game/core/input';
-import { SOUNDS } from 'game/constants/sounds';
 import { SCENE_PATH, SCENE_MAP, SCENE_TYPES } from 'game/constants/assets';
 import { parse } from './parsers';
 import WorldContainer from './containers/WorldContainer';
@@ -57,8 +56,9 @@ class WorldScene extends Scene {
    * Create the world scene.
    * @param  {Object} options.graphics The scene graphics.
    * @param  {Object} options.data     The scene data.
+   * @param  {Object} options.sounds   The scene sounds.
    */
-  create({ graphics, data }) {
+  create({ graphics, data, sounds }) {
     const { renderer } = this.game;
 
     const text = {
@@ -88,7 +88,7 @@ class WorldScene extends Scene {
     this.reviewContainer = new ReviewContainer(sprites.review);
     this.world = world;
 
-    super.create({ graphics });
+    super.create({ graphics, sounds });
   }
 
   /**
@@ -159,7 +159,7 @@ class WorldScene extends Scene {
   setReviewing() {
     if (this.setState(STATES.REVIEWING)) {
       this.game.pauseSounds();
-      this.game.playSound(SOUNDS.WEAPON_PISTOL);
+      this.playSound(this.game.data[this.type].sounds.pause);
       this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);

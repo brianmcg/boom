@@ -1,96 +1,118 @@
 {
-  "numLevels": 1,
-  "props": {
-    "player": {
-      "acceleration": 0.12,
-      "maxRotVelocity": 10,
-      "maxVelocity": 2,
-      "rotAcceleration": 2,
-      "sounds": {
-        "death": "player:death",
-        "pain": "player:pain",
-        "item": "player:item",
-        "weapon": "player:weapon"
-      },
-      "weapons": {
-        "pistol": {
-          "equiped": true,
-          "idleTime": 20,
-          "power": 3,
-          "maxAmmo": 100,
-          "recoil": 4,
-          "range": 1,
-          "sounds": {
-            "fire": "weapon:pistol"
-          }
-        },
-        "shotgun": {
-          "equiped": false,
-          "idleTime": 300,
-          "power": 15,
-          "maxAmmo": 60,
-          "recoil": 15,
-          "range": 2,
-          "sounds": {
-            "fire": "weapon:shotgun"
-          }
-        },
-        "chaingun": {
-          "equiped": false,
-          "idleTime": 0,
-          "power": 4,
-          "maxAmmo": 200,
-          "recoil": 5,
-          "range": 1,
-          "sounds": {
-            "fire": "weapon:pistol"
-          }
-        }
-      },
-      "camera": {
-        "heightIncrement": 0.04,
-        "maxHeight": 1,
-        "pitchVelocity": 4,
-        "maxRecoilAmount": 12,
-        "minRecoilAmount": 1,
-        "recoilFade": 0.2,
-        "maxShakeAmount": 10,
-        "minShakeAmount": 1,
-        "shakeFade": 0.65,
-        "maxPitch": 196
-      }
+  "title": {
+    "sounds": {
+      "pause": "weapon:pistol",
+      "complete": "weapon:shotgun",
+      "highlight": "player:item"
+    }
+  },
+  "world": {
+    "sounds": {
+      "pause": "weapon:pistol",
+      "complete": "weapon:shotgun",
+      "highlight": "player:item"
     },
-    "enemies": {
-      "grunt": {
-        "acceleration": 0.2,
-        "maxVelocity": 1,
-        "attackRange": 160,
-        "attackTime": 500,
-        "alertTime": 500,
-        "aimTime": 400,
-        "hurtTime": 400,
-        "maxHealth": 5,
-        "attackPower": 5,
-        "clipSize": 3,
+    "numLevels": 1,
+    "props": {
+      "player": {
+        "acceleration": 0.12,
+        "maxRotVelocity": 10,
+        "maxVelocity": 2,
+        "rotAcceleration": 2,
         "sounds": {
-          "alert": "grunt:alert",
-          "death": "grunt:death",
-          "pain": "grunt:pain",
-          "attack": "weapon:pistol"
+          "death": "player:death",
+          "pain": "player:pain",
+          "item": "player:item",
+          "weapon": "player:weapon"
+        },
+        "weapons": {
+          "pistol": {
+            "equiped": true,
+            "idleTime": 20,
+            "power": 3,
+            "maxAmmo": 100,
+            "recoil": 4,
+            "range": 1,
+            "sounds": {
+              "fire": "weapon:pistol"
+            }
+          },
+          "shotgun": {
+            "equiped": false,
+            "idleTime": 300,
+            "power": 15,
+            "maxAmmo": 60,
+            "recoil": 15,
+            "range": 2,
+            "sounds": {
+              "fire": "weapon:shotgun"
+            }
+          },
+          "chaingun": {
+            "equiped": false,
+            "idleTime": 0,
+            "power": 4,
+            "maxAmmo": 200,
+            "recoil": 5,
+            "range": 1,
+            "sounds": {
+              "fire": "weapon:pistol"
+            }
+          }
+        },
+        "camera": {
+          "heightIncrement": 0.04,
+          "maxHeight": 1,
+          "pitchVelocity": 4,
+          "maxRecoilAmount": 12,
+          "minRecoilAmount": 1,
+          "recoilFade": 0.2,
+          "maxShakeAmount": 10,
+          "minShakeAmount": 1,
+          "shakeFade": 0.65,
+          "maxPitch": 196
         }
+      },
+      "enemies": {
+        "grunt": {
+          "acceleration": 0.2,
+          "maxVelocity": 1,
+          "attackRange": 160,
+          "attackTime": 500,
+          "alertTime": 500,
+          "aimTime": 400,
+          "hurtTime": 400,
+          "maxHealth": 5,
+          "attackPower": 5,
+          "clipSize": 3,
+          "sounds": {
+            "alert": "grunt:alert",
+            "death": "grunt:death",
+            "pain": "grunt:pain",
+            "attack": "weapon:pistol"
+          }
+        }
+      },
+      "door": {
+        "speed": 2,
+        "interval": 2000,
+        "sounds": {
+          "open": "door:open",
+          "close": "door:close"
+        }
+      },
+      "world": {
+        "brightness": -0.25,
+        "visibility": 1000
       }
-    },
-    "door": {
-      "speed": 2,
-      "interval": 2000,
-      "sounds": {
-        "open": "door:open",
-        "close": "door:close"
-      }
-    },
-    "world": {
-      "brightness": -0.25,
-      "visibility": 1000
+    }
+  },
+  "credits": {
+    "sounds": {
+      "pause": "weapon:pistol",
+      "complete": "weapon:shotgun",
+      "highlight": "player:item"
     }
   }
 }
+
