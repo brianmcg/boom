@@ -73,6 +73,7 @@ class WorldScene extends Scene {
     };
 
     const { world, sprites } = parse({
+      scene: this,
       renderer,
       graphics,
       data,
@@ -86,7 +87,6 @@ class WorldScene extends Scene {
 
     this.reviewContainer = new ReviewContainer(sprites.review);
     this.world = world;
-    this.world.scene = this;
 
     super.create({ graphics });
   }

@@ -1,4 +1,3 @@
-import translate from 'root/translate';
 import { DynamicSector } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
@@ -149,7 +148,15 @@ class Door extends DynamicSector {
    * Set the door to the opening state.
    */
   setOpening() {
-    return this.setState(STATES.OPENING);
+    const stateChanged = this.setState(STATES.OPENING);
+
+    if (stateChanged) {
+      this.emitSound(this.sounds.open, {
+        distance: this.distanceTo(this.world.player),
+      });
+    }
+
+    return stateChanged;
   }
 
   /**
@@ -168,10 +175,20 @@ class Door extends DynamicSector {
 
   /**
    * Set the door to the closing state.
+   * @return {Boolean} State change successful.
    */
   setClosing() {
-    this.blocking = true;
-    this.setState(STATES.CLOSING);
+    const stateChanged = this.setState(STATES.CLOSING);
+
+    if (stateChanged) {
+      this.blocking = true;
+
+      this.emitSound(this.sounds.close, {
+        distance: this.distanceTo(this.world.player),
+      });
+    }
+
+    return stateChanged;
   }
 
   /**

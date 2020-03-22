@@ -62,7 +62,7 @@ const createSector = ({ sector, props }) => {
  * @param  {Object} data   The world data.
  * @return {World}         The created world.
  */
-export const createWorld = ({ data, graphics }) => {
+export const createWorld = ({ scene, data, graphics }) => {
   const { entrance, exit, props } = data;
   const { visibility, brightness } = props.world;
   const { animations } = graphics.data;
@@ -119,6 +119,7 @@ export const createWorld = ({ data, graphics }) => {
   const player = new Player(props.player);
 
   return new World({
+    scene,
     grid,
     player,
     obstacles,

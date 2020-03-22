@@ -34,6 +34,10 @@ class AbstractGunEnemy extends AbstractEnemy {
     const { player } = this.world;
     const ray = this.castRay();
 
+    this.emitSound(this.sounds.attack, {
+      distance: this.distanceToPlayer,
+    });
+
     if (player.rayCollision(ray)) {
       player.hurt(this.attackPower);
     }

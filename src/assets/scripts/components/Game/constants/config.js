@@ -18,7 +18,7 @@ export const TIME_STEP = 1000 / MAX_FPS;
  * Enabled the sound.
  * @type {Boolean}
  */
-export const SOUND_ENABLED = false;
+export const SOUND_ENABLED = true;
 
 /**
  * The size of mao tile.
@@ -63,4 +63,4 @@ export const UPDATE_DISTANCE = TILE_SIZE * 20;
  * The max distance a sound can travel.
  * @type {Number}
  */
-export const MAX_SOUND_DISTANCE = TILE_SIZE * 20;
+export const MAX_SOUND_DISTANCE = TILE_SIZE * 10;

@@ -5,6 +5,8 @@ const AXES = {
   Y: 'y',
 };
 
+const EMIT_SOUND_EVENT = 'sector:emit:sound';
+
 /**
  * Class representing a dynamic flat sector.
  */
@@ -19,13 +21,37 @@ class DynamicSector extends Sector {
    * @param  {Boolean} options.blocking  Is the sector blocking.
    * @param  {String}  options.axis      The axis of the sector.
    * @param  {Number}  options.speed     The speed of the sector.
+   * @param  {Object}  options.sounds    The door sounds.
    */
-  constructor({ speed, axis, ...other }) {
+  constructor({
+    speed,
+    axis,
+    sounds,
+    ...other
+  }) {
     super(other);
 
+    this.sounds = sounds;
     this.speed = speed;
     this.axis = axis;
+    this.isDynamic = true;
     this.offset = { x: 0, y: 0 };
+  }
+
+  /**
+   * Add a callback to the sound event.
+   * @param  {Function} callback The callback function.
+   */
+  onSound(callback) {
+    this.on(EMIT_SOUND_EVENT, callback);
+  }
+
+  /**
+   * Emit a sound event.
+   * @param  {String} id The id of the sound.
+   */
+  emitSound(...options) {
+    this.emit(EMIT_SOUND_EVENT, ...options);
   }
 
   /**

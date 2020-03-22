@@ -34,11 +34,11 @@ class SoundPlayer {
 
   /**
    * Play a sound.
-   * @param  {String} type     The type of sound.
-   * @param  {String} name     The name of the sound.
-   * @param  {Number} distance The distance from the player.
+   * @param  {String} type             The type of sound.
+   * @param  {String} name             The name of the sound.
+   * @param  {Number} options.distance The distance from the player.
    */
-  play(type, name, distance = 0) {
+  play(type, name, { distance = 0 } = {}) {
     const sound = this.sounds[type];
 
     if (sound) {
@@ -48,7 +48,6 @@ class SoundPlayer {
         const volume = distance > MAX_SOUND_DISTANCE ? 0 : 1 - distance / MAX_SOUND_DISTANCE;
         sound.volume(volume, id);
       }
-
 
       this.ids[type].push(id);
     }
