@@ -52,13 +52,13 @@ const createWallSprites = ({
   const spatterContainer = new Container();
 
   world.grid.forEach((row) => {
-    row.forEach((sector) => {
+    row.forEach((cell) => {
       const {
         front,
         left,
         back,
         right,
-      } = sector;
+      } = cell;
 
       [front, left, back, right].forEach((side) => {
         if (side && !wallImages.includes(side.texture)) {
@@ -109,8 +109,8 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
   const backgroundSprites = [];
 
   world.grid.forEach((row) => {
-    row.forEach((sector) => {
-      const { top, bottom } = sector;
+    row.forEach((cell) => {
+      const { top, bottom } = cell;
 
       [top, bottom].forEach((side) => {
         if (side && !backgroundImages.includes(side.texture)) {

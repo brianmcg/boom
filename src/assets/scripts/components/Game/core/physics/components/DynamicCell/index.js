@@ -1,26 +1,26 @@
-import Sector from '../Sector';
+import Cell from '../Cell';
 
 const AXES = {
   X: 'x',
   Y: 'y',
 };
 
-const EMIT_SOUND_EVENT = 'sector:emit:sound';
+const EMIT_SOUND_EVENT = 'cell:emit:sound';
 
 /**
- * Class representing a dynamic flat sector.
+ * Class representing a dynamic flat cell.
  */
-class DynamicSector extends Sector {
+class DynamicCell extends Cell {
   /**
-   * Creates a dynamic sector.
-   * @param  {Number}  options.x         The x coordinate of the sector.
-   * @param  {Number}  options.y         The y coordinate of the sector
-   * @param  {Number}  options.width     The width of the sector.
-   * @param  {Number}  options.length    The length of the sector.
-   * @param  {Number}  options.height    The height of the sector.
-   * @param  {Boolean} options.blocking  Is the sector blocking.
-   * @param  {String}  options.axis      The axis of the sector.
-   * @param  {Number}  options.speed     The speed of the sector.
+   * Creates a dynamic cell.
+   * @param  {Number}  options.x         The x coordinate of the cell.
+   * @param  {Number}  options.y         The y coordinate of the cell
+   * @param  {Number}  options.width     The width of the cell.
+   * @param  {Number}  options.length    The length of the cell.
+   * @param  {Number}  options.height    The height of the cell.
+   * @param  {Boolean} options.blocking  Is the cell blocking.
+   * @param  {String}  options.axis      The axis of the cell.
+   * @param  {Number}  options.speed     The speed of the cell.
    * @param  {Object}  options.sounds    The door sounds.
    */
   constructor({
@@ -71,4 +71,4 @@ class DynamicSector extends Sector {
   }
 }
 
-export default DynamicSector;
+export default DynamicCell;

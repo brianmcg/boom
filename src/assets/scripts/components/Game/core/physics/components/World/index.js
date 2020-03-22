@@ -14,13 +14,13 @@ class World extends EventEmitter {
     this.grid = grid;
     this.bodies = {};
     this.dynamicBodies = [];
-    this.grid.forEach(row => row.forEach(sector => this.add(sector)));
+    this.grid.forEach(row => row.forEach(cell => this.add(cell)));
 
     this.width = this.grid[0].length;
     this.height = this.grid.length;
 
-    this.maxSectorY = this.height - 1;
-    this.maxSectorX = this.width - 1;
+    this.maxCellY = this.height - 1;
+    this.maxCellX = this.width - 1;
 
     this.bullets = [];
   }
@@ -31,10 +31,10 @@ class World extends EventEmitter {
    */
   add(body) {
     if (!this.bodies[body.id]) {
-      const sector = this.getSector(body.gridX, body.gridY);
+      const cell = this.getCell(body.gridX, body.gridY);
 
-      if (sector !== body) {
-        sector.add(body);
+      if (cell !== body) {
+        cell.add(body);
       }
 
       if (body.update) {
@@ -57,7 +57,7 @@ class World extends EventEmitter {
       this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
     }
 
-    this.getSector(body.gridX, body.gridY).remove(body);
+    this.getCell(body.gridX, body.gridY).remove(body);
 
     delete this.bodies[body.id];
 
@@ -73,31 +73,31 @@ class World extends EventEmitter {
   }
 
   /**
-   * Get the sector at the given grid coordinates.
+   * Get the cell at the given grid coordinates.
    * @param  {Number} x The x grid coordinate.
    * @param  {Number} y The y grid coordinate.
-   * @return {Sector}   The sector.
+   * @return {Cell}   The cell.
    */
-  getSector(x, y) {
+  getCell(x, y) {
     return this.grid[y][x];
   }
 
   /**
-   * Get the sectors surrounding a given body.
+   * Get the cells surrounding a given body.
    * @param  {Body}   body The body.
-   * @return {Array}       The sectors surrounding the body.
+   * @return {Array}       The cells surrounding the body.
    */
-  getAdjacentSectors(body, radius = 1) {
-    const sectors = [];
+  getAdjacentCells(body, radius = 1) {
+    const cells = [];
     const { gridX, gridY } = body;
 
     for (let i = gridX - radius; i <= gridX + radius; i += 1) {
       for (let j = gridY - radius; j <= gridY + radius; j += 1) {
-        sectors.push(this.getSector(i, j));
+        cells.push(this.getCell(i, j));
       }
     }
 
-    return sectors;
+    return cells;
   }
 
   /**
@@ -106,17 +106,17 @@ class World extends EventEmitter {
    * @return {Array}       The bodies surrounding the body.
    */
   getAdjacentBodies(body) {
-    const sectors = this.getAdjacentSectors(body);
+    const cells = this.getAdjacentCells(body);
 
-    return sectors.reduce((bodies, sector) => {
-      sector.bodies.forEach((sectorBody) => {
-        if (sectorBody.id !== body.id) {
-          bodies.push(sectorBody);
+    return cells.reduce((bodies, cell) => {
+      cell.bodies.forEach((cellBody) => {
+        if (cellBody.id !== body.id) {
+          bodies.push(cellBody);
         }
       });
 
-      if (sector.id !== body.id) {
-        bodies.push(sector);
+      if (cell.id !== body.id) {
+        bodies.push(cell);
       }
 
       return bodies;

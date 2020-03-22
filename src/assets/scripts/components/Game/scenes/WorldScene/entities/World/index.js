@@ -19,7 +19,7 @@ class World extends PhysicsWorld {
    * @param  {Array}  options.enemies     The enemies.
    * @param  {Array}  options.obstacles   The obstacles.
    * @param  {Array}  options.items       The items.
-   * @param  {Array}  options.grid        The sector grid.
+   * @param  {Array}  options.grid        The cell grid.
    * @param  {Object} options.entrance    The entrance coordinates.
    * @param  {Object} options.exit        The exit coordinates.
    * @param  {Number} options.visibility  The visibility of the world.
@@ -60,9 +60,9 @@ class World extends PhysicsWorld {
     this.startingProps = Object.assign({}, this.props);
 
     grid.forEach((row) => {
-      row.forEach((sector) => {
-        if (sector.isDynamic) {
-          sector.onSound((...options) => {
+      row.forEach((cell) => {
+        if (cell.isDynamic) {
+          cell.onSound((...options) => {
             this.scene.playSound(...options);
           });
         }
@@ -135,8 +135,8 @@ class World extends PhysicsWorld {
    */
   openEntranceDoor() {
     const { x, y } = this.entrance;
-    const entrance = this.getSector(x, y);
-    const door = this.getAdjacentSectors(entrance).find(sector => sector.open);
+    const entrance = this.getCell(x, y);
+    const door = this.getAdjacentCells(entrance).find(cell => cell.open);
 
     door.open();
   }

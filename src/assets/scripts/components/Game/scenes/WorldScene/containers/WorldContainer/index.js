@@ -76,8 +76,8 @@ class WorldContainer extends Container {
   animate() {
     const {
       player,
-      maxSectorX,
-      maxSectorY,
+      maxCellX,
+      maxCellY,
       bullets,
     } = this.world;
 
@@ -128,7 +128,7 @@ class WorldContainer extends Container {
         distance,
         encounteredBodies,
         isHorizontal,
-        sector,
+        cell,
         endPoint,
         side,
       } = player.castRay(rayAngle);
@@ -140,9 +140,9 @@ class WorldContainer extends Container {
 
       // Update wall sprites.
       if (isHorizontal) {
-        sliceY = sector.offset ? endPoint.x - sector.offset.x : endPoint.x;
+        sliceY = cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
       } else {
-        sliceY = sector.offset ? endPoint.y - sector.offset.y : endPoint.y;
+        sliceY = cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
       }
 
       sliceY = TILE_SIZE - (Math.floor(sliceY) % TILE_SIZE) - 1;
@@ -173,12 +173,12 @@ class WorldContainer extends Container {
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
           gridX = Math.floor(mapX / TILE_SIZE);
-          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+          gridX = (gridX > maxCellX) ? maxCellX : gridX;
           gridX = (gridX < 0) ? 0 : gridX;
           gridY = Math.floor(mapY / TILE_SIZE);
-          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+          gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getSector(gridX, gridY).top.texture, pixelX, pixelY);
+          sprite.changeTexture(this.world.getCell(gridX, gridY).top.texture, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -194,12 +194,12 @@ class WorldContainer extends Container {
           pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
           pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
           gridX = Math.floor(mapX / TILE_SIZE);
-          gridX = (gridX > maxSectorX) ? maxSectorX : gridX;
+          gridX = (gridX > maxCellX) ? maxCellX : gridX;
           gridX = (gridX < 0) ? 0 : gridX;
           gridY = Math.floor(mapY / TILE_SIZE);
-          gridY = (gridY > maxSectorY) ? maxSectorY : gridY;
+          gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getSector(gridX, gridY).bottom.texture, pixelX, pixelY);
+          sprite.changeTexture(this.world.getCell(gridX, gridY).bottom.texture, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }

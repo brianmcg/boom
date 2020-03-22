@@ -1,6 +1,6 @@
 import { ITEM_TYPES, ENEMY_TYPES, EFFECT_TYPES } from 'game/constants/assets';
 import { TILE_SIZE } from 'game/constants/config';
-import Sector from '../entities/Sector';
+import Cell from '../entities/Cell';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
@@ -22,37 +22,37 @@ const ENEMIES = {
   [ENEMY_TYPES.GRUNT]: Grunt,
 };
 
-const createSector = ({ sector, props }) => {
-  const sides = Object.keys(sector.sides).reduce((memo, key) => ({
+const createCell = ({ cell, props }) => {
+  const sides = Object.keys(cell.sides).reduce((memo, key) => ({
     ...memo,
     [key]: {
-      texture: sector.sides[key],
+      texture: cell.sides[key],
       spatter: 0,
     },
   }), {});
 
-  if (sector.door) {
+  if (cell.door) {
     return new Door({
-      x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
+      x: (TILE_SIZE * cell.x) + (TILE_SIZE / 2),
+      y: (TILE_SIZE * cell.y) + (TILE_SIZE / 2),
       width: TILE_SIZE,
       height: TILE_SIZE,
       length: TILE_SIZE,
-      axis: sector.axis,
-      blocking: sector.blocking,
+      axis: cell.axis,
+      blocking: cell.blocking,
       sides,
-      key: sector.key,
+      key: cell.key,
       ...props.door,
     });
   }
 
-  return new Sector({
-    x: (TILE_SIZE * sector.x) + (TILE_SIZE / 2),
-    y: (TILE_SIZE * sector.y) + (TILE_SIZE / 2),
-    blocking: sector.blocking,
+  return new Cell({
+    x: (TILE_SIZE * cell.x) + (TILE_SIZE / 2),
+    y: (TILE_SIZE * cell.y) + (TILE_SIZE / 2),
+    blocking: cell.blocking,
     sides,
     width: TILE_SIZE,
-    height: sector.blocking ? TILE_SIZE : 0,
+    height: cell.blocking ? TILE_SIZE : 0,
     length: TILE_SIZE,
   });
 };
@@ -70,9 +70,9 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const grid = data.grid.reduce((rows, row) => ([
     ...rows,
-    row.reduce((sectors, sector) => ([
-      ...sectors,
-      createSector({ sector, props }),
+    row.reduce((cells, cell) => ([
+      ...cells,
+      createCell({ cell, props }),
     ]), []),
   ]), []);
 

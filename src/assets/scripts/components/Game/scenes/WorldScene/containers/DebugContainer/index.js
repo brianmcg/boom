@@ -1,6 +1,6 @@
 import { Container } from 'game/core/graphics';
 // import { SCREEN } from 'game/constants/config';
-// import { DEG, Sector, castRay } from 'game/core/physics';
+// import { DEG, Cell, castRay } from 'game/core/physics';
 // import Player from '../../entities/Player';
 
 // const SCALE = 0.25;
@@ -80,7 +80,7 @@ class DebugContainer extends Container {
   //       this.bodySprites[body.id].y = (playerSprite.y + (body.shape.y - player.shape.y) * SCALE);
   //       this.bodySprites[body.id].visible = true;
 
-  //       if (bodyIds.includes(body.id) || body instanceof Sector || body instanceof Player) {
+  //       if (bodyIds.includes(body.id) || body instanceof Cell || body instanceof Player) {
   //         this.bodySprites[body.id].alpha = 1;
   //       } else {
   //         this.bodySprites[body.id].alpha = 0.4;

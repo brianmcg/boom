@@ -1,8 +1,8 @@
 import Body from './components/Body';
 import DynamicBody from './components/DynamicBody';
 import World from './components/World';
-import Sector from './components/Sector';
-import DynamicSector from './components/DynamicSector';
+import Cell from './components/Cell';
+import DynamicCell from './components/DynamicCell';
 import { atan2 } from './helpers';
 import {
   COS,
@@ -29,13 +29,13 @@ export {
    */
   World,
   /**
-   * The sector component.
+   * The cell component.
    */
-  Sector,
+  Cell,
   /**
-   * The flat sector component.
+   * The flat cell component.
    */
-  DynamicSector,
+  DynamicCell,
   /**
    * The cosine table.
    */

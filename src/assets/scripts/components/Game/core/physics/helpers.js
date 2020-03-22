@@ -25,8 +25,8 @@ let xGridIndex;
 let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
-let horizontalSector;
-let verticalSector;
+let horizontalCell;
+let verticalCell;
 let offsetRatio;
 
 const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
@@ -150,7 +150,7 @@ export const castRay = (caster, rayAngle) => {
 
   const encounteredBodies = {};
 
-  world.getSector(gridX, gridY).bodies.forEach((body) => {
+  world.getCell(gridX, gridY).bodies.forEach((body) => {
     if (body.id !== id) {
       encounteredBodies[body.id] = body;
     }
@@ -200,15 +200,15 @@ export const castRay = (caster, rayAngle) => {
         break;
       }
 
-      horizontalSector = world.getSector(xGridIndex, yGridIndex);
+      horizontalCell = world.getCell(xGridIndex, yGridIndex);
 
-      if (horizontalSector.blocking) {
-        if (horizontalSector.axis) {
-          offsetRatio = TILE_SIZE / horizontalSector.offset.y;
+      if (horizontalCell.blocking) {
+        if (horizontalCell.axis) {
+          offsetRatio = TILE_SIZE / horizontalCell.offset.y;
           xOffsetDist = distToNextXIntersection / offsetRatio;
           yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
-          if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalSector.offset.x) {
+          if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
             distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
@@ -222,7 +222,7 @@ export const castRay = (caster, rayAngle) => {
           break;
         }
       } else {
-        horizontalSector.bodies.forEach((body) => {
+        horizontalCell.bodies.forEach((body) => {
           encounteredBodies[body.id] = body;
         });
         xIntersection += distToNextXIntersection;
@@ -271,15 +271,15 @@ export const castRay = (caster, rayAngle) => {
         break;
       }
 
-      verticalSector = world.getSector(xGridIndex, yGridIndex);
+      verticalCell = world.getCell(xGridIndex, yGridIndex);
 
-      if (verticalSector.blocking) {
-        if (verticalSector.axis) {
-          offsetRatio = TILE_SIZE / verticalSector.offset.x;
+      if (verticalCell.blocking) {
+        if (verticalCell.axis) {
+          offsetRatio = TILE_SIZE / verticalCell.offset.x;
           yOffsetDist = distToNextYIntersection / offsetRatio;
           xOffsetDist = distToNextVerticalGrid / offsetRatio;
 
-          if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalSector.offset.y) {
+          if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
             distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
@@ -293,7 +293,7 @@ export const castRay = (caster, rayAngle) => {
           break;
         }
       } else {
-        verticalSector.bodies.forEach((body) => {
+        verticalCell.bodies.forEach((body) => {
           encounteredBodies[body.id] = body;
         });
         yIntersection += distToNextYIntersection;
@@ -321,10 +321,10 @@ export const castRay = (caster, rayAngle) => {
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: caster.y < horizontalSector.y
-        ? horizontalSector.left
-        : horizontalSector.right,
-      sector: horizontalSector,
+      side: caster.y < horizontalCell.y
+        ? horizontalCell.left
+        : horizontalCell.right,
+      cell: horizontalCell,
     };
   }
 
@@ -345,9 +345,9 @@ export const castRay = (caster, rayAngle) => {
     },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
-    side: caster.x < verticalSector.x
-      ? verticalSector.front
-      : verticalSector.back,
-    sector: verticalSector,
+    side: caster.x < verticalCell.x
+      ? verticalCell.front
+      : verticalCell.back,
+    cell: verticalCell,
   };
 };

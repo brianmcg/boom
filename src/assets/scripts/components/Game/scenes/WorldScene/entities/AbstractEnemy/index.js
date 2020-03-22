@@ -392,15 +392,15 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setPatrolling() {
-    const sectors = this.world.getAdjacentSectors(this)
+    const cells = this.world.getAdjacentCells(this)
       .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
 
-    if (sectors.length) {
-      const index = Math.floor(Math.random() * sectors.length);
-      const sector = sectors[index];
-      this.waypoint = sector;
+    if (cells.length) {
+      const index = Math.floor(Math.random() * cells.length);
+      const cell = cells[index];
+      this.waypoint = cell;
     } else {
-      this.waypoint = this.world.getSector(this.gridX, this.gridY);
+      this.waypoint = this.world.getCell(this.gridX, this.gridY);
     }
 
     this.velocity = this.maxVelocity;

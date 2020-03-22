@@ -1,4 +1,4 @@
-import { DynamicSector } from 'game/core/physics';
+import { DynamicCell } from 'game/core/physics';
 import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
 
 const STATES = {
@@ -11,17 +11,17 @@ const STATES = {
 
 /**
  * Class representing a door.
- * @extends {DynamicSector}
+ * @extends {DynamicCell}
  */
-class Door extends DynamicSector {
+class Door extends DynamicCell {
   /**
-   * Creates a door sector
-   * @param  {Number} options.x       The x coordinate of the sector.
-   * @param  {Number} options.y       The y coordinate of the sector
-   * @param  {Number} options.width   The width of the sector.
-   * @param  {Number} options.length  The length of the sector.
-   * @param  {Number} options.height  The height of the sector.
-   * @param  {Object} options.sides   The ids of the sides of the sector.
+   * Creates a door cell
+   * @param  {Number} options.x       The x coordinate of the cell.
+   * @param  {Number} options.y       The y coordinate of the cell
+   * @param  {Number} options.width   The width of the cell.
+   * @param  {Number} options.length  The length of the cell.
+   * @param  {Number} options.height  The height of the cell.
+   * @param  {Object} options.sides   The ids of the sides of the cell.
    * @param  {String} options.axis    The axis of the door.
    * @param  {String} options.key     The key that unlocks the door.
    */
