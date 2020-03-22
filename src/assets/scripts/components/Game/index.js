@@ -288,6 +288,13 @@ class Game extends Application {
   }
 
   /**
+   * Stop all sounds.
+   */
+  stopSounds() {
+    this.sound.stop();
+  }
+
+  /**
    * Is a key pressed on the keyboard.
    * @param  {String}  key The key.
    * @return {Boolean}

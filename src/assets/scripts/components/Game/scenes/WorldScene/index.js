@@ -159,7 +159,6 @@ class WorldScene extends Scene {
   setReviewing() {
     if (this.setState(STATES.REVIEWING)) {
       this.game.pauseSounds();
-      this.playSound(this.sounds.pause);
       this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);

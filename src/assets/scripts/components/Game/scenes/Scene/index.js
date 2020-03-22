@@ -283,6 +283,13 @@ class Scene extends Container {
   }
 
   /**
+   * Stop all sounds.
+   */
+  stopSounds() {
+    this.game.stopSounds();
+  }
+
+  /**
    * Handle a state change to prompting.
    */
   setPrompting() {
@@ -296,6 +303,7 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
+      this.stopSounds();
       this.playSound(this.sounds.complete);
       this.game.fadeMusic();
       this.mainContainer.initFadeOutEffect();

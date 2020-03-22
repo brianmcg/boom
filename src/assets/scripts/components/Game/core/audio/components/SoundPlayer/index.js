@@ -97,6 +97,7 @@ class SoundPlayer {
   stop() {
     Object.keys(this.ids).forEach((key) => {
       this.ids[key].forEach(id => this.sounds[key].stop(id));
+      this.ids[key] = [];
     });
   }
 }

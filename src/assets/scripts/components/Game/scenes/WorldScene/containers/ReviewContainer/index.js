@@ -4,7 +4,7 @@ import { SCREEN, TIME_STEP } from 'game/constants/config';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
-const INTERVAL = 1000;
+const INTERVAL = 400;
 
 const STATES = {
   SHOW_TITLE: 'show:title',
@@ -41,7 +41,8 @@ class ReviewContainer extends Container {
     this.sprites = sprites;
 
     this.addChild(background);
-    this.setShowTitle();
+
+    this.on('added', this.setShowTitle.bind(this));
   }
 
   /**
@@ -115,6 +116,7 @@ class ReviewContainer extends Container {
 
     if (this.timer >= INTERVAL) {
       this.timer = 0;
+      this.parent.playSound(this.parent.sounds.complete);
       this.parent.setPrompting();
       this.setState(null);
     }
@@ -125,6 +127,7 @@ class ReviewContainer extends Container {
    */
   setShowTitle() {
     if (this.setState(STATES.SHOW_TITLE)) {
+      this.parent.playSound(this.parent.sounds.complete);
       this.addChild(this.sprites.title);
     }
   }
@@ -136,6 +139,7 @@ class ReviewContainer extends Container {
     const { name, value } = this.sprites.stats.enemies;
 
     if (this.setState(STATES.SHOW_ENEMIES)) {
+      this.parent.playSound(this.parent.sounds.pause);
       this.addChild(name);
       this.addChild(value);
     }
@@ -148,6 +152,7 @@ class ReviewContainer extends Container {
     const { name, value } = this.sprites.stats.items;
 
     if (this.setState(STATES.SHOW_ITEMS)) {
+      this.parent.playSound(this.parent.sounds.pause);
       this.addChild(name);
       this.addChild(value);
     }
@@ -160,6 +165,7 @@ class ReviewContainer extends Container {
     const { name, value } = this.sprites.stats.time;
 
     if (this.setState(STATES.SHOW_TIME)) {
+      this.parent.playSound(this.parent.sounds.pause);
       this.addChild(name);
       this.addChild(value);
     }
