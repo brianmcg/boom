@@ -438,8 +438,17 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setHurting() {
-    this.velocity = 0;
-    return this.setState(STATES.HURTING);
+    const stateChange = this.setState(STATES.HURTING);
+
+    if (stateChange) {
+      this.velocity = 0;
+
+      this.emitSound(this.sounds.hurt, {
+        distance: this.distanceToPlayer,
+      });
+    }
+
+    return stateChange;
   }
 
   /**
@@ -447,9 +456,18 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setDead() {
-    this.velocity = 0;
-    this.blocking = false;
-    return this.setState(STATES.DEAD);
+    const stateChange = this.setState(STATES.DEAD);
+
+    if (stateChange) {
+      this.velocity = 0;
+      this.blocking = false;
+
+      this.emitSound(this.sounds.death, {
+        distance: this.distanceToPlayer,
+      });
+    }
+
+    return stateChange;
   }
 
   /**
@@ -521,13 +539,17 @@ class AbstractEnemy extends AbstractActor {
    * @param {String} state The new state.
    */
   setState(state) {
-    if (super.setState(state)) {
+    const stateChange = super.setState(state);
+
+    if (stateChange) {
       this.attackTimer = 0;
       this.hurtTimer = 0;
       this.aimTimer = 0;
       this.alertTimer = 0;
       this.emit(state);
     }
+
+    return stateChange;
   }
 }
 

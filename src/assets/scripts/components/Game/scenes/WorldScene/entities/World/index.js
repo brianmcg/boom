@@ -26,6 +26,7 @@ class World extends PhysicsWorld {
    * @param  {Number} options.brightness  The brightness of the world.
    */
   constructor({
+    scene,
     player,
     enemies = [],
     obstacles = [],
@@ -38,6 +39,7 @@ class World extends PhysicsWorld {
   }) {
     super(grid);
 
+    this.scene = scene;
     this.exit = exit;
     this.entrance = entrance;
 
@@ -57,8 +59,20 @@ class World extends PhysicsWorld {
 
     this.startingProps = Object.assign({}, this.props);
 
+    grid.forEach((row) => {
+      row.forEach((sector) => {
+        if (sector.isDynamic) {
+          sector.onSound((...options) => {
+            this.scene.playSound(...options);
+          });
+        }
+      });
+    });
+
     enemies.forEach((enemy) => {
-      enemy.onSound(id => this.scene.playSound(id));
+      enemy.onSound((...options) => {
+        this.scene.playSound(...options);
+      });
       this.add(enemy);
     });
 
@@ -68,7 +82,9 @@ class World extends PhysicsWorld {
 
     player.onPlayerDeathEvent(this.restart.bind(this));
 
-    player.onSound(id => this.scene.playSound(id));
+    player.onSound((...options) => {
+      this.scene.playSound(...options);
+    });
 
     this.openEntranceDoor();
 

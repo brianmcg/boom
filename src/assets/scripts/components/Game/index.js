@@ -92,7 +92,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.showTitleScene();
+    this.showWorldScene();
 
     this.emit(EVENTS.STARTED);
   }
@@ -245,11 +245,13 @@ class Game extends Application {
   }
 
   /**
-   * Play a game sound.
-   * @param  {String} name The name of the sound to play.
+   * Play a sound.
+   * @param  {String} type             The type of sound.
+   * @param  {String} name             The name of the sound.
+   * @param  {Number} options.distance The distance from the player.
    */
-  playSound(name) {
-    this.sound.play(GAME_SOUNDS.NAME, name);
+  playSound(...options) {
+    this.sound.play(GAME_SOUNDS.NAME, ...options);
   }
 
   /**

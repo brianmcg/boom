@@ -6,6 +6,13 @@
       "maxRotVelocity": 10,
       "maxVelocity": 2,
       "rotAcceleration": 2,
+      "sounds": {
+        "death": "PLAYER_DEATH",
+        "hurt": "PLAYER_PAIN",
+        "itemPickup": "PLAYER_ITEM_PICKUP",
+        "weaponPickup": "WEAPON_PICKUP",
+        "armWeapon": "WEAPON_PICKUP"
+      },
       "weapons": {
         "pistol": {
           "equiped": true,
@@ -13,7 +20,11 @@
           "power": 3,
           "maxAmmo": 100,
           "recoil": 4,
-          "range": 1
+          "range": 1,
+          "sounds": {
+            "fire": "WEAPON_PISTOL",
+            "equip": "WEAPON_PICKUP"
+          }
         },
         "shotgun": {
           "equiped": false,
@@ -21,7 +32,11 @@
           "power": 15,
           "maxAmmo": 60,
           "recoil": 15,
-          "range": 2
+          "range": 2,
+          "sounds": {
+            "fire": "WEAPON_SHOTGUN",
+            "equip": "WEAPON_PICKUP"
+          }
         },
         "chaingun": {
           "equiped": false,
@@ -29,7 +44,11 @@
           "power": 4,
           "maxAmmo": 200,
           "recoil": 5,
-          "range": 1
+          "range": 1,
+          "sounds": {
+            "fire": "WEAPON_PISTOL",
+            "equip": "WEAPON_PICKUP"
+          }
         }
       },
       "camera": {
@@ -56,12 +75,22 @@
         "hurtTime": 400,
         "maxHealth": 5,
         "attackPower": 5,
-        "clipSize": 3
+        "clipSize": 3,
+        "sounds": {
+          "alert": "GRUNT_ALERT",
+          "death": "GRUNT_DEATH",
+          "hurt": "GRUNT_PAIN",
+          "attack": "WEAPON_PISTOL"
+        }
       }
     },
     "door": {
       "speed": 2,
-      "interval": 2000
+      "interval": 2000,
+      "sounds": {
+        "open": "WORLD_DOOR_OPEN",
+        "close": "WORLD_DOOR_CLOSE"
+      }
     },
     "world": {
       "brightness": -0.25,

@@ -17,10 +17,12 @@ class DynamicEntity extends DynamicBody {
    * @param  {Number}  options.angle    The angle of the dynamic entity.
    * @param  {Boolean} options.blocking Is the dynamic entity blocking.
    * @param  {String}  options.texture  The texture of entity.
+   * @param  {String}  options.sounds   The sounds of entity.
    */
-  constructor({ texture, ...other }) {
+  constructor({ texture, sounds, ...other }) {
     super(other);
 
+    this.sounds = sounds;
     this.texture = texture;
   }
 
@@ -36,8 +38,8 @@ class DynamicEntity extends DynamicBody {
    * Emit a sound event.
    * @param  {String} id The id of the sound.
    */
-  emitSound(id) {
-    this.emit(EMIT_SOUND_EVENT, id);
+  emitSound(...options) {
+    this.emit(EMIT_SOUND_EVENT, ...options);
   }
 
   /**

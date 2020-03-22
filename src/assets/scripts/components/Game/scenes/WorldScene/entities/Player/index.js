@@ -2,7 +2,6 @@ import translate from 'root/translate';
 import { DEG } from 'game/core/physics';
 import { TILE_SIZE } from 'game/constants/config';
 import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
-import { SOUNDS } from 'game/constants/sounds';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -123,7 +122,7 @@ class Player extends AbstractActor {
     this.y = (TILE_SIZE * y) + (TILE_SIZE / 2);
     this.angle = 0;
     this.velocity = 0;
-    this.weapon.setArming();
+    this.armWeapon();
   }
 
   /**
@@ -526,8 +525,16 @@ class Player extends AbstractActor {
     if (this.currentWeaponType !== this.nextWeaponType) {
       this.currentWeaponType = this.nextWeaponType;
       this.nextWeaponType = null;
-      this.weapon.setArming();
+      this.armWeapon();
     }
+  }
+
+  /**
+   * Arm weapon.
+   */
+  armWeapon() {
+    this.emitSound(this.sounds.armWeapon);
+    this.weapon.setArming();
   }
 
   /**
@@ -535,7 +542,6 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      this.emitSound(SOUNDS.WEAPON_PISTOL);
       const { enemies } = this.world;
       const { power, range, recoil } = this.weapon;
 
@@ -591,6 +597,7 @@ class Player extends AbstractActor {
 
       this.camera.setRecoil(recoil);
       this.world.setGunFlash(power);
+      this.emitSound(this.weapon.sounds.fire);
     }
   }
 
@@ -601,14 +608,20 @@ class Player extends AbstractActor {
   hurt(amount) {
     this.vision = 0.6;
     this.health -= amount;
-    this.camera.setShake(amount);
-    this.camera.setRecoil(amount * 6, {
-      down: true,
-    });
 
     if (this.health <= 0) {
       this.health = 0;
       this.setDying();
+      this.emitSound(this.sounds.death);
+    } else {
+      this.camera.setShake(amount);
+      this.camera.setRecoil(amount * 6, {
+        down: true,
+      });
+
+      this.emitSound(this.sounds.hurt, {
+        overlay: false,
+      });
     }
   }
 
@@ -659,6 +672,7 @@ class Player extends AbstractActor {
     const weaponToRefill = this.weapons[weapon];
 
     if (weaponToRefill.isEquiped()) {
+      this.emitSound(this.sounds.itemPickup);
       return weaponToRefill.addAmmo(amount);
     }
 
@@ -677,6 +691,8 @@ class Player extends AbstractActor {
         this.health = this.maxHealth;
       }
 
+      this.emitSound(this.sounds.itemPickup);
+
       return true;
     }
 
@@ -688,6 +704,7 @@ class Player extends AbstractActor {
    * @param  {String} type The type of key.
    */
   pickUpKey(key) {
+    this.emitSound(this.sounds.itemPickup);
     this.keyCards[key.color].equip();
 
     return true;

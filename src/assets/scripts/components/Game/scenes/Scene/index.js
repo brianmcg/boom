@@ -234,10 +234,12 @@ class Scene extends Container {
 
   /**
    * Play a sound.
-   * @param  {String} id The sound id.
+   * @param  {String} type             The type of sound.
+   * @param  {String} name             The name of the sound.
+   * @param  {Number} options.distance The distance from the player.
    */
-  playSound(id) {
-    this.game.playSound(id);
+  playSound(...options) {
+    this.game.playSound(...options);
   }
 
   /**
