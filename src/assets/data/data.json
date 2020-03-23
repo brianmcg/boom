@@ -91,6 +91,24 @@
             "pain": "grunt:pain",
             "attack": "weapon:pistol"
           }
+        },
+        "demon": {
+          "acceleration": 0.2,
+          "maxVelocity": 1,
+          "attackRange": 160,
+          "attackTime": 500,
+          "alertTime": 500,
+          "aimTime": 400,
+          "hurtTime": 400,
+          "maxHealth": 5,
+          "attackPower": 5,
+          "clipSize": 3,
+          "sounds": {
+            "alert": "grunt:alert",
+            "death": "grunt:death",
+            "pain": "grunt:pain",
+            "attack": "weapon:pistol"
+          }
         }
       },
       "door": {

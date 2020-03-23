@@ -24,9 +24,9 @@ class LogoSprite extends AnimatedSprite {
       loop: true,
     });
 
+    this.maxScale = SCREEN.HEIGHT / this.height / 2;
+
     this.scaleFactor = 0;
-    this.height /= this.height / (SCREEN.HEIGHT / 2);
-    this.width /= this.height / (SCREEN.HEIGHT / 2);
     this.scale.x = this.scaleFactor;
     this.scale.y = this.scaleFactor;
     this.timer = 0;
@@ -66,8 +66,8 @@ class LogoSprite extends AnimatedSprite {
   updateFadingIn(delta) {
     this.scaleFactor += SCALE_INCREMENT * delta;
 
-    if (this.scaleFactor >= 1) {
-      this.scaleFactor = 1;
+    if (this.scaleFactor >= this.maxScale) {
+      this.scaleFactor = this.maxScale;
       this.setStatic();
     }
 

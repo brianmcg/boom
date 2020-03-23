@@ -5,6 +5,7 @@ import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
 import Grunt from '../entities/Grunt';
+import Demon from '../entities/Demon';
 import Player from '../entities/Player';
 import KeyItem from '../entities/KeyItem';
 import AmmoItem from '../entities/AmmoItem';
@@ -20,6 +21,7 @@ const ITEMS = {
 
 const ENEMIES = {
   [ENEMY_TYPES.GRUNT]: Grunt,
+  [ENEMY_TYPES.DEMON]: Demon,
 };
 
 const createCell = ({ cell, props }) => {
