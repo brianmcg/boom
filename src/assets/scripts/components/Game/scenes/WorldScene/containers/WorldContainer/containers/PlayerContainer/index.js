@@ -13,8 +13,8 @@ class PlayerContainer extends Container {
   constructor(player, sprites = {}) {
     super();
 
-    this.addChild(new HudContainer(player, sprites.hud));
     this.addChild(sprites.weapon);
+    this.addChild(new HudContainer(player, sprites.hud));
   }
 }
 

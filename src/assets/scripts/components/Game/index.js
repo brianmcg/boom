@@ -200,7 +200,7 @@ class Game extends Application {
         },
       };
 
-      this.sound.add(SCENE_MUSIC, sound);
+      this.sound.add(SCENE_MUSIC.NAME, sound);
 
       this.scene.create({
         sounds,
@@ -263,14 +263,14 @@ class Game extends Application {
    * Play the scene music.
    */
   playMusic() {
-    this.sound.play(SCENE_MUSIC);
+    this.sound.play(SCENE_MUSIC.NAME);
   }
 
   /**
    * Fade out the scene music.
    */
   fadeMusic() {
-    this.sound.fade(SCENE_MUSIC);
+    this.sound.fade(SCENE_MUSIC.NAME);
   }
 
   /**

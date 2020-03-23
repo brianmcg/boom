@@ -8,8 +8,8 @@ class Sound extends Howl {
    * @param  {String} options.src     The sound source.
    * @param  {Object} options.sprite  The sprite description.
    */
-  constructor({ src, sprite }) {
-    super({ src: [src], sprite });
+  constructor({ src, sprite, loop = false }) {
+    super({ src: [src], sprite, loop });
   }
 }
 

@@ -19,6 +19,7 @@ class TitleScene extends Scene {
     super({
       ...options,
       type: SCENE_TYPES.TITLE,
+      loopMusic: false,
     });
 
     this.menuItems = [{

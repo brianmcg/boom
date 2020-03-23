@@ -16,14 +16,20 @@ class SoundLoader {
    * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
    * @param  {Object}   options.spriteSrc  The path to the sprite data.
+   * @param  {Object}   options.loop       Should the sound loop.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
-  load({ name, src, spriteSrc }) {
+  load({
+    name,
+    src,
+    spriteSrc,
+    loop,
+  }) {
     if (spriteSrc) {
       return this.loadSprite({ name, src, spriteSrc });
     }
 
-    return this.loadSrc({ name, src });
+    return this.loadSrc({ name, src, loop });
   }
 
   /**
@@ -51,9 +57,9 @@ class SoundLoader {
    * @param  {String}   options.src   The path to the sound file.
    * @return {Promise}                Promise that is resolwved when the sound is loaded.
    */
-  loadSrc({ name, src }) {
+  loadSrc({ name, src, loop }) {
     return new Promise((resolve) => {
-      const sound = new Sound({ src });
+      const sound = new Sound({ src, loop });
       this.cache[name] = sound;
       sound.onload = resolve(sound);
     });
