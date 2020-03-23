@@ -43,7 +43,10 @@ export const GAME_DATA = 'data.json';
  * The scene music file name.
  * @type {String}
  */
-export const SCENE_MUSIC = 'music.mp3';
+export const SCENE_MUSIC = {
+  NAME: 'music',
+  FILE: 'music.mp3',
+};
 
 /**
  * The scene graphics.

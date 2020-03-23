@@ -53,8 +53,8 @@ class Scene extends Container {
 
     this.assets = {
       sound: {
-        name: SCENE_MUSIC,
-        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC}`,
+        name: SCENE_MUSIC.NAME,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC.FILE}`,
         loop: loopMusic,
       },
       graphics: {
@@ -248,7 +248,7 @@ class Scene extends Container {
       this.mainContainer.initFadeInEffect();
       this.loadingContainer.destroy();
       // TODO: Enabled music
-      this.game.playMusic();
+      // this.game.playMusic();
     }
   }
 
