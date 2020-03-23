@@ -12,9 +12,11 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Number}  options.alpha          The sprite alpha.
    * @param  {Boolean} options.autoPlay       The sprite auto play.
    */
-  constructor(textures) {
+  constructor(textures, {
+    animationSpeed = 0.2,
+  } = {}) {
     super(textures, {
-      animationSpeed: 0.2,
+      animationSpeed,
       loop: true,
     });
 
