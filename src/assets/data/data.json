@@ -20,6 +20,7 @@
         "maxVelocity": 2,
         "rotAcceleration": 2,
         "sounds": {
+          "walk": "player:walk",
           "death": "player:death",
           "pain": "player:pain",
           "item": "player:item",
@@ -96,7 +97,7 @@
           "acceleration": 0.2,
           "maxVelocity": 1,
           "attackRange": 1,
-          "attackTime": 500,
+          "attackTime": 1000,
           "alertTime": 500,
           "aimTime": 400,
           "hurtTime": 400,
@@ -104,10 +105,10 @@
           "attackPower": 5,
           "clipSize": 3,
           "sounds": {
-            "alert": "grunt:alert",
-            "death": "grunt:death",
-            "pain": "grunt:pain",
-            "attack": "weapon:pistol"
+            "alert": "demon:alert",
+            "death": "demon:death",
+            "pain": "demon:pain",
+            "attack": "demon:attack"
           }
         }
       },
