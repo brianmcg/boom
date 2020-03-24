@@ -26,14 +26,14 @@ class EnemySprite extends AnimatedEntitySprite {
       loop: true,
     });
 
-    enemy.onIdle(() => this.setAnimation(STATES.IDLE));
-    enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
-    enemy.onPatrolling(() => this.setAnimation(STATES.MOVING, true));
-    enemy.onMoving(() => this.setAnimation(STATES.MOVING, true));
-    enemy.onAiming(() => this.setAnimation(STATES.AIMING));
-    enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
-    enemy.onHurting(() => this.setAnimation(STATES.HURTING));
-    enemy.onDead(() => this.setAnimation(STATES.DEAD));
+    if (enemy.onIdle) enemy.onIdle(() => this.setAnimation(STATES.IDLE));
+    if (enemy.onAlerted) enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
+    if (enemy.onPatrolling) enemy.onPatrolling(() => this.setAnimation(STATES.MOVING, true));
+    if (enemy.onMoving) enemy.onMoving(() => this.setAnimation(STATES.MOVING, true));
+    if (enemy.onAiming) enemy.onAiming(() => this.setAnimation(STATES.AIMING));
+    if (enemy.onAttacking) enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
+    if (enemy.onHurting) enemy.onHurting(() => this.setAnimation(STATES.HURTING));
+    if (enemy.onDead) enemy.onDead(() => this.setAnimation(STATES.DEAD));
 
     this.textureCollection = textureCollection;
   }
