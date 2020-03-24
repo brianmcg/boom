@@ -375,6 +375,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Is the enemy alive.
+   * @return {Boolean}
+   */
+  isAlive() {
+    return this.state !== STATES.DEAD;
+  }
+
+  /**
    * Set the state.
    * @param {String} state The new state.
    */

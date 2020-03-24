@@ -27,6 +27,17 @@ class AbstractActor extends DynamicEntity {
 
     this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;
+    this.isActor = true;
+  }
+
+  /**
+   * Is the enemy alive.
+   * @return {Boolean}
+   */
+  isAlive() {
+    if (this.constructor === AbstractActor) {
+      throw new TypeError('You have to implement this method.');
+    }
   }
 }
 
