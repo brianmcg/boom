@@ -77,7 +77,7 @@
         "grunt": {
           "acceleration": 0.2,
           "maxVelocity": 1,
-          "attackRange": 160,
+          "attackRange": 5,
           "attackTime": 500,
           "alertTime": 500,
           "aimTime": 400,
@@ -95,7 +95,7 @@
         "demon": {
           "acceleration": 0.2,
           "maxVelocity": 1,
-          "attackRange": 160,
+          "attackRange": 1,
           "attackTime": 500,
           "alertTime": 500,
           "aimTime": 400,

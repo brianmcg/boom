@@ -1,4 +1,4 @@
-import { UPDATE_DISTANCE } from 'game/constants/config';
+import { TILE_SIZE } from 'game/constants/config';
 import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
@@ -50,10 +50,10 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.type = type;
     this.spatters = spatters;
-    this.attackRange = attackRange;
+    this.attackRange = attackRange * TILE_SIZE;
     this.attackTime = attackTime;
-
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
     this.maxVelocity = maxVelocity;
@@ -63,8 +63,6 @@ class AbstractEnemy extends AbstractActor {
     this.attackTimer = 0;
     this.hurtTimer = 0;
     this.alertTimer = 0;
-
-    this.type = type;
 
     this.setIdle();
   }

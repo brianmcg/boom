@@ -131,8 +131,7 @@ class Door extends DynamicCell {
       this.timer -= TIME_STEP * delta;
 
       if (this.timer <= 0) {
-        const blocked = this.world.getAdjacentBodies(this).some(body => body.isPlayer)
-          || this.bodies.some(b => b.isDynamicBody);
+        const blocked = this.world.getAdjacentBodies(this).some(body => body.isDynamicBody);
 
         if (!blocked) {
           this.timer = 0;
