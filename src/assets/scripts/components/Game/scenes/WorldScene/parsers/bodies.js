@@ -4,8 +4,8 @@ import Cell from '../entities/Cell';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
-import Grunt from '../entities/Grunt';
-import Demon from '../entities/Demon';
+import GunEnemy from '../entities/GunEnemy';
+import ChaseEnemy from '../entities/ChaseEnemy';
 import Player from '../entities/Player';
 import KeyItem from '../entities/KeyItem';
 import AmmoItem from '../entities/AmmoItem';
@@ -20,8 +20,8 @@ const ITEMS = {
 };
 
 const ENEMIES = {
-  [ENEMY_TYPES.GRUNT]: Grunt,
-  [ENEMY_TYPES.DEMON]: Demon,
+  [ENEMY_TYPES.GRUNT]: GunEnemy,
+  [ENEMY_TYPES.DEMON]: ChaseEnemy,
 };
 
 const createCell = ({ cell, props }) => {
@@ -108,6 +108,7 @@ export const createWorld = ({ scene, data, graphics }) => {
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
     new ENEMIES[enemy.type]({
+      type: enemy.type,
       x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
       y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
       width: TILE_SIZE / 2,

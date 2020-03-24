@@ -64,6 +64,8 @@ class AbstractEnemy extends AbstractActor {
     this.hurtTimer = 0;
     this.alertTimer = 0;
 
+    this.type = type;
+
     this.setIdle();
   }
 

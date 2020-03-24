@@ -1,12 +1,11 @@
-import { ENEMY_TYPES } from 'game/constants/assets';
-import AbstractGunEnemy from '../AbstractGunEnemy';
+import AbstractEnemy from '../AbstractEnemy';
 
 /**
- * Class representing an amp enemy.
+ * Abstract class representing a gun enemy.
+ * @extends {AbstractEnemy}
  */
-class Demon extends AbstractGunEnemy {
+class ChaseEnemy extends AbstractEnemy {
   /**
-   * Creates an amp enemy.
    * @param  {Number} options.x               The x coordinate of the character.
    * @param  {Number} options.y               The y coordinate of the character
    * @param  {Number} options.width           The width of the character.
@@ -23,8 +22,15 @@ class Demon extends AbstractGunEnemy {
   constructor(options) {
     super(options);
 
-    this.type = ENEMY_TYPES.DEMON;
+    this.foo = true;
+  }
+
+  /**
+   * Attack a target.
+   */
+  attack() {
+    console.log('attack');
   }
 }
 
-export default Demon;
+export default ChaseEnemy;

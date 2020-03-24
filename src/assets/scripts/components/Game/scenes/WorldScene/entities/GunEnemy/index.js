@@ -12,7 +12,7 @@ const WAYPOINT_SIZE = TILE_SIZE / 4;
  * Abstract class representing a gun enemy.
  * @extends {AbstractEnemy}
  */
-class AbstractGunEnemy extends AbstractEnemy {
+class GunEnemy extends AbstractEnemy {
   /**
    * @param  {Number} options.x               The x coordinate of the character.
    * @param  {Number} options.y               The y coordinate of the character
@@ -31,10 +31,6 @@ class AbstractGunEnemy extends AbstractEnemy {
    */
   constructor({ aimTime = 1000, clipSize = 1, ...other }) {
     super(other);
-
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('Can not construct abstract class.');
-    }
 
     this.aimTime = aimTime;
     this.clipSize = clipSize;
@@ -287,4 +283,4 @@ class AbstractGunEnemy extends AbstractEnemy {
   }
 }
 
-export default AbstractGunEnemy;
+export default GunEnemy;
