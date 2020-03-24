@@ -1,6 +1,6 @@
 import translate from 'root/translate';
 import { DEG } from 'game/core/physics';
-import { TILE_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
@@ -14,7 +14,7 @@ const DEG_45 = DEG[45];
 
 const DEG_90 = DEG[90];
 
-const SPATTER_DISTANCE = TILE_SIZE * 1.5;
+const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 
 const STATES = {
   ALIVE: 'player:alive',
@@ -73,7 +73,7 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
-    this.heightVelocity = TILE_SIZE / 32;
+    this.heightVelocity = CELL_SIZE / 32;
     this.currentWeaponType = currentWeaponType;
     this.nextWeaponType = null;
     this.actions = {};
@@ -118,8 +118,8 @@ class Player extends AbstractActor {
   initialize() {
     const { x, y } = this.world.entrance;
 
-    this.x = (TILE_SIZE * x) + (TILE_SIZE / 2);
-    this.y = (TILE_SIZE * y) + (TILE_SIZE / 2);
+    this.x = (CELL_SIZE * x) + (CELL_SIZE / 2);
+    this.y = (CELL_SIZE * y) + (CELL_SIZE / 2);
     this.angle = 0;
     this.velocity = 0;
     this.armWeapon();

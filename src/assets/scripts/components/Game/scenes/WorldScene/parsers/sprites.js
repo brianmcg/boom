@@ -8,7 +8,7 @@ import {
   Container,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
-import { TILE_SIZE, SCREEN } from 'game/constants/config';
+import { CELL_SIZE, SCREEN } from 'game/constants/config';
 import { FONT_SIZES } from 'game/constants/fonts';
 import { EFFECT_TYPES } from 'game/constants/assets';
 import WallSprite from '../sprites/WallSprite';
@@ -75,7 +75,7 @@ const createWallSprites = ({
     const wallTexture = textures[image];
 
     const spatterTextures = spatters.map((animation) => {
-      const spatterTexture = RenderTexture.create(TILE_SIZE, TILE_SIZE);
+      const spatterTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
       const bloodTexture = textures[animation];
       spatterContainer.removeChildren();
       spatterContainer.addChild(new Sprite(wallTexture));
@@ -126,9 +126,9 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
     const { frame } = frames[image];
     const texture = textures[image];
 
-    for (let i = 0; i < TILE_SIZE; i += 1) {
+    for (let i = 0; i < CELL_SIZE; i += 1) {
       const row = [];
-      for (let j = 0; j < TILE_SIZE; j += 1) {
+      for (let j = 0; j < CELL_SIZE; j += 1) {
         const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
         row.push(new Texture(texture, pixel));
       }

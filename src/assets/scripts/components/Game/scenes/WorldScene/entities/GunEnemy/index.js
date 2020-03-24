@@ -1,4 +1,4 @@
-import { TIME_STEP, TILE_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
+import { TIME_STEP, CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractEnemy from '../AbstractEnemy';
 
 const STATES = {
@@ -6,7 +6,7 @@ const STATES = {
   AIMING: 'enemy:aiming',
 };
 
-const WAYPOINT_SIZE = TILE_SIZE / 4;
+const WAYPOINT_SIZE = CELL_SIZE / 4;
 
 /**
  * Abstract class representing a gun enemy.

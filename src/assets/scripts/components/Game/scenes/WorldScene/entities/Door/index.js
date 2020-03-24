@@ -1,5 +1,5 @@
 import { DynamicCell } from 'game/core/physics';
-import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
+import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
 
 const STATES = {
   OPENING: 'door:opening',
@@ -39,11 +39,11 @@ class Door extends DynamicCell {
     this.interval = interval;
 
     if (this.isHorizontal()) {
-      this.offset.y = TILE_SIZE / 2;
+      this.offset.y = CELL_SIZE / 2;
     }
 
     if (this.isVertical()) {
-      this.offset.x = TILE_SIZE / 2;
+      this.offset.x = CELL_SIZE / 2;
     }
 
     this.front = sides.front;
@@ -101,8 +101,8 @@ class Door extends DynamicCell {
 
     this.offset[axis] += speed * delta;
 
-    if (this.offset[axis] > TILE_SIZE) {
-      this.offset[axis] = TILE_SIZE;
+    if (this.offset[axis] > CELL_SIZE) {
+      this.offset[axis] = CELL_SIZE;
       this.setOpened();
     }
   }

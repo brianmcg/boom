@@ -1,4 +1,4 @@
-import { TIME_STEP, TILE_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
+import { TIME_STEP, CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractEnemy from '../AbstractEnemy';
 
 /**

@@ -1,4 +1,4 @@
-import { TILE_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
@@ -52,7 +52,7 @@ class AbstractEnemy extends AbstractActor {
 
     this.type = type;
     this.spatters = spatters;
-    this.attackRange = attackRange * TILE_SIZE;
+    this.attackRange = attackRange * CELL_SIZE;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;

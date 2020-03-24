@@ -1,4 +1,4 @@
-import { TILE_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import {
   DEG,
   TAN,
@@ -161,12 +161,12 @@ export const castRay = (caster, rayAngle) => {
   }
 
   if (rayAngle > 0 && rayAngle < DEG_180) {
-    horizontalGrid = TILE_SIZE + gridY * TILE_SIZE;
-    distToNextHorizontalGrid = TILE_SIZE;
+    horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
+    distToNextHorizontalGrid = CELL_SIZE;
     xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
   } else {
-    horizontalGrid = gridY * TILE_SIZE;
-    distToNextHorizontalGrid = -TILE_SIZE;
+    horizontalGrid = gridY * CELL_SIZE;
+    distToNextHorizontalGrid = -CELL_SIZE;
     xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
     horizontalGrid -= 1;
   }
@@ -175,20 +175,20 @@ export const castRay = (caster, rayAngle) => {
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= DEG_90 && rayAngle < DEG_270) {
-      distToNextXIntersection = TILE_SIZE / TAN[rayAngle];
+      distToNextXIntersection = CELL_SIZE / TAN[rayAngle];
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     } else {
-      distToNextXIntersection = TILE_SIZE / TAN[rayAngle];
+      distToNextXIntersection = CELL_SIZE / TAN[rayAngle];
       if (distToNextXIntersection < 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     }
 
     while (true) {
-      xGridIndex = Math.floor(xIntersection / TILE_SIZE);
-      yGridIndex = Math.floor(horizontalGrid / TILE_SIZE);
+      xGridIndex = Math.floor(xIntersection / CELL_SIZE);
+      yGridIndex = Math.floor(horizontalGrid / CELL_SIZE);
 
       if (
         xGridIndex >= world.width
@@ -204,11 +204,11 @@ export const castRay = (caster, rayAngle) => {
 
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
-          offsetRatio = TILE_SIZE / horizontalCell.offset.y;
+          offsetRatio = CELL_SIZE / horizontalCell.offset.y;
           xOffsetDist = distToNextXIntersection / offsetRatio;
           yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
-          if ((xIntersection + xOffsetDist) % TILE_SIZE > horizontalCell.offset.x) {
+          if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
             distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
@@ -232,12 +232,12 @@ export const castRay = (caster, rayAngle) => {
   }
 
   if (rayAngle < DEG_90 || rayAngle > DEG_270) {
-    verticalGrid = TILE_SIZE + gridX * TILE_SIZE;
-    distToNextVerticalGrid = TILE_SIZE;
+    verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
+    distToNextVerticalGrid = CELL_SIZE;
     yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
   } else {
-    verticalGrid = gridX * TILE_SIZE;
-    distToNextVerticalGrid = -TILE_SIZE;
+    verticalGrid = gridX * CELL_SIZE;
+    distToNextVerticalGrid = -CELL_SIZE;
     yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
     verticalGrid -= 1;
   }
@@ -246,20 +246,20 @@ export const castRay = (caster, rayAngle) => {
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= 0 && rayAngle < DEG_180) {
-      distToNextYIntersection = TILE_SIZE * TAN[rayAngle];
+      distToNextYIntersection = CELL_SIZE * TAN[rayAngle];
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     } else {
-      distToNextYIntersection = TILE_SIZE * TAN[rayAngle];
+      distToNextYIntersection = CELL_SIZE * TAN[rayAngle];
       if (distToNextYIntersection > 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     }
 
     while (true) {
-      xGridIndex = Math.floor(verticalGrid / TILE_SIZE);
-      yGridIndex = Math.floor(yIntersection / TILE_SIZE);
+      xGridIndex = Math.floor(verticalGrid / CELL_SIZE);
+      yGridIndex = Math.floor(yIntersection / CELL_SIZE);
 
       if (
         xGridIndex >= world.width
@@ -275,11 +275,11 @@ export const castRay = (caster, rayAngle) => {
 
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
-          offsetRatio = TILE_SIZE / verticalCell.offset.x;
+          offsetRatio = CELL_SIZE / verticalCell.offset.x;
           yOffsetDist = distToNextYIntersection / offsetRatio;
           xOffsetDist = distToNextVerticalGrid / offsetRatio;
 
-          if ((yIntersection + yOffsetDist) % TILE_SIZE > verticalCell.offset.y) {
+          if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
             distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];

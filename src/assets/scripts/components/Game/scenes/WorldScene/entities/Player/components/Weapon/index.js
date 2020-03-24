@@ -1,4 +1,4 @@
-import { TIME_STEP, TILE_SIZE } from 'game/constants/config';
+import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
 
 const MAX_MOVE_X = 8;
@@ -55,7 +55,7 @@ class Weapon extends Entity {
     this.power = power;
     this.equiped = equiped;
     this.player = player;
-    this.offsetY = TILE_SIZE;
+    this.offsetY = CELL_SIZE;
     this.recoil = recoil;
     this.ammo = maxAmmo / 2;
     this.maxAmmo = maxAmmo;
@@ -212,8 +212,8 @@ class Weapon extends Entity {
   updateUnarming(delta) {
     this.offsetY += MAX_MOVE_X * delta;
 
-    if (this.offsetY >= TILE_SIZE) {
-      this.offsetY = TILE_SIZE;
+    if (this.offsetY >= CELL_SIZE) {
+      this.offsetY = CELL_SIZE;
 
       if (this.player.isAlive()) {
         this.setUnarmed();

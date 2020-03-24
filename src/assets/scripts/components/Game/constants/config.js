@@ -24,7 +24,7 @@ export const SOUND_ENABLED = true;
  * The size of mao tile.
  * @type {Number}
  */
-export const TILE_SIZE = 32;
+export const CELL_SIZE = 32;
 
 /**
  * The screen dimensions.
@@ -57,10 +57,10 @@ export const FOV = 60;
  * The distance from the player inside which entities should update;
  * @type {Number}
  */
-export const UPDATE_DISTANCE = TILE_SIZE * 20;
+export const UPDATE_DISTANCE = CELL_SIZE * 20;
 
 /**
  * The max distance a sound can travel.
  * @type {Number}
  */
-export const MAX_SOUND_DISTANCE = TILE_SIZE * 10;
+export const MAX_SOUND_DISTANCE = CELL_SIZE * 10;

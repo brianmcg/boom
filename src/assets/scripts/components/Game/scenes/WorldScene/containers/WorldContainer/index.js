@@ -6,7 +6,7 @@ import {
   SIN,
   atan2,
 } from 'game/core/physics';
-import { SCREEN, TILE_SIZE, FOV } from 'game/constants/config';
+import { SCREEN, CELL_SIZE, FOV } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
@@ -19,7 +19,7 @@ const HALF_FOV = DEG[FOV / 2];
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
-const BULLET_OFFSET = TILE_SIZE / 8;
+const BULLET_OFFSET = CELL_SIZE / 8;
 
 let spriteAngle;
 let body;
@@ -102,12 +102,12 @@ class WorldContainer extends Container {
       actualDistance = Math.sqrt(dx * dx + dy * dy);
       correctedDistance = COS[spriteAngle] * actualDistance;
       spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-      spriteWidth = TILE_SIZE * spriteScale;
-      spriteHeight = TILE_SIZE * spriteScale;
+      spriteWidth = CELL_SIZE * spriteScale;
+      spriteHeight = CELL_SIZE * spriteScale;
       spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
       sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
       sprite.y = centerY
-        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
+        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
       sprite.width = spriteWidth;
       sprite.height = spriteHeight;
       sprite.zOrder = actualDistance - BULLET_OFFSET;
@@ -145,13 +145,13 @@ class WorldContainer extends Container {
         sliceY = cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
       }
 
-      sliceY = TILE_SIZE - (Math.floor(sliceY) % TILE_SIZE) - 1;
+      sliceY = CELL_SIZE - (Math.floor(sliceY) % CELL_SIZE) - 1;
 
       spriteAngle = (rayAngle - player.viewAngle + DEG_360) % DEG_360;
       correctedDistance = distance * COS[spriteAngle];
-      spriteHeight = TILE_SIZE * CAMERA_DISTANCE / correctedDistance;
+      spriteHeight = CELL_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
-        - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
+        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
@@ -166,16 +166,16 @@ class WorldContainer extends Container {
         sprite = background[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (TILE_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
+          actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.floor(mapX / TILE_SIZE);
+          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
+          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+          gridX = Math.floor(mapX / CELL_SIZE);
           gridX = (gridX > maxCellX) ? maxCellX : gridX;
           gridX = (gridX < 0) ? 0 : gridX;
-          gridY = Math.floor(mapY / TILE_SIZE);
+          gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
           sprite.changeTexture(this.world.getCell(gridX, gridY).top.texture, pixelX, pixelY);
@@ -191,12 +191,12 @@ class WorldContainer extends Container {
           correctedDistance = actualDistance / COS[spriteAngle];
           mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
           mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
-          pixelX = (mapX + TILE_SIZE) % TILE_SIZE;
-          pixelY = (mapY + TILE_SIZE) % TILE_SIZE;
-          gridX = Math.floor(mapX / TILE_SIZE);
+          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
+          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+          gridX = Math.floor(mapX / CELL_SIZE);
           gridX = (gridX > maxCellX) ? maxCellX : gridX;
           gridX = (gridX < 0) ? 0 : gridX;
-          gridY = Math.floor(mapY / TILE_SIZE);
+          gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
           sprite.changeTexture(this.world.getCell(gridX, gridY).bottom.texture, pixelX, pixelY);
@@ -222,12 +222,12 @@ class WorldContainer extends Container {
           actualDistance = Math.sqrt(dx * dx + dy * dy);
           correctedDistance = COS[spriteAngle] * actualDistance;
           spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-          spriteWidth = TILE_SIZE * spriteScale;
-          spriteHeight = TILE_SIZE * spriteScale;
+          spriteWidth = CELL_SIZE * spriteScale;
+          spriteHeight = CELL_SIZE * spriteScale;
           spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
           sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
           sprite.y = centerY
-            - (spriteHeight / (TILE_SIZE / (TILE_SIZE - player.viewHeight)));
+            - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
           sprite.width = spriteWidth;
           sprite.height = spriteHeight;
           sprite.zOrder = actualDistance;

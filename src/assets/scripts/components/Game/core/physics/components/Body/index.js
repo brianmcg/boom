@@ -1,5 +1,5 @@
 import { EventEmitter } from 'game/core/graphics';
-import { TILE_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import {
   isBodyCollision,
   isRayCollision,
@@ -36,9 +36,9 @@ class Body extends EventEmitter {
   constructor({
     x = 0,
     y = 0,
-    width = TILE_SIZE / 2,
-    length = TILE_SIZE / 2,
-    height = TILE_SIZE / 2,
+    width = CELL_SIZE / 2,
+    length = CELL_SIZE / 2,
+    height = CELL_SIZE / 2,
     blocking = true,
   } = {}) {
     super();
@@ -132,7 +132,7 @@ class Body extends EventEmitter {
    * @member {Number}
    */
   get gridX() {
-    return Math.floor(this.x / TILE_SIZE);
+    return Math.floor(this.x / CELL_SIZE);
   }
 
   /**
@@ -140,7 +140,7 @@ class Body extends EventEmitter {
    * @member {Number}
    */
   get gridY() {
-    return Math.floor(this.y / TILE_SIZE);
+    return Math.floor(this.y / CELL_SIZE);
   }
 
   /**

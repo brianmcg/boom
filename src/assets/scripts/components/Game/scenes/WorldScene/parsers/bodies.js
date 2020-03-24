@@ -1,5 +1,5 @@
 import { ITEM_TYPES, ENEMY_TYPES, EFFECT_TYPES } from 'game/constants/assets';
-import { TILE_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../entities/Cell';
 import World from '../entities/World';
 import Door from '../entities/Door';
@@ -35,11 +35,11 @@ const createCell = ({ cell, props }) => {
 
   if (cell.door) {
     return new Door({
-      x: (TILE_SIZE * cell.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * cell.y) + (TILE_SIZE / 2),
-      width: TILE_SIZE,
-      height: TILE_SIZE,
-      length: TILE_SIZE,
+      x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
+      width: CELL_SIZE,
+      height: CELL_SIZE,
+      length: CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
       sides,
@@ -49,13 +49,13 @@ const createCell = ({ cell, props }) => {
   }
 
   return new Cell({
-    x: (TILE_SIZE * cell.x) + (TILE_SIZE / 2),
-    y: (TILE_SIZE * cell.y) + (TILE_SIZE / 2),
+    x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
+    y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
     blocking: cell.blocking,
     sides,
-    width: TILE_SIZE,
-    height: cell.blocking ? TILE_SIZE : 0,
-    length: TILE_SIZE,
+    width: CELL_SIZE,
+    height: cell.blocking ? CELL_SIZE : 0,
+    length: CELL_SIZE,
   });
 };
 
@@ -82,12 +82,12 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...memo,
     new Entity({
       texture: obstacle.texture,
-      x: (TILE_SIZE * obstacle.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * obstacle.y) + (TILE_SIZE / 2),
+      x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
       blocking: obstacle.blocking,
-      height: TILE_SIZE,
-      width: TILE_SIZE / 2,
-      length: TILE_SIZE / 2,
+      height: CELL_SIZE,
+      width: CELL_SIZE / 2,
+      length: CELL_SIZE / 2,
       animated: !!obstacle.animated,
     }),
   ]), []);
@@ -97,11 +97,11 @@ export const createWorld = ({ scene, data, graphics }) => {
     new ITEMS[item.type]({
       ...item,
       texture: item.texture,
-      x: (TILE_SIZE * item.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * item.y) + (TILE_SIZE / 2),
-      width: TILE_SIZE / 2,
-      length: TILE_SIZE / 2,
-      height: TILE_SIZE / 2,
+      x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
+      width: CELL_SIZE / 2,
+      length: CELL_SIZE / 2,
+      height: CELL_SIZE / 2,
     }),
   ]), []);
 
@@ -109,11 +109,11 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...memo,
     new ENEMIES[enemy.type]({
       type: enemy.type,
-      x: (TILE_SIZE * enemy.x) + (TILE_SIZE / 2),
-      y: (TILE_SIZE * enemy.y) + (TILE_SIZE / 2),
-      width: TILE_SIZE / 2,
-      height: TILE_SIZE / 2,
-      length: TILE_SIZE / 2,
+      x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
+      width: CELL_SIZE / 2,
+      height: CELL_SIZE / 2,
+      length: CELL_SIZE / 2,
       ...props.enemies[enemy.type],
       spatters,
     }),
