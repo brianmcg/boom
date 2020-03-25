@@ -95,7 +95,7 @@
         },
         "demon": {
           "acceleration": 0.2,
-          "maxVelocity": 1,
+          "maxVelocity": 0.3,
           "attackRange": 1,
           "attackTime": 1000,
           "alertTime": 500,
