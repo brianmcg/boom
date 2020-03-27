@@ -43,8 +43,6 @@ class GunEnemy extends AbstractEnemy {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    if (this.isDead()) return;
-
     const { player } = this.world;
 
     this.distanceToPlayer = this.distanceTo(player);

@@ -321,6 +321,8 @@ class AbstractEnemy extends AbstractActor {
       this.emitSound(this.sounds.death, {
         distance: this.distanceToPlayer,
       });
+
+      this.world.stop(this);
     }
 
     return stateChange;

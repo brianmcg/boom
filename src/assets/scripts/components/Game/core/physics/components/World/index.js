@@ -26,6 +26,14 @@ class World extends EventEmitter {
   }
 
   /**
+   * Update
+   * @param  {Number} delta The delta time value.
+   */
+  update(delta) {
+    this.dynamicBodies.forEach(body => body.update(delta));
+  }
+
+  /**
    * Add a body to the world.
    * @param {Body} body The body to add.
    */
@@ -53,9 +61,7 @@ class World extends EventEmitter {
    * @param {Body} body The body to remove.
    */
   remove(body) {
-    if (body.update) {
-      this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
-    }
+    this.stop(body);
 
     this.getCell(body.gridX, body.gridY).remove(body);
 
@@ -65,11 +71,13 @@ class World extends EventEmitter {
   }
 
   /**
-   * Update
-   * @param  {Number} delta The delta time value.
+   * Stop updating this body.
+   * @param  {Body} body The body to stop updating.
    */
-  update(delta) {
-    this.dynamicBodies.forEach(body => body.update(delta));
+  stop(body) {
+    if (body.update) {
+      this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
+    }
   }
 
   /**
