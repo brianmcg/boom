@@ -86,7 +86,7 @@ class GunEnemy extends AbstractEnemy {
         if (this.distanceToPlayer <= this.attackRange) {
           this.setAiming();
         } else {
-          this.setMoving();
+          this.setChasing();
         }
       }
     } else {
@@ -102,7 +102,7 @@ class GunEnemy extends AbstractEnemy {
       Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
         && Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
     ) {
-      this.setMoving();
+      this.setChasing();
     } else {
       this.face(this.waypoint);
     }
@@ -111,7 +111,7 @@ class GunEnemy extends AbstractEnemy {
   /**
    * Update enemy in chasing state
    */
-  updateMoving() {
+  updateChasing() {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.attackRange) {
         this.setAiming();
@@ -141,7 +141,7 @@ class GunEnemy extends AbstractEnemy {
           }
         }
       } else {
-        this.setMoving();
+        this.setChasing();
       }
     } else {
       this.setPatrolling();
@@ -169,7 +169,7 @@ class GunEnemy extends AbstractEnemy {
           }
         }
       } else {
-        this.setMoving();
+        this.setChasing();
       }
     } else {
       this.setPatrolling();

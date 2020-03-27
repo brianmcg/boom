@@ -5,7 +5,7 @@ import AbstractActor from '../AbstractActor';
 const STATES = {
   IDLE: 'enemy:idle',
   ALERTED: 'enemy:alerted',
-  MOVING: 'enemy:moving',
+  CHASING: 'enemy:chasing',
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
@@ -79,8 +79,8 @@ class AbstractEnemy extends AbstractActor {
       case STATES.ALERTED:
         this.updateAlerted(delta);
         break;
-      case STATES.MOVING:
-        this.updateMoving(delta);
+      case STATES.CHASING:
+        this.updateChasing(delta);
         break;
       case STATES.ATTACKING:
         this.updateAttacking(delta);
@@ -117,7 +117,7 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Update enemy in chasing state
    */
-  updateMoving() {
+  updateChasing() {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }
@@ -216,8 +216,8 @@ class AbstractEnemy extends AbstractActor {
    * Add a callback to the idle moving change.
    * @param  {Function} callback The callback function.
    */
-  onMoving(callback) {
-    this.on(STATES.MOVING, callback);
+  onChasing(callback) {
+    this.on(STATES.CHASING, callback);
   }
 
   /**
@@ -271,13 +271,13 @@ class AbstractEnemy extends AbstractActor {
    * Set the enemy to the moving state.
    * @return {Boolean}  State change successful.
    */
-  setMoving() {
+  setChasing() {
     this.velocity = Math.min(
       this.maxVelocity,
       this.maxVelocity + this.acceleration,
     );
 
-    return this.setState(STATES.MOVING);
+    return this.setState(STATES.CHASING);
   }
 
   /**
@@ -348,8 +348,8 @@ class AbstractEnemy extends AbstractActor {
    * Is the enemy in the chasing state.
    * @return {Boolean}
    */
-  isMoving() {
-    return this.state === STATES.MOVING;
+  isChasing() {
+    return this.state === STATES.CHASING;
   }
 
   /**

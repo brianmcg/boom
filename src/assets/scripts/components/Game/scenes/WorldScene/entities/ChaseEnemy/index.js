@@ -43,7 +43,7 @@ class ChaseEnemy extends AbstractEnemy {
         if (this.distanceToPlayer <= this.attackRange) {
           this.setAttacking();
         } else {
-          this.setMoving();
+          this.setChasing();
         }
       }
     }
@@ -52,7 +52,7 @@ class ChaseEnemy extends AbstractEnemy {
   /**
    * Update enemy in chasing state
    */
-  updateMoving() {
+  updateChasing() {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.attackRange) {
         this.setAttacking();
@@ -74,7 +74,7 @@ class ChaseEnemy extends AbstractEnemy {
           this.setAttacking();
         }
       } else {
-        this.setMoving();
+        this.setChasing();
       }
     }
   }
@@ -87,7 +87,7 @@ class ChaseEnemy extends AbstractEnemy {
     this.hurtTimer += TIME_STEP * delta;
 
     if (this.hurtTimer >= this.hurtTime) {
-      this.setMoving();
+      this.setChasing();
     }
   }
 
