@@ -99,6 +99,7 @@ export const ITEM_TYPES = {
 export const ENEMY_TYPES = {
   GRUNT: 'grunt',
   DEMON: 'demon',
+  IMP: 'imp',
 };
 
 /**

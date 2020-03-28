@@ -6,6 +6,7 @@ import Door from '../entities/Door';
 import Entity from '../entities/Entity';
 import GunEnemy from '../entities/GunEnemy';
 import ChaseEnemy from '../entities/ChaseEnemy';
+import ProjectileEnemy from '../entities/ProjectileEnemy';
 import Player from '../entities/Player';
 import KeyItem from '../entities/KeyItem';
 import AmmoItem from '../entities/AmmoItem';
@@ -22,6 +23,7 @@ const ITEMS = {
 const ENEMIES = {
   [ENEMY_TYPES.GRUNT]: GunEnemy,
   [ENEMY_TYPES.DEMON]: ChaseEnemy,
+  [ENEMY_TYPES.IMP]: ProjectileEnemy,
 };
 
 const createCell = ({ cell, props }) => {
