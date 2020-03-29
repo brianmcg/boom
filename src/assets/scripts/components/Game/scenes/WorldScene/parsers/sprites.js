@@ -19,6 +19,7 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 import HudKeySprite from '../sprites/HudKeySprite';
 import BulletSprite from '../sprites/BulletSprite';
+import ProjectileSprite from '../sprites/ProjectileSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -27,6 +28,15 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   }), {});
 
   return new EnemySprite(enemy, textureCollection);
+};
+
+const createProjectileSprite = ({ animations, textures, projectile }) => {
+  const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
+    ...animationMemo,
+    [state]: animations[state].map(image => textures[image]),
+  }), {});
+
+  return new ProjectileSprite(projectile, textureCollection);
 };
 
 const createWeaponSprite = ({ animations, textures, player }) => {
@@ -183,6 +193,17 @@ const createEntitySprites = ({ animations, textures, world }) => {
       textures,
       enemy,
     });
+  });
+
+  world.enemies.reduce((memo, enemy) => ([
+    ...memo,
+    ...enemy.projectiles || [],
+  ]), []).forEach((projectile) => {
+    entitySprites[projectile.id] = createProjectileSprite({
+      animations: animations[projectile.type],
+      textures,
+      projectile,
+    })
   });
 
   return entitySprites;

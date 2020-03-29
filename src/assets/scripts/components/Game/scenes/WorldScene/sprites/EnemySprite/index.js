@@ -23,7 +23,6 @@ class EnemySprite extends AnimatedEntitySprite {
   constructor(enemy, textureCollection = []) {
     super(textureCollection[STATES.IDLE], {
       animationSpeed: 0.15,
-      loop: true,
     });
 
     if (enemy.onIdle) enemy.onIdle(() => this.setAnimation(STATES.IDLE));
@@ -46,7 +45,6 @@ class EnemySprite extends AnimatedEntitySprite {
   setAnimation(state, loop = false) {
     this.textures = this.textureCollection[state];
     this.loop = loop;
-    this.gotoAndPlay(0);
   }
 }
 

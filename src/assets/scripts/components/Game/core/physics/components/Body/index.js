@@ -10,6 +10,7 @@ import {
 const EVENTS = {
   ADDED: 'body:added',
   REMOVED: 'body:removed',
+  COLLISION: 'body:collision',
 };
 
 let idCount = 0;
@@ -68,6 +69,13 @@ class Body extends EventEmitter {
   }
 
   /**
+   * Emit the collision event.
+   */
+  emitCollisionEvent(body) {
+    this.emit(EVENTS.COLLISION, body);
+  }
+
+  /**
    * Add a callback for the added event.
    * @param  {Function} callback The callback function.
    */
@@ -83,6 +91,13 @@ class Body extends EventEmitter {
     this.on(EVENTS.REMOVED, callback);
   }
 
+  /**
+   * Add a callback for the collision event.
+   * @param  {Function} callback The callback function.
+   */
+  onCollisionEvent(callback) {
+    this.on(EVENTS.COLLISION, callback);
+  }
 
   /**
    * Check for collision with another body.
@@ -90,7 +105,13 @@ class Body extends EventEmitter {
    * @return {Boolean}      Collision has occurred.
    */
   bodyCollision(body) {
-    return isBodyCollision(this, body);
+    const isCollision = isBodyCollision(this, body);
+
+    if (isCollision) {
+      this.emitCollisionEvent(body);
+    }
+
+    return isCollision;
   }
 
   /**

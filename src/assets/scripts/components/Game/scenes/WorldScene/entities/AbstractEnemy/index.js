@@ -249,8 +249,13 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setIdle() {
-    this.velocity = 0;
-    return this.setState(STATES.IDLE);
+    const stateChange = this.setState(STATES.IDLE);
+
+    if (stateChange) {
+      this.velocity = 0;
+    }
+
+    return stateChange;
   }
 
   /**
@@ -285,8 +290,14 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAttacking() {
-    this.attack();
-    return this.setState(STATES.ATTACKING);
+    const stateChange = this.setState(STATES.ATTACKING);
+
+    if (stateChange) {
+      this.attack();
+      this.velocity = 0;
+    }
+
+    return stateChange;
   }
 
   /**

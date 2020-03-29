@@ -132,13 +132,6 @@ class GunEnemy extends AbstractEnemy {
 
         if (this.aimTimer >= this.aimTime) {
           this.setAttacking();
-
-          this.ammo -= 1;
-
-          if (this.ammo === 0) {
-            this.ammo = this.clipSize;
-            this.setPatrolling();
-          }
         }
       } else {
         this.setChasing();
@@ -160,8 +153,6 @@ class GunEnemy extends AbstractEnemy {
         if (this.attackTimer >= this.attackTime) {
           this.setAiming();
           this.setAttacking();
-
-          this.ammo -= 1;
 
           if (this.ammo === 0) {
             this.ammo = this.clipSize;
@@ -194,6 +185,8 @@ class GunEnemy extends AbstractEnemy {
   attack() {
     const { player } = this.world;
     const ray = this.castRay();
+
+    this.ammo -= 1;
 
     this.emitSound(this.sounds.attack, {
       distance: this.distanceToPlayer,

@@ -15,9 +15,10 @@ class ProjectileEnemy extends AbstractEnemy {
     super(other);
 
     this.projectiles = [...Array(projectiles).keys()]
-      .map(() => new Projectile(projectile));
-
-    console.log(this);
+      .map(() => new Projectile({
+        ...projectile,
+        source: this,
+      }));
   }
 
   /**
@@ -109,13 +110,13 @@ class ProjectileEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
-    // const { player } = this.world;
+    if (this.projectiles.length) {
+      const projectile = this.projectiles.pop();
 
-    // this.emitSound(this.sounds.attack, {
-    //   distance: this.distanceToPlayer,
-    // });
+      projectile.initialize();
 
-    // player.hurt(this.attackPower);
+      this.world.add(projectile);
+    }
   }
 }
 
