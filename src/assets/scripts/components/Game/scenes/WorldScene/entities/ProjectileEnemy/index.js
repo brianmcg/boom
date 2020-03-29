@@ -20,94 +20,20 @@ class ProjectileEnemy extends AbstractEnemy {
         ...projectile,
         source: this,
       }));
-
-    this.clipSize = clipSize;
-    this.ammo = clipSize;
-
-    this.numberOfAttacks = projectiles;
   }
 
   /**
-   * Update the enemy.
-   * @param  {Number} delta The delta time.
+   * Execute completed attack behavior.
    */
-  update(delta) {
-    const { player } = this.world;
-
-    this.distanceToPlayer = this.distanceTo(player);
-
-    if (this.distanceToPlayer < UPDATE_DISTANCE) {
-      this.face(player);
-
-      super.update(delta);
-    }
-  }
-
-  updateAlerted(delta) {
-    if (this.findPlayer()) {
-      this.alertTimer += TIME_STEP * delta;
-
-      if (this.alertTimer >= this.alertTime) {
-        if (this.distanceToPlayer <= this.attackRange) {
-          this.setAttacking();
-        } else {
-          this.setChasing();
-        }
-      }
-    } else {
-      this.setPatrolling();
-    }
+  onAttackComplete() {
+    this.setAiming();
   }
 
   /**
-   * Update enemy in chasing state
+   * Execute recovery behaviour.
    */
-  updateChasing() {
-    if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
-        this.setAttacking();
-      }
-    } else {
-      this.setPatrolling();
-    }
-  }
-
-  /**
-   * Update enemy in attacking state
-   * @param  {Number} delta The delta time.
-   */
-  updateAttacking(delta) {
-    if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
-        this.attackTimer += TIME_STEP * delta;
-
-        if (this.attackTimer >= this.attackTime) {
-          if (this.ammo === 0) {
-            this.ammo = this.clipSize;
-            this.setPatrolling();
-          } else {
-            this.setIdle();
-            this.setAttacking();
-          }
-        }
-      } else {
-        this.setChasing();
-      }
-    } else {
-      this.setPatrolling();
-    }
-  }
-
-  /**
-   * Update enemy in hurt state
-   * @param  {Number} delta The delta time.
-   */
-  updateHurting(delta) {
-    this.hurtTimer += TIME_STEP * delta;
-
-    if (this.hurtTimer >= this.hurtTime) {
-      this.setPatrolling();
-    }
+  onHurtComplete() {
+    this.setPatrolling();
   }
 
   /**
@@ -118,8 +44,6 @@ class ProjectileEnemy extends AbstractEnemy {
       const projectile = this.projectiles.pop();
 
       projectile.initialize();
-
-      this.ammo -= 1;
 
       this.world.add(projectile);
     }

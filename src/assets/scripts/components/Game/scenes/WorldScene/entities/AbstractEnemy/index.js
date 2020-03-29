@@ -1,4 +1,4 @@
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
 import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
@@ -6,6 +6,7 @@ const STATES = {
   IDLE: 'enemy:idle',
   ALERTED: 'enemy:alerted',
   CHASING: 'enemy:chasing',
+  AIMING: 'enemy:aiming',
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
@@ -41,8 +42,10 @@ class AbstractEnemy extends AbstractActor {
     attackTime = 1000,
     hurtTime = 1000,
     alertTime = 1000,
+    aimTime = 200,
     acceleration = 1,
     attackPower = 1,
+    maxAttacks,
     type,
     spatters,
     ...other
@@ -59,13 +62,17 @@ class AbstractEnemy extends AbstractActor {
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
+    this.aimTime = aimTime;
     this.maxVelocity = maxVelocity;
     this.acceleration = acceleration;
     this.attackPower = attackPower;
+    this.maxAttacks = maxAttacks;
+    this.numberOfAttacks = maxAttacks;
     this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;
     this.hurtTimer = 0;
     this.alertTimer = 0;
+    this.aimTimer = 0;
 
     this.setIdle();
   }
@@ -75,30 +82,41 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    switch (this.state) {
-      case STATES.IDLE:
-        this.updateIdle(delta);
-        break;
-      case STATES.ALERTED:
-        this.updateAlerted(delta);
-        break;
-      case STATES.PATROLLING:
-        this.updatePatrolling(delta);
-        break;
-      case STATES.CHASING:
-        this.updateChasing(delta);
-        break;
-      case STATES.ATTACKING:
-        this.updateAttacking(delta);
-        break;
-      case STATES.HURTING:
-        this.updateHurting(delta);
-        break;
-      default:
-        break;
-    }
+    const { player } = this.world;
 
-    super.update(delta);
+    this.distanceToPlayer = this.distanceTo(player);
+
+    if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      this.face(player);
+
+      switch (this.state) {
+        case STATES.IDLE:
+          this.updateIdle(delta);
+          break;
+        case STATES.ALERTED:
+          this.updateAlerted(delta);
+          break;
+        case STATES.PATROLLING:
+          this.updatePatrolling(delta);
+          break;
+        case STATES.CHASING:
+          this.updateChasing(delta);
+          break;
+        case STATES.AIMING:
+          this.updateAiming(delta);
+          break;
+        case STATES.ATTACKING:
+          this.updateAttacking(delta);
+          break;
+        case STATES.HURTING:
+          this.updateHurting(delta);
+          break;
+        default:
+          break;
+      }
+
+      super.update(delta);
+    }
   }
 
   /**
@@ -107,6 +125,39 @@ class AbstractEnemy extends AbstractActor {
   updateIdle() {
     if (this.findPlayer()) {
       this.setAlerted();
+    }
+  }
+
+  /**
+   * Update enemy in the alerted state.
+   * @param  {Number} delta The delta time.
+   */
+  updateAlerted(delta) {
+    if (this.findPlayer()) {
+      this.alertTimer += TIME_STEP * delta;
+
+      if (this.alertTimer >= this.alertTime) {
+        if (this.distanceToPlayer <= this.attackRange) {
+          this.setAiming();
+        } else {
+          this.setChasing();
+        }
+      }
+    } else {
+      this.setPatrolling();
+    }
+  }
+
+  /**
+   * Update enemy in chasing state
+   */
+  updateChasing() {
+    if (this.findPlayer()) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        this.setAiming();
+      }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -130,21 +181,22 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Update enemy in the alerted state.
+   * Update enemy in aiming state
    * @param  {Number} delta The delta time.
    */
-  updateAlerted() {
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('You have to implement this method.');
-    }
-  }
+  updateAiming(delta) {
+    if (this.findPlayer()) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        this.aimTimer += TIME_STEP * delta;
 
-  /**
-   * Update enemy in chasing state
-   */
-  updateChasing() {
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('You have to implement this method.');
+        if (this.aimTimer >= this.aimTime) {
+          this.setAttacking();
+        }
+      } else {
+        this.setChasing();
+      }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -152,9 +204,24 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in attacking state
    * @param  {Number} delta The delta time.
    */
-  updateAttacking() {
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('You have to implement this method.');
+  updateAttacking(delta) {
+    if (this.findPlayer()) {
+      if (this.distanceToPlayer <= this.attackRange) {
+        this.attackTimer += TIME_STEP * delta;
+
+        if (this.attackTimer >= this.attackTime) {
+          if (this.numberOfAttacks === 0) {
+            this.numberOfAttacks = this.maxAttacks;
+            this.setPatrolling();
+          } else {
+            this.onAttackComplete();
+          }
+        }
+      } else {
+        this.setChasing();
+      }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -162,9 +229,11 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in hurt state
    * @param  {Number} delta The delta time.
    */
-  updateHurting() {
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('You have to implement this method.');
+  updateHurting(delta) {
+    this.hurtTimer += TIME_STEP * delta;
+
+    if (this.hurtTimer >= this.hurtTime) {
+      this.onHurtComplete();
     }
   }
 
@@ -172,6 +241,24 @@ class AbstractEnemy extends AbstractActor {
    * Attack a target.
    */
   attack() {
+    if (this.constructor === AbstractEnemy) {
+      throw new TypeError('You have to implement this method.');
+    }
+  }
+
+  /**
+   * Execute completed attack behavior.
+   */
+  onAttackComplete() {
+    if (this.constructor === AbstractEnemy) {
+      throw new TypeError('You have to implement this method.');
+    }
+  }
+
+  /**
+   * Execute recovery behaviour.
+   */
+  onHurtComplete() {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }
@@ -251,6 +338,14 @@ class AbstractEnemy extends AbstractActor {
    */
   onChasing(callback) {
     this.on(STATES.CHASING, callback);
+  }
+
+  /**
+   * Add a callback to the idle aiming change.
+   * @param  {Function} callback The callback function.
+   */
+  onAiming(callback) {
+    this.on(STATES.AIMING, callback);
   }
 
   /**
@@ -340,6 +435,15 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Set the enemy to the aiming state.
+   * @return {Boolean}  State change successful.
+   */
+  setAiming() {
+    this.velocity = 0;
+    return this.setState(STATES.AIMING);
+  }
+
+  /**
    * Set the enemy to the attacking state.
    * @return {Boolean}  State change successful.
    */
@@ -348,6 +452,7 @@ class AbstractEnemy extends AbstractActor {
 
     if (stateChange) {
       this.attack();
+      this.numberOfAttacks -= 1;
       this.velocity = 0;
     }
 
@@ -426,6 +531,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Is the enemy in the aiming state.
+   * @return {Boolean}
+   */
+  isAiming() {
+    return this.state === STATES.AIMING;
+  }
+
+  /**
    * Is the enemy in the attacking state.
    * @return {Boolean}
    */
@@ -468,6 +581,7 @@ class AbstractEnemy extends AbstractActor {
       this.attackTimer = 0;
       this.hurtTimer = 0;
       this.alertTimer = 0;
+      this.aimTimer = 0;
       this.emit(state);
     }
 
