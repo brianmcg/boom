@@ -18,7 +18,6 @@ import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 import HudKeySprite from '../sprites/HudKeySprite';
-import BulletSprite from '../sprites/BulletSprite';
 import ExplosionSprite from '../sprites/ExplosionSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
