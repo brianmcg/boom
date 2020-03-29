@@ -23,15 +23,6 @@ class ChaseEnemy extends AbstractEnemy {
   }
 
   /**
-   * Update enemy in idle state
-   */
-  updateIdle() {
-    if (this.findPlayer()) {
-      this.setAlerted();
-    }
-  }
-
-  /**
    * Update enemy in the alerted state.
    * @param  {Number} delta The delta time.
    */
@@ -46,6 +37,8 @@ class ChaseEnemy extends AbstractEnemy {
           this.setChasing();
         }
       }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -76,6 +69,8 @@ class ChaseEnemy extends AbstractEnemy {
       } else {
         this.setChasing();
       }
+    } else {
+      this.setPatrolling();
     }
   }
 

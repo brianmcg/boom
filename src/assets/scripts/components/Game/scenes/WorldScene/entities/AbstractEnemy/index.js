@@ -9,7 +9,10 @@ const STATES = {
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
+  PATROLLING: 'enemy:patrolling',
 };
+
+const WAYPOINT_SIZE = CELL_SIZE / 4;
 
 /**
  * Abstract class representing an enemy.
@@ -79,6 +82,9 @@ class AbstractEnemy extends AbstractActor {
       case STATES.ALERTED:
         this.updateAlerted(delta);
         break;
+      case STATES.PATROLLING:
+        this.updatePatrolling(delta);
+        break;
       case STATES.CHASING:
         this.updateChasing(delta);
         break;
@@ -99,8 +105,27 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    */
   updateIdle() {
-    if (this.constructor === AbstractEnemy) {
-      throw new TypeError('You have to implement this method.');
+    if (this.findPlayer()) {
+      this.setAlerted();
+    }
+  }
+
+  /**
+   * Update the enemy in the patrolling state.
+   */
+  updatePatrolling() {
+    if (
+      Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
+        && Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
+    ) {
+      if (this.findPlayer()) {
+        this.setChasing();
+      } else {
+        this.setIdle();
+        this.setPatrolling();
+      }
+    } else {
+      this.face(this.waypoint);
     }
   }
 
@@ -213,6 +238,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Add a callback to the patrolling state change.
+   * @param  {Function} callback The callback function.
+   */
+  onPatrolling(callback) {
+    this.on(STATES.PATROLLING, callback);
+  }
+
+  /**
    * Add a callback to the idle moving change.
    * @param  {Function} callback The callback function.
    */
@@ -270,6 +303,27 @@ class AbstractEnemy extends AbstractActor {
         distance: this.distanceToPlayer,
       });
     }
+  }
+
+  /**
+   * Set the enemy to the patrolling state.
+   * @return {Boolean}  State change successful.
+   */
+  setPatrolling() {
+    const cells = this.world.getAdjacentCells(this)
+      .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
+
+    if (cells.length) {
+      const index = Math.floor(Math.random() * cells.length);
+      const cell = cells[index];
+      this.waypoint = cell;
+    } else {
+      this.waypoint = this.world.getCell(this.gridX, this.gridY);
+    }
+
+    this.velocity = this.maxVelocity;
+
+    return this.setState(STATES.PATROLLING);
   }
 
   /**
@@ -353,6 +407,14 @@ class AbstractEnemy extends AbstractActor {
    */
   isAlerted() {
     return this.state === STATES.ALERTED;
+  }
+
+  /**
+   * Is the enemy in the patrolling state.
+   * @return {Boolean} [description]
+   */
+  isPatrolling() {
+    return this.state === STATES.PATROLLING;
   }
 
   /**

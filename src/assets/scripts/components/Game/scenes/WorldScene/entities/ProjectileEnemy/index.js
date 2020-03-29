@@ -10,6 +10,7 @@ class ProjectileEnemy extends AbstractEnemy {
   constructor({
     projectiles,
     projectile,
+    clipSize,
     ...other
   }) {
     super(other);
@@ -19,6 +20,11 @@ class ProjectileEnemy extends AbstractEnemy {
         ...projectile,
         source: this,
       }));
+
+    this.clipSize = clipSize;
+    this.ammo = clipSize;
+
+    this.numberOfAttacks = projectiles;
   }
 
   /**
@@ -37,19 +43,6 @@ class ProjectileEnemy extends AbstractEnemy {
     }
   }
 
-  /**
-   * Update enemy in idle state
-   */
-  updateIdle() {
-    if (this.findPlayer()) {
-      this.setAlerted();
-    }
-  }
-
-  /**
-   * Update enemy in the alerted state.
-   * @param  {Number} delta The delta time.
-   */
   updateAlerted(delta) {
     if (this.findPlayer()) {
       this.alertTimer += TIME_STEP * delta;
@@ -61,6 +54,8 @@ class ProjectileEnemy extends AbstractEnemy {
           this.setChasing();
         }
       }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -72,6 +67,8 @@ class ProjectileEnemy extends AbstractEnemy {
       if (this.distanceToPlayer <= this.attackRange) {
         this.setAttacking();
       }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -85,12 +82,19 @@ class ProjectileEnemy extends AbstractEnemy {
         this.attackTimer += TIME_STEP * delta;
 
         if (this.attackTimer >= this.attackTime) {
-          this.setIdle();
-          this.setAttacking();
+          if (this.ammo === 0) {
+            this.ammo = this.clipSize;
+            this.setPatrolling();
+          } else {
+            this.setIdle();
+            this.setAttacking();
+          }
         }
       } else {
         this.setChasing();
       }
+    } else {
+      this.setPatrolling();
     }
   }
 
@@ -102,7 +106,7 @@ class ProjectileEnemy extends AbstractEnemy {
     this.hurtTimer += TIME_STEP * delta;
 
     if (this.hurtTimer >= this.hurtTime) {
-      this.setChasing();
+      this.setPatrolling();
     }
   }
 
@@ -114,6 +118,8 @@ class ProjectileEnemy extends AbstractEnemy {
       const projectile = this.projectiles.pop();
 
       projectile.initialize();
+
+      this.ammo -= 1;
 
       this.world.add(projectile);
     }

@@ -1,12 +1,9 @@
-import { TIME_STEP, CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
+import { TIME_STEP, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractEnemy from '../AbstractEnemy';
 
 const STATES = {
-  PATROLLING: 'enemy:patrolling',
   AIMING: 'enemy:aiming',
 };
-
-const WAYPOINT_SIZE = CELL_SIZE / 4;
 
 /**
  * Abstract class representing a gun enemy.
@@ -51,9 +48,6 @@ class GunEnemy extends AbstractEnemy {
       this.face(player);
 
       switch (this.state) {
-        case STATES.PATROLLING:
-          this.updatePatrolling(delta);
-          break;
         case STATES.AIMING:
           this.updateAiming(delta);
           break;
@@ -62,15 +56,6 @@ class GunEnemy extends AbstractEnemy {
       }
 
       super.update(delta);
-    }
-  }
-
-  /**
-   * Update enemy in idle state
-   */
-  updateIdle() {
-    if (this.findPlayer()) {
-      this.setAlerted();
     }
   }
 
@@ -91,20 +76,6 @@ class GunEnemy extends AbstractEnemy {
       }
     } else {
       this.setPatrolling();
-    }
-  }
-
-  /**
-   * Update the enemy in the patrolling state.
-   */
-  updatePatrolling() {
-    if (
-      Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
-        && Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
-    ) {
-      this.setChasing();
-    } else {
-      this.face(this.waypoint);
     }
   }
 
@@ -151,12 +122,12 @@ class GunEnemy extends AbstractEnemy {
         this.attackTimer += TIME_STEP * delta;
 
         if (this.attackTimer >= this.attackTime) {
-          this.setAiming();
-          this.setAttacking();
-
           if (this.ammo === 0) {
             this.ammo = this.clipSize;
             this.setPatrolling();
+          } else {
+            this.setIdle();
+            this.setAttacking();
           }
         }
       } else {
@@ -198,40 +169,11 @@ class GunEnemy extends AbstractEnemy {
   }
 
   /**
-   * Add a callback to the patrolling state change.
-   * @param  {Function} callback The callback function.
-   */
-  onPatrolling(callback) {
-    this.on(STATES.PATROLLING, callback);
-  }
-
-  /**
    * Add a callback to the idle aiming change.
    * @param  {Function} callback The callback function.
    */
   onAiming(callback) {
     this.on(STATES.AIMING, callback);
-  }
-
-  /**
-   * Set the enemy to the patrolling state.
-   * @return {Boolean}  State change successful.
-   */
-  setPatrolling() {
-    const cells = this.world.getAdjacentCells(this)
-      .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
-
-    if (cells.length) {
-      const index = Math.floor(Math.random() * cells.length);
-      const cell = cells[index];
-      this.waypoint = cell;
-    } else {
-      this.waypoint = this.world.getCell(this.gridX, this.gridY);
-    }
-
-    this.velocity = this.maxVelocity;
-
-    return this.setState(STATES.PATROLLING);
   }
 
   /**
@@ -241,14 +183,6 @@ class GunEnemy extends AbstractEnemy {
   setAiming() {
     this.velocity = 0;
     return this.setState(STATES.AIMING);
-  }
-
-  /**
-   * Is the enemy in the patrolling state.
-   * @return {Boolean} [description]
-   */
-  isPatrolling() {
-    return this.state === STATES.PATROLLING;
   }
 
   /**
