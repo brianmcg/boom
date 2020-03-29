@@ -154,18 +154,8 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
   return backgroundSprites;
 };
 
-const createBulletSprites = ({ animations, textures, world }) => {
-  const bulletTextures = animations[EFFECT_TYPES.BULLET].map(t => textures[t]);
-  const { bullets } = world.player;
-
-  return bullets.map(bullet => new BulletSprite(bulletTextures, {
-    world,
-    bullet,
-  }));
-};
-
-const createExplosionSprites = ({ animations, textures, world }) => (
-  world.enemies.reduce((memo, enemy) => {
+const createExplosionSprites = ({ animations, textures, world }) => {
+  const enemyProjectileSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
         const explosionTextures = animations[projectile.explosionType]
@@ -176,11 +166,27 @@ const createExplosionSprites = ({ animations, textures, world }) => (
     }
 
     return memo;
-  }, {})
-);
+  }, {});
+
+  const playerBulletSprites = Object.keys(world.player.bullets).reduce((memo, key) => {
+    world.player.bullets[key].forEach((bullet) => {
+      const explosionTextures = animations[bullet.explosionType]
+        .map(animation => textures[animation]);
+
+      memo[bullet.id] = new ExplosionSprite(explosionTextures);
+    });
+
+
+    return memo;
+  }, {});
+
+  return {
+    ...enemyProjectileSprites,
+    ...playerBulletSprites,
+  };
+};
 
 const createEffectsSprites = ({ animations, textures, world }) => ({
-  bullets: createBulletSprites({ animations, textures, world }),
   explosions: createExplosionSprites({ animations, textures, world }),
 });
 

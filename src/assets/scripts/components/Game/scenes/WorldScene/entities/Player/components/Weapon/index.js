@@ -46,10 +46,12 @@ class Weapon extends Entity {
     maxAmmo,
     range,
     sounds,
+    explosionType,
     ...other
   }) {
     super(other);
 
+    this.explosionType = explosionType;
     this.sounds = sounds;
     this.idleTime = idleTime;
     this.power = power;
@@ -326,20 +328,6 @@ class Weapon extends Entity {
    */
   isUnarmed() {
     return this.state === STATES.UNARMED;
-  }
-
-  /**
-   * Set the weapon state
-   * @param {String} state The state to set.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
   }
 
   /**

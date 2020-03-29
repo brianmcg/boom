@@ -7,6 +7,8 @@ import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Message from './components/Message';
 import KeyCard from './components/KeyCard';
+import Bullet from '../Bullet';
+import Explosion from '../../effects/Explosion';
 
 const DEG_360 = DEG[360];
 
@@ -103,7 +105,12 @@ class Player extends AbstractActor {
 
     this.messages = [];
 
-    this.bullets = [...Array(10).keys()].map(index => ({ index }));
+    this.bullets = Object.keys(weapons).reduce((memo, key) => ({
+      ...memo,
+      [key]: [...Array(10).keys()].map(() => new Bullet({
+        explosionType: weapons[key].explosionType,
+      })),
+    }), {});
 
     this.isPlayer = true;
 
@@ -570,16 +577,27 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = collisions.length ? {
-        ...this.bullets.shift(),
-        x: collisions[0].x,
-        y: collisions[0].y,
-      } : {
-        ...this.bullets.shift(),
-        ...endPoint,
-      };
+      const bullet = this.bullets[this.currentWeaponType].shift();
 
-      this.world.bullets.push(bullet);
+      const explosion = collisions.length
+        ? new Explosion({
+          id: bullet.id,
+          x: collisions[0].x,
+          y: collisions[0].y,
+          type: bullet.explosionType,
+          world: this.world,
+        })
+        : new Explosion({
+          id: bullet.id,
+          x: endPoint.x,
+          y: endPoint.y,
+          type: bullet.explosionType,
+          world: this.world,
+        });
+
+      this.world.addExplosion(explosion);
+
+      this.bullets[this.currentWeaponType].push(bullet);
 
       range.forEach((_, i) => {
         const enemy = collisions[i];

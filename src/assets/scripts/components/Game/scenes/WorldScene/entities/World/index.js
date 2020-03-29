@@ -55,8 +55,6 @@ class World extends PhysicsWorld {
     this.gunFlash = false;
     this.itemFlash = false;
 
-    this.bullets = [];
-
     this.explosions = [];
 
     this.startTime = performance.now();

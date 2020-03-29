@@ -78,7 +78,6 @@ class WorldContainer extends Container {
       player,
       maxCellX,
       maxCellY,
-      bullets,
       explosions,
     } = this.world;
 
@@ -94,31 +93,7 @@ class WorldContainer extends Container {
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
 
-    // Add bullet effects.
-    bullets.forEach(({ index, x, y }) => {
-      sprite = effects.bullets[index];
-      dx = x - player.x;
-      dy = y - player.y;
-      spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
-      actualDistance = Math.sqrt(dx * dx + dy * dy);
-      correctedDistance = COS[spriteAngle] * actualDistance;
-      spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-      spriteWidth = CELL_SIZE * spriteScale;
-      spriteHeight = CELL_SIZE * spriteScale;
-      spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-      sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-      sprite.y = centerY
-        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
-      sprite.width = spriteWidth;
-      sprite.height = spriteHeight;
-      sprite.zOrder = actualDistance - BULLET_OFFSET;
-      sprite.tint = this.calculateTint(actualDistance);
-
-      if (!sprite.parent) {
-        this.mapContainer.addChild(sprite);
-      }
-    });
-
+    // Update effects.
     explosions.forEach((explosion) => {
       const { id, x, y } = explosion;
 
@@ -137,7 +112,7 @@ class WorldContainer extends Container {
         - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
       sprite.width = spriteWidth;
       sprite.height = spriteHeight;
-      sprite.zOrder = actualDistance - BULLET_OFFSET;
+      sprite.zOrder = actualDistance; //  - BULLET_OFFSET;
       sprite.tint = this.calculateTint(actualDistance);
 
       if (!explosion.added) {
@@ -145,7 +120,6 @@ class WorldContainer extends Container {
         this.mapContainer.addChild(sprite);
       }
     });
-
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
