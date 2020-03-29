@@ -4,10 +4,8 @@ import DynamicEntity from '../DynamicEntity';
 
 const STATES = {
   TRAVELLING: 'projectile:travelling',
-  EXPLODING: 'projectile:exploding',
+  COLLIDING: 'projectile:colliding',
 };
-
-const EXPLODE_EVENT = 'projectile:explode:event';
 
 /**
  * Class representing a projectile
@@ -53,13 +51,40 @@ class Projectile extends DynamicEntity {
     this.speed = speed;
 
     this.onCollisionEvent((body) => {
-      this.world.stop(this);
-      this.setExploding();
+      this.setColliding();
 
       if (body.isActor) {
         body.hurt(this.power);
       }
     });
+
+    this.setTravelling();
+  }
+
+  /**
+   * Update the projectile.
+   * @param  {Number} delta The delta time.
+   * @return {[type]}       [description]
+   */
+  update(delta) {
+    switch (this.state) {
+      case STATES.TRAVELLING:
+        super.update(delta);
+        break;
+      case STATES.EXPLODING:
+        this.updateColliding(delta);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Update the projectile in the exploding state.
+   */
+  updateColliding() {
+    this.world.remove(this);
+    this.setTravelling();
   }
 
   /**
@@ -80,14 +105,6 @@ class Projectile extends DynamicEntity {
   }
 
   /**
-   * Add a callback for the explode event.
-   * @param  {Function} callback The callback function.
-   */
-  onExplode(callback) {
-    this.on(EXPLODE_EVENT, callback);
-  }
-
-  /**
    * Set the projectile to the travelling state.
    * @return {Boolean} State change successfull.
    */
@@ -99,12 +116,11 @@ class Projectile extends DynamicEntity {
    * Set the projectile to the exploding state.
    * @return {Boolean} State change successfull.
    */
-  setExploding() {
+  setColliding() {
     const stateChanged = this.setState(STATES.EXPLODING);
 
     if (stateChanged) {
       this.velocity = 0;
-      this.emit(EXPLODE_EVENT);
     }
 
     return stateChanged;

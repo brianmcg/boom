@@ -81,7 +81,7 @@ class WorldContainer extends Container {
       bullets,
     } = this.world;
 
-    this.mapContainer.reset();
+    // this.mapContainer.reset();
 
     const { background } = this.backgroundContainer;
     const { walls, entities, effects } = this.mapContainer;

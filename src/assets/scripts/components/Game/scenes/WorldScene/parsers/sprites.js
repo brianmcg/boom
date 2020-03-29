@@ -31,12 +31,9 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
 };
 
 const createProjectileSprite = ({ animations, textures, projectile }) => {
-  const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
-    ...animationMemo,
-    [state]: animations[state].map(image => textures[image]),
-  }), {});
+  const projectileTextures = animations.map(animation => textures[animation]);
 
-  return new ProjectileSprite(projectile, textureCollection);
+  return new ProjectileSprite(projectile, projectileTextures);
 };
 
 const createWeaponSprite = ({ animations, textures, player }) => {
