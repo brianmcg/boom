@@ -19,7 +19,7 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 import HudKeySprite from '../sprites/HudKeySprite';
 import BulletSprite from '../sprites/BulletSprite';
-import ProjectileSprite from '../sprites/ProjectileSprite';
+import ExplosionSprite from '../sprites/ExplosionSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -30,10 +30,10 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   return new EnemySprite(enemy, textureCollection);
 };
 
-const createProjectileSprite = ({ animations, textures, projectile }) => {
+const createProjectileSprite = ({ animations, textures }) => {
   const projectileTextures = animations.map(animation => textures[animation]);
 
-  return new ProjectileSprite(projectile, projectileTextures);
+  return new AnimatedEntitySprite(projectileTextures);
 };
 
 const createWeaponSprite = ({ animations, textures, player }) => {
@@ -164,8 +164,24 @@ const createBulletSprites = ({ animations, textures, world }) => {
   }));
 };
 
+const createExplosionSprites = ({ animations, textures, world }) => (
+  world.enemies.reduce((memo, enemy) => {
+    if (enemy.projectiles) {
+      enemy.projectiles.forEach((projectile) => {
+        const explosionTextures = animations[projectile.explosionType]
+          .map(animation => textures[animation]);
+
+        memo[projectile.id] = new ExplosionSprite(explosionTextures);
+      });
+    }
+
+    return memo;
+  }, {})
+);
+
 const createEffectsSprites = ({ animations, textures, world }) => ({
   bullets: createBulletSprites({ animations, textures, world }),
+  explosions: createExplosionSprites({ animations, textures, world }),
 });
 
 const createEntitySprites = ({ animations, textures, world }) => {
@@ -199,8 +215,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
     entitySprites[projectile.id] = createProjectileSprite({
       animations: animations[projectile.type],
       textures,
-      projectile,
-    })
+    });
   });
 
   return entitySprites;

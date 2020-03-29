@@ -1,6 +1,7 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { COS, SIN } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
+import Explosion from '../../effects/Explosion';
 
 const STATES = {
   TRAVELLING: 'projectile:travelling',
@@ -35,6 +36,7 @@ class Projectile extends DynamicEntity {
     speed = 0,
     type,
     source,
+    explosionType,
     ...other
   }) {
     super({
@@ -49,6 +51,7 @@ class Projectile extends DynamicEntity {
     this.power = power;
     this.source = source;
     this.speed = speed;
+    this.explosionType = explosionType;
 
     this.onCollisionEvent((body) => {
       this.setColliding();
@@ -85,6 +88,15 @@ class Projectile extends DynamicEntity {
   updateColliding() {
     this.world.remove(this);
     this.source.projectiles.push(this);
+
+    this.world.addExplosion(new Explosion({
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      type: this.explosionType,
+      world: this.world,
+    }));
+
     this.setTravelling();
   }
 

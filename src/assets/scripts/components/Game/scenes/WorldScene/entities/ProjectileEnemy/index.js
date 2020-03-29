@@ -1,4 +1,3 @@
-import { TIME_STEP, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractEnemy from '../AbstractEnemy';
 import Projectile from '../Projectile';
 

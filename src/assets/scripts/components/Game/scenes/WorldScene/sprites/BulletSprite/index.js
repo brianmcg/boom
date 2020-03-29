@@ -12,7 +12,7 @@ class BulletSprite extends AnimatedSprite {
    */
   constructor(textures, { world, bullet }) {
     super(textures, {
-      animationSpeed: 0.4,
+      animationSpeed: 0.04,
     });
 
     this.zOrder = Number.MAX_VALUE;

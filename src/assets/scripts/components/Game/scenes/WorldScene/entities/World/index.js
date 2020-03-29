@@ -57,6 +57,8 @@ class World extends PhysicsWorld {
 
     this.bullets = [];
 
+    this.explosions = [];
+
     this.startTime = performance.now();
 
     this.startingProps = Object.assign({}, this.props);
@@ -93,6 +95,14 @@ class World extends PhysicsWorld {
     this.add(player);
   }
 
+  addExplosion(explosion) {
+    this.explosions.push(explosion);
+  }
+
+  removeExplosion(explosion) {
+    this.explosions = this.explosions.filter(e => e.id !== explosion.id);
+  }
+
   /**
    * Update the world.
    * @param  {Number} delta            The delta time value.
@@ -101,6 +111,8 @@ class World extends PhysicsWorld {
   update(delta, { actions }) {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
+
+    this.explosions.forEach(e => e.update(delta));
 
     if (this.gunFlash) {
       this.brightness -= GUN_FLASH_DECREMENT * delta;

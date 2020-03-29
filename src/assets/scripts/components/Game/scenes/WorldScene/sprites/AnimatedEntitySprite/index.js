@@ -14,10 +14,11 @@ class AnimatedEntitySprite extends AnimatedSprite {
    */
   constructor(textures, {
     animationSpeed = 0.2,
+    loop = true,
   } = {}) {
     super(textures, {
       animationSpeed,
-      loop: true,
+      loop,
     });
 
     this.zOrder = Number.MAX_VALUE;
