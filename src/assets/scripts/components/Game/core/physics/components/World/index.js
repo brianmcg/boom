@@ -21,8 +21,6 @@ class World extends EventEmitter {
 
     this.maxCellY = this.height - 1;
     this.maxCellX = this.width - 1;
-
-    this.bullets = [];
   }
 
   /**

@@ -84,6 +84,7 @@ class Projectile extends DynamicEntity {
    */
   updateColliding() {
     this.world.remove(this);
+    this.source.projectiles.push(this);
     this.setTravelling();
   }
 
