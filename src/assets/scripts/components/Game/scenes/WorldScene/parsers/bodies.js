@@ -98,6 +98,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...memo,
     new ITEMS[item.type]({
       ...item,
+      itemType: item.type,
       texture: item.texture,
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),

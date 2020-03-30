@@ -646,7 +646,7 @@ class Player extends AbstractActor {
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
-    switch (item.type) {
+    switch (item.itemType) {
       case ITEM_TYPES.AMMO:
         return this.pickUpAmmo(item);
       case ITEM_TYPES.HEALTH:

@@ -1,5 +1,4 @@
 import translate from 'root/translate';
-import { ITEM_TYPES } from 'game/constants/assets';
 import AbstractItem from '../AbstractItem';
 
 /**
@@ -19,7 +18,6 @@ class WeaponItem extends AbstractItem {
   constructor({ weapon, ...other }) {
     super(other);
 
-    this.type = ITEM_TYPES.WEAPON;
     this.weapon = weapon;
     this.title = translate(`world.item.${weapon}`);
   }
