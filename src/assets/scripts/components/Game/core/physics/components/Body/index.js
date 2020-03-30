@@ -37,9 +37,9 @@ class Body extends EventEmitter {
   constructor({
     x = 0,
     y = 0,
-    width = CELL_SIZE / 2,
-    length = CELL_SIZE / 2,
-    height = CELL_SIZE / 2,
+    width = CELL_SIZE * 0.5,
+    length = CELL_SIZE * 0.5,
+    height = CELL_SIZE * 0.5,
     blocking = true,
   } = {}) {
     super();
