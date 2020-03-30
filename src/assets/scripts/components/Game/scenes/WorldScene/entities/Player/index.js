@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { DEG } from 'game/core/physics';
+import { DEG, SIN, COS } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
@@ -12,9 +12,11 @@ import Explosion from '../../effects/Explosion';
 
 const DEG_360 = DEG[360];
 
-const DEG_45 = DEG[45];
+const DEG_180 = DEG[180];
 
 const DEG_90 = DEG[90];
+
+const DEG_45 = DEG[45];
 
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 
@@ -579,21 +581,22 @@ class Player extends AbstractActor {
 
       const bullet = this.bullets[this.currentWeaponType].shift();
 
-      const explosion = collisions.length
-        ? new Explosion({
-          id: bullet.id,
-          x: collisions[0].x,
-          y: collisions[0].y,
-          type: bullet.explosionType,
-          world: this.world,
-        })
-        : new Explosion({
-          id: bullet.id,
-          x: endPoint.x,
-          y: endPoint.y,
-          type: bullet.explosionType,
-          world: this.world,
-        });
+      const angle = (this.angle + DEG_180) % DEG_360;
+
+      let { x, y } = collisions.length
+        ? { x: collisions[0].x, y: collisions[0].y }
+        : { x: endPoint.x, y: endPoint.y };
+
+      x += COS[angle] * bullet.width;
+      y += SIN[angle] * bullet.width;
+
+      const explosion = new Explosion({
+        x,
+        y,
+        id: bullet.id,
+        type: bullet.explosionType,
+        world: this.world,
+      });
 
       this.world.addExplosion(explosion);
 

@@ -40,7 +40,7 @@ class ProjectileEnemy extends AbstractEnemy {
    */
   attack() {
     if (this.projectiles.length) {
-      const projectile = this.projectiles.pop();
+      const projectile = this.projectiles.shift();
 
       projectile.initialize();
 

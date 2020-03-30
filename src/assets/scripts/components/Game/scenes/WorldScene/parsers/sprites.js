@@ -160,7 +160,9 @@ const createExplosionSprites = ({ animations, textures, world }) => {
         const explosionTextures = animations[projectile.explosionType]
           .map(animation => textures[animation]);
 
-        memo[projectile.id] = new ExplosionSprite(explosionTextures);
+        memo[projectile.id] = new ExplosionSprite(explosionTextures, {
+          animationSpeed: 0.3,
+        });
       });
     }
 
@@ -172,7 +174,9 @@ const createExplosionSprites = ({ animations, textures, world }) => {
       const explosionTextures = animations[bullet.explosionType]
         .map(animation => textures[animation]);
 
-      memo[bullet.id] = new ExplosionSprite(explosionTextures);
+      memo[bullet.id] = new ExplosionSprite(explosionTextures, {
+        animationSpeed: 0.4,
+      });
     });
 
 

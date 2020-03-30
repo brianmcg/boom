@@ -19,7 +19,6 @@ const HALF_FOV = DEG[FOV / 2];
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
-const BULLET_OFFSET = CELL_SIZE / 8;
 
 let spriteAngle;
 let body;
@@ -112,7 +111,7 @@ class WorldContainer extends Container {
         - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
       sprite.width = spriteWidth;
       sprite.height = spriteHeight;
-      sprite.zOrder = actualDistance; //  - BULLET_OFFSET;
+      sprite.zOrder = actualDistance;
       sprite.tint = this.calculateTint(actualDistance);
 
       if (!explosion.added) {
