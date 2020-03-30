@@ -1,6 +1,6 @@
 import { TIME_STEP } from 'game/constants/config';
 
-const TIME_TO_LIVE = 3000;
+const TIME_TO_LIVE = 2000;
 
 /**
  * Class representing an explosion.
