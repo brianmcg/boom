@@ -30,7 +30,7 @@ const createCell = ({ cell, props }) => {
   const sides = Object.keys(cell.sides).reduce((memo, key) => ({
     ...memo,
     [key]: {
-      texture: cell.sides[key],
+      type: cell.sides[key],
       spatter: 0,
     },
   }), {});
@@ -83,7 +83,7 @@ export const createWorld = ({ scene, data, graphics }) => {
   const obstacles = data.obstacles.reduce((memo, obstacle) => ([
     ...memo,
     new Entity({
-      texture: obstacle.texture,
+      type: obstacle.texture,
       x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
       blocking: obstacle.blocking,
@@ -99,7 +99,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     new ITEMS[item.type]({
       ...item,
       itemType: item.type,
-      texture: item.texture,
+      type: item.texture,
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
       width: CELL_SIZE / 2,

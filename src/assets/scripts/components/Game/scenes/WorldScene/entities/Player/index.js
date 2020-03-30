@@ -88,18 +88,18 @@ class Player extends AbstractActor {
       [color]: new KeyCard(color),
     }), {});
 
-    this.weapons = Object.keys(weapons).reduce((memo, texture) => {
+    this.weapons = Object.keys(weapons).reduce((memo, type) => {
       const weapon = new Weapon({
         player: this,
-        ...weapons[texture],
-        texture,
+        ...weapons[type],
+        type,
       });
 
-      weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.texture));
+      weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.type));
 
       return {
         ...memo,
-        [texture]: weapon,
+        [type]: weapon,
       };
     }, {});
 

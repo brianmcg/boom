@@ -19,11 +19,11 @@ class DynamicEntity extends DynamicBody {
    * @param  {String}  options.texture  The texture of entity.
    * @param  {String}  options.sounds   The sounds of entity.
    */
-  constructor({ texture, sounds, ...other }) {
+  constructor({ type, sounds, ...other }) {
     super(other);
 
     this.sounds = sounds;
-    this.texture = texture;
+    this.type = type;
   }
 
   /**

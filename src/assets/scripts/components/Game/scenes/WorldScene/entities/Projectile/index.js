@@ -34,7 +34,6 @@ class Projectile extends DynamicEntity {
     height = CELL_SIZE / 4,
     power = 0,
     speed = 0,
-    type,
     source,
     explosionType,
     ...other
@@ -47,7 +46,6 @@ class Projectile extends DynamicEntity {
       ...other,
     });
 
-    this.type = type;
     this.power = power;
     this.source = source;
     this.speed = speed;

@@ -67,8 +67,8 @@ const createWallSprites = ({
       } = cell;
 
       [front, left, back, right].forEach((side) => {
-        if (side && !wallImages.includes(side.texture)) {
-          wallImages.push(side.texture);
+        if (side && !wallImages.includes(side.type)) {
+          wallImages.push(side.type);
         }
       });
     });
@@ -119,8 +119,8 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
       const { top, bottom } = cell;
 
       [top, bottom].forEach((side) => {
-        if (side && !backgroundImages.includes(side.texture)) {
-          backgroundImages.push(side.texture);
+        if (side && !backgroundImages.includes(side.type)) {
+          backgroundImages.push(side.type);
         }
       });
     });
@@ -193,15 +193,15 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.texture]);
+    entitySprites[item.id] = new EntitySprite(textures[item.type]);
   });
 
   world.obstacles.forEach((object) => {
     if (object.animated) {
-      const animationTextures = animations[object.texture].map(t => textures[t]);
+      const animationTextures = animations[object.type].map(t => textures[t]);
       entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.texture]);
+      entitySprites[object.id] = new EntitySprite(textures[object.type]);
     }
   });
 
@@ -291,8 +291,6 @@ const createReviewSprites = (text) => {
 };
 
 const createHudSprites = ({ world, textures }) => {
-  const { keyCards } = world.player;
-
   const healthIcon = new Sprite(textures.health);
 
   const healthAmount = new TextSprite({
@@ -311,7 +309,7 @@ const createHudSprites = ({ world, textures }) => {
 
   const keys = world.items.reduce((memo, item) => {
     if (item.color) {
-      const { baseTexture, frame } = textures[item.texture];
+      const { baseTexture, frame } = textures[item.type];
       const keyTexture = new Texture(baseTexture, frame);
 
       return {
