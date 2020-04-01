@@ -84,15 +84,15 @@ class Projectile extends DynamicEntity {
    * Update the projectile in the exploding state.
    */
   updateColliding() {
-    this.world.remove(this);
+    this.parent.remove(this);
     this.source.projectiles.push(this);
 
-    this.world.addExplosion(new Explosion({
+    this.parent.addExplosion(new Explosion({
       id: this.id,
       x: this.x,
       y: this.y,
       type: this.explosionType,
-      world: this.world,
+      parent: this.parent,
     }));
 
     this.setTravelling();

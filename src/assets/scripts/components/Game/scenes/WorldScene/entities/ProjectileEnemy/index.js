@@ -44,7 +44,7 @@ class ProjectileEnemy extends AbstractEnemy {
 
       projectile.initialize();
 
-      this.world.add(projectile);
+      this.parent.add(projectile);
     }
   }
 }

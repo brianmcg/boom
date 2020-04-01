@@ -45,7 +45,7 @@ class World extends EventEmitter {
 
       if (body.update) {
         this.dynamicBodies.push(body);
-        body.world = this;
+        body.parent = this;
       }
 
       this.bodies[body.id] = body;

@@ -82,7 +82,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    const { player } = this.world;
+    const { player } = this.parent;
 
     this.distanceToPlayer = this.distanceTo(player);
 
@@ -270,7 +270,7 @@ class AbstractEnemy extends AbstractActor {
    */
   findPlayer() {
     const { distance } = this.castRay();
-    const { player } = this.world;
+    const { player } = this.parent;
 
     return player.isAlive() && distance > this.distanceToPlayer;
   }
@@ -405,7 +405,7 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setPatrolling() {
-    const cells = this.world.getAdjacentCells(this)
+    const cells = this.parent.getAdjacentCells(this)
       .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
 
     if (cells.length) {
@@ -413,7 +413,7 @@ class AbstractEnemy extends AbstractActor {
       const cell = cells[index];
       this.waypoint = cell;
     } else {
-      this.waypoint = this.world.getCell(this.gridX, this.gridY);
+      this.waypoint = this.parent.getCell(this.gridX, this.gridY);
     }
 
     this.velocity = this.maxVelocity;
@@ -492,7 +492,7 @@ class AbstractEnemy extends AbstractActor {
         distance: this.distanceToPlayer,
       });
 
-      this.world.stop(this);
+      this.parent.stop(this);
     }
 
     return stateChange;

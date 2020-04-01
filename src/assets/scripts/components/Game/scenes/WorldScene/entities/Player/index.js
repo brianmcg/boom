@@ -125,7 +125,7 @@ class Player extends AbstractActor {
    * Handle the added to world event.
    */
   initialize() {
-    const { x, y } = this.world.entrance;
+    const { x, y } = this.parent.entrance;
 
     this.x = (CELL_SIZE * x) + (CELL_SIZE / 2);
     this.y = (CELL_SIZE * y) + (CELL_SIZE / 2);
@@ -311,7 +311,7 @@ class Player extends AbstractActor {
    * Update player interactions.
    */
   updateAliveInteractions() {
-    this.world.getAdjacentBodies(this).forEach((body) => {
+    this.parent.getAdjacentBodies(this).forEach((body) => {
       if (body.isItem) {
         this.updateItemInteraction(body);
       } else if (body.isDoor) {
@@ -328,8 +328,8 @@ class Player extends AbstractActor {
     if (this.bodyCollision(item)) {
       if (item.setColliding()) {
         if (this.pickUp(item)) {
-          this.world.setItemFlash();
-          this.world.remove(item);
+          this.parent.setItemFlash();
+          this.parent.remove(item);
           item.setRemoved();
         } else {
           this.addMessage(translate('world.player.cannot.pickup', {
@@ -551,7 +551,7 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      const { enemies } = this.world;
+      const { enemies } = this.parent;
       const { power, range, recoil } = this.weapon;
 
       const {
@@ -595,10 +595,10 @@ class Player extends AbstractActor {
         y,
         id: bullet.id,
         type: bullet.explosionType,
-        world: this.world,
+        parent: this.parent,
       });
 
-      this.world.addExplosion(explosion);
+      this.parent.addExplosion(explosion);
 
       this.bullets[this.currentWeaponType].push(bullet);
 
@@ -617,7 +617,7 @@ class Player extends AbstractActor {
       });
 
       this.camera.setRecoil(recoil);
-      this.world.setGunFlash(power);
+      this.parent.setGunFlash(power);
       this.emitSound(this.weapon.sounds.fire);
     }
   }

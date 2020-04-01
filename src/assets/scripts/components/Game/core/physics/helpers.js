@@ -145,12 +145,12 @@ export const castRay = (caster, rayAngle) => {
     gridX,
     gridY,
     angle,
-    world,
+    parent,
   } = caster;
 
   const encounteredBodies = {};
 
-  world.getCell(gridX, gridY).bodies.forEach((body) => {
+  parent.getCell(gridX, gridY).bodies.forEach((body) => {
     if (body.id !== id) {
       encounteredBodies[body.id] = body;
     }
@@ -191,8 +191,8 @@ export const castRay = (caster, rayAngle) => {
       yGridIndex = Math.floor(horizontalGrid / CELL_SIZE);
 
       if (
-        xGridIndex >= world.width
-          || yGridIndex >= world.height
+        xGridIndex >= parent.width
+          || yGridIndex >= parent.height
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
@@ -200,7 +200,7 @@ export const castRay = (caster, rayAngle) => {
         break;
       }
 
-      horizontalCell = world.getCell(xGridIndex, yGridIndex);
+      horizontalCell = parent.getCell(xGridIndex, yGridIndex);
 
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
@@ -262,8 +262,8 @@ export const castRay = (caster, rayAngle) => {
       yGridIndex = Math.floor(yIntersection / CELL_SIZE);
 
       if (
-        xGridIndex >= world.width
-          || yGridIndex >= world.height
+        xGridIndex >= parent.width
+          || yGridIndex >= parent.height
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
@@ -271,7 +271,7 @@ export const castRay = (caster, rayAngle) => {
         break;
       }
 
-      verticalCell = world.getCell(xGridIndex, yGridIndex);
+      verticalCell = parent.getCell(xGridIndex, yGridIndex);
 
       if (verticalCell.blocking) {
         if (verticalCell.axis) {

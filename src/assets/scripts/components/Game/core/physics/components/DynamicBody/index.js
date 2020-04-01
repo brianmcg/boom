@@ -33,10 +33,10 @@ class DynamicBody extends Body {
    */
   update(delta) {
     // Get bodies from surrounding cells
-    const bodies = this.world.getAdjacentBodies(this);
+    const bodies = this.parent.getAdjacentBodies(this);
 
     // Unmark id from cell before moving
-    this.world.getCell(this.gridX, this.gridY).remove(this);
+    this.parent.getCell(this.gridX, this.gridY).remove(this);
 
     // Update angle
     this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG_360) % DEG_360;
@@ -70,7 +70,7 @@ class DynamicBody extends Body {
     });
 
     // Mark current cell with id
-    this.world.getCell(this.gridX, this.gridY).add(this);
+    this.parent.getCell(this.gridX, this.gridY).add(this);
   }
 }
 

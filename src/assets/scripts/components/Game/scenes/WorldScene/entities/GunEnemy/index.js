@@ -24,7 +24,7 @@ class GunEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
-    const { player } = this.world;
+    const { player } = this.parent;
     const ray = this.castRay();
 
     this.emitSound(this.sounds.attack, {

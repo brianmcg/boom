@@ -131,7 +131,7 @@ class Door extends DynamicCell {
       this.timer -= TIME_STEP * delta;
 
       if (this.timer <= 0) {
-        const blocked = this.world.getAdjacentBodies(this).some(body => (
+        const blocked = this.parent.getAdjacentBodies(this).some(body => (
           body.isActor && body.isAlive()
         )) || this.bodies.some(b => b.isDynamicBody);
 
@@ -153,7 +153,7 @@ class Door extends DynamicCell {
 
     if (stateChanged) {
       this.emitSound(this.sounds.open, {
-        distance: this.distanceTo(this.world.player),
+        distance: this.distanceTo(this.parent.player),
       });
     }
 
@@ -164,7 +164,7 @@ class Door extends DynamicCell {
    * Set the door to the opened state.
    */
   setOpened() {
-    const { player } = this.world;
+    const { player } = this.parent;
     const force = this.speed * 1.5;
 
     if (this.setState(STATES.OPENED)) {
@@ -185,7 +185,7 @@ class Door extends DynamicCell {
       this.blocking = true;
 
       this.emitSound(this.sounds.close, {
-        distance: this.distanceTo(this.world.player),
+        distance: this.distanceTo(this.parent.player),
       });
     }
 

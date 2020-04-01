@@ -19,13 +19,13 @@ class Explosion {
     type,
     x,
     y,
-    world,
+    parent,
   }) {
     this.id = id;
     this.x = x;
     this.y = y;
     this.timer = 0;
-    this.world = world;
+    this.parent = parent;
     this.type = type;
   }
 
@@ -39,7 +39,7 @@ class Explosion {
 
       if (this.timer >= TIME_TO_LIVE) {
         this.timer = 0;
-        this.world.removeExplosion(this);
+        this.parent.removeExplosion(this);
       }
     }
   }
