@@ -2,7 +2,7 @@ import translate from 'root/translate';
 import { KEYS } from 'game/core/input';
 import { SCENE_PATH, SCENE_MAP, SCENE_TYPES } from 'game/constants/assets';
 import { parse } from './parsers';
-import WorldContainer from './containers/WorldContainer';
+import POVContainer from './containers/POVContainer';
 import ReviewContainer from './containers/ReviewContainer';
 import Scene from '../Scene';
 
@@ -80,7 +80,7 @@ class WorldScene extends Scene {
       text,
     });
 
-    this.mainContainer.addChild(new WorldContainer({
+    this.mainContainer.addChild(new POVContainer({
       world,
       sprites: sprites.world,
     }));

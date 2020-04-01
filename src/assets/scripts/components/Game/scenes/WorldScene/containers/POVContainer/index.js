@@ -45,11 +45,11 @@ let actualDistance;
 let correctedDistance;
 
 /**
- * Class representing a WorldContainer.
+ * Class representing a POVContainer.
  */
-class WorldContainer extends Container {
+class POVContainer extends Container {
   /**
-   * Creates a WorldContainer.
+   * Creates a POVContainer.
    * @param  {World}  options.world   The world.
    * @param  {Object} options.sprites The sprites object.
    */
@@ -280,4 +280,4 @@ class WorldContainer extends Container {
   }
 }
 
-export default WorldContainer;
+export default POVContainer;

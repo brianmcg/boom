@@ -5,7 +5,7 @@ const HUD_PADDING = SCREEN.HEIGHT / 24;
 
 const ICON_PADDING = SCREEN.HEIGHT / 111;
 
-class HudContainer extends Container {
+class HUDContainer extends Container {
   constructor(player, sprites) {
     super();
 
@@ -120,4 +120,4 @@ class HudContainer extends Container {
   }
 }
 
-export default HudContainer;
+export default HUDContainer;

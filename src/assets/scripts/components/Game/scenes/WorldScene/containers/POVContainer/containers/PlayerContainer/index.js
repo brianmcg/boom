@@ -1,5 +1,5 @@
 import { Container } from 'game/core/graphics';
-import HudContainer from './containers/HudContainer';
+import HUDContainer from './containers/HUDContainer';
 
 /**
  * Class representing an map container.
@@ -14,7 +14,7 @@ class PlayerContainer extends Container {
     super();
 
     this.addChild(sprites.weapon);
-    this.addChild(new HudContainer(player, sprites.hud));
+    this.addChild(new HUDContainer(player, sprites.hud));
   }
 }
 
