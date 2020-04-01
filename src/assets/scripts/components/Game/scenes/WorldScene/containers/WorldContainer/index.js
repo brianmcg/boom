@@ -106,7 +106,7 @@ class WorldContainer extends Container {
         side,
       } = player.castRay(rayAngle);
 
-      const { type, spatter } = side;
+      const { name, spatter } = side;
 
       // Update total encountered bodies.
       Object.assign(totalEncounteredBodies, encounteredBodies);
@@ -128,7 +128,7 @@ class WorldContainer extends Container {
       sprite.height = spriteHeight;
       sprite.y = spriteY;
       sprite.zOrder = distance;
-      sprite.changeTexture(type, sliceY, spatter);
+      sprite.changeTexture(name, sliceY, spatter);
       sprite.tint = this.calculateTint(distance, isHorizontal);
 
       // Update background sprites
@@ -151,7 +151,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getCell(gridX, gridY).top.type, pixelX, pixelY);
+          sprite.changeTexture(this.world.getCell(gridX, gridY).top.name, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -172,7 +172,7 @@ class WorldContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getCell(gridX, gridY).bottom.type, pixelX, pixelY);
+          sprite.changeTexture(this.world.getCell(gridX, gridY).bottom.name, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }

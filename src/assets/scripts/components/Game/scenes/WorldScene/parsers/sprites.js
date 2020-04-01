@@ -68,7 +68,7 @@ const createWallSprites = ({
 
       [front, left, back, right].forEach((side) => {
         if (side && !wallImages.includes(side.type)) {
-          wallImages.push(side.type);
+          wallImages.push(side.name);
         }
       });
     });
@@ -120,7 +120,7 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
 
       [top, bottom].forEach((side) => {
         if (side && !backgroundImages.includes(side.type)) {
-          backgroundImages.push(side.type);
+          backgroundImages.push(side.name);
         }
       });
     });
@@ -197,21 +197,21 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.type]);
+    entitySprites[item.id] = new EntitySprite(textures[item.name]);
   });
 
   world.obstacles.forEach((object) => {
     if (object.animated) {
-      const animationTextures = animations[object.type].map(t => textures[t]);
+      const animationTextures = animations[object.name].map(t => textures[t]);
       entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.type]);
+      entitySprites[object.id] = new EntitySprite(textures[object.name]);
     }
   });
 
   world.enemies.forEach((enemy) => {
     entitySprites[enemy.id] = createEnemySprite({
-      animations: animations[enemy.type],
+      animations: animations[enemy.name],
       textures,
       enemy,
     });
@@ -222,7 +222,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
     ...enemy.projectiles || [],
   ]), []).forEach((projectile) => {
     entitySprites[projectile.id] = createProjectileSprite({
-      animations: animations[projectile.type],
+      animations: animations[projectile.name],
       textures,
     });
   });
@@ -313,7 +313,7 @@ const createHudSprites = ({ world, textures }) => {
 
   const keys = world.items.reduce((memo, item) => {
     if (item.color) {
-      const { baseTexture, frame } = textures[item.type];
+      const { baseTexture, frame } = textures[item.name];
       const keyTexture = new Texture(baseTexture, frame);
 
       return {

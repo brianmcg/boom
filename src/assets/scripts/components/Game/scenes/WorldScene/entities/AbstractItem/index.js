@@ -20,13 +20,13 @@ class AbstractItem extends Entity {
    * @param  {Number} options.height  The height of the body.
    * @param  {String} options.texture The texture of entity.
    */
-  constructor({ itemType, ...other }) {
+  constructor({ type, ...other }) {
     super({ blocking: false, ...other });
 
     this.setIdle();
 
     this.isItem = true;
-    this.itemType = itemType;
+    this.type = type;
 
     if (this.constructor === AbstractItem) {
       throw new TypeError('Can not construct abstract class.');

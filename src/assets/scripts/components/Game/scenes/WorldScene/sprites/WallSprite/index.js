@@ -20,11 +20,11 @@ class WallSprite extends Sprite {
 
   /**
    * Change the xurrent texture.
-   * @param  {String}  image  The name of the image.
+   * @param  {String}  name  The name of the texture.
    * @param  {Number}  offset The index of the slice.
    */
-  changeTexture(image, offset, spatter) {
-    this.texture = this.textures[image][offset][spatter];
+  changeTexture(name, offset, spatter) {
+    this.texture = this.textures[name][offset][spatter];
   }
 }
 

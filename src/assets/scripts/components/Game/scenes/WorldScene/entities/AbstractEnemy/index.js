@@ -47,6 +47,7 @@ class AbstractEnemy extends AbstractActor {
     attackPower = 1,
     maxAttacks,
     spatters,
+    type,
     ...other
   }) {
     super(other);
@@ -55,6 +56,7 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.type = type;
     this.spatters = spatters;
     this.attackRange = attackRange * CELL_SIZE;
     this.attackTime = attackTime;

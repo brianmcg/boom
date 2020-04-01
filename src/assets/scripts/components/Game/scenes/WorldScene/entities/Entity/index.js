@@ -14,11 +14,11 @@ class Entity extends Body {
    * @param  {Number}  options.height   The height of the entity.
    * @param  {Boolean} options.blocking Is the entity blocking.
    * @param  {Boolean} options.animated Is the entity animated.
-   * @param  {String}  options.type     The type of entity.
+   * @param  {String}  options.name     The name of entity.
    */
-  constructor({ type, animated = false, ...other }) {
+  constructor({ name, animated = false, ...other }) {
     super(other);
-    this.type = type;
+    this.name = name;
     this.animated = animated;
   }
 

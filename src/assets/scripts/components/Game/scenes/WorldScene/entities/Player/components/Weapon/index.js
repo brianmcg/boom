@@ -46,11 +46,13 @@ class Weapon extends Entity {
     maxAmmo,
     range,
     sounds,
+    type,
     explosionType,
     ...other
   }) {
     super(other);
 
+    this.type = type;
     this.explosionType = explosionType;
     this.sounds = sounds;
     this.idleTime = idleTime;

@@ -21,12 +21,12 @@ class BackgroundSprite extends Sprite {
 
   /**
    * Change the sprite texture.
-   * @param  {String} key  The key the texture.
+   * @param  {String} name The name of the texture.
    * @param  {Number} x    The x coordinate of the texture.
    * @param  {Number} y    The y coordinate of the texture.
    */
-  changeTexture(key, x, y) {
-    this.texture = this.textures[key][x][y];
+  changeTexture(name, x, y) {
+    this.texture = this.textures[name][x][y];
   }
 }
 
