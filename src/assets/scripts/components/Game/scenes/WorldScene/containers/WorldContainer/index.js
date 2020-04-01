@@ -92,34 +92,6 @@ class WorldContainer extends Container {
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
 
-    // Update effects.
-    explosions.forEach((explosion) => {
-      const { id, x, y } = explosion;
-
-      sprite = effects.explosions[id];
-      dx = x - player.x;
-      dy = y - player.y;
-      spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
-      actualDistance = Math.sqrt(dx * dx + dy * dy);
-      correctedDistance = COS[spriteAngle] * actualDistance;
-      spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-      spriteWidth = CELL_SIZE * spriteScale;
-      spriteHeight = CELL_SIZE * spriteScale;
-      spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-      sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-      sprite.y = centerY
-        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
-      sprite.width = spriteWidth;
-      sprite.height = spriteHeight;
-      sprite.zOrder = actualDistance;
-      sprite.tint = this.calculateTint(actualDistance);
-
-      if (!explosion.added) {
-        explosion.added = true;
-        this.mapContainer.addChild(sprite);
-      }
-    });
-
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       sprite = walls[xIndex];
@@ -239,6 +211,37 @@ class WorldContainer extends Container {
         }
       } else {
         this.mapContainer.removeChild(sprite);
+      }
+    });
+
+    // Update effects.
+    explosions.forEach((explosion) => {
+      const { id, x, y } = explosion;
+
+      sprite = effects.explosions[id];
+      dx = x - player.x;
+      dy = y - player.y;
+      spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
+
+      if (!explosion.isStarted) {
+        explosion.start();
+        this.mapContainer.addChild(sprite);
+      }
+
+      if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
+        actualDistance = Math.sqrt(dx * dx + dy * dy);
+        correctedDistance = COS[spriteAngle] * actualDistance;
+        spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+        spriteWidth = CELL_SIZE * spriteScale;
+        spriteHeight = CELL_SIZE * spriteScale;
+        spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+        sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+        sprite.y = centerY
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+        sprite.width = spriteWidth;
+        sprite.height = spriteHeight;
+        sprite.zOrder = actualDistance;
+        sprite.tint = this.calculateTint(actualDistance);
       }
     });
 

@@ -606,7 +606,7 @@ class Player extends AbstractActor {
         const enemy = collisions[i];
 
         if (enemy) {
-          enemy.hit(power);
+          enemy.hurt(power);
 
           if (distance - enemy.distanceToPlayer < SPATTER_DISTANCE) {
             if (!side.spatter) {

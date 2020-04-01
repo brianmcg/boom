@@ -34,12 +34,21 @@ class Explosion {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    this.timer += TIME_STEP * delta;
+    if (this.isStarted) {
+      this.timer += TIME_STEP * delta;
 
-    if (this.timer >= TIME_TO_LIVE) {
-      this.timer = 0;
-      this.world.removeExplosion(this);
+      if (this.timer >= TIME_TO_LIVE) {
+        this.timer = 0;
+        this.world.removeExplosion(this);
+      }
     }
+  }
+
+  /**
+   * Start the explosion.
+   */
+  start() {
+    this.isStarted = true;
   }
 }
 

@@ -208,7 +208,7 @@ class AbstractEnemy extends AbstractActor {
         this.attackTimer += TIME_STEP * delta;
 
         if (this.attackTimer >= this.attackTime) {
-          if (this.numberOfAttacks === 0) {
+          if (this.numberOfAttacks < 1) {
             this.numberOfAttacks = this.maxAttacks;
             this.setPatrolling();
           } else {
@@ -285,10 +285,10 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Hit the enemy
+   * Hurt the enemy
    * @param  {Number} amount The amount of hit points.
    */
-  hit(amount) {
+  hurt(amount) {
     this.health -= amount;
 
     if (this.health > 0) {
