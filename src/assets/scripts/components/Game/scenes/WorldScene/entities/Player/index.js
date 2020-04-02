@@ -551,28 +551,33 @@ class Player extends AbstractActor {
    */
   useWeapon() {
     if (this.weapon.use()) {
-      const { enemies } = this.parent;
-      const { power, range, recoil } = this.weapon;
+      const { power, recoil } = this.weapon;
 
       const {
         startPoint,
         endPoint,
         distance,
         side,
+        encounteredBodies,
       } = this.castRay();
 
-      const collisions = enemies.reduce((memo, enemy) => {
-        if (!enemy.isDead() && enemy.rayCollision({ startPoint, endPoint })) {
-          return [...memo, enemy];
-        }
+      const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
+        if (body.blocking) {
+          const point = body.getRayCollision({ startPoint, endPoint });
 
+          if (point) {
+            memo.push({ body, point });
+          }
+
+          return memo;
+        }
         return memo;
-      }, []).sort((enemyA, enemyB) => {
-        if (enemyA.distanceToPlayer > enemyB.distanceToPlayer) {
+      }, []).sort((a, b) => {
+        if (a.point.distance > b.point.distance) {
           return 1;
         }
 
-        if (enemyA.distanceToPlayer < enemyB.distanceToPlayer) {
+        if (a.point.distance < b.point.distance) {
           return -1;
         }
 
@@ -580,42 +585,39 @@ class Player extends AbstractActor {
       });
 
       const bullet = this.bullets[this.currentWeaponType].shift();
-
       const angle = (this.angle + DEG_180) % DEG_360;
 
-      let { x, y } = collisions.length
-        ? { x: collisions[0].x, y: collisions[0].y }
-        : { x: endPoint.x, y: endPoint.y };
+      if (collisions.length) {
+        const { point, body } = collisions[0];
 
-      x += COS[angle] * bullet.width;
-      y += SIN[angle] * bullet.width;
+        this.parent.addExplosion(new Explosion({
+          x: point.x + COS[angle] * (bullet.width / 2),
+          y: point.y + SIN[angle] * (bullet.width / 2),
+          id: bullet.id,
+          type: bullet.explosionType,
+          parent: this.parent,
+        }));
 
-      const explosion = new Explosion({
-        x,
-        y,
-        id: bullet.id,
-        type: bullet.explosionType,
-        parent: this.parent,
-      });
+        if (body.isEnemy) {
+          body.hurt(power);
 
-      this.parent.addExplosion(explosion);
-
-      this.bullets[this.currentWeaponType].push(bullet);
-
-      range.forEach((_, i) => {
-        const enemy = collisions[i];
-
-        if (enemy) {
-          enemy.hurt(power);
-
-          if (distance - enemy.distanceToPlayer < SPATTER_DISTANCE) {
+          if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
             if (!side.spatter) {
-              side.spatter = enemy.spatter();
+              side.spatter = body.spatter();
             }
           }
         }
-      });
+      } else {
+        this.parent.addExplosion(new Explosion({
+          x: endPoint.x + COS[angle] * (bullet.width / 2),
+          y: endPoint.y + SIN[angle] * (bullet.width / 2),
+          id: bullet.id,
+          type: bullet.explosionType,
+          parent: this.parent,
+        }));
+      }
 
+      this.bullets[this.currentWeaponType].push(bullet);
       this.camera.setRecoil(recoil);
       this.parent.setGunFlash(power);
       this.emitSound(this.weapon.sounds.fire);

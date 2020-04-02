@@ -1,4 +1,4 @@
-import { ITEM_TYPES, ENEMY_TYPES, EFFECT_TYPES } from 'game/constants/assets';
+import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../entities/Cell';
 import World from '../entities/World';
@@ -67,10 +67,18 @@ const createCell = ({ cell, props }) => {
  * @return {World}         The created world.
  */
 export const createWorld = ({ scene, data, graphics }) => {
+  const spatterTypes = Object.values(data.props.enemies).reduce((memo, { spatterType }) => {
+    if (memo.includes(spatterType)) {
+      return memo;
+    }
+    return [...memo, spatterType];
+  }, []);
+
   const { entrance, exit, props } = data;
   const { visibility, brightness } = props.world;
   const { animations } = graphics.data;
-  const spatters = animations[EFFECT_TYPES.SPATTER].length;
+  // TODO: Deal with multiple spatter types.
+  const spatters = animations[spatterTypes[0]].length;
 
   const grid = data.grid.reduce((rows, row) => ([
     ...rows,

@@ -31,7 +31,7 @@ class GunEnemy extends AbstractEnemy {
       distance: this.distanceToPlayer,
     });
 
-    if (player.rayCollision(ray)) {
+    if (player.isRayCollision(ray)) {
       player.hurt(this.attackPower);
     }
   }

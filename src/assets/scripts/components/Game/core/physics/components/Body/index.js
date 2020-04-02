@@ -5,6 +5,7 @@ import {
   isRayCollision,
   castRay,
   distanceBetween,
+  getRayCollision,
 } from '../../helpers';
 
 const EVENTS = {
@@ -119,8 +120,17 @@ class Body extends EventEmitter {
    * @param  {Object} ray The ray.
    * @return {Boolean}    Collision has occurred.
    */
-  rayCollision(ray) {
+  isRayCollision(ray) {
     return isRayCollision(this, ray);
+  }
+
+  /**
+   * Get the coordinates of a ray collision.
+   * @param  {Object} ray The ray.
+   * @return {Object}     The collision coordinates.
+   */
+  getRayCollision(ray) {
+    return getRayCollision(this, ray);
   }
 
   /**
