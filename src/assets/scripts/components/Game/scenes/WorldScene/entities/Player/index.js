@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { DEG, SIN, COS } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
-import { ITEM_TYPES, KEY_COLORS, WEAPON_TYPES } from 'game/constants/assets';
+import { ITEM_TYPES, WEAPON_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -85,11 +85,6 @@ class Player extends AbstractActor {
 
     this.camera = new Camera({ player: this, ...camera });
 
-    this.keyCards = Object.values(KEY_COLORS).reduce((memo, color) => ({
-      ...memo,
-      [color]: new KeyCard(color),
-    }), {});
-
     this.weapons = Object.keys(weapons).reduce((memo, type) => {
       const weapon = new Weapon({
         player: this,
@@ -132,6 +127,15 @@ class Player extends AbstractActor {
     this.angle = 0;
     this.velocity = 0;
     this.armWeapon();
+    this.keyCards = this.parent.items.reduce((memo, { isKey, color }) => {
+      if (isKey) {
+        return {
+          ...memo,
+          [color]: new KeyCard(color),
+        };
+      }
+      return memo;
+    }, {});
   }
 
   /**

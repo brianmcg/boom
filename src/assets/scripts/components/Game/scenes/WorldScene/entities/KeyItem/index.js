@@ -19,6 +19,7 @@ class KeyItem extends AbstractItem {
     super(other);
 
     this.color = color;
+    this.isKey = true;
     this.title = translate('world.item.key', {
       color: translate(`world.color.${color}`),
     });

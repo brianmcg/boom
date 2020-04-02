@@ -10,7 +10,6 @@ import {
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN } from 'game/constants/config';
 import { FONT_SIZES } from 'game/constants/fonts';
-import { EFFECT_TYPES } from 'game/constants/assets';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
@@ -54,8 +53,17 @@ const createWallSprites = ({
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [];
-  const spatters = animations[EFFECT_TYPES.SPATTER];
   const spatterContainer = new Container();
+
+  const spatterTypes = world.enemies.reduce((memo, { spatterType }) => {
+    if (!memo.includes(spatterType)) {
+      memo.push(spatterType);
+    }
+    return memo;
+  }, []);
+
+  // TODO: Handle multiple spatter types.
+  const spatters = animations[spatterTypes[0]];
 
   world.grid.forEach((row) => {
     row.forEach((cell) => {
@@ -80,14 +88,14 @@ const createWallSprites = ({
     const { frame } = frames[image];
     const wallTexture = textures[image];
 
-    const spatterTextures = spatters.map((animation) => {
-      const spatterTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
-      const bloodTexture = textures[animation];
+    const spatterTextures = spatters.map((spatter) => {
+      const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
+      const spatterTexture = textures[spatter];
       spatterContainer.removeChildren();
       spatterContainer.addChild(new Sprite(wallTexture));
-      spatterContainer.addChild(new Sprite(bloodTexture));
-      renderer.render(spatterContainer, spatterTexture);
-      return spatterTexture;
+      spatterContainer.addChild(new Sprite(spatterTexture));
+      renderer.render(spatterContainer, renderTexture);
+      return renderTexture;
     });
 
     for (let i = 0; i < frame.w; i += 1) {

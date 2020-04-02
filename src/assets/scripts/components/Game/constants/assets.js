@@ -70,7 +70,6 @@ export const SCENE_TYPES = {
   CREDITS: 'credits',
 };
 
-
 /**
  * The weapon types
  * @type {Object}
@@ -100,22 +99,4 @@ export const ENEMY_TYPES = {
   GRUNT: 'grunt',
   DEMON: 'demon',
   IMP: 'imp',
-};
-
-/**
- * The key colors.
- * @type {Object}
- */
-export const KEY_COLORS = {
-  YELLOW: 'yellow',
-  BLUE: 'blue',
-  RED: 'red',
-};
-
-/**
- * The effect types.
- * @type {Object}
- */
-export const EFFECT_TYPES = {
-  SPATTER: 'spatter',
 };
