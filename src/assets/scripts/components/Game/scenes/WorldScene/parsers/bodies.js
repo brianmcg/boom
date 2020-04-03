@@ -1,4 +1,3 @@
-import { ITEM_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../entities/Cell';
 import World from '../entities/World';
@@ -13,14 +12,17 @@ import AmmoItem from '../entities/AmmoItem';
 import HealthItem from '../entities/HealthItem';
 import WeaponItem from '../entities/WeaponItem';
 
-const ITEMS = {
-  [ITEM_TYPES.KEY]: KeyItem,
-  [ITEM_TYPES.AMMO]: AmmoItem,
-  [ITEM_TYPES.HEALTH]: HealthItem,
-  [ITEM_TYPES.WEAPON]: WeaponItem,
-};
+const ITEMS = [
+  KeyItem,
+  AmmoItem,
+  HealthItem,
+  WeaponItem,
+].reduce((memo, type) => ({
+  ...memo,
+  [type.name.toLowerCase()]: type,
+}), {});
 
-const ENEMY_TYPES = [
+const ENEMIES = [
   GunEnemy,
   ChaseEnemy,
   ProjectileEnemy,
@@ -121,7 +123,7 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
-    new ENEMY_TYPES[props.enemies[enemy.type].behaviour]({
+    new ENEMIES[props.enemies[enemy.type].behaviour]({
       type: enemy.type,
       name: enemy.name,
       x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),

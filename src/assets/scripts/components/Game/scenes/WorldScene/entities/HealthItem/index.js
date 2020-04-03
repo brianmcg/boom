@@ -18,6 +18,7 @@ class HealthItem extends AbstractItem {
     super(other);
 
     this.amount = amount;
+    this.isHealth = true;
     this.title = translate('world.item.health');
   }
 }

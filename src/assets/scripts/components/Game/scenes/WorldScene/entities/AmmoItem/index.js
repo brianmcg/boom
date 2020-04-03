@@ -21,6 +21,7 @@ class AmmoItem extends AbstractItem {
 
     this.amount = amount;
     this.weapon = weapon;
+    this.isAmmo = true;
     this.title = translate('world.item.ammo', {
       weapon: translate(`world.item.${weapon}`),
     });

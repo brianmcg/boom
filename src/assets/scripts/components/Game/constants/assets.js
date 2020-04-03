@@ -59,24 +59,3 @@ export const SCENE_GRAPHICS = 'graphics.json';
  * @type {String}
  */
 export const SCENE_MAP = 'map.json';
-
-/**
- * The scene types.
- * @type {Object}
- */
-export const SCENE_TYPES = {
-  TITLE: 'title',
-  WORLD: 'world',
-  CREDITS: 'credits',
-};
-
-/**
- * The item types.
- * @type {Object}
- */
-export const ITEM_TYPES = {
-  HEALTH: 'health',
-  AMMO: 'ammo',
-  KEY: 'key',
-  WEAPON: 'weapon',
-};

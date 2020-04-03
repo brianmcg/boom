@@ -2,49 +2,25 @@ import { DEG } from 'game/core/physics';
 
 const DEG_360 = DEG[360];
 
+const HEIGHT_INCREMENT = 0.04;
+const MAX_HEIGHT = 1;
+const PITCH_VELOCITY = 4;
+const MAX_RECOIL = 196;
+const MIN_RECOIL = 1;
+const RECOIL_FADE = 0.25;
+const MAX_SHAKE = 24;
+const MIN_SHAKE = 1;
+const SHAKE_FADE = 0.65;
 /**
  * Class representing a camera.
  */
 class Camera {
   /**
    * Creates a camera.
-   * @param  {Player} options.player          The player.
-   * @param  {Number} options.heightIncrement The amount to increment the height by.
-   * @param  {Number} options.maxHeight       The maximum height.
-   * @param  {Number} options.pitchVelocity   The velocity of the recoil.
-   * @param  {Number} options.maxRecoilAmount The maximum recoil amount.
-   * @param  {Number} options.minRecoilAmount The minimum recoil amount.
-   * @param  {Number} options.recoilFade      The amount by which the recoil effect fades.
-   * @param  {Number} options.maxShakeAmount  The maximum shake amount.
-   * @param  {Number} options.minShakeAmount  The minimum shake amount.
-   * @param  {Number} options.shakeFade       The amount by which the shake effect fades.
-   * @param  {Number} options.maxPitch        The maximum y axis rotation.
+   * @param  {Player} player  The player.
    */
-  constructor({
-    player,
-    heightIncrement,
-    maxHeight,
-    pitchVelocity,
-    maxRecoilAmount,
-    minRecoilAmount,
-    recoilFade,
-    maxShakeAmount,
-    minShakeAmount,
-    shakeFade,
-    maxPitch,
-  }) {
+  constructor(player) {
     this.player = player;
-    this.heightIncrement = heightIncrement;
-    this.maxHeight = maxHeight;
-    this.pitchVelocity = pitchVelocity;
-    this.maxPitch = maxPitch;
-    this.maxRecoilAmount = maxRecoilAmount;
-    this.minRecoilAmount = minRecoilAmount;
-    this.recoilFade = recoilFade;
-    this.maxShakeAmount = maxShakeAmount;
-    this.minShakeAmount = minShakeAmount;
-    this.shakeFade = shakeFade;
-
     this.height = 0;
     this.heightDirection = 1;
     this.pitch = 0;
@@ -76,23 +52,23 @@ class Camera {
     if (velocity) {
       if (this.heightDirection > 0) {
         this.height = Math.min(
-          this.height + this.heightIncrement * Math.abs(velocity) * delta,
-          this.maxHeight,
+          this.height + HEIGHT_INCREMENT * Math.abs(velocity) * delta,
+          MAX_HEIGHT,
         );
       } else if (this.heightDirection < 0) {
         this.height = Math.max(
-          this.height - this.heightIncrement * Math.abs(velocity) * delta * 2,
-          -this.maxHeight,
+          this.height - HEIGHT_INCREMENT * Math.abs(velocity) * delta * 2,
+          -MAX_HEIGHT,
         );
       }
 
-      if (Math.abs(this.height) === this.maxHeight) {
+      if (Math.abs(this.height) === MAX_HEIGHT) {
         this.heightDirection *= -1;
       }
     } else if (this.height > 0) {
-      this.height = Math.max(this.height - this.heightIncrement * maxVelocity * delta, 0);
+      this.height = Math.max(this.height - HEIGHT_INCREMENT * maxVelocity * delta, 0);
     } else if (this.height < 0) {
-      this.height = Math.min(this.height + this.heightIncrement * maxVelocity * delta, 0);
+      this.height = Math.min(this.height + HEIGHT_INCREMENT * maxVelocity * delta, 0);
     }
   }
 
@@ -100,30 +76,31 @@ class Camera {
    * Update the rotation according to player actions.
    */
   updatePitch() {
-    const { lookDown, lookUp } = this.player.actions;
-
-    if (lookDown) {
-      this.pitch = Math.max(this.pitch - this.pitchVelocity, -this.maxPitch);
-    } else if (lookUp) {
-      this.pitch = Math.min(this.pitch + this.pitchVelocity, this.maxPitch);
-    } else if (this.pitch < 0) {
-      this.pitch = Math.min(this.pitch + this.pitchVelocity, 0);
-    } else if (this.pitch > 0) {
-      this.pitch = Math.max(this.pitch - this.pitchVelocity, 0);
-    }
-
     if (this.recoilAmount) {
       this.pitch += this.recoilAmount * this.recoilDirection;
-      this.recoilAmount *= this.recoilFade;
+      this.recoilAmount *= RECOIL_FADE;
 
-      if (this.recoilAmount < this.minRecoilAmount) {
+      if (this.recoilAmount < MIN_RECOIL) {
         this.recoilAmount = 0;
       }
     } else if (this.recoilDirection > 0) {
-      this.pitch = Math.max(this.pitch - this.pitchVelocity, 0);
+      this.pitch = Math.max(this.pitch - PITCH_VELOCITY, 0);
     } else if (this.recoilDirection < 0) {
-      this.pitch = Math.min(this.pitch + this.pitchVelocity, 0);
+      this.pitch = Math.min(this.pitch + PITCH_VELOCITY, 0);
     }
+
+    // NOTE: Keeping commented code here for future pitch work.
+    // const { lookDown, lookUp } = this.player.actions;
+
+    // if (lookDown) {
+    //   this.pitch = Math.max(this.pitch - PITCH_VELOCITY, -MAX_PITCH);
+    // } else if (lookUp) {
+    //   this.pitch = Math.min(this.pitch + PITCH_VELOCITY, MAX_PITCH);
+    // } else if (this.pitch < 0) {
+    //   this.pitch = Math.min(this.pitch + PITCH_VELOCITY, 0);
+    // } else if (this.pitch > 0) {
+    //   this.pitch = Math.max(this.pitch - PITCH_VELOCITY, 0);
+    // }
   }
 
   /**
@@ -137,10 +114,10 @@ class Camera {
         this.shakeDirection = -1;
       } else if (this.shakeDirection === -1 && this.angle < -this.shakeEdge) {
         this.shakeDirection = 1;
-        this.shakeEdge *= this.shakeFade;
+        this.shakeEdge *= SHAKE_FADE;
       }
 
-      if (this.shakeEdge < this.minShakeAmount) {
+      if (this.shakeEdge < MIN_SHAKE) {
         this.shakeDirection = 1;
         this.shakeEdge = 0;
         this.angle = 0;
@@ -154,7 +131,7 @@ class Camera {
    * @param {Number} amount The amount to shake.
    */
   setShake(amount) {
-    this.shakeAmount = Math.min(this.maxShakeAmount, amount);
+    this.shakeAmount = Math.min(MAX_SHAKE, amount);
     this.shakeEdge = this.shakeAmount - 1;
   }
 
@@ -165,7 +142,7 @@ class Camera {
    */
   setRecoil(amount, { down } = {}) {
     this.recoilDirection = down ? -1 : 1;
-    this.recoilAmount = Math.min(this.maxRecoilAmount, amount);
+    this.recoilAmount = Math.min(MAX_RECOIL, amount);
   }
 }
 

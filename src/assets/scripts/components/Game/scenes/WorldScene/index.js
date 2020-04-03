@@ -1,6 +1,6 @@
 import translate from 'root/translate';
 import { KEYS } from 'game/core/input';
-import { SCENE_PATH, SCENE_MAP, SCENE_TYPES } from 'game/constants/assets';
+import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
 import ReviewContainer from './containers/ReviewContainer';
@@ -21,10 +21,7 @@ class WorldScene extends Scene {
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super({
-      ...options,
-      type: SCENE_TYPES.WORLD,
-    });
+    super(options);
 
     this.assets = {
       ...this.assets,
@@ -182,10 +179,10 @@ class WorldScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    if (this.index < this.game.data.numLevels) {
+    if (this.index < this.game.data.world.levels) {
       this.game.showWorldScene({
         index: this.index + 1,
-        props: this.world.props,
+        startingProps: this.world.props,
       });
     } else {
       this.game.showCreditsScene();

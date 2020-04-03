@@ -9,7 +9,6 @@ import {
   GAME_DATA,
   GAME_FONT,
   SCENE_MUSIC,
-  SCENE_TYPES,
 } from './constants/assets';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -19,12 +18,6 @@ import Loader from './utilities/Loader';
 const EVENTS = {
   STOPPED: 'game:stopped',
   STARTED: 'game:started',
-};
-
-const SCENES = {
-  [SCENE_TYPES.TITLE]: TitleScene,
-  [SCENE_TYPES.WORLD]: WorldScene,
-  [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
 /**
@@ -134,22 +127,22 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show({ type: SCENE_TYPES.TITLE });
+    this.show(TitleScene);
   }
 
   /**
    * Show the world scene.
    * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene({ index = 1 } = {}) {
-    this.show({ type: SCENE_TYPES.WORLD, index });
+  showWorldScene({ index = 1, ...other } = {}) {
+    this.show(WorldScene, { index, ...other });
   }
 
   /**
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show({ type: SCENE_TYPES.CREDITS });
+    this.show(CreditsScene);
   }
 
   /**
@@ -158,8 +151,8 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show({ type, index, startingProps = {} } = {}) {
-    const SceneType = SCENES[type];
+  async show(Scene, { index, startingProps = {} } = {}) {
+    const type = Scene.name.toLowerCase().split('scene')[0];
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
@@ -176,8 +169,9 @@ class Game extends Application {
       });
     }
 
-    if (SceneType) {
-      this.scene = new SceneType({
+    if (Scene) {
+      this.scene = new Scene({
+        type,
         index,
         game: this,
       });

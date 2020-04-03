@@ -1,7 +1,6 @@
 import translate from 'root/translate';
 import { DEG, SIN, COS } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
-import { ITEM_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -83,7 +82,7 @@ class Player extends AbstractActor {
     this.actions = {};
     this.vision = 1;
 
-    this.camera = new Camera({ player: this, ...camera });
+    this.camera = new Camera(this);
 
     this.weapons = weapons.reduce((memo, data) => {
       const weapon = new Weapon({
@@ -642,7 +641,7 @@ class Player extends AbstractActor {
       this.emitSound(this.sounds.death);
     } else {
       this.camera.setShake(amount);
-      this.camera.setRecoil(amount * 6, {
+      this.camera.setRecoil(amount * 4, {
         down: true,
       });
 
@@ -655,18 +654,23 @@ class Player extends AbstractActor {
    * @param  {Item} item The item to pick up.
    */
   pickUp(item) {
-    switch (item.type) {
-      case ITEM_TYPES.AMMO:
-        return this.pickUpAmmo(item);
-      case ITEM_TYPES.HEALTH:
-        return this.pickUpHealth(item);
-      case ITEM_TYPES.KEY:
-        return this.pickUpKey(item);
-      case ITEM_TYPES.WEAPON:
-        return this.pickUpWeapon(item);
-      default:
-        return false;
+    if (item.isAmmo) {
+      return this.pickUpAmmo(item);
     }
+
+    if (item.isHealth) {
+      return this.pickUpHealth(item);
+    }
+
+    if (item.isKey) {
+      return this.pickUpKey(item);
+    }
+
+    if (item.isWeapon) {
+      return this.pickUpWeapon(item);
+    }
+
+    return false;
   }
 
   /**
@@ -820,10 +824,10 @@ class Player extends AbstractActor {
     const { weapons, currentWeaponType, health } = this;
 
     return {
-      weapons: Object.keys(weapons).reduce((memo, key) => ({
+      weapons: Object.values(weapons).reduce((memo, weapon) => ([
         ...memo,
-        [key]: weapons[key].props,
-      }), {}),
+        weapon.props,
+      ]), []),
       currentWeaponType,
       health,
     };

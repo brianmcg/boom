@@ -19,6 +19,7 @@ class WeaponItem extends AbstractItem {
     super(other);
 
     this.weapon = weapon;
+    this.isWeapon = true;
     this.title = translate(`world.item.${weapon}`);
   }
 }

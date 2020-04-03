@@ -348,6 +348,10 @@ class Weapon extends Entity {
       ammo,
       maxAmmo,
       range,
+      type,
+      explosionType,
+      sounds,
+      equiped,
     } = this;
 
     return {
@@ -357,6 +361,10 @@ class Weapon extends Entity {
       ammo,
       maxAmmo,
       range,
+      type,
+      explosionType,
+      sounds,
+      equiped,
     };
   }
 }
