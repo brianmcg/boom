@@ -17,7 +17,6 @@ class Projectile extends DynamicEntity {
    * @param  {Number}           options.x         The x coordinate of the projectile.
    * @param  {Number}           options.y         The y coordinate of the projectile
    * @param  {Number}           options.width     The width of the projectile.
-   * @param  {Number}           options.length    The length of the projectile.
    * @param  {Number}           options.height    The height of the projectile.
    * @param  {Number}           options.angle     The angle of the projectile.
    * @param  {Boolean}          options.blocking  Is the projectile blocking.
@@ -30,7 +29,6 @@ class Projectile extends DynamicEntity {
    */
   constructor({
     width = CELL_SIZE / 4,
-    length = CELL_SIZE / 4,
     height = CELL_SIZE / 4,
     power = 0,
     speed = 0,
@@ -40,7 +38,6 @@ class Projectile extends DynamicEntity {
   }) {
     super({
       width,
-      length,
       height,
       blocking: false,
       ...other,

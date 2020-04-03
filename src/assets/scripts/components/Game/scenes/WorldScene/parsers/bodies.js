@@ -46,7 +46,6 @@ const createCell = ({ cell, props }) => {
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       width: CELL_SIZE,
       height: CELL_SIZE,
-      length: CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
       sides,
@@ -62,7 +61,6 @@ const createCell = ({ cell, props }) => {
     sides,
     width: CELL_SIZE,
     height: cell.blocking ? CELL_SIZE : 0,
-    length: CELL_SIZE,
   });
 };
 
@@ -102,7 +100,6 @@ export const createWorld = ({ scene, data, graphics }) => {
       blocking: obstacle.blocking,
       width: Math.ceil(CELL_SIZE * obstacle.width),
       height: Math.ceil(CELL_SIZE * obstacle.height),
-      length: Math.ceil(CELL_SIZE * obstacle.length),
       animated: !!obstacle.animated,
     }),
   ]), []);
@@ -116,7 +113,6 @@ export const createWorld = ({ scene, data, graphics }) => {
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
       width: CELL_SIZE / 2,
-      length: CELL_SIZE / 2,
       height: CELL_SIZE / 2,
     }),
   ]), []);
@@ -130,7 +126,6 @@ export const createWorld = ({ scene, data, graphics }) => {
       y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
       width: Math.ceil(CELL_SIZE * enemy.width),
       height: Math.ceil(CELL_SIZE * enemy.height),
-      length: Math.ceil(CELL_SIZE * enemy.length),
       ...props.enemies[enemy.type],
       spatters,
     }),

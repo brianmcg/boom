@@ -13,7 +13,6 @@ class DynamicBody extends Body {
    * @param  {Number}  options.x        The x coordinate of the dynamic body.
    * @param  {Number}  options.y        The y coordinate of the dynamic body
    * @param  {Number}  options.width    The width of the dynamic body.
-   * @param  {Number}  options.length   The length of the dynamic body.
    * @param  {Number}  options.height   The height of the dynamic body.
    * @param  {Boolean} options.blocking Is the body blocking.
    * @param  {Number}  options.angle    The angle of the dynamic body.
@@ -62,9 +61,9 @@ class DynamicBody extends Body {
     bodies.forEach((body) => {
       if (body.blocking && this.bodyCollision(body)) {
         if (body.y > this.y) {
-          this.y = (body.y - (body.length / 2)) - (this.length / 2);
+          this.y = (body.y - (body.width / 2)) - (this.width / 2);
         } else {
-          this.y = body.y + (body.length / 2) + (this.length / 2);
+          this.y = body.y + (body.width / 2) + (this.width / 2);
         }
       }
     });

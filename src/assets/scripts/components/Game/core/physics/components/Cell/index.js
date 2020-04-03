@@ -10,7 +10,6 @@ class Cell extends Body {
    * @param  {Number}  options.x         The x coordinate of the cell.
    * @param  {Number}  options.y         The y coordinate of the cell
    * @param  {Number}  options.width     The width of the cell.
-   * @param  {Number}  options.length    The length of the cell.
    * @param  {Number}  options.height    The height of the cell.
    * @param  {Boolean} options.blocking  Is the cell blocking.
    */

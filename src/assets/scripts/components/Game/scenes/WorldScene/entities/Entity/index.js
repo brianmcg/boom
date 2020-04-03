@@ -10,7 +10,6 @@ class Entity extends Body {
    * @param  {Number}  options.x        The x coordinate of the entity.
    * @param  {Number}  options.y        The y coordinate of the entity.
    * @param  {Number}  options.width    The width of the entity.
-   * @param  {Number}  options.length   The length of the entity.
    * @param  {Number}  options.height   The height of the entity.
    * @param  {Boolean} options.blocking Is the entity blocking.
    * @param  {Boolean} options.animated Is the entity animated.

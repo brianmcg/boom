@@ -31,7 +31,6 @@ class Body extends EventEmitter {
    * @param  {Number}  options.x         The x coordinate of the body.
    * @param  {Number}  options.y         The y coordinate of the body
    * @param  {Number}  options.width     The width of the body.
-   * @param  {Number}  options.length    The length of the body.
    * @param  {Number}  options.height    The height of the body.
    * @param  {Boolean} options.blocking. Is the body blocking.
    */
@@ -39,7 +38,6 @@ class Body extends EventEmitter {
     x = 0,
     y = 0,
     width = CELL_SIZE * 0.5,
-    length = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
     blocking = true,
   } = {}) {
@@ -49,7 +47,6 @@ class Body extends EventEmitter {
     this.x = x;
     this.y = y;
     this.width = width;
-    this.length = length;
     this.height = height;
     this.blocking = blocking;
   }
@@ -181,9 +178,8 @@ class Body extends EventEmitter {
   get shape() {
     return {
       x: this.x - this.width / 2,
-      y: this.y - this.length / 2,
+      y: this.y - this.width / 2,
       width: this.width,
-      length: this.length,
     };
   }
 }

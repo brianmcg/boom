@@ -8,7 +8,7 @@ const PITCH_VELOCITY = 4;
 const MAX_RECOIL = 196;
 const MIN_RECOIL = 1;
 const RECOIL_FADE = 0.25;
-const MAX_SHAKE = 24;
+const MAX_SHAKE = 8;
 const MIN_SHAKE = 1;
 const SHAKE_FADE = 0.65;
 /**

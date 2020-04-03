@@ -44,7 +44,7 @@ export const createDebugSprites = (world) => {
 
       bodySprites[body.id] = new RectangleSprite({
         width: body.shape.width,
-        height: body.shape.length,
+        height: body.shape.width,
         color,
       });
     }

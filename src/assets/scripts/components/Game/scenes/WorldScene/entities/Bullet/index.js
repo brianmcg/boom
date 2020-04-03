@@ -13,7 +13,6 @@ class Bullet extends Body {
   constructor({ explosionType }) {
     super({
       width: CELL_SIZE / 8,
-      length: CELL_SIZE / 8,
       height: CELL_SIZE / 8,
     });
 

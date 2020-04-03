@@ -10,7 +10,6 @@ class WeaponItem extends AbstractItem {
    * @param  {Number} options.x       The x coordinate of the item.
    * @param  {Number} options.y       The y coordinate of the item
    * @param  {Number} options.width   The width of the item.
-   * @param  {Number} options.length  The length of the item.
    * @param  {Number} options.height  The height of the item.
    * @param  {String} options.texture The texture of item.
    * @param  {String} options.weapon  The weapon this item contains.

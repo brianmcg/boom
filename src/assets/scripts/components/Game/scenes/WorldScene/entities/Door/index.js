@@ -19,7 +19,6 @@ class Door extends DynamicCell {
    * @param  {Number} options.x       The x coordinate of the cell.
    * @param  {Number} options.y       The y coordinate of the cell
    * @param  {Number} options.width   The width of the cell.
-   * @param  {Number} options.length  The length of the cell.
    * @param  {Number} options.height  The height of the cell.
    * @param  {Object} options.sides   The ids of the sides of the cell.
    * @param  {String} options.axis    The axis of the door.
@@ -165,7 +164,7 @@ class Door extends DynamicCell {
    */
   setOpened() {
     const { player } = this.parent;
-    const force = this.speed * 1.5;
+    const force = this.speed * 2;
 
     if (this.setState(STATES.OPENED)) {
       this.blocking = false;

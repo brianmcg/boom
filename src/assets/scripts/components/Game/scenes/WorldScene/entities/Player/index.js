@@ -42,7 +42,6 @@ class Player extends AbstractActor {
    * @param  {Number} options.x               The x coordinate of the player.
    * @param  {Number} options.y               The y coordinate of the player
    * @param  {Number} options.width           The width of the player.
-   * @param  {Number} options.length          The length of the player.
    * @param  {Number} options.height          The height of the player.
    * @param  {Number} options.angle           The angle of the player.
    * @param  {Number} options.maxHealth       The maximum health of the player.

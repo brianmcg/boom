@@ -16,7 +16,6 @@ class AbstractItem extends Entity {
    * @param  {Number} options.x       The x coordinate of the body.
    * @param  {Number} options.y       The y coordinate of the body
    * @param  {Number} options.width   The width of the body.
-   * @param  {Number} options.length  The length of the body.
    * @param  {Number} options.height  The height of the body.
    * @param  {String} options.texture The texture of entity.
    */

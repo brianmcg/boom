@@ -1,7 +1,7 @@
 import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
 
-const MAX_MOVE_X = 8;
+const MAX_MOVE_X = 6;
 
 const MAX_MOVE_Y = 6;
 

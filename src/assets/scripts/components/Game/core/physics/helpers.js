@@ -138,8 +138,8 @@ export const isBodyCollision = (bodyA, bodyB) => {
 
   return shapeA.x < shapeB.x + shapeB.width
     && shapeA.x + shapeA.width > shapeB.x
-    && shapeA.y < shapeB.y + shapeB.length
-    && shapeA.length + shapeA.y > shapeB.y;
+    && shapeA.y < shapeB.y + shapeB.width
+    && shapeA.width + shapeA.y > shapeB.y;
 };
 
 /**
@@ -150,12 +150,7 @@ export const isBodyCollision = (bodyA, bodyB) => {
  * @return {Boolean}            Represents whether a collision has occured.
  */
 export const isRayCollision = (body, { startPoint, endPoint }) => {
-  const {
-    x,
-    y,
-    width,
-    length,
-  } = body.shape;
+  const { x, y, width } = body.shape;
 
   return lineIntersectsLine(
     startPoint,
@@ -166,16 +161,16 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
     startPoint,
     endPoint,
     { x: x + width, y },
-    { x: x + width, y: y + length },
+    { x: x + width, y: y + width },
   ) || lineIntersectsLine(
     startPoint,
     endPoint,
-    { x: x + width, y: y + length },
-    { x, y: y + length },
+    { x: x + width, y: y + width },
+    { x, y: y + width },
   ) || lineIntersectsLine(
     startPoint,
     endPoint,
-    { x, y: y + length },
+    { x, y: y + width },
     { x, y },
   );
 };
@@ -188,12 +183,7 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
  * @return {Boolean}            Represents whether a collision has occured.
  */
 export const getRayCollision = (body, { startPoint, endPoint }) => {
-  const {
-    x,
-    y,
-    width,
-    length,
-  } = body.shape;
+  const { x, y, width } = body.shape;
 
   return [
     getLineLineIntersection(
@@ -206,18 +196,18 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
       startPoint,
       endPoint,
       { x: x + width, y },
-      { x: x + width, y: y + length },
+      { x: x + width, y: y + width },
     ),
     getLineLineIntersection(
       startPoint,
       endPoint,
-      { x: x + width, y: y + length },
-      { x, y: y + length },
+      { x: x + width, y: y + width },
+      { x, y: y + width },
     ),
     getLineLineIntersection(
       startPoint,
       endPoint,
-      { x, y: y + length },
+      { x, y: y + width },
       { x, y },
     ),
   ].reduce((memo, intersection) => {
