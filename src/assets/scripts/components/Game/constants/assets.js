@@ -90,13 +90,3 @@ export const ITEM_TYPES = {
   KEY: 'key',
   WEAPON: 'weapon',
 };
-
-/**
- * The enemy types.
- * @type {Object}
- */
-export const ENEMY_TYPES = {
-  GRUNT: 'grunt',
-  DEMON: 'demon',
-  IMP: 'imp',
-};

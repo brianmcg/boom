@@ -1,4 +1,4 @@
-import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
+import { ITEM_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../entities/Cell';
 import World from '../entities/World';
@@ -20,11 +20,14 @@ const ITEMS = {
   [ITEM_TYPES.WEAPON]: WeaponItem,
 };
 
-const ENEMIES = {
-  [ENEMY_TYPES.GRUNT]: GunEnemy,
-  [ENEMY_TYPES.DEMON]: ChaseEnemy,
-  [ENEMY_TYPES.IMP]: ProjectileEnemy,
-};
+const ENEMY_TYPES = [
+  GunEnemy,
+  ChaseEnemy,
+  ProjectileEnemy,
+].reduce((memo, type) => ({
+  ...memo,
+  [type.name.toLowerCase()]: type,
+}), {});
 
 const createCell = ({ cell, props }) => {
   const sides = Object.keys(cell.sides).reduce((memo, key) => ({
@@ -118,7 +121,7 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const enemies = data.enemies.reduce((memo, enemy) => ([
     ...memo,
-    new ENEMIES[enemy.type]({
+    new ENEMY_TYPES[props.enemies[enemy.type].behaviour]({
       type: enemy.type,
       name: enemy.name,
       x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
