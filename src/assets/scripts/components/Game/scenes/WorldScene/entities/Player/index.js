@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { DEG, SIN, COS } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
-import { ITEM_TYPES, WEAPON_TYPES } from 'game/constants/assets';
+import { ITEM_TYPES } from 'game/constants/assets';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -63,7 +63,7 @@ class Player extends AbstractActor {
       rotAcceleration = 0,
       weapons = {},
       camera = {},
-      currentWeaponType = WEAPON_TYPES.PISTOL,
+      currentWeaponType,
       ...other
     } = options;
 
@@ -78,34 +78,33 @@ class Player extends AbstractActor {
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
     this.heightVelocity = CELL_SIZE / 32;
-    this.currentWeaponType = currentWeaponType;
+    this.currentWeaponType = currentWeaponType || weapons[0].type;
     this.nextWeaponType = null;
     this.actions = {};
     this.vision = 1;
 
     this.camera = new Camera({ player: this, ...camera });
 
-    this.weapons = Object.keys(weapons).reduce((memo, type) => {
+    this.weapons = weapons.reduce((memo, data) => {
       const weapon = new Weapon({
         player: this,
-        ...weapons[type],
-        type,
+        ...data,
       });
 
       weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.type));
 
       return {
         ...memo,
-        [type]: weapon,
+        [data.type]: weapon,
       };
     }, {});
 
     this.messages = [];
 
-    this.bullets = Object.keys(weapons).reduce((memo, key) => ({
+    this.bullets = weapons.reduce((memo, data) => ({
       ...memo,
-      [key]: [...Array(10).keys()].map(() => new Bullet({
-        explosionType: weapons[key].explosionType,
+      [data.type]: [...Array(10).keys()].map(() => new Bullet({
+        explosionType: data.explosionType,
       })),
     }), {});
 
@@ -288,22 +287,23 @@ class Player extends AbstractActor {
    */
   updateAliveWeapon(delta) {
     const {
-      armChaingun,
-      armPistol,
-      armShotgun,
+      armWeaponA,
+      armWeaponB,
+      armWeaponC,
+      armWeaponD,
       attack,
     } = this.actions;
 
-    const { CHAINGUN, PISTOL, SHOTGUN } = WEAPON_TYPES;
-
     if (this.weapon.isUnarmed()) {
       this.armNextWeapon();
-    } else if (armChaingun) {
-      this.selectNextWeapon(CHAINGUN);
-    } else if (armPistol) {
-      this.selectNextWeapon(PISTOL);
-    } else if (armShotgun) {
-      this.selectNextWeapon(SHOTGUN);
+    } else if (armWeaponA) {
+      this.selectNextWeapon(0);
+    } else if (armWeaponB) {
+      this.selectNextWeapon(1);
+    } else if (armWeaponC) {
+      this.selectNextWeapon(2);
+    } else if (armWeaponD) {
+      this.selectNextWeapon(3);
     } else if (attack) {
       this.useWeapon();
     }
@@ -522,11 +522,11 @@ class Player extends AbstractActor {
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
    */
-  selectNextWeapon(nextWeaponType) {
-    const weapon = this.weapons[nextWeaponType];
+  selectNextWeapon(index) {
+    const weapon = Object.values(this.weapons)[index];
 
-    if (weapon.isEquiped() && this.currentWeaponType !== nextWeaponType) {
-      this.nextWeaponType = nextWeaponType;
+    if (weapon && weapon.isEquiped() && this.currentWeaponType !== weapon.type) {
+      this.nextWeaponType = weapon.type;
       this.weapon.setUnarming();
     }
   }
@@ -675,10 +675,11 @@ class Player extends AbstractActor {
    */
   pickUpWeapon({ weapon }) {
     const pickedUpWeapon = this.weapons[weapon];
+    const index = Object.keys(this.weapons).indexOf(weapon);
 
     if (!pickedUpWeapon.isEquiped()) {
       pickedUpWeapon.setEquiped(true);
-      this.selectNextWeapon(weapon);
+      this.selectNextWeapon(index);
 
       return true;
     }

@@ -71,16 +71,6 @@ export const SCENE_TYPES = {
 };
 
 /**
- * The weapon types
- * @type {Object}
- */
-export const WEAPON_TYPES = {
-  PISTOL: 'pistol',
-  SHOTGUN: 'shotgun',
-  CHAINGUN: 'chaingun',
-};
-
-/**
  * The item types.
  * @type {Object}
  */
