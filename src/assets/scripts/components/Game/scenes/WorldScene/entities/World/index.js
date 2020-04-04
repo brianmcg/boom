@@ -1,10 +1,11 @@
+import { CELL_SIZE } from 'game/constants/config';
 import { World as PhysicsWorld } from 'game/core/physics';
 
-const MAX_GUN_FLASH_AMOUNT = 2;
+const MAX_GUN_FLASH_AMOUNT = 1;
 
 const ITEM_FLASH_AMOUNT = 0.35;
 
-const GUN_FLASH_DECREMENT = 0.2;
+const EXPLOSION_FLASH_DECREMENT = 0.2;
 
 const ITEM_FLASH_DECREMENT = 0.01;
 
@@ -50,9 +51,9 @@ class World extends PhysicsWorld {
 
     this.baseBrightness = brightness;
     this.brightness = brightness;
-    this.visibility = visibility;
+    this.visibility = visibility * CELL_SIZE;
 
-    this.gunFlash = false;
+    this.explosionFlash = false;
     this.itemFlash = false;
 
     this.explosions = [];
@@ -112,8 +113,8 @@ class World extends PhysicsWorld {
 
     this.explosions.forEach(e => e.update(delta));
 
-    if (this.gunFlash) {
-      this.brightness -= GUN_FLASH_DECREMENT * delta;
+    if (this.explosionFlash) {
+      this.brightness -= EXPLOSION_FLASH_DECREMENT * delta;
     }
 
     if (this.itemFlash) {
@@ -122,7 +123,7 @@ class World extends PhysicsWorld {
 
     if (this.brightness <= this.baseBrightness) {
       this.itemFlash = false;
-      this.gunFlash = false;
+      this.explosionFlash = false;
       this.brightness = this.baseBrightness;
     }
 
@@ -157,15 +158,15 @@ class World extends PhysicsWorld {
    * Set the brightness and enabled gun flash.
    * @param {Number} power The power of the gun shot.
    */
-  setGunFlash(power) {
+  onExplosion(power) {
     this.brightness += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
-    this.gunFlash = true;
+    this.explosionFlash = true;
   }
 
   /**
    * Set the brightness and enabled item flash.
    */
-  setItemFlash() {
+  onItemPickup() {
     this.brightness += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
   }

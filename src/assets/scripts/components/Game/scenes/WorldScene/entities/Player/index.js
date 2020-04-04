@@ -329,7 +329,7 @@ class Player extends AbstractActor {
     if (this.isBodyCollision(item)) {
       if (item.setColliding()) {
         if (this.pickUp(item)) {
-          this.parent.setItemFlash();
+          this.parent.onItemPickup();
           this.parent.remove(item);
           item.setRemoved();
         } else {
@@ -620,7 +620,7 @@ class Player extends AbstractActor {
 
       this.bullets[this.currentWeaponType].push(bullet);
       this.camera.setRecoil(recoil);
-      this.parent.setGunFlash(power);
+      this.parent.onExplosion(power);
       this.emitSound(this.weapon.sounds.fire);
     }
   }
@@ -638,11 +638,8 @@ class Player extends AbstractActor {
       this.setDying();
       this.emitSound(this.sounds.death);
     } else {
-      this.camera.setShake(amount);
-      this.camera.setRecoil(amount * 4, {
-        down: true,
-      });
-
+      this.shake(amount);
+      this.recoil(amount * 4, { direction: -1 });
       this.emitSound(this.sounds.pain);
     }
   }
@@ -752,6 +749,15 @@ class Player extends AbstractActor {
    */
   shake(amount) {
     this.camera.setShake(amount);
+  }
+
+  /**
+   * Recoil the player.
+   * @param  {Number} amount  The amount to recoil.
+   * @param  {Object} options The recoil options.
+   */
+  recoil(amount, options) {
+    this.camera.setRecoil(amount, options);
   }
 
   /**

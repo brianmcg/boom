@@ -140,8 +140,8 @@ class Camera {
    * @param {Number}  amount       The recoil amount.
    * @param {Boolean} options.down Is the recoil downwards.
    */
-  setRecoil(amount, { down } = {}) {
-    this.recoilDirection = down ? -1 : 1;
+  setRecoil(amount, { direction = 1 } = {}) {
+    this.recoilDirection = direction;
     this.recoilAmount = Math.min(MAX_RECOIL, amount);
   }
 }
