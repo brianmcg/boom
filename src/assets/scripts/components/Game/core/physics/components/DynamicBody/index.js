@@ -1,5 +1,6 @@
 import Body from '../Body';
 import { COS, SIN, DEG } from '../../constants';
+import { isFacing } from '../../helpers';
 
 const DEG_360 = DEG[360];
 
@@ -45,7 +46,7 @@ class DynamicBody extends Body {
 
     // Check for x axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.bodyCollision(body)) {
+      if (body.blocking && this.isBodyCollision(body)) {
         if (body.x > this.x) {
           this.x = (body.x - (body.width / 2)) - (this.width / 2);
         } else {
@@ -59,7 +60,7 @@ class DynamicBody extends Body {
 
     // Check for y axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.bodyCollision(body)) {
+      if (body.blocking && this.isBodyCollision(body)) {
         if (body.y > this.y) {
           this.y = (body.y - (body.width / 2)) - (this.width / 2);
         } else {
@@ -70,6 +71,15 @@ class DynamicBody extends Body {
 
     // Mark current cell with id
     this.parent.getCell(this.gridX, this.gridY).add(this);
+  }
+
+  /**
+   * Check if the body is facing another
+   * @param  {Body}  body The body.
+   * @return {Boolean}    The check is confirmed.
+   */
+  isFacing(body) {
+    return isFacing(this, body);
   }
 }
 

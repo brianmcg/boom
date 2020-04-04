@@ -1,5 +1,4 @@
 import { CELL_SIZE, UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
-import { atan2 } from 'game/core/physics';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -86,7 +85,7 @@ class AbstractEnemy extends AbstractActor {
   update(delta) {
     const { player } = this.parent;
 
-    this.distanceToPlayer = this.distanceTo(player);
+    this.distanceToPlayer = this.getDistanceTo(player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       this.face(player);
@@ -275,17 +274,6 @@ class AbstractEnemy extends AbstractActor {
     const { player } = this.parent;
 
     return player.isAlive() && distance > this.distanceToPlayer;
-  }
-
-  /**
-   * Set the enemy angle to face a body.
-   * @param  {Body} body The body to face.
-   */
-  face(body) {
-    const dx = body.x - this.x;
-    const dy = body.y - this.y;
-
-    this.angle = atan2(dy, dx);
   }
 
   /**

@@ -85,7 +85,7 @@ class Projectile extends DynamicEntity {
     this.source.projectiles.push(this);
 
     this.parent.addExplosion(new Explosion({
-      id: this.id,
+      sourceId: this.id,
       x: this.x,
       y: this.y,
       type: this.explosionType,

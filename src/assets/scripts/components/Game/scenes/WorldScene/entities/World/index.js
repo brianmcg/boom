@@ -1,6 +1,6 @@
 import { World as PhysicsWorld } from 'game/core/physics';
 
-const MAX_GUN_FLASH_AMOUNT = 0.8;
+const MAX_GUN_FLASH_AMOUNT = 2;
 
 const ITEM_FLASH_AMOUNT = 0.35;
 

@@ -15,18 +15,19 @@ class Explosion {
    * @param  {World}  options.world The world.
    */
   constructor({
-    id,
+    sourceId,
     type,
     x,
     y,
     parent,
   }) {
-    this.id = id;
     this.x = x;
     this.y = y;
+    this.sourceId = sourceId;
     this.timer = 0;
     this.parent = parent;
     this.type = type;
+    this.isTriggered = true;
   }
 
   /**
@@ -34,21 +35,14 @@ class Explosion {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    if (this.isStarted) {
-      this.timer += TIME_STEP * delta;
+    this.isTriggered = false;
 
-      if (this.timer >= TIME_TO_LIVE) {
-        this.timer = 0;
-        this.parent.removeExplosion(this);
-      }
+    this.timer += TIME_STEP * delta;
+
+    if (this.timer >= TIME_TO_LIVE) {
+      this.timer = 0;
+      this.parent.removeExplosion(this);
     }
-  }
-
-  /**
-   * Start the explosion.
-   */
-  start() {
-    this.isStarted = true;
   }
 }
 

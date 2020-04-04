@@ -38,6 +38,14 @@ class AbstractActor extends DynamicEntity {
       throw new TypeError('You have to implement this method.');
     }
   }
+
+  /**
+   * Set the actor angle to face a body.
+   * @param  {Body} body The body to face.
+   */
+  face(body) {
+    this.angle = this.getAngleTo(body);
+  }
 }
 
 export default AbstractActor;

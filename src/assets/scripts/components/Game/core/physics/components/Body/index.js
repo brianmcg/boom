@@ -3,9 +3,10 @@ import { CELL_SIZE } from 'game/constants/config';
 import {
   isBodyCollision,
   isRayCollision,
-  castRay,
-  distanceBetween,
+  getDistanceBetween,
   getRayCollision,
+  getAngleBetween,
+  castRay,
 } from '../../helpers';
 
 const EVENTS = {
@@ -98,11 +99,29 @@ class Body extends EventEmitter {
   }
 
   /**
+   * Get the distance to another body.
+   * @param  {Body} body The other body.
+   * @return {Boolean}   The distance result.
+   */
+  getDistanceTo(body) {
+    return getDistanceBetween(this, body);
+  }
+
+  /**
+   * Get angle to a body.
+   * @param  {Body} body The body.
+   * @return {Number}    The angle to the body.
+   */
+  getAngleTo(body) {
+    return getAngleBetween(this, body);
+  }
+
+  /**
    * Check for collision with another body.
    * @param  {Body}    body The other body.
    * @return {Boolean}      Collision has occurred.
    */
-  bodyCollision(body) {
+  isBodyCollision(body) {
     const isCollision = isBodyCollision(this, body);
 
     if (isCollision) {
@@ -137,15 +156,6 @@ class Body extends EventEmitter {
    */
   castRay(rayAngle) {
     return castRay(this, rayAngle);
-  }
-
-  /**
-   * Get the distance to another body.
-   * @param  {Body} body The other body.
-   * @return {Boolean}   The distance result.
-   */
-  distanceTo(body) {
-    return distanceBetween(this, body);
   }
 
   /**

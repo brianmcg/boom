@@ -35,7 +35,7 @@ let offsetRatio;
  * @param  {Body}   bodyB The second body
  * @return {Number}       The distance result.
  */
-export const distanceBetween = (bodyA, bodyB) => {
+export const getDistanceBetween = (bodyA, bodyB) => {
   const dx = bodyA.x - bodyB.x;
   const dy = bodyA.y - bodyB.y;
 
@@ -61,13 +61,13 @@ const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   if (l2p1.x === l2p2.x) {
     if (l2p1.y < l2p2.y) {
       if (y >= l2p1.y && y <= l2p2.y) {
-        return { x, y, distance: distanceBetween(l1p1, { x, y }) };
+        return { x, y, distance: getDistanceBetween(l1p1, { x, y }) };
       }
       return null;
     }
 
     if (y >= l2p2.y && y <= l2p1.y) {
-      return { x, y, distance: distanceBetween(l1p1, { x, y }) };
+      return { x, y, distance: getDistanceBetween(l1p1, { x, y }) };
     }
 
     return null;
@@ -76,13 +76,13 @@ const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   if (l2p1.y === l2p2.y) {
     if (l2p1.x < l2p2.x) {
       if (x >= l2p1.x && x <= l2p2.x) {
-        return { x, y, distance: distanceBetween(l1p1, { x, y }) };
+        return { x, y, distance: getDistanceBetween(l1p1, { x, y }) };
       }
       return null;
     }
 
     if (x >= l2p2.x && x <= (l2p1.x)) {
-      return { x, y, distance: distanceBetween(l1p1, { x, y }) };
+      return { x, y, distance: getDistanceBetween(l1p1, { x, y }) };
     }
 
     return null;
@@ -228,6 +228,31 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
 };
 
 /**
+ * Get angle between two bodies.
+ * @param  {Body} bodyA The first body.
+ * @param  {Body} bodyB The second body.
+ * @return {Number}     The angle between two bodies.
+ */
+export const getAngleBetween = (bodyA, bodyB) => {
+  const dx = bodyB.x - bodyA.x;
+  const dy = bodyB.y - bodyA.y;
+
+  return atan2(dy, dx);
+};
+
+/**
+ * Check if a dynamic body is facing a body.
+ * @param  {Body} dynamicBody The dynamic body.
+ * @param  {Body} body        The body.
+ * @return {Boolean}          The result of the check.
+ */
+export const isFacing = (dynamicBody, body) => {
+  const angle = (getAngleBetween(dynamicBody, body) - dynamicBody.angle + DEG_360) % DEG_360;
+
+  return angle > DEG_270 || angle < DEG_90;
+};
+
+/**
  * Cast a ray from a caster.
  * @param  {Number}         options.rayAngle  The optional ray angle.
  * @param  {DynamicEntity}  options.caster    The caster entity.
@@ -247,7 +272,7 @@ export const castRay = (caster, rayAngle) => {
   const encounteredBodies = {};
 
   parent.getCell(gridX, gridY).bodies.forEach((body) => {
-    if (body.id !== id) {
+    if (body.id !== id && isFacing(caster, body)) {
       encounteredBodies[body.id] = body;
     }
   });
@@ -400,7 +425,7 @@ export const castRay = (caster, rayAngle) => {
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     Object.values(encounteredBodies).forEach((body) => {
-      if (distanceBetween(caster, body) > distToHorizontalGridBeingHit) {
+      if (getDistanceBetween(caster, body) > distToHorizontalGridBeingHit) {
         delete encounteredBodies[body.id];
       }
     });
@@ -425,7 +450,7 @@ export const castRay = (caster, rayAngle) => {
   }
 
   Object.values(encounteredBodies).forEach((body) => {
-    if (distanceBetween(caster, body) > distToVerticalGridBeingHit) {
+    if (getDistanceBetween(caster, body) > distToVerticalGridBeingHit) {
       delete encounteredBodies[body.id];
     }
   });

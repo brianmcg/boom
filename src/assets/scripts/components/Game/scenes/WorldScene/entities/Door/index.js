@@ -152,7 +152,7 @@ class Door extends DynamicCell {
 
     if (stateChanged) {
       this.emitSound(this.sounds.open, {
-        distance: this.distanceTo(this.parent.player),
+        distance: this.getDistanceTo(this.parent.player),
       });
     }
 
@@ -184,7 +184,7 @@ class Door extends DynamicCell {
       this.blocking = true;
 
       this.emitSound(this.sounds.close, {
-        distance: this.distanceTo(this.parent.player),
+        distance: this.getDistanceTo(this.parent.player),
       });
     }
 

@@ -60,7 +60,6 @@ class Player extends AbstractActor {
       acceleration = 0,
       rotAcceleration = 0,
       weapons = {},
-      camera = {},
       currentWeaponType,
       ...other
     } = options;
@@ -327,7 +326,7 @@ class Player extends AbstractActor {
    * @param  {Item} item The item.
    */
   updateItemInteraction(item) {
-    if (this.bodyCollision(item)) {
+    if (this.isBodyCollision(item)) {
       if (item.setColliding()) {
         if (this.pickUp(item)) {
           this.parent.setItemFlash();
@@ -595,7 +594,7 @@ class Player extends AbstractActor {
         this.parent.addExplosion(new Explosion({
           x: point.x + COS[angle] * (bullet.width / 2),
           y: point.y + SIN[angle] * (bullet.width / 2),
-          id: bullet.id,
+          sourceId: bullet.id,
           type: bullet.explosionType,
           parent: this.parent,
         }));
@@ -613,7 +612,7 @@ class Player extends AbstractActor {
         this.parent.addExplosion(new Explosion({
           x: endPoint.x + COS[angle] * (bullet.width / 2),
           y: endPoint.y + SIN[angle] * (bullet.width / 2),
-          id: bullet.id,
+          sourceId: bullet.id,
           type: bullet.explosionType,
           parent: this.parent,
         }));

@@ -4,7 +4,6 @@ import {
   COS,
   TAN,
   SIN,
-  atan2,
 } from 'game/core/physics';
 import { SCREEN, CELL_SIZE, FOV } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
@@ -12,9 +11,7 @@ import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
-const DEG_90 = DEG[90];
 const DEG_360 = DEG[360];
-const DEG_270 = DEG[270];
 const HALF_FOV = DEG[FOV / 2];
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
@@ -23,8 +20,6 @@ const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 let spriteAngle;
 let body;
 let centerY;
-let dx;
-let dy;
 let gridX;
 let gridY;
 let mapX;
@@ -187,49 +182,8 @@ class POVContainer extends Container {
       body = totalEncounteredBodies[id];
 
       if (body) {
-        dx = body.x - player.x;
-        dy = body.y - player.y;
-        spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
-
-        if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
-          actualDistance = Math.sqrt(dx * dx + dy * dy);
-          correctedDistance = COS[spriteAngle] * actualDistance;
-          spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-          spriteWidth = CELL_SIZE * spriteScale;
-          spriteHeight = CELL_SIZE * spriteScale;
-          spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-          sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-          sprite.y = centerY
-            - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
-          sprite.width = spriteWidth;
-          sprite.height = spriteHeight;
-          sprite.zOrder = actualDistance;
-          sprite.tint = this.calculateTint(actualDistance);
-          this.mapContainer.addChild(sprite);
-        } else {
-          this.mapContainer.removeChild(sprite);
-        }
-      } else {
-        this.mapContainer.removeChild(sprite);
-      }
-    });
-
-    // Update effects.
-    explosions.forEach((explosion) => {
-      const { id, x, y } = explosion;
-
-      sprite = effects.explosions[id];
-      dx = x - player.x;
-      dy = y - player.y;
-      spriteAngle = (atan2(dy, dx) - player.viewAngle + DEG_360) % DEG_360;
-
-      if (!explosion.isStarted) {
-        explosion.start();
-        this.mapContainer.addChild(sprite);
-      }
-
-      if (spriteAngle > DEG_270 || spriteAngle < DEG_90) {
-        actualDistance = Math.sqrt(dx * dx + dy * dy);
+        spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(body);
         correctedDistance = COS[spriteAngle] * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteWidth = CELL_SIZE * spriteScale;
@@ -242,6 +196,38 @@ class POVContainer extends Container {
         sprite.height = spriteHeight;
         sprite.zOrder = actualDistance;
         sprite.tint = this.calculateTint(actualDistance);
+        this.mapContainer.addChild(sprite);
+      } else {
+        this.mapContainer.removeChild(sprite);
+      }
+    });
+
+    // Update effects.
+    explosions.forEach((explosion) => {
+      sprite = effects.explosions[explosion.sourceId];
+
+      if (explosion.isTriggered) {
+        this.mapContainer.addChild(sprite);
+      }
+
+      if (player.isFacing(explosion)) {
+        spriteAngle = (player.getAngleTo(explosion) - player.viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(explosion);
+        correctedDistance = COS[spriteAngle] * actualDistance;
+        spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+        spriteWidth = CELL_SIZE * spriteScale;
+        spriteHeight = CELL_SIZE * spriteScale;
+        spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+        sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+        sprite.y = centerY
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+        sprite.width = spriteWidth;
+        sprite.height = spriteHeight;
+        sprite.zOrder = actualDistance;
+        sprite.tint = this.calculateTint(actualDistance);
+        sprite.visible = true;
+      } else {
+        sprite.visible = false;
       }
     });
 

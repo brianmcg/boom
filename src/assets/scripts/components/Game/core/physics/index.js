@@ -3,7 +3,6 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
-import { atan2 } from './helpers';
 import {
   COS,
   SIN,
@@ -52,8 +51,4 @@ export {
    * The degrees table.
    */
   DEG,
-  /**
-   * The atan2 function.
-   */
-  atan2,
 };

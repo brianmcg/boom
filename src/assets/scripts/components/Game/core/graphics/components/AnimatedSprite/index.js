@@ -40,7 +40,21 @@ class AnimatedSprite extends PixiAnimatedSprite {
   }
 
   /**
-   * Check id the sprite should be updated.
+   * Show the sprite.
+   */
+  show() {
+    this.visible = true;
+  }
+
+  /**
+   * Hide the sprite.
+   */
+  hide() {
+    this.visible = false;
+  }
+
+  /**
+   * Check if the sprite should be updated.
    * @return {Boolean} Should sprite be updated.
    */
   isUpdateable() {
