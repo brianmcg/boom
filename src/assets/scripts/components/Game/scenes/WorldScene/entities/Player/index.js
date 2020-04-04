@@ -638,7 +638,6 @@ class Player extends AbstractActor {
       this.setDying();
       this.emitSound(this.sounds.death);
     } else {
-      this.shake(amount);
       this.recoil(amount * 4, { direction: -1 });
       this.emitSound(this.sounds.pain);
     }

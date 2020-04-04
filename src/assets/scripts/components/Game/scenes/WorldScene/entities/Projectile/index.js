@@ -51,6 +51,7 @@ class Projectile extends DynamicEntity {
     this.onCollisionEvent((body) => {
       this.setColliding();
       this.parent.onExplosion(this.power);
+      this.parent.player.shake(this.power);
 
       if (body.isPlayer) {
         body.hurt(this.power);
