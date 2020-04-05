@@ -47,17 +47,11 @@ class TextSprite extends BitmapText {
   }
 
   /**
-   * Show the sprite.
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
    */
-  show() {
-    this.visible = true;
-  }
-
-  /**
-   * Hide the sprite.
-   */
-  hide() {
-    this.visible = false;
+  updatePauseEffect(value) {
+    this.setScale(1 - value);
   }
 }
 

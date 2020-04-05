@@ -9,6 +9,7 @@ const createPromptSprite = text => (
     font: FONT_SIZES.SMALL,
     text,
     color: RED,
+    anchor: 0.5,
   })
 );
 

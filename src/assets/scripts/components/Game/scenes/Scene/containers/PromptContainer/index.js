@@ -5,9 +5,9 @@ const STATIC_INTERVAL = 100;
 
 const PADDING = 8;
 
-const MAX_RATIO = 1.15;
+const MAX_SCALE = 1.15;
 
-const RATIO_DIVISOR = 0.0075;
+const SCALE_INCREMENT = 0.0075;
 
 const STATES = {
   FADING_IN: 'prompt:fading:in',
@@ -26,13 +26,13 @@ class PromptContainer extends Container {
   constructor(sprite) {
     super();
 
-    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
+    sprite.x = (SCREEN.WIDTH / 2);
     sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
 
     this.minHeight = sprite.height;
     this.minWidth = sprite.width;
 
-    this.ratio = 1;
+    this.scaleFactor = 1;
     this.timer = 0;
 
     this.addChild(sprite);
@@ -59,6 +59,8 @@ class PromptContainer extends Container {
       default:
         break;
     }
+
+    this.sprite.setScale(this.scaleFactor);
   }
 
   /**
@@ -66,10 +68,10 @@ class PromptContainer extends Container {
    * @param  {Number} delta     The delta time.
    */
   updateFadingIn(delta) {
-    this.ratio += delta * RATIO_DIVISOR;
+    this.scaleFactor += delta * SCALE_INCREMENT;
 
-    if (this.ratio >= MAX_RATIO) {
-      this.ratio = MAX_RATIO;
+    if (this.scaleFactor >= MAX_SCALE) {
+      this.scaleFactor = MAX_SCALE;
 
       this.setStatic();
     }
@@ -93,31 +95,13 @@ class PromptContainer extends Container {
    * @param  {Number} delta     The delta time.
    */
   updateFadingOut(delta) {
-    this.ratio -= delta * RATIO_DIVISOR * 1.5;
+    this.scaleFactor -= delta * SCALE_INCREMENT * 1.5;
 
-    if (this.ratio <= 1) {
-      this.ratio = 1;
+    if (this.scaleFactor <= 1) {
+      this.scaleFactor = 1;
 
       this.setFadingIn();
     }
-  }
-
-  /**
-   * Animate the container.
-   */
-  animate() {
-    const {
-      sprite,
-      minWidth,
-      minHeight,
-      ratio,
-    } = this;
-
-    sprite.width = minWidth * ratio;
-    sprite.height = minHeight * ratio;
-
-    sprite.x = (SCREEN.WIDTH / 2) - (sprite.width / 2);
-    sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
   }
 
   /**
@@ -153,20 +137,6 @@ class PromptContainer extends Container {
     }
 
     return false;
-  }
-
-  /**
-   * Show the container.
-   */
-  play() {
-    this.visible = true;
-  }
-
-  /**
-   * Handle state change to paused.
-   */
-  stop() {
-    this.visible = false;
   }
 }
 

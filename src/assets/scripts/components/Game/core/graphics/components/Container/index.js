@@ -68,6 +68,14 @@ class Container extends PixiContainer {
   }
 
   /**
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
+   */
+  updatePauseEffect(value) {
+    this.children.forEach(child => child.updatePauseEffect && child.updatePauseEffect(value));
+  }
+
+  /**
    * Animate the container children.
    */
   animate() {

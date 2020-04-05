@@ -176,6 +176,7 @@ class Scene extends Container {
 
     this.menuContainer.updatePauseEffect(this.pauseEffect);
     this.mainContainer.updatePauseEffect(this.pauseEffect);
+    this.promptContainer.updatePauseEffect(this.pauseEffect);
   }
 
   /**
@@ -212,6 +213,7 @@ class Scene extends Container {
 
     this.mainContainer.updatePauseEffect(this.pauseEffect);
     this.menuContainer.updatePauseEffect(this.pauseEffect);
+    this.promptContainer.updatePauseEffect(this.pauseEffect);
   }
 
 

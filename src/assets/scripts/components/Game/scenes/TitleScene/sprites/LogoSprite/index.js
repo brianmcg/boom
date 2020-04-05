@@ -1,15 +1,7 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { TIME_STEP, SCREEN } from 'game/constants/config';
 
-const INTERVAL = 5000;
-
-const SCALE_INCREMENT = 0.075;
-
-const STATES = {
-  FADING_IN: 'logo:fading:in',
-  STATIC: 'logo:static',
-  FADING_OUT: 'logo:fading:out',
-};
+const INTERVAL = 4000;
 
 /**
  * Class representing a logo sprite.
@@ -28,6 +20,8 @@ class LogoSprite extends AnimatedSprite {
     this.maxScale = SCREEN.HEIGHT / this.height / 2;
     this.timer = 0;
     this.anchor.set(0.5);
+
+    this.setScale(this.maxScale);
 
     this.onLoop = () => {
       this.animationEnabled = true;
@@ -52,17 +46,11 @@ class LogoSprite extends AnimatedSprite {
   }
 
   /**
-   * Play the sprite.
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
    */
-  play() {
-    this.visible = true;
-  }
-
-  /**
-   * Stop the sprite.
-   */
-  stop() {
-    this.visible = false;
+  updatePauseEffect(value) {
+    this.setScale((1 - value) * this.maxScale);
   }
 }
 

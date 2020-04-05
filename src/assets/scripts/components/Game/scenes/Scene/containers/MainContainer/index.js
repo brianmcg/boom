@@ -72,10 +72,12 @@ class MainContainer extends Container {
   }
 
   /**
-   * Update the paused effect.
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
    */
-  updatePauseEffect(amount = 0) {
-    this.setPixelSize(PAUSE_PIXEL_SIZE * amount);
+  updatePauseEffect(value = 0) {
+    super.updatePauseEffect(value);
+    this.setPixelSize(PAUSE_PIXEL_SIZE * value);
   }
 
   /**
