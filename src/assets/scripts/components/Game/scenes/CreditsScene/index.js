@@ -19,7 +19,7 @@ class CreditsScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: this.hideMenu.bind(this),
+      onSelect: this.setRunning.bind(this),
     }, {
       label: translate('scene.menu.quit'),
       onSelect: this.triggerQuit.bind(this),

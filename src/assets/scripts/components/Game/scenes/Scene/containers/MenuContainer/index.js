@@ -6,18 +6,7 @@ const SCREEN_PADDING = 6;
 
 const ICON_PADDING_RIGHT = 5;
 
-const FADE_INCREMENT = 0.1;
-
 const MAX_ALPHA = 0.7;
-
-const SCALE_INCREMENT = 0.1;
-
-const STATES = {
-  FADING_IN: 'menu:fading:in',
-  GROWING: 'menu:growing',
-  SHRINKING: 'menu:shrinking',
-  FADING_OUT: 'menu:fading:out',
-};
 
 /**
  * A class representing a menu container.
@@ -33,12 +22,16 @@ class MenuContainer extends Container {
 
     this.sprites = sprites;
 
-    const { icon, labels } = this.sprites;
+    const { icon, labels, background } = this.sprites;
 
     this.currentIndex = 0;
     this.items = items;
+    this.scaleFactor = 0;
+    this.alphaFactor = 0;
+    this.selectedOption = null;
+    this.currentIndex = 0;
 
-    this.addChild(sprites.background);
+    this.addChild(background);
 
     if (this.items.length) {
       this.addChild(icon);
@@ -50,97 +43,10 @@ class MenuContainer extends Container {
 
       sprite.x = (SCREEN.WIDTH / 2);
       sprite.y = ((SCREEN.HEIGHT / 2) - (totalHeight / 2))
-        + (index * sprite.height)
-        + (index * SCREEN_PADDING);
+        + (index * sprite.height) + (index * SCREEN_PADDING);
 
       this.addChild(sprite);
     });
-
-    this.on('added', this.setFadingIn.bind(this));
-  }
-
-  /**
-   * Update the menu container.
-   * @param  {Number} delta The delta time.
-   */
-  update(delta) {
-    super.update(delta);
-
-    switch (this.state) {
-      case STATES.FADING_IN:
-        this.updateFadingIn(delta);
-        break;
-      case STATES.GROWING:
-        this.updateGrowing(delta);
-        break;
-      case STATES.SHRINKING:
-        this.updateShrinking(delta);
-        break;
-      case STATES.FADING_OUT:
-        this.updateFadingOut(delta);
-        break;
-      default:
-        break;
-    }
-  }
-
-  /**
-   * Update in the fading in state.
-   * @param  {Number} delta The delta time.
-   */
-  updateFadingIn(delta) {
-    this.fade += FADE_INCREMENT * delta;
-
-    if (this.fade >= 1) {
-      this.fade = 1;
-      this.setGrowing();
-    }
-  }
-
-  /**
-   * Update in the growing state.
-   * @param  {Number} delta The delta time.
-   */
-  updateGrowing(delta) {
-    this.scaleFactor += delta * SCALE_INCREMENT;
-
-    if (this.scaleFactor >= 1) {
-      this.scaleFactor = 1;
-
-      this.setState(null);
-    }
-  }
-
-  /**
-   * Update in the shrinking state.
-   * @param  {Number} delta The delta time.
-   */
-  updateShrinking(delta) {
-    this.scaleFactor -= delta * SCALE_INCREMENT;
-
-    if (this.scaleFactor <= 0) {
-      this.scaleFactor = 0;
-
-      this.setFadingOut();
-    }
-  }
-
-  /**
-   * Update in the fading out state.
-   * @param  {Number} delta The delta time.
-   */
-  updateFadingOut(delta) {
-    this.fade -= FADE_INCREMENT * delta;
-
-    if (this.fade <= 0) {
-      this.fade = 0;
-      this.parent.setRunning();
-      this.parent.removeChild(this);
-
-      if (this.selectedOption) {
-        this.selectedOption();
-      }
-    }
   }
 
   /**
@@ -172,11 +78,21 @@ class MenuContainer extends Container {
   /**
    * Select the current menu item.
    */
-  select() {
+  getHighlightedOption() {
     if (this.items.length) {
-      this.selectedOption = this.items[this.currentIndex].onSelect;
-      this.setShrinking();
+      return this.items[this.currentIndex].onSelect;
     }
+
+    return null;
+  }
+
+  /**
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
+   */
+  updatePauseEffect(value) {
+    this.alphaFactor = value * MAX_ALPHA;
+    this.scaleFactor = value;
   }
 
   /**
@@ -186,7 +102,7 @@ class MenuContainer extends Container {
     const { icon, labels, background } = this.sprites;
 
     icon.setScale(this.scaleFactor);
-    background.alpha = this.fade * MAX_ALPHA;
+    background.alpha = this.alphaFactor;
 
     Object.values(labels).forEach((child, index) => {
       child.setScale(this.scaleFactor);
@@ -199,55 +115,6 @@ class MenuContainer extends Container {
         child.tint = WHITE;
       }
     });
-  }
-
-  /**
-   * Set to the fading in state.
-   */
-  setFadingIn() {
-    const stateChange = this.setState(STATES.FADING_IN);
-
-    if (stateChange) {
-      this.selectedOption = null;
-      this.currentIndex = 0;
-      this.fade = 0;
-      this.scaleFactor = 0;
-    }
-
-    return stateChange;
-  }
-
-  /**
-   * Set to the fading out state.
-   */
-  setFadingOut() {
-    return this.setState(STATES.FADING_OUT);
-  }
-
-  /**
-   * Set to the growing state.
-   */
-  setGrowing() {
-    return this.setState(STATES.GROWING);
-  }
-
-  /**
-   * Set to the shrinking state.
-   */
-  setShrinking() {
-    return this.setState(STATES.SHRINKING);
-  }
-
-  /**
-   * Set the state.
-   * @param {String} state The new state.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-      return true;
-    }
-    return false;
   }
 }
 

@@ -26,60 +26,12 @@ class LogoSprite extends AnimatedSprite {
     });
 
     this.maxScale = SCREEN.HEIGHT / this.height / 2;
-
-    // this.scaleFactor = 0;
-    this.setScale(1);
     this.timer = 0;
-    this.onLoop = this.handleOnLoop.bind(this);
     this.anchor.set(0.5);
-    this.setFadinIn();
-  }
 
-  /**
-   * Handle the on loop event.
-   */
-  handleOnLoop() {
-    this.isInterval = true;
-  }
-
-  /**
-   * Update the sprite.
-   * @param  {Number} delta The delta time.
-   */
-  // update(delta) {
-  //   switch (this.state) {
-  //     case STATES.FADING_IN:
-  //       this.updateFadingIn(delta);
-  //       break;
-  //     case STATES.STATIC:
-  //       this.updateStatic(delta);
-  //       break;
-  //     this.updateStatic(delta);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  /**
-   * Update the spritein the fading in state.
-   * @param  {Number} delta The delta time.
-   */
-  updateFadingIn(delta) {
-    this.scaleFactor += SCALE_INCREMENT * delta;
-
-    if (this.scaleFactor >= this.maxScale) {
-      this.scaleFactor = this.maxScale;
-      this.setStatic();
-    }
-
-    this.scale.x = this.scaleFactor;
-    this.scale.y = this.scaleFactor;
-  }
-
-  setScale(amount) {
-    this.scale.x = amount;
-    this.scale.y = amount;
+    this.onLoop = () => {
+      this.animationEnabled = true;
+    };
   }
 
   /**
@@ -87,12 +39,12 @@ class LogoSprite extends AnimatedSprite {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    if (this.isInterval) {
+    if (this.animationEnabled) {
       this.timer += delta * TIME_STEP;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
-        this.isInterval = false;
+        this.animationEnabled = false;
       }
     } else {
       super.update(delta);
@@ -100,48 +52,17 @@ class LogoSprite extends AnimatedSprite {
   }
 
   /**
-   * Set the sprite to the fading in state.
-   * @return {Boolean} State change successful.
-   */
-  setFadinIn() {
-    return this.setState(STATES.FADING_IN);
-  }
-
-  /**
-   * Set the state to the static state.
-   * @return {Boolean} State change successful.
-   */
-  setStatic() {
-    return this.setState(STATES.STATIC);
-  }
-
-  /**
-   * Set the state.
-   * @param {String}   state The new state.
-   * @return {Boolean}       State change successful.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
    * Play the sprite.
    */
   play() {
-    // this.visible = true;
+    this.visible = true;
   }
 
   /**
    * Stop the sprite.
    */
   stop() {
-    // this.visible = false;
+    this.visible = false;
   }
 }
 

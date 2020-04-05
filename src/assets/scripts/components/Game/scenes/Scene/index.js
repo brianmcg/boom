@@ -11,7 +11,9 @@ const STATES = {
   LOADING: 'loading',
   FADING_IN: 'fading:in',
   FADING_OUT: 'fading:out',
+  PAUSING: 'scene:pausing',
   PAUSED: 'paused',
+  UNPAUSING: 'scene:unpausing',
   RUNNING: 'running',
   PROMPTING: 'prompting',
   STOPPED: 'stopped',
@@ -22,6 +24,8 @@ const EVENTS = {
   RESTART: 'scene:restart',
   QUIT: 'scene:quit',
 };
+
+const PAUSE_INCREMENT = 0.1;
 
 /**
  * Class representing a scene.
@@ -106,8 +110,14 @@ class Scene extends Container {
       case STATES.RUNNING:
         this.updateRunning(delta);
         break;
+      case STATES.PAUSING:
+        this.updatePausing(delta);
+        break;
       case STATES.PAUSED:
         this.updatePaused(delta);
+        break;
+      case STATES.UNPAUSING:
+        this.updateUnpausing(delta);
         break;
       case STATES.PROMPTING:
         this.updatePrompting(delta);
@@ -145,7 +155,27 @@ class Scene extends Container {
       this.showMenu();
     }
 
+    if (this.selectedOption) {
+      this.selectedOption();
+    }
+
     this.mainContainer.update(delta);
+  }
+
+  /**
+   * Update the scene when in a pausing state.
+   * @param  {Number} delta The delta value.
+   */
+  updatePausing(delta) {
+    this.pauseEffect += PAUSE_INCREMENT * delta;
+
+    if (this.pauseEffect >= 1) {
+      this.pauseEffect = 1;
+      this.setPaused();
+    }
+
+    this.menuContainer.updatePauseEffect(this.pauseEffect);
+    this.mainContainer.updatePauseEffect(this.pauseEffect);
   }
 
   /**
@@ -163,9 +193,27 @@ class Scene extends Container {
       this.hideMenu();
     }
 
-    this.mainContainer.updatePauseEffect(this.menuContainer.fade);
+    this.mainContainer.updatePauseEffect(this.pauseEffect);
     this.menuContainer.update(delta);
   }
+
+  /**
+   * Update the scene when in a unpausing state.
+   * @param  {Number} delta The delta value.
+   */
+  updateUnpausing(delta) {
+    this.pauseEffect -= PAUSE_INCREMENT * delta;
+
+    if (this.pauseEffect <= 0) {
+      this.pauseEffect = 0;
+      this.removeChild(this.menuContainer);
+      this.setRunning();
+    }
+
+    this.mainContainer.updatePauseEffect(this.pauseEffect);
+    this.menuContainer.updatePauseEffect(this.pauseEffect);
+  }
+
 
   /**
    * Highlight the next menu item.
@@ -187,7 +235,7 @@ class Scene extends Container {
    * Select the next menu item.
    */
   menuSelect() {
-    this.menuContainer.select();
+    this.selectedOption = this.menuContainer.getHighlightedOption();
     this.hideMenu();
   }
 
@@ -195,16 +243,16 @@ class Scene extends Container {
    * Show the menu.
    */
   showMenu() {
-    this.setPaused();
-    this.playSound(this.sounds.pause);
     this.addChild(this.menuContainer);
+    this.setPausing();
+    this.playSound(this.sounds.pause);
   }
 
   /**
    * Hide the menu.
    */
   hideMenu() {
-    this.menuContainer.setShrinking();
+    this.setUnpausing();
     this.playSound(this.sounds.pause);
   }
 
@@ -262,8 +310,20 @@ class Scene extends Container {
     }
   }
 
+  setPausing() {
+    const isStateChanged = this.setState(STATES.PAUSING);
+
+    if (isStateChanged) {
+      this.pauseEffect = 0;
+      this.mainContainer.stop();
+      this.selectedOption = null;
+    }
+
+    return isStateChanged;
+  }
+
   /**
-   * Handle a state change to paused.
+   * Set the state to pausing.
    */
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
@@ -274,20 +334,10 @@ class Scene extends Container {
   }
 
   /**
-   * Play a sound.
-   * @param  {String} type             The type of sound.
-   * @param  {String} name             The name of the sound.
-   * @param  {Number} options.distance The distance from the player.
+   * Set the state to unpausing.
    */
-  playSound(...options) {
-    this.game.playSound(...options);
-  }
-
-  /**
-   * Stop all sounds.
-   */
-  stopSounds() {
-    this.game.stopSounds();
+  setUnpausing() {
+    return this.setState(STATES.UNPAUSING);
   }
 
   /**
@@ -331,6 +381,23 @@ class Scene extends Container {
           break;
       }
     }
+  }
+
+  /**
+   * Play a sound.
+   * @param  {String} type             The type of sound.
+   * @param  {String} name             The name of the sound.
+   * @param  {Number} options.distance The distance from the player.
+   */
+  playSound(...options) {
+    this.game.playSound(...options);
+  }
+
+  /**
+   * Stop all sounds.
+   */
+  stopSounds() {
+    this.game.stopSounds();
   }
 
   /**

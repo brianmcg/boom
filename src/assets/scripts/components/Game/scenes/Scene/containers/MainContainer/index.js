@@ -74,18 +74,23 @@ class MainContainer extends Container {
   /**
    * Update the paused effect.
    */
-  updatePauseEffect(fade = 0) {
-    this.setPixelSize(PAUSE_PIXEL_SIZE * fade);
+  updatePauseEffect(amount = 0) {
+    this.setPixelSize(PAUSE_PIXEL_SIZE * amount);
   }
 
   /**
    * Set the pixel size.
    * @param {Number} value The value to set.
+   * @returns {Boolean}
    */
-  setPixelSize(value) {
+  setPixelSize(value = 1) {
     if (this.parent) {
       this.pixelateFilter.size = value * this.parent.scale.x;
+
+      return true;
     }
+
+    return false;
   }
 
   /**
@@ -118,7 +123,6 @@ class MainContainer extends Container {
    * Pause the container.
    */
   stop() {
-    this.setPixelSize(MIN_PIXEL_SIZE);
     this.enablePixelFilter();
     super.stop();
   }

@@ -33,7 +33,7 @@ class WorldScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: this.hideMenu.bind(this),
+      onSelect: this.setRunning.bind(this),
     }, {
       label: translate('scene.menu.restart'),
       onSelect: this.triggerRestart.bind(this),
