@@ -16,7 +16,8 @@ import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';
 import BackgroundSprite from '../sprites/BackgroundSprite';
 import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
-import HudKeySprite from '../sprites/HudKeySprite';
+import HUDKeySprite from '../sprites/HUDKeySprite';
+import HUDSprite from '../sprites/HUDSprite';
 import ExplosionSprite from '../sprites/ExplosionSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
@@ -303,20 +304,27 @@ const createReviewSprites = (text) => {
 };
 
 const createHudSprites = ({ world, textures }) => {
-  const healthIcon = new Sprite(textures.health);
-
   const healthAmount = new TextSprite({
     font: FONT_SIZES.MEDIUM,
     text: '100',
     color: WHITE,
+    anchor: 0.5,
   });
 
-  const ammoIcon = new Sprite(textures.ammo);
 
   const ammoAmount = new TextSprite({
     font: FONT_SIZES.MEDIUM,
     text: '100',
     color: WHITE,
+    anchor: 0.5,
+  });
+
+  const ammoIcon = new HUDSprite(textures.ammo, {
+    maxScale: ammoAmount.height / textures.ammo.frame.height,
+  });
+
+  const healthIcon = new HUDSprite(textures.health, {
+    maxScale: healthAmount.height / textures.health.frame.height,
   });
 
   const keys = world.items.reduce((memo, item) => {
@@ -326,7 +334,7 @@ const createHudSprites = ({ world, textures }) => {
 
       return {
         ...memo,
-        [item.color]: new HudKeySprite(keyTexture),
+        [item.color]: new HUDKeySprite(keyTexture),
       };
     }
 

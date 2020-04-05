@@ -5,7 +5,15 @@ const HUD_PADDING = SCREEN.HEIGHT / 24;
 
 const ICON_PADDING = SCREEN.HEIGHT / 111;
 
+/**
+ * Class representing a hud container.
+ */
 class HUDContainer extends Container {
+  /**
+   * Creates a hud container.
+   * @param  {Player} player  The player.
+   * @param  {Object} sprites The hud sprites.
+   */
   constructor(player, sprites) {
     super();
 
@@ -19,19 +27,16 @@ class HUDContainer extends Container {
       message,
     } = sprites;
 
-    healthIcon.height = healthAmount.height;
-    healthIcon.width = healthAmount.height;
-    healthIcon.x = HUD_PADDING;
-    healthIcon.y = SCREEN.HEIGHT - healthIcon.height - HUD_PADDING;
-    healthAmount.y = healthIcon.y - ICON_PADDING;
-    healthAmount.x = healthIcon.x + healthIcon.width + (HUD_PADDING / 2);
+    healthIcon.x = HUD_PADDING + (healthIcon.width / 2);
+    healthIcon.y = SCREEN.HEIGHT - (healthIcon.height / 2) - HUD_PADDING;
+    healthAmount.x = healthIcon.x + (healthIcon.width / 2)
+      + (healthAmount.width / 2) + (HUD_PADDING / 2);
+    healthAmount.y = healthIcon.y;
 
-    ammoIcon.height = ammoAmount.height;
-    ammoIcon.width = ammoAmount.height;
-    ammoIcon.x = SCREEN.WIDTH - ammoIcon.width - HUD_PADDING;
-    ammoIcon.y = SCREEN.HEIGHT - ammoIcon.height - HUD_PADDING;
-    ammoAmount.y = ammoIcon.y - ICON_PADDING;
-    ammoAmount.x = ammoIcon.x - ammoAmount.width - (HUD_PADDING / 2);
+    ammoIcon.x = SCREEN.WIDTH - (ammoIcon.width / 2) - HUD_PADDING;
+    ammoIcon.y = SCREEN.HEIGHT - (ammoIcon.height / 2) - HUD_PADDING;
+    ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+    ammoAmount.y = ammoIcon.y;
 
     message.y = HUD_PADDING;
 
@@ -91,7 +96,8 @@ class HUDContainer extends Container {
 
     // Update ammo.
     ammoAmount.text = this.player.weapon.ammo;
-    ammoAmount.x = ammoIcon.x - ammoAmount.width - (HUD_PADDING / 2);
+    // ammoAmount.x = ammoIcon.x - ammoAmount.width - (HUD_PADDING / 2);
+    ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
 
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;
@@ -101,22 +107,6 @@ class HUDContainer extends Container {
       message.text = messages.map(m => m.text).join('\n');
       message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
     }
-  }
-
-  /**
-   * Play the container.
-   */
-  play() {
-    super.play();
-    this.show();
-  }
-
-  /**
-   * Stop the container.
-   */
-  stop() {
-    super.stop();
-    this.hide();
   }
 }
 

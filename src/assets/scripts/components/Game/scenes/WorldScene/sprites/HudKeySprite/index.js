@@ -1,4 +1,4 @@
-import { Sprite } from 'game/core/graphics';
+import HUDSprite from '../HUDSprite';
 
 const STATES = {
   INACTIVE: 'key:inactive',
@@ -15,7 +15,7 @@ const SCALE_INCREMENT = 0.075;
 /**
  * Class representing a hud keyCard sprite.
  */
-class HudKeySprite extends Sprite {
+class HUDKeySprite extends HUDSprite {
   /**
    * Creates a hud keyCard sprite
    * @param  {Texture} texture     The sprite texture.
@@ -23,7 +23,6 @@ class HudKeySprite extends Sprite {
   constructor(texture) {
     super(texture);
 
-    this.anchor.set(0.5);
     this.scaleFactor = 0;
 
     this.hide();
@@ -146,4 +145,4 @@ class HudKeySprite extends Sprite {
   }
 }
 
-export default HudKeySprite;
+export default HUDKeySprite;
