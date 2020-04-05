@@ -20,6 +20,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
     alpha = 1,
     loop = false,
     autoPlay = true,
+    anchor,
   } = {}) {
     super(textures, false);
 
@@ -36,6 +37,10 @@ class AnimatedSprite extends PixiAnimatedSprite {
 
     if (tint) {
       this.tint = tint;
+    }
+
+    if (anchor) {
+      this.anchor.set(anchor);
     }
   }
 

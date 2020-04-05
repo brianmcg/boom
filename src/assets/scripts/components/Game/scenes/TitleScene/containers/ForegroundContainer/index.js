@@ -10,7 +10,6 @@ class ForegroundContainer extends Container {
    * @param  {LogoSprite}         options.logo   The logo sprite.
    */
   constructor({ logo }) {
-
     super();
 
     logo.x = (SCREEN.WIDTH / 2);

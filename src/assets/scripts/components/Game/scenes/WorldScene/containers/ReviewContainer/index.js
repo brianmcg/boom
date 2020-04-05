@@ -6,11 +6,17 @@ const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const INTERVAL = 400;
 
+const FADE_INCREMENT = 0.05;
+
+const MAX_ALPHA = 0.7;
+
 const STATES = {
-  SHOW_TITLE: 'show:title',
-  SHOW_ENEMIES: 'show:enemies',
-  SHOW_ITEMS: 'show:items',
-  SHOW_TIME: 'show:time',
+  FADING_IN: 'review:fading:in',
+  SHOW_TITLE: 'review:show:title',
+  SHOW_ENEMIES: 'review:show:enemies',
+  SHOW_ITEMS: 'review:show:items',
+  SHOW_TIME: 'review:show:time',
+  FADING_OUT: 'review:fading:out',
 };
 
 /**
@@ -42,7 +48,7 @@ class ReviewContainer extends Container {
 
     this.addChild(background);
 
-    this.on('added', this.setShowTitle.bind(this));
+    this.on('added', this.setFadingIn.bind(this));
   }
 
   /**
@@ -51,6 +57,9 @@ class ReviewContainer extends Container {
    */
   update(delta) {
     switch (this.state) {
+      case STATES.FADING_IN:
+        this.updateFadingIn(delta);
+        break;
       case STATES.SHOW_TITLE:
         this.updateShowTitle(delta);
         break;
@@ -63,9 +72,65 @@ class ReviewContainer extends Container {
       case STATES.SHOW_TIME:
         this.updateShowTime(delta);
         break;
+      case STATES.FADING_OUT:
+        this.updateFadingOut(delta);
+        break;
       default:
         break;
     }
+  }
+
+  /**
+   * Animate the container.
+   */
+  animate() {
+    this.sprites.background.alpha = this.fade * MAX_ALPHA;
+  }
+
+  updateFadingIn(delta) {
+    this.fade += FADE_INCREMENT * delta;
+
+    if (this.fade >= 1) {
+      this.fade = 1;
+      this.setShowTitle();
+    }
+  }
+
+  updateFadingOut(delta) {
+    this.fade -= FADE_INCREMENT * delta;
+
+    if (this.fade <= 0) {
+      this.fade = 0;
+      // this.parent.setPrompting();
+    }
+  }
+
+  setFadingIn() {
+    const stateChange = this.setState(STATES.FADING_IN);
+
+    if (stateChange) {
+      this.fade = 0;
+      this.sprites.background.alpha = 0;
+    }
+
+    return stateChange;
+  }
+
+  setFadingOut() {
+    const stateChange = this.setState(STATES.FADING_OUT);
+
+    if (stateChange) {
+      const { title, stats } = this.sprites;
+
+      this.removeChild(title);
+
+      Object.values(stats).forEach(({ name, value }) => {
+        this.removeChild(name);
+        this.removeChild(value);
+      });
+    }
+
+    return stateChange;
   }
 
   /**
@@ -118,7 +183,6 @@ class ReviewContainer extends Container {
       this.timer = 0;
       this.parent.playSound(this.parent.sounds.complete);
       this.parent.setPrompting();
-      this.setState(null);
     }
   }
 
@@ -169,17 +233,6 @@ class ReviewContainer extends Container {
       this.addChild(name);
       this.addChild(value);
     }
-  }
-
-  setHideText() {
-    const { title, stats } = this.sprites;
-
-    this.removeChild(title);
-
-    Object.values(stats).forEach(({ name, value }) => {
-      this.removeChild(name);
-      this.removeChild(value);
-    });
   }
 
   /**

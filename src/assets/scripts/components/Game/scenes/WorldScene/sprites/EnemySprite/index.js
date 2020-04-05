@@ -29,12 +29,18 @@ class EnemySprite extends AnimatedEntitySprite {
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
     enemy.onPatrolling(() => this.setAnimation(STATES.MOVING, true));
     enemy.onChasing(() => this.setAnimation(STATES.MOVING, true));
-    enemy.onAiming(() => this.setAnimation(STATES.AIMING));
+    enemy.onAiming(() => this.setAnimation(STATES.AIMING, enemy.aimLoop));
     enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
     enemy.onHurting(() => this.setAnimation(STATES.HURTING));
     enemy.onDead(() => this.setAnimation(STATES.DEAD));
 
     this.textureCollection = textureCollection;
+
+    this.onComplete = () => {
+      if (enemy.isDead() && enemy.corpseRemains) {
+        this.visible = false;
+      }
+    };
   }
 
   /**

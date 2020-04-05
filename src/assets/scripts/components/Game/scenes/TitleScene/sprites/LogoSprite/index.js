@@ -8,6 +8,7 @@ const SCALE_INCREMENT = 0.075;
 const STATES = {
   FADING_IN: 'logo:fading:in',
   STATIC: 'logo:static',
+  FADING_OUT: 'logo:fading:out',
 };
 
 /**
@@ -26,9 +27,8 @@ class LogoSprite extends AnimatedSprite {
 
     this.maxScale = SCREEN.HEIGHT / this.height / 2;
 
-    this.scaleFactor = 0;
-    this.scale.x = this.scaleFactor;
-    this.scale.y = this.scaleFactor;
+    // this.scaleFactor = 0;
+    this.setScale(1);
     this.timer = 0;
     this.onLoop = this.handleOnLoop.bind(this);
     this.anchor.set(0.5);
@@ -46,18 +46,20 @@ class LogoSprite extends AnimatedSprite {
    * Update the sprite.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
-    switch (this.state) {
-      case STATES.FADING_IN:
-        this.updateFadingIn(delta);
-        break;
-      case STATES.STATIC:
-        this.updateStatic(delta);
-        break;
-      default:
-        break;
-    }
-  }
+  // update(delta) {
+  //   switch (this.state) {
+  //     case STATES.FADING_IN:
+  //       this.updateFadingIn(delta);
+  //       break;
+  //     case STATES.STATIC:
+  //       this.updateStatic(delta);
+  //       break;
+  //     this.updateStatic(delta);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 
   /**
    * Update the spritein the fading in state.
@@ -75,11 +77,16 @@ class LogoSprite extends AnimatedSprite {
     this.scale.y = this.scaleFactor;
   }
 
+  setScale(amount) {
+    this.scale.x = amount;
+    this.scale.y = amount;
+  }
+
   /**
    * Update the sprite in the static state.
    * @param  {Number} delta The delta time.
    */
-  updateStatic(delta) {
+  update(delta) {
     if (this.isInterval) {
       this.timer += delta * TIME_STEP;
 
@@ -127,14 +134,14 @@ class LogoSprite extends AnimatedSprite {
    * Play the sprite.
    */
   play() {
-    this.visible = true;
+    // this.visible = true;
   }
 
   /**
    * Stop the sprite.
    */
   stop() {
-    this.visible = false;
+    // this.visible = false;
   }
 }
 

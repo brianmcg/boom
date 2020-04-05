@@ -20,6 +20,7 @@ class TextSprite extends BitmapText {
     x = 0,
     y = 0,
     alpha = 1,
+    anchor,
   }) {
     super(text, { font });
 
@@ -30,6 +31,19 @@ class TextSprite extends BitmapText {
     if (color || color === 0) {
       this.tint = color;
     }
+
+    if (anchor) {
+      this.anchor.set(anchor);
+    }
+  }
+
+  /**
+   * Set the sprite scale.
+   * @param {Number} amount the scale amount.
+   */
+  setScale(amount) {
+    this.scale.x = amount;
+    this.scale.y = amount;
   }
 
   /**

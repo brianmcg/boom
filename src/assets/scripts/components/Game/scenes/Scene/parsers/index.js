@@ -26,21 +26,18 @@ const createMenuSprites = (menu, textures, animations) => {
       font: FONT_SIZES.SMALL,
       text: key,
       color: index ? WHITE : RED,
+      anchor: 0.5,
     }),
   }), {});
 
-  const iconHeight = labels[Object.keys(labels)[0]].height;
   const menuTextures = animations.skull.map(image => textures[image]);
-  const icon = new MenuIconSprite(menuTextures);
 
-  icon.height = iconHeight;
-  icon.width = iconHeight;
+  const icon = new MenuIconSprite(menuTextures, {
+    anchor: 0.5,
+    size: labels[Object.keys(labels)[0]].height,
+  });
 
-  return {
-    icon,
-    labels,
-    background,
-  };
+  return { icon, labels, background };
 };
 
 /**

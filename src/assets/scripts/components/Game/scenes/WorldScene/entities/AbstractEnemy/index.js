@@ -46,6 +46,8 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterType,
+    corpseRemains,
+    aimLoop,
     type,
     ...other
   }) {
@@ -55,6 +57,8 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.aimLoop = aimLoop;
+    this.corpseRemains = corpseRemains;
     this.type = type;
     this.spatterType = spatterType;
     this.spatters = spatters;

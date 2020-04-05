@@ -1,11 +1,12 @@
 import { Container, PixelateFilter } from 'game/core/graphics';
 
-const PIXEL = {
-  MAX_SIZE: 100,
-  INCREMEMENT: 4,
-  MIN_SIZE: 1,
-  PAUSE_SIZE: 10,
-};
+const PIXEL_INCREMENT = 4;
+
+const MIN_PIXEL_SIZE = 1;
+
+const PAUSE_PIXEL_SIZE = 8;
+
+const MAX_PIXEL_SIZE = 100;
 
 /**
  * A class representing a MainContainer.
@@ -26,7 +27,7 @@ class MainContainer extends Container {
    */
   initFadeInEffect() {
     this.enablePixelFilter();
-    this.setPixelSize(PIXEL.MAX_SIZE);
+    this.setPixelSize(MAX_PIXEL_SIZE);
   }
 
   /**
@@ -41,14 +42,16 @@ class MainContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateFadeInEffect(delta) {
-    let pixelSize = this.pixelateFilter.size[0] - (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
+    let pixelSize = this.getPixelSize();
 
-    if (pixelSize < PIXEL.MIN_SIZE) {
-      pixelSize = PIXEL.MIN_SIZE;
+    pixelSize -= PIXEL_INCREMENT * delta;
+
+    if (pixelSize <= MIN_PIXEL_SIZE) {
+      pixelSize = MIN_PIXEL_SIZE;
       this.parent.setRunning();
     }
 
-    this.pixelateFilter.size = pixelSize;
+    this.setPixelSize(pixelSize);
   }
 
   /**
@@ -56,22 +59,23 @@ class MainContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateFadeOutEffect(delta) {
-    const maxPixelSize = PIXEL.MAX_SIZE * this.parent.scale.x;
-    let pixelSize = this.pixelateFilter.size[0] + (PIXEL.INCREMEMENT * this.parent.scale.x * delta);
+    let pixelSize = this.getPixelSize();
 
-    if (pixelSize > maxPixelSize) {
-      pixelSize = maxPixelSize;
+    pixelSize += PIXEL_INCREMENT * delta;
+
+    if (pixelSize >= MAX_PIXEL_SIZE) {
+      pixelSize = MAX_PIXEL_SIZE;
       this.parent.setStopped();
     }
 
-    this.pixelateFilter.size = pixelSize;
+    this.setPixelSize(pixelSize);
   }
 
   /**
    * Update the paused effect.
    */
-  updatePauseEffect() {
-    this.setPixelSize(PIXEL.PAUSE_SIZE);
+  updatePauseEffect(fade = 0) {
+    this.setPixelSize(PAUSE_PIXEL_SIZE * fade);
   }
 
   /**
@@ -79,7 +83,21 @@ class MainContainer extends Container {
    * @param {Number} value The value to set.
    */
   setPixelSize(value) {
-    this.pixelateFilter.size = value * this.parent.scale.x;
+    if (this.parent) {
+      this.pixelateFilter.size = value * this.parent.scale.x;
+    }
+  }
+
+  /**
+   * Get the pixel size.
+   * @return {[type]} [description]
+   */
+  getPixelSize() {
+    if (this.parent) {
+      return this.pixelateFilter.size[0] / this.parent.scale.x;
+    }
+
+    return null;
   }
 
   /**
@@ -100,6 +118,7 @@ class MainContainer extends Container {
    * Pause the container.
    */
   stop() {
+    this.setPixelSize(MIN_PIXEL_SIZE);
     this.enablePixelFilter();
     super.stop();
   }

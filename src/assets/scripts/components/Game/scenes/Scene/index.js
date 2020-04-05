@@ -163,7 +163,7 @@ class Scene extends Container {
       this.hideMenu();
     }
 
-    this.mainContainer.updatePauseEffect(delta);
+    this.mainContainer.updatePauseEffect(this.menuContainer.fade);
     this.menuContainer.update(delta);
   }
 
@@ -188,7 +188,7 @@ class Scene extends Container {
    */
   menuSelect() {
     this.menuContainer.select();
-    this.removeChild(this.menuContainer);
+    this.hideMenu();
   }
 
   /**
@@ -204,9 +204,8 @@ class Scene extends Container {
    * Hide the menu.
    */
   hideMenu() {
-    this.setRunning();
+    this.menuContainer.setShrinking();
     this.playSound(this.sounds.pause);
-    this.removeChild(this.menuContainer);
   }
 
   /**

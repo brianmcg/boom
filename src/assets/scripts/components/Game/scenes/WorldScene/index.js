@@ -139,8 +139,17 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta time.
    */
   updateReviewing(delta) {
-    this.updatePaused(delta);
+    this.mainContainer.updatePauseEffect(this.reviewContainer.fade);
     this.reviewContainer.update(delta);
+  }
+
+  /**
+   * Update the scene when in a fade out state.
+   * @param  {Number} delta The delta value.
+   */
+  updateFadingOut(delta) {
+    super.updateFadingOut(delta);
+    this.reviewContainer.updateFadingOut(delta);
   }
 
   /**
@@ -148,7 +157,7 @@ class WorldScene extends Scene {
    */
   setFadingOut() {
     super.setFadingOut();
-    this.reviewContainer.setHideText();
+    this.reviewContainer.setFadingOut();
   }
 
   /**
@@ -174,6 +183,11 @@ class WorldScene extends Scene {
       this.world.player.addMessage(this.title);
     }
   }
+
+  // setFadingOut() {
+  //   super.setFadingOut();
+  //   this.reviewContainer.setFadingOut();
+  // }
 
   /**
    * Complete the scene.
