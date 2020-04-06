@@ -7,9 +7,14 @@ import ReviewContainer from './containers/ReviewContainer';
 import Scene from '../Scene';
 
 const STATES = {
-  STANDARD: 'world:scene.standard',
-  REVIEWING: 'world:scene:reviewing',
+  ADDING_REVIEW: 'world:scene:adding:review',
+  DISPLAYING_REVIEW: 'world:scene:displaying:review',
+  REMOVING_REVIEW: 'world:scene:removing:review',
 };
+
+const FADE_INCREMENT = 0.1;
+
+const FADE_PIXEL_SIZE = 8;
 
 /**
  * Class representing a world scene.
@@ -94,8 +99,14 @@ class WorldScene extends Scene {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.REVIEWING:
-        this.updateReviewing(delta);
+      case STATES.ADDING_REVIEW:
+        this.updateAddingReview(delta);
+        break;
+      case STATES.DISPLAYING_REVIEW:
+        this.updateDisplayingReview(delta);
+        break;
+      case STATES.REMOVING_REVIEW:
+        this.updateRemovingReview(delta);
         break;
       default:
         super.update(delta);
@@ -135,41 +146,75 @@ class WorldScene extends Scene {
   }
 
   /**
+   * Update the scene when in a adding review state.
+   * @param  {Number} delta The delta value.
+   */
+  updateAddingReview(delta) {
+    this.fadeEffect += FADE_INCREMENT * delta;
+
+    if (this.fadeEffect >= 1) {
+      this.fadeEffect = 1;
+      this.setDisplayingReview();
+    }
+
+    this.reviewContainer.updateFadeEffect(this.fadeEffect);
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: FADE_PIXEL_SIZE,
+    });
+  }
+
+  /**
    * Update the scene in the reviewing state.
    * @param  {Number} delta The delta time.
    */
-  updateReviewing(delta) {
-    this.mainContainer.updatePauseEffect(this.reviewContainer.fade);
+  updateDisplayingReview(delta) {
     this.reviewContainer.update(delta);
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: FADE_PIXEL_SIZE,
+    });
   }
 
   /**
-   * Update the scene when in a fade out state.
+   * Update the scene when in a removing review state.
    * @param  {Number} delta The delta value.
    */
-  updateFadingOut(delta) {
-    super.updateFadingOut(delta);
-    this.reviewContainer.updateFadingOut(delta);
+  updateRemovingReview(delta) {
+    this.fadeEffect -= FADE_INCREMENT * delta;
+
+    if (this.fadeEffect <= 0) {
+      this.fadeEffect = 0;
+      this.triggerComplete();
+    }
+
+    this.reviewContainer.updateFadeEffect(this.fadeEffect);
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: FADE_PIXEL_SIZE,
+    });
   }
 
   /**
-   * Set the state to fading out.
+   * Set the state to adding review.
    */
-  setFadingOut() {
-    super.setFadingOut();
-    this.reviewContainer.setFadingOut();
-  }
-
-  /**
-   * Set the state to reviewing.
-   */
-  setReviewing() {
-    if (this.setState(STATES.REVIEWING)) {
+  setAddingReviewing() {
+    if (this.setState(STATES.ADDING_REVIEW)) {
+      this.fadeEffect = 0;
       this.game.pauseSounds();
       this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
+  }
+
+  /**
+   * Update the scene when in a prompting state.
+   * @param  {Number} delta The delta value.
+   */
+  updatePrompting(delta) {
+    if (this.game.isKeyPressed(KEYS.SPACE)) {
+      this.setRemovingReview();
+    }
+
+    this.promptContainer.update(delta);
   }
 
   /**
@@ -184,10 +229,19 @@ class WorldScene extends Scene {
     }
   }
 
-  // setFadingOut() {
-  //   super.setFadingOut();
-  //   this.reviewContainer.setFadingOut();
-  // }
+  /**
+   * Set the scene to the displaying review state.
+   */
+  setDisplayingReview() {
+    return this.setState(STATES.DISPLAYING_REVIEW);
+  }
+
+  /**
+   * Set the state to removing review.
+   */
+  setRemovingReview() {
+    return this.setState(STATES.REMOVING_REVIEW);
+  }
 
   /**
    * Complete the scene.

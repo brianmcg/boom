@@ -130,7 +130,7 @@ class World extends PhysicsWorld {
     this.player.setActions(actions);
 
     if (x === gridX && y === gridY) {
-      this.scene.setReviewing();
+      this.scene.setAddingReviewing();
     }
 
     super.update(delta);

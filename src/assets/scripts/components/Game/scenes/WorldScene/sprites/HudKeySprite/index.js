@@ -71,8 +71,7 @@ class HUDKeySprite extends HUDSprite {
       this.setInactive();
     }
 
-    this.scale.x = this.scaleFactor;
-    this.scale.y = this.scaleFactor;
+    this.setScale(this.scaleFactor);
   }
 
   /**

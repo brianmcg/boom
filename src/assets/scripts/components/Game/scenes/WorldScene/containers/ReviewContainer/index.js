@@ -6,17 +6,13 @@ const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const INTERVAL = 400;
 
-const FADE_INCREMENT = 0.05;
-
 const MAX_ALPHA = 0.7;
 
 const STATES = {
-  FADING_IN: 'review:fading:in',
   SHOW_TITLE: 'review:show:title',
   SHOW_ENEMIES: 'review:show:enemies',
   SHOW_ITEMS: 'review:show:items',
   SHOW_TIME: 'review:show:time',
-  FADING_OUT: 'review:fading:out',
 };
 
 /**
@@ -35,7 +31,9 @@ class ReviewContainer extends Container {
     const statsHeight = stats.enemies.name.height;
     const statsStartY = title.height + (TEXT_PADDING * 8);
 
-    title.y = TEXT_PADDING * 4;
+    title.y = (title.height / 2) + TEXT_PADDING * 4;
+
+    title.setScale(0);
 
     [enemies, items, time].forEach(({ name, value }, i) => {
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
@@ -46,9 +44,10 @@ class ReviewContainer extends Container {
     this.currentIndex = 0;
     this.sprites = sprites;
 
+    background.alpha = 0;
     this.addChild(background);
 
-    this.on('added', this.setFadingIn.bind(this));
+    this.on('added', this.setShowTitle.bind(this));
   }
 
   /**
@@ -57,9 +56,6 @@ class ReviewContainer extends Container {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.FADING_IN:
-        this.updateFadingIn(delta);
-        break;
       case STATES.SHOW_TITLE:
         this.updateShowTitle(delta);
         break;
@@ -72,65 +68,25 @@ class ReviewContainer extends Container {
       case STATES.SHOW_TIME:
         this.updateShowTime(delta);
         break;
-      case STATES.FADING_OUT:
-        this.updateFadingOut(delta);
-        break;
       default:
         break;
     }
   }
 
   /**
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
+   */
+  updateFadeEffect(value) {
+    super.updateFadeEffect(1 - value);
+    this.fadeEffect = value;
+  }
+
+  /**
    * Animate the container.
    */
   animate() {
-    this.sprites.background.alpha = this.fade * MAX_ALPHA;
-  }
-
-  updateFadingIn(delta) {
-    this.fade += FADE_INCREMENT * delta;
-
-    if (this.fade >= 1) {
-      this.fade = 1;
-      this.setShowTitle();
-    }
-  }
-
-  updateFadingOut(delta) {
-    this.fade -= FADE_INCREMENT * delta;
-
-    if (this.fade <= 0) {
-      this.fade = 0;
-      // this.parent.setPrompting();
-    }
-  }
-
-  setFadingIn() {
-    const stateChange = this.setState(STATES.FADING_IN);
-
-    if (stateChange) {
-      this.fade = 0;
-      this.sprites.background.alpha = 0;
-    }
-
-    return stateChange;
-  }
-
-  setFadingOut() {
-    const stateChange = this.setState(STATES.FADING_OUT);
-
-    if (stateChange) {
-      const { title, stats } = this.sprites;
-
-      this.removeChild(title);
-
-      Object.values(stats).forEach(({ name, value }) => {
-        this.removeChild(name);
-        this.removeChild(value);
-      });
-    }
-
-    return stateChange;
+    this.sprites.background.alpha = this.fadeEffect * MAX_ALPHA;
   }
 
   /**
@@ -236,20 +192,6 @@ class ReviewContainer extends Container {
   }
 
   /**
-   * Set the container state.
-   * @param {String} state The container state to set.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
    * Set the statistics text.
    * @param {Number} options.enemiesKilled The number of enemies killed.
    * @param {Number} options.enemiesTotal  The total number of enemies.
@@ -267,16 +209,30 @@ class ReviewContainer extends Container {
     const { title, stats } = this.sprites;
     const { enemies, items, time } = stats;
 
-    title.x = (SCREEN.WIDTH / 2) - (title.width / 2);
+    title.x = SCREEN.WIDTH / 2;
 
     time.value.text = formatMS(timeTaken);
     enemies.value.text = `${Math.round(enemiesKilled / enemiesTotal * 100)}%`;
     items.value.text = `${Math.round(itemsFound / itemsTotal * 100)}%`;
 
     [enemies, items, time].forEach(({ name, value }) => {
-      name.x = (SCREEN.WIDTH / 2) - TEXT_PADDING - name.width;
-      value.x = (SCREEN.WIDTH / 2) + TEXT_PADDING;
+      name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
+      value.x = (SCREEN.WIDTH / 2) + (value.width / 2) + TEXT_PADDING;
     });
+  }
+
+  /**
+   * Set the container state.
+   * @param {String} state The container state to set.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 }
 

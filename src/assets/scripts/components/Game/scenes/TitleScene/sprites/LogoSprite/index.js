@@ -49,7 +49,7 @@ class LogoSprite extends AnimatedSprite {
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
-  updatePauseEffect(value) {
+  updateFadeEffect(value) {
     this.setScale((1 - value) * this.maxScale);
   }
 }

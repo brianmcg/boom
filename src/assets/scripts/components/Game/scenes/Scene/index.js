@@ -27,6 +27,12 @@ const EVENTS = {
 
 const PAUSE_INCREMENT = 0.1;
 
+const FADE_INCREMENT = 0.05;
+
+const FADE_PIXEL_SIZE = 80;
+
+const PAUSE_PIXEL_SIZE = 8;
+
 /**
  * Class representing a scene.
  * @class
@@ -143,7 +149,16 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingIn(delta) {
-    this.mainContainer.updateFadeInEffect(delta);
+    this.fadeEffect -= FADE_INCREMENT * delta;
+
+    if (this.fadeEffect <= 0) {
+      this.fadeEffect = 0;
+      this.setRunning();
+    }
+
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: FADE_PIXEL_SIZE,
+    });
   }
 
   /**
@@ -167,16 +182,19 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePausing(delta) {
-    this.pauseEffect += PAUSE_INCREMENT * delta;
+    this.fadeEffect += PAUSE_INCREMENT * delta;
 
-    if (this.pauseEffect >= 1) {
-      this.pauseEffect = 1;
+    if (this.fadeEffect >= 1) {
+      this.fadeEffect = 1;
       this.setPaused();
     }
 
-    this.menuContainer.updatePauseEffect(this.pauseEffect);
-    this.mainContainer.updatePauseEffect(this.pauseEffect);
-    this.promptContainer.updatePauseEffect(this.pauseEffect);
+    this.menuContainer.updateFadeEffect(this.fadeEffect);
+    this.promptContainer.updateFadeEffect(this.fadeEffect);
+
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: PAUSE_PIXEL_SIZE,
+    });
   }
 
   /**
@@ -194,8 +212,11 @@ class Scene extends Container {
       this.hideMenu();
     }
 
-    this.mainContainer.updatePauseEffect(this.pauseEffect);
     this.menuContainer.update(delta);
+
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: PAUSE_PIXEL_SIZE,
+    });
   }
 
   /**
@@ -203,17 +224,20 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateUnpausing(delta) {
-    this.pauseEffect -= PAUSE_INCREMENT * delta;
+    this.fadeEffect -= PAUSE_INCREMENT * delta;
 
-    if (this.pauseEffect <= 0) {
-      this.pauseEffect = 0;
+    if (this.fadeEffect <= 0) {
+      this.fadeEffect = 0;
       this.removeChild(this.menuContainer);
       this.setRunning();
     }
 
-    this.mainContainer.updatePauseEffect(this.pauseEffect);
-    this.menuContainer.updatePauseEffect(this.pauseEffect);
-    this.promptContainer.updatePauseEffect(this.pauseEffect);
+    this.menuContainer.updateFadeEffect(this.fadeEffect);
+    this.promptContainer.updateFadeEffect(this.fadeEffect);
+
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: PAUSE_PIXEL_SIZE,
+    });
   }
 
 
@@ -275,7 +299,18 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingOut(delta) {
-    this.mainContainer.updateFadeOutEffect(delta);
+    this.fadeEffect += FADE_INCREMENT * delta;
+
+    if (this.fadeEffect >= 1) {
+      this.fadeEffect = 1;
+      this.setStopped();
+    }
+
+    this.promptContainer.updateFadeEffect(this.fadeEffect);
+
+    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+      pixelSize: FADE_PIXEL_SIZE,
+    });
   }
 
   /**
@@ -294,7 +329,7 @@ class Scene extends Container {
     if (this.setState(STATES.FADING_IN)) {
       this.removeChild(this.loadingContainer);
       this.addChild(this.mainContainer);
-      this.mainContainer.initFadeInEffect();
+      this.fadeEffect = 1;
       this.loadingContainer.destroy();
       // TODO: Enabled music
       // this.game.playMusic();
@@ -307,17 +342,19 @@ class Scene extends Container {
   setRunning() {
     if (this.setState(STATES.RUNNING)) {
       this.game.resumeSounds();
-      this.mainContainer.play();
-      this.promptContainer.play();
+      this.play();
     }
   }
 
+  /**
+   * Set the state to the pausing state.
+   */
   setPausing() {
     const isStateChanged = this.setState(STATES.PAUSING);
 
     if (isStateChanged) {
-      this.pauseEffect = 0;
-      this.mainContainer.stop();
+      this.fadeEffect = 0;
+      this.stop();
       this.selectedOption = null;
     }
 
@@ -325,18 +362,16 @@ class Scene extends Container {
   }
 
   /**
-   * Set the state to pausing.
+   * Set the state to the paused state.
    */
   setPaused() {
     if (this.setState(STATES.PAUSED)) {
       this.game.pauseSounds();
-      this.mainContainer.stop();
-      this.promptContainer.stop();
     }
   }
 
   /**
-   * Set the state to unpausing.
+   * Set the state to the unpausing state.
    */
   setUnpausing() {
     return this.setState(STATES.UNPAUSING);
@@ -356,11 +391,10 @@ class Scene extends Container {
    */
   setFadingOut() {
     if (this.setState(STATES.FADING_OUT)) {
+      this.stop();
       this.stopSounds();
       this.playSound(this.sounds.complete);
       this.game.fadeMusic();
-      this.mainContainer.initFadeOutEffect();
-      this.removeChild(this.promptContainer);
     }
   }
 
@@ -368,6 +402,8 @@ class Scene extends Container {
    * Handle a state change to stopped.
    */
   setStopped() {
+    this.removeChild(this.promptContainer);
+
     if (this.setState(STATES.STOPPED)) {
       switch (this.stopEvent) {
         case EVENTS.COMPLETE:
@@ -432,8 +468,7 @@ class Scene extends Container {
    */
   resize(scale) {
     if (this.state !== STATES.STOPPED) {
-      this.scale.x = scale;
-      this.scale.y = scale;
+      this.setScale(scale);
     }
   }
 

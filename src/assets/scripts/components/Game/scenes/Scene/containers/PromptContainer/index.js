@@ -64,6 +64,14 @@ class PromptContainer extends Container {
   }
 
   /**
+   * Update the pause effect.
+   * @param  {Number} value The value of the effect.
+   */
+  updateFadeEffect(value) {
+    super.updateFadeEffect(value);
+  }
+
+  /**
    * Update the container in the fading in state.
    * @param  {Number} delta     The delta time.
    */

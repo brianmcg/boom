@@ -251,6 +251,7 @@ const createReviewSprites = (text) => {
     font: FONT_SIZES.LARGE,
     text: text.title,
     color: WHITE,
+    anchor: 0.5,
   });
 
   const enemies = {
@@ -258,11 +259,13 @@ const createReviewSprites = (text) => {
       font: FONT_SIZES.MEDIUM,
       text: text.enemies,
       color: WHITE,
+      anchor: 0.5,
     }),
     value: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
+      anchor: 0.5,
     }),
   };
 
@@ -271,11 +274,13 @@ const createReviewSprites = (text) => {
       font: FONT_SIZES.MEDIUM,
       text: text.items,
       color: WHITE,
+      anchor: 0.5,
     }),
     value: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
+      anchor: 0.5,
     }),
   };
 
@@ -284,11 +289,13 @@ const createReviewSprites = (text) => {
       font: FONT_SIZES.MEDIUM,
       text: text.time,
       color: WHITE,
+      anchor: 0.5,
     }),
     value: new TextSprite({
       font: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
+      anchor: 0.5,
     }),
   };
 

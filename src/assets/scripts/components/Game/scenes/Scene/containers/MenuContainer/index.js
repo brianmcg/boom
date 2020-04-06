@@ -24,12 +24,10 @@ class MenuContainer extends Container {
 
     const { icon, labels, background } = this.sprites;
 
-    this.currentIndex = 0;
     this.items = items;
     this.scaleFactor = 0;
     this.alphaFactor = 0;
     this.selectedOption = null;
-    this.currentIndex = 0;
 
     this.addChild(background);
 
@@ -46,6 +44,10 @@ class MenuContainer extends Container {
         + (index * sprite.height) + (index * SCREEN_PADDING);
 
       this.addChild(sprite);
+    });
+
+    this.on('added', () => {
+      this.currentIndex = 0;
     });
   }
 
@@ -90,7 +92,7 @@ class MenuContainer extends Container {
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
-  updatePauseEffect(value) {
+  updateFadeEffect(value) {
     this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
   }

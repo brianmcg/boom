@@ -68,11 +68,11 @@ class Container extends PixiContainer {
   }
 
   /**
-   * Update the pause effect.
+   * Update the fade effect.
    * @param  {Number} value The value of the effect.
    */
-  updatePauseEffect(value) {
-    this.children.forEach(child => child.updatePauseEffect && child.updatePauseEffect(value));
+  updateFadeEffect(value) {
+    this.children.forEach(child => child.updateFadeEffect && child.updateFadeEffect(value));
   }
 
   /**
@@ -110,6 +110,23 @@ class Container extends PixiContainer {
    */
   hide() {
     this.visible = false;
+  }
+
+  /**
+   * Set the container scale.
+   * @param {Number} amount the scale amount.
+   */
+  setScale(amount) {
+    this.scale.x = amount;
+    this.scale.y = amount;
+  }
+
+  /**
+   * Get the scale of the container.
+   * @return {Number} The scale value.
+   */
+  getScale() {
+    return this.scale.x;
   }
 
   /**

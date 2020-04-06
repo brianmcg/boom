@@ -120,13 +120,8 @@ class Player extends AbstractActor {
     this.x = (CELL_SIZE * x) + (CELL_SIZE / 2);
     this.y = (CELL_SIZE * y) + (CELL_SIZE / 2);
     this.angle = 0;
-
-    // this.x = 143.77672712277456;
-    // this.y = 504.01155726275437;
-    // this.angle = 366;
-
     this.velocity = 0;
-    this.armWeapon();
+
     this.keyCards = this.parent.items.reduce((memo, { isKey, color }) => {
       if (isKey) {
         return {
@@ -136,6 +131,8 @@ class Player extends AbstractActor {
       }
       return memo;
     }, {});
+
+    this.armWeapon();
   }
 
   /**
