@@ -127,13 +127,13 @@ class Projectile extends DynamicEntity {
    * @return {Boolean} State change successfull.
    */
   setColliding() {
-    const stateChanged = this.setState(STATES.EXPLODING);
+    const isStateChanged = this.setState(STATES.EXPLODING);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.velocity = 0;
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 }
 

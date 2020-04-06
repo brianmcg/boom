@@ -40,20 +40,6 @@ class DynamicEntity extends DynamicBody {
   emitSound(...options) {
     this.emit(EMIT_SOUND_EVENT, ...options);
   }
-
-  /**
-   * Set the state.
-   * @param {String} state The state.
-   */
-  setState(state) {
-    const isChanged = this.state !== state;
-
-    if (isChanged) {
-      this.state = state;
-    }
-
-    return isChanged;
-  }
 }
 
 export default DynamicEntity;

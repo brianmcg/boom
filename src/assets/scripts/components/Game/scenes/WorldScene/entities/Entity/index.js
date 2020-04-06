@@ -20,20 +20,6 @@ class Entity extends Body {
     this.name = name;
     this.animated = animated;
   }
-
-  /**
-   * Set the state.
-   * @param {String} state The state.
-   */
-  setState(state) {
-    const isChanged = this.state !== state;
-
-    if (isChanged) {
-      this.state = state;
-    }
-
-    return isChanged;
-  }
 }
 
 export default Entity;

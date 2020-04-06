@@ -38,6 +38,20 @@ class Sprite extends PixiSprite {
   hide() {
     this.visible = false;
   }
+
+  /**
+   * Set the sprite state
+   * @param {String} state The state to set.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default Sprite;

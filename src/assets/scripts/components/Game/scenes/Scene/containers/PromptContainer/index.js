@@ -151,20 +151,6 @@ class PromptContainer extends Container {
   setShrinking() {
     return this.setState(STATES.SHRINKING);
   }
-
-  /**
-   * Set the state of the container.
-   * @param {String} state The state of the container.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
 }
 
 export default PromptContainer;

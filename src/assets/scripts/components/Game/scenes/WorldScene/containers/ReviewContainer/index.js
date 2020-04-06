@@ -289,20 +289,6 @@ class ReviewContainer extends Container {
     Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
     Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
-
-  /**
-   * Set the container state.
-   * @param {String} state The container state to set.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
 }
 
 export default ReviewContainer;

@@ -148,29 +148,34 @@ class Door extends DynamicCell {
    * Set the door to the opening state.
    */
   setOpening() {
-    const stateChanged = this.setState(STATES.OPENING);
+    const isStateChanged = this.setState(STATES.OPENING);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.emitSound(this.sounds.open, {
         distance: this.getDistanceTo(this.parent.player),
       });
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 
   /**
    * Set the door to the opened state.
    */
   setOpened() {
-    const { player } = this.parent;
-    const force = this.speed * 2;
+    const isStateChanged = this.setState(STATES.OPENED);
 
-    if (this.setState(STATES.OPENED)) {
+    if (isStateChanged) {
+      const { player } = this.parent;
+      const force = this.speed * 2;
+
       this.blocking = false;
-      player.shake(force);
       this.timer = this.interval;
+
+      player.shake(force);
     }
+
+    return isStateChanged;
   }
 
   /**
@@ -178,9 +183,9 @@ class Door extends DynamicCell {
    * @return {Boolean} State change successful.
    */
   setClosing() {
-    const stateChanged = this.setState(STATES.CLOSING);
+    const isStateChanged = this.setState(STATES.CLOSING);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.blocking = true;
 
       this.emitSound(this.sounds.close, {
@@ -188,14 +193,14 @@ class Door extends DynamicCell {
       });
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 
   /**
    * Set the door to the closed state.
    */
   setClosed() {
-    this.setState(STATES.CLOSED);
+    return this.setState(STATES.CLOSED);
   }
 
   /**
@@ -228,20 +233,6 @@ class Door extends DynamicCell {
    */
   isClosed() {
     return this.state === STATES.CLOSED;
-  }
-
-  /**
-   * Set the door state.
-   * @param {String} state The door state.
-   */
-  setState(state) {
-    const stateChanged = this.state !== state;
-
-    if (stateChanged) {
-      this.state = state;
-    }
-
-    return stateChanged;
   }
 }
 

@@ -136,6 +136,20 @@ class Container extends PixiContainer {
   isUpdateable() {
     return this.playing;
   }
+
+    /**
+   * Set the container state.
+   * @param {String} state The new state.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default Container;

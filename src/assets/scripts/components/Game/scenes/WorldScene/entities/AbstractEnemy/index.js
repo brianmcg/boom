@@ -371,13 +371,13 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setIdle() {
-    const stateChange = this.setState(STATES.IDLE);
+    const isStateChanged = this.setState(STATES.IDLE);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.velocity = 0;
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 
   /**
@@ -385,9 +385,9 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAlerted() {
-    const stateChanged = this.setState(STATES.ALERTED);
+    const isStateChangedd = this.setState(STATES.ALERTED);
 
-    if (stateChanged) {
+    if (isStateChangedd) {
       this.emitSound(this.sounds.alert, {
         distance: this.distanceToPlayer,
       });
@@ -442,15 +442,15 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAttacking() {
-    const stateChange = this.setState(STATES.ATTACKING);
+    const isStateChanged = this.setState(STATES.ATTACKING);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.attack();
       this.numberOfAttacks -= 1;
       this.velocity = 0;
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 
   /**
@@ -458,9 +458,9 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setHurting() {
-    const stateChange = this.setState(STATES.HURTING);
+    const isStateChanged = this.setState(STATES.HURTING);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.velocity = 0;
 
       this.emitSound(this.sounds.pain, {
@@ -468,7 +468,7 @@ class AbstractEnemy extends AbstractActor {
       });
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 
   /**
@@ -476,9 +476,9 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setDead() {
-    const stateChange = this.setState(STATES.DEAD);
+    const isStateChanged = this.setState(STATES.DEAD);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.velocity = 0;
       this.blocking = false;
 
@@ -489,7 +489,7 @@ class AbstractEnemy extends AbstractActor {
       this.parent.stop(this);
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 
   /**
@@ -569,9 +569,9 @@ class AbstractEnemy extends AbstractActor {
    * @param {String} state The new state.
    */
   setState(state) {
-    const stateChange = super.setState(state);
+    const isStateChanged = super.setState(state);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.attackTimer = 0;
       this.hurtTimer = 0;
       this.alertTimer = 0;
@@ -579,7 +579,7 @@ class AbstractEnemy extends AbstractActor {
       this.emit(state);
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 }
 

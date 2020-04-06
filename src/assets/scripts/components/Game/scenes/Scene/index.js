@@ -465,20 +465,6 @@ class Scene extends Container {
   }
 
   /**
-   * Set the scene state.
-   * @param {String} state The new state.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
    * Set the event to emit when stopped.
    * @param {String} stopEvent The new stopEvent.
    */

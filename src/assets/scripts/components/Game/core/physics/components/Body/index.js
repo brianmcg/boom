@@ -166,6 +166,20 @@ class Body extends EventEmitter {
   }
 
   /**
+   * Set the body state.
+   * @param {String} state The new state.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * The grid x position.
    * @member {Number}
    */

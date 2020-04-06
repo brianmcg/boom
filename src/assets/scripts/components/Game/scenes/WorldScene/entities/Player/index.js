@@ -773,13 +773,13 @@ class Player extends AbstractActor {
    * @return {Boolean}
    */
   setDying() {
-    const stateChanged = this.setState(STATES.DYING);
+    const isStateChanged = this.setState(STATES.DYING);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.weapon.setUnarming();
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 
   /**
@@ -795,13 +795,13 @@ class Player extends AbstractActor {
    * @return {Boolean}
    */
   setDead() {
-    const stateChanged = this.setState(STATES.DEAD);
+    const isStateChanged = this.setState(STATES.DEAD);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.emit(EVENTS.DEATH);
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 
   /**

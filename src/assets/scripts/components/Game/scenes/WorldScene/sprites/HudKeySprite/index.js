@@ -87,14 +87,14 @@ class HUDKeySprite extends HUDSprite {
    * @return {Boolean} State change successfull.
    */
   setEquipping() {
-    const stateChange = this.setState(STATES.EQUIPPING);
+    const isStateChanged = this.setState(STATES.EQUIPPING);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.scaleFactor = 0;
       this.show();
     }
 
-    return stateChange;
+    return isStateChanged;
   }
 
   /**
@@ -127,20 +127,6 @@ class HUDKeySprite extends HUDSprite {
    */
   isUsing() {
     return this.state === STATES.USING;
-  }
-
-  /**
-   * Set the sprite state
-   * @param {String} state The state to set.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
   }
 }
 

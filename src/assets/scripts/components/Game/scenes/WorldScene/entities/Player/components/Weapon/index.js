@@ -238,13 +238,13 @@ class Weapon extends Entity {
    * @return {Boolean} Has the state changed to firing.
    */
   setFiring() {
-    const stateChanged = this.setState(STATES.FIRING);
+    const isStateChanged = this.setState(STATES.FIRING);
 
-    if (stateChanged) {
+    if (isStateChanged) {
       this.ammo -= 1;
     }
 
-    return stateChanged;
+    return isStateChanged;
   }
 
   /**
@@ -260,9 +260,9 @@ class Weapon extends Entity {
    * @return {Boolean} Has the state changed to arming.
    */
   setArming() {
-    const stateChange = this.setState(STATES.ARMING);
+    const isStateChanged = this.setState(STATES.ARMING);
 
-    if (stateChange) {
+    if (isStateChanged) {
       this.emit(EVENTS.ARMING);
     }
 
