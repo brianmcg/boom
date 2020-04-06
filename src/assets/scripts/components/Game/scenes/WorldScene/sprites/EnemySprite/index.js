@@ -21,15 +21,15 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
-    super(textureCollection[STATES.IDLE], {
+    super(textureCollection[STATES.IDLE].tiles, {
       animationSpeed: 0.15,
     });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
-    enemy.onPatrolling(() => this.setAnimation(STATES.MOVING, true));
-    enemy.onChasing(() => this.setAnimation(STATES.MOVING, true));
-    enemy.onAiming(() => this.setAnimation(STATES.AIMING, enemy.aimLoop));
+    enemy.onPatrolling(() => this.setAnimation(STATES.MOVING));
+    enemy.onChasing(() => this.setAnimation(STATES.MOVING));
+    enemy.onAiming(() => this.setAnimation(STATES.AIMING));
     enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
     enemy.onHurting(() => this.setAnimation(STATES.HURTING));
     enemy.onDead(() => this.setAnimation(STATES.DEAD));
@@ -48,9 +48,9 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param {String}  state The animation state
    * @param {Boolean} loop  Should the animation loop.
    */
-  setAnimation(state, loop = false) {
-    this.textures = this.textureCollection[state];
-    this.loop = loop;
+  setAnimation(state) {
+    this.textures = this.textureCollection[state].tiles;
+    this.loop = this.textureCollection[state].props.loop;
   }
 }
 

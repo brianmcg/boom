@@ -23,7 +23,10 @@ import ExplosionSprite from '../sprites/ExplosionSprite';
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
     ...animationMemo,
-    [state]: animations[state].map(image => textures[image]),
+    [state]: {
+      tiles: animations[state].tiles.map(image => textures[image]),
+      props: animations[state].properties,
+    },
   }), {});
 
   return new EnemySprite(enemy, textureCollection);
