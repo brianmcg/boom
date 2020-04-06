@@ -28,12 +28,14 @@ export const parse = ({ graphics, text }) => {
       font: FONT_SIZES.MEDIUM,
       text: credit.key,
       color: RED,
+      anchor: 0.5,
     });
 
     const values = credit.values.map(value => new TextSprite({
       font: FONT_SIZES.SMALL,
       text: value,
       color: WHITE,
+      anchor: 0.5,
     }));
 
     memo.push([key, ...values]);
@@ -45,6 +47,7 @@ export const parse = ({ graphics, text }) => {
     font: FONT_SIZES.LARGE,
     text: text.end,
     color: WHITE,
+    anchor: 0.5,
   });
 
   return {

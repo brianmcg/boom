@@ -12,7 +12,7 @@ const STATES = {
   REMOVING_REVIEW: 'world:scene:removing:review',
 };
 
-const FADE_INCREMENT = 0.1;
+const FADE_INCREMENT = 0.05;
 
 const FADE_PIXEL_SIZE = 8;
 
@@ -157,8 +157,7 @@ class WorldScene extends Scene {
       this.setDisplayingReview();
     }
 
-    this.reviewContainer.updateFadeEffect(this.fadeEffect);
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -169,7 +168,7 @@ class WorldScene extends Scene {
    */
   updateDisplayingReview(delta) {
     this.reviewContainer.update(delta);
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -186,10 +185,11 @@ class WorldScene extends Scene {
       this.triggerComplete();
     }
 
-    this.reviewContainer.updateFadeEffect(this.fadeEffect);
     this.mainContainer.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
+
+    this.reviewContainer.updateFadeEffect(this.fadeEffect);
   }
 
   /**
@@ -255,6 +255,14 @@ class WorldScene extends Scene {
     } else {
       this.game.showCreditsScene();
     }
+  }
+
+  /**
+   * Trigger the complete event.
+   */
+  triggerComplete() {
+    this.removeChild(this.reviewContainer);
+    super.triggerComplete();
   }
 
   /**

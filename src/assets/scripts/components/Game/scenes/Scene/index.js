@@ -156,7 +156,7 @@ class Scene extends Container {
       this.setRunning();
     }
 
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -189,10 +189,7 @@ class Scene extends Container {
       this.setPaused();
     }
 
-    this.menuContainer.updateFadeEffect(this.fadeEffect);
-    this.promptContainer.updateFadeEffect(this.fadeEffect);
-
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -214,7 +211,7 @@ class Scene extends Container {
 
     this.menuContainer.update(delta);
 
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -232,10 +229,7 @@ class Scene extends Container {
       this.setRunning();
     }
 
-    this.menuContainer.updateFadeEffect(this.fadeEffect);
-    this.promptContainer.updateFadeEffect(this.fadeEffect);
-
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -306,9 +300,7 @@ class Scene extends Container {
       this.setStopped();
     }
 
-    this.promptContainer.updateFadeEffect(this.fadeEffect);
-
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }

@@ -60,20 +60,18 @@ class CreditsScene extends Scene {
       end: translate('credits.scroll.end'),
     };
 
-    const { sprites } = parse({
-      ...options,
-      text,
-    });
+    const resources = parse({ text, ...options });
 
-    const background = new BackgroundContainer(sprites.background);
+    const { background, scroll } = resources.sprites;
 
-    const scroll = new ScrollContainer(sprites.scroll, {
-      onComplete: () => this.setPrompting(),
-    });
+    const backgroundContainer = new BackgroundContainer(background);
 
+    const scrollContainer = new ScrollContainer(scroll);
 
-    this.mainContainer.addChild(background);
-    this.mainContainer.addChild(scroll);
+    scrollContainer.onScrollComplete(this.setPrompting.bind(this));
+
+    this.mainContainer.addChild(backgroundContainer);
+    this.mainContainer.addChild(scrollContainer);
   }
 
   /**

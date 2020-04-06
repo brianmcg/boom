@@ -5,6 +5,8 @@ const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
 const SCROLL_SPEED = SCREEN.HEIGHT / 280;
 
+const SCROLL_COMPLETE_EVENT = 'scroll:complete';
+
 /**
  * Class representing a scroll container.
  */
@@ -14,14 +16,14 @@ class ScrollContainer extends Container {
    * @param  {Object}     options.credits The credits data.
    * @param  {TextSprite} options.end     The end text.
    */
-  constructor({ credits, end }, { onComplete }) {
+  constructor({ credits, end }) {
     super();
 
     let y = 0;
 
     credits.forEach((credit) => {
       credit.forEach((text, i) => {
-        text.x = (SCREEN.WIDTH / 2) - (text.width / 2);
+        text.x = SCREEN.WIDTH / 2;
         text.y = y;
         y += text.height + TEXT_PADDING;
         if (!i) {
@@ -32,14 +34,20 @@ class ScrollContainer extends Container {
       y += TEXT_PADDING * 5;
     });
 
-    end.x = (SCREEN.WIDTH / 2) - (end.width / 2);
+    end.x = SCREEN.WIDTH / 2;
     end.y = y + SCREEN.HEIGHT;
 
     this.scrollY = SCREEN.HEIGHT;
 
     this.addChild(end);
+  }
 
-    this.onComplete = onComplete;
+  /**
+   * Add a callback for the scoll complete event.
+   * @param  {Function} callback The callback function.
+   */
+  onScrollComplete(callback) {
+    this.on(SCROLL_COMPLETE_EVENT, callback);
   }
 
   /**
@@ -54,24 +62,8 @@ class ScrollContainer extends Container {
 
     if (this.scrollY <= yEnd) {
       this.scrollY = yEnd;
-      this.onComplete();
+      this.emit(SCROLL_COMPLETE_EVENT);
     }
-  }
-
-  /**
-   * Play the container.
-   */
-  play() {
-    super.play();
-    this.visible = true;
-  }
-
-  /**
-   * Stop the container.
-   */
-  stop() {
-    super.stop();
-    this.visible = false;
   }
 
   /**
