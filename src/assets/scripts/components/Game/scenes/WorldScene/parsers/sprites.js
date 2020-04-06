@@ -311,7 +311,6 @@ const createHudSprites = ({ world, textures }) => {
     anchor: 0.5,
   });
 
-
   const ammoAmount = new TextSprite({
     font: FONT_SIZES.MEDIUM,
     text: '100',
@@ -341,11 +340,12 @@ const createHudSprites = ({ world, textures }) => {
     return memo;
   }, {});
 
-  const message = new TextSprite({
+  const messages = [...Array(5)].map(() => new TextSprite({
     font: FONT_SIZES.SMALL,
     text: '',
     color: RED,
-  });
+    anchor: 0.5,
+  }));
 
   const foreground = new RectangleSprite({
     width: SCREEN.WIDTH,
@@ -361,7 +361,7 @@ const createHudSprites = ({ world, textures }) => {
     ammoIcon,
     ammoAmount,
     keys,
-    message,
+    messages,
   };
 };
 

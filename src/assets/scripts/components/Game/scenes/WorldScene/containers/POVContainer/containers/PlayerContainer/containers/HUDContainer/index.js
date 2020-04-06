@@ -24,7 +24,7 @@ class HUDContainer extends Container {
       ammoAmount,
       foreground,
       keys,
-      message,
+      messages,
     } = sprites;
 
     healthIcon.x = HUD_PADDING + (healthIcon.width / 2);
@@ -37,8 +37,6 @@ class HUDContainer extends Container {
     ammoIcon.y = SCREEN.HEIGHT - (ammoIcon.height / 2) - HUD_PADDING;
     ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
     ammoAmount.y = ammoIcon.y;
-
-    message.y = HUD_PADDING;
 
     this.addChild(ammoIcon);
     this.addChild(ammoAmount);
@@ -61,12 +59,27 @@ class HUDContainer extends Container {
       });
     });
 
+    messages.forEach((message) => {
+      message.x = SCREEN.WIDTH / 2;
+    });
+
+    player.onMessagesUpdatedEvent((items) => {
+      messages.forEach((message, i) => {
+        const item = items[i];
+
+        if (item) {
+          message.text = item.text;
+          message.y = HUD_PADDING + (message.height / 2)
+            + ((message.height + (HUD_PADDING / 2)) * i);
+          this.addChild(message);
+        } else {
+          this.removeChild(message);
+        }
+      });
+    });
+
     this.player = player;
     this.sprites = sprites;
-
-    player.onMessageAddedEvent(() => this.addChild(message));
-
-    player.onMessageRemovedEvent(() => !player.hasMessages() && this.removeChild(message));
   }
 
   /**
@@ -79,11 +92,8 @@ class HUDContainer extends Container {
       ammoIcon,
       ammoAmount,
       foreground,
-      message,
       keys,
     } = this.sprites;
-
-    const { messages } = this.player;
 
     Object.values(keys).forEach((key) => {
       if (!key.isInactive()) {
@@ -96,17 +106,10 @@ class HUDContainer extends Container {
 
     // Update ammo.
     ammoAmount.text = this.player.weapon.ammo;
-    // ammoAmount.x = ammoIcon.x - ammoAmount.width - (HUD_PADDING / 2);
     ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
 
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;
-
-    // Update messages
-    if (messages.length) {
-      message.text = messages.map(m => m.text).join('\n');
-      message.x = (SCREEN.WIDTH / 2) - (message.width / 2);
-    }
   }
 }
 

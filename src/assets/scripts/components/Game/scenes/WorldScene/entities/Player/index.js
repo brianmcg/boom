@@ -28,8 +28,7 @@ const STATES = {
 const EVENTS = {
   DEATH: 'player:death',
   ARM_WEAPON: 'player:arm:weapon',
-  MESSAGE_ADDED: 'player:message:added',
-  MESSAGE_REMOVED: 'player:message:removed',
+  MESSAGES_UPDATED: 'player:update:messages',
 };
 
 /**
@@ -140,19 +139,11 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback for the message added event.
+   * Add a callback for the message updated event.
    * @param  {Function} callback The callback function.
    */
-  onMessageAddedEvent(callback) {
-    this.on(EVENTS.MESSAGE_ADDED, callback);
-  }
-
-  /**
-   * Add a callback for the message removed event.
-   * @param  {Function} callback The callback function.
-   */
-  onMessageRemovedEvent(callback) {
-    this.on(EVENTS.MESSAGE_REMOVED, callback);
+  onMessagesUpdatedEvent(callback) {
+    this.on(EVENTS.MESSAGES_UPDATED, callback);
   }
 
   /**
@@ -201,7 +192,7 @@ class Player extends AbstractActor {
     this.messages = this.messages.filter(message => message.timer);
 
     if (this.messages.length < initialLength) {
-      this.emit(EVENTS.MESSAGE_REMOVED);
+      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
     }
   }
 
@@ -508,8 +499,8 @@ class Player extends AbstractActor {
    * @param {String} text The text of the message.
    */
   addMessage(text) {
-    this.messages = [new Message(text), ...this.messages];
-    this.emit(EVENTS.MESSAGE_ADDED);
+    this.messages.unshift(new Message(text));
+    this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
   }
 
   /**
