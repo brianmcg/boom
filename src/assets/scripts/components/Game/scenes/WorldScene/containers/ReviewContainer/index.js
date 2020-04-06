@@ -4,15 +4,18 @@ import { SCREEN, TIME_STEP } from 'game/constants/config';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
-const INTERVAL = 400;
+const INTERVAL = 200;
 
 const MAX_ALPHA = 0.7;
+
+const SCALE_INCREMENT = 0.1;
 
 const STATES = {
   SHOW_TITLE: 'review:show:title',
   SHOW_ENEMIES: 'review:show:enemies',
   SHOW_ITEMS: 'review:show:items',
   SHOW_TIME: 'review:show:time',
+  REMOVE_STATS: 'review:remove:stats',
 };
 
 /**
@@ -33,21 +36,20 @@ class ReviewContainer extends Container {
 
     title.y = (title.height / 2) + TEXT_PADDING * 4;
 
-    title.setScale(0);
-
     [enemies, items, time].forEach(({ name, value }, i) => {
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
       value.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
     });
 
     this.timer = 0;
-    this.currentIndex = 0;
+    this.titleScale = 0;
+    this.enemiesScale = 0;
+    this.itemsScale = 0;
+    this.timeScale = 0;
+
     this.sprites = sprites;
 
-    background.alpha = 0;
     this.addChild(background);
-
-    this.on('added', this.setShowTitle.bind(this));
   }
 
   /**
@@ -68,6 +70,9 @@ class ReviewContainer extends Container {
       case STATES.SHOW_TIME:
         this.updateShowTime(delta);
         break;
+      case STATES.REMOVE_STATS:
+        this.updateRemoveStats(delta);
+        break;
       default:
         break;
     }
@@ -78,15 +83,7 @@ class ReviewContainer extends Container {
    * @param  {Number} value The value of the effect.
    */
   updateFadeEffect(value) {
-    super.updateFadeEffect(1 - value);
     this.fadeEffect = value;
-  }
-
-  /**
-   * Animate the container.
-   */
-  animate() {
-    this.sprites.background.alpha = this.fadeEffect * MAX_ALPHA;
   }
 
   /**
@@ -94,11 +91,17 @@ class ReviewContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateShowTitle(delta) {
-    this.timer += TIME_STEP * delta;
+    this.titleScale += SCALE_INCREMENT * delta;
 
-    if (this.timer >= INTERVAL) {
-      this.timer = 0;
-      this.setShowEnemies();
+    if (this.titleScale >= 1) {
+      this.titleScale = 1;
+
+      this.timer += TIME_STEP * delta;
+
+      if (this.timer >= INTERVAL) {
+        this.timer = 0;
+        this.setShowEnemies();
+      }
     }
   }
 
@@ -107,11 +110,17 @@ class ReviewContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateShowEnemies(delta) {
-    this.timer += TIME_STEP * delta;
+    this.enemiesScale += SCALE_INCREMENT * delta;
 
-    if (this.timer >= INTERVAL) {
-      this.timer = 0;
-      this.setShowItems();
+    if (this.enemiesScale >= 1) {
+      this.enemiesScale = 1;
+
+      this.timer += TIME_STEP * delta;
+
+      if (this.timer >= INTERVAL) {
+        this.timer = 0;
+        this.setShowItems();
+      }
     }
   }
 
@@ -120,11 +129,17 @@ class ReviewContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateShowItems(delta) {
-    this.timer += TIME_STEP * delta;
+    this.itemsScale += SCALE_INCREMENT * delta;
 
-    if (this.timer >= INTERVAL) {
-      this.timer = 0;
-      this.setShowTime();
+    if (this.itemsScale >= 1) {
+      this.itemsScale = 1;
+
+      this.timer += TIME_STEP * delta;
+
+      if (this.timer >= INTERVAL) {
+        this.timer = 0;
+        this.setShowTime();
+      }
     }
   }
 
@@ -133,13 +148,29 @@ class ReviewContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateShowTime(delta) {
-    this.timer += TIME_STEP * delta;
+    this.timeScale += SCALE_INCREMENT * delta;
 
-    if (this.timer >= INTERVAL) {
-      this.timer = 0;
-      this.parent.playSound(this.parent.sounds.complete);
-      this.parent.setPrompting();
+    if (this.timeScale >= 1) {
+      this.timeScale = 1;
+
+      this.timer += TIME_STEP * delta;
+
+      if (this.timer >= INTERVAL) {
+        this.timer = 0;
+        this.parent.playSound(this.parent.sounds.complete);
+        this.parent.setPrompting();
+      }
     }
+  }
+
+  /**
+   * Update in the remove stats state.
+   */
+  updateRemoveStats() {
+    this.titleScale = this.fadeEffect;
+    this.enemiesScale = this.fadeEffect;
+    this.itemsScale = this.fadeEffect;
+    this.timeScale = this.fadeEffect;
   }
 
   /**
@@ -148,6 +179,7 @@ class ReviewContainer extends Container {
   setShowTitle() {
     if (this.setState(STATES.SHOW_TITLE)) {
       this.parent.playSound(this.parent.sounds.complete);
+      this.sprites.title.setScale(0);
       this.addChild(this.sprites.title);
     }
   }
@@ -156,39 +188,61 @@ class ReviewContainer extends Container {
    * Set the state to show enemies.
    */
   setShowEnemies() {
-    const { name, value } = this.sprites.stats.enemies;
+    const isStateChanged = this.setState(STATES.SHOW_ENEMIES);
 
-    if (this.setState(STATES.SHOW_ENEMIES)) {
+    if (isStateChanged) {
       this.parent.playSound(this.parent.sounds.pause);
-      this.addChild(name);
-      this.addChild(value);
+
+      Object.values(this.sprites.stats.enemies).forEach((sprite) => {
+        sprite.setScale(0);
+        this.addChild(sprite);
+      });
     }
+
+    return isStateChanged;
   }
 
   /**
    * Set the state to show items.
    */
   setShowItems() {
-    const { name, value } = this.sprites.stats.items;
+    const isStateChanged = this.setState(STATES.SHOW_ITEMS);
 
-    if (this.setState(STATES.SHOW_ITEMS)) {
+    if (isStateChanged) {
       this.parent.playSound(this.parent.sounds.pause);
-      this.addChild(name);
-      this.addChild(value);
+
+      Object.values(this.sprites.stats.items).forEach((sprite) => {
+        sprite.setScale(0);
+        this.addChild(sprite);
+      });
     }
+
+    return isStateChanged;
   }
 
   /**
    * Set the state to show time.
    */
   setShowTime() {
-    const { name, value } = this.sprites.stats.time;
+    const isStateChanged = this.setState(STATES.SHOW_TIME);
 
-    if (this.setState(STATES.SHOW_TIME)) {
+    if (isStateChanged) {
       this.parent.playSound(this.parent.sounds.pause);
-      this.addChild(name);
-      this.addChild(value);
+
+      Object.values(this.sprites.stats.time).forEach((sprite) => {
+        sprite.setScale(0);
+        this.addChild(sprite);
+      });
     }
+
+    return isStateChanged;
+  }
+
+  /**
+   * Set to the remove stats state.
+   */
+  setRemoveStats() {
+    return this.setState(STATES.REMOVE_STATS);
   }
 
   /**
@@ -219,6 +273,21 @@ class ReviewContainer extends Container {
       name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
       value.x = (SCREEN.WIDTH / 2) + (value.width / 2) + TEXT_PADDING;
     });
+  }
+
+  /**
+   * Animate the container.
+   */
+  animate() {
+    const { background, title, stats } = this.sprites;
+
+    background.alpha = this.fadeEffect * MAX_ALPHA;
+
+    title.setScale(this.titleScale);
+
+    Object.values(stats.enemies).forEach(sprite => sprite.setScale(this.enemiesScale));
+    Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
+    Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
 
   /**

@@ -12,7 +12,7 @@ const STATES = {
   REMOVING_REVIEW: 'world:scene:removing:review',
 };
 
-const FADE_INCREMENT = 0.05;
+const FADE_INCREMENT = 0.1;
 
 const FADE_PIXEL_SIZE = 8;
 
@@ -190,6 +190,8 @@ class WorldScene extends Scene {
     });
 
     this.reviewContainer.updateFadeEffect(this.fadeEffect);
+
+    this.reviewContainer.update(delta);
   }
 
   /**
@@ -233,14 +235,26 @@ class WorldScene extends Scene {
    * Set the scene to the displaying review state.
    */
   setDisplayingReview() {
-    return this.setState(STATES.DISPLAYING_REVIEW);
+    const isStateChanged = this.setState(STATES.DISPLAYING_REVIEW);
+
+    if (isStateChanged) {
+      this.reviewContainer.setShowTitle();
+    }
+
+    return isStateChanged;
   }
 
   /**
    * Set the state to removing review.
    */
   setRemovingReview() {
-    return this.setState(STATES.REMOVING_REVIEW);
+    const isStateChanged = this.setState(STATES.REMOVING_REVIEW);
+
+    if (isStateChanged) {
+      this.reviewContainer.setRemoveStats();
+    }
+
+    return isStateChanged;
   }
 
   /**

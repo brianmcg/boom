@@ -244,7 +244,7 @@ const createReviewSprites = (text) => {
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: BLACK,
-    alpha: 0.75,
+    alpha: 0,
   });
 
   const title = new TextSprite({
