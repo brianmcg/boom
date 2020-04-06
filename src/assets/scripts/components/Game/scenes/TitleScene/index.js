@@ -42,20 +42,21 @@ class TitleScene extends Scene {
   }
 
   /**
+   * Update scene in the running state.
+   * @param  {Number} delta The delta time.
+   */
+  updateRunning(delta) {
+    super.updateRunning(delta);
+    this.setPrompting();
+  }
+
+  /**
    * Update the container in the prompting state.
    * @param  {delta} delta The delta time.
    */
   updatePrompting(delta) {
-    this.updateRunning(delta);
+    super.updateRunning(delta);
     super.updatePrompting(delta);
-  }
-
-  /**
-   * Set the container state to running.
-   */
-  setRunning() {
-    super.setRunning();
-    this.setPrompting();
   }
 
   /**

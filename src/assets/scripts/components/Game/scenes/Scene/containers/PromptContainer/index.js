@@ -31,18 +31,16 @@ class PromptContainer extends Container {
 
     sprite.x = (SCREEN.WIDTH / 2);
     sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
+    sprite.setScale(0);
 
     this.minHeight = sprite.height;
     this.minWidth = sprite.width;
-
     this.scaleFactor = 0;
     this.timer = 0;
+    this.sprite = sprite;
 
     this.addChild(sprite);
     this.setFadingIn();
-
-    this.sprite = sprite;
-    this.sprite.setScale(this.scaleFactor);
   }
 
   /**
