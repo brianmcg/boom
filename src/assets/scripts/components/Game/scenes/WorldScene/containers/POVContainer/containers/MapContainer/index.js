@@ -15,7 +15,6 @@ class MapContainer extends Container {
     this.walls = walls;
     this.entities = entities;
     this.effects = effects;
-    this.dynamicChildren = Object.values(entities);
     this.walls.forEach(wall => this.addChild(wall));
   }
 
@@ -24,13 +23,6 @@ class MapContainer extends Container {
    */
   sort() {
     this.children.sort((a, b) => b.zOrder - a.zOrder);
-  }
-
-  /**
-   * Reset the map container.
-   */
-  reset() {
-    this.dynamicChildren.forEach(child => this.removeChild(child));
   }
 }
 

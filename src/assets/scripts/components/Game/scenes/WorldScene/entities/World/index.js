@@ -134,6 +134,11 @@ class World extends PhysicsWorld {
     }
 
     super.update(delta);
+
+    // TODO: Use sectors.
+    // this.player.enabledSectors.forEach((sector) => {
+    //   sector.dynamicBodies.forEach(body => body.update(delta));
+    // });
   }
 
   /**

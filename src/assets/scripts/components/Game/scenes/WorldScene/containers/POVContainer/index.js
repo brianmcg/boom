@@ -18,7 +18,6 @@ const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
 
 let spriteAngle;
-let body;
 let centerY;
 let gridX;
 let gridY;
@@ -58,6 +57,7 @@ class POVContainer extends Container {
     this.playerContainer = new PlayerContainer(world.player, player);
 
     this.world = world;
+    this.displayedEntities = [];
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
@@ -75,7 +75,9 @@ class POVContainer extends Container {
       explosions,
     } = this.world;
 
-    // this.mapContainer.reset();
+    // Remove sprites from previous run.
+    this.displayedEntities.forEach(entity => this.mapContainer.removeChild(entity));
+    this.displayedEntities = [];
 
     const { background } = this.backgroundContainer;
     const { walls, entities, effects } = this.mapContainer;
@@ -177,29 +179,24 @@ class POVContainer extends Container {
     }
 
     // Update entity sprites
-    Object.keys(entities).forEach((id) => {
-      sprite = entities[id];
-      body = totalEncounteredBodies[id];
-
-      if (body) {
-        spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
-        actualDistance = player.getDistanceTo(body);
-        correctedDistance = COS[spriteAngle] * actualDistance;
-        spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-        spriteWidth = CELL_SIZE * spriteScale;
-        spriteHeight = CELL_SIZE * spriteScale;
-        spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
-        sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-        sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
-        sprite.width = spriteWidth;
-        sprite.height = spriteHeight;
-        sprite.zOrder = actualDistance;
-        sprite.tint = this.calculateTint(actualDistance);
-        this.mapContainer.addChild(sprite);
-      } else {
-        this.mapContainer.removeChild(sprite);
-      }
+    Object.values(totalEncounteredBodies).forEach((body) => {
+      sprite = entities[body.id];
+      spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
+      actualDistance = player.getDistanceTo(body);
+      correctedDistance = COS[spriteAngle] * actualDistance;
+      spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
+      spriteWidth = CELL_SIZE * spriteScale;
+      spriteHeight = CELL_SIZE * spriteScale;
+      spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+      sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+      sprite.y = centerY
+        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+      sprite.width = spriteWidth;
+      sprite.height = spriteHeight;
+      sprite.zOrder = actualDistance;
+      sprite.tint = this.calculateTint(actualDistance);
+      this.mapContainer.addChild(sprite);
+      this.displayedEntities.push(sprite);
     });
 
     // Update effects.
