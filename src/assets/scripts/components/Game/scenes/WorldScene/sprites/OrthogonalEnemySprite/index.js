@@ -37,7 +37,7 @@ class OrthogonalEnemySprite extends AnimatedEntitySprite {
   /**
    * Animate the sprite.
    */
-  animate() {
+  update() {
     const { enemy } = this;
 
     if (enemy.isDead()) {

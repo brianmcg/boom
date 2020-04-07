@@ -37,7 +37,7 @@ class ScrollContainer extends Container {
     end.x = SCREEN.WIDTH / 2;
     end.y = y + SCREEN.HEIGHT;
 
-    this.scrollY = SCREEN.HEIGHT;
+    this.y = SCREEN.HEIGHT;
 
     this.addChild(end);
   }
@@ -58,19 +58,12 @@ class ScrollContainer extends Container {
     const lastSprite = this.children[this.children.length - 1];
     const yEnd = SCREEN.HEIGHT - (lastSprite.height * 2) - this.height;
 
-    this.scrollY -= delta * SCROLL_SPEED;
+    this.y -= delta * SCROLL_SPEED;
 
-    if (this.scrollY <= yEnd) {
-      this.scrollY = yEnd;
+    if (this.y <= yEnd) {
+      this.y = yEnd;
       this.emit(SCROLL_COMPLETE_EVENT);
     }
-  }
-
-  /**
-   * Animate the container.
-   */
-  animate() {
-    this.y = this.scrollY;
   }
 }
 

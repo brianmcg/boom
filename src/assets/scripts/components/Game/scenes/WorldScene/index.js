@@ -109,9 +109,10 @@ class WorldScene extends Scene {
         this.updateRemovingReview(delta);
         break;
       default:
-        super.update(delta);
         break;
     }
+
+    super.update(delta);
   }
 
   /**
@@ -166,8 +167,7 @@ class WorldScene extends Scene {
    * Update the scene in the reviewing state.
    * @param  {Number} delta The delta time.
    */
-  updateDisplayingReview(delta) {
-    this.reviewContainer.update(delta);
+  updateDisplayingReview() {
     this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
@@ -190,8 +190,6 @@ class WorldScene extends Scene {
     });
 
     this.reviewContainer.updateFadeEffect(this.fadeEffect);
-
-    this.reviewContainer.update(delta);
   }
 
   /**
@@ -211,12 +209,10 @@ class WorldScene extends Scene {
    * Update the scene when in a prompting state.
    * @param  {Number} delta The delta value.
    */
-  updatePrompting(delta) {
+  updatePrompting() {
     if (this.game.isKeyPressed(KEYS.SPACE)) {
       this.setRemovingReview();
     }
-
-    this.promptContainer.update(delta);
   }
 
   /**

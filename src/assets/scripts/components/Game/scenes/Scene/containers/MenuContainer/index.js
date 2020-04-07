@@ -100,7 +100,7 @@ class MenuContainer extends Container {
   /**
    * Animate the container.
    */
-  animate() {
+  update() {
     const { icon, labels, background } = this.sprites;
 
     icon.setScale(this.scaleFactor);

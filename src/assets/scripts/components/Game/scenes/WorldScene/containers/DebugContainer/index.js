@@ -36,7 +36,7 @@ class DebugContainer extends Container {
   // /**
   //  * Animate the container.
   //  */
-  // animate() {
+  // update() {
   //   const { player, bodies } = this.world;
   //   const playerSprite = this.bodySprites[player.id];
 

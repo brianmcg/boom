@@ -67,7 +67,7 @@ class POVContainer extends Container {
   /**
    * Animate the container.
    */
-  animate() {
+  update(delta) {
     const {
       player,
       maxCellX,
@@ -231,7 +231,7 @@ class POVContainer extends Container {
     // Sort sprites in map container
     this.mapContainer.sort();
 
-    super.animate();
+    super.update(delta);
   }
 
   /**

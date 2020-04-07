@@ -11,9 +11,7 @@ class Container extends PixiContainer {
   constructor() {
     super();
     this.playableChildren = [];
-    this.animateableChildren = [];
-    this.autoPlay = true;
-    this.playing = false;
+    this.playing = true;
   }
 
   /**
@@ -25,10 +23,6 @@ class Container extends PixiContainer {
 
     if (child.play) {
       this.playableChildren.push(child);
-    }
-
-    if (child.animate) {
-      this.animateableChildren.push(child);
     }
   }
 
@@ -42,10 +36,6 @@ class Container extends PixiContainer {
     if (child.play) {
       this.playableChildren = this.playableChildren.filter(p => p !== child);
     }
-
-    if (child.animate) {
-      this.animateableChildren = this.animateableChildren.filter(a => a !== child);
-    }
   }
 
   /**
@@ -55,7 +45,6 @@ class Container extends PixiContainer {
     super.removeChildren();
 
     this.playableChildren = [];
-    this.animateableChildren = [];
   }
 
   /**
@@ -64,7 +53,7 @@ class Container extends PixiContainer {
    * @param  {Object} options The update options.
    */
   update(delta) {
-    this.playableChildren.forEach(child => child.isUpdateable() && child.update(delta));
+    this.playableChildren.forEach(child => child.update(delta));
   }
 
   /**
@@ -76,26 +65,17 @@ class Container extends PixiContainer {
   }
 
   /**
-   * Animate the container children.
-   */
-  animate() {
-    this.animateableChildren.forEach(child => child.animate());
-  }
-
-  /**
    * Play playable children.
    */
   play() {
-    this.playing = true;
-    this.playableChildren.forEach(child => child.autoPlay && child.play());
+    this.playableChildren.forEach(child => child.play && child.play());
   }
 
   /**
    * Stop playable children.
    */
   stop() {
-    this.playing = false;
-    this.playableChildren.forEach(child => child.autoPlay && child.stop());
+    this.playableChildren.forEach(child => child.play && child.stop());
   }
 
   /**
@@ -130,14 +110,6 @@ class Container extends PixiContainer {
   }
 
   /**
-   * Check if the container should be updated.
-   * @return {Boolean} Should container be updated.
-   */
-  isUpdateable() {
-    return this.playing;
-  }
-
-    /**
    * Set the container state.
    * @param {String} state The new state.
    */

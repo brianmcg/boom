@@ -107,9 +107,6 @@ class Scene extends Container {
    */
   update(delta) {
     switch (this.state) {
-      case STATES.LOADING:
-        this.updateLoading(delta);
-        break;
       case STATES.FADING_IN:
         this.updateFadingIn(delta);
         break;
@@ -134,14 +131,8 @@ class Scene extends Container {
       default:
         break;
     }
-  }
 
-  /**
-   * Update the scene when in a loading state.
-   * @param {Numbmer} delta The delta value.
-   */
-  updateLoading(delta) {
-    this.loadingContainer.update(delta);
+    super.update(delta);
   }
 
   /**
@@ -165,7 +156,7 @@ class Scene extends Container {
    * Update the scene when in a running state.
    * @param  {Number} delta The delta value.
    */
-  updateRunning(delta) {
+  updateRunning() {
     if (this.game.isKeyPressed(KEYS.ESC)) {
       this.showMenu();
     }
@@ -173,8 +164,6 @@ class Scene extends Container {
     if (this.selectedOption) {
       this.selectedOption();
     }
-
-    this.mainContainer.update(delta);
   }
 
   /**
@@ -198,7 +187,7 @@ class Scene extends Container {
    * Update the scene when in a paused state.
    * @param  {Number} delta The delta value.
    */
-  updatePaused(delta) {
+  updatePaused() {
     if (this.game.isKeyPressed(KEYS.DOWN_ARROW)) {
       this.menuHighlightNext();
     } else if (this.game.isKeyPressed(KEYS.UP_ARROW)) {
@@ -208,8 +197,6 @@ class Scene extends Container {
     } else if (this.game.isKeyPressed(KEYS.ESC)) {
       this.hideMenu();
     }
-
-    this.menuContainer.update(delta);
 
     this.updateFadeEffect(this.fadeEffect, {
       pixelSize: PAUSE_PIXEL_SIZE,
@@ -280,12 +267,10 @@ class Scene extends Container {
    * Update the scene when in a prompting state.
    * @param  {Number} delta The delta value.
    */
-  updatePrompting(delta) {
+  updatePrompting() {
     if (this.game.isKeyPressed(KEYS.SPACE)) {
       this.triggerComplete();
     }
-
-    this.promptContainer.update(delta);
   }
 
   /**

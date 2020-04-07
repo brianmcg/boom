@@ -17,14 +17,6 @@ class ExplosionSprite extends AnimatedEntitySprite {
       this.parent.removeChild(this);
     };
   }
-
-  /**
-   * Check if the sprite should be updated.
-   * @return {Boolean} Should sprite be updated.
-   */
-  isUpdateable() {
-    return !!this.parent;
-  }
 }
 
 export default ExplosionSprite;

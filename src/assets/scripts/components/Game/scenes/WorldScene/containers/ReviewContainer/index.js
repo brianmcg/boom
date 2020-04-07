@@ -76,6 +76,16 @@ class ReviewContainer extends Container {
       default:
         break;
     }
+
+    const { background, title, stats } = this.sprites;
+
+    background.alpha = this.fadeEffect * MAX_ALPHA;
+
+    title.setScale(this.titleScale);
+
+    Object.values(stats.enemies).forEach(sprite => sprite.setScale(this.enemiesScale));
+    Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
+    Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
 
   /**
@@ -273,21 +283,6 @@ class ReviewContainer extends Container {
       name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
       value.x = (SCREEN.WIDTH / 2) + (value.width / 2) + TEXT_PADDING;
     });
-  }
-
-  /**
-   * Animate the container.
-   */
-  animate() {
-    const { background, title, stats } = this.sprites;
-
-    background.alpha = this.fadeEffect * MAX_ALPHA;
-
-    title.setScale(this.titleScale);
-
-    Object.values(stats.enemies).forEach(sprite => sprite.setScale(this.enemiesScale));
-    Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
-    Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
 }
 

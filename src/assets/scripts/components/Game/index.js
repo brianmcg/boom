@@ -85,7 +85,7 @@ class Game extends Application {
     this.ticker.start();
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
-    this.showWorldScene();
+    this.showTitleScene();
 
     this.emit(EVENTS.STARTED);
   }
@@ -117,7 +117,6 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.update(delta);
-      this.scene.animate();
       this.keyboard.update();
       this.mouse.update();
     }

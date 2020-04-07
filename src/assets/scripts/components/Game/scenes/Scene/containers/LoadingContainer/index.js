@@ -56,9 +56,7 @@ class LoadingContainer extends Container {
         this.index = 0;
       }
     }
-  }
 
-  animate() {
     this.sprites.forEach((sprite, i) => {
       sprite.tint = this.index === i ? WHITE : RED;
     });
