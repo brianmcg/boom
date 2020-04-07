@@ -38,6 +38,7 @@ class Body extends EventEmitter {
   constructor({
     x = 0,
     y = 0,
+    z = 0,
     width = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
     blocking = true,
@@ -47,6 +48,7 @@ class Body extends EventEmitter {
     this.id = generateId(this);
     this.x = x;
     this.y = y;
+    this.z = z;
     this.width = width;
     this.height = height;
     this.blocking = blocking;

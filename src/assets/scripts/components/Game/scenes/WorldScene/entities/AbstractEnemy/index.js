@@ -14,6 +14,10 @@ const STATES = {
 
 const WAYPOINT_SIZE = CELL_SIZE / 4;
 
+const FLOAT_INCREMENT = 0.075;
+
+const FLOAT_BOUNDARY = 4;
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -35,19 +39,17 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
   constructor({
-    maxVelocity = 1,
-    attackRange = 250,
+    attackRange = 2,
     attackTime = 1000,
     hurtTime = 1000,
     alertTime = 1000,
     aimTime = 200,
-    acceleration = 1,
     attackPower = 1,
     maxAttacks,
     spatters,
     spatterType,
     corpseRemains,
-    aimLoop,
+    isFloating,
     type,
     ...other
   }) {
@@ -57,18 +59,15 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.aimLoop = aimLoop;
+    this.attackRange = attackRange * CELL_SIZE;
     this.corpseRemains = corpseRemains;
     this.type = type;
     this.spatterType = spatterType;
     this.spatters = spatters;
-    this.attackRange = attackRange * CELL_SIZE;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
     this.aimTime = aimTime;
-    this.maxVelocity = maxVelocity;
-    this.acceleration = acceleration;
     this.attackPower = attackPower;
     this.maxAttacks = maxAttacks;
     this.numberOfAttacks = maxAttacks;
@@ -78,6 +77,8 @@ class AbstractEnemy extends AbstractActor {
     this.alertTimer = 0;
     this.aimTimer = 0;
     this.isEnemy = true;
+    this.isFloating = isFloating;
+    this.floatDirection = 1;
 
     this.setIdle();
   }
@@ -92,6 +93,14 @@ class AbstractEnemy extends AbstractActor {
     this.distanceToPlayer = this.getDistanceTo(player);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
+      if (this.isFloating) {
+        this.z += FLOAT_INCREMENT * this.floatDirection * delta;
+
+        if (Math.abs(this.z) >= FLOAT_BOUNDARY) {
+          this.floatDirection *= -1;
+        }
+      }
+
       this.face(player);
 
       switch (this.state) {

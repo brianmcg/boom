@@ -1,3 +1,4 @@
+import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../Cell';
 
 const AXES = {
@@ -30,8 +31,8 @@ class DynamicCell extends Cell {
   }) {
     super(other);
 
+    this.speed = speed * CELL_SIZE;
     this.sounds = sounds;
-    this.speed = speed;
     this.axis = axis;
     this.isDynamic = true;
     this.offset = { x: 0, y: 0 };

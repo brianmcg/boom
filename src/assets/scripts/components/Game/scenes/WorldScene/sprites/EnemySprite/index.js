@@ -21,9 +21,9 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {Array}  textureCollection The textures for the sprite.
    */
   constructor(enemy, textureCollection = []) {
-    super(textureCollection[STATES.IDLE].tiles, {
-      animationSpeed: 0.15,
-    });
+    const { textures } = textureCollection[STATES.IDLE];
+
+    super(textures, { animationSpeed: 0.15 });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
@@ -49,8 +49,10 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param {Boolean} loop  Should the animation loop.
    */
   setAnimation(state) {
-    this.textures = this.textureCollection[state].tiles;
-    this.loop = this.textureCollection[state].props.loop;
+    const { textures, loop } = this.textureCollection[state];
+
+    this.textures = textures;
+    this.loop = loop;
   }
 }
 

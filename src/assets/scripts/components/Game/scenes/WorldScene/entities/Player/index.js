@@ -54,9 +54,7 @@ class Player extends AbstractActor {
    */
   constructor(options = {}) {
     const {
-      maxVelocity = 1,
       maxRotVelocity = 1,
-      acceleration = 0,
       rotAcceleration = 0,
       weapons = {},
       currentWeaponType,
@@ -65,15 +63,16 @@ class Player extends AbstractActor {
 
     super(other);
 
-    this.maxVelocity = maxVelocity;
-    this.baseMaxVelocity = maxVelocity;
+    this.baseMaxVelocity = this.maxVelocity;
+
     this.maxRotVelocity = maxRotVelocity;
-    this.acceleration = acceleration;
     this.rotAcceleration = rotAcceleration;
     this.maxHeight = this.height;
+
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
     this.heightVelocity = CELL_SIZE / 32;
+
     this.currentWeaponType = currentWeaponType || weapons[0].type;
     this.nextWeaponType = null;
     this.actions = {};

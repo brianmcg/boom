@@ -24,8 +24,8 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
     ...animationMemo,
     [state]: {
-      tiles: animations[state].tiles.map(image => textures[image]),
-      props: animations[state].properties,
+      ...animations[state],
+      textures: animations[state].frames.map(image => textures[image]),
     },
   }), {});
 

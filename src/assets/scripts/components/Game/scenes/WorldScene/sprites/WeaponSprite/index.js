@@ -40,23 +40,18 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    if (this.player.weapon.isFiring()) {
+    const { weapon } = this.player;
+
+    this.x = this.centerX + weapon.offsetX;
+    this.y = this.centerY + weapon.offsetY;
+
+    if (weapon.isFiring()) {
       if (this.playing) {
         super.update(delta);
       } else {
         this.play();
       }
     }
-  }
-
-  /**
-   * Animate the weapon sprite.
-   */
-  animate() {
-    const { weapon } = this.player;
-
-    this.x = this.centerX + weapon.offsetX;
-    this.y = this.centerY + weapon.offsetY;
   }
 
   /**
@@ -72,15 +67,6 @@ class WeaponSprite extends AnimatedSprite {
     } else {
       weapon.setDisabled();
     }
-  }
-
-  /**
-   * Check id the sprite should be updated.
-   * @return {Boolean} Should sprite be updated.
-   */
-  isUpdateable() {
-    const { weapon } = this.player;
-    return weapon.isFiring() || weapon.isArming();
   }
 }
 

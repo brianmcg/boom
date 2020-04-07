@@ -1,3 +1,4 @@
+import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 
 /**
@@ -17,13 +18,21 @@ class AbstractActor extends DynamicEntity {
    * @param  {Number}  options.health    The current health of the actor.
    * @param  {Number}  options.maxHealth The maximum health of the actor.
    */
-  constructor({ maxHealth = 100, health, ...other }) {
+  constructor({
+    maxHealth = 100,
+    health,
+    maxVelocity,
+    acceleration,
+    ...other
+  }) {
     super(other);
 
     if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
 
+    this.maxVelocity = maxVelocity * CELL_SIZE;
+    this.acceleration = acceleration * CELL_SIZE;
     this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;
     this.isActor = true;
