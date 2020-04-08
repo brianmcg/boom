@@ -39,16 +39,16 @@ class MainContainer extends Container {
    * Pause the container.
    */
   stop() {
-    this.pixelateFilter.enabled = true;
     super.stop();
+    this.pixelateFilter.enabled = true;
   }
 
   /**
    * Resume the container.
    */
   play() {
-    this.pixelateFilter.enabled = false;
     super.play();
+    this.pixelateFilter.enabled = false;
   }
 }
 

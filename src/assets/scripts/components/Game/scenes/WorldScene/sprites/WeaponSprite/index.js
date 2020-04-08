@@ -35,29 +35,21 @@ class WeaponSprite extends AnimatedSprite {
     };
   }
 
-  update(delta) {
-    super.update(delta);
-    // console.log('update');
-  }
-
-  setFiring(type) {
+  setFiring() {
     this.textures = this.textureCollection[this.player.currentWeaponType].firing;
+    this.play();
   }
 
-  setIdle(type) {
+  setIdle() {
     this.textures = this.textureCollection[this.player.currentWeaponType].idle;
   }
 
-
-  // play() {
-  //   console.log('play');
-  //   if (this.player.weapon.isFiring()) {
-  //     console.log('super:play');
-  //     super.play();
-  //   }
-  // }
-
-
+  /**
+   * Play the sprite.
+   */
+  play() {
+    if (this.player.weapon.isFiring()) super.play();
+  }
 }
 
 export default WeaponSprite;

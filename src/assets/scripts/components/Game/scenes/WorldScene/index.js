@@ -12,7 +12,7 @@ const STATES = {
   REMOVING_REVIEW: 'world:scene:removing:review',
 };
 
-const FADE_INCREMENT = 0.1;
+const FADE_INCREMENT = 0.05;
 
 const FADE_PIXEL_SIZE = 8;
 
@@ -185,11 +185,9 @@ class WorldScene extends Scene {
       this.triggerComplete();
     }
 
-    this.mainContainer.updateFadeEffect(this.fadeEffect, {
+    this.updateFadeEffect(this.fadeEffect, {
       pixelSize: FADE_PIXEL_SIZE,
     });
-
-    this.reviewContainer.updateFadeEffect(this.fadeEffect);
   }
 
   /**
@@ -197,9 +195,9 @@ class WorldScene extends Scene {
    */
   setAddingReviewing() {
     if (this.setState(STATES.ADDING_REVIEW)) {
+      this.stop();
       this.fadeEffect = 0;
       this.game.pauseSounds();
-      this.mainContainer.stop();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }

@@ -118,6 +118,20 @@ class MenuContainer extends Container {
       }
     });
   }
+
+  /**
+   * Play the container. This has the opposite effect of regular container.
+   */
+  play() {
+    super.stop();
+  }
+
+  /**
+   * Stop the container. This has the opposite effect of regular container.
+   */
+  stop() {
+    super.play();
+  }
 }
 
 export default MenuContainer;

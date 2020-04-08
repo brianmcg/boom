@@ -79,7 +79,7 @@ class ReviewContainer extends Container {
 
     const { background, title, stats } = this.sprites;
 
-    background.alpha = this.fadeEffect * MAX_ALPHA;
+    background.alpha = this.alphaFactor;
 
     title.setScale(this.titleScale);
 
@@ -93,7 +93,8 @@ class ReviewContainer extends Container {
    * @param  {Number} value The value of the effect.
    */
   updateFadeEffect(value) {
-    this.fadeEffect = value;
+    this.alphaFactor = value * MAX_ALPHA;
+    this.scaleFactor = value;
   }
 
   /**
@@ -177,10 +178,10 @@ class ReviewContainer extends Container {
    * Update in the remove stats state.
    */
   updateRemoveStats() {
-    this.titleScale = this.fadeEffect;
-    this.enemiesScale = this.fadeEffect;
-    this.itemsScale = this.fadeEffect;
-    this.timeScale = this.fadeEffect;
+    this.titleScale = this.scaleFactor;
+    this.enemiesScale = this.scaleFactor;
+    this.itemsScale = this.scaleFactor;
+    this.timeScale = this.scaleFactor;
   }
 
   /**

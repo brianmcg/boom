@@ -41,6 +41,8 @@ class EnemySprite extends AnimatedEntitySprite {
         this.visible = false;
       }
     };
+
+    this.play();
   }
 
   /**
@@ -53,6 +55,7 @@ class EnemySprite extends AnimatedEntitySprite {
 
     this.textures = textures;
     this.loop = loop;
+    this.play();
   }
 }
 

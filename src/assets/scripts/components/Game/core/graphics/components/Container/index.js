@@ -11,7 +11,7 @@ class Container extends PixiContainer {
   constructor() {
     super();
     this.playableChildren = [];
-    this.playing = false;
+    this.playing = true;
   }
 
   /**
@@ -53,7 +53,7 @@ class Container extends PixiContainer {
    * @param  {Object} options The update options.
    */
   update(delta) {
-    this.playableChildren.forEach(child => child.update(delta));
+    this.playableChildren.forEach(child => child.playing && child.update(delta));
   }
 
   /**
