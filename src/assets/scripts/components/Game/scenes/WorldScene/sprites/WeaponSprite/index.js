@@ -13,60 +13,51 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.currentWeaponType], {
+    super(textureCollection[player.currentWeaponType].idle, {
       animationSpeed: 0.3,
       loop: false,
     });
 
     this.textureCollection = textureCollection;
-    this.x = this.centerX;
-    this.y = this.centerY;
     this.width *= HEIGHT_RATIO;
     this.height *= HEIGHT_RATIO;
-    this.centerX = (SCREEN.WIDTH / 2) - (this.width / 2);
-    this.centerY = SCREEN.HEIGHT - this.height;
+    this.x = SCREEN.WIDTH / 2;
+    this.y = SCREEN.HEIGHT - (this.height / 2);
     this.player = player;
-    this.onComplete = this.handleOnComplete.bind(this);
+    this.anchor.set(0.5);
 
-    this.player.onArmWeaponEvent((weaponType) => {
-      this.textures = this.textureCollection[weaponType];
-      this.texture = this.textures[0];
-    });
-  }
-
-  /**
-   * Updates the sprite.
-   * @param  {Number} delta The delta time.
-   */
-  update(delta) {
-    const { weapon } = this.player;
-
-    this.x = this.centerX + weapon.offsetX;
-    this.y = this.centerY + weapon.offsetY;
-
-    if (weapon.isFiring()) {
-      if (this.playing) {
-        super.update(delta);
-      } else {
-        this.play();
+    this.onComplete = () => {
+      const { weapon } = this.player;
+      if (weapon.isFiring()) {
+        weapon.setIdle();
+        this.setIdle();
       }
-    }
+    };
   }
 
-  /**
-   * Handle on complete event.
-   */
-  handleOnComplete() {
-    const { weapon } = this.player;
-
-    this.gotoAndStop(0);
-
-    if (weapon.isAutomatic()) {
-      weapon.setIdle();
-    } else {
-      weapon.setDisabled();
-    }
+  update(delta) {
+    super.update(delta);
+    // console.log('update');
   }
+
+  setFiring(type) {
+    this.textures = this.textureCollection[this.player.currentWeaponType].firing;
+  }
+
+  setIdle(type) {
+    this.textures = this.textureCollection[this.player.currentWeaponType].idle;
+  }
+
+
+  // play() {
+  //   console.log('play');
+  //   if (this.player.weapon.isFiring()) {
+  //     console.log('super:play');
+  //     super.play();
+  //   }
+  // }
+
+
 }
 
 export default WeaponSprite;

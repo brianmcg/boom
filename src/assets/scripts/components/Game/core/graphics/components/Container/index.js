@@ -11,7 +11,7 @@ class Container extends PixiContainer {
   constructor() {
     super();
     this.playableChildren = [];
-    this.playing = true;
+    this.playing = false;
   }
 
   /**
@@ -68,6 +68,7 @@ class Container extends PixiContainer {
    * Play playable children.
    */
   play() {
+    this.playing = true;
     this.playableChildren.forEach(child => child.play && child.play());
   }
 
@@ -75,6 +76,7 @@ class Container extends PixiContainer {
    * Stop playable children.
    */
   stop() {
+    this.playing = false;
     this.playableChildren.forEach(child => child.play && child.stop());
   }
 
@@ -121,6 +123,10 @@ class Container extends PixiContainer {
     }
 
     return false;
+  }
+
+  isUpdateable() {
+    return this.visible;
   }
 }
 

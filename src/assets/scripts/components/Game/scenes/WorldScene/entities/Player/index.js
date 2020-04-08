@@ -74,7 +74,7 @@ class Player extends AbstractActor {
     this.heightVelocity = CELL_SIZE / 32;
 
     this.currentWeaponType = currentWeaponType || weapons[0].type;
-    this.nextWeaponType = null;
+    // this.nextWeaponType = null;
     this.actions = {};
     this.vision = 1;
 
@@ -86,7 +86,7 @@ class Player extends AbstractActor {
         ...data,
       });
 
-      weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.type));
+      // weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.type));
 
       return {
         ...memo,
@@ -131,7 +131,7 @@ class Player extends AbstractActor {
       return memo;
     }, {});
 
-    this.armWeapon();
+    // this.armWeapon();
   }
 
   /**
@@ -283,9 +283,7 @@ class Player extends AbstractActor {
       attack,
     } = this.actions;
 
-    if (this.weapon.isUnarmed()) {
-      this.armNextWeapon();
-    } else if (armWeaponA) {
+    if (armWeaponA) {
       this.selectNextWeapon(0);
     } else if (armWeaponB) {
       this.selectNextWeapon(1);
@@ -515,29 +513,29 @@ class Player extends AbstractActor {
     const weapon = Object.values(this.weapons)[index];
 
     if (weapon && weapon.isEquiped() && this.currentWeaponType !== weapon.type) {
-      this.nextWeaponType = weapon.type;
-      this.weapon.setUnarming();
+      this.currentWeaponType = weapon.type;
+      this.emit('change:weapon');
     }
   }
 
   /**
    * Arm the next selected weapon.
    */
-  armNextWeapon() {
-    if (this.currentWeaponType !== this.nextWeaponType) {
-      this.currentWeaponType = this.nextWeaponType;
-      this.nextWeaponType = null;
-      this.armWeapon();
-    }
-  }
+  // armNextWeapon() {
+  //   if (this.currentWeaponType !== this.nextWeaponType) {
+  //     this.currentWeaponType = this.nextWeaponType;
+  //     this.nextWeaponType = null;
+  //     this.armWeapon();
+  //   }
+  // }
 
   /**
    * Arm weapon.
    */
-  armWeapon() {
-    this.emitSound(this.sounds.weapon);
-    this.weapon.setArming();
-  }
+  // armWeapon() {
+  //   this.emitSound(this.sounds.weapon);
+  //   this.weapon.setArming();
+  // }
 
   /**
    * Use the current weapon.
@@ -614,6 +612,8 @@ class Player extends AbstractActor {
       this.camera.setRecoil(recoil);
       this.parent.onExplosion(power);
       this.emitSound(this.weapon.sounds.fire);
+
+      this.emit('use:weapon', this.weapon.type);
     }
   }
 
@@ -668,7 +668,7 @@ class Player extends AbstractActor {
     const index = Object.keys(this.weapons).indexOf(weapon);
 
     if (!pickedUpWeapon.isEquiped()) {
-      pickedUpWeapon.setEquiped(true);
+      pickedUpWeapon.setEquiped();
       this.selectNextWeapon(index);
 
       return true;
@@ -775,7 +775,7 @@ class Player extends AbstractActor {
     const isStateChanged = this.setState(STATES.DYING);
 
     if (isStateChanged) {
-      this.weapon.setUnarming();
+      // this.weapon.setUnarming();
     }
 
     return isStateChanged;

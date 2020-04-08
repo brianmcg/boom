@@ -32,19 +32,22 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
   return new EnemySprite(enemy, textureCollection);
 };
 
+const createWeaponSprite = ({ animations, textures, player }) => {
+  const textureCollection = Object.keys(player.weapons).reduce((weaponMemo, weaponKey) => ({
+    ...weaponMemo,
+    [weaponKey]: Object.keys(animations[weaponKey]).reduce((stateMemo, stateKey) => ({
+      ...stateMemo,
+      [stateKey]: animations[weaponKey][stateKey].frames.map(frame => textures[frame]),
+    }), {}),
+  }), {});
+
+  return new WeaponSprite(textureCollection, player);
+};
+
 const createProjectileSprite = ({ animations, textures }) => {
   const projectileTextures = animations.map(animation => textures[animation]);
 
   return new AnimatedEntitySprite(projectileTextures);
-};
-
-const createWeaponSprite = ({ animations, textures, player }) => {
-  const textureCollection = Object.keys(player.weapons).reduce((memo, key) => ({
-    ...memo,
-    [key]: animations[key].map(image => textures[image]),
-  }), {});
-
-  return new WeaponSprite(textureCollection, player);
 };
 
 const createWallSprites = ({

@@ -16,6 +16,10 @@ class ExplosionSprite extends AnimatedEntitySprite {
       this.gotoAndStop(0);
       this.parent.removeChild(this);
     };
+
+    this.on('added', () => {
+      this.play();
+    });
   }
 }
 

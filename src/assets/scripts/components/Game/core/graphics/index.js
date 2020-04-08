@@ -13,6 +13,7 @@ import {
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';
+import PauseContainer from './components/PauseContainer';
 import AnimatedSprite from './components/AnimatedSprite';
 import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
@@ -89,4 +90,5 @@ export {
    * The render texture component.
    */
   RenderTexture,
+  PauseContainer,
 };
