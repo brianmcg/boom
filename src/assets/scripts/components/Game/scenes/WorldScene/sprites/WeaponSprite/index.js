@@ -39,7 +39,6 @@ class WeaponSprite extends AnimatedSprite {
    * Set the idle animation.
    */
   setIdle() {
-    console.log('setIdle');
     this.textures = this.textureCollection[this.player.currentWeaponType].idle;
   }
 
