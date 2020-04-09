@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { DEG, SIN, COS } from 'game/core/physics';
+import { degrees } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
@@ -9,13 +9,13 @@ import KeyCard from './components/KeyCard';
 import Bullet from '../Bullet';
 import Explosion from '../../effects/Explosion';
 
-const DEG_360 = DEG[360];
+const DEG_360 = degrees(360);
 
-const DEG_180 = DEG[180];
+const DEG_180 = degrees(180);
 
-const DEG_90 = DEG[90];
+const DEG_90 = degrees(90);
 
-const DEG_45 = DEG[45];
+const DEG_45 = degrees(45);
 
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 

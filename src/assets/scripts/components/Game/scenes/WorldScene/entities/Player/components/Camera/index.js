@@ -1,6 +1,7 @@
-import { DEG } from 'game/core/physics';
+import { degrees } from 'game/core/physics';
 
-const DEG_360 = DEG[360];
+// const DEG_360 = degrees(360);
+const DEG_1 = degrees(1);
 
 const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 1;
@@ -8,12 +9,11 @@ const PITCH_VELOCITY = 4;
 const MAX_RECOIL = 196;
 const MIN_RECOIL = 1;
 const RECOIL_FADE = 0.25;
+// const MAX_SHAKE = 8;
+// const MIN_SHAKE = 1;
+// const SHAKE_FADE = 0.65;
 
-const SHAKE_MULTIPLIER = 0.25;
-const SHAKE_FADE_MULTIPLIER = 0.1625;
-const MAX_SHAKE = DEG[2];
-const MIN_SHAKE = DEG[1] * SHAKE_MULTIPLIER;
-const SHAKE_FADE = DEG[1] * SHAKE_FADE_MULTIPLIER;
+
 /**
  * Class representing a camera.
  */
@@ -111,20 +111,14 @@ class Camera {
    */
   updateYaw() {
     if (this.shakeAmount) {
-      this.angle = (this.angle + this.shakeAmount * this.shakeDirection) % DEG_360;
+      this.angle += (this.shakeAmount * this.shakeDirection);
+      // this.shakeAmount = 0;
+      this.shakeAmount *= 0.9;
+      this.shakeDirection *= -1;
 
-      if (this.shakeDirection === 1 && this.angle > this.shakeEdge) {
-        this.shakeDirection = -1;
-      } else if (this.shakeDirection === -1 && this.angle < -this.shakeEdge) {
-        this.shakeDirection = 1;
-        this.shakeEdge *= SHAKE_FADE;
-      }
-
-      if (this.shakeEdge < MIN_SHAKE) {
-        this.shakeDirection = 1;
-        this.shakeEdge = 0;
-        this.angle = 0;
+      if (this.shakeAmount < DEG_1 * 0.4) {
         this.shakeAmount = 0;
+        this.angle = 0;
       }
     }
   }
@@ -133,9 +127,9 @@ class Camera {
    * Set shake amount.
    * @param {Number} amount The amount to shake.
    */
-  setShake(amount) {
-    this.shakeAmount = Math.min(MAX_SHAKE, DEG[amount] * SHAKE_MULTIPLIER);
-    this.shakeEdge = this.shakeAmount - DEG[1] * SHAKE_MULTIPLIER;
+  setShake(amount, { direction = 1 } = {}) {
+    this.shakeAmount = degrees(amount) * 0.5;
+    this.shakeDirection = direction;
   }
 
   /**

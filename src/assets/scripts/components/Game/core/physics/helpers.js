@@ -1,15 +1,4 @@
 import { CELL_SIZE } from 'game/constants/config';
-import {
-  DEG,
-  TAN,
-  COS,
-  SIN,
-} from './constants';
-
-const DEG_90 = DEG[90];
-const DEG_180 = DEG[180];
-const DEG_270 = DEG[270];
-const DEG_360 = DEG[360];
 
 let horizontalGrid;
 let verticalGrid;
@@ -28,6 +17,15 @@ let yOffsetDist;
 let horizontalCell;
 let verticalCell;
 let offsetRatio;
+
+const degreesTable = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
+
+export const degrees = value => degreesTable[value];
+
+const DEG_90 = degrees(90);
+const DEG_180 = degrees(180);
+const DEG_270 = degrees(270);
+const DEG_360 = degrees(360);
 
 /**
  * Get the distance between two bodies.

@@ -1,22 +1,17 @@
 import { Container } from 'game/core/graphics';
-import {
-  DEG,
-  COS,
-  TAN,
-  SIN,
-} from 'game/core/physics';
+import { degrees } from 'game/core/physics';
 import { SCREEN, CELL_SIZE, FOV } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
-const DEG_360 = DEG[360];
-const HALF_FOV = DEG[FOV] / 2;
+const DEG_360 = degrees(360);
+const HALF_FOV = degrees(FOV) / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
-const ANGLE_INCREMENT = DEG[FOV] / SCREEN.WIDTH;
+const ANGLE_INCREMENT = degrees(FOV) / SCREEN.WIDTH;
 
 let spriteAngle;
 let centerY;

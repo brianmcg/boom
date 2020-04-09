@@ -1,8 +1,7 @@
 import Body from '../Body';
-import { COS, SIN, DEG } from '../../constants';
-import { isFacing } from '../../helpers';
+import { isFacing, degrees } from '../../helpers';
 
-const DEG_360 = DEG[360];
+const DEG_360 = degrees(360);
 
 /**
  * Class representing a dynamic body.

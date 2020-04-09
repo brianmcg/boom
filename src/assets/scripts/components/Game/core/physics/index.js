@@ -3,12 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
-import {
-  COS,
-  SIN,
-  TAN,
-  DEG,
-} from './constants';
+import { degrees } from './helpers';
 
 /**
  * @module  game/core/physics
@@ -36,19 +31,7 @@ export {
    */
   DynamicCell,
   /**
-   * The cosine table.
-   */
-  COS,
-  /**
-   * The sin table.
-   */
-  SIN,
-  /**
-   * The tan table.
-   */
-  TAN,
-  /**
    * The degrees table.
    */
-  DEG,
+  degrees,
 };

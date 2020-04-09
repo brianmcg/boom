@@ -1,4 +1,4 @@
-import { DEG } from 'game/core/physics';
+import { degrees } from 'game/core/physics';
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
 const ACTIONS = {
@@ -78,14 +78,14 @@ class OrthogonalEnemySprite extends AnimatedEntitySprite {
     } else if (enemy.isPatrolling() || enemy.isChasing()) {
       this.updateTextures({
         actionId: ACTIONS.MOVING,
-        angleId: Math.floor(enemy.angleDiff / DEG[45]),
+        angleId: Math.floor(enemy.angleDiff / degrees(45)),
         frame: this.currentFrame,
         loop: true,
       });
     } else {
       this.updateTextures({
         actionId: ACTIONS.STANDING,
-        angleId: Math.floor(enemy.angleDiff / DEG[45]),
+        angleId: Math.floor(enemy.angleDiff / degrees(45)),
         frame: 0,
         loop: false,
       });

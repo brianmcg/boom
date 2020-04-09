@@ -1,5 +1,4 @@
 import { CELL_SIZE } from 'game/constants/config';
-import { COS, SIN } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
 import Explosion from '../../effects/Explosion';
 
