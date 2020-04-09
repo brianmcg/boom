@@ -15,7 +15,8 @@ const DEG_360 = DEG[360];
 const HALF_FOV = DEG[FOV] / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
-const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];
+const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
+const ANGLE_INCREMENT = DEG[FOV] / SCREEN.WIDTH;
 
 let spriteAngle;
 let centerY;
@@ -118,7 +119,7 @@ class POVContainer extends Container {
       sliceY = CELL_SIZE - (Math.floor(sliceY) % CELL_SIZE) - 1;
 
       spriteAngle = (rayAngle - player.viewAngle + DEG_360) % DEG_360;
-      correctedDistance = distance * COS[spriteAngle];
+      correctedDistance = distance * Math.cos(spriteAngle);
       spriteHeight = CELL_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
         - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
@@ -137,9 +138,9 @@ class POVContainer extends Container {
 
         if (sprite) {
           actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[spriteAngle];
-          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+          correctedDistance = actualDistance / Math.cos(spriteAngle);
+          mapX = Math.floor(player.x + (Math.cos(rayAngle) * correctedDistance));
+          mapY = Math.floor(player.y + (Math.sin(rayAngle) * correctedDistance));
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
           gridX = Math.floor(mapX / CELL_SIZE);
@@ -158,9 +159,9 @@ class POVContainer extends Container {
 
         if (sprite) {
           actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
-          correctedDistance = actualDistance / COS[spriteAngle];
-          mapX = Math.floor(player.x + (COS[rayAngle] * correctedDistance));
-          mapY = Math.floor(player.y + (SIN[rayAngle] * correctedDistance));
+          correctedDistance = actualDistance / Math.cos(spriteAngle);
+          mapX = Math.floor(player.x + (Math.cos(rayAngle) * correctedDistance));
+          mapY = Math.floor(player.y + (Math.sin(rayAngle) * correctedDistance));
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
           gridX = Math.floor(mapX / CELL_SIZE);
@@ -175,7 +176,7 @@ class POVContainer extends Container {
       }
 
       // Increment ray angle
-      rayAngle = (rayAngle + 1) % DEG_360;
+      rayAngle = (rayAngle + ANGLE_INCREMENT) % DEG_360;
     }
 
     // Update entity sprites
@@ -183,11 +184,11 @@ class POVContainer extends Container {
       sprite = entities[body.id];
       spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
       actualDistance = player.getDistanceTo(body);
-      correctedDistance = COS[spriteAngle] * actualDistance;
+      correctedDistance = Math.cos(spriteAngle) * actualDistance;
       spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
       spriteWidth = CELL_SIZE * spriteScale;
       spriteHeight = CELL_SIZE * spriteScale;
-      spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+      spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
       sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
       sprite.y = centerY - body.z
         - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
@@ -210,11 +211,11 @@ class POVContainer extends Container {
       if (player.isFacing(explosion)) {
         spriteAngle = (player.getAngleTo(explosion) - player.viewAngle + DEG_360) % DEG_360;
         actualDistance = player.getDistanceTo(explosion);
-        correctedDistance = COS[spriteAngle] * actualDistance;
+        correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteWidth = CELL_SIZE * spriteScale;
         spriteHeight = CELL_SIZE * spriteScale;
-        spriteX = TAN[spriteAngle] * CAMERA_DISTANCE;
+        spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
         sprite.y = centerY
           - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));

@@ -39,10 +39,10 @@ class DynamicBody extends Body {
     this.parent.getCell(this.gridX, this.gridY).remove(this);
 
     // Update angle
-    this.angle = (this.angle + Math.round(this.rotVelocity * delta) + DEG_360) % DEG_360;
+    this.angle = (this.angle + (this.rotVelocity * delta) + DEG_360) % DEG_360;
 
     // Update x coordinate
-    this.x += COS[this.angle] * this.velocity * delta;
+    this.x += Math.cos(this.angle) * this.velocity * delta;
 
     // Check for x axis collisions
     bodies.forEach((body) => {
@@ -56,7 +56,7 @@ class DynamicBody extends Body {
     });
 
     // Update y coordinate
-    this.y += SIN[this.angle] * this.velocity * delta;
+    this.y += Math.sin(this.angle) * this.velocity * delta;
 
     // Check for y axis collisions
     bodies.forEach((body) => {

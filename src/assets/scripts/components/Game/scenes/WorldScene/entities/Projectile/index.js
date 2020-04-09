@@ -110,8 +110,8 @@ class Projectile extends DynamicEntity {
 
     this.angle = angle;
     this.velocity = this.speed;
-    this.x = x + COS[angle] * width;
-    this.y = y + SIN[angle] * width;
+    this.x = x + Math.cos(angle) * width;
+    this.y = y + Math.sin(angle) * width;
   }
 
   /**

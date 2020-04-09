@@ -17,8 +17,8 @@
       "player": {
         "acceleration": 0.00375,
         "maxVelocity": 0.0625,
-        "maxRotVelocity": 10,
-        "rotAcceleration": 2,
+        "maxRotVelocity": 0.04,
+        "rotAcceleration": 0.008,
         "sounds": {
           "walk": "player:walk",
           "death": "player:death",
@@ -93,7 +93,7 @@
           "behaviour": "projectileenemy",
           "acceleration": 0.00625,
           "maxVelocity": 0.03125,
-          "attackRange": 5,
+          "attackRange": 4,
           "attackTime": 2000,
           "alertTime": 500,
           "hurtTime": 400,

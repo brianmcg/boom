@@ -578,8 +578,8 @@ class Player extends AbstractActor {
         const { point, body } = collisions[0];
 
         this.parent.addExplosion(new Explosion({
-          x: point.x + COS[angle] * (bullet.width / 2),
-          y: point.y + SIN[angle] * (bullet.width / 2),
+          x: point.x + Math.cos(angle) * (bullet.width / 2),
+          y: point.y + Math.cos(angle) * (bullet.width / 2),
           sourceId: bullet.id,
           type: bullet.explosionType,
           parent: this.parent,
@@ -596,8 +596,8 @@ class Player extends AbstractActor {
         }
       } else {
         this.parent.addExplosion(new Explosion({
-          x: endPoint.x + COS[angle] * (bullet.width / 2),
-          y: endPoint.y + SIN[angle] * (bullet.width / 2),
+          x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
+          y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
           sourceId: bullet.id,
           type: bullet.explosionType,
           parent: this.parent,

@@ -237,7 +237,9 @@ export const getAngleBetween = (bodyA, bodyB) => {
   const dx = bodyB.x - bodyA.x;
   const dy = bodyB.y - bodyA.y;
 
-  return atan2(dy, dx);
+  const angle = Math.atan2(dy, dx) % DEG_360;
+
+  return angle < 0 ? angle + DEG_360 : angle;
 };
 
 /**
@@ -284,11 +286,11 @@ export const castRay = (caster, rayAngle) => {
   if (rayAngle > 0 && rayAngle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
     distToNextHorizontalGrid = CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
+    xIntersection = (horizontalGrid - y) / Math.tan(rayAngle) + x;
   } else {
     horizontalGrid = gridY * CELL_SIZE;
     distToNextHorizontalGrid = -CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / TAN[rayAngle] + x;
+    xIntersection = (horizontalGrid - y) / Math.tan(rayAngle) + x;
     horizontalGrid -= 1;
   }
 
@@ -296,12 +298,12 @@ export const castRay = (caster, rayAngle) => {
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= DEG_90 && rayAngle < DEG_270) {
-      distToNextXIntersection = CELL_SIZE / TAN[rayAngle];
+      distToNextXIntersection = CELL_SIZE / Math.tan(rayAngle);
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     } else {
-      distToNextXIntersection = CELL_SIZE / TAN[rayAngle];
+      distToNextXIntersection = CELL_SIZE / Math.tan(rayAngle);
       if (distToNextXIntersection < 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
@@ -332,14 +334,14 @@ export const castRay = (caster, rayAngle) => {
           if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
-            distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
+            distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(rayAngle);
             break;
           } else {
             xIntersection += distToNextXIntersection;
             horizontalGrid += distToNextHorizontalGrid;
           }
         } else {
-          distToHorizontalGridBeingHit = (xIntersection - x) / COS[rayAngle];
+          distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(rayAngle);
           break;
         }
       } else {
@@ -355,11 +357,11 @@ export const castRay = (caster, rayAngle) => {
   if (rayAngle < DEG_90 || rayAngle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
     distToNextVerticalGrid = CELL_SIZE;
-    yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
+    yIntersection = Math.tan(rayAngle) * (verticalGrid - x) + y;
   } else {
     verticalGrid = gridX * CELL_SIZE;
     distToNextVerticalGrid = -CELL_SIZE;
-    yIntersection = TAN[rayAngle] * (verticalGrid - x) + y;
+    yIntersection = Math.tan(rayAngle) * (verticalGrid - x) + y;
     verticalGrid -= 1;
   }
 
@@ -367,12 +369,12 @@ export const castRay = (caster, rayAngle) => {
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (rayAngle >= 0 && rayAngle < DEG_180) {
-      distToNextYIntersection = CELL_SIZE * TAN[rayAngle];
+      distToNextYIntersection = CELL_SIZE * Math.tan(rayAngle);
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     } else {
-      distToNextYIntersection = CELL_SIZE * TAN[rayAngle];
+      distToNextYIntersection = CELL_SIZE * Math.tan(rayAngle);
       if (distToNextYIntersection > 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
@@ -403,14 +405,14 @@ export const castRay = (caster, rayAngle) => {
           if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
-            distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
+            distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(rayAngle);
             break;
           } else {
             yIntersection += distToNextYIntersection;
             verticalGrid += distToNextVerticalGrid;
           }
         } else {
-          distToVerticalGridBeingHit = (yIntersection - y) / SIN[rayAngle];
+          distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(rayAngle);
           break;
         }
       } else {
