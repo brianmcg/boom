@@ -27,7 +27,8 @@ const STATES = {
 
 const EVENTS = {
   DEATH: 'player:death',
-  ARM_WEAPON: 'player:arm:weapon',
+  DYING: 'player:dying',
+  CHANGE_WEAPON: 'weapon:change',
   MESSAGES_UPDATED: 'player:update:messages',
 };
 
@@ -74,7 +75,6 @@ class Player extends AbstractActor {
     this.heightVelocity = CELL_SIZE / 32;
 
     this.currentWeaponType = currentWeaponType || weapons[0].type;
-    // this.nextWeaponType = null;
     this.actions = {};
     this.vision = 1;
 
@@ -85,8 +85,6 @@ class Player extends AbstractActor {
         player: this,
         ...data,
       });
-
-      // weapon.onArmingEvent(() => this.emit(EVENTS.ARM_WEAPON, weapon.type));
 
       return {
         ...memo,
@@ -130,8 +128,6 @@ class Player extends AbstractActor {
       }
       return memo;
     }, {});
-
-    // this.armWeapon();
   }
 
   /**
@@ -148,6 +144,14 @@ class Player extends AbstractActor {
    */
   onPlayerDeathEvent(callback) {
     this.on(EVENTS.DEATH, callback);
+  }
+
+  /**
+   * Add a callback to the change weapon event.
+   * @param  {Function} callback The callback.
+   */
+  onChangeWeapon(callback) {
+    this.on(EVENTS.CHANGE_WEAPON, callback);
   }
 
   /**
@@ -514,28 +518,9 @@ class Player extends AbstractActor {
 
     if (weapon && weapon.isEquiped() && this.currentWeaponType !== weapon.type) {
       this.currentWeaponType = weapon.type;
-      this.emit('change:weapon');
+      this.emit(EVENTS.CHANGE_WEAPON);
     }
   }
-
-  /**
-   * Arm the next selected weapon.
-   */
-  // armNextWeapon() {
-  //   if (this.currentWeaponType !== this.nextWeaponType) {
-  //     this.currentWeaponType = this.nextWeaponType;
-  //     this.nextWeaponType = null;
-  //     this.armWeapon();
-  //   }
-  // }
-
-  /**
-   * Arm weapon.
-   */
-  // armWeapon() {
-  //   this.emitSound(this.sounds.weapon);
-  //   this.weapon.setArming();
-  // }
 
   /**
    * Use the current weapon.
@@ -612,8 +597,6 @@ class Player extends AbstractActor {
       this.camera.setRecoil(recoil);
       this.parent.onExplosion(power);
       this.emitSound(this.weapon.sounds.fire);
-
-      this.emit('use:weapon', this.weapon.type);
     }
   }
 

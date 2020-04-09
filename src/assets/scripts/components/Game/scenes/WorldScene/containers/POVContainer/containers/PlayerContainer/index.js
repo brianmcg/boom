@@ -1,10 +1,10 @@
 import { Container } from 'game/core/graphics';
-import { SCREEN, CELL_SIZE } from 'game/constants/config';
+import { SCREEN } from 'game/constants/config';
 import HUDContainer from './containers/HUDContainer';
 
-const MAX_MOVE_X = 6;
+const MAX_MOVE_X = SCREEN.WIDTH / 40;
 
-const MAX_MOVE_Y = 6;
+const MAX_MOVE_Y = SCREEN.HEIGHT / 22;
 
 const MOVE_INCREMENT_X = 0.4;
 
@@ -13,10 +13,10 @@ const MOVE_INCREMENT_Y = 0.1;
 const CHANGE_INCREMENT = 6;
 
 const STATES = {
-  IDLE: 'idle',
-  UNARMING: 'unarming',
-  ARMING: 'arming',
-  FIRING: 'firing',
+  IDLE: 'player:idle',
+  UNARMING: 'player:unarming',
+  ARMING: 'player:arming',
+  FIRING: 'player:firing',
 };
 
 /**
@@ -38,24 +38,24 @@ class PlayerContainer extends Container {
     this.player = player;
     this.sprites = sprites;
 
-    this.offsetY = CELL_SIZE;
-    this.offsetX = 0;
-    this.offsetYDirection = 1;
 
     this.centerX = weapon.x;
     this.centerY = weapon.y;
+    this.weaponHeight = weapon.height;
 
-    player.on('change:weapon', () => {
-      this.setUnarming();
-    });
+    this.offsetY = weapon.height;
+    this.offsetX = 0;
+    this.offsetYDirection = 1;
 
-    player.on('use:weapon', (type) => {
-      weapon.setFiring(type);
-    });
+    player.onChangeWeapon(() => this.setUnarming());
 
     this.setArming();
   }
 
+  /**
+   * Update the container.
+   * @param  {Number} delta The delta time.
+   */
   update(delta) {
     super.update(delta);
 
@@ -80,6 +80,10 @@ class PlayerContainer extends Container {
     this.sprites.weapon.y = this.centerY + this.offsetY;
   }
 
+  /**
+   * Update the container in the idle state.
+   * @param  {Number} delta The delta time.
+   */
   updateIdle(delta) {
     const { actions, velocity } = this.player;
 
@@ -110,6 +114,10 @@ class PlayerContainer extends Container {
     }
   }
 
+  /**
+   * Update the container in teh arming state.
+   * @param  {Number} delta The delta time.
+   */
   updateArming(delta) {
     this.offsetY -= CHANGE_INCREMENT * delta;
 
@@ -119,16 +127,24 @@ class PlayerContainer extends Container {
     }
   }
 
+  /**
+   * Update the container in the unarming state.
+   * @param  {Number} delta The delta time.
+   */
   updateUnarming(delta) {
     this.offsetY += CHANGE_INCREMENT * delta;
 
-    if (this.offsetY >= CELL_SIZE) {
-      this.offsetY = CELL_SIZE;
+    if (this.offsetY >= this.weaponHeight) {
+      this.offsetY = this.weaponHeight;
 
       this.setArming();
     }
   }
 
+  /**
+   * Set the idle state.
+   * @returns {Boolean} The state changed.
+   */
   setIdle() {
     const isStateChanged = this.setState(STATES.IDLE);
 
@@ -139,12 +155,20 @@ class PlayerContainer extends Container {
     return isStateChanged;
   }
 
+  /**
+   * Set the firing state.
+   * @returns {Boolean} The state changed.
+   */
   setFiring() {
     const isStateChanged = this.setState(STATES.FIRING);
 
     return isStateChanged;
   }
 
+  /**
+   * Set the arming state.
+   * @returns {Boolean} The state changed.
+   */
   setArming() {
     const isStateChanged = this.setState(STATES.ARMING);
 
@@ -155,26 +179,14 @@ class PlayerContainer extends Container {
     return isStateChanged;
   }
 
+  /**
+   * Set the unarming state.
+   * @returns {Boolean} The state changed.
+   */
   setUnarming() {
     const isStateChanged = this.setState(STATES.UNARMING);
 
     return isStateChanged;
-  }
-
-  isIdle() {
-    return this.state === STATES.IDLE;
-  }
-
-  isArming() {
-    return this.state === STATES.ARMING;
-  }
-
-  isUnarming() {
-    return this.state === STATES.UNARMING;
-  }
-
-  isFiring() {
-    return this.state === STATES.FIRING;
   }
 }
 

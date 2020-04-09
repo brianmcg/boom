@@ -294,16 +294,22 @@ class Scene extends Container {
    * Handle a state change to loading.
    */
   setLoading() {
-    if (this.setState(STATES.LOADING)) {
+    const isStateChanged = this.setState(STATES.LOADING);
+
+    if (isStateChanged) {
       this.addChild(this.loadingContainer);
     }
+
+    return isStateChanged;
   }
 
   /**
    * Handle a state change to fading in.
    */
   setFadingIn() {
-    if (this.setState(STATES.FADING_IN)) {
+    const isStateChanged = this.setState(STATES.FADING_IN);
+
+    if (isStateChanged) {
       this.removeChild(this.loadingContainer);
       this.addChild(this.mainContainer);
       this.fadeEffect = 1;
@@ -311,16 +317,22 @@ class Scene extends Container {
       // TODO: Enabled music
       // this.game.playMusic();
     }
+
+    return isStateChanged;
   }
 
   /**
    * Handle a state change to running.
    */
   setRunning() {
-    if (this.setState(STATES.RUNNING)) {
+    const isStateChanged = this.setState(STATES.RUNNING);
+
+    if (isStateChanged) {
       this.game.resumeSounds();
       this.play();
     }
+
+    return isStateChanged;
   }
 
   /**
@@ -342,9 +354,13 @@ class Scene extends Container {
    * Set the state to the paused state.
    */
   setPaused() {
-    if (this.setState(STATES.PAUSED)) {
+    const isStateChanged = this.setState(STATES.PAUSED);
+
+    if (isStateChanged) {
       this.game.pauseSounds();
     }
+
+    return isStateChanged;
   }
 
   /**
@@ -358,21 +374,29 @@ class Scene extends Container {
    * Handle a state change to prompting.
    */
   setPrompting() {
-    if (this.setState(STATES.PROMPTING)) {
+    const isStateChanged = this.setState(STATES.PROMPTING);
+
+    if (isStateChanged) {
       this.addChild(this.promptContainer);
     }
+
+    return isStateChanged;
   }
 
   /**
    * Handle a state change to fading out.
    */
   setFadingOut() {
-    if (this.setState(STATES.FADING_OUT)) {
+    const isStateChanged = this.setState(STATES.FADING_OUT);
+
+    if (isStateChanged) {
       this.stop();
       this.stopSounds();
       this.playSound(this.sounds.complete);
       this.game.fadeMusic();
     }
+
+    return isStateChanged;
   }
 
   /**

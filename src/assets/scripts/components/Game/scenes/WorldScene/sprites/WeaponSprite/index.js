@@ -26,22 +26,29 @@ class WeaponSprite extends AnimatedSprite {
     this.player = player;
     this.anchor.set(0.5);
 
-    this.onComplete = () => {
-      const { weapon } = this.player;
-      if (weapon.isFiring()) {
-        weapon.setIdle();
-        this.setIdle();
-      }
-    };
+    Object.values(player.weapons).forEach((weapon) => {
+      weapon.onFireEvent(() => this.setFiring());
+
+      weapon.onDisabledEvent(() => this.setIdle());
+    });
+
+    this.onComplete = () => player.weapon.setDisabled();
   }
 
+  /**
+   * Set the idle animation.
+   */
+  setIdle() {
+    console.log('setIdle');
+    this.textures = this.textureCollection[this.player.currentWeaponType].idle;
+  }
+
+  /**
+   * Set the firing animation.
+   */
   setFiring() {
     this.textures = this.textureCollection[this.player.currentWeaponType].firing;
     this.play();
-  }
-
-  setIdle() {
-    this.textures = this.textureCollection[this.player.currentWeaponType].idle;
   }
 
   /**
