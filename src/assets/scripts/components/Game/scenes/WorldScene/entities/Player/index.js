@@ -371,6 +371,7 @@ class Player extends AbstractActor {
       moveForward,
       turnLeft,
       turnRight,
+      yawChange
     } = this.actions;
 
     if (moveForward) {
@@ -380,6 +381,16 @@ class Player extends AbstractActor {
     } else {
       this.velocity = Math.max(0, this.velocity - this.acceleration);
     }
+
+    // this.rotVelocity = yawChange;
+
+    // if (this.rotVelocity < 0 && this.rotVelocity < -this.maxRotVelocity) {
+    //   this.rotVelocity = -this.maxRotVelocity;
+    // }
+
+    // if (this.rotVelocity > 0 && this.rotVelocity > this.maxRotVelocity) {
+    //   this.rotVelocity = this.maxRotVelocity;
+    // }
 
     if (turnLeft) {
       this.rotVelocity = Math.max(

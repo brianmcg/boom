@@ -310,7 +310,7 @@ class Game extends Application {
    * @return {Number} The mouse x position.
    */
   getMouseX() {
-    return this.mouse.x;
+    return this.mouse.changeX;
   }
 
   /**
@@ -318,7 +318,7 @@ class Game extends Application {
    * @return {Number} The mouse y position.
    */
   getMouseY() {
-    return this.mouse.y;
+    return this.mouse.changeY;
   }
 }
 

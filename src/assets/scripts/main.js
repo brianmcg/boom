@@ -9,7 +9,8 @@ const game = new Game();
 manual.onClickStartEvent(() => {
   document.body.removeChild(manual.view);
   document.body.appendChild(game.view);
-  game.start();
+  // game.lockMousePointer();
+  // game.start();
 });
 
 game.onStoppedEvent(() => {

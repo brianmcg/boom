@@ -12,7 +12,7 @@ import BackgroundContainer from './containers/BackgroundContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
 const DEG_360 = DEG[360];
-const HALF_FOV = DEG[FOV / 2];
+const HALF_FOV = DEG[FOV] / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / TAN[HALF_FOV];

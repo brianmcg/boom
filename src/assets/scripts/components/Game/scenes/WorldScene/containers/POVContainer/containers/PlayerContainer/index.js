@@ -85,12 +85,12 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateIdle(delta) {
-    const { actions, velocity } = this.player;
+    const { rotVelocity, velocity } = this.player;
 
     // Update x offset
-    if (actions.turnLeft) {
+    if (rotVelocity < 0) {
       this.offsetX = Math.max(this.offsetX - MOVE_INCREMENT_X * delta, -MAX_MOVE_X);
-    } else if (actions.turnRight) {
+    } else if (rotVelocity > 0) {
       this.offsetX = Math.min(this.offsetX + MOVE_INCREMENT_X * delta, MAX_MOVE_X);
     } else if (this.offsetX > 0) {
       this.offsetX = Math.max(this.offsetX - MOVE_INCREMENT_X * delta, 0);

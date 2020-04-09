@@ -23,6 +23,7 @@ class Mouse {
     this.onMove = this.onMove.bind(this);
     this.x = 0;
     this.y = 0;
+    this.sensitivity = 0.08;
   }
 
   /**
@@ -41,14 +42,9 @@ class Mouse {
    * @param  {Event} e The move event.
    */
   onMove(e) {
-    this.x = e.movementX
+    this.x += e.movementX
       || e.mozMovementX
       || e.webkitMovementX
-      || 0;
-
-    this.y = e.movementY
-      || e.mozMovementY
-      || e.webkitMovementY
       || 0;
   }
 
@@ -57,7 +53,6 @@ class Mouse {
    */
   update() {
     this.x = 0;
-    this.y = 0;
   }
 
   /**
@@ -86,6 +81,14 @@ class Mouse {
     return document.pointerLockElement === this.element
       || document.mozPointerLockElement === this.element
       || document.webkitPointerLockElement === this.element;
+  }
+
+  get changeX() {
+    return this.x * this.sensitivity;
+  }
+
+  get changeY() {
+    return this.y * this.sensitivity;
   }
 }
 

@@ -129,7 +129,7 @@ class WorldScene extends Scene {
         strafeLeft: this.game.isKeyHeld(KEYS.A),
         strafeRight: this.game.isKeyHeld(KEYS.D),
         use: this.game.isKeyPressed(KEYS.SPACE),
-        lookDown: this.game.isKeyHeld(KEYS.COMMA),
+        // lookDown: this.game.isKeyHeld(KEYS.COMMA),
         lookUp: this.game.isKeyHeld(KEYS.PERIOD),
         crouch: this.game.isKeyHeld(KEYS.ALT),
         attack: this.game.isKeyHeld(KEYS.CTRL),
@@ -137,9 +137,9 @@ class WorldScene extends Scene {
         armWeaponB: this.game.isKeyPressed(KEYS.NUM_2),
         armWeaponC: this.game.isKeyPressed(KEYS.NUM_3),
         armWeaponD: this.game.isKeyPressed(KEYS.NUM_4),
-        strafe: this.game.isKeyHeld(KEYS.SHIFT),
-        angleChange: this.game.getMouseX(),
-        pitchChange: this.game.getMouseY(),
+        // strafe: this.game.isKeyHeld(KEYS.SHIFT),
+        yawChange: this.game.getMouseX(),
+        // pitchChange: this.game.getMouseY(),
       },
     });
 
