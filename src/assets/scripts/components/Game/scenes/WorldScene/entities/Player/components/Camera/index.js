@@ -8,9 +8,12 @@ const PITCH_VELOCITY = 4;
 const MAX_RECOIL = 196;
 const MIN_RECOIL = 1;
 const RECOIL_FADE = 0.25;
-const MAX_SHAKE = 8;
-const MIN_SHAKE = 1;
-const SHAKE_FADE = 0.65;
+
+const SHAKE_MULTIPLIER = 0.25;
+const SHAKE_FADE_MULTIPLIER = 0.1625;
+const MAX_SHAKE = DEG[2];
+const MIN_SHAKE = DEG[1] * SHAKE_MULTIPLIER;
+const SHAKE_FADE = DEG[1] * SHAKE_FADE_MULTIPLIER;
 /**
  * Class representing a camera.
  */
@@ -131,8 +134,8 @@ class Camera {
    * @param {Number} amount The amount to shake.
    */
   setShake(amount) {
-    this.shakeAmount = Math.min(MAX_SHAKE, amount);
-    this.shakeEdge = this.shakeAmount - 1;
+    this.shakeAmount = Math.min(MAX_SHAKE, DEG[amount] * SHAKE_MULTIPLIER);
+    this.shakeEdge = this.shakeAmount - DEG[1] * SHAKE_MULTIPLIER;
   }
 
   /**
