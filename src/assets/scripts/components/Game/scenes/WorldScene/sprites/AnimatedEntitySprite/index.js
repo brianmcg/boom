@@ -21,6 +21,7 @@ class AnimatedEntitySprite extends AnimatedSprite {
     });
 
     this.zOrder = Number.MAX_VALUE;
+    this.play();
   }
 }
 

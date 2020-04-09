@@ -41,8 +41,6 @@ class EnemySprite extends AnimatedEntitySprite {
         this.visible = false;
       }
     };
-
-    this.play();
   }
 
   /**
