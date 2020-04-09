@@ -23,7 +23,8 @@ class Mouse {
     this.onMove = this.onMove.bind(this);
     this.x = 0;
     this.y = 0;
-    this.sensitivity = 0.08;
+    this.held = false;
+    this.sensitivity = 0.0004;
   }
 
   /**
@@ -32,8 +33,12 @@ class Mouse {
   onChange() {
     if (this.isPointerLocked()) {
       document.addEventListener('mousemove', this.onMove, false);
+      document.addEventListener('mousedown', this.onMouseDown.bind(this), false);
+      document.addEventListener('mouseup', this.onMouseUp.bind(this), false);
     } else {
       document.removeEventListener('mousemove', this.onMove, false);
+      document.removeEventListener('mousedown', this.onMouseDown, false);
+      document.removeEventListener('mouseup', this.onMouseUp, false);
     }
   }
 
@@ -48,6 +53,20 @@ class Mouse {
       || 0;
   }
 
+  /**
+   * Handle mouse down event.
+   */
+  onMouseDown() {
+    this.held = true;
+
+  }
+
+  /**
+   * Handle mouse up event.
+   */
+  onMouseUp() {
+    this.held = false;
+  }
   /**
    * Update the mouse.
    */
@@ -89,6 +108,10 @@ class Mouse {
 
   get changeY() {
     return this.y * this.sensitivity;
+  }
+
+  get buttonHeld() {
+    return this.held;
   }
 }
 

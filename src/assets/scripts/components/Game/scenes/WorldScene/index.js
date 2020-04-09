@@ -132,7 +132,7 @@ class WorldScene extends Scene {
         // lookDown: this.game.isKeyHeld(KEYS.COMMA),
         lookUp: this.game.isKeyHeld(KEYS.PERIOD),
         crouch: this.game.isKeyHeld(KEYS.ALT),
-        attack: this.game.isKeyHeld(KEYS.CTRL),
+        attack: this.game.isKeyHeld(KEYS.CTRL) || this.game.isMouseButtonHeld(),
         armWeaponA: this.game.isKeyPressed(KEYS.NUM_1),
         armWeaponB: this.game.isKeyPressed(KEYS.NUM_2),
         armWeaponC: this.game.isKeyPressed(KEYS.NUM_3),

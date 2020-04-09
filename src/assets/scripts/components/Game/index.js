@@ -179,6 +179,14 @@ class Game extends Application {
 
       this.stage.addChild(this.scene);
 
+      this.stage.interactive = true;
+
+      this.stage.on('click', (e) => {
+        if (!this.isPointerLocked()) {
+          this.lockPointer();
+        }
+      })
+
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
       const sceneProps = this.data[type].props || {};
@@ -238,8 +246,16 @@ class Game extends Application {
   /**
    * Lock the mouse pointer.
    */
-  lockMousePointer() {
+  lockPointer() {
     this.mouse.lockPointer();
+  }
+
+  /**
+   * Is the mouse pointer locked.
+   * @return {Boolean}
+   */
+  isPointerLocked() {
+    return this.mouse.isPointerLocked();
   }
 
   /**
@@ -319,6 +335,14 @@ class Game extends Application {
    */
   getMouseY() {
     return this.mouse.changeY;
+  }
+
+  /**
+   * Is the mouse button held.
+   * @return {Boolean}
+   */
+  isMouseButtonHeld() {
+    return this.mouse.buttonHeld;
   }
 }
 

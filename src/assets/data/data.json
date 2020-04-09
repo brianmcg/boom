@@ -17,7 +17,7 @@
       "player": {
         "acceleration": 0.00375,
         "maxVelocity": 0.0625,
-        "maxRotVelocity": 0.04,
+        "maxRotVelocity": 0.16,
         "rotAcceleration": 0.008,
         "sounds": {
           "walk": "player:walk",

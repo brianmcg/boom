@@ -382,22 +382,22 @@ class Player extends AbstractActor {
       this.velocity = Math.max(0, this.velocity - this.acceleration);
     }
 
-    // this.rotVelocity = yawChange;
+    if (yawChange) {
+      this.rotVelocity = yawChange;
 
-    // if (this.rotVelocity < 0 && this.rotVelocity < -this.maxRotVelocity) {
-    //   this.rotVelocity = -this.maxRotVelocity;
-    // }
+      if (this.rotVelocity < 0 && this.rotVelocity < -this.maxRotVelocity) {
+        this.rotVelocity = -this.maxRotVelocity;
+      }
 
-    // if (this.rotVelocity > 0 && this.rotVelocity > this.maxRotVelocity) {
-    //   this.rotVelocity = this.maxRotVelocity;
-    // }
-
-    if (turnLeft) {
+      if (this.rotVelocity > 0 && this.rotVelocity > this.maxRotVelocity) {
+        this.rotVelocity = this.maxRotVelocity;
+      }
+    } else if (turnLeft) {
       this.rotVelocity = Math.max(
-        this.rotVelocity - this.rotAcceleration, this.maxRotVelocity * -1,
+        this.rotVelocity - this.rotAcceleration, this.maxRotVelocity / 3 * -1,
       );
     } else if (turnRight) {
-      this.rotVelocity = Math.min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity);
+      this.rotVelocity = Math.min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity / 3);
     } else {
       this.rotVelocity = 0;
     }
