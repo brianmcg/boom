@@ -11,6 +11,8 @@ import Explosion from '../../effects/Explosion';
 
 const DEG_360 = degrees(360);
 
+const DEG_270 = degrees(270);
+
 const DEG_180 = degrees(180);
 
 const DEG_90 = degrees(90);
@@ -176,6 +178,9 @@ class Player extends AbstractActor {
       case STATES.DYING:
         this.updateDying(delta);
         break;
+      case STATES.DEAD:
+        this.updateDead(delta);
+        break;
       default:
         break;
     }
@@ -201,189 +206,26 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   updateAlive(delta) {
-    this.updateAliveMovement(delta);
-    this.updateAliveHeight(delta);
-    this.updateAliveVision(delta);
-    this.updateAliveView(delta);
-    this.updateAliveWeapon(delta);
-    this.updateAliveInteractions(delta);
-  }
-
-  /**
-   * Update the player in the dead state.
-   * @param  {Number} delta The delta time value.
-   */
-  updateDying(delta) {
-    this.updateDyingHeight(delta);
-    this.updateDyingVision(delta);
-    this.updateDyingView(delta);
-    this.updateDyingWeapon(delta);
-  }
-
-  /**
-   * Update player movement.
-   * @param  {Number delta The delta time.
-   */
-  updateAliveMovement(delta) {
-    this.maxVelocity = this.baseMaxVelocity * this.height / this.maxHeight;
-
-    if (this.actions.strafe) {
-      this.updateStrafingMovement(delta);
-    } else {
-      this.updateStandardMovement(delta);
-    }
-  }
-
-  /**
-   * Update the player vision in standard state.
-   * @param  {Number} delta The delta time.
-   */
-  updateAliveVision(delta) {
-    if (this.vision < 1) {
-      this.vision += 0.02 * delta;
-
-      if (this.vision > 1) {
-        this.vision = 1;
-      }
-    }
-  }
-
-  /**
-   * Update player height.
-   * @param  {Number delta The delta time.
-   */
-  updateAliveHeight(delta) {
-    if (this.actions.crouch) {
-      this.height = Math.max(
-        this.height - (this.heightVelocity * delta),
-        this.crouchHeight,
-      );
-    } else {
-      this.height = Math.min(
-        this.height + (this.heightVelocity * delta),
-        this.maxHeight,
-      );
-    }
-  }
-
-  /**
-   * Update player camera.
-   * @param  {Number delta The delta time.
-   */
-  updateAliveView(delta) {
-    this.camera.update(delta);
-  }
-
-  /**
-   * Update player weapon.
-   * @param  {Number delta The delta time.
-   */
-  updateAliveWeapon(delta) {
     const {
+      moveBackward,
+      moveForward,
+      strafeLeft,
+      strafeRight,
+      turnLeft,
+      turnRight,
+      angleChange,
+      crouch,
       armWeaponA,
       armWeaponB,
       armWeaponC,
       armWeaponD,
       attack,
+      use,
     } = this.actions;
 
-    if (armWeaponA) {
-      this.selectNextWeapon(0);
-    } else if (armWeaponB) {
-      this.selectNextWeapon(1);
-    } else if (armWeaponC) {
-      this.selectNextWeapon(2);
-    } else if (armWeaponD) {
-      this.selectNextWeapon(3);
-    } else if (attack) {
-      this.useWeapon();
-    }
-
-    this.weapon.update(delta);
-  }
-
-  /**
-   * Update player interactions.
-   */
-  updateAliveInteractions() {
-    this.parent.getAdjacentBodies(this).forEach((body) => {
-      if (body.isItem) {
-        this.updateItemInteraction(body);
-      } else if (body.isDoor) {
-        this.updateDoorInteraction(body);
-      }
-    });
-  }
-
-  /**
-   * Update item interaction.
-   * @param  {Item} item The item.
-   */
-  updateItemInteraction(item) {
-    if (this.isBodyCollision(item)) {
-      if (item.setColliding()) {
-        if (this.pickUp(item)) {
-          this.parent.onItemPickup();
-          this.parent.remove(item);
-          item.setRemoved();
-        } else {
-          this.addMessage(translate('world.player.cannot.pickup', {
-            item: item.title,
-          }));
-        }
-      }
-    } else {
-      item.setIdle();
-    }
-  }
-
-  /**
-   * Update door interaction.
-   * @param  {Door} door The door.
-   */
-  updateDoorInteraction(door) {
-    if (this.actions.use) {
-      if (door.keyCard) {
-        const keyCard = this.keyCards[door.keyCard];
-
-        if (keyCard.isEquiped()) {
-          if (door.open()) {
-            keyCard.use();
-          }
-        } else {
-          this.addMessage(translate('world.door.locked', {
-            color: translate(`world.color.${door.keyCard}`),
-          }));
-        }
-      } else {
-        door.open();
-      }
-    }
-  }
-
-  /**
-   * Update player standard movement.
-   * @param  {Number} delta The delta time.
-   */
-  updateStandardMovement(delta) {
-    const {
-      moveBackward,
-      moveForward,
-      turnLeft,
-      turnRight,
-      yawChange
-    } = this.actions;
-
-    if (moveForward) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-    } else if (moveBackward) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
-    } else {
-      this.velocity = Math.max(0, this.velocity - this.acceleration);
-    }
-
-    if (yawChange) {
-      this.rotVelocity = yawChange;
+    // Update angle and velocity.
+    if (angleChange) {
+      this.rotVelocity = angleChange;
 
       if (this.rotVelocity < 0 && this.rotVelocity < -this.maxRotVelocity) {
         this.rotVelocity = -this.maxRotVelocity;
@@ -402,42 +244,27 @@ class Player extends AbstractActor {
       this.rotVelocity = 0;
     }
 
-    super.update(delta);
-  }
+    this.angle = (this.angle + (this.rotVelocity * delta) + DEG_360) % DEG_360;
 
-  /**
-   * Update player strafing movement.
-   * @param  {Number delta The delta time.
-   */
-  updateStrafingMovement(delta) {
-    const previousAngle = this.angle;
+    const currentAngle = this.angle;
 
-    const {
-      moveBackward,
-      moveForward,
-      turnLeft,
-      turnRight,
-    } = this.actions;
-
-    this.rotVelocity = 0;
-
-    if (moveForward && turnLeft) {
-      this.angle = (previousAngle - DEG_45 + DEG_360) % DEG_360;
+    if (moveForward && strafeLeft) {
+      this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-    } else if (moveForward && turnRight) {
-      this.angle = (previousAngle + DEG_45) % DEG_360;
+    } else if (moveForward && strafeRight) {
+      this.angle = (currentAngle + DEG_45) % DEG_360;
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-    } else if (!moveForward && !moveBackward && turnLeft) {
+    } else if (!moveForward && !moveBackward && strafeLeft) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-      this.angle = (previousAngle - DEG_90 + DEG_360) % DEG_360;
-    } else if (!moveForward && !moveBackward && turnRight) {
+      this.angle = (currentAngle - DEG_90 + DEG_360) % DEG_360;
+    } else if (!moveForward && !moveBackward && strafeRight) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
-      this.angle = (previousAngle + DEG_90) % DEG_360;
-    } else if (moveBackward && turnLeft) {
+      this.angle = (currentAngle + DEG_90) % DEG_360;
+    } else if (moveBackward && strafeLeft) {
       this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
-      this.angle = (previousAngle + DEG_45) % DEG_360;
-    } else if (moveBackward && turnRight) {
-      this.angle = (previousAngle - DEG_45 + DEG_360) % DEG_360;
+      this.angle = (currentAngle + DEG_45) % DEG_360;
+    } else if (moveBackward && strafeRight) {
+      this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
       this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
     } else if (moveForward) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
@@ -449,27 +276,118 @@ class Player extends AbstractActor {
 
     super.update(delta);
 
-    this.angle = previousAngle;
+    this.angle = currentAngle;
+
+    // Update height.
+    if (this.actions.crouch) {
+      this.height = Math.max(
+        this.height - (this.heightVelocity * delta),
+        this.crouchHeight,
+      );
+    } else {
+      this.height = Math.min(
+        this.height + (this.heightVelocity * delta),
+        this.maxHeight,
+      );
+    }
+
+    // Update height.
+    if (crouch) {
+      this.height = Math.max(
+        this.height - (this.heightVelocity * delta),
+        this.crouchHeight,
+      );
+    } else {
+      this.height = Math.min(
+        this.height + (this.heightVelocity * delta),
+        this.maxHeight,
+      );
+    }
+
+    // Update vision
+    if (this.vision < 1) {
+      this.vision += 0.02 * delta;
+
+      if (this.vision > 1) {
+        this.vision = 1;
+      }
+    }
+
+    // Update camera.
+    this.camera.update(delta);
+
+    // Update weapon.
+    if (armWeaponA) {
+      this.selectNextWeapon(0);
+    } else if (armWeaponB) {
+      this.selectNextWeapon(1);
+    } else if (armWeaponC) {
+      this.selectNextWeapon(2);
+    } else if (armWeaponD) {
+      this.selectNextWeapon(3);
+    } else if (attack) {
+      this.useWeapon();
+    }
+
+    this.weapon.update(delta);
+
+    // Update interactions
+    this.parent.getAdjacentBodies(this).forEach((body) => {
+      // Update item interactions
+      // TODO: Move to collision event.
+      if (body.isItem) {
+        if (this.isBodyCollision(body)) {
+          if (body.setColliding()) {
+            if (this.pickUp(body)) {
+              this.parent.onItemPickup();
+              this.parent.remove(body);
+              body.setRemoved();
+            } else {
+              this.addMessage(translate('world.player.cannot.pickup', {
+                item: body.title,
+              }));
+            }
+          }
+        } else {
+          body.setIdle();
+        }
+      } else if (body.isDoor) {
+        // Update door interactions.
+        if (use) {
+          if (body.keyCard) {
+            const keyCard = this.keyCards[body.keyCard];
+
+            if (keyCard.isEquiped()) {
+              if (body.open()) {
+                keyCard.use();
+              }
+            } else {
+              this.addMessage(translate('world.door.locked', {
+                color: translate(`world.color.${body.keyCard}`),
+              }));
+            }
+          } else {
+            body.open();
+          }
+        }
+      }
+    });
   }
 
   /**
-   * Update height in dead state.
-   * @param  {Number} delta The delta time.
+   * Update the player in the dead state.
+   * @param  {Number} delta The delta time value.
    */
-  updateDyingHeight(delta) {
+  updateDying(delta) {
+    // Update height
     this.height -= this.heightVelocity * delta * 0.2;
 
     if (this.height <= this.deadHeight) {
       this.height = this.deadHeight;
       this.setDead();
     }
-  }
 
-  /**
-   * Update the player vision in dead state.
-   * @param  {Number} delta The delta time.
-   */
-  updateDyingVision(delta) {
+    // Update vision
     if (this.vision < 1) {
       this.vision += 0.01 * delta;
 
@@ -477,13 +395,8 @@ class Player extends AbstractActor {
         this.vision = 1;
       }
     }
-  }
 
-  /**
-   * Update the camera vision in dead state.
-   * @param  {Number} delta The delta time.
-   */
-  updateDyingView(delta) {
+    // Update camera
     const { pitch, maxPitch } = this.camera;
 
     let newRotationY = pitch + (10 * delta);
@@ -493,14 +406,19 @@ class Player extends AbstractActor {
     }
 
     this.camera.pitch = newRotationY;
+
+    // Update weapon
+    this.weapon.update(delta);
   }
 
   /**
-   * Update the weapon in the dead state.
+   * Update the player in the dead state.
    * @param  {Number} delta The delta time.
    */
-  updateDyingWeapon(delta) {
-    this.weapon.update(delta);
+  updateDead(delta) {
+    console.log('dead');
+
+    this.emit(EVENTS.DEATH);
   }
 
   /**
@@ -546,7 +464,7 @@ class Player extends AbstractActor {
         distance,
         side,
         encounteredBodies,
-      } = this.castRay();
+      } = this.castRay(this.viewAngle);
 
       const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
         if (body.blocking) {
@@ -572,7 +490,7 @@ class Player extends AbstractActor {
       });
 
       const bullet = this.bullets[this.currentWeaponType].shift();
-      const angle = (this.angle + DEG_180) % DEG_360;
+      const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       if (collisions.length) {
         const { point, body } = collisions[0];
@@ -721,6 +639,17 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Check if the player is facing a body.
+   * @param  {Body} dynamicBody The dynamic body.
+   * @param  {Body} body        The body.
+   * @return {Boolean}          The result of the check.
+   */
+  isFacing(body) {
+    const angle = (this.getAngleTo(body) - this.viewAngle + DEG_360) % DEG_360;
+    return angle > DEG_270 || angle < DEG_90;
+  }
+
+  /**
    * Set the player actions.
    * @param {Object} actions The player actions.
    */
@@ -788,13 +717,7 @@ class Player extends AbstractActor {
    * @return {Boolean}
    */
   setDead() {
-    const isStateChanged = this.setState(STATES.DEAD);
-
-    if (isStateChanged) {
-      this.emit(EVENTS.DEATH);
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.DEAD);
   }
 
   /**

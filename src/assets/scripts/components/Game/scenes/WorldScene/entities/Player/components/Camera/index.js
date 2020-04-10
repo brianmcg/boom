@@ -1,18 +1,12 @@
 import { degrees } from 'game/core/physics';
 
-// const DEG_360 = degrees(360);
 const DEG_1 = degrees(1);
-
 const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 1;
 const PITCH_VELOCITY = 4;
 const MAX_RECOIL = 196;
 const MIN_RECOIL = 1;
 const RECOIL_FADE = 0.25;
-// const MAX_SHAKE = 8;
-// const MIN_SHAKE = 1;
-// const SHAKE_FADE = 0.65;
-
 
 /**
  * Class representing a camera.
@@ -91,19 +85,6 @@ class Camera {
     } else if (this.recoilDirection < 0) {
       this.pitch = Math.min(this.pitch + PITCH_VELOCITY, 0);
     }
-
-    // NOTE: Keeping commented code here for future pitch work.
-    // const { lookDown, lookUp } = this.player.actions;
-
-    // if (lookDown) {
-    //   this.pitch = Math.max(this.pitch - PITCH_VELOCITY, -MAX_PITCH);
-    // } else if (lookUp) {
-    //   this.pitch = Math.min(this.pitch + PITCH_VELOCITY, MAX_PITCH);
-    // } else if (this.pitch < 0) {
-    //   this.pitch = Math.min(this.pitch + PITCH_VELOCITY, 0);
-    // } else if (this.pitch > 0) {
-    //   this.pitch = Math.max(this.pitch - PITCH_VELOCITY, 0);
-    // }
   }
 
   /**
@@ -112,7 +93,6 @@ class Camera {
   updateYaw() {
     if (this.shakeAmount) {
       this.angle += (this.shakeAmount * this.shakeDirection);
-      // this.shakeAmount = 0;
       this.shakeAmount *= 0.9;
       this.shakeDirection *= -1;
 

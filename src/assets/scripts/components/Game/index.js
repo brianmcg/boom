@@ -322,6 +322,15 @@ class Game extends Application {
   }
 
   /**
+   * Is a key released on the keyboard.
+   * @param  {String}  key The key.
+   * @return {Boolean}
+   */
+  isKeyReleased(key) {
+    return this.keyboard.released[key];
+  }
+
+  /**
    * Get the mouse x position.
    * @return {Number} The mouse x position.
    */

@@ -65,6 +65,8 @@ class Keyboard {
 
     this.pressed = { ...this.held };
 
+    this.released = { ...this.held };
+
     // On key down, update the pressed and help hashmaps.
     document.addEventListener('keydown', (e) => {
       e.preventDefault();
@@ -81,6 +83,7 @@ class Keyboard {
       e.preventDefault();
       e.stopPropagation();
 
+      this.released[KEY_CODES[e.keyCode]] = true;
       this.held[KEY_CODES[e.keyCode]] = false;
     }, false);
   }
@@ -91,6 +94,7 @@ class Keyboard {
   update() {
     Object.keys(this.pressed).forEach((key) => {
       this.pressed[key] = false;
+      this.released[key] = false;
     });
   }
 }

@@ -58,7 +58,6 @@ class Mouse {
    */
   onMouseDown() {
     this.held = true;
-
   }
 
   /**
@@ -67,6 +66,7 @@ class Mouse {
   onMouseUp() {
     this.held = false;
   }
+
   /**
    * Update the mouse.
    */

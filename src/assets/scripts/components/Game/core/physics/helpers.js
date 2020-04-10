@@ -241,18 +241,6 @@ export const getAngleBetween = (bodyA, bodyB) => {
 };
 
 /**
- * Check if a dynamic body is facing a body.
- * @param  {Body} dynamicBody The dynamic body.
- * @param  {Body} body        The body.
- * @return {Boolean}          The result of the check.
- */
-export const isFacing = (dynamicBody, body) => {
-  const angle = (getAngleBetween(dynamicBody, body) - dynamicBody.angle + DEG_360) % DEG_360;
-
-  return angle > DEG_270 || angle < DEG_90;
-};
-
-/**
  * Cast a ray from a caster.
  * @param  {Number}         options.rayAngle  The optional ray angle.
  * @param  {DynamicEntity}  options.caster    The caster entity.
@@ -272,7 +260,7 @@ export const castRay = (caster, rayAngle) => {
   const encounteredBodies = {};
 
   parent.getCell(gridX, gridY).bodies.forEach((body) => {
-    if (body.id !== id && isFacing(caster, body)) {
+    if (body.id !== id && caster.isFacing(body)) {
       encounteredBodies[body.id] = body;
     }
   });

@@ -1,7 +1,11 @@
 import Body from '../Body';
-import { isFacing, degrees } from '../../helpers';
+import { degrees } from '../../helpers';
 
 const DEG_360 = degrees(360);
+
+const DEG_270 = degrees(270);
+
+const DEG_90 = degrees(90);
 
 /**
  * Class representing a dynamic body.
@@ -36,9 +40,6 @@ class DynamicBody extends Body {
 
     // Unmark id from cell before moving
     this.parent.getCell(this.gridX, this.gridY).remove(this);
-
-    // Update angle
-    this.angle = (this.angle + (this.rotVelocity * delta) + DEG_360) % DEG_360;
 
     // Update x coordinate
     this.x += Math.cos(this.angle) * this.velocity * delta;
@@ -78,7 +79,8 @@ class DynamicBody extends Body {
    * @return {Boolean}    The check is confirmed.
    */
   isFacing(body) {
-    return isFacing(this, body);
+    const angle = (this.getAngleTo(body) - this.angle + DEG_360) % DEG_360;
+    return angle > DEG_270 || angle < DEG_90;
   }
 }
 
