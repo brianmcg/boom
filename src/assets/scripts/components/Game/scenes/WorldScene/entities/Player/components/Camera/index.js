@@ -44,7 +44,7 @@ class Camera {
    * @param  {Number} delta The delta time.
    */
   updateHeight(delta) {
-    const { velocity, maxVelocity } = this.player;
+    const { velocity, speed } = this.player;
 
     if (velocity) {
       if (this.heightDirection > 0) {
@@ -63,9 +63,9 @@ class Camera {
         this.heightDirection *= -1;
       }
     } else if (this.height > 0) {
-      this.height = Math.max(this.height - HEIGHT_INCREMENT * maxVelocity * delta, 0);
+      this.height = Math.max(this.height - HEIGHT_INCREMENT * speed * delta, 0);
     } else if (this.height < 0) {
-      this.height = Math.min(this.height + HEIGHT_INCREMENT * maxVelocity * delta, 0);
+      this.height = Math.min(this.height + HEIGHT_INCREMENT * speed * delta, 0);
     }
   }
 

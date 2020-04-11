@@ -21,7 +21,7 @@ class AbstractActor extends DynamicEntity {
   constructor({
     maxHealth = 100,
     health,
-    maxVelocity,
+    speed,
     acceleration,
     ...other
   }) {
@@ -31,7 +31,7 @@ class AbstractActor extends DynamicEntity {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.maxVelocity = maxVelocity * CELL_SIZE;
+    this.speed = speed * CELL_SIZE;
     this.acceleration = acceleration * CELL_SIZE;
     this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;

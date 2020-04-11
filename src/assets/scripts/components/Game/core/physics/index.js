@@ -3,6 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
+import Vector from './components/Vector';
 import { degrees } from './helpers';
 
 /**
@@ -30,6 +31,10 @@ export {
    * The flat cell component.
    */
   DynamicCell,
+  /**
+   * The Vector component.
+   */
+  Vector,
   /**
    * The degrees table.
    */

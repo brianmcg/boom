@@ -31,7 +31,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.height          The height of the character.
    * @param  {Number} options.angle           The angle of the character.
    * @param  {Number} options.maxHealth       The maximum health of the character.
-   * @param  {Number} options.maxVelocity     The maximum velocity of the enemy.
+   * @param  {Number} options.speed           The maximum speed of the enemy.
    * @param  {Number} options.attackRange     The attack range of the enemy.
    * @param  {Number} options.attackTime      The time between attacks.
    * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
@@ -419,7 +419,7 @@ class AbstractEnemy extends AbstractActor {
       this.waypoint = this.parent.getCell(this.gridX, this.gridY);
     }
 
-    this.velocity = this.maxVelocity;
+    this.velocity = this.speed;
 
     return this.setState(STATES.PATROLLING);
   }
@@ -429,11 +429,7 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setChasing() {
-    this.velocity = Math.min(
-      this.maxVelocity,
-      this.maxVelocity + this.acceleration,
-    );
-
+    this.velocity = this.speed;
     return this.setState(STATES.CHASING);
   }
 

@@ -48,7 +48,7 @@ class Player extends AbstractActor {
    * @param  {Number} options.angle           The angle of the player.
    * @param  {Number} options.maxHealth       The maximum health of the player.
    * @param  {Number}  options.health         The current health of the player.
-   * @param  {Number} options.maxVelocity     The maximum velocity of the player.
+   * @param  {Number} options.speed           The maximum speed of the player.
    * @param  {Number} options.maxRotVelocity  The maximum rotation velocity of the player.
    * @param  {Number} options.acceleration    The acceleration of the player.
    * @param  {Number} options.rotAcceleration The rotation acceleration of the player.
@@ -66,7 +66,7 @@ class Player extends AbstractActor {
 
     super(other);
 
-    this.baseMaxVelocity = this.maxVelocity;
+    this.maxSpeed = this.speed;
 
     this.maxRotVelocity = maxRotVelocity;
     this.rotAcceleration = rotAcceleration;
@@ -250,26 +250,26 @@ class Player extends AbstractActor {
 
     if (moveForward && strafeLeft) {
       this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
     } else if (moveForward && strafeRight) {
       this.angle = (currentAngle + DEG_45) % DEG_360;
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
     } else if (!moveForward && !moveBackward && strafeLeft) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
       this.angle = (currentAngle - DEG_90 + DEG_360) % DEG_360;
     } else if (!moveForward && !moveBackward && strafeRight) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
       this.angle = (currentAngle + DEG_90) % DEG_360;
     } else if (moveBackward && strafeLeft) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
       this.angle = (currentAngle + DEG_45) % DEG_360;
     } else if (moveBackward && strafeRight) {
       this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
-      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
     } else if (moveForward) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.maxVelocity);
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
     } else if (moveBackward) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.maxVelocity * -1);
+      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
     } else {
       this.velocity = 0;
     }
