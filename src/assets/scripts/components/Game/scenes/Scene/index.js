@@ -140,14 +140,14 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingIn(delta) {
-    this.fadeEffect -= FADE_INCREMENT * delta;
+    this.fadeAmount -= FADE_INCREMENT * delta;
 
-    if (this.fadeEffect <= 0) {
-      this.fadeEffect = 0;
+    if (this.fadeAmount <= 0) {
+      this.fadeAmount = 0;
       this.setRunning();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -157,7 +157,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateRunning() {
-    if (this.game.isKeyPressed(KEYS.ESC)) {
+    if (this.isKeyPressed(KEYS.ESC)) {
       this.showMenu();
     }
 
@@ -171,14 +171,14 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePausing(delta) {
-    this.fadeEffect += PAUSE_INCREMENT * delta;
+    this.fadeAmount += PAUSE_INCREMENT * delta;
 
-    if (this.fadeEffect >= 1) {
-      this.fadeEffect = 1;
+    if (this.fadeAmount >= 1) {
+      this.fadeAmount = 1;
       this.setPaused();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -188,17 +188,17 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused() {
-    if (this.game.isKeyPressed(KEYS.DOWN_ARROW)) {
+    if (this.isKeyPressed(KEYS.DOWN_ARROW)) {
       this.menuHighlightNext();
-    } else if (this.game.isKeyPressed(KEYS.UP_ARROW)) {
+    } else if (this.isKeyPressed(KEYS.UP_ARROW)) {
       this.menuHighlightPrevious();
-    } else if (this.game.isKeyPressed(KEYS.ENTER)) {
+    } else if (this.isKeyPressed(KEYS.ENTER)) {
       this.menuSelect();
-    } else if (this.game.isKeyPressed(KEYS.ESC)) {
+    } else if (this.isKeyPressed(KEYS.ESC)) {
       this.hideMenu();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -208,15 +208,15 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateUnpausing(delta) {
-    this.fadeEffect -= PAUSE_INCREMENT * delta;
+    this.fadeAmount -= PAUSE_INCREMENT * delta;
 
-    if (this.fadeEffect <= 0) {
-      this.fadeEffect = 0;
+    if (this.fadeAmount <= 0) {
+      this.fadeAmount = 0;
       this.removeChild(this.menuContainer);
       this.setRunning();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
@@ -268,7 +268,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePrompting() {
-    if (this.game.isKeyPressed(KEYS.SPACE)) {
+    if (this.isKeyPressed(KEYS.SPACE)) {
       this.triggerComplete();
     }
   }
@@ -278,14 +278,14 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateFadingOut(delta) {
-    this.fadeEffect += FADE_INCREMENT * delta;
+    this.fadeAmount += FADE_INCREMENT * delta;
 
-    if (this.fadeEffect >= 1) {
-      this.fadeEffect = 1;
+    if (this.fadeAmount >= 1) {
+      this.fadeAmount = 1;
       this.setStopped();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -312,7 +312,7 @@ class Scene extends Container {
     if (isStateChanged) {
       this.removeChild(this.loadingContainer);
       this.addChild(this.mainContainer);
-      this.fadeEffect = 1;
+      this.fadeAmount = 1;
       this.loadingContainer.destroy();
       // TODO: Enabled music
       // this.game.playMusic();
@@ -342,7 +342,7 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PAUSING);
 
     if (isStateChanged) {
-      this.fadeEffect = 0;
+      this.fadeAmount = 0;
       this.stop();
       this.selectedOption = null;
     }
@@ -403,9 +403,11 @@ class Scene extends Container {
    * Handle a state change to stopped.
    */
   setStopped() {
-    this.removeChild(this.promptContainer);
+    const isStateChanged = this.setState(STATES.STOPPED);
 
-    if (this.setState(STATES.STOPPED)) {
+    if (isStateChanged) {
+      this.removeChild(this.promptContainer);
+
       switch (this.stopEvent) {
         case EVENTS.COMPLETE:
           this.complete();
@@ -420,6 +422,8 @@ class Scene extends Container {
           break;
       }
     }
+
+    return isStateChanged;
   }
 
   /**
@@ -437,6 +441,32 @@ class Scene extends Container {
    */
   stopSounds() {
     this.game.stopSounds();
+  }
+
+  /**
+   * Check if a key pressed.
+   * @param  {String}  key The key to check.
+   * @return {Boolean}     The key is pressed.
+   */
+  isKeyPressed(key) {
+    return this.game.isKeyPressed(key);
+  }
+
+  /**
+   * Check if a key held down.
+   * @param  {String}  key The key to check.
+   * @return {Boolean}     The key is held down.
+   */
+  isKeyHeld(key) {
+    return this.game.isKeyHeld(key);
+  }
+
+  /**
+   * Check if the mouse button is held down.
+   * @return {Boolean} The mouse button is held down.
+   */
+  isMouseButtonHeld() {
+    return this.game.isMouseButtonHeld();
   }
 
   /**

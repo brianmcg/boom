@@ -38,13 +38,13 @@ class WorldScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: this.setRunning.bind(this),
+      action: () => this.setRunning(),
     }, {
       label: translate('scene.menu.restart'),
-      onSelect: this.triggerRestart.bind(this),
+      action: () => this.triggerRestart(),
     }, {
       label: translate('scene.menu.quit'),
-      onSelect: this.triggerQuit.bind(this),
+      action: () => this.triggerQuit(),
     }];
 
     this.promptOption = translate('scene.prompt.continue');
@@ -122,19 +122,19 @@ class WorldScene extends Scene {
   updateRunning(delta) {
     this.world.update(delta, {
       actions: {
-        moveForward: this.game.isKeyHeld(KEYS.UP_ARROW) || this.game.isKeyHeld(KEYS.W),
-        moveBackward: this.game.isKeyHeld(KEYS.DOWN_ARROW) || this.game.isKeyHeld(KEYS.S),
-        turnLeft: this.game.isKeyHeld(KEYS.LEFT_ARROW),
-        turnRight: this.game.isKeyHeld(KEYS.RIGHT_ARROW),
-        strafeLeft: this.game.isKeyHeld(KEYS.A),
-        strafeRight: this.game.isKeyHeld(KEYS.D),
-        use: this.game.isKeyPressed(KEYS.SPACE),
-        crouch: this.game.isKeyHeld(KEYS.SHIFT),
-        attack: this.game.isKeyHeld(KEYS.CTRL) || this.game.isMouseButtonHeld(),
-        armWeaponA: this.game.isKeyPressed(KEYS.NUM_1),
-        armWeaponB: this.game.isKeyPressed(KEYS.NUM_2),
-        armWeaponC: this.game.isKeyPressed(KEYS.NUM_3),
-        armWeaponD: this.game.isKeyPressed(KEYS.NUM_4),
+        moveForward: this.isKeyHeld(KEYS.UP_ARROW) || this.isKeyHeld(KEYS.W),
+        moveBackward: this.isKeyHeld(KEYS.DOWN_ARROW) || this.isKeyHeld(KEYS.S),
+        turnLeft: this.isKeyHeld(KEYS.LEFT_ARROW),
+        turnRight: this.isKeyHeld(KEYS.RIGHT_ARROW),
+        strafeLeft: this.isKeyHeld(KEYS.A),
+        strafeRight: this.isKeyHeld(KEYS.D),
+        use: this.isKeyPressed(KEYS.SPACE),
+        crouch: this.isKeyHeld(KEYS.SHIFT),
+        attack: this.isKeyHeld(KEYS.CTRL) || this.isMouseButtonHeld(),
+        armWeaponA: this.isKeyPressed(KEYS.NUM_1),
+        armWeaponB: this.isKeyPressed(KEYS.NUM_2),
+        armWeaponC: this.isKeyPressed(KEYS.NUM_3),
+        armWeaponD: this.isKeyPressed(KEYS.NUM_4),
         angleChange: this.game.getMouseX(),
       },
     });
@@ -147,14 +147,14 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta value.
    */
   updateAddingReview(delta) {
-    this.fadeEffect += FADE_INCREMENT * delta;
+    this.fadeAmount += FADE_INCREMENT * delta;
 
-    if (this.fadeEffect >= 1) {
-      this.fadeEffect = 1;
+    if (this.fadeAmount >= 1) {
+      this.fadeAmount = 1;
       this.setDisplayingReview();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -164,7 +164,7 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta time.
    */
   updateDisplayingReview() {
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -174,14 +174,14 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta value.
    */
   updateRemovingReview(delta) {
-    this.fadeEffect -= FADE_INCREMENT * delta;
+    this.fadeAmount -= FADE_INCREMENT * delta;
 
-    if (this.fadeEffect <= 0) {
-      this.fadeEffect = 0;
+    if (this.fadeAmount <= 0) {
+      this.fadeAmount = 0;
       this.triggerComplete();
     }
 
-    this.updateFadeEffect(this.fadeEffect, {
+    this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
@@ -192,7 +192,7 @@ class WorldScene extends Scene {
   setAddingReviewing() {
     if (this.setState(STATES.ADDING_REVIEW)) {
       this.stop();
-      this.fadeEffect = 0;
+      this.fadeAmount = 0;
       this.game.pauseSounds();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
@@ -204,7 +204,7 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta value.
    */
   updatePrompting() {
-    if (this.game.isKeyPressed(KEYS.SPACE)) {
+    if (this.isKeyPressed(KEYS.SPACE)) {
       this.setRemovingReview();
     }
   }

@@ -3,10 +3,11 @@
  */
 class Mouse {
   /**
-   * Creates a mouse.
-   * @param  {Element} el The canvas el.
+   * [constructor description]
+   * @param  {Element} options.el          The canvas element.
+   * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
-  constructor(el) {
+  constructor({ el, sensitivity = 0.0004 }) {
     el.requestPointerLock = el.requestPointerLock
       || el.mozRequestPointerLock
       || el.webkitRequestPointerLock;
@@ -15,59 +16,43 @@ class Mouse {
       || document.mozExitPointerLock
       || document.webkitExitPointerLock;
 
-    document.addEventListener('pointerlockchange', () => this.onChange(), false);
-    document.addEventListener('mozpointerlockchange', () => this.onChange(), false);
-    document.addEventListener('webkitpointerlockchange', () => this.onChange(), false);
+    const onMouseMove = (e) => {
+      this.x += e.movementX
+        || e.mozMovementX
+        || e.webkitMovementX
+        || 0;
+    };
+
+    const onMouseDown = () => {
+      this.buttonHeld = true;
+    };
+
+    const onMouseUp = () => {
+      this.buttonHeld = false;
+    };
+
+    const onChange = () => {
+      if (this.isPointerLocked()) {
+        document.addEventListener('mousemove', onMouseMove, false);
+        document.addEventListener('mousedown', onMouseDown, false);
+        document.addEventListener('mouseup', onMouseUp, false);
+      } else {
+        document.removeEventListener('mousemove', onMouseMove, false);
+        document.removeEventListener('mousedown', onMouseDown, false);
+        document.removeEventListener('mouseup', onMouseUp, false);
+      }
+    };
+
+    document.addEventListener('pointerlockchange', onChange, false);
+    document.addEventListener('mozpointerlockchange', onChange, false);
+    document.addEventListener('webkitpointerlockchange', onChange, false);
+
+    this.sensitivity = sensitivity;
+    this.el = el;
 
     this.x = 0;
     this.y = 0;
-    this.held = false;
-    this.sensitivity = 0.0004;
-    this.el = el;
-
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-  }
-
-  /**
-   * Handle the change event.
-   */
-  onChange() {
-    if (this.isPointerLocked()) {
-      document.addEventListener('mousemove', this.onMouseMove, false);
-      document.addEventListener('mousedown', this.onMouseDown, false);
-      document.addEventListener('mouseup', this.onMouseUp, false);
-    } else {
-      document.removeEventListener('mousemove', this.onMouseMove, false);
-      document.removeEventListener('mousedown', this.onMouseDown, false);
-      document.removeEventListener('mouseup', this.onMouseUp, false);
-    }
-  }
-
-  /**
-   * Handle the move event.
-   * @param  {Event} e The move event.
-   */
-  onMouseMove(e) {
-    this.x += e.movementX
-      || e.mozMovementX
-      || e.webkitMovementX
-      || 0;
-  }
-
-  /**
-   * Handle mouse down event.
-   */
-  onMouseDown() {
-    this.held = true;
-  }
-
-  /**
-   * Handle mouse up event.
-   */
-  onMouseUp() {
-    this.held = false;
+    this.buttonHeld = false;
   }
 
   /**
@@ -105,16 +90,28 @@ class Mouse {
       || document.webkitPointerLockElement === this.el;
   }
 
-  get changeX() {
+  /**
+   * Get the x value.
+   * @return {Number} The x value.
+   */
+  getX() {
     return this.x * this.sensitivity;
   }
 
-  get changeY() {
+  /**
+   * Get the y value.
+   * @return {Number} The y value.
+   */
+  getY() {
     return this.y * this.sensitivity;
   }
 
-  get buttonHeld() {
-    return this.held;
+  /**
+   * Check if the button is buttonHeld.
+   * @return {Boolean} The result of the check.
+   */
+  isButtonHeld() {
+    return this.buttonHeld;
   }
 }
 

@@ -42,7 +42,7 @@ class Game extends Application {
     this.loader = new Loader();
     this.sound = new SoundPlayer();
     this.keyboard = new Keyboard();
-    this.mouse = new Mouse(this.view);
+    this.mouse = new Mouse({ el: this.view });
 
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
@@ -181,11 +181,7 @@ class Game extends Application {
 
       this.stage.interactive = true;
 
-      this.stage.on('click', (e) => {
-        if (!this.isPointerLocked()) {
-          this.lockPointer();
-        }
-      })
+      this.stage.on('click', () => this.lockPointer());
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
 
@@ -335,7 +331,7 @@ class Game extends Application {
    * @return {Number} The mouse x position.
    */
   getMouseX() {
-    return this.mouse.changeX;
+    return this.mouse.getX();
   }
 
   /**
@@ -343,7 +339,7 @@ class Game extends Application {
    * @return {Number} The mouse y position.
    */
   getMouseY() {
-    return this.mouse.changeY;
+    return this.mouse.getY();
   }
 
   /**
@@ -351,7 +347,7 @@ class Game extends Application {
    * @return {Boolean}
    */
   isMouseButtonHeld() {
-    return this.mouse.buttonHeld;
+    return this.mouse.isButtonHeld();
   }
 }
 

@@ -21,7 +21,7 @@ class HUDSprite extends Sprite {
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
-  updateFadeEffect(value) {
+  fade(value) {
     this.setScale((1 - value) * this.maxScale);
   }
 }

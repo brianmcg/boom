@@ -92,7 +92,7 @@ class ReviewContainer extends Container {
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
-  updateFadeEffect(value) {
+  fade(value) {
     this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
   }

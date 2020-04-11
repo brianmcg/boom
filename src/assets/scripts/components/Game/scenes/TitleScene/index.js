@@ -19,10 +19,10 @@ class TitleScene extends Scene {
 
     this.menuItems = [{
       label: translate('scene.menu.continue'),
-      onSelect: this.setRunning.bind(this),
+      action: () => this.setRunning(),
     }, {
       label: translate('scene.menu.quit'),
-      onSelect: this.triggerQuit.bind(this),
+      action: () => this.triggerQuit(),
     }];
 
     this.promptOption = translate('title.prompt.start');

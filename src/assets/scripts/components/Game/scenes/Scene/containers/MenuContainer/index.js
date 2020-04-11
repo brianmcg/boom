@@ -82,7 +82,7 @@ class MenuContainer extends Container {
    */
   getHighlightedOption() {
     if (this.items.length) {
-      return this.items[this.currentIndex].onSelect;
+      return this.items[this.currentIndex].action;
     }
 
     return null;
@@ -92,7 +92,7 @@ class MenuContainer extends Container {
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
-  updateFadeEffect(value) {
+  fade(value) {
     this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
   }
