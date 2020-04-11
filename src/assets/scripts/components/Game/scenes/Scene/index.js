@@ -74,6 +74,39 @@ class Scene extends Container {
     };
 
     this.setLoading();
+
+    // this.input.onKeyDown(() => this.onKeyDown());
+  }
+
+  onKeyDown(key) {
+    if (this.isRunning()) {
+      switch (key) {
+        case KEYS.ESC:
+          this.showMenu();
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (this.isPaused()) {
+      switch (key) {
+        case KEYS.DOWN_ARROW:
+          this.menuHighlightNext();
+          break;
+        case KEYS.UP_ARROW:
+          this.menuHighlightPrevious();
+          break;
+        case KEYS.ENTER:
+          this.menuSelect();
+          break;
+        case KEYS.ESC:
+          this.hideMenu();
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   /**
