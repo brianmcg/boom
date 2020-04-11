@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { degrees } from 'game/core/physics';
+import { degrees, Vector } from 'game/core/physics';
 import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
@@ -51,16 +51,16 @@ class Player extends AbstractActor {
    * @param  {Number} options.maxHealth             The maximum health of the player.
    * @param  {Number}  options.health               The current health of the player.
    * @param  {Number} options.speed                 The maximum speed of the player.
-   * @param  {Number} options.rotationSpeed         The maximum rotation speed of the player.
+   * @param  {Number} options.rotateSpeed         The maximum rotation speed of the player.
    * @param  {Number} options.acceleration          The acceleration of the player.
-   * @param  {Number} options.rotationAcceleration  The rotation acceleration of the player.
+   * @param  {Number} options.rotateAcceleration  The rotation acceleration of the player.
    * @param  {Array}  options.weapons               The player weapons data.
    * @param  {Camera} options.camera                The player camera.
    */
   constructor(options = {}) {
     const {
-      rotationSpeed = 1,
-      rotationAcceleration = 0,
+      rotateSpeed = 1,
+      rotateAcceleration = 0,
       weapons = {},
       currentWeaponType,
       ...other
@@ -68,8 +68,8 @@ class Player extends AbstractActor {
 
     super(other);
 
-    this.rotationSpeed = rotationSpeed;
-    this.rotationAcceleration = rotationAcceleration;
+    this.rotateSpeed = rotateSpeed;
+    this.rotateAcceleration = rotateAcceleration;
     this.maxHeight = this.height;
     this.maxSpeed = this.speed;
 
@@ -80,8 +80,10 @@ class Player extends AbstractActor {
     this.currentWeaponType = currentWeaponType || weapons[0].type;
     this.actions = {};
     this.vision = 1;
-    this.rotationVelocity = 0;
+    this.rotateAngle = 0;
     this.timer = 0;
+
+    this.moveAngle = 0;
 
     this.camera = new Camera(this);
 
@@ -209,66 +211,68 @@ class Player extends AbstractActor {
       use,
     } = this.actions;
 
+    const previousMoveAngle = this.moveAngle;
+
+    let moveX = 0;
+    let moveY = 0;
+
+    // Update speed.
     this.speed = this.maxSpeed * this.height / this.maxHeight;
 
-    // Update angle and velocity.
+    // Update movement.
     if (rotate) {
-      this.rotationVelocity = rotate;
+      this.rotateAngle = rotate * delta;
 
-      if (this.rotationVelocity < 0 && this.rotationVelocity < -this.rotationSpeed) {
-        this.rotationVelocity = -this.rotationSpeed;
+      if (this.rotateAngle < 0 && this.rotateAngle < -this.rotateSpeed) {
+        this.rotateAngle = -this.rotateSpeed;
       }
 
-      if (this.rotationVelocity > 0 && this.rotationVelocity > this.rotationSpeed) {
-        this.rotationVelocity = this.rotationSpeed;
+      if (this.rotateAngle > 0 && this.rotateAngle > this.rotateSpeed) {
+        this.rotateAngle = this.rotateSpeed;
       }
     } else if (turnLeft) {
-      this.rotationVelocity = Math.max(
-        this.rotationVelocity - this.rotationAcceleration,
-        this.rotationSpeed / 3 * -1,
+      this.rotateAngle = Math.max(
+        this.rotateAngle - this.rotateAcceleration,
+        this.rotateSpeed / 3 * -1,
       );
     } else if (turnRight) {
-      this.rotationVelocity = Math.min(
-        this.rotationVelocity + this.rotationAcceleration,
-        this.rotationSpeed / 3,
+      this.rotateAngle = Math.min(
+        this.rotateAngle + this.rotateAcceleration,
+        this.rotateSpeed / 3,
       );
     } else {
-      this.rotationVelocity = 0;
+      this.rotateAngle = 0;
     }
 
-    this.angle = (this.angle + (this.rotationVelocity * delta) + DEG_360) % DEG_360;
+    if (moveForward || moveBackward || strafeLeft || strafeRight) {
+      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
 
-    const currentAngle = this.angle;
+      if (moveForward) {
+        moveX += 1;
+      }
 
-    if (moveForward && strafeLeft) {
-      this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
-      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
-    } else if (moveForward && strafeRight) {
-      this.angle = (currentAngle + DEG_45) % DEG_360;
-      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
-    } else if (!moveForward && !moveBackward && strafeLeft) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
-      this.angle = (currentAngle - DEG_90 + DEG_360) % DEG_360;
-    } else if (!moveForward && !moveBackward && strafeRight) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
-      this.angle = (currentAngle + DEG_90) % DEG_360;
-    } else if (moveBackward && strafeLeft) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
-      this.angle = (currentAngle + DEG_45) % DEG_360;
-    } else if (moveBackward && strafeRight) {
-      this.angle = (currentAngle - DEG_45 + DEG_360) % DEG_360;
-      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
-    } else if (moveForward) {
-      this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
-    } else if (moveBackward) {
-      this.velocity = Math.max(this.velocity - this.acceleration, this.speed * -1);
+      if (strafeRight) {
+        moveY += 1;
+      }
+
+      if (moveBackward) {
+        moveX -= 1;
+      }
+
+      if (strafeLeft) {
+        moveY -= 1;
+      }
     } else {
       this.velocity = 0;
     }
 
-    super.update(delta);
+    this.angle = (this.angle + this.rotateAngle + DEG_360) % DEG_360;
 
-    this.angle = currentAngle;
+    this.moveAngle = -Math.atan2(-moveY, moveX);
+
+    if (this.moveAngle !== previousMoveAngle) {
+      this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
+    }
 
     // Update height.
     if (this.actions.crouch) {
@@ -360,6 +364,8 @@ class Player extends AbstractActor {
         }
       }
     });
+
+    super.update(delta);
   }
 
   /**

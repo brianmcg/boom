@@ -1,6 +1,7 @@
 import { degrees } from 'game/core/physics';
 
 const DEG_1 = degrees(1);
+const DEG_360 = degrees(360);
 const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 1;
 const PITCH_VELOCITY = 4;
@@ -92,6 +93,8 @@ class Camera {
    * Update the shake effect.
    */
   updateYaw() {
+    this.angle = (-this.player.moveAngle + DEG_360) % DEG_360;
+
     if (this.shakeAmount) {
       this.angle += (this.shakeAmount * this.shakeDirection);
       this.shakeAmount *= 0.9;

@@ -91,13 +91,13 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateIdle(delta) {
-    const { rotationVelocity, velocity } = this.player;
+    const { rotateAngle, velocity } = this.player;
 
     // Update x offset
-    if (rotationVelocity < 0) {
-      this.weaponX = Math.max(this.weaponX - MOVE_INCREMENT_X * delta, -MAX_MOVE_X);
-    } else if (rotationVelocity > 0) {
-      this.weaponX = Math.min(this.weaponX + MOVE_INCREMENT_X * delta, MAX_MOVE_X);
+    if (rotateAngle < 0) {
+      this.weaponX = Math.max(this.weaponX + rotateAngle * 10 * delta, -MAX_MOVE_X);
+    } else if (rotateAngle > 0) {
+      this.weaponX = Math.min(this.weaponX + rotateAngle * 10 * delta, MAX_MOVE_X);
     } else if (this.weaponX > 0) {
       this.weaponX = Math.max(this.weaponX - MOVE_INCREMENT_X * delta, 0);
     } else if (this.weaponX < 0) {
