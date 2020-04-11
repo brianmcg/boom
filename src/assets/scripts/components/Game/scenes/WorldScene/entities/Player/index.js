@@ -1,6 +1,6 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -19,6 +19,8 @@ const DEG_90 = degrees(90);
 
 const DEG_45 = degrees(45);
 
+const DEATH_INTERVAL = 1500;
+
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 
 const STATES = {
@@ -30,7 +32,7 @@ const STATES = {
 const EVENTS = {
   DEATH: 'player:death',
   DYING: 'player:dying',
-  CHANGE_WEAPON: 'weapon:change',
+  CHANGE_WEAPON: 'player:weapon:change',
   MESSAGES_UPDATED: 'player:update:messages',
 };
 
@@ -79,6 +81,7 @@ class Player extends AbstractActor {
     this.actions = {};
     this.vision = 1;
     this.rotationVelocity = 0;
+    this.timer = 0;
 
     this.camera = new Camera(this);
 
@@ -111,6 +114,38 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Add a callback for the message updated event.
+   * @param  {Function} callback The callback function.
+   */
+  onMessagesUpdated(callback) {
+    this.on(EVENTS.MESSAGES_UPDATED, callback);
+  }
+
+  /**
+   * Add a callback for the player dying event.
+   * @param  {Function} callback The callback function.
+   */
+  onDying(callback) {
+    this.on(EVENTS.DYING, callback);
+  }
+
+  /**
+   * Add a callback for the player death event.
+   * @param  {Function} callback The callback function.
+   */
+  onDeath(callback) {
+    this.on(EVENTS.DEATH, callback);
+  }
+
+  /**
+   * Add a callback to the change weapon event.
+   * @param  {Function} callback The callback.
+   */
+  onChangeWeapon(callback) {
+    this.on(EVENTS.CHANGE_WEAPON, callback);
+  }
+
+  /**
    * Handle the added to world event.
    */
   initialize() {
@@ -130,30 +165,6 @@ class Player extends AbstractActor {
       }
       return memo;
     }, {});
-  }
-
-  /**
-   * Add a callback for the message updated event.
-   * @param  {Function} callback The callback function.
-   */
-  onMessagesUpdated(callback) {
-    this.on(EVENTS.MESSAGES_UPDATED, callback);
-  }
-
-  /**
-   * Add a callback for the player death event.
-   * @param  {Function} callback The callback function.
-   */
-  onDeath(callback) {
-    this.on(EVENTS.DEATH, callback);
-  }
-
-  /**
-   * Add a callback to the change weapon event.
-   * @param  {Function} callback The callback.
-   */
-  onChangeWeapon(callback) {
-    this.on(EVENTS.CHANGE_WEAPON, callback);
   }
 
   /**
@@ -376,13 +387,13 @@ class Player extends AbstractActor {
     // Update camera
     const { pitch, maxPitch } = this.camera;
 
-    let newRotationY = pitch + (10 * delta);
+    let newPitch = pitch + (10 * delta);
 
-    if (newRotationY >= maxPitch) {
-      newRotationY = maxPitch;
+    if (newPitch >= maxPitch) {
+      newPitch = maxPitch;
     }
 
-    this.camera.pitch = newRotationY;
+    this.camera.pitch = newPitch;
 
     // Update weapon
     this.weapon.update(delta);
@@ -393,9 +404,12 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateDead(delta) {
-    console.log('dead');
+    this.timer += delta * TIME_STEP;
 
-    this.emit(EVENTS.DEATH);
+    if (this.timer >= DEATH_INTERVAL) {
+      this.timer = 0;
+      this.emit(EVENTS.DEATH);
+    }
   }
 
   /**
@@ -691,7 +705,7 @@ class Player extends AbstractActor {
     const isStateChanged = this.setState(STATES.DYING);
 
     if (isStateChanged) {
-      // this.weapon.setUnarming();
+      this.emit(EVENTS.DYING);
     }
 
     return isStateChanged;

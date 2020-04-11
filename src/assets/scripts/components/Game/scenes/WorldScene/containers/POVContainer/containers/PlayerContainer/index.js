@@ -17,6 +17,7 @@ const STATES = {
   UNARMING: 'player:unarming',
   ARMING: 'player:arming',
   FIRING: 'player:firing',
+  DYING: 'player:dying',
 };
 
 /**
@@ -38,18 +39,20 @@ class PlayerContainer extends Container {
     this.player = player;
     this.sprites = sprites;
 
-
-    this.centerX = weapon.x;
-    this.centerY = weapon.y;
+    this.weaponCenterX = weapon.x;
+    this.weaponCenterY = weapon.y;
     this.weaponHeight = weapon.height;
 
-    this.offsetY = weapon.height;
-    this.offsetX = 0;
-    this.offsetYDirection = 1;
+    this.weaponX = 0;
+    this.weaponY = weapon.height;
+    this.weaponYDirection = 1;
 
     player.onChangeWeapon(() => this.setUnarming());
+    player.onDying(() => this.setDying());
 
     this.setArming();
+
+    this.fadeAmount = 0;
   }
 
   /**
@@ -72,12 +75,15 @@ class PlayerContainer extends Container {
       case STATES.FIRING:
         this.updateFiring(delta);
         break;
+      case STATES.DYING:
+        this.updateDying(delta);
+        break;
       default:
         break;
     }
 
-    this.sprites.weapon.x = this.centerX + this.offsetX;
-    this.sprites.weapon.y = this.centerY + this.offsetY;
+    this.sprites.weapon.x = this.weaponCenterX + this.weaponX;
+    this.sprites.weapon.y = this.weaponCenterY + this.weaponY;
   }
 
   /**
@@ -89,28 +95,28 @@ class PlayerContainer extends Container {
 
     // Update x offset
     if (rotationVelocity < 0) {
-      this.offsetX = Math.max(this.offsetX - MOVE_INCREMENT_X * delta, -MAX_MOVE_X);
+      this.weaponX = Math.max(this.weaponX - MOVE_INCREMENT_X * delta, -MAX_MOVE_X);
     } else if (rotationVelocity > 0) {
-      this.offsetX = Math.min(this.offsetX + MOVE_INCREMENT_X * delta, MAX_MOVE_X);
-    } else if (this.offsetX > 0) {
-      this.offsetX = Math.max(this.offsetX - MOVE_INCREMENT_X * delta, 0);
-    } else if (this.offsetX < 0) {
-      this.offsetX = Math.min(this.offsetX + MOVE_INCREMENT_X * delta, 0);
+      this.weaponX = Math.min(this.weaponX + MOVE_INCREMENT_X * delta, MAX_MOVE_X);
+    } else if (this.weaponX > 0) {
+      this.weaponX = Math.max(this.weaponX - MOVE_INCREMENT_X * delta, 0);
+    } else if (this.weaponX < 0) {
+      this.weaponX = Math.min(this.weaponX + MOVE_INCREMENT_X * delta, 0);
     }
 
     // Update y offset
     if (velocity) {
-      if (this.offsetYDirection > 0) {
-        this.offsetY = Math.min(this.offsetY + MOVE_INCREMENT_Y * delta, MAX_MOVE_Y);
-      } else if (this.offsetYDirection < 0) {
-        this.offsetY = Math.max(this.offsetY - MOVE_INCREMENT_Y * delta, 0);
+      if (this.weaponYDirection > 0) {
+        this.weaponY = Math.min(this.weaponY + MOVE_INCREMENT_Y * delta, MAX_MOVE_Y);
+      } else if (this.weaponYDirection < 0) {
+        this.weaponY = Math.max(this.weaponY - MOVE_INCREMENT_Y * delta, 0);
       }
-    } else if (this.offsetY > 0) {
-      this.offsetY = Math.max(this.offsetY - MOVE_INCREMENT_Y * delta, 0);
+    } else if (this.weaponY > 0) {
+      this.weaponY = Math.max(this.weaponY - MOVE_INCREMENT_Y * delta, 0);
     }
 
-    if (Math.abs(this.offsetY) === MAX_MOVE_Y || Math.abs(this.offsetY) === 0) {
-      this.offsetYDirection *= -1;
+    if (Math.abs(this.weaponY) === MAX_MOVE_Y || Math.abs(this.weaponY) === 0) {
+      this.weaponYDirection *= -1;
     }
   }
 
@@ -119,10 +125,10 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateArming(delta) {
-    this.offsetY -= CHANGE_INCREMENT * delta;
+    this.weaponY -= CHANGE_INCREMENT * delta;
 
-    if (this.offsetY <= 0) {
-      this.offsetY = 0;
+    if (this.weaponY <= 0) {
+      this.weaponY = 0;
       this.setIdle();
     }
   }
@@ -132,12 +138,33 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateUnarming(delta) {
-    this.offsetY += CHANGE_INCREMENT * delta;
+    this.weaponY += CHANGE_INCREMENT * delta;
 
-    if (this.offsetY >= this.weaponHeight) {
-      this.offsetY = this.weaponHeight;
+    if (this.weaponY >= this.weaponHeight) {
+      this.weaponY = this.weaponHeight;
 
       this.setArming();
+    }
+  }
+
+  /**
+   * Update the container in the dead state.
+   * @param  {Number} delta The delta time.
+   */
+  updateDying(delta) {
+    this.fadeAmount += delta;
+
+    if (this.fadeAmount > 1) {
+      this.fadeAmount = 1;
+      this.removeChildren();
+    }
+
+    this.fade(this.fadeAmount);
+
+    this.weaponY += CHANGE_INCREMENT * 0.5 * delta;
+
+    if (this.weaponY >= this.weaponHeight) {
+      this.weaponY = this.weaponHeight;
     }
   }
 
@@ -184,9 +211,14 @@ class PlayerContainer extends Container {
    * @returns {Boolean} The state changed.
    */
   setUnarming() {
-    const isStateChanged = this.setState(STATES.UNARMING);
+    return this.setState(STATES.UNARMING);
+  }
 
-    return isStateChanged;
+  /**
+   * Set the dead state.
+   */
+  setDying() {
+    return this.setState(STATES.DYING);
   }
 }
 

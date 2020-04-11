@@ -60,8 +60,8 @@ class Container extends PixiContainer {
    * Update the fade effect.
    * @param  {Number} value The value of the effect.
    */
-  fade(...options) {
-    this.children.forEach(child => child.fade && child.fade(...options));
+  fade(amount, options) {
+    this.children.forEach(child => child.fade && child.fade(amount, options));
   }
 
   /**
