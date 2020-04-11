@@ -78,6 +78,7 @@ class Player extends AbstractActor {
     this.currentWeaponType = currentWeaponType || weapons[0].type;
     this.actions = {};
     this.vision = 1;
+    this.rotationVelocity = 0;
 
     this.camera = new Camera(this);
 
@@ -175,6 +176,7 @@ class Player extends AbstractActor {
     }
 
     this.updateMessages(delta);
+    this.updateActions(delta);
   }
 
   /**
@@ -189,12 +191,9 @@ class Player extends AbstractActor {
       strafeRight,
       turnLeft,
       turnRight,
-      angleChange,
+      rotate,
       crouch,
-      armWeaponA,
-      armWeaponB,
-      armWeaponC,
-      armWeaponD,
+      selectWeapon,
       attack,
       use,
     } = this.actions;
@@ -202,31 +201,31 @@ class Player extends AbstractActor {
     this.speed = this.maxSpeed * this.height / this.maxHeight;
 
     // Update angle and velocity.
-    if (angleChange) {
-      this.rotVelocity = angleChange;
+    if (rotate) {
+      this.rotationVelocity = rotate;
 
-      if (this.rotVelocity < 0 && this.rotVelocity < -this.rotationSpeed) {
-        this.rotVelocity = -this.rotationSpeed;
+      if (this.rotationVelocity < 0 && this.rotationVelocity < -this.rotationSpeed) {
+        this.rotationVelocity = -this.rotationSpeed;
       }
 
-      if (this.rotVelocity > 0 && this.rotVelocity > this.rotationSpeed) {
-        this.rotVelocity = this.rotationSpeed;
+      if (this.rotationVelocity > 0 && this.rotationVelocity > this.rotationSpeed) {
+        this.rotationVelocity = this.rotationSpeed;
       }
     } else if (turnLeft) {
-      this.rotVelocity = Math.max(
-        this.rotVelocity - this.rotationAcceleration,
+      this.rotationVelocity = Math.max(
+        this.rotationVelocity - this.rotationAcceleration,
         this.rotationSpeed / 3 * -1,
       );
     } else if (turnRight) {
-      this.rotVelocity = Math.min(
-        this.rotVelocity + this.rotationAcceleration,
+      this.rotationVelocity = Math.min(
+        this.rotationVelocity + this.rotationAcceleration,
         this.rotationSpeed / 3,
       );
     } else {
-      this.rotVelocity = 0;
+      this.rotationVelocity = 0;
     }
 
-    this.angle = (this.angle + (this.rotVelocity * delta) + DEG_360) % DEG_360;
+    this.angle = (this.angle + (this.rotationVelocity * delta) + DEG_360) % DEG_360;
 
     const currentAngle = this.angle;
 
@@ -299,15 +298,11 @@ class Player extends AbstractActor {
     this.camera.update(delta);
 
     // Update weapon.
-    if (armWeaponA) {
-      this.selectNextWeapon(0);
-    } else if (armWeaponB) {
-      this.selectNextWeapon(1);
-    } else if (armWeaponC) {
-      this.selectNextWeapon(2);
-    } else if (armWeaponD) {
-      this.selectNextWeapon(3);
-    } else if (attack) {
+    if (selectWeapon) {
+      this.selectNextWeapon(selectWeapon - 1);
+    }
+
+    if (attack) {
       this.useWeapon();
     }
 
@@ -416,6 +411,15 @@ class Player extends AbstractActor {
     if (this.messages.length < initialLength) {
       this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
     }
+  }
+
+  /**
+   * Update the actions.
+   */
+  updateActions() {
+    this.actions.use = false;
+    this.actions.selectWeapon = 0;
+    this.actions.rotate = 0;
   }
 
   /**
@@ -644,14 +648,6 @@ class Player extends AbstractActor {
   isFacing(body) {
     const angle = (this.getAngleTo(body) - this.viewAngle + DEG_360) % DEG_360;
     return angle > DEG_270 || angle < DEG_90;
-  }
-
-  /**
-   * Set the player actions.
-   * @param {Object} actions The player actions.
-   */
-  setActions(actions = {}) {
-    this.actions = actions;
   }
 
   /**

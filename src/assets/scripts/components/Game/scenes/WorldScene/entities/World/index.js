@@ -105,7 +105,7 @@ class World extends PhysicsWorld {
    * @param  {Number} delta            The delta time value.
    * @param  {Object} options.actions  The player actions.
    */
-  update(delta, { actions }) {
+  update(delta) {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
 
@@ -124,8 +124,6 @@ class World extends PhysicsWorld {
       this.explosionFlash = false;
       this.brightness = this.baseBrightness;
     }
-
-    this.player.setActions(actions);
 
     if (x === gridX && y === gridY) {
       this.scene.setAddingReviewing();

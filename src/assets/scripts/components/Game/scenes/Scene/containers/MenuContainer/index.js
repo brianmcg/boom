@@ -8,6 +8,11 @@ const ICON_PADDING_RIGHT = 5;
 
 const MAX_ALPHA = 0.7;
 
+const EVENTS = {
+  SELECT: 'menu:select',
+  CLOSE: 'menu:close',
+};
+
 /**
  * A class representing a menu container.
  */
@@ -41,8 +46,29 @@ class MenuContainer extends Container {
       });
     }
 
-
     this.on('added', () => this.setIndex(0));
+
+    this.on('removed', () => {
+      if (this.selectedIndex !== null) {
+        this.emit(EVENTS.SELECT, this.selectedIndex);
+      } else {
+        this.emit(EVENTS.CLOSE);
+      }
+    });
+  }
+
+  /**
+   * Add a callback for the select event.
+   */
+  onSelect(callback) {
+    this.on(EVENTS.SELECT, callback);
+  }
+
+  /**
+   * Add a callback for the select event.
+   */
+  onClose(callback) {
+    this.on(EVENTS.CLOSE, callback);
   }
 
   /**
@@ -107,6 +133,13 @@ class MenuContainer extends Container {
   }
 
   /**
+   * Select an option.
+   */
+  select() {
+    this.selectedIndex = this.index;
+  }
+
+  /**
    * Set the index.
    */
   setIndex(index) {
@@ -116,6 +149,7 @@ class MenuContainer extends Container {
       child.tint = index === i ? RED : WHITE;
     });
 
+    this.selectedIndex = null;
     this.index = index;
   }
 

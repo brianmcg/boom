@@ -36,7 +36,7 @@ class WorldScene extends Scene {
       },
     };
 
-    this.menuItems = [{
+    this.menu = [{
       label: translate('scene.menu.continue'),
       action: () => this.setRunning(),
     }, {
@@ -52,7 +52,186 @@ class WorldScene extends Scene {
     this.title = translate('world.title', {
       index: this.index,
     });
+
+    // Replace parent class space callback.
+    this.addKeyDownCallback(KEYS.SPACE, () => {
+      if (this.isPrompting()) {
+        this.setRemovingReview();
+      }
+    }, {
+      replace: true,
+    });
+
+    // Rotate
+    this.addMouseMoveCallback((x) => {
+      this.world.player.actions.rotate += x;
+    });
+
+    // Move forward
+    this.addKeyDownCallback(KEYS.UP_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveForward = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.UP_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveForward = false;
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.W, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveForward = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.W, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveForward = false;
+      }
+    });
+
+    // Move backward
+    this.addKeyDownCallback(KEYS.DOWN_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveBackward = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.DOWN_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveBackward = false;
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.S, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveBackward = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.S, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.moveBackward = false;
+      }
+    });
+
+    // Turn left
+    this.addKeyDownCallback(KEYS.LEFT_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.turnLeft = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.LEFT_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.turnLeft = false;
+      }
+    });
+
+    // Turn right
+    this.addKeyDownCallback(KEYS.RIGHT_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.turnRight = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.RIGHT_ARROW, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.turnRight = false;
+      }
+    });
+
+    // Strafe left
+    this.addKeyDownCallback(KEYS.A, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.strafeLeft = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.A, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.strafeLeft = false;
+      }
+    });
+
+    // Strafe right
+    this.addKeyDownCallback(KEYS.D, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.strafeRight = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.D, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.strafeRight = false;
+      }
+    });
+
+    // Use interactive body
+    this.addKeyDownCallback(KEYS.E, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.use = true;
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.SPACE, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.use = true;
+      }
+    });
+
+    // Attack
+    this.addMouseDownCallback(() => {
+      this.world.player.actions.attack = true;
+    });
+
+    this.addMouseUpCallback(() => {
+      this.world.player.actions.attack = false;
+    });
+
+    this.addKeyDownCallback(KEYS.CTRL, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.attack = true;
+      }
+    });
+
+    this.addKeyUpCallback(KEYS.CTRL, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.attack = false;
+      }
+    });
+
+    // Select Weapon 1
+    this.addKeyDownCallback(KEYS.NUM_1, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.selectWeapon = 1;
+      }
+    });
+
+    // Select Weapon 2
+    this.addKeyDownCallback(KEYS.NUM_2, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.selectWeapon = 2;
+      }
+    });
+
+    // Select Weapon 3
+    this.addKeyDownCallback(KEYS.NUM_3, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.selectWeapon = 3;
+      }
+    });
+
+    // Select Weapon 4
+    this.addKeyDownCallback(KEYS.NUM_4, () => {
+      if (this.isRunning()) {
+        this.world.player.actions.selectWeapon = 4;
+      }
+    });
   }
+
 
   /**
    * Create the world scene.
@@ -120,26 +299,7 @@ class WorldScene extends Scene {
    * @param  {Number} delta The delta time.
    */
   updateRunning(delta) {
-    this.world.update(delta, {
-      actions: {
-        moveForward: this.isKeyHeld(KEYS.UP_ARROW) || this.isKeyHeld(KEYS.W),
-        moveBackward: this.isKeyHeld(KEYS.DOWN_ARROW) || this.isKeyHeld(KEYS.S),
-        turnLeft: this.isKeyHeld(KEYS.LEFT_ARROW),
-        turnRight: this.isKeyHeld(KEYS.RIGHT_ARROW),
-        strafeLeft: this.isKeyHeld(KEYS.A),
-        strafeRight: this.isKeyHeld(KEYS.D),
-        use: this.isKeyPressed(KEYS.SPACE),
-        crouch: this.isKeyHeld(KEYS.SHIFT),
-        attack: this.isKeyHeld(KEYS.CTRL) || this.isMouseButtonHeld(),
-        armWeaponA: this.isKeyPressed(KEYS.NUM_1),
-        armWeaponB: this.isKeyPressed(KEYS.NUM_2),
-        armWeaponC: this.isKeyPressed(KEYS.NUM_3),
-        armWeaponD: this.isKeyPressed(KEYS.NUM_4),
-        angleChange: this.game.getMouseX(),
-      },
-    });
-
-    super.updateRunning(delta);
+    this.world.update(delta);
   }
 
   /**
@@ -196,16 +356,6 @@ class WorldScene extends Scene {
       this.game.pauseSounds();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
-    }
-  }
-
-  /**
-   * Update the scene when in a prompting state.
-   * @param  {Number} delta The delta value.
-   */
-  updatePrompting() {
-    if (this.isKeyPressed(KEYS.SPACE)) {
-      this.setRemovingReview();
     }
   }
 

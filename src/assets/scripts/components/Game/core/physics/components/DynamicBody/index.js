@@ -25,7 +25,6 @@ class DynamicBody extends Body {
     super(other);
 
     this.velocity = 0;
-    this.rotVelocity = 0;
     this.angle = angle;
     this.isDynamicBody = true;
   }

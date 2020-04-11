@@ -117,8 +117,6 @@ class Game extends Application {
 
     if (this.scene) {
       this.scene.update(delta);
-      this.keyboard.update();
-      this.mouse.update();
     }
   }
 
@@ -297,57 +295,6 @@ class Game extends Application {
    */
   stopSounds() {
     this.sound.stop();
-  }
-
-  /**
-   * Is a key pressed on the keyboard.
-   * @param  {String}  key The key.
-   * @return {Boolean}
-   */
-  isKeyPressed(key) {
-    return this.keyboard.pressed[key];
-  }
-
-  /**
-   * Is a key held on the keyboard.
-   * @param  {String}  key The key.
-   * @return {Boolean}
-   */
-  isKeyHeld(key) {
-    return this.keyboard.held[key];
-  }
-
-  /**
-   * Is a key released on the keyboard.
-   * @param  {String}  key The key.
-   * @return {Boolean}
-   */
-  isKeyReleased(key) {
-    return this.keyboard.released[key];
-  }
-
-  /**
-   * Get the mouse x position.
-   * @return {Number} The mouse x position.
-   */
-  getMouseX() {
-    return this.mouse.getX();
-  }
-
-  /**
-   * Get the mouse y position.
-   * @return {Number} The mouse y position.
-   */
-  getMouseY() {
-    return this.mouse.getY();
-  }
-
-  /**
-   * Is the mouse button held.
-   * @return {Boolean}
-   */
-  isMouseButtonHeld() {
-    return this.mouse.isButtonHeld();
   }
 }
 

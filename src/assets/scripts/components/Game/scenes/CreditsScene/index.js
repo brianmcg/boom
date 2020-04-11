@@ -17,7 +17,7 @@ class CreditsScene extends Scene {
   constructor(options) {
     super(options);
 
-    this.menuItems = [{
+    this.menu = [{
       label: translate('scene.menu.continue'),
       action: () => this.setRunning(),
     }, {
@@ -72,15 +72,6 @@ class CreditsScene extends Scene {
 
     this.mainContainer.addChild(backgroundContainer);
     this.mainContainer.addChild(scrollContainer);
-  }
-
-  /**
-   * Update the scene in the prompting state.
-   * @param  {delta} delta The delta time.
-   */
-  updatePrompting(delta) {
-    this.updateRunning(delta);
-    super.updatePrompting(delta);
   }
 
   /**

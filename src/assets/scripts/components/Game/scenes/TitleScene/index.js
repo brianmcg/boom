@@ -17,7 +17,7 @@ class TitleScene extends Scene {
   constructor(options) {
     super({ ...options, loopMusic: false });
 
-    this.menuItems = [{
+    this.menu = [{
       label: translate('scene.menu.continue'),
       action: () => this.setRunning(),
     }, {
@@ -39,24 +39,6 @@ class TitleScene extends Scene {
     this.mainContainer.addChild(new ForegroundContainer(sprites.foreground));
 
     super.create(options);
-  }
-
-  /**
-   * Update scene in the running state.
-   * @param  {Number} delta The delta time.
-   */
-  updateRunning(delta) {
-    super.updateRunning(delta);
-    this.setPrompting();
-  }
-
-  /**
-   * Update the container in the prompting state.
-   * @param  {delta} delta The delta time.
-   */
-  updatePrompting(delta) {
-    super.updateRunning(delta);
-    super.updatePrompting(delta);
   }
 
   /**

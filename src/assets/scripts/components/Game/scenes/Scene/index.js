@@ -73,39 +73,97 @@ class Scene extends Container {
       },
     };
 
-    this.setLoading();
+    this.addKeyDownCallback(KEYS.ESC, () => {
+      if (this.isRunning() || this.isPrompting()) {
+        this.showMenu();
+      } else if (this.state === STATES.PAUSED) {
+        this.hideMenu();
+      }
+    });
 
-    // this.input.onKeyDown(() => this.onKeyDown());
+    this.addKeyDownCallback(KEYS.UP_ARROW, () => {
+      if (this.isPaused()) {
+        this.menuHighlightPrevious();
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.DOWN_ARROW, () => {
+      if (this.isPaused()) {
+        this.menuHighlightNext();
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.ENTER, () => {
+      if (this.isPaused()) {
+        this.menuSelect();
+      }
+    });
+
+    this.addKeyDownCallback(KEYS.SPACE, () => {
+      if (this.isPrompting()) {
+        this.triggerComplete();
+      }
+    });
+
+    this.setLoading();
   }
 
-  onKeyDown(key) {
-    if (this.isRunning()) {
-      switch (key) {
-        case KEYS.ESC:
-          this.showMenu();
-          break;
-        default:
-          break;
-      }
-    }
+  /**
+   * Add mouse move callback.
+   * @param {Function} callback The callback.
+   */
+  addMouseMoveCallback(callback) {
+    this.game.mouse.onMouseMove(callback);
+  }
 
-    if (this.isPaused()) {
-      switch (key) {
-        case KEYS.DOWN_ARROW:
-          this.menuHighlightNext();
-          break;
-        case KEYS.UP_ARROW:
-          this.menuHighlightPrevious();
-          break;
-        case KEYS.ENTER:
-          this.menuSelect();
-          break;
-        case KEYS.ESC:
-          this.hideMenu();
-          break;
-        default:
-          break;
-      }
+  /**
+   * Add mouse down callback.
+   * @param {Function} callback The callback.
+   */
+  addMouseDownCallback(callback) {
+    this.game.mouse.onMouseDown(callback);
+  }
+
+  /**
+   * Add mouse up callback.
+   * @param {Function} callback The callback.
+   */
+  addMouseUpCallback(callback) {
+    this.game.mouse.onMouseUp(callback);
+  }
+
+  /**
+   * Add a key down event to the scene.
+   * @param {String}   name             The name of the key.
+   * @param {Function} callback         The callback function.
+   * @param {Boolean}  options.replace  Replace existing callback.
+   */
+  addKeyDownCallback(name, callback, { replace = false } = {}) {
+    if (replace) {
+      this.game.keyboard.add(name).onKeyDown(callback);
+    } else {
+      const key = this.game.keyboard.keys[name]
+        ? this.game.keyboard.keys[name]
+        : this.game.keyboard.add(name);
+
+      key.onKeyDown(callback);
+    }
+  }
+
+  /**
+   * Add a key up callback to the scene.
+   * @param {String}   name     The name of the key.
+   * @param {Function} callback The callback function.
+   */
+  addKeyUpCallback(name, callback, { replace = false } = {}) {
+    if (replace) {
+      this.game.keyboard.add(name).onKeyUp(callback);
+    } else {
+      const key = this.game.keyboard.keys[name]
+        ? this.game.keyboard.keys[name]
+        : this.game.keyboard.add(name);
+
+      key.onKeyUp(callback);
     }
   }
 
@@ -116,7 +174,7 @@ class Scene extends Container {
    */
   create({ graphics, sounds }) {
     const text = {
-      menu: this.menuItems.map(item => item.label),
+      menu: this.menu.map(item => item.label),
       prompt: this.promptOption,
     };
 
@@ -125,6 +183,10 @@ class Scene extends Container {
     this.sounds = sounds;
 
     this.menuContainer = new MenuContainer(sprites.menu);
+
+    this.menuContainer.onSelect(index => this.menu[index].action());
+
+    this.menuContainer.onClose(() => this.setRunning());
 
     this.promptContainer = new PromptContainer(sprites.prompt);
 
@@ -151,9 +213,6 @@ class Scene extends Container {
         break;
       case STATES.UNPAUSING:
         this.updateUnpausing(delta);
-        break;
-      case STATES.PROMPTING:
-        this.updatePrompting(delta);
         break;
       case STATES.FADING_OUT:
         this.updateFadingOut(delta);
@@ -187,13 +246,7 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updateRunning() {
-    if (this.isKeyPressed(KEYS.ESC)) {
-      this.showMenu();
-    }
-
-    if (this.selectedOption) {
-      this.selectedOption();
-    }
+    this.setPrompting();
   }
 
   /**
@@ -218,16 +271,6 @@ class Scene extends Container {
    * @param  {Number} delta The delta value.
    */
   updatePaused() {
-    if (this.isKeyPressed(KEYS.DOWN_ARROW)) {
-      this.menuHighlightNext();
-    } else if (this.isKeyPressed(KEYS.UP_ARROW)) {
-      this.menuHighlightPrevious();
-    } else if (this.isKeyPressed(KEYS.ENTER)) {
-      this.menuSelect();
-    } else if (this.isKeyPressed(KEYS.ESC)) {
-      this.hideMenu();
-    }
-
     this.fade(this.fadeAmount, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
@@ -243,7 +286,6 @@ class Scene extends Container {
     if (this.fadeAmount <= 0) {
       this.fadeAmount = 0;
       this.removeChild(this.menuContainer);
-      this.setRunning();
     }
 
     this.fade(this.fadeAmount, {
@@ -272,7 +314,7 @@ class Scene extends Container {
    * Select the next menu item.
    */
   menuSelect() {
-    this.selectedOption = this.menuItems[this.menuContainer.index].action;
+    this.menuContainer.select();
     this.hideMenu();
   }
 
@@ -291,16 +333,6 @@ class Scene extends Container {
   hideMenu() {
     this.setUnpausing();
     this.playSound(this.sounds.pause);
-  }
-
-  /**
-   * Update the scene when in a prompting state.
-   * @param  {Number} delta The delta value.
-   */
-  updatePrompting() {
-    if (this.isKeyPressed(KEYS.SPACE)) {
-      this.triggerComplete();
-    }
   }
 
   /**
@@ -374,7 +406,6 @@ class Scene extends Container {
     if (isStateChanged) {
       this.fadeAmount = 0;
       this.stop();
-      this.selectedOption = null;
     }
 
     return isStateChanged;
@@ -457,6 +488,30 @@ class Scene extends Container {
   }
 
   /**
+   * Check if the scene is in the running state.
+   * @return {Boolean} The result of the check.
+   */
+  isRunning() {
+    return this.state === STATES.RUNNING;
+  }
+
+  /**
+   * Check if the scene is in the paused state.
+   * @return {Boolean} The result of the check.
+   */
+  isPaused() {
+    return this.state === STATES.PAUSED;
+  }
+
+  /**
+   * Check if the scene is in the prompting state.
+   * @return {Boolean} The result of the check.
+   */
+  isPrompting() {
+    return this.state === STATES.PROMPTING;
+  }
+
+  /**
    * Play a sound.
    * @param  {String} type             The type of sound.
    * @param  {String} name             The name of the sound.
@@ -471,32 +526,6 @@ class Scene extends Container {
    */
   stopSounds() {
     this.game.stopSounds();
-  }
-
-  /**
-   * Check if a key pressed.
-   * @param  {String}  key The key to check.
-   * @return {Boolean}     The key is pressed.
-   */
-  isKeyPressed(key) {
-    return this.game.isKeyPressed(key);
-  }
-
-  /**
-   * Check if a key held down.
-   * @param  {String}  key The key to check.
-   * @return {Boolean}     The key is held down.
-   */
-  isKeyHeld(key) {
-    return this.game.isKeyHeld(key);
-  }
-
-  /**
-   * Check if the mouse button is held down.
-   * @return {Boolean} The mouse button is held down.
-   */
-  isMouseButtonHeld() {
-    return this.game.isMouseButtonHeld();
   }
 
   /**

@@ -1,3 +1,5 @@
+import Key from './components/Key';
+
 export const KEYS = {
   ALT: 'ALT',
   LEFT_ARROW: 'LEFT_ARROW',
@@ -22,6 +24,7 @@ export const KEYS = {
   A: 'A',
   S: 'S',
   D: 'D',
+  E: 'E',
 };
 
 const KEY_CODES = {
@@ -48,6 +51,7 @@ const KEY_CODES = {
   83: KEYS.S,
   65: KEYS.A,
   68: KEYS.D,
+  69: KEYS.E,
 };
 
 /**
@@ -58,14 +62,7 @@ class Keyboard {
    * Creates a keyboard instance.
    */
   constructor() {
-    this.held = Object.keys(KEYS).reduce((memo, name) => ({
-      [name]: false,
-      ...memo,
-    }), {});
-
-    this.pressed = { ...this.held };
-
-    this.released = { ...this.held };
+    this.keys = {};
 
     // On key down, update the pressed and help hashmaps.
     document.addEventListener('keydown', (e) => {
@@ -73,8 +70,11 @@ class Keyboard {
       e.stopPropagation();
 
       if (!e.repeat) {
-        this.pressed[KEY_CODES[e.keyCode]] = true;
-        this.held[KEY_CODES[e.keyCode]] = true;
+        const key = this.keys[KEY_CODES[e.keyCode]];
+
+        if (key) {
+          key.keyDownCallbacks.forEach(callback => callback());
+        }
       }
     }, false);
 
@@ -83,19 +83,24 @@ class Keyboard {
       e.preventDefault();
       e.stopPropagation();
 
-      this.released[KEY_CODES[e.keyCode]] = true;
-      this.held[KEY_CODES[e.keyCode]] = false;
+      const key = this.keys[KEY_CODES[e.keyCode]];
+
+      if (key) {
+        key.keyUpCallbacks.forEach(callback => callback());
+      }
     }, false);
   }
 
   /**
-   * Reset all the pressed keys to false.
+   * Add a key.
+   * @param {String} name   The name of the key.
    */
-  update() {
-    Object.keys(this.pressed).forEach((key) => {
-      this.pressed[key] = false;
-      this.released[key] = false;
-    });
+  add(name) {
+    const key = new Key();
+
+    this.keys[name] = key;
+
+    return key;
   }
 }
 

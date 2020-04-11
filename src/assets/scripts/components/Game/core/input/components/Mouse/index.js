@@ -16,19 +16,28 @@ class Mouse {
       || document.mozExitPointerLock
       || document.webkitExitPointerLock;
 
+    this.el = el;
+    this.mouseMoveCallbacks = [];
+    this.mouseDownCallbacks = [];
+    this.mouseUpCallbacks = [];
+
     const onMouseMove = (e) => {
-      this.x += e.movementX
+      const x = sensitivity * e.movementX
         || e.mozMovementX
         || e.webkitMovementX
         || 0;
+
+      this.mouseMoveCallbacks.forEach(callback => callback(x, null));
     };
 
     const onMouseDown = () => {
       this.buttonHeld = true;
+      this.mouseDownCallbacks.forEach(callback => callback());
     };
 
     const onMouseUp = () => {
       this.buttonHeld = false;
+      this.mouseUpCallbacks.forEach(callback => callback());
     };
 
     const onChange = () => {
@@ -46,20 +55,30 @@ class Mouse {
     document.addEventListener('pointerlockchange', onChange, false);
     document.addEventListener('mozpointerlockchange', onChange, false);
     document.addEventListener('webkitpointerlockchange', onChange, false);
-
-    this.sensitivity = sensitivity;
-    this.el = el;
-
-    this.x = 0;
-    this.y = 0;
-    this.buttonHeld = false;
   }
 
   /**
-   * Update the mouse.
+   * Add a callback to the mouse move event.
+   * @param  {Function} callback The callback.
    */
-  update() {
-    this.x = 0;
+  onMouseMove(callback) {
+    this.mouseMoveCallbacks.push(callback);
+  }
+
+  /**
+   * Add a callback to the mouse down event.
+   * @param  {Function} callback The callback.
+   */
+  onMouseDown(callback) {
+    this.mouseDownCallbacks.push(callback);
+  }
+
+  /**
+   * Add a callback to the mouse up event.
+   * @param  {Function} callback The callback.
+   */
+  onMouseUp(callback) {
+    this.mouseUpCallbacks.push(callback);
   }
 
   /**
@@ -88,30 +107,6 @@ class Mouse {
     return document.pointerLockElement === this.el
       || document.mozPointerLockElement === this.el
       || document.webkitPointerLockElement === this.el;
-  }
-
-  /**
-   * Get the x value.
-   * @return {Number} The x value.
-   */
-  getX() {
-    return this.x * this.sensitivity;
-  }
-
-  /**
-   * Get the y value.
-   * @return {Number} The y value.
-   */
-  getY() {
-    return this.y * this.sensitivity;
-  }
-
-  /**
-   * Check if the button is buttonHeld.
-   * @return {Boolean} The result of the check.
-   */
-  isButtonHeld() {
-    return this.buttonHeld;
   }
 }
 
