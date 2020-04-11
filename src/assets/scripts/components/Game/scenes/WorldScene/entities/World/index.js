@@ -83,11 +83,9 @@ class World extends PhysicsWorld {
 
     items.forEach(item => this.add(item));
 
-    player.onPlayerDeathEvent(this.restart.bind(this));
+    player.onDeath(() => this.restart());
 
-    player.onSound((...options) => {
-      this.scene.playSound(...options);
-    });
+    player.onSound((...options) => this.scene.playSound(...options));
 
     this.openEntranceDoor();
 

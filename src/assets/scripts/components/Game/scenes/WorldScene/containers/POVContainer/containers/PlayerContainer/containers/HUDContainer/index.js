@@ -63,7 +63,7 @@ class HUDContainer extends Container {
       message.x = SCREEN.WIDTH / 2;
     });
 
-    player.onMessagesUpdatedEvent((items) => {
+    player.onMessagesUpdated((items) => {
       messages.forEach((message, i) => {
         const item = items[i];
 

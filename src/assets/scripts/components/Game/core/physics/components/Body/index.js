@@ -80,7 +80,7 @@ class Body extends EventEmitter {
    * Add a callback for the added event.
    * @param  {Function} callback The callback function.
    */
-  onAddedEvent(callback) {
+  onAdded(callback) {
     this.on(EVENTS.ADDED, callback);
   }
 

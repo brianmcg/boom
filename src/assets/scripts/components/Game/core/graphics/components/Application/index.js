@@ -27,7 +27,7 @@ class Application extends PixiApplication {
 
     this.eventEmitter = new EventEmitter();
 
-    window.addEventListener('resize', this.resize.bind(this));
+    window.addEventListener('resize', () => this.resize());
   }
 
   /**

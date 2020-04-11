@@ -41,24 +41,24 @@ const EVENTS = {
 class Player extends AbstractActor {
   /**
    * Creates a player.
-   * @param  {Number} options.x               The x coordinate of the player.
-   * @param  {Number} options.y               The y coordinate of the player
-   * @param  {Number} options.width           The width of the player.
-   * @param  {Number} options.height          The height of the player.
-   * @param  {Number} options.angle           The angle of the player.
-   * @param  {Number} options.maxHealth       The maximum health of the player.
-   * @param  {Number}  options.health         The current health of the player.
-   * @param  {Number} options.speed           The maximum speed of the player.
-   * @param  {Number} options.maxRotVelocity  The maximum rotation velocity of the player.
-   * @param  {Number} options.acceleration    The acceleration of the player.
-   * @param  {Number} options.rotAcceleration The rotation acceleration of the player.
-   * @param  {Array}  options.weapons         The player weapons data.
-   * @param  {Camera} options.camera          The player camera.
+   * @param  {Number} options.x                     The x coordinate of the player.
+   * @param  {Number} options.y                     The y coordinate of the player
+   * @param  {Number} options.width                 The width of the player.
+   * @param  {Number} options.height                The height of the player.
+   * @param  {Number} options.angle                 The angle of the player.
+   * @param  {Number} options.maxHealth             The maximum health of the player.
+   * @param  {Number}  options.health               The current health of the player.
+   * @param  {Number} options.speed                 The maximum speed of the player.
+   * @param  {Number} options.rotationSpeed         The maximum rotation speed of the player.
+   * @param  {Number} options.acceleration          The acceleration of the player.
+   * @param  {Number} options.rotationAcceleration  The rotation acceleration of the player.
+   * @param  {Array}  options.weapons               The player weapons data.
+   * @param  {Camera} options.camera                The player camera.
    */
   constructor(options = {}) {
     const {
-      maxRotVelocity = 1,
-      rotAcceleration = 0,
+      rotationSpeed = 1,
+      rotationAcceleration = 0,
       weapons = {},
       currentWeaponType,
       ...other
@@ -66,11 +66,10 @@ class Player extends AbstractActor {
 
     super(other);
 
-    this.maxSpeed = this.speed;
-
-    this.maxRotVelocity = maxRotVelocity;
-    this.rotAcceleration = rotAcceleration;
+    this.rotationSpeed = rotationSpeed;
+    this.rotationAcceleration = rotationAcceleration;
     this.maxHeight = this.height;
+    this.maxSpeed = this.speed;
 
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
@@ -105,7 +104,7 @@ class Player extends AbstractActor {
 
     this.isPlayer = true;
 
-    this.onAddedEvent(this.initialize.bind(this));
+    this.onAdded(() => this.initialize());
 
     this.setAlive();
   }
@@ -136,7 +135,7 @@ class Player extends AbstractActor {
    * Add a callback for the message updated event.
    * @param  {Function} callback The callback function.
    */
-  onMessagesUpdatedEvent(callback) {
+  onMessagesUpdated(callback) {
     this.on(EVENTS.MESSAGES_UPDATED, callback);
   }
 
@@ -144,7 +143,7 @@ class Player extends AbstractActor {
    * Add a callback for the player death event.
    * @param  {Function} callback The callback function.
    */
-  onPlayerDeathEvent(callback) {
+  onDeath(callback) {
     this.on(EVENTS.DEATH, callback);
   }
 
@@ -157,20 +156,10 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback for the arm weapon event.
-   * @param  {Function} callback The callback function.
-   */
-  onArmWeaponEvent(callback) {
-    this.on(EVENTS.ARM_WEAPON, callback);
-  }
-
-  /**
    * Update the player.
    * @param  {Number} delta The delta time value.
    */
   update(delta) {
-    this.updateMessages(delta);
-
     switch (this.state) {
       case STATES.ALIVE:
         this.updateAlive(delta);
@@ -184,21 +173,8 @@ class Player extends AbstractActor {
       default:
         break;
     }
-  }
 
-  /**
-   * Update the messages.
-   * @param  {Number} delta The delta time.
-   */
-  updateMessages(delta) {
-    const initialLength = this.messages.length;
-
-    this.messages.forEach(message => message.update(delta));
-    this.messages = this.messages.filter(message => message.timer);
-
-    if (this.messages.length < initialLength) {
-      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
-    }
+    this.updateMessages(delta);
   }
 
   /**
@@ -223,23 +199,29 @@ class Player extends AbstractActor {
       use,
     } = this.actions;
 
+    this.speed = this.maxSpeed * this.height / this.maxHeight;
+
     // Update angle and velocity.
     if (angleChange) {
       this.rotVelocity = angleChange;
 
-      if (this.rotVelocity < 0 && this.rotVelocity < -this.maxRotVelocity) {
-        this.rotVelocity = -this.maxRotVelocity;
+      if (this.rotVelocity < 0 && this.rotVelocity < -this.rotationSpeed) {
+        this.rotVelocity = -this.rotationSpeed;
       }
 
-      if (this.rotVelocity > 0 && this.rotVelocity > this.maxRotVelocity) {
-        this.rotVelocity = this.maxRotVelocity;
+      if (this.rotVelocity > 0 && this.rotVelocity > this.rotationSpeed) {
+        this.rotVelocity = this.rotationSpeed;
       }
     } else if (turnLeft) {
       this.rotVelocity = Math.max(
-        this.rotVelocity - this.rotAcceleration, this.maxRotVelocity / 3 * -1,
+        this.rotVelocity - this.rotationAcceleration,
+        this.rotationSpeed / 3 * -1,
       );
     } else if (turnRight) {
-      this.rotVelocity = Math.min(this.rotVelocity + this.rotAcceleration, this.maxRotVelocity / 3);
+      this.rotVelocity = Math.min(
+        this.rotVelocity + this.rotationAcceleration,
+        this.rotationSpeed / 3,
+      );
     } else {
       this.rotVelocity = 0;
     }
@@ -419,6 +401,21 @@ class Player extends AbstractActor {
     console.log('dead');
 
     this.emit(EVENTS.DEATH);
+  }
+
+  /**
+   * Update the messages.
+   * @param  {Number} delta The delta time.
+   */
+  updateMessages(delta) {
+    const initialLength = this.messages.length;
+
+    this.messages.forEach(message => message.update(delta));
+    this.messages = this.messages.filter(message => message.timer);
+
+    if (this.messages.length < initialLength) {
+      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
+    }
   }
 
   /**

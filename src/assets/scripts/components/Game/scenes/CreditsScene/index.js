@@ -68,7 +68,7 @@ class CreditsScene extends Scene {
 
     const scrollContainer = new ScrollContainer(scroll);
 
-    scrollContainer.onScrollComplete(this.setPrompting.bind(this));
+    scrollContainer.onScrollComplete(() => this.setPrompting());
 
     this.mainContainer.addChild(backgroundContainer);
     this.mainContainer.addChild(scrollContainer);
