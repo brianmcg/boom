@@ -14,78 +14,57 @@ const MAX_ALPHA = 0.7;
 class MenuContainer extends Container {
   /**
    * Creates a menu container.
-   * @param  {Object} options.sprites The sprites.
-   * @param  {Array}  options.items   The menu items.
+   * @param  {Object} sprites The sprites.
    */
-  constructor({ sprites, items }) {
+  constructor(sprites) {
     super();
 
     this.sprites = sprites;
+    this.scaleFactor = 0;
+    this.alphaFactor = 0;
 
     const { icon, labels, background } = this.sprites;
 
-    this.items = items;
-    this.scaleFactor = 0;
-    this.alphaFactor = 0;
-    this.selectedOption = null;
-
     this.addChild(background);
 
-    if (this.items.length) {
+    if (labels.length) {
       this.addChild(icon);
+
+      labels.forEach((sprite, index) => {
+        const totalHeight = (sprite.height + SCREEN_PADDING) * labels.length;
+
+        sprite.x = (SCREEN.WIDTH / 2);
+        sprite.y = ((SCREEN.HEIGHT / 2) - (totalHeight / 2))
+          + (index * sprite.height) + (index * SCREEN_PADDING);
+
+        this.addChild(sprite);
+      });
     }
 
-    this.items.forEach((item, index) => {
-      const sprite = labels[item.label];
-      const totalHeight = (sprite.height + SCREEN_PADDING) * this.items.length;
 
-      sprite.x = (SCREEN.WIDTH / 2);
-      sprite.y = ((SCREEN.HEIGHT / 2) - (totalHeight / 2))
-        + (index * sprite.height) + (index * SCREEN_PADDING);
-
-      this.addChild(sprite);
-    });
-
-    this.on('added', () => {
-      this.currentIndex = 0;
-    });
+    this.on('added', () => this.setIndex(0));
   }
 
   /**
-   * Highlight the next menu item.
+   * Update the container.
    */
-  highlightNext() {
-    if (this.items.length) {
-      if (this.currentIndex < this.items.length - 1) {
-        this.currentIndex += 1;
-      } else {
-        this.currentIndex = 0;
+  update(delta) {
+    super.update(delta);
+
+    const { icon, labels, background } = this.sprites;
+
+    icon.setScale(this.scaleFactor);
+
+    background.alpha = this.alphaFactor;
+
+    labels.forEach((child, i) => {
+      child.setScale(this.scaleFactor);
+
+      if (i === this.index) {
+        icon.y = child.y;
+        icon.x = child.x - (child.width / 2) - ICON_PADDING_RIGHT - (icon.width / 2);
       }
-    }
-  }
-
-  /**
-   * Highlight the previous menu item.
-   */
-  highlightPrevious() {
-    if (this.items.length) {
-      if (this.currentIndex > 0) {
-        this.currentIndex -= 1;
-      } else {
-        this.currentIndex = this.items.length - 1;
-      }
-    }
-  }
-
-  /**
-   * Select the current menu item.
-   */
-  getHighlightedOption() {
-    if (this.items.length) {
-      return this.items[this.currentIndex].action;
-    }
-
-    return null;
+    });
   }
 
   /**
@@ -98,25 +77,46 @@ class MenuContainer extends Container {
   }
 
   /**
-   * Animate the container.
+   * Highlight the next menu item.
    */
-  update() {
-    const { icon, labels, background } = this.sprites;
+  highlightNext() {
+    const { length } = this.sprites.labels;
 
-    icon.setScale(this.scaleFactor);
-    background.alpha = this.alphaFactor;
-
-    Object.values(labels).forEach((child, index) => {
-      child.setScale(this.scaleFactor);
-
-      if (index === this.currentIndex) {
-        icon.y = child.y;
-        icon.x = child.x - (child.width / 2) - ICON_PADDING_RIGHT - (icon.width / 2);
-        child.tint = RED;
+    if (length) {
+      if (this.index < length - 1) {
+        this.setIndex(this.index + 1);
       } else {
-        child.tint = WHITE;
+        this.setIndex(0);
       }
+    }
+  }
+
+  /**
+   * Highlight the previous menu item.
+   */
+  highlightPrevious() {
+    const { length } = this.sprites.labels;
+
+    if (length) {
+      if (this.index > 0) {
+        this.setIndex(this.index - 1);
+      } else {
+        this.setIndex(length - 1);
+      }
+    }
+  }
+
+  /**
+   * Set the index.
+   */
+  setIndex(index) {
+    const { labels } = this.sprites;
+
+    labels.forEach((child, i) => {
+      child.tint = index === i ? RED : WHITE;
     });
+
+    this.index = index;
   }
 
   /**

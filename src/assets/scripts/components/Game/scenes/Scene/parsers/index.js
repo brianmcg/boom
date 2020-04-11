@@ -21,15 +21,15 @@ const createMenuSprites = (menu, textures, animations) => {
     alpha: 0.75,
   });
 
-  const labels = menu.reduce((memo, key, index) => ({
+  const labels = menu.reduce((memo, key, index) => ([
     ...memo,
-    [key]: new TextSprite({
+    new TextSprite({
       font: FONT_SIZES.SMALL,
       text: key,
       color: index ? WHITE : RED,
       anchor: 0.5,
     }),
-  }), {});
+  ]), []);
 
   const menuTextures = animations.skull.map(image => textures[image]);
 

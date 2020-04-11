@@ -91,10 +91,7 @@ class Scene extends Container {
 
     this.sounds = sounds;
 
-    this.menuContainer = new MenuContainer({
-      sprites: sprites.menu,
-      items: this.menuItems,
-    });
+    this.menuContainer = new MenuContainer(sprites.menu);
 
     this.promptContainer = new PromptContainer(sprites.prompt);
 
@@ -242,7 +239,7 @@ class Scene extends Container {
    * Select the next menu item.
    */
   menuSelect() {
-    this.selectedOption = this.menuContainer.getHighlightedOption();
+    this.selectedOption = this.menuItems[this.menuContainer.index].action;
     this.hideMenu();
   }
 
