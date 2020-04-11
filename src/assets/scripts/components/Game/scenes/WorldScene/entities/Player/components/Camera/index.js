@@ -27,6 +27,7 @@ class Camera {
     this.shakeDirection = 1;
     this.shakeAmount = 0;
     this.shakeEdge = 0;
+    this.maxPitch = 192;
   }
 
   /**
