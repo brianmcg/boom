@@ -88,7 +88,7 @@ class Body extends EventEmitter {
    * Add a callback for the removed event.
    * @param  {Function} callback The callback function.
    */
-  onRemovedEvent(callback) {
+  onRemoved(callback) {
     this.on(EVENTS.REMOVED, callback);
   }
 
@@ -96,7 +96,7 @@ class Body extends EventEmitter {
    * Add a callback for the collision event.
    * @param  {Function} callback The callback function.
    */
-  onCollisionEvent(callback) {
+  onCollision(callback) {
     this.on(EVENTS.COLLISION, callback);
   }
 

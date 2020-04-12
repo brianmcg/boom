@@ -10,16 +10,15 @@ import Bullet from '../Bullet';
 import Explosion from '../../effects/Explosion';
 
 const DEG_360 = degrees(360);
-
 const DEG_270 = degrees(270);
-
 const DEG_180 = degrees(180);
-
 const DEG_90 = degrees(90);
-
 const DEATH_INTERVAL = 1500;
-
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
+const DYING_HEIGHT_FADE = 0.2;
+const DYING_PITCH_INCREMENT = 10;
+const HURT_VISION_AMOUNT = 0.6;
+const HURT_RECOIL_MULTIPLIER = 4;
 
 const STATES = {
   ALIVE: 'player:alive',
@@ -70,27 +69,22 @@ class Player extends AbstractActor {
     this.rotateAcceleration = rotateAcceleration;
     this.maxHeight = this.height;
     this.maxSpeed = this.speed;
-
+    this.weaponIndex = weaponIndex;
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
     this.heightVelocity = CELL_SIZE / 32;
 
-    this.weaponIndex = weaponIndex;
     this.actions = {};
+    this.messages = [];
     this.vision = 1;
     this.rotateAngle = 0;
     this.timer = 0;
-
     this.moveAngle = 0;
+    this.isPlayer = true;
 
     this.camera = new Camera(this);
-
     this.weapons = weapons.map(data => new Weapon({ player: this, ...data }));
-
     this.weapon = this.weapons[this.weaponIndex];
-
-    this.messages = [];
-
     this.bullets = weapons.reduce((memo, data) => ({
       ...memo,
       [data.type]: [...Array(10).keys()].map(() => new Bullet({
@@ -98,15 +92,12 @@ class Player extends AbstractActor {
       })),
     }), {});
 
-    this.isPlayer = true;
-
-    this.onAdded(() => this.initialize());
-
-    this.setAlive();
-
     this.viewHeight = this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
+
+    this.onAdded(() => this.initialize());
+    this.setAlive();
   }
 
   /**
@@ -181,9 +172,6 @@ class Player extends AbstractActor {
       default:
         break;
     }
-
-    this.updateMessages(delta);
-    this.updateActions(delta);
   }
 
   /**
@@ -213,16 +201,12 @@ class Player extends AbstractActor {
     // Update speed.
     this.speed = this.maxSpeed * this.height / this.maxHeight;
 
-    // Update movement.
+    // Update rotation.
     if (rotate) {
-      this.rotateAngle = rotate * delta;
-
-      if (this.rotateAngle < 0 && this.rotateAngle < -this.rotateSpeed) {
-        this.rotateAngle = -this.rotateSpeed;
-      }
-
-      if (this.rotateAngle > 0 && this.rotateAngle > this.rotateSpeed) {
-        this.rotateAngle = this.rotateSpeed;
+      if (rotate < 0) {
+        this.rotateAngle = Math.max(rotate, -this.rotateSpeed);
+      } else if (rotate > 0) {
+        this.rotateAngle = Math.min(rotate, this.rotateSpeed);
       }
     } else if (turnLeft) {
       this.rotateAngle = Math.max(
@@ -238,29 +222,26 @@ class Player extends AbstractActor {
       this.rotateAngle = 0;
     }
 
+    // Update movement.
+    this.angle = (this.angle + (this.rotateAngle * delta) + DEG_360) % DEG_360;
+
     if (moveForward || moveBackward || strafeLeft || strafeRight) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
 
       if (moveForward) {
         moveX += 1;
+      } else if (moveBackward) {
+        moveX -= 1;
       }
 
       if (strafeRight) {
         moveY += 1;
-      }
-
-      if (moveBackward) {
-        moveX -= 1;
-      }
-
-      if (strafeLeft) {
+      } else if (strafeLeft) {
         moveY -= 1;
       }
     } else {
       this.velocity = 0;
     }
-
-    this.angle = (this.angle + this.rotateAngle + DEG_360) % DEG_360;
 
     this.moveAngle = -Math.atan2(-moveY, moveX);
 
@@ -281,7 +262,6 @@ class Player extends AbstractActor {
       );
     }
 
-    // Update height.
     if (crouch) {
       this.height = Math.max(
         this.height - (this.heightVelocity * delta),
@@ -309,9 +289,7 @@ class Player extends AbstractActor {
     // Update weapon.
     if (selectWeapon) {
       this.selectWeapon(selectWeapon - 1);
-    }
-
-    if (attack) {
+    } else if (attack) {
       this.useWeapon();
     }
 
@@ -320,7 +298,6 @@ class Player extends AbstractActor {
     // Update interactions
     this.parent.getAdjacentBodies(this).forEach((body) => {
       // Update item interactions
-      // TODO: Move to collision event.
       if (body.isItem) {
         if (this.isBodyCollision(body)) {
           if (body.setColliding()) {
@@ -364,6 +341,14 @@ class Player extends AbstractActor {
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
+    // Update actions.
+    this.actions.use = false;
+    this.actions.selectWeapon = 0;
+    this.actions.rotate = 0;
+
+    // Update messages
+    this.messages.forEach(message => message.update(delta));
+
     // Update parent
     super.update(delta);
   }
@@ -373,8 +358,13 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   updateDying(delta) {
+    // Update camera
+    const { pitch, maxPitch } = this.camera;
+
+    this.camera.pitch = Math.min(pitch + (DYING_PITCH_INCREMENT * delta), maxPitch);
+
     // Update height
-    this.height -= this.heightVelocity * delta * 0.2;
+    this.height -= this.heightVelocity * DYING_HEIGHT_FADE * delta;
 
     if (this.height <= this.deadHeight) {
       this.height = this.deadHeight;
@@ -390,16 +380,10 @@ class Player extends AbstractActor {
       }
     }
 
-    // Update camera
-    const { pitch, maxPitch } = this.camera;
-
-    let newPitch = pitch + (10 * delta);
-
-    if (newPitch >= maxPitch) {
-      newPitch = maxPitch;
-    }
-
-    this.camera.pitch = newPitch;
+    // Update view
+    this.viewHeight = this.height + this.camera.height;
+    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewPitch = this.camera.pitch;
 
     // Update weapon
     this.weapon.update(delta);
@@ -419,44 +403,20 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Update the messages.
-   * @param  {Number} delta The delta time.
-   */
-  updateMessages(delta) {
-    const initialLength = this.messages.length;
-
-    this.messages.forEach(message => message.update(delta));
-    this.messages = this.messages.filter(message => message.timer);
-
-    if (this.messages.length < initialLength) {
-      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
-    }
-  }
-
-  /**
-   * Update the actions.
-   */
-  updateActions() {
-    this.actions.use = false;
-    this.actions.selectWeapon = 0;
-    this.actions.rotate = 0;
-  }
-
-  /**
    * Add a player message.
    * @param {String} text The text of the message.
    */
   addMessage(text) {
-    this.messages.unshift(new Message(text));
-    this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
-  }
+    const message = new Message(text);
 
-  /**
-   * Check if the player has messages.
-   * @return {Boolean}
-   */
-  hasMessages() {
-    return !!this.messages.length;
+    message.onExpired(() => {
+      this.messages = this.messages.filter(m => m !== message);
+      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
+    });
+
+    this.messages.unshift(message);
+
+    this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
   }
 
   /**
@@ -488,6 +448,7 @@ class Player extends AbstractActor {
         encounteredBodies,
       } = this.castRay(this.viewAngle);
 
+      // Get sorted collisions
       const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
         if (body.blocking) {
           const point = body.getRayCollision({ startPoint, endPoint });
@@ -515,6 +476,8 @@ class Player extends AbstractActor {
       const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       if (collisions.length) {
+        // Handle collsion with body
+        // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
         this.parent.addExplosion(new Explosion({
@@ -535,6 +498,7 @@ class Player extends AbstractActor {
           }
         }
       } else {
+        // Handle collision with wall
         this.parent.addExplosion(new Explosion({
           x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
           y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
@@ -556,7 +520,7 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount to hurt the player.
    */
   hurt(amount) {
-    this.vision = 0.6;
+    this.vision = HURT_VISION_AMOUNT;
     this.health -= amount;
 
     if (this.health <= 0) {
@@ -564,7 +528,7 @@ class Player extends AbstractActor {
       this.setDying();
       this.emitSound(this.sounds.death);
     } else {
-      this.recoil(amount * 4, { direction: -1 });
+      this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
       this.emitSound(this.sounds.pain);
     }
   }
@@ -751,10 +715,7 @@ class Player extends AbstractActor {
     const { weapons, weaponIndex, health } = this;
 
     return {
-      weapons: Object.values(weapons).reduce((memo, weapon) => ([
-        ...memo,
-        weapon.props,
-      ]), []),
+      weapons: weapons.map(weapon => weapon.props),
       weaponIndex,
       health,
     };

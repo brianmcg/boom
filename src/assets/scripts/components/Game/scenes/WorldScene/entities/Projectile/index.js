@@ -47,7 +47,7 @@ class Projectile extends DynamicEntity {
     this.speed = speed * CELL_SIZE;
     this.explosionType = explosionType;
 
-    this.onCollisionEvent((body) => {
+    this.onCollision((body) => {
       this.setColliding();
       this.parent.onExplosion(this.power);
       this.parent.player.shake(this.power);

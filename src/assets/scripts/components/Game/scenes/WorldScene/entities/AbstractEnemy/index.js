@@ -22,6 +22,8 @@ const FORCE_FADE = 0.8;
 
 const MIN_FORCE = 0.1;
 
+const MAX_FORCE = 4;
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -263,7 +265,9 @@ class AbstractEnemy extends AbstractActor {
   updateDead(delta) {
     this.velocity *= (FORCE_FADE * delta);
 
-    if (this.velocity < MIN_FORCE) {
+    if (this.velocity > MAX_FORCE) {
+      this.velocity = MAX_FORCE;
+    } else if (this.velocity < MIN_FORCE) {
       this.velocity = 0;
       this.blocking = false;
       this.parent.stop(this);

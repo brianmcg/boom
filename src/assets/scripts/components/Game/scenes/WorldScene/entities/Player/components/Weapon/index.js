@@ -33,6 +33,7 @@ class Weapon extends Entity {
     sounds,
     type,
     explosionType,
+    ammo,
     ...other
   }) {
     super(other);
@@ -45,7 +46,7 @@ class Weapon extends Entity {
     this.equiped = equiped;
     this.player = player;
     this.recoil = recoil;
-    this.ammo = maxAmmo / 2;
+    this.ammo = ammo !== undefined ? ammo : maxAmmo / 2;
     this.maxAmmo = maxAmmo;
     this.timer = 0;
 

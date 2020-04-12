@@ -16,6 +16,14 @@ class Message {
   }
 
   /**
+   * Add a callback for when the message expires.
+   * @param  {Function} callback The callback.
+   */
+  onExpired(callback) {
+    this.callback = callback;
+  }
+
+  /**
    * Update the message.
    * @param  {Number} delta The delta time.
    */
@@ -24,6 +32,10 @@ class Message {
 
     if (this.timer < 0) {
       this.timer = 0;
+
+      if (this.callback) {
+        this.callback();
+      }
     }
   }
 }
