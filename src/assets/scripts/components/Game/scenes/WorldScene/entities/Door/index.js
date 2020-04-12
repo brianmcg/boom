@@ -113,7 +113,7 @@ class Door extends DynamicCell {
   updateClosing(delta) {
     const { axis, speed } = this;
 
-    this.offset[axis] -= speed * delta;
+    this.offset[axis] -= speed * 0.5 * delta;
 
     if (this.offset[axis] < 0) {
       this.offset[axis] = 0;

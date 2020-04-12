@@ -1,13 +1,15 @@
 import { degrees } from 'game/core/physics';
 
-const DEG_1 = degrees(1);
 const DEG_360 = degrees(360);
 const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 1;
 const PITCH_VELOCITY = 4;
 const MAX_RECOIL = 196;
 const MIN_RECOIL = 1;
-const RECOIL_FADE = 0.25;
+const RECOIL_FADE = 0.2;
+const SHAKE_FADE = 0.55;
+const MIN_SHAKE = degrees(1) * 0.1;
+const MAX_SHAKE = degrees(10);
 
 /**
  * Class representing a camera.
@@ -27,7 +29,7 @@ class Camera {
     this.recoilDirection = 1;
     this.shakeDirection = 1;
     this.shakeAmount = 0;
-    this.shakeEdge = 0;
+    this.shakeAngle = 0;
     this.maxPitch = 192;
   }
 
@@ -92,19 +94,31 @@ class Camera {
   /**
    * Update the shake effect.
    */
-  updateYaw() {
-    this.angle = (-this.player.moveAngle + DEG_360) % DEG_360;
-
+  updateYaw(delta) {
     if (this.shakeAmount) {
-      this.angle += (this.shakeAmount * this.shakeDirection);
-      this.shakeAmount *= 0.9;
-      this.shakeDirection *= -1;
+      if (this.shakeDirection > 0) {
+        this.shakeAngle += this.shakeAmount * delta;
 
-      if (this.shakeAmount < DEG_1 * 0.4) {
+        if (this.shakeAngle >= this.shakeAmount) {
+          this.shakeDirection *= -1;
+          this.shakeAmount *= SHAKE_FADE;
+        }
+      } else if (this.shakeDirection < 0) {
+        this.shakeAngle -= this.shakeAmount * delta;
+
+        if (this.shakeAngle <= -this.shakeAmount) {
+          this.shakeAmount *= SHAKE_FADE;
+          this.shakeDirection *= -1;
+        }
+      }
+
+      if (this.shakeAmount < MIN_SHAKE) {
         this.shakeAmount = 0;
-        this.angle = 0;
+        this.shakeAngle = 0;
       }
     }
+
+    this.angle = (this.shakeAngle - this.player.moveAngle + DEG_360) % DEG_360;
   }
 
   /**
@@ -112,8 +126,8 @@ class Camera {
    * @param {Number} amount The amount to shake.
    */
   setShake(amount, { direction = 1 } = {}) {
-    this.shakeAmount = degrees(amount) * 0.5;
     this.shakeDirection = direction;
+    this.shakeAmount = Math.min(MAX_SHAKE, degrees(amount) * SHAKE_FADE);
   }
 
   /**
@@ -123,7 +137,7 @@ class Camera {
    */
   setRecoil(amount, { direction = 1 } = {}) {
     this.recoilDirection = direction;
-    this.recoilAmount = Math.min(MAX_RECOIL, amount);
+    this.recoilAmount = Math.min(MAX_RECOIL, amount * 2);
   }
 }
 

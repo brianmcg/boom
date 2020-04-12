@@ -54,7 +54,7 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterType,
-    corpseRemains,
+    explode,
     isFloating,
     type,
     ...other
@@ -66,7 +66,7 @@ class AbstractEnemy extends AbstractActor {
     }
 
     this.attackRange = attackRange * CELL_SIZE;
-    this.corpseRemains = corpseRemains;
+    this.explode = explode;
     this.type = type;
     this.spatterType = spatterType;
     this.spatters = spatters;
