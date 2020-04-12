@@ -54,7 +54,7 @@ class WorldScene extends Scene {
     });
 
     // Replace parent class space callback.
-    this.addKeyDownCallback(KEYS.SPACE, () => {
+    this.onKeyDown(KEYS.SPACE, () => {
       if (this.isPrompting()) {
         this.setRemovingReview();
       }
@@ -63,169 +63,169 @@ class WorldScene extends Scene {
     });
 
     // Rotate
-    this.addMouseMoveCallback((x) => {
+    this.onMouseMove((x) => {
       this.world.player.actions.rotate += x;
     });
 
     // Move forward
-    this.addKeyDownCallback(KEYS.UP_ARROW, () => {
+    this.onKeyDown(KEYS.UP_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveForward = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.UP_ARROW, () => {
+    this.onKeyUp(KEYS.UP_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveForward = false;
       }
     });
 
-    this.addKeyDownCallback(KEYS.W, () => {
+    this.onKeyDown(KEYS.W, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveForward = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.W, () => {
+    this.onKeyUp(KEYS.W, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveForward = false;
       }
     });
 
     // Move backward
-    this.addKeyDownCallback(KEYS.DOWN_ARROW, () => {
+    this.onKeyDown(KEYS.DOWN_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveBackward = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.DOWN_ARROW, () => {
+    this.onKeyUp(KEYS.DOWN_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveBackward = false;
       }
     });
 
-    this.addKeyDownCallback(KEYS.S, () => {
+    this.onKeyDown(KEYS.S, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveBackward = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.S, () => {
+    this.onKeyUp(KEYS.S, () => {
       if (this.isRunning()) {
         this.world.player.actions.moveBackward = false;
       }
     });
 
     // Turn left
-    this.addKeyDownCallback(KEYS.LEFT_ARROW, () => {
+    this.onKeyDown(KEYS.LEFT_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.turnLeft = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.LEFT_ARROW, () => {
+    this.onKeyUp(KEYS.LEFT_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.turnLeft = false;
       }
     });
 
     // Turn right
-    this.addKeyDownCallback(KEYS.RIGHT_ARROW, () => {
+    this.onKeyDown(KEYS.RIGHT_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.turnRight = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.RIGHT_ARROW, () => {
+    this.onKeyUp(KEYS.RIGHT_ARROW, () => {
       if (this.isRunning()) {
         this.world.player.actions.turnRight = false;
       }
     });
 
     // Strafe left
-    this.addKeyDownCallback(KEYS.A, () => {
+    this.onKeyDown(KEYS.A, () => {
       if (this.isRunning()) {
         this.world.player.actions.strafeLeft = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.A, () => {
+    this.onKeyUp(KEYS.A, () => {
       if (this.isRunning()) {
         this.world.player.actions.strafeLeft = false;
       }
     });
 
     // Strafe right
-    this.addKeyDownCallback(KEYS.D, () => {
+    this.onKeyDown(KEYS.D, () => {
       if (this.isRunning()) {
         this.world.player.actions.strafeRight = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.D, () => {
+    this.onKeyUp(KEYS.D, () => {
       if (this.isRunning()) {
         this.world.player.actions.strafeRight = false;
       }
     });
 
     // Use interactive body
-    this.addKeyDownCallback(KEYS.E, () => {
+    this.onKeyDown(KEYS.E, () => {
       if (this.isRunning()) {
         this.world.player.actions.use = true;
       }
     });
 
-    this.addKeyDownCallback(KEYS.SPACE, () => {
+    this.onKeyDown(KEYS.SPACE, () => {
       if (this.isRunning()) {
         this.world.player.actions.use = true;
       }
     });
 
     // Attack
-    this.addMouseDownCallback(() => {
+    this.onMouseDown(() => {
       this.world.player.actions.attack = true;
     });
 
-    this.addMouseUpCallback(() => {
+    this.onMouseUp(() => {
       this.world.player.actions.attack = false;
     });
 
-    this.addKeyDownCallback(KEYS.CTRL, () => {
+    this.onKeyDown(KEYS.CTRL, () => {
       if (this.isRunning()) {
         this.world.player.actions.attack = true;
       }
     });
 
-    this.addKeyUpCallback(KEYS.CTRL, () => {
+    this.onKeyUp(KEYS.CTRL, () => {
       if (this.isRunning()) {
         this.world.player.actions.attack = false;
       }
     });
 
     // Select Weapon 1
-    this.addKeyDownCallback(KEYS.NUM_1, () => {
+    this.onKeyDown(KEYS.NUM_1, () => {
       if (this.isRunning()) {
         this.world.player.actions.selectWeapon = 1;
       }
     });
 
     // Select Weapon 2
-    this.addKeyDownCallback(KEYS.NUM_2, () => {
+    this.onKeyDown(KEYS.NUM_2, () => {
       if (this.isRunning()) {
         this.world.player.actions.selectWeapon = 2;
       }
     });
 
     // Select Weapon 3
-    this.addKeyDownCallback(KEYS.NUM_3, () => {
+    this.onKeyDown(KEYS.NUM_3, () => {
       if (this.isRunning()) {
         this.world.player.actions.selectWeapon = 3;
       }
     });
 
     // Select Weapon 4
-    this.addKeyDownCallback(KEYS.NUM_4, () => {
+    this.onKeyDown(KEYS.NUM_4, () => {
       if (this.isRunning()) {
         this.world.player.actions.selectWeapon = 4;
       }

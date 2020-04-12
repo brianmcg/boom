@@ -97,7 +97,7 @@ class Player extends AbstractActor {
       };
     }, {});
 
-    this.selectNextWeapon(0);
+    this.weapon = this.weapons[this.currentWeaponType];
 
     this.messages = [];
 

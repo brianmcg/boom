@@ -9,7 +9,6 @@ export const KEYS = {
   SPACE: 'SPACE',
   CTRL: 'CTRL',
   SHIFT: 'SHIFT',
-  ESC: 'ESC',
   ENTER: 'ENTER',
   NUM_1: 'NUM_1',
   NUM_2: 'NUM_2',
@@ -25,6 +24,7 @@ export const KEYS = {
   S: 'S',
   D: 'D',
   E: 'E',
+  Q: 'Q',
 };
 
 const KEY_CODES = {
@@ -52,6 +52,7 @@ const KEY_CODES = {
   65: KEYS.A,
   68: KEYS.D,
   69: KEYS.E,
+  81: KEYS.Q,
 };
 
 /**

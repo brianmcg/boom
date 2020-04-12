@@ -73,7 +73,7 @@ class Scene extends Container {
       },
     };
 
-    this.addKeyDownCallback(KEYS.ESC, () => {
+    this.onKeyDown(KEYS.Q, () => {
       if (this.isRunning() || this.isPrompting()) {
         this.showMenu();
       } else if (this.state === STATES.PAUSED) {
@@ -81,25 +81,25 @@ class Scene extends Container {
       }
     });
 
-    this.addKeyDownCallback(KEYS.UP_ARROW, () => {
+    this.onKeyDown(KEYS.UP_ARROW, () => {
       if (this.isPaused()) {
         this.menuHighlightPrevious();
       }
     });
 
-    this.addKeyDownCallback(KEYS.DOWN_ARROW, () => {
+    this.onKeyDown(KEYS.DOWN_ARROW, () => {
       if (this.isPaused()) {
         this.menuHighlightNext();
       }
     });
 
-    this.addKeyDownCallback(KEYS.ENTER, () => {
+    this.onKeyDown(KEYS.ENTER, () => {
       if (this.isPaused()) {
         this.menuSelect();
       }
     });
 
-    this.addKeyDownCallback(KEYS.SPACE, () => {
+    this.onKeyDown(KEYS.SPACE, () => {
       if (this.isPrompting()) {
         this.triggerComplete();
       }
@@ -112,7 +112,7 @@ class Scene extends Container {
    * Add mouse move callback.
    * @param {Function} callback The callback.
    */
-  addMouseMoveCallback(callback) {
+  onMouseMove(callback) {
     this.game.mouse.onMouseMove(callback);
   }
 
@@ -120,7 +120,7 @@ class Scene extends Container {
    * Add mouse down callback.
    * @param {Function} callback The callback.
    */
-  addMouseDownCallback(callback) {
+  onMouseDown(callback) {
     this.game.mouse.onMouseDown(callback);
   }
 
@@ -128,7 +128,7 @@ class Scene extends Container {
    * Add mouse up callback.
    * @param {Function} callback The callback.
    */
-  addMouseUpCallback(callback) {
+  onMouseUp(callback) {
     this.game.mouse.onMouseUp(callback);
   }
 
@@ -138,7 +138,7 @@ class Scene extends Container {
    * @param {Function} callback         The callback function.
    * @param {Boolean}  options.replace  Replace existing callback.
    */
-  addKeyDownCallback(name, callback, { replace = false } = {}) {
+  onKeyDown(name, callback, { replace = false } = {}) {
     if (replace) {
       this.game.keyboard.add(name).onKeyDown(callback);
     } else {
@@ -155,7 +155,7 @@ class Scene extends Container {
    * @param {String}   name     The name of the key.
    * @param {Function} callback The callback function.
    */
-  addKeyUpCallback(name, callback, { replace = false } = {}) {
+  onKeyUp(name, callback, { replace = false } = {}) {
     if (replace) {
       this.game.keyboard.add(name).onKeyUp(callback);
     } else {
