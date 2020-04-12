@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { degrees, Vector } from 'game/core/physics';
+import { degrees } from 'game/core/physics';
 import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
@@ -16,8 +16,6 @@ const DEG_270 = degrees(270);
 const DEG_180 = degrees(180);
 
 const DEG_90 = degrees(90);
-
-const DEG_45 = degrees(45);
 
 const DEATH_INTERVAL = 1500;
 
@@ -99,6 +97,8 @@ class Player extends AbstractActor {
       };
     }, {});
 
+    this.selectNextWeapon(0);
+
     this.messages = [];
 
     this.bullets = weapons.reduce((memo, data) => ({
@@ -113,6 +113,10 @@ class Player extends AbstractActor {
     this.onAdded(() => this.initialize());
 
     this.setAlive();
+
+    this.viewHeight = this.height + this.camera.height;
+    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewPitch = this.camera.pitch;
   }
 
   /**
@@ -365,6 +369,12 @@ class Player extends AbstractActor {
       }
     });
 
+    // Update view
+    this.viewHeight = this.height + this.camera.height;
+    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewPitch = this.camera.pitch;
+
+    // Update parent
     super.update(delta);
   }
 
@@ -470,6 +480,8 @@ class Player extends AbstractActor {
       this.currentWeaponType = weapon.type;
       this.emit(EVENTS.CHANGE_WEAPON);
     }
+
+    this.weapon = weapon;
   }
 
   /**
@@ -756,38 +768,6 @@ class Player extends AbstractActor {
       currentWeaponType,
       health,
     };
-  }
-
-  /**
-   * Get the player weapon.
-   * @return {Weapon} The player weapon.
-   */
-  get weapon() {
-    return this.weapons[this.currentWeaponType];
-  }
-
-  /**
-   * Get the camera height.
-   * @return {Number} The camera height.
-   */
-  get viewHeight() {
-    return this.height + this.camera.height;
-  }
-
-  /**
-   * Get the view angle on the y axis.
-   * @return {Number} The view angle.
-   */
-  get viewPitch() {
-    return this.camera.pitch;
-  }
-
-  /**
-   * Get the view angle on the x axis.
-   * @return {Number} The view angle.
-   */
-  get viewAngle() {
-    return (this.angle + this.camera.angle + DEG_360) % DEG_360;
   }
 }
 
