@@ -4,12 +4,12 @@ import AbstractActor from '../AbstractActor';
 const STATES = {
   IDLE: 'enemy:idle',
   ALERTED: 'enemy:alerted',
+  PATROLLING: 'enemy:patrolling',
   CHASING: 'enemy:chasing',
   AIMING: 'enemy:aiming',
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
   DEAD: 'enemy:dead',
-  PATROLLING: 'enemy:patrolling',
 };
 
 const WAYPOINT_SIZE = CELL_SIZE / 4;
@@ -17,6 +17,10 @@ const WAYPOINT_SIZE = CELL_SIZE / 4;
 const FLOAT_INCREMENT = 0.075;
 
 const FLOAT_BOUNDARY = 4;
+
+const FORCE_FADE = 0.8;
+
+const MIN_FORCE = 0.1;
 
 /**
  * Abstract class representing an enemy.
@@ -101,8 +105,6 @@ class AbstractEnemy extends AbstractActor {
         }
       }
 
-      this.face(player);
-
       switch (this.state) {
         case STATES.IDLE:
           this.updateIdle(delta);
@@ -124,6 +126,9 @@ class AbstractEnemy extends AbstractActor {
           break;
         case STATES.HURTING:
           this.updateHurting(delta);
+          break;
+        case STATES.DEAD:
+          this.updateDead(delta);
           break;
         default:
           break;
@@ -252,6 +257,20 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Update enemy in hurt state
+   * @param  {Number} delta The delta time.
+   */
+  updateDead(delta) {
+    this.velocity *= (FORCE_FADE * delta);
+
+    if (this.velocity < MIN_FORCE) {
+      this.velocity = 0;
+      this.blocking = false;
+      this.parent.stop(this);
+    }
+  }
+
+  /**
    * Attack a target.
    */
   attack() {
@@ -286,6 +305,8 @@ class AbstractEnemy extends AbstractActor {
     const { distance } = this.castRay();
     const { player } = this.parent;
 
+    this.face(player);
+
     return player.isAlive() && distance > this.distanceToPlayer;
   }
 
@@ -294,12 +315,18 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} amount The amount of hit points.
    */
   hurt(amount) {
-    this.health -= amount;
+    if (this.isAlive()) {
+      const { player } = this.parent;
 
-    if (this.health > 0) {
-      this.setHurting();
-    } else {
-      this.setDead();
+      this.health -= amount;
+
+      if (this.health > 0) {
+        this.setHurting();
+      } else {
+        this.angle = player.viewAngle;
+        this.velocity = amount;
+        this.setDead();
+      }
     }
   }
 
@@ -484,14 +511,9 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
-      this.velocity = 0;
-      this.blocking = false;
-
       this.emitSound(this.sounds.death, {
         distance: this.distanceToPlayer,
       });
-
-      this.parent.stop(this);
     }
 
     return isStateChanged;
