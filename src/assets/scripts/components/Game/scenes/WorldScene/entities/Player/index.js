@@ -60,7 +60,7 @@ class Player extends AbstractActor {
       rotateSpeed = 1,
       rotateAcceleration = 0,
       weapons = {},
-      currentWeaponType,
+      weaponIndex = 0,
       ...other
     } = options;
 
@@ -75,7 +75,7 @@ class Player extends AbstractActor {
     this.deadHeight = this.height * 0.45;
     this.heightVelocity = CELL_SIZE / 32;
 
-    this.currentWeaponType = currentWeaponType || weapons[0].type;
+    this.weaponIndex = weaponIndex;
     this.actions = {};
     this.vision = 1;
     this.rotateAngle = 0;
@@ -85,19 +85,9 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
-    this.weapons = weapons.reduce((memo, data) => {
-      const weapon = new Weapon({
-        player: this,
-        ...data,
-      });
+    this.weapons = weapons.map(data => new Weapon({ player: this, ...data }));
 
-      return {
-        ...memo,
-        [data.type]: weapon,
-      };
-    }, {});
-
-    this.weapon = this.weapons[this.currentWeaponType];
+    this.weapon = this.weapons[this.weaponIndex];
 
     this.messages = [];
 
@@ -318,7 +308,7 @@ class Player extends AbstractActor {
 
     // Update weapon.
     if (selectWeapon) {
-      this.selectNextWeapon(selectWeapon - 1);
+      this.selectWeapon(selectWeapon - 1);
     }
 
     if (attack) {
@@ -473,15 +463,14 @@ class Player extends AbstractActor {
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
    */
-  selectNextWeapon(index) {
-    const weapon = Object.values(this.weapons)[index];
+  selectWeapon(index) {
+    const weapon = this.weapons[index];
 
-    if (weapon && weapon.isEquiped() && this.currentWeaponType !== weapon.type) {
-      this.currentWeaponType = weapon.type;
+    if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
+      this.weaponIndex = index;
       this.emit(EVENTS.CHANGE_WEAPON);
+      this.weapon = weapon;
     }
-
-    this.weapon = weapon;
   }
 
   /**
@@ -522,7 +511,7 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = this.bullets[this.currentWeaponType].shift();
+      const bullet = this.bullets[this.weapon.type].shift();
       const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       if (collisions.length) {
@@ -555,7 +544,7 @@ class Player extends AbstractActor {
         }));
       }
 
-      this.bullets[this.currentWeaponType].push(bullet);
+      this.bullets[this.weapon.type].push(bullet);
       this.camera.setRecoil(recoil);
       this.parent.onExplosion(power);
       this.emitSound(this.weapon.sounds.fire);
@@ -609,12 +598,12 @@ class Player extends AbstractActor {
    * @param  {Weapon} type  The weapon.
    */
   pickUpWeapon({ weapon }) {
-    const pickedUpWeapon = this.weapons[weapon];
-    const index = Object.keys(this.weapons).indexOf(weapon);
+    const index = this.weapons.map(({ type }) => type).indexOf(weapon);
+    const pickedUpWeapon = this.weapons[index];
 
     if (!pickedUpWeapon.isEquiped()) {
       pickedUpWeapon.setEquiped();
-      this.selectNextWeapon(index);
+      this.selectWeapon(index);
 
       return true;
     }
@@ -630,7 +619,8 @@ class Player extends AbstractActor {
    * @param  {Ammo} amount The amount of ammo.
    */
   pickUpAmmo({ weapon, amount }) {
-    const weaponToRefill = this.weapons[weapon];
+    const index = this.weapons.map(({ type }) => type).indexOf(weapon);
+    const weaponToRefill = this.weapons[index];
 
     if (weaponToRefill.isEquiped()) {
       this.emitSound(this.sounds.item);
@@ -758,14 +748,14 @@ class Player extends AbstractActor {
    * @return {Object} The player props.
    */
   get props() {
-    const { weapons, currentWeaponType, health } = this;
+    const { weapons, weaponIndex, health } = this;
 
     return {
       weapons: Object.values(weapons).reduce((memo, weapon) => ([
         ...memo,
         weapon.props,
       ]), []),
-      currentWeaponType,
+      weaponIndex,
       health,
     };
   }

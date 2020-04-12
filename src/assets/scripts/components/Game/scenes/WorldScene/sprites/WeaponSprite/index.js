@@ -13,7 +13,7 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.currentWeaponType].idle, {
+    super(textureCollection[player.weapon.type].idle, {
       animationSpeed: 0.3,
       loop: false,
     });
@@ -39,14 +39,14 @@ class WeaponSprite extends AnimatedSprite {
    * Set the idle animation.
    */
   setIdle() {
-    this.textures = this.textureCollection[this.player.currentWeaponType].idle;
+    this.textures = this.textureCollection[this.player.weapon.type].idle;
   }
 
   /**
    * Set the firing animation.
    */
   setFiring() {
-    this.textures = this.textureCollection[this.player.currentWeaponType].firing;
+    this.textures = this.textureCollection[this.player.weapon.type].firing;
     this.play();
   }
 
