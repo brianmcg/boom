@@ -49,8 +49,8 @@ class World extends PhysicsWorld {
     this.enemies = enemies;
     this.obstacles = obstacles;
 
-    this.baseBrightness = brightness;
     this.brightness = brightness;
+    this.flash = 0;
     this.visibility = visibility * CELL_SIZE;
 
     this.explosionFlash = false;
@@ -112,17 +112,17 @@ class World extends PhysicsWorld {
     this.explosions.forEach(e => e.update(delta));
 
     if (this.explosionFlash) {
-      this.brightness -= EXPLOSION_FLASH_DECREMENT * delta;
+      this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
     }
 
     if (this.itemFlash) {
-      this.brightness -= ITEM_FLASH_DECREMENT * delta;
+      this.flash -= ITEM_FLASH_DECREMENT * delta;
     }
 
-    if (this.brightness <= this.baseBrightness) {
+    if (this.flash <= 0) {
       this.itemFlash = false;
       this.explosionFlash = false;
-      this.brightness = this.baseBrightness;
+      this.flash = 0;
     }
 
     if (x === gridX && y === gridY) {
@@ -160,7 +160,7 @@ class World extends PhysicsWorld {
    * @param {Number} power The power of the gun shot.
    */
   onExplosion(power) {
-    this.brightness += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
+    this.flash += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
     this.explosionFlash = true;
   }
 
@@ -168,7 +168,7 @@ class World extends PhysicsWorld {
    * Set the brightness and enabled item flash.
    */
   onItemPickup() {
-    this.brightness += ITEM_FLASH_AMOUNT;
+    this.flash += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
   }
 

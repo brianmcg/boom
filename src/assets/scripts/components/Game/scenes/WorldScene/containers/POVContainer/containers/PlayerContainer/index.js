@@ -1,5 +1,6 @@
 import { Container } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
+import { GREY } from 'game/constants/colors';
 import HUDContainer from './containers/HUDContainer';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 40;
@@ -60,7 +61,9 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    super.update(delta);
+    const { weapon } = this.sprites;
+    const { flash, brightness } = this.player.parent;
+    let intensity = brightness + flash;
 
     switch (this.state) {
       case STATES.IDLE:
@@ -82,8 +85,19 @@ class PlayerContainer extends Container {
         break;
     }
 
-    this.sprites.weapon.x = this.weaponCenterX + this.weaponX;
-    this.sprites.weapon.y = this.weaponCenterY + this.weaponY;
+    if (intensity > 1) {
+      intensity = 1;
+    }
+
+    if (intensity < 0) {
+      intensity = 0;
+    }
+
+    weapon.x = this.weaponCenterX + this.weaponX;
+    weapon.y = this.weaponCenterY + this.weaponY;
+    weapon.tint = Math.round(intensity * 255) * GREY;
+
+    super.update(delta);
   }
 
   /**

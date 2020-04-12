@@ -236,15 +236,18 @@ class POVContainer extends Container {
    * @param  {Boolean} darken   Darken the sprite.
    */
   calculateTint(distance, darken) {
-    const { brightness, visibility } = this.world;
+    const { flash, brightness, visibility } = this.world;
 
-    let intensity = 1;
+    let intensity = brightness - (distance / visibility);
 
-    intensity += brightness;
-    intensity -= distance / visibility;
+    if (intensity < 0) {
+      intensity = 0;
+    }
+
+    intensity += flash;
 
     if (darken) {
-      intensity -= 0.2;
+      intensity -= 0.1;
     }
 
     if (intensity > 1) {
