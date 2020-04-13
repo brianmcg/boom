@@ -72,8 +72,6 @@ class World extends PhysicsWorld {
 
     player.onDeath(() => this.restart());
 
-    this.openEntranceDoor();
-
     this.add(player);
   }
 

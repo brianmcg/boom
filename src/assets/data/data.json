@@ -1,17 +1,17 @@
 {
   "title": {
     "sounds": {
-      "pause": "weapon:pistol",
-      "complete": "weapon:shotgun",
-      "highlight": "player:item"
+      "pause": "entity_respawn",
+      "complete": "entity_respawn",
+      "highlight": "item_pickup"
     }
   },
   "world": {
     "levels": 2,
     "sounds": {
-      "pause": "weapon:pistol",
-      "complete": "weapon:shotgun",
-      "highlight": "player:item"
+      "pause": "entity_respawn",
+      "complete": "entity_respawn",
+      "highlight": "item_pickup"
     },
     "props": {
       "player": {
@@ -20,11 +20,12 @@
         "rotateSpeed": 0.16,
         "rotateAcceleration": 0.008,
         "sounds": {
-          "walk": "player:walk",
-          "death": "player:death",
-          "pain": "player:pain",
-          "item": "player:item",
-          "weapon": "player:weapon"
+          "death": "player_death",
+          "enter": "entering_map",
+          "item": "item_pickup",
+          "pain": "player_injured",
+          "use": "player_use",
+          "weapon": "weapon_pickup"
         },
         "weapons": [{
           "type": "pistol",
@@ -36,7 +37,7 @@
           "recoil": 6,
           "range": 1,
           "sounds": {
-            "fire": "weapon:pistol"
+            "fire": "weapon_pistol"
           }
         }, {
           "type": "shotgun",
@@ -48,7 +49,7 @@
           "recoil": 10,
           "range": 2,
           "sounds": {
-            "fire": "weapon:shotgun"
+            "fire": "weapon_shotgun"
           }
         }, {
           "type": "chaingun",
@@ -60,7 +61,7 @@
           "recoil": 5,
           "range": 1,
           "sounds": {
-            "fire": "weapon:pistol"
+            "fire": "weapon_chaingun"
           }
         }]
       },
@@ -79,10 +80,11 @@
           "maxAttacks": 3,
           "spatterType": "spatter",
           "sounds": {
-            "alert": "grunt:alert",
-            "death": "grunt:death",
-            "pain": "grunt:pain",
-            "attack": "weapon:pistol"
+            "alert": "human_alerted",
+            "attack": "weapon_pistol",
+            "death": "human_death",
+            "nearby": "human_nearby",
+            "pain": "human_injured"
           }
         },
         "imp": {
@@ -103,13 +105,18 @@
             "speed": 0.0625,
             "name": "fireball",
             "sounds": {},
-            "power": 5
+            "power": 5,
+            "sounds": {
+              "travel": "imp_attack",
+              "explode": "soul_death"
+            }
           },
           "sounds": {
-            "alert": "grunt:alert",
-            "death": "grunt:death",
-            "pain": "grunt:pain",
-            "attack": "weapon:pistol"
+            "alert": "imp_alerted",
+            "attack": "imp_attack",
+            "death": "imp_death",
+            "nearby": "imp_nearby",
+            "pain": "imp_injured"
           }
         },
         "demon": {
@@ -126,10 +133,11 @@
           "maxAttacks": 6,
           "spatterType": "spatter",
           "sounds": {
-            "alert": "demon:alert",
-            "death": "demon:death",
-            "pain": "demon:pain",
-            "attack": "demon:attack"
+            "alert": "demon_alerted",
+            "attack": "demon_attack",
+            "death": "demon_death",
+            "nearby": "demon_nearby",
+            "pain": "demon_injured"
           }
         },
         "soul": {
@@ -148,10 +156,11 @@
           "spatterType": "spatter",
           "isFloating": true,
           "sounds": {
-            "alert": "demon:alert",
-            "death": "demon:death",
-            "pain": "demon:pain",
-            "attack": "demon:attack"
+            "alert": "soul_nearby",
+            "attack": "soul_attack",
+            "death": "soul_death",
+            "nearby": "soul_nearby",
+            "pain": "soul_injured"
           }
         }
       },
@@ -159,8 +168,8 @@
         "speed": 0.0625,
         "interval": 2000,
         "sounds": {
-          "open": "door:open",
-          "close": "door:close"
+          "open": "door_opening",
+          "close": "door_closing"
         }
       },
       "world": {
@@ -171,9 +180,9 @@
   },
   "credits": {
     "sounds": {
-      "pause": "weapon:pistol",
-      "complete": "weapon:shotgun",
-      "highlight": "player:item"
+      "pause": "entity_respawn",
+      "complete": "entity_respawn",
+      "highlight": "item_pickup"
     }
   }
 }

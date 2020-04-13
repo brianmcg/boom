@@ -324,6 +324,11 @@ class AbstractEnemy extends AbstractActor {
       } else {
         this.angle = player.viewAngle;
         this.velocity = amount;
+
+        if (this.velocity > MAX_FORCE) {
+          this.velocity = MAX_FORCE;
+        }
+
         this.setDead();
       }
     }

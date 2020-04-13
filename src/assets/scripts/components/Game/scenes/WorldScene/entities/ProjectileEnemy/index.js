@@ -42,7 +42,7 @@ class ProjectileEnemy extends AbstractEnemy {
     if (this.projectiles.length) {
       const projectile = this.projectiles.shift();
 
-      projectile.initialize();
+      projectile.setProperties(this);
 
       this.parent.add(projectile);
     }

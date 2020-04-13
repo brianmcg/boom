@@ -163,6 +163,8 @@ class Player extends AbstractActor {
         [sound]: [],
       }), {}),
     }), this.playing);
+
+    this.emitSound(this.sounds.enter);
   }
 
   /**
@@ -328,6 +330,7 @@ class Player extends AbstractActor {
       } else if (body.isDoor) {
         // Update door interactions.
         if (use) {
+          this.emitSound(this.sounds.use);
           if (body.keyCard) {
             const keyCard = this.keyCards[body.keyCard];
 
@@ -542,7 +545,7 @@ class Player extends AbstractActor {
     } else {
       this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
 
-      if (this.isPlaying(this.sounds.pain)) {
+      if (!this.isPlaying(this.sounds.pain)) {
         this.emitSound(this.sounds.pain);
       }
     }
@@ -602,7 +605,7 @@ class Player extends AbstractActor {
     const weaponToRefill = this.weapons[index];
 
     if (weaponToRefill.isEquiped()) {
-      this.emitSound(this.sounds.item);
+      this.emitSound(this.sounds.weapon);
       return weaponToRefill.addAmmo(amount);
     }
 

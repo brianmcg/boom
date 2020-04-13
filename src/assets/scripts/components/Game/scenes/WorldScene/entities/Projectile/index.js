@@ -3,6 +3,7 @@ import DynamicEntity from '../DynamicEntity';
 import Explosion from '../../effects/Explosion';
 
 const STATES = {
+  IDLE: 'projectile:idle',
   TRAVELLING: 'projectile:travelling',
   COLLIDING: 'projectile:colliding',
 };
@@ -57,7 +58,7 @@ class Projectile extends DynamicEntity {
       }
     });
 
-    this.setTravelling();
+    this.setIdle();
   }
 
   /**
@@ -93,24 +94,36 @@ class Projectile extends DynamicEntity {
       parent: this.parent,
     }));
 
-    this.setTravelling();
+    this.setIdle();
   }
 
   /**
    * Initialize the projectile.
    */
   initialize() {
-    const {
-      x,
-      y,
-      angle,
-      width,
-    } = this.source;
+    super.initialize();
+    this.travelSoundId = this.emitSound(this.sounds.travel);
+  }
 
+  /**
+   * Set the projectile properties.
+   * @param {Number} options.x     The x coordinate.
+   * @param {Number} options.y     The y coordinate.
+   * @param {Number} options.angle The angle.
+   * @param {Number} options.width The width.
+   */
+  setProperties({
+    x = 0,
+    y = 0,
+    angle = 0,
+    width = 0,
+  }) {
     this.angle = angle;
     this.velocity = this.speed;
     this.x = x + Math.cos(angle) * width;
     this.y = y + Math.sin(angle) * width;
+
+    this.setTravelling();
   }
 
   /**
@@ -122,6 +135,14 @@ class Projectile extends DynamicEntity {
   }
 
   /**
+   * Set the projectile to the idle state.
+   * @return {Boolean} State change successfull.
+   */
+  setIdle() {
+    return this.setState(STATES.IDLE);
+  }
+
+  /**
    * Set the projectile to the exploding state.
    * @return {Boolean} State change successfull.
    */
@@ -130,6 +151,8 @@ class Projectile extends DynamicEntity {
 
     if (isStateChanged) {
       this.velocity = 0;
+      this.soundSprite.stop(this.travelSoundId);
+      this.emitSound(this.sounds.explode);
     }
 
     return isStateChanged;

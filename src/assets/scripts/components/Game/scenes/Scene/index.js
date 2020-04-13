@@ -322,7 +322,6 @@ class Scene extends Container {
   showMenu() {
     this.addChild(this.menuContainer);
     this.setPausing();
-    this.playSound(this.sounds.pause);
   }
 
   /**
@@ -330,7 +329,6 @@ class Scene extends Container {
    */
   hideMenu() {
     this.setUnpausing();
-    this.playSound(this.sounds.pause);
   }
 
   /**
@@ -367,7 +365,7 @@ class Scene extends Container {
       this.addChild(this.mainContainer);
       this.fadeAmount = 1;
       // TODO: Enabled music
-      this.game.playMusic();
+      // this.game.playMusic();
     }
 
     return isStateChanged;
@@ -380,7 +378,6 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.RUNNING);
 
     if (isStateChanged) {
-      this.game.resumeSounds();
       this.play();
     }
 
@@ -394,6 +391,8 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PAUSING);
 
     if (isStateChanged) {
+      this.game.pauseSounds();
+      this.playSound(this.sounds.pause);
       this.fadeAmount = 0;
       this.stop();
     }
@@ -408,7 +407,7 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PAUSED);
 
     if (isStateChanged) {
-      this.game.pauseSounds();
+      // this.game.pauseSounds();
     }
 
     return isStateChanged;
@@ -418,7 +417,14 @@ class Scene extends Container {
    * Set the state to the unpausing state.
    */
   setUnpausing() {
-    return this.setState(STATES.UNPAUSING);
+    const isStateChanged = this.setState(STATES.UNPAUSING);
+
+    if (isStateChanged) {
+      this.playSound(this.sounds.pause);
+      this.game.resumeSounds();
+    }
+
+    return isStateChanged;
   }
 
   /**

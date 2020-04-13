@@ -367,6 +367,7 @@ class WorldScene extends Scene {
 
     if (!this.started) {
       this.started = true;
+      this.world.openEntranceDoor();
       this.world.player.addMessage(this.title);
     }
   }

@@ -28,14 +28,17 @@ class DynamicEntity extends DynamicBody {
   }
 
   initialize() {
-    this.soundSprite = this.parent.scene.game.soundSprite;
+    if (!this.isInitialized) {
+      this.soundSprite = this.parent.scene.game.soundSprite;
 
-    this.playingSoundNames = Object.values(this.sounds).reduce((memo, name) => ({
-      ...memo,
-      [name]: false,
-    }), {});
+      this.playingSoundNames = Object.values(this.sounds).reduce((memo, name) => ({
+        ...memo,
+        [name]: false,
+      }), {});
 
-    this.playingSoundIds = [];
+      this.isInitialized = true;
+      this.playingSoundIds = [];
+    }
   }
 
   /**
@@ -54,10 +57,7 @@ class DynamicEntity extends DynamicBody {
     this.playingSoundNames[name] = true;
     this.playingSoundIds.push(id);
 
-    console.log(name, id);
-
-    this.soundSprite.once('end', (endId) => {
-      console.log(endId);
+    this.soundSprite.once('end', () => {
       this.playingSoundNames[name] = false;
       this.playingSoundIds = this.playingSoundIds.filter(playingId => playingId !== id);
     });

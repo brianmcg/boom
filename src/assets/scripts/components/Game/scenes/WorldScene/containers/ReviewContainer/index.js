@@ -170,6 +170,7 @@ class ReviewContainer extends Container {
         this.timer = 0;
         this.parent.playSound(this.parent.sounds.complete);
         this.parent.setPrompting();
+        this.stop();
       }
     }
   }

@@ -25,9 +25,7 @@ class ChaseEnemy extends AbstractEnemy {
   attack() {
     const { player } = this.parent;
 
-    this.emitSound(this.sounds.attack, {
-      distance: this.distanceToPlayer,
-    });
+    this.emitSound(this.sounds.attack);
 
     player.hurt(this.attackPower);
   }

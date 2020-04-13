@@ -116,7 +116,13 @@ class Body extends EventEmitter {
    * @return {Boolean}      Collision has occurred.
    */
   isBodyCollision(body) {
-    return isBodyCollision(this, body);
+    const isCollision = isBodyCollision(this, body);
+
+    if (isCollision) {
+      this.emit(EVENTS.COLLISION, body);
+    }
+
+    return isCollision;
   }
 
   /**
