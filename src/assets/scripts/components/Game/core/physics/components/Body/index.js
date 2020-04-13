@@ -54,7 +54,6 @@ class Body extends EventEmitter {
     this.blocking = blocking;
   }
 
-
   /**
    * Emit the added event.
    */
@@ -67,13 +66,6 @@ class Body extends EventEmitter {
    */
   emitRemovedEvent() {
     this.emit(EVENTS.REMOVED);
-  }
-
-  /**
-   * Emit the collision event.
-   */
-  emitCollisionEvent(body) {
-    this.emit(EVENTS.COLLISION, body);
   }
 
   /**
@@ -124,13 +116,7 @@ class Body extends EventEmitter {
    * @return {Boolean}      Collision has occurred.
    */
   isBodyCollision(body) {
-    const isCollision = isBodyCollision(this, body);
-
-    if (isCollision) {
-      this.emitCollisionEvent(body);
-    }
-
-    return isCollision;
+    return isBodyCollision(this, body);
   }
 
   /**

@@ -73,7 +73,7 @@ class GameManual {
    * Add a callback to the click start event.
    * @param  {Function} callback The callback function.
    */
-  onClickStartEvent(callback) {
+  onClickStart(callback) {
     this.on(EVENTS.CLICK_START, callback);
   }
 

@@ -1,5 +1,5 @@
-import { DynamicCell } from 'game/core/physics';
 import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
+import DynamicCell from '../DynamicCell';
 
 const STATES = {
   OPENING: 'door:opening',
@@ -24,14 +24,8 @@ class Door extends DynamicCell {
    * @param  {String} options.axis    The axis of the door.
    * @param  {String} options.key     The key that unlocks the door.
    */
-  constructor({
-    key,
-    sides,
-    interval,
-    axis,
-    ...other
-  }) {
-    super({ ...other, axis });
+  constructor({ key, interval, ...other }) {
+    super(other);
 
     this.timer = 0;
     this.keyCard = key;
@@ -45,12 +39,6 @@ class Door extends DynamicCell {
       this.offset.x = CELL_SIZE / 2;
     }
 
-    this.front = sides.front;
-    this.left = sides.left;
-    this.back = sides.back;
-    this.right = sides.right;
-    this.bottom = sides.bottom;
-    this.top = sides.top;
     this.isDoor = true;
 
     this.setClosed();
@@ -89,6 +77,8 @@ class Door extends DynamicCell {
       default:
         break;
     }
+
+    super.update(delta);
   }
 
   /**
@@ -151,9 +141,7 @@ class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENING);
 
     if (isStateChanged) {
-      this.emitSound(this.sounds.open, {
-        distance: this.getDistanceTo(this.parent.player),
-      });
+      this.emitSound(this.sounds.open);
     }
 
     return isStateChanged;
@@ -188,9 +176,7 @@ class Door extends DynamicCell {
     if (isStateChanged) {
       this.blocking = true;
 
-      this.emitSound(this.sounds.close, {
-        distance: this.getDistanceTo(this.parent.player),
-      });
+      this.emitSound(this.sounds.close);
     }
 
     return isStateChanged;

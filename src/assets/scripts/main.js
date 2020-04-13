@@ -2,24 +2,34 @@ import './styles/index.scss';
 import Manual from './components/Manual';
 import Game from './components/Game';
 
+const app = document.getElementById('app');
+
 const manual = new Manual();
 
 const game = new Game();
 
-manual.onClickStartEvent(() => {
-  document.body.removeChild(manual.view);
-  document.body.appendChild(game.view);
+manual.onClickStart(() => {
+  app.removeChild(manual.view);
+  app.appendChild(game.view);
   // game.lockPointer();
   // game.start();
 });
 
-game.onStoppedEvent(() => {
-  document.body.removeChild(game.view);
-  document.body.appendChild(manual.view);
+// game.onLoadingStarted(() => {
+//   console.log('loading:started');
+// });
+
+// game.onLoadingComplete(() => {
+//   console.log('loading:complete');
+// });
+
+game.onStopped(() => {
+  app.removeChild(game.view);
+  app.appendChild(manual.view);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.appendChild(game.view);
+  app.appendChild(game.view);
   game.start();
 });
 

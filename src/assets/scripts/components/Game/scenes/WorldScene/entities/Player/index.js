@@ -95,8 +95,8 @@ class Player extends AbstractActor {
     this.viewHeight = this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
+    this.distanceToPlayer = 0;
 
-    this.onAdded(() => this.initialize());
     this.setAlive();
   }
 
@@ -136,6 +136,8 @@ class Player extends AbstractActor {
    * Handle the added to world event.
    */
   initialize() {
+    super.initialize();
+
     const { x, y } = this.parent.entrance;
 
     this.x = (CELL_SIZE * x) + (CELL_SIZE / 2);
@@ -152,6 +154,15 @@ class Player extends AbstractActor {
       }
       return memo;
     }, {});
+
+    // Add weapon names to player sound object.
+    this.playing = this.weapons.reduce((weaponMemo, weapon) => ({
+      ...weaponMemo,
+      ...Object.values(weapon.sounds).reduce((soundMemo, sound) => ({
+        ...soundMemo,
+        [sound]: [],
+      }), {}),
+    }), this.playing);
   }
 
   /**
@@ -428,6 +439,7 @@ class Player extends AbstractActor {
 
     if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
       this.weaponIndex = index;
+      this.emitSound(this.sounds.weapon);
       this.emit(EVENTS.CHANGE_WEAPON);
       this.weapon = weapon;
     }
@@ -529,7 +541,10 @@ class Player extends AbstractActor {
       this.emitSound(this.sounds.death);
     } else {
       this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
-      this.emitSound(this.sounds.pain);
+
+      if (this.isPlaying(this.sounds.pain)) {
+        this.emitSound(this.sounds.pain);
+      }
     }
   }
 

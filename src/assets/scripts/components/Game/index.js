@@ -18,6 +18,8 @@ import Loader from './utilities/Loader';
 const EVENTS = {
   STOPPED: 'game:stopped',
   STARTED: 'game:started',
+  LOADING_STARTED: 'game:loading:started',
+  LOADING_COMPLETE: 'game:loading:complete',
 };
 
 /**
@@ -55,8 +57,24 @@ class Game extends Application {
    * Add a callback to the stopped event.
    * @param  {Function} callback The callback function.
    */
-  onStoppedEvent(callback) {
+  onStopped(callback) {
     this.on(EVENTS.STOPPED, callback);
+  }
+
+  /**
+   * Add a callback to the loading complete event.
+   * @param  {Function} callback The callback function.
+   */
+  onLoadingComplete(callback) {
+    this.on(EVENTS.LOADING_COMPLETE, callback);
+  }
+
+  /**
+   * Add a callback to the loading started event.
+   * @param  {Function} callback The callback function.
+   */
+  onLoadingStarted(callback) {
+    this.on(EVENTS.LOADING_STARTED, callback);
   }
 
   /**
@@ -79,6 +97,7 @@ class Game extends Application {
       },
     });
 
+    this.soundSprite = sound;
     this.scene = null;
     this.data = data;
 
@@ -86,8 +105,6 @@ class Game extends Application {
     this.sound.add(GAME_SOUNDS.NAME, sound);
 
     this.showWorldScene();
-
-    this.emit(EVENTS.STARTED);
   }
 
   /**
@@ -151,6 +168,8 @@ class Game extends Application {
   async show(Scene, { index, startingProps = {} } = {}) {
     const type = Scene.name.toLowerCase().split('scene')[0];
 
+    this.emit(EVENTS.LOADING_STARTED);
+
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
       const graphicsKeys = Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME));
@@ -205,6 +224,8 @@ class Game extends Application {
           props,
         },
       });
+
+      this.emit(EVENTS.LOADING_COMPLETE);
     }
   }
 
@@ -259,7 +280,7 @@ class Game extends Application {
    * @param  {Number} options.distance The distance from the player.
    */
   playSound(...options) {
-    this.sound.play(GAME_SOUNDS.NAME, ...options);
+    return this.sound.play(GAME_SOUNDS.NAME, ...options);
   }
 
   /**

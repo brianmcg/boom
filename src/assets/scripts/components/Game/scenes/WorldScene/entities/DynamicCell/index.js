@@ -1,32 +1,35 @@
-import { DynamicBody } from 'game/core/physics';
+import { DynamicCell as PhysicsCell } from 'game/core/physics';
 import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 
 /**
- * Class representing a dynamic entity.
- * @extends {DynamicBody}
+ * Class representing a game cell.
+ * @extends {Cell}
  */
-class DynamicEntity extends DynamicBody {
+class DynamicCell extends PhysicsCell {
   /**
-   * Creates a dynamic entity.
-   * @param  {Number}  options.x        The x coordinate of the dynamic entity.
-   * @param  {Number}  options.y        The y coordinate of the dynamic entity
-   * @param  {Number}  options.width    The width of the dynamic entity.
-   * @param  {Number}  options.height   The height of the dynamic entity.
-   * @param  {Number}  options.angle    The angle of the dynamic entity.
-   * @param  {Boolean} options.blocking Is the dynamic entity blocking.
-   * @param  {String}  options.texture  The texture of entity.
-   * @param  {String}  options.sounds   The sounds of entity.
+   * Creates a cell.
+   * @param  {Number} options.x       The x coordinate of the cell.
+   * @param  {Number} options.y       The y coordinate of the cell
+   * @param  {Number} options.width   The width of the cell.
+   * @param  {Number} options.height  The height of the cell.
+   * @param  {Object} options.sides   The ids of the sides of the cell.
    */
-  constructor({ name, sounds, ...other }) {
+  constructor({ sides = {}, ...other }) {
     super(other);
 
-    this.sounds = sounds;
-    this.name = name;
-    this.distanceToPlayer = Number.MAX_VALUE;
+    this.front = sides.front;
+    this.left = sides.left;
+    this.back = sides.back;
+    this.right = sides.right;
+    this.bottom = sides.bottom;
+    this.top = sides.top;
 
     this.onAdded(() => this.initialize());
   }
 
+  /**
+   * Initialize the cell.
+   */
   initialize() {
     this.soundSprite = this.parent.scene.game.soundSprite;
 
@@ -54,22 +57,17 @@ class DynamicEntity extends DynamicBody {
     this.playingSoundNames[name] = true;
     this.playingSoundIds.push(id);
 
-    console.log(name, id);
-
-    this.soundSprite.once('end', (endId) => {
-      console.log(endId);
+    this.soundSprite.once('end', () => {
       this.playingSoundNames[name] = false;
       this.playingSoundIds = this.playingSoundIds.filter(playingId => playingId !== id);
     });
-
-    return id;
   }
 
   /**
    * Update the entity.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update() {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
     if (this.playingSoundIds.length) {
@@ -79,8 +77,6 @@ class DynamicEntity extends DynamicBody {
 
       this.playingSoundIds.forEach(id => this.soundSprite.volume(volume, id));
     }
-
-    super.update(delta);
   }
 
   /**
@@ -93,4 +89,4 @@ class DynamicEntity extends DynamicBody {
   }
 }
 
-export default DynamicEntity;
+export default DynamicCell;

@@ -6,8 +6,6 @@ const AXES = {
   Y: 'y',
 };
 
-const EMIT_SOUND_EVENT = 'cell:emit:sound';
-
 /**
  * Class representing a dynamic flat cell.
  */
@@ -36,22 +34,6 @@ class DynamicCell extends Cell {
     this.axis = axis;
     this.isDynamic = true;
     this.offset = { x: 0, y: 0 };
-  }
-
-  /**
-   * Add a callback to the sound event.
-   * @param  {Function} callback The callback function.
-   */
-  onSound(callback) {
-    this.on(EMIT_SOUND_EVENT, callback);
-  }
-
-  /**
-   * Emit a sound event.
-   * @param  {String} id The id of the sound.
-   */
-  emitSound(...options) {
-    this.emit(EMIT_SOUND_EVENT, ...options);
   }
 
   /**

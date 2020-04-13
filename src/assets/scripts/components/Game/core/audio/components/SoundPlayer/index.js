@@ -18,6 +18,10 @@ class SoundPlayer {
    * @param {Sound}  sound The sound to add.
    */
   add(type, sound) {
+    const addId = (id) => {
+      this.ids[type].push(id);
+    };
+
     const removeId = (id) => {
       this.ids[type] = this.ids[type].filter(soundId => soundId !== id);
     };
@@ -28,6 +32,7 @@ class SoundPlayer {
 
     sound.on('end', removeId);
     sound.on('stop', removeId);
+    sound.on('play', addId);
 
     this.sounds[type] = sound;
   }

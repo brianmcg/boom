@@ -2,7 +2,6 @@ import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
 import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
-import LoadingContainer from './containers/LoadingContainer';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
@@ -56,7 +55,6 @@ class Scene extends Container {
     this.type = type;
     this.game = game;
 
-    this.loadingContainer = new LoadingContainer();
     this.mainContainer = new MainContainer();
 
     this.path = `${type}${index ? `/${index}` : ''}`;
@@ -356,13 +354,7 @@ class Scene extends Container {
    * Handle a state change to loading.
    */
   setLoading() {
-    const isStateChanged = this.setState(STATES.LOADING);
-
-    if (isStateChanged) {
-      this.addChild(this.loadingContainer);
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.LOADING);
   }
 
   /**
@@ -372,12 +364,10 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.FADING_IN);
 
     if (isStateChanged) {
-      this.removeChild(this.loadingContainer);
       this.addChild(this.mainContainer);
       this.fadeAmount = 1;
-      this.loadingContainer.destroy();
       // TODO: Enabled music
-      // this.game.playMusic();
+      this.game.playMusic();
     }
 
     return isStateChanged;

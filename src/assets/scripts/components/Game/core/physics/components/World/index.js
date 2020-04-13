@@ -14,13 +14,19 @@ class World extends EventEmitter {
     this.grid = grid;
     this.bodies = {};
     this.dynamicBodies = [];
-    this.grid.forEach(row => row.forEach(cell => this.add(cell)));
 
     this.width = this.grid[0].length;
     this.height = this.grid.length;
 
     this.maxCellY = this.height - 1;
     this.maxCellX = this.width - 1;
+  }
+
+  /**
+   * Initialize the world.
+   */
+  initialize() {
+    this.grid.forEach(row => row.forEach(cell => this.add(cell)));
   }
 
   /**

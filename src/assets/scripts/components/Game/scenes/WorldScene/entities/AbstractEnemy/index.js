@@ -77,7 +77,6 @@ class AbstractEnemy extends AbstractActor {
     this.attackPower = attackPower;
     this.maxAttacks = maxAttacks;
     this.numberOfAttacks = maxAttacks;
-    this.distanceToPlayer = Number.MAX_VALUE;
     this.attackTimer = 0;
     this.hurtTimer = 0;
     this.alertTimer = 0;
@@ -94,9 +93,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    const { player } = this.parent;
-
-    this.distanceToPlayer = this.getDistanceTo(player);
+    super.update(delta);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       if (this.isFloating) {
@@ -135,8 +132,6 @@ class AbstractEnemy extends AbstractActor {
         default:
           break;
       }
-
-      super.update(delta);
     }
   }
 
@@ -428,9 +423,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChangedd = this.setState(STATES.ALERTED);
 
     if (isStateChangedd) {
-      this.emitSound(this.sounds.alert, {
-        distance: this.distanceToPlayer,
-      });
+      this.emitSound(this.sounds.alert);
     }
   }
 
@@ -499,9 +492,9 @@ class AbstractEnemy extends AbstractActor {
     if (isStateChanged) {
       this.velocity = 0;
 
-      this.emitSound(this.sounds.pain, {
-        distance: this.distanceToPlayer,
-      });
+      if (!this.isPlaying(this.sounds.pain)) {
+        this.emitSound(this.sounds.pain);
+      }
     }
 
     return isStateChanged;
@@ -515,9 +508,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
-      this.emitSound(this.sounds.death, {
-        distance: this.distanceToPlayer,
-      });
+      this.emitSound(this.sounds.death);
     }
 
     return isStateChanged;
