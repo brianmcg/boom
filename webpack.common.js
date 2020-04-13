@@ -15,6 +15,9 @@ module.exports = {
       root: path.resolve(__dirname, 'src/assets/scripts'),
       game: path.resolve(__dirname, 'src/assets/scripts/components/Game'),
       manual: path.resolve(__dirname, 'src/assets/scripts/components/GameManual'),
+      react: 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+      'react-dom': 'preact/compat',
     },
   },
   output: {
@@ -39,15 +42,27 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /(\.jsx|\.js)$/,
+      test: /\.m?js$/,
       use: {
         loader: 'babel-loader',
         options: {
-          presets: ['es2015'],
+          presets: [[
+            '@babel/preset-env', {
+              targets: {
+                esmodules: true,
+              },
+            },
+          ]],
+          plugins: [[
+            '@babel/plugin-transform-react-jsx', {
+              pragma: 'h',
+              pragmaFrag: 'Fragment',
+            },
+          ]],
         },
       },
-      exclude: /node_modules/,
-      include: '/src/',
+      exclude: path.resolve(__dirname, 'node_modules/'),
+      include: path.resolve(__dirname, 'src/'),
     }, {
       test: /(\.css|\.scss|\.sass)$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader', {

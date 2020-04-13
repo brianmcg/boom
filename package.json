@@ -6,9 +6,13 @@
   "keywords": [],
   "repository": "",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@babel/preset-env": "^7.9.5",
     "autoprefixer": "^9.1.5",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "better-docs": "^1.1.6",
@@ -38,7 +42,8 @@
   "dependencies": {
     "@pixi/filter-pixelate": "^3.0.3",
     "howler": "^2.1.3",
-    "pixi.js": "^5.2.1"
+    "pixi.js": "^5.2.1",
+    "preact": "^10.4.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
