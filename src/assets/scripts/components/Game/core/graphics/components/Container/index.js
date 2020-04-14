@@ -11,6 +11,7 @@ class Container extends PixiContainer {
   constructor() {
     super();
     this.playableChildren = [];
+    this.fadeableChildren = [];
     this.playing = true;
   }
 
@@ -24,6 +25,10 @@ class Container extends PixiContainer {
     if (child.play) {
       this.playableChildren.push(child);
     }
+
+    if (child.fade) {
+      this.fadeableChildren.push(child);
+    }
   }
 
   /**
@@ -36,6 +41,10 @@ class Container extends PixiContainer {
     if (child.play) {
       this.playableChildren = this.playableChildren.filter(p => p !== child);
     }
+
+    if (child.fade) {
+      this.fadeableChildren = this.fadeableChildren.filter(p => p !== child);
+    }
   }
 
   /**
@@ -45,6 +54,7 @@ class Container extends PixiContainer {
     super.removeChildren();
 
     this.playableChildren = [];
+    this.fadeableChildren = [];
   }
 
   /**
@@ -61,7 +71,7 @@ class Container extends PixiContainer {
    * @param  {Number} value The value of the effect.
    */
   fade(amount, options) {
-    this.children.forEach(child => child.fade && child.fade(amount, options));
+    this.fadeableChildren.forEach(child => child.fade(amount, options));
   }
 
   /**
@@ -69,7 +79,7 @@ class Container extends PixiContainer {
    */
   play() {
     this.playing = true;
-    this.playableChildren.forEach(child => child.play && child.play());
+    this.playableChildren.forEach(child => child.play());
   }
 
   /**
@@ -77,7 +87,12 @@ class Container extends PixiContainer {
    */
   stop() {
     this.playing = false;
-    this.playableChildren.forEach(child => child.play && child.stop());
+    this.playableChildren.forEach(child => child.stop());
+  }
+
+  pause() {
+    this.playing = false;
+    this.playableChildren.forEach(child => child.pause());
   }
 
   /**
@@ -123,10 +138,6 @@ class Container extends PixiContainer {
     }
 
     return false;
-  }
-
-  isUpdateable() {
-    return this.visible;
   }
 }
 

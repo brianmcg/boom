@@ -42,6 +42,13 @@ class AnimatedSprite extends PixiAnimatedSprite {
   }
 
   /**
+   * Pause the sprite.
+   */
+  pause() {
+    super.stop();
+  }
+
+  /**
    * Set the sprite scale.
    * @param {Number} amount the scale amount.
    */

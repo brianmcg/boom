@@ -394,7 +394,7 @@ class Scene extends Container {
       this.game.pauseSounds();
       this.playSound(this.sounds.pause);
       this.fadeAmount = 0;
-      this.stop();
+      this.pause();
     }
 
     return isStateChanged;
@@ -448,7 +448,7 @@ class Scene extends Container {
 
     if (isStateChanged) {
       this.stop();
-      this.stopSounds();
+      // this.stopSounds();
       this.playSound(this.sounds.complete);
       this.game.fadeMusic();
     }

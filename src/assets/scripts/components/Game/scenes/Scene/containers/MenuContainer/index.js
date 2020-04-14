@@ -166,6 +166,13 @@ class MenuContainer extends Container {
   stop() {
     super.play();
   }
+
+  /**
+   * Pause the container. This has the opposite effect of regular container.
+   */
+  pause() {
+    super.play();
+  }
 }
 
 export default MenuContainer;

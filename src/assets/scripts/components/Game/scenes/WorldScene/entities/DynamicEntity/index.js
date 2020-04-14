@@ -1,4 +1,5 @@
 import { DynamicBody } from 'game/core/physics';
+import { EntitySoundController } from 'game/core/audio';
 import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 
 /**
@@ -28,41 +29,23 @@ class DynamicEntity extends DynamicBody {
   }
 
   initialize() {
-    if (!this.isInitialized) {
-      this.soundSprite = this.parent.scene.game.soundSprite;
-
-      this.playingSoundNames = Object.values(this.sounds).reduce((memo, name) => ({
-        ...memo,
-        [name]: false,
-      }), {});
-
-      this.isInitialized = true;
-      this.playingSoundIds = [];
+    if (!this.soundController) {
+      this.soundController = new EntitySoundController({
+        sounds: this.sounds,
+        soundSprite: this.parent.scene.game.soundSprite,
+        maxSoundDistance: MAX_SOUND_DISTANCE,
+      });
     }
   }
 
   /**
-   * Emit a sound event.
+   * Emit a sound.
    * @param  {String} id The id of the sound.
    */
   emitSound(name) {
-    const id = this.soundSprite.play(name);
-
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
-
-    this.soundSprite.volume(volume, id);
-
-    this.playingSoundNames[name] = true;
-    this.playingSoundIds.push(id);
-
-    this.soundSprite.once('end', () => {
-      this.playingSoundNames[name] = false;
-      this.playingSoundIds = this.playingSoundIds.filter(playingId => playingId !== id);
+    this.soundController.emitSound(name, {
+      distance: this.distanceToPlayer,
     });
-
-    return id;
   }
 
   /**
@@ -71,25 +54,38 @@ class DynamicEntity extends DynamicBody {
    */
   update(delta) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
-
-    if (this.playingSoundIds.length) {
-      const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-        ? 0
-        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
-
-      this.playingSoundIds.forEach(id => this.soundSprite.volume(volume, id));
-    }
-
+    this.soundController.update(this.distanceToPlayer);
     super.update(delta);
   }
 
   /**
-   * Check if a sound is playingSoundNames.
+   * Play the entity.
+   */
+  play() {
+    this.soundController.play();
+  }
+
+  /**
+   * Pause the entity.
+   */
+  pause() {
+    this.soundController.pause();
+  }
+
+  /**
+   * Stop the entity.
+   */
+  stop() {
+    this.soundController.stop();
+  }
+
+  /**
+   * Check if a sound is playing..
    * @param  {String}  name The name of the sound.
-   * @return {Boolean}      [description]
+   * @return {Boolean}      The result of the check.
    */
   isPlaying(name) {
-    return !!this.playingSoundNames[name];
+    return this.soundController.isPlaying(name);
   }
 }
 

@@ -258,7 +258,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateDead(delta) {
-    this.velocity *= (FORCE_FADE * delta);
+    this.velocity *= FORCE_FADE
 
     if (this.velocity > MAX_FORCE) {
       this.velocity = MAX_FORCE;
@@ -315,16 +315,13 @@ class AbstractEnemy extends AbstractActor {
    */
   hurt(amount) {
     if (this.isAlive()) {
-      const { player } = this.parent;
-
       this.health -= amount;
 
       if (this.health > 0) {
         this.setHurting();
       } else {
-        this.angle = player.viewAngle;
+        this.angle = this.parent.player.viewAngle;
         this.velocity = amount;
-
         if (this.velocity > MAX_FORCE) {
           this.velocity = MAX_FORCE;
         }

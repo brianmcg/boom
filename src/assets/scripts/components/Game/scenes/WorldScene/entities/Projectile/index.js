@@ -102,7 +102,7 @@ class Projectile extends DynamicEntity {
    */
   initialize() {
     super.initialize();
-    this.travelSoundId = this.emitSound(this.sounds.travel);
+    this.emitSound(this.sounds.travel);
   }
 
   /**
@@ -151,7 +151,7 @@ class Projectile extends DynamicEntity {
 
     if (isStateChanged) {
       this.velocity = 0;
-      this.soundSprite.stop(this.travelSoundId);
+      this.stop();
       this.emitSound(this.sounds.explode);
     }
 

@@ -1,4 +1,5 @@
 import './styles/index.scss';
+
 import Manual from './components/Manual';
 import Game from './components/Game';
 import Spinner from './components/Spinner';
