@@ -92,6 +92,13 @@ class Player extends AbstractActor {
       })),
     }), {});
 
+    this.sounds = this.weapons.reduce((memo, weapon) => {
+      return {
+        ...memo,
+        [weapon.type]: weapon.sounds.fire,
+      };
+    }, this.sounds);
+
     this.viewHeight = this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;

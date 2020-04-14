@@ -265,7 +265,7 @@ class AbstractEnemy extends AbstractActor {
     } else if (this.velocity < MIN_FORCE) {
       this.velocity = 0;
       this.blocking = false;
-      this.parent.stop(this);
+      this.parent.stopUpdates(this);
     }
   }
 

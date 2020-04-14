@@ -11,10 +11,9 @@ class EntitySoundController {
   constructor({ soundSprite, sounds, maxSoundDistance }) {
     this.soundSprite = soundSprite;
     this.maxSoundDistance = maxSoundDistance;
-
-    this.playingSoundNames = Object.values(sounds).reduce((memo, name) => ({
+    this.sounds = sounds.reduce((memo, sound) => ({
       ...memo,
-      [name]: false,
+      [sound]: null,
     }), {});
 
     this.playingSoundIds = [];
@@ -31,16 +30,11 @@ class EntitySoundController {
     const id = this.soundSprite.play(name);
 
     this.soundSprite.volume(volume, id);
-
-    this.playingSoundNames[name] = true;
     this.playingSoundIds.push(id);
-
-    this.soundSprite.once('end', () => {
-      this.playingSoundNames[name] = false;
-      this.playingSoundIds = this.playingSoundIds.filter(playingId => playingId !== id);
+    this.sounds[name] = id;
+    this.soundSprite.once('end', (endedId) => {
+      this.playingSoundIds.filter(playingId => playingId !== endedId);
     });
-
-    return id;
   }
 
   /**
@@ -50,7 +44,6 @@ class EntitySoundController {
   update(distance) {
     if (this.playingSoundIds.length) {
       const volume = distance > this.maxSoundDistance ? 0 : 1 - distance / this.maxSoundDistance;
-
       this.playingSoundIds.forEach(id => this.soundSprite.volume(volume, id));
     }
   }
@@ -59,24 +52,33 @@ class EntitySoundController {
    * Pause the sounds.
    */
   pause() {
-    this.playingSoundIds.forEach(id => this.soundSprite.pause(id));
+    Object.values(this.sounds).forEach((id) => {
+      if (id && this.soundSprite.playing(id)) {
+        this.soundSprite.pause(id);
+      }
+    });
   }
 
   /**
    * Play the sounds.
    */
   play() {
-    this.playingSoundIds.forEach(id => this.soundSprite.play(id));
+    Object.values(this.sounds).forEach((id) => {
+      if (id && !this.soundSprite.playing(id)) {
+        this.soundSprite.play(id);
+      }
+    });
   }
 
   /**
    * Stop the sounds.
    */
   stop() {
-    this.playingSoundIds.forEach(id => this.soundSprite.stop(id));
-    this.playingSoundIds = [];
-    this.playingSoundNames = Object.keys(this.playingSoundNames)
-      .reduce((memo, key) => ({ ...memo, [key]: false }), {});
+    Object.values(this.sounds).forEach((id) => {
+      if (id && this.soundSprite.playing(id)) {
+        this.soundSprite.stop(id);
+      }
+    });
   }
 
   /**
@@ -85,7 +87,8 @@ class EntitySoundController {
    * @return {Boolean}      The result of the check.
    */
   isPlaying(name) {
-    return !!this.playingSoundNames[name];
+    const id = this.sounds[name];
+    return id ? this.soundSprite.playing(id) : false;
   }
 }
 

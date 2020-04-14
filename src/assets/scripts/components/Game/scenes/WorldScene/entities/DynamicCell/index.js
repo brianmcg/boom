@@ -32,9 +32,11 @@ class DynamicCell extends PhysicsCell {
    * Initialize the cell.
    */
   initialize() {
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+
     if (!this.soundController) {
       this.soundController = new EntitySoundController({
-        sounds: this.sounds,
+        sounds: Object.values(this.sounds),
         soundSprite: this.parent.scene.game.soundSprite,
         maxSoundDistance: MAX_SOUND_DISTANCE,
       });

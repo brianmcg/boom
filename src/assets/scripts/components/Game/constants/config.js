@@ -63,4 +63,4 @@ export const UPDATE_DISTANCE = CELL_SIZE * 20;
  * The max distance a sound can travel.
  * @type {Number}
  */
-export const MAX_SOUND_DISTANCE = CELL_SIZE * 10;
+export const MAX_SOUND_DISTANCE = CELL_SIZE * 9;

@@ -65,7 +65,7 @@ class World extends EventEmitter {
    * @param {Body} body The body to remove.
    */
   remove(body) {
-    this.stop(body);
+    this.stopUpdates(body);
 
     this.getCell(body.gridX, body.gridY).remove(body);
 
@@ -78,7 +78,7 @@ class World extends EventEmitter {
    * Stop updating this body.
    * @param  {Body} body The body to stop updating.
    */
-  stop(body) {
+  stopUpdates(body) {
     if (body.update) {
       this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
     }

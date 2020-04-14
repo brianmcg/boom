@@ -353,7 +353,7 @@ class WorldScene extends Scene {
     if (this.setState(STATES.ADDING_REVIEW)) {
       this.stop();
       this.fadeAmount = 0;
-      this.game.pauseSounds();
+      // this.game.pauseSounds();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
@@ -396,6 +396,30 @@ class WorldScene extends Scene {
     }
 
     return isStateChanged;
+  }
+
+  /**
+   * Play the scene.
+   */
+  play() {
+    super.play();
+    this.world.play();
+  }
+
+  /**
+   * Pause the scene.
+   */
+  pause() {
+    super.pause();
+    this.world.pause();
+  }
+
+  /**
+   * Stop the scene.
+   */
+  stop() {
+    super.stop();
+    this.world.stop();
   }
 
   /**

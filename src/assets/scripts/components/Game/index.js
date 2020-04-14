@@ -8,7 +8,6 @@ import {
   GAME_SOUNDS,
   GAME_DATA,
   GAME_FONT,
-  SCENE_MUSIC,
 } from './constants/assets';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -42,7 +41,7 @@ class Game extends Application {
     };
 
     this.loader = new Loader();
-    this.sound = new SoundPlayer();
+    // this.sound = new SoundPlayer();
     this.keyboard = new Keyboard();
     this.mouse = new Mouse({ el: this.view });
 
@@ -102,7 +101,7 @@ class Game extends Application {
     this.data = data;
 
     this.ticker.start();
-    this.sound.add(GAME_SOUNDS.NAME, sound);
+    // this.sound.add(GAME_SOUNDS.NAME, sound);
 
     this.showWorldScene();
   }
@@ -214,7 +213,7 @@ class Game extends Application {
         },
       };
 
-      this.sound.add(SCENE_MUSIC.NAME, sound);
+      // this.sound.add(SCENE_MUSIC.NAME, sound);
 
       this.scene.create({
         sounds,
@@ -271,51 +270,6 @@ class Game extends Application {
    */
   isPointerLocked() {
     return this.mouse.isPointerLocked();
-  }
-
-  /**
-   * Play a sound.
-   * @param  {String} type             The type of sound.
-   * @param  {String} name             The name of the sound.
-   * @param  {Number} options.distance The distance from the player.
-   */
-  playSound(...options) {
-    return this.sound.play(GAME_SOUNDS.NAME, ...options);
-  }
-
-  /**
-   * Play the scene music.
-   */
-  playMusic() {
-    this.sound.play(SCENE_MUSIC.NAME);
-  }
-
-  /**
-   * Fade out the scene music.
-   */
-  fadeMusic() {
-    this.sound.fade(SCENE_MUSIC.NAME);
-  }
-
-  /**
-   * Pause all the playing sounds.
-   */
-  pauseSounds() {
-    this.sound.pause();
-  }
-
-  /**
-   * Resume all the paused sounds.
-   */
-  resumeSounds() {
-    this.sound.resume();
-  }
-
-  /**
-   * Stop all sounds.
-   */
-  stopSounds() {
-    this.sound.stop();
   }
 }
 

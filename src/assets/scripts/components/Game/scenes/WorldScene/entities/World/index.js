@@ -75,14 +75,6 @@ class World extends PhysicsWorld {
     this.add(player);
   }
 
-  addExplosion(explosion) {
-    this.explosions.push(explosion);
-  }
-
-  removeExplosion(explosion) {
-    this.explosions = this.explosions.filter(e => e.id !== explosion.id);
-  }
-
   /**
    * Update the world.
    * @param  {Number} delta            The delta time value.
@@ -121,6 +113,28 @@ class World extends PhysicsWorld {
   }
 
   /**
+   * Play the world.
+   */
+  play() {
+    this.dynamicBodies.forEach(body => body.play());
+  }
+
+  /**
+   * Pause the world.
+   */
+  pause() {
+    this.dynamicBodies.forEach(body => body.pause());
+  }
+
+  /**
+   * Stop the world.
+   * @return {[type]} [description]
+   */
+  stop() {
+    this.dynamicBodies.forEach(body => body.stop());
+  }
+
+  /**
    * Restart the world scene.
    */
   restart() {
@@ -146,6 +160,23 @@ class World extends PhysicsWorld {
     this.flash += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
     this.explosionFlash = true;
   }
+
+  /**
+   * Add an explosion to the world.
+   * @param {World} explosion The explosion to add.
+   */
+  addExplosion(explosion) {
+    this.explosions.push(explosion);
+  }
+
+  /**
+   * Remove an explosion from the world.
+   * @param  {Explosion} explosion The explosion to remove.
+   */
+  removeExplosion(explosion) {
+    this.explosions = this.explosions.filter(e => e.id !== explosion.id);
+  }
+
 
   /**
    * Set the brightness and enabled item flash.

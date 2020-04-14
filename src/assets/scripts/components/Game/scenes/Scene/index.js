@@ -296,7 +296,7 @@ class Scene extends Container {
    * Highlight the next menu item.
    */
   menuHighlightNext() {
-    this.playSound(this.sounds.highlight);
+    // this.playSound(this.sounds.highlight);
     this.menuContainer.highlightNext();
   }
 
@@ -304,7 +304,7 @@ class Scene extends Container {
    * Highlight the previous menu item.
    */
   menuHighlightPrevious() {
-    this.playSound(this.sounds.highlight);
+    // this.playSound(this.sounds.highlight);
     this.menuContainer.highlightPrevious();
   }
 
@@ -391,8 +391,8 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PAUSING);
 
     if (isStateChanged) {
-      this.game.pauseSounds();
-      this.playSound(this.sounds.pause);
+      // this.game.pauseSounds();
+      // this.playSound(this.sounds.pause);
       this.fadeAmount = 0;
       this.pause();
     }
@@ -420,8 +420,8 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.UNPAUSING);
 
     if (isStateChanged) {
-      this.playSound(this.sounds.pause);
-      this.game.resumeSounds();
+      // this.playSound(this.sounds.pause);
+      // this.game.resumeSounds();
     }
 
     return isStateChanged;
@@ -449,8 +449,8 @@ class Scene extends Container {
     if (isStateChanged) {
       this.stop();
       // this.stopSounds();
-      this.playSound(this.sounds.complete);
-      this.game.fadeMusic();
+      // this.playSound(this.sounds.complete);
+      // this.game.fadeMusic();
     }
 
     return isStateChanged;
@@ -513,16 +513,16 @@ class Scene extends Container {
    * @param  {String} name             The name of the sound.
    * @param  {Number} options.distance The distance from the player.
    */
-  playSound(...options) {
-    this.game.playSound(...options);
-  }
+  // playSound(...options) {
+  //   this.game.playSound(...options);
+  // }
 
   /**
    * Stop all sounds.
    */
-  stopSounds() {
-    this.game.stopSounds();
-  }
+  // stopSounds() {
+  //   this.game.stopSounds();
+  // }
 
   /**
    * Trigger the complete event.
