@@ -15,9 +15,6 @@ module.exports = {
       root: path.resolve(__dirname, 'src/assets/scripts'),
       game: path.resolve(__dirname, 'src/assets/scripts/components/Game'),
       manual: path.resolve(__dirname, 'src/assets/scripts/components/GameManual'),
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat',
     },
   },
   output: {
@@ -53,12 +50,12 @@ module.exports = {
               },
             },
           ]],
-          plugins: [[
-            '@babel/plugin-transform-react-jsx', {
-              pragma: 'h',
-              pragmaFrag: 'Fragment',
-            },
-          ]],
+          // plugins: [[
+          //   '@babel/plugin-transform-react-jsx', {
+          //     pragma: 'h',
+          //     pragmaFrag: 'Fragment',
+          //   },
+          // ]],
         },
       },
       exclude: path.resolve(__dirname, 'node_modules/'),
@@ -117,6 +114,9 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, 'src/assets/data'),
       to: path.resolve(__dirname, 'dist/assets/data'),
+    }, {
+      from: path.resolve(__dirname, 'src/assets/images'),
+      to: path.resolve(__dirname, 'dist/assets/images'),
     }, {
       from: path.resolve(__dirname, 'src/assets/fonts'),
       to: path.resolve(__dirname, 'dist/assets/fonts'),

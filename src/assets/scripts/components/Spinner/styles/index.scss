@@ -1,41 +1,7 @@
-.loadingio-spinner-blocks-ohj2q18ttyk {
+img {
   position: absolute;
   left: 50%;
   top: 50%;
   cursor: inherit;
   margin: -50px 0px 0px -50px;
 }
-
-@keyframes ldio-cuyqoxkic9j {
-  0% { background: #ffffff }
-  25% { background: #ffffff }
-  25.25% { background: #bc0000 }
-  100% { background: #bc0000 }
-}
-
-.ldio-cuyqoxkic9j div {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: #bc0000;
-  animation: ldio-cuyqoxkic9j 0.5s linear infinite;
-}
-
-.loadingio-spinner-blocks-ohj2q18ttyk {
-  width: 100px;
-  height: 100px;
-  display: inline-block;
-  overflow: hidden;
-  background: #000000;
-}
-
-.ldio-cuyqoxkic9j {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
-}
-
-.ldio-cuyqoxkic9j div { box-sizing: content-box; }
