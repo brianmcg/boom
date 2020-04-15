@@ -25,7 +25,6 @@ class Game extends Application {
   constructor() {
     super(SCREEN.WIDTH, SCREEN.HEIGHT, {
       backgroundColor: BLACK,
-      autoStart: false,
     });
 
     this.style = {
