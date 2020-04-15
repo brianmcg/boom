@@ -1,25 +1,32 @@
-import {
-  Ticker,
-  Renderer,
-  Container,
-  UPDATE_PRIORITY,
-} from 'pixi.js';
+import { Application as PixiApplication } from 'pixi.js';
+import EventEmitter from '../EventEmitter';
 
 /**
  * Class representing an application.
+ * @extends {PIXI.Application}
  */
-class Application {
+class Application extends PixiApplication {
   /**
    * Creates and application
    * @param  {Number}   width                   The width of the screen.
    * @param  {Number}   height                  The height of the screen.
    * @param  {Number}   options.backgroundColor A hex value representing the color.
+   * @param  {Boolean}  options.autoStart       Should the application auto start.
    */
   constructor(...options) {
-    this.renderer = new Renderer(...options);
-    this.stage = new Container();
-    this.ticker = new Ticker();
-    this.ticker.add(() => this.renderer.render(this.stage), UPDATE_PRIORITY.LOW);
+    super({
+      ...options,
+      autoStart: false,
+      forceFXAA: true,
+    });
+
+    delete this.loader;
+    delete this.resize;
+    delete this.start;
+    delete this.stop;
+
+    this.eventEmitter = new EventEmitter();
+
     window.addEventListener('resize', () => this.resize());
   }
 
@@ -32,39 +39,28 @@ class Application {
     this.renderer.resize(width, height);
   }
 
-
   /**
-   * Destroy the application
-   * @param  {Boolean} removeView   Automatically remove canvas from DOM.
-   * @param  {Boolean} stageOptions Pass to destroy methods of all children.
+   * Add event listener to application.
+   * @param  {Event}    event    The event to listen for.
+   * @param  {Function} callback The callback to execute.
    */
-  destroy(removeView = false, stageOptions) {
-    this.stage.destroy(stageOptions);
-    this.stage = null;
-    this.renderer.destroy(removeView);
-    this.renderer = null;
+  on(event, callback) {
+    this.eventEmitter.on(event, callback);
   }
 
   /**
-   * Get the renderer view.
-   * @return {HTMLCanvasElement} The canvas element
+   * Trigger an event.
+   * @param  {Event}    event    The event to listen for.
+   * @param  {Function} callback The callback to execute.
    */
-  get view() {
-    return this.renderer.view;
+  emit(event, callback) {
+    this.eventEmitter.emit(event, callback);
   }
 
-  /**
-   * Get the canvas style.
-   * @return {Object} The canvas style.
-   */
   get style() {
     return this.renderer.view.style;
   }
 
-  /**
-   * Set the canvas style
-   * @param  {[type]} style The style object.
-   */
   set style(style) {
     Object.assign(this.renderer.view.style, style);
   }
