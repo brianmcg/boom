@@ -1,5 +1,5 @@
 import { DynamicBody } from 'game/core/physics';
-import { EntitySoundController } from 'game/core/audio';
+import { SoundSpriteController } from 'game/core/audio';
 import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 
 /**
@@ -35,7 +35,7 @@ class DynamicEntity extends DynamicBody {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
     if (!this.soundController) {
-      this.soundController = new EntitySoundController({
+      this.soundController = new SoundSpriteController({
         sounds: Object.values(this.sounds),
         soundSprite: this.parent.scene.game.soundSprite,
         maxSoundDistance: MAX_SOUND_DISTANCE,

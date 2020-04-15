@@ -1,7 +1,7 @@
 /**
  * Class representing and entity sound controller.
  */
-class EntitySoundController {
+class SoundSpriteController {
   /**
    * Creates an entity sound controller.
    * @param  {Sound}  options.soundSprite      The sound sprite containing game sounds.
@@ -92,4 +92,4 @@ class EntitySoundController {
   }
 }
 
-export default EntitySoundController;
+export default SoundSpriteController;

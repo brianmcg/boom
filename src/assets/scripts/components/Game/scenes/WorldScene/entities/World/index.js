@@ -113,6 +113,15 @@ class World extends PhysicsWorld {
   }
 
   /**
+   * Start the world.
+   * @param  {String} message The message for the player.
+   */
+  start(message) {
+    this.player.start(message);
+  }
+
+
+  /**
    * Play the world.
    */
   play() {
@@ -139,17 +148,6 @@ class World extends PhysicsWorld {
    */
   restart() {
     this.scene.triggerRestart();
-  }
-
-  /**
-   * Open the entrance door.
-   */
-  openEntranceDoor() {
-    const { x, y } = this.entrance;
-    const entrance = this.getCell(x, y);
-    const door = this.getAdjacentCells(entrance).find(cell => cell.open);
-
-    door.open();
   }
 
   /**

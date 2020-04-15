@@ -1,6 +1,6 @@
 import SoundPlayer from './components/SoundPlayer';
 import SoundLoader from './components/SoundLoader';
-import EntitySoundController from './components/EntitySoundController';
+import SoundSpriteController from './components/SoundSpriteController';
 
 /**
  * @module  game/core/audio
@@ -18,5 +18,5 @@ export {
   /**
    * The entity sound controller component.
    */
-  EntitySoundController,
+  SoundSpriteController,
 };

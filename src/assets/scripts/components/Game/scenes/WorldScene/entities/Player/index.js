@@ -170,8 +170,16 @@ class Player extends AbstractActor {
         [sound]: [],
       }), {}),
     }), this.playing);
+  }
 
+  /**
+   * Start a world.
+   * @param  {String} message The message to display.
+   */
+  start(message) {
+    this.addMessage(message);
     this.emitSound(this.sounds.enter);
+    this.actions.use = true;
   }
 
   /**
