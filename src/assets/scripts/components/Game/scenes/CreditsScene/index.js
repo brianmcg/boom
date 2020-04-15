@@ -74,6 +74,10 @@ class CreditsScene extends Scene {
     this.mainContainer.addChild(scrollContainer);
   }
 
+  updateRunning() {
+    return !!this.updateRunning;
+  }
+
   /**
    * Complete the scene.
    */

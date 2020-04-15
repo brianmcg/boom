@@ -1,16 +1,16 @@
 {
   "title": {
     "sounds": {
-      "pause": "entity_respawn",
-      "complete": "entity_respawn",
+      "pause": "weapon_pistol",
+      "complete": "weapon_shotgun",
       "highlight": "item_pickup"
     }
   },
   "world": {
     "levels": 2,
     "sounds": {
-      "pause": "entity_respawn",
-      "complete": "entity_respawn",
+      "pause": "weapon_pistol",
+      "complete": "weapon_shotgun",
       "highlight": "item_pickup"
     },
     "props": {
@@ -180,8 +180,8 @@
   },
   "credits": {
     "sounds": {
-      "pause": "entity_respawn",
-      "complete": "entity_respawn",
+      "pause": "weapon_pistol",
+      "complete": "weapon_shotgun",
       "highlight": "item_pickup"
     }
   }

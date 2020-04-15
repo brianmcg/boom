@@ -189,6 +189,7 @@ class Game extends Application {
       };
 
       this.music = sound;
+      this.music.volume(0.2);
 
       this.scene.create({
         sounds,

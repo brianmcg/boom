@@ -38,7 +38,6 @@ class DynamicEntity extends DynamicBody {
       this.soundController = new SoundSpriteController({
         sounds: Object.values(this.sounds),
         soundSprite: this.parent.scene.game.soundSprite,
-        maxSoundDistance: MAX_SOUND_DISTANCE,
       });
     }
   }

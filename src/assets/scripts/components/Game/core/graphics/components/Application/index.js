@@ -25,8 +25,6 @@ class Application extends PixiApplication {
     delete this.start;
     delete this.stop;
 
-    this.eventEmitter = new EventEmitter();
-
     window.addEventListener('resize', () => this.resize());
   }
 
@@ -37,24 +35,6 @@ class Application extends PixiApplication {
    */
   resize(width, height) {
     this.renderer.resize(width, height);
-  }
-
-  /**
-   * Add event listener to application.
-   * @param  {Event}    event    The event to listen for.
-   * @param  {Function} callback The callback to execute.
-   */
-  on(event, callback) {
-    this.eventEmitter.on(event, callback);
-  }
-
-  /**
-   * Trigger an event.
-   * @param  {Event}    event    The event to listen for.
-   * @param  {Function} callback The callback to execute.
-   */
-  emit(event, callback) {
-    this.eventEmitter.emit(event, callback);
   }
 
   get style() {

@@ -1,5 +1,6 @@
 import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
+import { SoundSpriteController } from 'game/core/audio';
 import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
@@ -188,6 +189,11 @@ class Scene extends Container {
 
     this.promptContainer = new PromptContainer(sprites.prompt);
 
+    this.soundController = new SoundSpriteController({
+      sounds: Object.values(this.sounds),
+      soundSprite: this.game.soundSprite,
+    });
+
     this.setFadingIn();
   }
 
@@ -296,7 +302,7 @@ class Scene extends Container {
    * Highlight the next menu item.
    */
   menuHighlightNext() {
-    // this.playSound(this.sounds.highlight);
+    this.soundController.emitSound(this.sounds.highlight);
     this.menuContainer.highlightNext();
   }
 
@@ -304,7 +310,7 @@ class Scene extends Container {
    * Highlight the previous menu item.
    */
   menuHighlightPrevious() {
-    // this.playSound(this.sounds.highlight);
+    this.soundController.emitSound(this.sounds.highlight);
     this.menuContainer.highlightPrevious();
   }
 
@@ -364,8 +370,6 @@ class Scene extends Container {
     if (isStateChanged) {
       this.addChild(this.mainContainer);
       this.fadeAmount = 1;
-      // TODO: Enabled music
-      // this.game.playMusic();
     }
 
     return isStateChanged;
@@ -379,6 +383,7 @@ class Scene extends Container {
 
     if (isStateChanged) {
       this.play();
+      this.game.music.play();
     }
 
     return isStateChanged;
@@ -391,10 +396,10 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PAUSING);
 
     if (isStateChanged) {
-      // this.game.pauseSounds();
-      // this.playSound(this.sounds.pause);
-      this.fadeAmount = 0;
       this.pause();
+      this.game.music.pause();
+      this.soundController.emitSound(this.sounds.pause);
+      this.fadeAmount = 0;
     }
 
     return isStateChanged;
@@ -404,13 +409,7 @@ class Scene extends Container {
    * Set the state to the paused state.
    */
   setPaused() {
-    const isStateChanged = this.setState(STATES.PAUSED);
-
-    if (isStateChanged) {
-      // this.game.pauseSounds();
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.PAUSED);
   }
 
   /**
@@ -420,8 +419,7 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.UNPAUSING);
 
     if (isStateChanged) {
-      // this.playSound(this.sounds.pause);
-      // this.game.resumeSounds();
+      this.soundController.emitSound(this.sounds.pause);
     }
 
     return isStateChanged;
@@ -448,8 +446,7 @@ class Scene extends Container {
 
     if (isStateChanged) {
       this.stop();
-      // this.stopSounds();
-      // this.playSound(this.sounds.complete);
+      this.soundController.emitSound(this.sounds.complete);
       // this.game.fadeMusic();
     }
 
@@ -506,23 +503,6 @@ class Scene extends Container {
   isPrompting() {
     return this.state === STATES.PROMPTING;
   }
-
-  /**
-   * Play a sound.
-   * @param  {String} type             The type of sound.
-   * @param  {String} name             The name of the sound.
-   * @param  {Number} options.distance The distance from the player.
-   */
-  // playSound(...options) {
-  //   this.game.playSound(...options);
-  // }
-
-  /**
-   * Stop all sounds.
-   */
-  // stopSounds() {
-  //   this.game.stopSounds();
-  // }
 
   /**
    * Trigger the complete event.

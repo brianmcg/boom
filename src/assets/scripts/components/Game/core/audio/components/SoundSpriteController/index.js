@@ -10,7 +10,8 @@ class SoundSpriteController {
    */
   constructor({ soundSprite, sounds }) {
     this.soundSprite = soundSprite;
-    this.sounds = sounds.reduce((memo, sound) => ({
+
+    this.lastPlayed = sounds.reduce((memo, sound) => ({
       ...memo,
       [sound]: null,
     }), {});
@@ -29,10 +30,11 @@ class SoundSpriteController {
 
     this.soundSprite.volume(volume, id);
     this.playing.push(id);
-    this.sounds[name] = id;
-    this.soundSprite.once('end', (endedId) => {
-      this.playing.filter(playingId => playingId !== endedId);
-    });
+    this.lastPlayed[name] = id;
+
+    this.soundSprite.once('end', () => {
+      this.playing = this.playing.filter(playingId => playingId !== id);
+    }, id);
   }
 
   /**
@@ -70,8 +72,13 @@ class SoundSpriteController {
    * @return {Boolean}      The result of the check.
    */
   isPlaying(name) {
-    const id = this.sounds[name];
-    return id ? this.soundSprite.playing(id) : false;
+    const id = this.lastPlayed[name];
+
+    if (id) {
+      return this.soundSprite.playing(id);
+    }
+
+    return false;
   }
 }
 
