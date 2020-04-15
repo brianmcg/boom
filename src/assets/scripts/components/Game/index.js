@@ -1,5 +1,4 @@
 import { Application } from './core/graphics';
-import { SoundPlayer } from './core/audio';
 import { Keyboard, Mouse } from './core/input';
 import { BLACK } from './constants/colors';
 import { SCREEN, MAX_FPS } from './constants/config';
@@ -13,13 +12,8 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './utilities/Loader';
-
-const EVENTS = {
-  STOPPED: 'game:stopped',
-  STARTED: 'game:started',
-  LOADING_STARTED: 'game:loading:started',
-  LOADING_COMPLETE: 'game:loading:complete',
-};
+import Spinner from './components/Spinner';
+import Manual from './components/Manual';
 
 /**
  * A class representing a game.
@@ -40,40 +34,20 @@ class Game extends Application {
       top: '50%',
     };
 
-    this.loader = new Loader();
-    // this.sound = new SoundPlayer();
-    this.keyboard = new Keyboard();
-    this.mouse = new Mouse({ el: this.view });
-
     this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
-
     this.frameCount = 0;
     this.timer = 0;
-  }
 
-  /**
-   * Add a callback to the stopped event.
-   * @param  {Function} callback The callback function.
-   */
-  onStopped(callback) {
-    this.on(EVENTS.STOPPED, callback);
-  }
-
-  /**
-   * Add a callback to the loading complete event.
-   * @param  {Function} callback The callback function.
-   */
-  onLoadingComplete(callback) {
-    this.on(EVENTS.LOADING_COMPLETE, callback);
-  }
-
-  /**
-   * Add a callback to the loading started event.
-   * @param  {Function} callback The callback function.
-   */
-  onLoadingStarted(callback) {
-    this.on(EVENTS.LOADING_STARTED, callback);
+    this.loader = new Loader();
+    this.keyboard = new Keyboard();
+    this.mouse = new Mouse({ el: this.view });
+    this.spinner = new Spinner();
+    this.manual = new Manual();
+    // this.manual.onClickStart(() => this.start());
+    // this.addManual();
+    this.addCanvas();
+    this.start();
   }
 
   /**
@@ -96,12 +70,14 @@ class Game extends Application {
       },
     });
 
+    this.removeManual();
+    this.addCanvas();
+
     this.soundSprite = sound;
     this.scene = null;
     this.data = data;
 
     this.ticker.start();
-    // this.sound.add(GAME_SOUNDS.NAME, sound);
 
     this.showWorldScene();
   }
@@ -110,10 +86,11 @@ class Game extends Application {
    * Stop game and unload assets.
    */
   stop() {
+    this.removeCanvas();
+    this.addManual();
     this.ticker.stop();
     this.scene.destroy();
     this.loader.unload();
-    this.emit(EVENTS.STOPPED);
   }
 
   /**
@@ -121,8 +98,7 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
-    // NOTE: Uncomment below code to log frame rate.
-
+    // NOTE: Uncomment below code to log frame rate in console.
     // this.timer += this.ticker.elapsedMS;
     // this.frameCount += 1;
     // if (this.timer >= 1000) {
@@ -167,7 +143,7 @@ class Game extends Application {
   async show(Scene, { index, startingProps = {} } = {}) {
     const type = Scene.name.toLowerCase().split('scene')[0];
 
-    this.emit(EVENTS.LOADING_STARTED);
+    this.addSpinner();
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
@@ -205,6 +181,8 @@ class Game extends Application {
 
       const sounds = this.data[type].sounds || {};
 
+      this.music = sound;
+
       const props = {
         ...sceneProps,
         player: {
@@ -212,8 +190,6 @@ class Game extends Application {
           ...startingProps.player,
         },
       };
-
-      // this.sound.add(SCENE_MUSIC.NAME, sound);
 
       this.scene.create({
         sounds,
@@ -224,7 +200,7 @@ class Game extends Application {
         },
       });
 
-      this.emit(EVENTS.LOADING_COMPLETE);
+      this.removeSpinner();
     }
   }
 
@@ -250,6 +226,8 @@ class Game extends Application {
       margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
     };
 
+    this.spinner.resize(scale);
+
     if (this.scene) {
       this.scene.resize(scale);
     }
@@ -270,6 +248,54 @@ class Game extends Application {
    */
   isPointerLocked() {
     return this.mouse.isPointerLocked();
+  }
+
+  /**
+   * Add the spinner.
+   */
+  addSpinner() {
+    document.body.appendChild(this.spinner.view);
+  }
+
+  /**
+   * Remove the spinner.
+   */
+  removeSpinner() {
+    if (document.contains(this.spinner.view)) {
+      document.body.removeChild(this.spinner.view);
+    }
+  }
+
+  /**
+   * Add the game canvas.
+   */
+  addCanvas() {
+    document.body.appendChild(this.view);
+  }
+
+  /**
+   * Remove the game canvas.
+   */
+  removeCanvas() {
+    if (document.contains(this.view)) {
+      document.body.removeChild(this.view);
+    }
+  }
+
+  /**
+   * Add the game manual.
+   */
+  addManual() {
+    document.body.appendChild(this.manual.view);
+  }
+
+  /**
+   * Remove the game manual.
+   */
+  removeManual() {
+    if (document.contains(this.manual.view)) {
+      document.body.removeChild(this.manual.view);
+    }
   }
 }
 
