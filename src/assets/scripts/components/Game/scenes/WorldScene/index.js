@@ -267,6 +267,8 @@ class WorldScene extends Scene {
     }));
 
     this.reviewContainer = new ReviewContainer(sprites.review);
+    this.reviewContainer.onShowStat(() => this.soundController.emitSound(this.sounds.pause));
+
     this.world = world;
 
     super.create({ graphics, sounds });
@@ -353,7 +355,6 @@ class WorldScene extends Scene {
     if (this.setState(STATES.ADDING_REVIEW)) {
       this.stop();
       this.fadeAmount = 0;
-      // this.game.pauseSounds();
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
@@ -378,6 +379,7 @@ class WorldScene extends Scene {
     const isStateChanged = this.setState(STATES.DISPLAYING_REVIEW);
 
     if (isStateChanged) {
+      this.soundController.emitSound(this.sounds.complete);
       this.reviewContainer.setShowTitle();
     }
 

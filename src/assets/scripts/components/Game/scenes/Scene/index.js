@@ -432,6 +432,7 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PROMPTING);
 
     if (isStateChanged) {
+      this.soundController.emitSound(this.sounds.complete);
       this.addChild(this.promptContainer);
     }
 

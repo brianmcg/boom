@@ -10,6 +10,8 @@ const MAX_ALPHA = 0.7;
 
 const SCALE_INCREMENT = 0.1;
 
+const SHOW_STAT_EVENT = 'review:container:show:stat';
+
 const STATES = {
   SHOW_TITLE: 'review:show:title',
   SHOW_ENEMIES: 'review:show:enemies',
@@ -50,6 +52,14 @@ class ReviewContainer extends Container {
     this.sprites = sprites;
 
     this.addChild(background);
+  }
+
+  /**
+   * Add a callback for the show stat event.
+   * @param  {Function} callback The callback function.
+   */
+  onShowStat(callback) {
+    this.on(SHOW_STAT_EVENT, callback);
   }
 
   /**
@@ -168,7 +178,6 @@ class ReviewContainer extends Container {
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
-        // this.parent.playSound(this.parent.sounds.complete);
         this.parent.setPrompting();
       }
     }
@@ -189,7 +198,6 @@ class ReviewContainer extends Container {
    */
   setShowTitle() {
     if (this.setState(STATES.SHOW_TITLE)) {
-      // this.parent.playSound(this.parent.sounds.complete);
       this.sprites.title.setScale(0);
       this.addChild(this.sprites.title);
     }
@@ -202,7 +210,7 @@ class ReviewContainer extends Container {
     const isStateChanged = this.setState(STATES.SHOW_ENEMIES);
 
     if (isStateChanged) {
-      // this.parent.playSound(this.parent.sounds.pause);
+      this.emit(SHOW_STAT_EVENT);
 
       Object.values(this.sprites.stats.enemies).forEach((sprite) => {
         sprite.setScale(0);
@@ -220,7 +228,7 @@ class ReviewContainer extends Container {
     const isStateChanged = this.setState(STATES.SHOW_ITEMS);
 
     if (isStateChanged) {
-      // this.parent.playSound(this.parent.sounds.pause);
+      this.emit(SHOW_STAT_EVENT);
 
       Object.values(this.sprites.stats.items).forEach((sprite) => {
         sprite.setScale(0);
@@ -238,7 +246,7 @@ class ReviewContainer extends Container {
     const isStateChanged = this.setState(STATES.SHOW_TIME);
 
     if (isStateChanged) {
-      // this.parent.playSound(this.parent.sounds.pause);
+      this.emit(SHOW_STAT_EVENT);
 
       Object.values(this.sprites.stats.time).forEach((sprite) => {
         sprite.setScale(0);
