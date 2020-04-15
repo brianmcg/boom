@@ -48,9 +48,11 @@ class DynamicEntity extends DynamicBody {
    * @param  {String} id The id of the sound.
    */
   emitSound(name) {
-    this.soundController.emitSound(name, {
-      distance: this.distanceToPlayer,
-    });
+    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
+      ? 0
+      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+
+    this.soundController.emitSound(name, volume);
   }
 
   /**
@@ -59,7 +61,13 @@ class DynamicEntity extends DynamicBody {
    */
   update(delta) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
-    this.soundController.update(this.distanceToPlayer);
+
+    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
+      ? 0
+      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+
+    this.soundController.update(volume);
+
     super.update(delta);
   }
 

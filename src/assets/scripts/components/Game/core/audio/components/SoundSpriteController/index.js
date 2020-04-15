@@ -8,15 +8,14 @@ class SoundSpriteController {
    * @param  {Object} options.sounds           A hash containing entity sound names.
    * @param  {Number} options.maxSoundDistance The maximum distance a player hears a sound.
    */
-  constructor({ soundSprite, sounds, maxSoundDistance }) {
+  constructor({ soundSprite, sounds }) {
     this.soundSprite = soundSprite;
-    this.maxSoundDistance = maxSoundDistance;
     this.sounds = sounds.reduce((memo, sound) => ({
       ...memo,
       [sound]: null,
     }), {});
 
-    this.playingSoundIds = [];
+    this.playing = [];
   }
 
   /**
@@ -25,15 +24,14 @@ class SoundSpriteController {
    * @param  {Number} options.distance The distance from the player.
    * @return {Number}                  The id of the playing sound.
    */
-  emitSound(name, { distance }) {
-    const volume = distance > this.maxSoundDistance ? 0 : 1 - distance / this.maxSoundDistance;
+  emitSound(name, volume) {
     const id = this.soundSprite.play(name);
 
     this.soundSprite.volume(volume, id);
-    this.playingSoundIds.push(id);
+    this.playing.push(id);
     this.sounds[name] = id;
     this.soundSprite.once('end', (endedId) => {
-      this.playingSoundIds.filter(playingId => playingId !== endedId);
+      this.playing.filter(playingId => playingId !== endedId);
     });
   }
 
@@ -41,44 +39,29 @@ class SoundSpriteController {
    * Update the sounds.
    * @param  {Number} distance The distance from the player.
    */
-  update(distance) {
-    if (this.playingSoundIds.length) {
-      const volume = distance > this.maxSoundDistance ? 0 : 1 - distance / this.maxSoundDistance;
-      this.playingSoundIds.forEach(id => this.soundSprite.volume(volume, id));
-    }
+  update(volume) {
+    this.playing.forEach(id => this.soundSprite.volume(volume, id));
   }
 
   /**
    * Pause the sounds.
    */
   pause() {
-    Object.values(this.sounds).forEach((id) => {
-      if (id && this.soundSprite.playing(id)) {
-        this.soundSprite.pause(id);
-      }
-    });
+    this.playing.forEach(id => this.soundSprite.pause(id));
   }
 
   /**
    * Play the sounds.
    */
   play() {
-    Object.values(this.sounds).forEach((id) => {
-      if (id && !this.soundSprite.playing(id)) {
-        this.soundSprite.play(id);
-      }
-    });
+    this.playing.forEach(id => this.soundSprite.play(id));
   }
 
   /**
    * Stop the sounds.
    */
   stop() {
-    Object.values(this.sounds).forEach((id) => {
-      if (id && this.soundSprite.playing(id)) {
-        this.soundSprite.stop(id);
-      }
-    });
+    this.playing.forEach(id => this.soundSprite.stop(id));
   }
 
   /**

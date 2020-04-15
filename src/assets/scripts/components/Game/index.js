@@ -180,8 +180,6 @@ class Game extends Application {
 
       const sounds = this.data[type].sounds || {};
 
-      this.music = sound;
-
       const props = {
         ...sceneProps,
         player: {
@@ -189,6 +187,8 @@ class Game extends Application {
           ...startingProps.player,
         },
       };
+
+      this.music = sound;
 
       this.scene.create({
         sounds,
