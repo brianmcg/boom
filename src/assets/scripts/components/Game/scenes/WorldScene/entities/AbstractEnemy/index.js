@@ -22,8 +22,6 @@ const FORCE_FADE = 0.8;
 
 const MIN_FORCE = 0.1;
 
-const MAX_FORCE = 4;
-
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -50,12 +48,12 @@ class AbstractEnemy extends AbstractActor {
     hurtTime = 1000,
     alertTime = 1000,
     aimTime = 200,
-    attackPower = 1,
     maxAttacks,
     spatters,
     spatterType,
     explode,
     isFloating,
+    primaryAttack,
     type,
     ...other
   }) {
@@ -74,7 +72,6 @@ class AbstractEnemy extends AbstractActor {
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
     this.aimTime = aimTime;
-    this.attackPower = attackPower;
     this.maxAttacks = maxAttacks;
     this.numberOfAttacks = maxAttacks;
     this.attackTimer = 0;
@@ -84,6 +81,11 @@ class AbstractEnemy extends AbstractActor {
     this.isEnemy = true;
     this.isFloating = isFloating;
     this.floatDirection = 1;
+
+    this.primaryAttack = {
+      ...primaryAttack,
+      spread: [...Array(primaryAttack.spread).keys()].map(i => i),
+    };
 
     this.setIdle();
   }
@@ -257,12 +259,10 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in hurt state
    * @param  {Number} delta The delta time.
    */
-  updateDead(delta) {
-    this.velocity *= FORCE_FADE
+  updateDead() {
+    this.velocity *= FORCE_FADE;
 
-    if (this.velocity > MAX_FORCE) {
-      this.velocity = MAX_FORCE;
-    } else if (this.velocity < MIN_FORCE) {
+    if (this.velocity < MIN_FORCE) {
       this.velocity = 0;
       this.blocking = false;
       this.parent.stopUpdates(this);
@@ -311,21 +311,17 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Hurt the enemy
-   * @param  {Number} amount The amount of hit points.
+   * @param  {Number} damage The damage to health.
    */
-  hurt(amount) {
+  hurt(damage) {
     if (this.isAlive()) {
-      this.health -= amount;
+      this.health -= damage;
 
       if (this.health > 0) {
         this.setHurting();
       } else {
         this.angle = this.parent.player.viewAngle;
-        this.velocity = amount;
-        if (this.velocity > MAX_FORCE) {
-          this.velocity = MAX_FORCE;
-        }
-
+        this.velocity = damage * 0.1;
         this.setDead();
       }
     }
@@ -586,6 +582,13 @@ class AbstractEnemy extends AbstractActor {
    */
   isAlive() {
     return this.state !== STATES.DEAD;
+  }
+
+  attackDamage() {
+    const { power, accuracy, spread } = this.primaryAttack;
+
+    return spread
+      .reduce(memo => (memo + (power * (Math.floor(Math.random() * accuracy) + 1))), 0);
   }
 
   /**

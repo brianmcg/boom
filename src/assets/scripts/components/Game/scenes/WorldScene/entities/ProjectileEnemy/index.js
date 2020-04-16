@@ -41,8 +41,11 @@ class ProjectileEnemy extends AbstractEnemy {
   attack() {
     if (this.projectiles.length) {
       const projectile = this.projectiles.shift();
+      const distance = Math.sqrt((this.width * this.width) * 2) + 1;
+      const x = this.x + Math.cos(this.angle) * distance;
+      const y = this.y + Math.sin(this.angle) * distance;
 
-      projectile.setProperties(this);
+      projectile.setProperties({ x, y, angle: this.angle });
 
       this.parent.add(projectile);
     }

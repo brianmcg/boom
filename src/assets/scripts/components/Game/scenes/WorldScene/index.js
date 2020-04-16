@@ -200,6 +200,7 @@ class WorldScene extends Scene {
     this.onKeyUp(KEYS.CTRL, () => {
       if (this.isRunning()) {
         this.world.player.actions.attack = false;
+        this.world.player.actions.stopAttack = true;
       }
     });
 

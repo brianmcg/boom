@@ -7,6 +7,11 @@ const STATES = {
   DISABLED: 'weapon:disabled',
 };
 
+const EVENTS = {
+  FIRE: 'weapon:fire',
+  STOP: 'weapon:stop',
+};
+
 /**
  * Class representing a weapon.
  */
@@ -16,7 +21,6 @@ class Weapon extends Entity {
    * @param  {Player}  options.player   The player.
    * @param  {Number}  options.power    The power of the weapon.
    * @param  {Boolean} options.equiped  Is the weapon equiped.
-   * @param  {Number}  options.idleTime The time to wait in idle state after firing.
    * @param  {Number}  options.recoil   The recoil of the weapon.
    * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
    * @param  {Number}  options.range    The range of the weapon.
@@ -25,8 +29,9 @@ class Weapon extends Entity {
   constructor({
     player,
     power,
+    accuracy,
+    spread,
     equiped,
-    idleTime,
     recoil,
     maxAmmo,
     range,
@@ -34,6 +39,8 @@ class Weapon extends Entity {
     type,
     explosionType,
     ammo,
+    rate,
+    automatic,
     ...other
   }) {
     super(other);
@@ -41,10 +48,13 @@ class Weapon extends Entity {
     this.type = type;
     this.explosionType = explosionType;
     this.sounds = sounds;
-    this.idleTime = idleTime;
     this.power = power;
+    this.accuracy = accuracy;
+    this.spread = [...Array(spread).keys()].map(i => i);
+    this.rate = rate;
     this.equiped = equiped;
     this.player = player;
+    this.automatic = automatic;
     this.recoil = recoil;
     this.ammo = ammo !== undefined ? ammo : maxAmmo / 2;
     this.maxAmmo = maxAmmo;
@@ -54,14 +64,61 @@ class Weapon extends Entity {
   }
 
   /**
-   * Use the weapon.
+   * Add a callback to the fire event.
+   * @param  {Function} callback The callback.
    */
-  use() {
+  onFire(callback) {
+    this.on(EVENTS.FIRE, callback);
+  }
+
+  /**
+   * Add a callback to the stop event.
+   * @param  {Function} callback The callback.
+   */
+  onStop(callback) {
+    this.on(EVENTS.STOP, callback);
+  }
+
+  /**
+   * Update the weapon.
+   * @param  {Number} delta The delta time.
+   */
+  update(delta) {
+    switch (this.state) {
+      case STATES.FIRING:
+        this.setDisabled();
+        break;
+      case STATES.DISABLED:
+        this.timer += delta * TIME_STEP;
+
+        if (this.timer >= this.rate) {
+          this.setIdle();
+          this.timer = 0;
+        }
+
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  /**
+   * Fire the weapon.
+   */
+  fire() {
     if (this.isIdle() && this.ammo) {
       return this.setFiring();
     }
 
     return false;
+  }
+
+  /**
+   * Stop using the weapon.
+   */
+  stop() {
+    this.emit(EVENTS.STOP);
   }
 
   /**
@@ -100,29 +157,6 @@ class Weapon extends Entity {
   }
 
   /**
-   * Update the weapon.
-   * @param  {Number} delta The delta time.
-   */
-  update(delta) {
-    if (this.isDisabled()) {
-      this.timer += delta * TIME_STEP;
-
-      if (this.timer >= this.idleTime) {
-        this.setIdle();
-        this.timer = 0;
-      }
-    }
-  }
-
-  /**
-   * Add a callback to the fire event.
-   * @param  {Function} callback The callback
-   */
-  onFireEvent(callback) {
-    this.on(STATES.FIRE, callback);
-  }
-
-  /**
    * Add a callback to the diabled event.
    * @param  {Function} callback The callback.
    */
@@ -143,13 +177,7 @@ class Weapon extends Entity {
    * @return {Boolean} Has the state changed to idle.
    */
   setIdle() {
-    const isStateChanged = this.setState(STATES.IDLE);
-
-    if (isStateChanged) {
-      this.emit(STATES.IDLE);
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.IDLE);
   }
 
   /**
@@ -159,10 +187,13 @@ class Weapon extends Entity {
   setFiring() {
     const isStateChanged = this.setState(STATES.FIRING);
 
-    this.emit(STATES.FIRE);
-
     if (isStateChanged) {
+      this.emit(EVENTS.FIRE);
       this.ammo -= 1;
+
+      if (this.ammo === 0) {
+        this.stop();
+      }
     }
 
     return isStateChanged;
@@ -173,13 +204,7 @@ class Weapon extends Entity {
    * @return {Boolean} Has the state changed to disabled.
    */
   setDisabled() {
-    const isStateChanged = this.setState(STATES.DISABLED);
-
-    if (isStateChanged) {
-      this.emit(STATES.DISABLED);
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.DISABLED);
   }
 
   /**
@@ -206,18 +231,9 @@ class Weapon extends Entity {
     return this.state === STATES.DISABLED;
   }
 
-  /**
-   * Is the weapon automatic.
-   * @return {Boolean} Boolean Is the weapon is automatic.
-   */
-  isAutomatic() {
-    return this.idleTime === 0;
-  }
-
   get props() {
     const {
       power,
-      idleTime,
       recoil,
       ammo,
       maxAmmo,
@@ -230,7 +246,6 @@ class Weapon extends Entity {
 
     return {
       power,
-      idleTime,
       recoil,
       ammo,
       maxAmmo,

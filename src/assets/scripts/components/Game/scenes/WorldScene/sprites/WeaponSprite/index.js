@@ -27,12 +27,14 @@ class WeaponSprite extends AnimatedSprite {
     this.anchor.set(0.5);
 
     Object.values(player.weapons).forEach((weapon) => {
-      weapon.onFireEvent(() => this.setFiring());
+      weapon.onFire(() => this.setFiring());
 
-      weapon.onDisabledEvent(() => this.setIdle());
+      if (weapon.automatic) {
+        weapon.onStop(() => this.setIdle());
+      }
     });
 
-    this.onComplete = () => player.weapon.setDisabled();
+    this.onComplete = () => this.setIdle();
   }
 
   /**
@@ -46,15 +48,13 @@ class WeaponSprite extends AnimatedSprite {
    * Set the firing animation.
    */
   setFiring() {
-    this.textures = this.textureCollection[this.player.weapon.type].firing;
-    this.play();
-  }
+    const { type, automatic } = this.player.weapon;
 
-  /**
-   * Play the sprite.
-   */
-  play() {
-    if (this.player.weapon.isFiring()) super.play();
+    if ((automatic && !this.playing) || !automatic) {
+      this.textures = this.textureCollection[type].firing;
+      this.loop = automatic;
+      this.play();
+    }
   }
 }
 

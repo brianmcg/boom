@@ -30,7 +30,7 @@ class GunEnemy extends AbstractEnemy {
     this.emitSound(this.sounds.attack);
 
     if (player.isRayCollision(ray)) {
-      player.hurt(this.attackPower);
+      player.hurt(this.attackDamage());
     }
   }
 }

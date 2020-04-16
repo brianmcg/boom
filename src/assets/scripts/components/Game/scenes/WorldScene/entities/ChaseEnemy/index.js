@@ -27,7 +27,7 @@ class ChaseEnemy extends AbstractEnemy {
 
     this.emitSound(this.sounds.attack);
 
-    player.hurt(this.attackPower);
+    player.hurt(this.attackDamage());
   }
 }
 

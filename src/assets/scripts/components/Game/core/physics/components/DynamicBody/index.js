@@ -1,3 +1,4 @@
+import { CELL_SIZE } from 'game/constants/config';
 import Body from '../Body';
 import { degrees } from '../../helpers';
 
@@ -37,11 +38,13 @@ class DynamicBody extends Body {
     // Get bodies from surrounding cells
     const bodies = this.parent.getAdjacentBodies(this);
 
+    const velocity = Math.min(this.velocity * delta, CELL_SIZE);
+
     // Unmark id from cell before moving
     this.parent.getCell(this.gridX, this.gridY).remove(this);
 
     // Update x coordinate
-    this.x += Math.cos(this.angle) * this.velocity * delta;
+    this.x += Math.cos(this.angle) * velocity;
 
     // Check for x axis collisions
     bodies.forEach((body) => {
@@ -55,7 +58,7 @@ class DynamicBody extends Body {
     });
 
     // Update y coordinate
-    this.y += Math.sin(this.angle) * this.velocity * delta;
+    this.y += Math.sin(this.angle) * velocity;
 
     // Check for y axis collisions
     bodies.forEach((body) => {

@@ -30,7 +30,6 @@ class Projectile extends DynamicEntity {
   constructor({
     width = CELL_SIZE / 4,
     height = CELL_SIZE / 4,
-    power = 0,
     speed = 0,
     source,
     explosionType,
@@ -43,18 +42,19 @@ class Projectile extends DynamicEntity {
       ...other,
     });
 
-    this.power = power;
     this.source = source;
     this.speed = speed * CELL_SIZE;
     this.explosionType = explosionType;
 
     this.onCollision((body) => {
+      const damage = this.source.attackDamage();
+
       this.setColliding();
-      this.parent.onExplosion(this.power);
-      this.parent.player.shake(this.power);
+      this.parent.onExplosion(damage * 0.75);
+      this.parent.player.shake(damage * 0.75);
 
       if (body.isPlayer) {
-        body.hurt(this.power);
+        body.hurt(damage);
       }
     });
 
@@ -112,16 +112,11 @@ class Projectile extends DynamicEntity {
    * @param {Number} options.angle The angle.
    * @param {Number} options.width The width.
    */
-  setProperties({
-    x = 0,
-    y = 0,
-    angle = 0,
-    width = 0,
-  }) {
+  setProperties({ x = 0, y = 0, angle = 0 }) {
     this.angle = angle;
+    this.x = x;
+    this.y = y;
     this.velocity = this.speed;
-    this.x = x + Math.cos(angle) * width;
-    this.y = y + Math.sin(angle) * width;
 
     this.setTravelling();
   }

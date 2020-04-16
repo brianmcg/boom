@@ -18,7 +18,7 @@ const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
-const HURT_RECOIL_MULTIPLIER = 4;
+const HURT_RECOIL_MULTIPLIER = 1;
 
 const STATES = {
   ALIVE: 'player:alive',
@@ -92,12 +92,10 @@ class Player extends AbstractActor {
       })),
     }), {});
 
-    this.sounds = this.weapons.reduce((memo, weapon) => {
-      return {
-        ...memo,
-        [weapon.type]: weapon.sounds.fire,
-      };
-    }, this.sounds);
+    this.sounds = this.weapons.reduce((memo, weapon) => ({
+      ...memo,
+      [weapon.type]: weapon.sounds.fire,
+    }), this.sounds);
 
     this.viewHeight = this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
@@ -218,6 +216,7 @@ class Player extends AbstractActor {
       crouch,
       selectWeapon,
       attack,
+      stopAttack,
       use,
     } = this.actions;
 
@@ -317,8 +316,14 @@ class Player extends AbstractActor {
     // Update weapon.
     if (selectWeapon) {
       this.selectWeapon(selectWeapon - 1);
-    } else if (attack) {
-      this.useWeapon();
+    }
+
+    if (attack && this.weapon.fire()) {
+      this.attack();
+    }
+
+    if (stopAttack) {
+      this.weapon.stop();
     }
 
     this.weapon.update(delta);
@@ -374,6 +379,7 @@ class Player extends AbstractActor {
     this.actions.use = false;
     this.actions.selectWeapon = 0;
     this.actions.rotate = 0;
+    this.actions.stopAttack = false;
 
     // Update messages
     this.messages.forEach(message => message.update(delta));
@@ -466,83 +472,89 @@ class Player extends AbstractActor {
   /**
    * Use the current weapon.
    */
-  useWeapon() {
-    if (this.weapon.use()) {
-      const { power, recoil } = this.weapon;
+  attack() {
+    const {
+      power,
+      recoil,
+      accuracy,
+      spread,
+    } = this.weapon;
 
-      const {
-        startPoint,
-        endPoint,
-        distance,
-        side,
-        encounteredBodies,
-      } = this.castRay(this.viewAngle);
+    const {
+      startPoint,
+      endPoint,
+      distance,
+      side,
+      encounteredBodies,
+    } = this.castRay(this.viewAngle);
 
-      // Get sorted collisions
-      const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
-        if (body.blocking) {
-          const point = body.getRayCollision({ startPoint, endPoint });
+    // Get sorted collisions
+    const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
+      if (body.blocking) {
+        const point = body.getRayCollision({ startPoint, endPoint });
 
-          if (point) {
-            memo.push({ body, point });
-          }
-
-          return memo;
+        if (point) {
+          memo.push({ body, point });
         }
+
         return memo;
-      }, []).sort((a, b) => {
-        if (a.point.distance > b.point.distance) {
-          return 1;
-        }
-
-        if (a.point.distance < b.point.distance) {
-          return -1;
-        }
-
-        return 0;
-      });
-
-      const bullet = this.bullets[this.weapon.type].shift();
-      const angle = (this.viewAngle + DEG_180) % DEG_360;
-
-      if (collisions.length) {
-        // Handle collsion with body
-        // TODO: Handle more than nearest collsion
-        const { point, body } = collisions[0];
-
-        this.parent.addExplosion(new Explosion({
-          x: point.x + Math.cos(angle) * (bullet.width / 2),
-          y: point.y + Math.cos(angle) * (bullet.width / 2),
-          sourceId: bullet.id,
-          type: bullet.explosionType,
-          parent: this.parent,
-        }));
-
-        if (body.isEnemy) {
-          body.hurt(power);
-
-          if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
-            if (!side.spatter) {
-              side.spatter = body.spatter();
-            }
-          }
-        }
-      } else {
-        // Handle collision with wall
-        this.parent.addExplosion(new Explosion({
-          x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
-          y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
-          sourceId: bullet.id,
-          type: bullet.explosionType,
-          parent: this.parent,
-        }));
+      }
+      return memo;
+    }, []).sort((a, b) => {
+      if (a.point.distance > b.point.distance) {
+        return 1;
       }
 
-      this.bullets[this.weapon.type].push(bullet);
-      this.camera.setRecoil(recoil);
-      this.parent.onExplosion(power);
-      this.emitSound(this.weapon.sounds.fire);
+      if (a.point.distance < b.point.distance) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    const bullet = this.bullets[this.weapon.type].shift();
+    const angle = (this.viewAngle + DEG_180) % DEG_360;
+
+    if (collisions.length) {
+      // Handle collsion with body
+      // TODO: Handle more than nearest collsion
+      const { point, body } = collisions[0];
+
+      this.parent.addExplosion(new Explosion({
+        x: point.x + Math.cos(angle) * (bullet.width / 2),
+        y: point.y + Math.cos(angle) * (bullet.width / 2),
+        sourceId: bullet.id,
+        type: bullet.explosionType,
+        parent: this.parent,
+      }));
+
+      if (body.isEnemy) {
+        const damage = spread
+          .reduce(memo => (memo + (power * (Math.floor(Math.random() * accuracy) + 1))), 0);
+
+        body.hurt(damage);
+
+        if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
+          if (!side.spatter) {
+            side.spatter = body.spatter();
+          }
+        }
+      }
+    } else {
+      // Handle collision with wall
+      this.parent.addExplosion(new Explosion({
+        x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
+        y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
+        sourceId: bullet.id,
+        type: bullet.explosionType,
+        parent: this.parent,
+      }));
     }
+
+    this.bullets[this.weapon.type].push(bullet);
+    this.camera.setRecoil(recoil);
+    this.parent.onExplosion(power);
+    this.emitSound(this.weapon.sounds.fire);
   }
 
   /**
