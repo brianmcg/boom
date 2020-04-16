@@ -242,6 +242,9 @@ class Weapon extends Entity {
       explosionType,
       sounds,
       equiped,
+      rate,
+      accuracy,
+      spread,
     } = this;
 
     return {
@@ -254,6 +257,9 @@ class Weapon extends Entity {
       explosionType,
       sounds,
       equiped,
+      rate,
+      accuracy,
+      spread: spread.length,
     };
   }
 }
