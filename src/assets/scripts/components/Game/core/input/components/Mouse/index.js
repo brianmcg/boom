@@ -7,7 +7,7 @@ class Mouse {
    * @param  {Element} options.el          The canvas element.
    * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
-  constructor({ el, sensitivity = 0.0002 }) {
+  constructor({ el, sensitivity = 0.0004 }) {
     el.requestPointerLock = el.requestPointerLock
       || el.mozRequestPointerLock
       || el.webkitRequestPointerLock;

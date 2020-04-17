@@ -64,7 +64,9 @@ class WorldScene extends Scene {
 
     // Rotate
     this.onMouseMove((x) => {
-      this.world.player.actions.rotate += x;
+      if (this.isRunning()) {
+        this.world.player.actions.rotate += x;
+      }
     });
 
     // Move forward
@@ -184,11 +186,16 @@ class WorldScene extends Scene {
 
     // Attack
     this.onMouseDown(() => {
-      this.world.player.actions.attack = true;
+      if (this.isRunning()) {
+        this.world.player.actions.attack = true;
+      }
     });
 
     this.onMouseUp(() => {
-      this.world.player.actions.attack = false;
+      if (this.isRunning()) {
+        this.world.player.actions.attack = false;
+        this.world.player.actions.stopAttack = true;
+      }
     });
 
     this.onKeyDown(KEYS.CTRL, () => {
