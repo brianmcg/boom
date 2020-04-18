@@ -4,13 +4,13 @@ import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
 import ReviewContainer from './containers/ReviewContainer';
-import Scene from '../Scene';
+import Scene, { STATES } from '../Scene';
 
-const STATES = {
+Object.assign(STATES, {
   ADDING_REVIEW: 'world:scene:adding:review',
   DISPLAYING_REVIEW: 'world:scene:displaying:review',
   REMOVING_REVIEW: 'world:scene:removing:review',
-};
+});
 
 const FADE_INCREMENT = 0.05;
 
@@ -53,191 +53,67 @@ class WorldScene extends Scene {
       index: this.index,
     });
 
+    this.controls.add(STATES.RUNNING, {
+      onKeyDown: {
+        [KEYS.UP_ARROW]: () => this.world.player.setMoveForward(true),
+        [KEYS.W]: () => this.world.player.setMoveForward(true),
+        [KEYS.DOWN_ARROW]: () => this.world.player.setMoveBackward(true),
+        [KEYS.S]: () => this.world.player.setMoveBackward(true),
+        [KEYS.LEFT_ARROW]: () => this.world.player.setTurnLeft(true),
+        [KEYS.RIGHT_ARROW]: () => this.world.player.setTurnRight(true),
+        [KEYS.A]: () => this.world.player.setStrafeLeft(true),
+        [KEYS.D]: () => this.world.player.setStrafeRight(true),
+        [KEYS.E]: () => this.world.player.setUse(true),
+        [KEYS.SPACE]: () => this.world.player.setUse(true),
+        [KEYS.CTRL]: () => this.world.player.setAttack(true),
+        [KEYS.NUM_1]: () => this.world.player.setSelectWeapon(0),
+        [KEYS.NUM_2]: () => this.world.player.setSelectWeapon(1),
+        [KEYS.NUM_3]: () => this.world.player.setSelectWeapon(2),
+      },
+      onKeyUp: {
+        [KEYS.UP_ARROW]: () => this.world.player.setMoveForward(false),
+        [KEYS.W]: () => this.world.player.setMoveForward(false),
+        [KEYS.DOWN_ARROW]: () => this.world.player.setMoveBackward(false),
+        [KEYS.S]: () => this.world.player.setMoveBackward(false),
+        [KEYS.LEFT_ARROW]: () => this.world.player.setTurnLeft(false),
+        [KEYS.RIGHT_ARROW]: () => this.world.player.setTurnRight(false),
+        [KEYS.A]: () => this.world.player.setStrafeLeft(false),
+        [KEYS.D]: () => this.world.player.setStrafeRight(false),
+        [KEYS.CTRL]: () => this.world.player.setAttack(false),
+      },
+    });
+
+
+    // // Attack
+    // this.onMouseDown(() => {
+    //   if (this.isRunning()) {
+    //     this.world.player.actions.attack = true;
+    //   }
+    // });
+
+
+    // this.onMouseUp(() => {
+    //   if (this.isRunning()) {
+    //     this.world.player.actions.attack = false;
+    //     this.world.player.actions.stopAttack = true;
+    //   }
+    // });
+
+    // this.onMouseMove((x) => {
+    //   if (this.isRunning()) {
+    //     this.world.player.actions.rotate += x;
+    //   }
+    // });
+
+
     // Replace parent class space callback.
-    this.onKeyDown(KEYS.SPACE, () => {
-      if (this.isPrompting()) {
-        this.setRemovingReview();
-      }
-    }, {
-      replace: true,
-    });
-
-    // Rotate
-    this.onMouseMove((x) => {
-      if (this.isRunning()) {
-        this.world.player.actions.rotate += x;
-      }
-    });
-
-    // Move forward
-    this.onKeyDown(KEYS.UP_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveForward = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.UP_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveForward = false;
-      }
-    });
-
-    this.onKeyDown(KEYS.W, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveForward = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.W, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveForward = false;
-      }
-    });
-
-    // Move backward
-    this.onKeyDown(KEYS.DOWN_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveBackward = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.DOWN_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveBackward = false;
-      }
-    });
-
-    this.onKeyDown(KEYS.S, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveBackward = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.S, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.moveBackward = false;
-      }
-    });
-
-    // Turn left
-    this.onKeyDown(KEYS.LEFT_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.turnLeft = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.LEFT_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.turnLeft = false;
-      }
-    });
-
-    // Turn right
-    this.onKeyDown(KEYS.RIGHT_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.turnRight = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.RIGHT_ARROW, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.turnRight = false;
-      }
-    });
-
-    // Strafe left
-    this.onKeyDown(KEYS.A, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.strafeLeft = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.A, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.strafeLeft = false;
-      }
-    });
-
-    // Strafe right
-    this.onKeyDown(KEYS.D, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.strafeRight = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.D, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.strafeRight = false;
-      }
-    });
-
-    // Use interactive body
-    this.onKeyDown(KEYS.E, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.use = true;
-      }
-    });
-
-    this.onKeyDown(KEYS.SPACE, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.use = true;
-      }
-    });
-
-    // Attack
-    this.onMouseDown(() => {
-      if (this.isRunning()) {
-        this.world.player.actions.attack = true;
-      }
-    });
-
-    this.onMouseUp(() => {
-      if (this.isRunning()) {
-        this.world.player.actions.attack = false;
-        this.world.player.actions.stopAttack = true;
-      }
-    });
-
-    this.onKeyDown(KEYS.CTRL, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.attack = true;
-      }
-    });
-
-    this.onKeyUp(KEYS.CTRL, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.attack = false;
-        this.world.player.actions.stopAttack = true;
-      }
-    });
-
-    // Select Weapon 1
-    this.onKeyDown(KEYS.NUM_1, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.selectWeapon = 1;
-      }
-    });
-
-    // Select Weapon 2
-    this.onKeyDown(KEYS.NUM_2, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.selectWeapon = 2;
-      }
-    });
-
-    // Select Weapon 3
-    this.onKeyDown(KEYS.NUM_3, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.selectWeapon = 3;
-      }
-    });
-
-    // Select Weapon 4
-    this.onKeyDown(KEYS.NUM_4, () => {
-      if (this.isRunning()) {
-        this.world.player.actions.selectWeapon = 4;
-      }
-    });
+    // this.onKeyDown(KEYS.SPACE, () => {
+    //   if (this.isPrompting()) {
+    //     this.setRemovingReview();
+    //   }
+    // }, {
+    //   replace: true,
+    // });
   }
 
 

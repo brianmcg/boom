@@ -43,7 +43,7 @@ class Game extends Application {
     this.mouse = new Mouse({ el: this.view });
     this.spinner = new Spinner();
     this.manual = new Manual();
-    // this.manual.onClickStart(() => this.start());
+    this.manual.onClickStart(() => this.start());
     // this.addManual();
     this.addCanvas();
     this.start();

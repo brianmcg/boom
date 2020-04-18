@@ -6,8 +6,9 @@ import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
+import Controls from './components/Controls';
 
-const STATES = {
+export const STATES = {
   LOADING: 'loading',
   FADING_IN: 'fading:in',
   FADING_OUT: 'fading:out',
@@ -72,36 +73,28 @@ class Scene extends Container {
       },
     };
 
-    this.onKeyDown(KEYS.Q, () => {
-      if (this.isRunning() || this.isPrompting()) {
-        this.showMenu();
-      } else if (this.state === STATES.PAUSED) {
-        this.hideMenu();
-      }
+    this.controls = new Controls(this.game);
+
+    this.controls.add(STATES.PAUSED, {
+      onKeyDown: {
+        [KEYS.Q]: () => this.hideMenu(),
+        [KEYS.UP_ARROW]: () => this.menuHighlightPrevious(),
+        [KEYS.DOWN_ARROW]: () => this.menuHighlightNext(),
+        [KEYS.ENTER]: () => this.menuSelect(),
+      },
     });
 
-    this.onKeyDown(KEYS.UP_ARROW, () => {
-      if (this.isPaused()) {
-        this.menuHighlightPrevious();
-      }
+    this.controls.add(STATES.RUNNING, {
+      onKeyDown: {
+        [KEYS.Q]: () => this.showMenu(),
+      },
     });
 
-    this.onKeyDown(KEYS.DOWN_ARROW, () => {
-      if (this.isPaused()) {
-        this.menuHighlightNext();
-      }
-    });
-
-    this.onKeyDown(KEYS.ENTER, () => {
-      if (this.isPaused()) {
-        this.menuSelect();
-      }
-    });
-
-    this.onKeyDown(KEYS.SPACE, () => {
-      if (this.isPrompting()) {
-        this.triggerComplete();
-      }
+    this.controls.add(STATES.PROMPTING, {
+      onKeyDown: {
+        [KEYS.Q]: () => this.showMenu(),
+        [KEYS.SPACE]: () => this.triggerComplete(),
+      },
     });
 
     this.setLoading();
@@ -129,41 +122,6 @@ class Scene extends Container {
    */
   onMouseUp(callback) {
     this.game.mouse.onMouseUp(callback);
-  }
-
-  /**
-   * Add a key down event to the scene.
-   * @param {String}   name             The name of the key.
-   * @param {Function} callback         The callback function.
-   * @param {Boolean}  options.replace  Replace existing callback.
-   */
-  onKeyDown(name, callback, { replace = false } = {}) {
-    if (replace) {
-      this.game.keyboard.add(name).onKeyDown(callback);
-    } else {
-      const key = this.game.keyboard.keys[name]
-        ? this.game.keyboard.keys[name]
-        : this.game.keyboard.add(name);
-
-      key.onKeyDown(callback);
-    }
-  }
-
-  /**
-   * Add a key up callback to the scene.
-   * @param {String}   name     The name of the key.
-   * @param {Function} callback The callback function.
-   */
-  onKeyUp(name, callback, { replace = false } = {}) {
-    if (replace) {
-      this.game.keyboard.add(name).onKeyUp(callback);
-    } else {
-      const key = this.game.keyboard.keys[name]
-        ? this.game.keyboard.keys[name]
-        : this.game.keyboard.add(name);
-
-      key.onKeyUp(callback);
-    }
   }
 
   /**
@@ -548,9 +506,24 @@ class Scene extends Container {
   }
 
   /**
+   * Set the scene state.
+   * @param {String} state The scene state.
+   */
+  setState(state) {
+    const isStateChanged = super.setState(state);
+
+    if (isStateChanged) {
+      this.controls.set(state);
+    }
+
+    return isStateChanged;
+  }
+
+  /**
    * Destroy the scene.
    */
   destroy() {
+    this.controls.reset();
     this.mainContainer.destroy();
     this.menuContainer.destroy();
     this.promptContainer.destroy();

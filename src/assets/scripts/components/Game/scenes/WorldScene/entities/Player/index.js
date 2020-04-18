@@ -314,12 +314,12 @@ class Player extends AbstractActor {
     this.camera.update(delta);
 
     // Update weapon.
-    if (selectWeapon) {
-      this.selectWeapon(selectWeapon - 1);
+    if (selectWeapon || selectWeapon === 0) {
+      this.selectWeapon(selectWeapon);
     }
 
     if (attack && this.weapon.fire()) {
-      this.attack();
+      this.fireWeapon();
     }
 
     if (stopAttack) {
@@ -377,7 +377,7 @@ class Player extends AbstractActor {
 
     // Update actions.
     this.actions.use = false;
-    this.actions.selectWeapon = 0;
+    this.actions.selectWeapon = null;
     this.actions.rotate = 0;
     this.actions.stopAttack = false;
 
@@ -454,6 +454,48 @@ class Player extends AbstractActor {
     this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
   }
 
+  setMoveForward(value) {
+    this.actions.moveForward = value;
+  }
+
+  setMoveBackward(value) {
+    this.actions.moveBackward = value;
+  }
+
+  setTurnLeft(value) {
+    this.actions.turnLeft = value;
+  }
+
+  setTurnRight(value) {
+    this.actions.turnRight = value;
+  }
+
+  setStrafeLeft(value) {
+    this.actions.strafeLeft = value;
+  }
+
+  setStrafeRight(value) {
+    this.actions.strafeRight = value;
+  }
+
+  setUse(value) {
+    this.actions.use = value;
+  }
+
+  setAttack(value) {
+    this.actions.attack = value;
+    this.actions.stopAttack = !value;
+  }
+
+  setSelectWeapon(value) {
+    this.actions.selectWeapon = value;
+  }
+
+  // stopAttack() {
+  //   this.actions.stopAttack = true;
+  // }
+
+
   /**
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
@@ -472,7 +514,7 @@ class Player extends AbstractActor {
   /**
    * Use the current weapon.
    */
-  attack() {
+  fireWeapon() {
     const {
       power,
       recoil,

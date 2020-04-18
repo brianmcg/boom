@@ -73,8 +73,8 @@ class Keyboard {
       if (!e.repeat) {
         const key = this.keys[KEY_CODES[e.keyCode]];
 
-        if (key) {
-          key.keyDownCallbacks.forEach(callback => callback());
+        if (key && key.downCallback) {
+          key.downCallback();
         }
       }
     }, false);
@@ -86,15 +86,31 @@ class Keyboard {
 
       const key = this.keys[KEY_CODES[e.keyCode]];
 
-      if (key) {
-        key.keyUpCallbacks.forEach(callback => callback());
+      if (key && key.upCallback) {
+        key.upCallback();
       }
     }, false);
   }
 
   /**
+   * Get a key.
+   * @param  {String} name The name of the key.
+   * @return {Key}         The key.
+   */
+  get(name) {
+    const key = this.keys[name];
+
+    if (key) {
+      return key;
+    }
+
+    return this.add(name);
+  }
+
+  /**
    * Add a key.
    * @param {String} name   The name of the key.
+   * @return {Key}          The key.
    */
   add(name) {
     const key = new Key();
@@ -102,6 +118,13 @@ class Keyboard {
     this.keys[name] = key;
 
     return key;
+  }
+
+  /**
+   * Remove all keys.
+   */
+  removeKeys() {
+    this.keys = {};
   }
 }
 

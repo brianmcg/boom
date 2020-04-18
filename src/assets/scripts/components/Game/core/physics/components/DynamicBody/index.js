@@ -38,7 +38,7 @@ class DynamicBody extends Body {
     // Get bodies from surrounding cells
     const bodies = this.parent.getAdjacentBodies(this);
 
-    const velocity = Math.min(this.velocity * delta, CELL_SIZE);
+    const velocity = Math.min(this.velocity * delta, CELL_SIZE / 2);
 
     // Unmark id from cell before moving
     this.parent.getCell(this.gridX, this.gridY).remove(this);
