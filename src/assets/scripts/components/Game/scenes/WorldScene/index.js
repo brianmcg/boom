@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import { KEYS } from 'game/core/input';
+import { KEYS, BUTTONS } from 'game/core/input';
 import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
@@ -53,67 +53,48 @@ class WorldScene extends Scene {
       index: this.index,
     });
 
-    this.controls.add(STATES.RUNNING, {
+    this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
-        [KEYS.UP_ARROW]: () => this.world.player.setMoveForward(true),
-        [KEYS.W]: () => this.world.player.setMoveForward(true),
-        [KEYS.DOWN_ARROW]: () => this.world.player.setMoveBackward(true),
-        [KEYS.S]: () => this.world.player.setMoveBackward(true),
-        [KEYS.LEFT_ARROW]: () => this.world.player.setTurnLeft(true),
-        [KEYS.RIGHT_ARROW]: () => this.world.player.setTurnRight(true),
-        [KEYS.A]: () => this.world.player.setStrafeLeft(true),
-        [KEYS.D]: () => this.world.player.setStrafeRight(true),
-        [KEYS.E]: () => this.world.player.setUse(true),
-        [KEYS.SPACE]: () => this.world.player.setUse(true),
-        [KEYS.CTRL]: () => this.world.player.setAttack(true),
-        [KEYS.NUM_1]: () => this.world.player.setSelectWeapon(0),
-        [KEYS.NUM_2]: () => this.world.player.setSelectWeapon(1),
-        [KEYS.NUM_3]: () => this.world.player.setSelectWeapon(2),
+        [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: true }),
+        [KEYS.W]: () => this.assignPlayerAction({ moveForward: true }),
+        [KEYS.DOWN_ARROW]: () => this.assignPlayerAction({ moveBackward: true }),
+        [KEYS.S]: () => this.assignPlayerAction({ moveBackward: true }),
+        [KEYS.LEFT_ARROW]: () => this.assignPlayerAction({ turnLeft: true }),
+        [KEYS.RIGHT_ARROW]: () => this.assignPlayerAction({ turnRight: true }),
+        [KEYS.A]: () => this.assignPlayerAction({ strafeLeft: true }),
+        [KEYS.D]: () => this.assignPlayerAction({ strafeRight: true }),
+        [KEYS.E]: () => this.assignPlayerAction({ use: true }),
+        [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
+        [KEYS.CTRL]: () => this.assignPlayerAction({ attack: true }),
+        [KEYS.NUM_1]: () => this.assignPlayerAction({ selectWeapon: 0 }),
+        [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 1 }),
+        [KEYS.NUM_3]: () => this.assignPlayerAction({ selectWeapon: 2 }),
       },
       onKeyUp: {
-        [KEYS.UP_ARROW]: () => this.world.player.setMoveForward(false),
-        [KEYS.W]: () => this.world.player.setMoveForward(false),
-        [KEYS.DOWN_ARROW]: () => this.world.player.setMoveBackward(false),
-        [KEYS.S]: () => this.world.player.setMoveBackward(false),
-        [KEYS.LEFT_ARROW]: () => this.world.player.setTurnLeft(false),
-        [KEYS.RIGHT_ARROW]: () => this.world.player.setTurnRight(false),
-        [KEYS.A]: () => this.world.player.setStrafeLeft(false),
-        [KEYS.D]: () => this.world.player.setStrafeRight(false),
-        [KEYS.CTRL]: () => this.world.player.setAttack(false),
+        [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: false }),
+        [KEYS.W]: () => this.assignPlayerAction({ moveForward: false }),
+        [KEYS.DOWN_ARROW]: () => this.assignPlayerAction({ moveBackward: false }),
+        [KEYS.S]: () => this.assignPlayerAction({ moveBackward: false }),
+        [KEYS.LEFT_ARROW]: () => this.assignPlayerAction({ turnLeft: false }),
+        [KEYS.RIGHT_ARROW]: () => this.assignPlayerAction({ turnRight: false }),
+        [KEYS.A]: () => this.assignPlayerAction({ strafeLeft: false }),
+        [KEYS.D]: () => this.assignPlayerAction({ strafeRight: false }),
+        [KEYS.CTRL]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
       },
+      onMouseDown: {
+        [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),
+      },
+      onMouseUp: {
+        [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
+      },
+      onMouseMove: x => this.incrementPlayerAction({ rotate: x }),
     });
 
-
-    // // Attack
-    // this.onMouseDown(() => {
-    //   if (this.isRunning()) {
-    //     this.world.player.actions.attack = true;
-    //   }
-    // });
-
-
-    // this.onMouseUp(() => {
-    //   if (this.isRunning()) {
-    //     this.world.player.actions.attack = false;
-    //     this.world.player.actions.stopAttack = true;
-    //   }
-    // });
-
-    // this.onMouseMove((x) => {
-    //   if (this.isRunning()) {
-    //     this.world.player.actions.rotate += x;
-    //   }
-    // });
-
-
-    // Replace parent class space callback.
-    // this.onKeyDown(KEYS.SPACE, () => {
-    //   if (this.isPrompting()) {
-    //     this.setRemovingReview();
-    //   }
-    // }, {
-    //   replace: true,
-    // });
+    this.game.input.add(STATES.PROMPTING, {
+      onKeyDown: {
+        [KEYS.SPACE]: () => this.setRemovingReview(),
+      },
+    });
   }
 
 
@@ -242,6 +223,24 @@ class WorldScene extends Scene {
       this.reviewContainer.setStatistics(this.world.getStatistics());
       this.addChild(this.reviewContainer);
     }
+  }
+
+  /**
+   * Set player actions.
+   * @param {Object} actions The actions to set.
+   */
+  assignPlayerAction(actions) {
+    Object.assign(this.world.player.actions, actions);
+  }
+
+  /**
+   * Increment player actions.
+   * @param  {Object} actions The actions to increment.
+   */
+  incrementPlayerAction(actions) {
+    Object.keys(actions).forEach((key) => {
+      this.world.player.actions[key] += actions[key];
+    });
   }
 
   /**

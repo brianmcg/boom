@@ -454,48 +454,6 @@ class Player extends AbstractActor {
     this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
   }
 
-  setMoveForward(value) {
-    this.actions.moveForward = value;
-  }
-
-  setMoveBackward(value) {
-    this.actions.moveBackward = value;
-  }
-
-  setTurnLeft(value) {
-    this.actions.turnLeft = value;
-  }
-
-  setTurnRight(value) {
-    this.actions.turnRight = value;
-  }
-
-  setStrafeLeft(value) {
-    this.actions.strafeLeft = value;
-  }
-
-  setStrafeRight(value) {
-    this.actions.strafeRight = value;
-  }
-
-  setUse(value) {
-    this.actions.use = value;
-  }
-
-  setAttack(value) {
-    this.actions.attack = value;
-    this.actions.stopAttack = !value;
-  }
-
-  setSelectWeapon(value) {
-    this.actions.selectWeapon = value;
-  }
-
-  // stopAttack() {
-  //   this.actions.stopAttack = true;
-  // }
-
-
   /**
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.

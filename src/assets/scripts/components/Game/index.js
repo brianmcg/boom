@@ -1,5 +1,5 @@
 import { Application } from './core/graphics';
-import { Keyboard, Mouse } from './core/input';
+import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
 import { SCREEN, MAX_FPS } from './constants/config';
 import {
@@ -39,8 +39,7 @@ class Game extends Application {
     this.timer = 0;
 
     this.loader = new Loader();
-    this.keyboard = new Keyboard();
-    this.mouse = new Mouse({ el: this.view });
+    this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
     this.manual.onClickStart(() => this.start());
@@ -239,7 +238,7 @@ class Game extends Application {
    * Lock the mouse pointer.
    */
   lockPointer() {
-    this.mouse.lockPointer();
+    this.input.mouse.lockPointer();
   }
 
   /**
@@ -247,7 +246,7 @@ class Game extends Application {
    * @return {Boolean}
    */
   isPointerLocked() {
-    return this.mouse.isPointerLocked();
+    return this.input.mouse.isPointerLocked();
   }
 
   /**

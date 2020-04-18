@@ -6,7 +6,6 @@ import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
-import Controls from './components/Controls';
 
 export const STATES = {
   LOADING: 'loading',
@@ -73,9 +72,7 @@ class Scene extends Container {
       },
     };
 
-    this.controls = new Controls(this.game);
-
-    this.controls.add(STATES.PAUSED, {
+    this.game.input.add(STATES.PAUSED, {
       onKeyDown: {
         [KEYS.Q]: () => this.hideMenu(),
         [KEYS.UP_ARROW]: () => this.menuHighlightPrevious(),
@@ -84,13 +81,13 @@ class Scene extends Container {
       },
     });
 
-    this.controls.add(STATES.RUNNING, {
+    this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
         [KEYS.Q]: () => this.showMenu(),
       },
     });
 
-    this.controls.add(STATES.PROMPTING, {
+    this.game.input.add(STATES.PROMPTING, {
       onKeyDown: {
         [KEYS.Q]: () => this.showMenu(),
         [KEYS.SPACE]: () => this.triggerComplete(),
@@ -98,30 +95,6 @@ class Scene extends Container {
     });
 
     this.setLoading();
-  }
-
-  /**
-   * Add mouse move callback.
-   * @param {Function} callback The callback.
-   */
-  onMouseMove(callback) {
-    this.game.mouse.onMouseMove(callback);
-  }
-
-  /**
-   * Add mouse down callback.
-   * @param {Function} callback The callback.
-   */
-  onMouseDown(callback) {
-    this.game.mouse.onMouseDown(callback);
-  }
-
-  /**
-   * Add mouse up callback.
-   * @param {Function} callback The callback.
-   */
-  onMouseUp(callback) {
-    this.game.mouse.onMouseUp(callback);
   }
 
   /**
@@ -513,7 +486,7 @@ class Scene extends Container {
     const isStateChanged = super.setState(state);
 
     if (isStateChanged) {
-      this.controls.set(state);
+      this.game.input.set(state);
     }
 
     return isStateChanged;
@@ -523,7 +496,7 @@ class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
-    this.controls.reset();
+    this.game.input.removeCallbacks();
     this.mainContainer.destroy();
     this.menuContainer.destroy();
     this.promptContainer.destroy();

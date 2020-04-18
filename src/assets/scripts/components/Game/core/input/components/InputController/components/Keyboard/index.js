@@ -98,32 +98,19 @@ class Keyboard {
    * @return {Key}         The key.
    */
   get(name) {
-    const key = this.keys[name];
-
-    if (key) {
-      return key;
+    if (this.keys[name]) {
+      return this.keys[name];
     }
 
-    return this.add(name);
+    this.keys[name] = new Key();
+
+    return this.keys[name];
   }
 
   /**
-   * Add a key.
-   * @param {String} name   The name of the key.
-   * @return {Key}          The key.
+   * Remove all callbacks.
    */
-  add(name) {
-    const key = new Key();
-
-    this.keys[name] = key;
-
-    return key;
-  }
-
-  /**
-   * Remove all keys.
-   */
-  removeKeys() {
+  removeCallbacks() {
     this.keys = {};
   }
 }

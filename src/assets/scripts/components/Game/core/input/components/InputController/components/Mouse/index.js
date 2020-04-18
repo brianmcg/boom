@@ -1,5 +1,17 @@
 import Button from './components/Button';
 
+export const BUTTONS = {
+  LEFT: 'LEFT',
+  MIDDLE: 'MIDDLE',
+  RIGHT: 'RIGHT',
+};
+
+const BUTTON_CODES = {
+  0: BUTTONS.LEFT,
+  1: BUTTONS.MIDDLE,
+  2: BUTTONS.RIGHT,
+};
+
 /**
  * Class representing a mouse.
  */
@@ -9,7 +21,10 @@ class Mouse {
    * @param  {Element} options.el          The canvas element.
    * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
-  constructor({ el, sensitivity = 0.0004 }) {
+  constructor(el, sensitivity = 0.0004) {
+    this.buttons = {};
+    this.el = el;
+
     el.requestPointerLock = el.requestPointerLock
       || el.mozRequestPointerLock
       || el.webkitRequestPointerLock;
@@ -18,29 +33,30 @@ class Mouse {
       || document.mozExitPointerLock
       || document.webkitExitPointerLock;
 
-    this.el = el;
-    this.mouseMoveCallback = null;
-    this.mouseDownCallback = null;
-    this.mouseUpCallback = null;
-
     const onMouseMove = (e) => {
       const x = sensitivity * e.movementX
         || e.mozMovementX
         || e.webkitMovementX
         || 0;
 
-      // this.mouseMoveCallbacks.forEach(callback => callback(x, null));
-    };
-
-    const onMouseDown = () => {
-      if (this.mouseDownCallback) {
-        this.mouseDownCallback();
+      if (this.moveCallback) {
+        this.moveCallback(x);
       }
     };
 
-    const onMouseUp = () => {
-      if (this.mouseUpCallback) {
-        this.mouseUpCallback();
+    const onMouseDown = (e) => {
+      const button = this.buttons[BUTTON_CODES[e.button]];
+
+      if (button && button.downCallback) {
+        button.downCallback();
+      }
+    };
+
+    const onMouseUp = (e) => {
+      const button = this.buttons[BUTTON_CODES[e.button]];
+
+      if (button && button.upCallback) {
+        button.upCallback();
       }
     };
 
@@ -62,36 +78,26 @@ class Mouse {
   }
 
   /**
-   * Add a callback to the mouse move event.
-   * @param  {Function} callback The callback.
+   * Get a button.
+   * @param  {String} name The name of the button.
+   * @return {Key}         The button.
    */
-  onMouseMove(callback) {
-    this.mouseMoveCallback = callback;
+  get(name) {
+    if (this.buttons[name]) {
+      return this.buttons[name];
+    }
+
+    this.buttons[name] = new Button();
+
+    return this.buttons[name];
   }
 
   /**
-   * Add a callback to the mouse down event.
+   * Add a callback to the move event.
    * @param  {Function} callback The callback.
    */
-  onMouseDown(callback) {
-    this.mouseDownCallback = callback;
-  }
-
-  /**
-   * Add a callback to the mouse up event.
-   * @param  {Function} callback The callback.
-   */
-  onMouseUp(callback) {
-    this.mouseUpCallback = callback;
-  }
-
-  /**
-   * Remove all callbacks.
-   */
-  removeButtons() {
-    this.mouseMoveCallbacks = null;
-    this.mouseDownCallbacks = null;
-    this.mouseUpCallbacks = null;
+  onMove(callback) {
+    this.moveCallback = callback;
   }
 
   /**
@@ -120,6 +126,14 @@ class Mouse {
     return document.pointerLockElement === this.el
       || document.mozPointerLockElement === this.el
       || document.webkitPointerLockElement === this.el;
+  }
+
+  /**
+   * Remove all callbacks.
+   */
+  removeCallbacks() {
+    this.buttons = {};
+    this.moveCallback = null;
   }
 }
 

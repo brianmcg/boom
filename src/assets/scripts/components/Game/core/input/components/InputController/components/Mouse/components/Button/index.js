@@ -4,7 +4,7 @@ class Button {
   }
 
   onUp(callback) {
-    this.downCallback = callback;
+    this.upCallback = callback;
   }
 }
 
