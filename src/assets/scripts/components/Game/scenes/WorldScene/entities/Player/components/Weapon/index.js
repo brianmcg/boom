@@ -1,4 +1,4 @@
-import { TIME_STEP } from 'game/constants/config';
+import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
 import Entity from '../../../Entity';
 
 const STATES = {
@@ -50,7 +50,6 @@ class Weapon extends Entity {
     this.sounds = sounds;
     this.power = power;
     this.accuracy = accuracy;
-    this.spread = [...Array(spread).keys()].map(i => i);
     this.rate = rate;
     this.equiped = equiped;
     this.player = player;
@@ -59,6 +58,10 @@ class Weapon extends Entity {
     this.ammo = ammo !== undefined ? ammo : maxAmmo / 2;
     this.maxAmmo = maxAmmo;
     this.timer = 0;
+    this.range = range;
+    this.spread = [...Array(spread).keys()].map(i => i);
+    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE / 4, CELL_SIZE * range) / 2 : 0;
+    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE / 4, CELL_SIZE * range) / spread : 0;
 
     this.setDisabled();
   }
@@ -252,13 +255,13 @@ class Weapon extends Entity {
       recoil,
       ammo,
       maxAmmo,
-      range,
       type,
       explosionType,
       sounds,
       equiped,
       rate,
       accuracy,
+      range,
       spread: spread.length,
     };
   }

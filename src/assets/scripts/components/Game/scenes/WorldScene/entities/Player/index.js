@@ -478,80 +478,89 @@ class Player extends AbstractActor {
       recoil,
       accuracy,
       spread,
+      spreadAngle,
+      pelletAngle,
     } = this.weapon;
 
-    const {
-      startPoint,
-      endPoint,
-      distance,
-      side,
-      encounteredBodies,
-    } = this.castRay(this.viewAngle);
+    let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
 
-    // Get sorted collisions
-    const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
-      if (body.blocking) {
-        const point = body.getRayCollision({ startPoint, endPoint });
+    for (let i = 0; i < spread.length; i += 1) {
+      const {
+        startPoint,
+        endPoint,
+        distance,
+        side,
+        encounteredBodies,
+      } = this.castRay(rayAngle);
 
-        if (point) {
-          memo.push({ body, point });
+      // Get sorted collisions
+      const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
+        if (body.blocking) {
+          const point = body.getRayCollision({ startPoint, endPoint });
+
+          if (point) {
+            memo.push({ body, point });
+          }
+
+          return memo;
+        }
+        return memo;
+      }, []).sort((a, b) => {
+        if (a.point.distance > b.point.distance) {
+          return 1;
         }
 
-        return memo;
-      }
-      return memo;
-    }, []).sort((a, b) => {
-      if (a.point.distance > b.point.distance) {
-        return 1;
-      }
+        if (a.point.distance < b.point.distance) {
+          return -1;
+        }
 
-      if (a.point.distance < b.point.distance) {
-        return -1;
-      }
+        return 0;
+      });
 
-      return 0;
-    });
+      const bullet = this.bullets[this.weapon.type].shift();
+      const angle = (this.viewAngle + DEG_180) % DEG_360;
 
-    const bullet = this.bullets[this.weapon.type].shift();
-    const angle = (this.viewAngle + DEG_180) % DEG_360;
+      if (collisions.length) {
+        // Handle collsion with body
+        // TODO: Handle more than nearest collsion
+        const { point, body } = collisions[0];
 
-    if (collisions.length) {
-      // Handle collsion with body
-      // TODO: Handle more than nearest collsion
-      const { point, body } = collisions[0];
+        this.parent.addExplosion(new Explosion({
+          x: point.x + Math.cos(angle) * (bullet.width / 2),
+          y: point.y + Math.cos(angle) * (bullet.width / 2),
+          sourceId: bullet.id,
+          type: bullet.explosionType,
+          parent: this.parent,
+        }));
 
-      this.parent.addExplosion(new Explosion({
-        x: point.x + Math.cos(angle) * (bullet.width / 2),
-        y: point.y + Math.cos(angle) * (bullet.width / 2),
-        sourceId: bullet.id,
-        type: bullet.explosionType,
-        parent: this.parent,
-      }));
+        if (body.isEnemy) {
+          const damage = power * (Math.floor(Math.random() * accuracy) + 1);
 
-      if (body.isEnemy) {
-        const damage = spread
-          .reduce(memo => (memo + (power * (Math.floor(Math.random() * accuracy) + 1))), 0);
+          body.hurt(damage);
+          console.log(damage);
 
-        body.hurt(damage);
-
-        if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
-          if (!side.spatter) {
-            side.spatter = body.spatter();
+          if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
+            if (!side.spatter) {
+              side.spatter = body.spatter();
+            }
           }
         }
+      } else {
+        // Handle collision with wall
+        this.parent.addExplosion(new Explosion({
+          x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
+          y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
+          sourceId: bullet.id,
+          type: bullet.explosionType,
+          parent: this.parent,
+        }));
       }
-    } else {
-      // Handle collision with wall
-      this.parent.addExplosion(new Explosion({
-        x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
-        y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
-        sourceId: bullet.id,
-        type: bullet.explosionType,
-        parent: this.parent,
-      }));
+
+      this.bullets[this.weapon.type].push(bullet);
+
+      rayAngle += pelletAngle;
     }
 
-    this.bullets[this.weapon.type].push(bullet);
     this.camera.setRecoil(recoil);
     this.parent.onExplosion(power);
     this.emitSound(this.weapon.sounds.fire);
