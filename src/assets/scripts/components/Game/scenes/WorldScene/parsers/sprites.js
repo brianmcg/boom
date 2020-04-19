@@ -184,6 +184,16 @@ const createExplosionSprites = ({ animations, textures, world }) => {
     return memo;
   }, {});
 
+  const enemySpurtSprites = world.enemies.reduce((memo, enemy) => {
+    const spurtTextures = animations[enemy.spurtType].map(animation => textures[animation]);
+
+    memo[enemy.id] = new ExplosionSprite(spurtTextures, {
+      animationSpeed: 0.2,
+    });
+
+    return memo;
+  }, {});
+
   const playerBulletSprites = Object.keys(world.player.bullets).reduce((memo, key) => {
     world.player.bullets[key].forEach((bullet) => {
       const explosionTextures = animations[bullet.explosionType]
@@ -201,6 +211,7 @@ const createExplosionSprites = ({ animations, textures, world }) => {
   return {
     ...enemyProjectileSprites,
     ...playerBulletSprites,
+    ...enemySpurtSprites,
   };
 };
 

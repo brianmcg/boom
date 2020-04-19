@@ -51,6 +51,7 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterType,
+    spurtType,
     explode,
     isFloating,
     primaryAttack,
@@ -66,6 +67,7 @@ class AbstractEnemy extends AbstractActor {
     this.attackRange = attackRange * CELL_SIZE;
     this.explode = explode;
     this.type = type;
+    this.spurtType = spurtType;
     this.spatterType = spatterType;
     this.spatters = spatters;
     this.attackTime = attackTime;
@@ -321,7 +323,7 @@ class AbstractEnemy extends AbstractActor {
         this.setHurting();
       } else {
         this.angle = this.parent.player.viewAngle;
-        this.velocity = damage * 0.1;
+        this.velocity = damage * 0.5;
         this.setDead();
       }
     }
