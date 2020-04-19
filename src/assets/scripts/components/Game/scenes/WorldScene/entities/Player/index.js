@@ -537,7 +537,6 @@ class Player extends AbstractActor {
           const damage = power * (Math.floor(Math.random() * accuracy) + 1);
 
           body.hurt(damage);
-          console.log(damage);
 
           if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
             if (!side.spatter) {
@@ -558,7 +557,7 @@ class Player extends AbstractActor {
 
       this.bullets[this.weapon.type].push(bullet);
 
-      rayAngle += pelletAngle;
+      rayAngle = (rayAngle + pelletAngle) % DEG_360;
     }
 
     this.camera.setRecoil(recoil);
