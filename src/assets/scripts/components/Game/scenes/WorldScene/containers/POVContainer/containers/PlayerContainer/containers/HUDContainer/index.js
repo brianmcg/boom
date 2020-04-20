@@ -44,6 +44,7 @@ class HUDContainer extends Container {
     this.addChild(healthAmount);
     this.addChild(foreground);
 
+    // Set key card sprite positions
     Object.values(player.keyCards).forEach((keyCard) => {
       keyCard.onUseEvent(() => {
         keys[keyCard.color].setUsing();
@@ -59,10 +60,12 @@ class HUDContainer extends Container {
       });
     });
 
+    // Set message sprite positions.
     messages.forEach((message) => {
       message.x = SCREEN.WIDTH / 2;
     });
 
+    // Update message positions on messages updated event.
     player.onMessagesUpdated((items) => {
       messages.forEach((message, i) => {
         const item = items[i];
@@ -78,6 +81,23 @@ class HUDContainer extends Container {
       });
     });
 
+    // Update health sprite on player hurt event.
+    player.onHurt(() => {
+      healthAmount.text = this.player.health;
+    });
+
+    // Update ammo sprites on fore weapon event.
+    player.onFireWeapon(() => {
+      ammoAmount.text = this.player.weapon.ammo;
+      ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+    });
+
+    // Update ammo sprites on change weapon event.
+    player.onChangeWeapon(() => {
+      ammoAmount.text = this.player.weapon.ammo;
+      ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+    });
+
     this.player = player;
     this.sprites = sprites;
   }
@@ -87,26 +107,14 @@ class HUDContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta) {
-    const {
-      healthAmount,
-      ammoIcon,
-      ammoAmount,
-      foreground,
-      keys,
-    } = this.sprites;
+    const { foreground, keys } = this.sprites;
 
+    // Update each key card sprite if it is active.
     Object.values(keys).forEach((key) => {
       if (!key.isInactive()) {
         key.update(delta);
       }
     });
-
-    // Update health.
-    healthAmount.text = this.player.health;
-
-    // Update ammo.
-    ammoAmount.text = this.player.weapon.ammo;
-    ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
 
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;

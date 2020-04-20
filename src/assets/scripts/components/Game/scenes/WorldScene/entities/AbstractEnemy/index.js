@@ -324,7 +324,7 @@ class AbstractEnemy extends AbstractActor {
         this.setHurting();
       } else {
         this.angle = this.parent.player.viewAngle;
-        this.velocity = damage * 0.5;
+        this.velocity = damage * 0.1;
         this.setDead();
       }
     }

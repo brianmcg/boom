@@ -344,14 +344,14 @@ const createReviewSprites = (text) => {
 const createHudSprites = ({ world, textures }) => {
   const healthAmount = new TextSprite({
     font: FONT_SIZES.MEDIUM,
-    text: '100',
+    text: `${world.player.health}`,
     color: WHITE,
     anchor: 0.5,
   });
 
   const ammoAmount = new TextSprite({
     font: FONT_SIZES.MEDIUM,
-    text: '100',
+    text: `${world.player.weapon.ammo}`,
     color: WHITE,
     anchor: 0.5,
   });

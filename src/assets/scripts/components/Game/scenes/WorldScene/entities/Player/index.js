@@ -27,9 +27,11 @@ const STATES = {
 };
 
 const EVENTS = {
+  HURT: 'player:hurt',
+  FIRE_WEAPON: 'player:fire:weapon',
   DEATH: 'player:death',
   DYING: 'player:dying',
-  CHANGE_WEAPON: 'player:weapon:change',
+  CHANGE_WEAPON: 'player:change:weapon',
   MESSAGES_UPDATED: 'player:update:messages',
 };
 
@@ -111,6 +113,22 @@ class Player extends AbstractActor {
    */
   onMessagesUpdated(callback) {
     this.on(EVENTS.MESSAGES_UPDATED, callback);
+  }
+
+  /**
+   * Add a callback for the fire weapon event.
+   * @param  {Function} callback The callback function.
+   */
+  onFireWeapon(callback) {
+    this.on(EVENTS.FIRE_WEAPON, callback);
+  }
+
+  /**
+   * Add a callback for the hurt event.
+   * @param  {Function} callback The callback function.
+   */
+  onHurt(callback) {
+    this.on(EVENTS.HURT, callback);
   }
 
   /**
@@ -319,7 +337,7 @@ class Player extends AbstractActor {
     }
 
     if (attack && this.weapon.fire()) {
-      this.fireWeapon();
+      this.attack();
     }
 
     if (stopAttack) {
@@ -463,16 +481,16 @@ class Player extends AbstractActor {
 
     if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
       this.weaponIndex = index;
+      this.weapon = weapon;
       this.emitSound(this.sounds.weapon);
       this.emit(EVENTS.CHANGE_WEAPON);
-      this.weapon = weapon;
     }
   }
 
   /**
    * Use the current weapon.
    */
-  fireWeapon() {
+  attack() {
     const {
       power,
       recoil,
@@ -483,6 +501,9 @@ class Player extends AbstractActor {
     } = this.weapon;
 
     let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
+
+    // Keep a list of accumulated damage to enemies.
+    const enemyDamage = {};
 
     for (let i = 0; i < spread.length; i += 1) {
       const {
@@ -535,7 +556,11 @@ class Player extends AbstractActor {
         if (body.isEnemy) {
           const damage = power * (Math.floor(Math.random() * accuracy) + 1);
 
-          body.hurt(damage);
+          if (!enemyDamage[body.id]) {
+            enemyDamage[body.id] = damage;
+          } else {
+            enemyDamage[body.id] += damage;
+          }
 
           if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
             if (!side.spatter) {
@@ -558,9 +583,15 @@ class Player extends AbstractActor {
       rayAngle = (rayAngle + pelletAngle) % DEG_360;
     }
 
+    // Apply accumulated damage to enemy.
+    Object.keys(enemyDamage).forEach((id) => {
+      this.parent.bodies[id].hurt(enemyDamage[id]);
+    });
+
     this.camera.setRecoil(recoil);
     this.parent.onExplosion(power);
     this.emitSound(this.weapon.sounds.fire);
+    this.emit(EVENTS.FIRE_WEAPON);
   }
 
   /**
@@ -570,6 +601,8 @@ class Player extends AbstractActor {
   hurt(amount) {
     this.vision = HURT_VISION_AMOUNT;
     this.health -= amount;
+
+    this.emit(EVENTS.HURT);
 
     if (this.health <= 0) {
       this.health = 0;
