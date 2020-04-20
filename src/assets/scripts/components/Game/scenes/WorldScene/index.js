@@ -87,7 +87,9 @@ class WorldScene extends Scene {
       onMouseUp: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
       },
-      onMouseMove: x => this.incrementPlayerAction({ rotate: x }),
+      onMouseMove: {
+        callback: x => this.incrementPlayerAction({ rotate: x }),
+      },
     });
 
     this.game.input.add(STATES.PROMPTING, {

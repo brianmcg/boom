@@ -74,7 +74,7 @@ class InputController {
       }
 
       if (onMouseMove) {
-        this.mouse.onMove(onMouseMove);
+        this.mouse.onMove(onMouseMove.callback);
       }
     }
   }

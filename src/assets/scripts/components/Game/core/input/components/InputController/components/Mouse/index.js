@@ -133,7 +133,7 @@ class Mouse {
    */
   removeCallbacks() {
     this.buttons = {};
-    this.moveCallback = null;
+    delete this.moveCallback;
   }
 }
 
