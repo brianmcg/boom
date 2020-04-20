@@ -1,5 +1,6 @@
 import { CELL_SIZE, UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
+import Explosion from '../../effects/Explosion';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -52,7 +53,7 @@ class AbstractEnemy extends AbstractActor {
     spatters,
     spatterType,
     spurtType,
-    explode,
+    explosionType,
     isFloating,
     primaryAttack,
     type,
@@ -65,7 +66,7 @@ class AbstractEnemy extends AbstractActor {
     }
 
     this.attackRange = attackRange * CELL_SIZE;
-    this.explode = explode;
+    this.explosionType = explosionType;
     this.type = type;
     this.spurtType = spurtType;
     this.spatterType = spatterType;
@@ -508,6 +509,15 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
+      if (this.explosionType) {
+        this.parent.addExplosion(new Explosion({
+          x: this.x,
+          y: this.y,
+          sourceId: `${this.id}_${this.explosionType}`,
+          parent: this.parent,
+        }));
+      }
+
       this.emitSound(this.sounds.death);
     }
 

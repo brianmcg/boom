@@ -60,8 +60,8 @@ class Weapon extends Entity {
     this.timer = 0;
     this.range = range;
     this.spread = [...Array(spread).keys()].map(i => i);
-    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE / 4, CELL_SIZE * range) / 2 : 0;
-    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE / 4, CELL_SIZE * range) / spread : 0;
+    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * range) / 2 : 0;
+    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * range) / spread : 0;
 
     this.setDisabled();
   }

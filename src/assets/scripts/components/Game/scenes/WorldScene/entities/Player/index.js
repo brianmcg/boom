@@ -528,7 +528,7 @@ class Player extends AbstractActor {
         this.parent.addExplosion(new Explosion({
           x: point.x + Math.cos(angle) * (bullet.width / 2),
           y: point.y + Math.cos(angle) * (bullet.width / 2),
-          sourceId: body.spurtType ? body.id : bullet.id,
+          sourceId: body.spurtType ? `${body.id}_${body.spurtType}` : bullet.id,
           parent: this.parent,
         }));
 
