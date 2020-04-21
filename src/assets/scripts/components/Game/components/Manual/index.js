@@ -45,9 +45,6 @@ class GameManual {
         action: translate('manual.action.crouch'),
         key: translate('manual.input.shift'),
       }, {
-        action: translate('manual.action.strafe'),
-        key: translate('manual.input.alt'),
-      }, {
         action: translate('manual.action.menu'),
         key: translate('manual.input.escape'),
       }],

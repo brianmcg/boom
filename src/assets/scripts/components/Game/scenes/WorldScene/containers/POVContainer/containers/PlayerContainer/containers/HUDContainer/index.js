@@ -81,6 +81,13 @@ class HUDContainer extends Container {
       });
     });
 
+    // Update hud on pick up event.
+    player.onPickUp(() => {
+      ammoAmount.text = this.player.weapon.ammo;
+      ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+      healthAmount.text = this.player.health;
+    });
+
     // Update health sprite on player hurt event.
     player.onHurt(() => {
       healthAmount.text = this.player.health;

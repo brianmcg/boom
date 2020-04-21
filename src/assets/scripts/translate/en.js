@@ -3,37 +3,37 @@ export default {
     text: 'forward',
   },
   'manual.input.up': {
-    text: 'up arrow',
+    text: 'w or up',
   },
   'manual.action.backward': {
     text: 'backward',
   },
   'manual.input.down': {
-    text: 'down arrow',
+    text: 's or down',
   },
   'manual.action.left': {
     text: 'left',
   },
   'manual.input.left': {
-    text: 'left arrow',
+    text: 'mouse or left',
   },
   'manual.action.right': {
     text: 'right',
   },
   'manual.input.right': {
-    text: 'right arrow',
+    text: 'mouse or right',
   },
   'manual.action.use': {
     text: 'use',
   },
   'manual.input.space': {
-    text: 'space',
+    text: 'e or space',
   },
   'manual.action.attack': {
     text: 'attack',
   },
   'manual.input.ctrl': {
-    text: 'ctrl',
+    text: 'left click or ctrl',
   },
   'manual.action.crouch': {
     text: 'crouch',
@@ -41,17 +41,11 @@ export default {
   'manual.input.shift': {
     text: 'shift',
   },
-  'manual.action.strafe': {
-    text: 'strafe',
-  },
-  'manual.input.alt': {
-    text: 'alt',
-  },
   'manual.action.menu': {
     text: 'menu',
   },
   'manual.input.escape': {
-    text: 'escape',
+    text: 'q',
   },
   'manual.title': {
     text: 'Boom Controls',

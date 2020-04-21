@@ -33,6 +33,7 @@ const EVENTS = {
   DYING: 'player:dying',
   CHANGE_WEAPON: 'player:change:weapon',
   MESSAGES_UPDATED: 'player:update:messages',
+  PICK_UP: 'player:pick:up',
 };
 
 /**
@@ -121,6 +122,14 @@ class Player extends AbstractActor {
    */
   onFireWeapon(callback) {
     this.on(EVENTS.FIRE_WEAPON, callback);
+  }
+
+  /**
+   * Add a callback for the pick up event.
+   * @param  {Function} callback The callback function.
+   */
+  onPickUp(callback) {
+    this.on(EVENTS.PICK_UP, callback);
   }
 
   /**
@@ -353,6 +362,7 @@ class Player extends AbstractActor {
         if (this.isBodyCollision(body)) {
           if (body.setColliding()) {
             if (this.pickUp(body)) {
+              this.emit(EVENTS.PICK_UP);
               this.parent.onItemPickup();
               this.parent.remove(body);
               body.setRemoved();
