@@ -30,11 +30,17 @@ class GameManual {
         action: translate('manual.action.backward'),
         key: translate('manual.input.down'),
       }, {
-        action: translate('manual.action.left'),
-        key: translate('manual.input.left'),
+        action: translate('manual.action.strafe.left'),
+        key: translate('manual.input.strafe.left'),
       }, {
-        action: translate('manual.action.right'),
-        key: translate('manual.input.right'),
+        action: translate('manual.action.strafe.right'),
+        key: translate('manual.input.strafe.right'),
+      }, {
+        action: translate('manual.action.turn.left'),
+        key: translate('manual.input.turn.left'),
+      }, {
+        action: translate('manual.action.turn.right'),
+        key: translate('manual.input.turn.right'),
       }, {
         action: translate('manual.action.use'),
         key: translate('manual.input.space'),
@@ -45,8 +51,11 @@ class GameManual {
         action: translate('manual.action.crouch'),
         key: translate('manual.input.shift'),
       }, {
+        action: translate('manual.action.pause'),
+        key: translate('manual.input.pause'),
+      }, {
         action: translate('manual.action.menu'),
-        key: translate('manual.input.escape'),
+        key: translate('manual.input.menu'),
       }],
     });
 

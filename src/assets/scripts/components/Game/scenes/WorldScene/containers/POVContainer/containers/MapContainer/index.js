@@ -21,8 +21,9 @@ class MapContainer extends Container {
   /**
    * Sort the map container
    */
-  sort() {
+  update(delta) {
     this.children.sort((a, b) => b.zOrder - a.zOrder);
+    super.update(delta);
   }
 }
 

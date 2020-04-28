@@ -1,121 +1,157 @@
 export default {
   'manual.action.forward': {
-    text: '[FR] forward',
+    text: 'vers l\'avant',
   },
   'manual.input.up': {
-    text: '[FR] up arrow',
+    text: 'w ou en haut',
   },
   'manual.action.backward': {
-    text: '[FR] backward',
+    text: 'en arriere',
   },
   'manual.input.down': {
-    text: '[FR] down arrow',
+    text: 's ou vers le bas',
   },
-  'manual.action.left': {
-    text: '[FR] left',
+  'manual.action.strafe.left': {
+    text: 'strafe gauche',
   },
-  'manual.input.left': {
-    text: '[FR] left arrow',
+  'manual.input.strafe.left': {
+    text: 'a',
   },
-  'manual.action.right': {
-    text: '[FR] right',
+  'manual.action.strafe.right': {
+    text: 'droit strafe',
   },
-  'manual.input.right': {
-    text: '[FR] right arrow',
+  'manual.input.strafe.right': {
+    text: 'd',
+  },
+  'manual.action.turn.left': {
+    text: 'tournez a gauche',
+  },
+  'manual.input.turn.left': {
+    text: 'souris ou gauche',
+  },
+  'manual.action.turn.right': {
+    text: 'tournez a droite',
+  },
+  'manual.input.turn.right': {
+    text: 'souris ou droite',
   },
   'manual.action.use': {
-    text: '[FR] use',
+    text: 'utilisation',
   },
   'manual.input.space': {
-    text: '[FR] space',
+    text: 'e ou barre d\'espace',
   },
   'manual.action.attack': {
-    text: '[FR] attack',
+    text: 'attaque',
   },
   'manual.input.ctrl': {
-    text: '[FR] ctrl',
+    text: 'click gauche ou ctrl',
   },
   'manual.action.crouch': {
-    text: '[FR] crouch',
+    text: 'accroupissement',
   },
   'manual.input.shift': {
-    text: '[FR] shift',
+    text: 'touche majuscule',
   },
-  'manual.action.strafe': {
-    text: '[FR] strafe',
+  'manual.action.pause': {
+    text: 'pause',
   },
-  'manual.input.alt': {
-    text: '[FR] alt',
+  'manual.input.pause': {
+    text: 'q',
   },
   'manual.action.menu': {
-    text: '[FR] menu',
+    text: 'menu',
   },
-  'manual.input.escape': {
-    text: '[FR] escape',
+  'manual.input.menu': {
+    text: 'en haut/en arriere/entrer',
   },
   'manual.title': {
-    text: '[FR] Boom Controls',
+    text: 'Controles de Boom',
   },
   'manual.play': {
-    text: '[FR] click to play',
+    text: 'cliquez pour jouer',
   },
   'scene.menu.continue': {
-    text: '[FR] Continue',
+    text: 'Continue',
   },
   'scene.menu.restart': {
-    text: '[FR] Restart',
+    text: 'Restart',
   },
   'scene.menu.quit': {
-    text: '[FR] Quit',
+    text: 'Quit',
   },
   'scene.prompt.continue': {
-    text: '[FR] Press space to continue',
+    text: 'Press space to continue',
   },
   'title.prompt.start': {
-    text: '[FR] Press space to start',
+    text: 'Press space to start',
   },
-  'world.review.title': {
-    text: '[FR] Level INDEX',
+  'world.title': {
+    text: 'Level INDEX',
     keys: ['index'],
   },
   'world.review.enemies': {
-    text: '[FR] Kills',
+    text: 'Kills',
   },
   'world.review.items': {
-    text: '[FR] Items',
+    text: 'Items',
   },
   'world.review.time': {
-    text: '[FR] Time',
+    text: 'Time',
   },
   'world.door.locked': {
-    text: '[FR] COLOR key required',
+    text: 'COLOR key required',
     keys: ['color'],
   },
+  'world.player.cannot.pickup': {
+    text: 'Cannot pick up ITEM',
+    keys: ['item'],
+  },
+  'world.item.key': {
+    text: 'COLOR Key',
+    keys: ['color'],
+  },
+  'world.item.ammo': {
+    text: 'WEAPON Ammo',
+    keys: ['weapon'],
+  },
+  'world.item.health': {
+    text: 'Health',
+  },
+  'world.item.pistol': {
+    text: 'Pistol',
+  },
+  'world.item.shotgun': {
+    text: 'Shotgun',
+  },
+  'world.item.chaingun': {
+    text: 'Chaingun',
+  },
   'world.color.yellow': {
-    text: '[FR] Yellow',
+    text: 'Yellow',
   },
   'world.color.blue': {
-    text: '[FR] Blue',
+    text: 'Blue',
   },
   'world.color.red': {
-    text: '[FR] Red',
+    text: 'Red',
   },
   'credits.scroll.end': {
-    text: '[FR] The End',
+    text: 'The End',
   },
   'credits.scroll.coding': {
-    text: '[FR] Coding',
+    text: 'Coding',
   },
   'credits.scroll.graphics': {
-    text: '[FR] Graphics',
+    text: 'Graphics',
   },
   'credits.scroll.sound': {
-    text: '[FR] Sound',
+    text: 'Sound',
   },
   'credits.scroll.screenplay': {
-    text: '[FR] Script',
+    text: 'Script',
   },
   'credits.scroll.author': {
-    text: '[FR] Brian McGrath',
+    text: 'Brian McGrath',
   },
 };

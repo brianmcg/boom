@@ -33,7 +33,7 @@ class Game extends Application {
       top: '50%',
     };
 
-    this.ticker.maxFPS = MAX_FPS;
+    // this.ticker.maxFPS = MAX_FPS;
     this.ticker.add(this.loop, this);
     this.frameCount = 0;
     this.timer = 0;
@@ -270,6 +270,7 @@ class Game extends Application {
    */
   addCanvas() {
     document.body.appendChild(this.view);
+    this.lockPointer();
   }
 
   /**

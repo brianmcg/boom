@@ -23,7 +23,7 @@ class EnemySprite extends AnimatedEntitySprite {
   constructor(enemy, textureCollection = []) {
     const { textures } = textureCollection[STATES.IDLE];
 
-    super(textures, { animationSpeed: 0.15 });
+    super(textures, { animationSpeed: 0.2 });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));

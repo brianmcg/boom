@@ -224,9 +224,6 @@ class POVContainer extends Container {
       }
     });
 
-    // Sort sprites in map container
-    this.mapContainer.sort();
-
     super.update(delta);
   }
 

@@ -11,16 +11,28 @@ export default {
   'manual.input.down': {
     text: 's or down',
   },
-  'manual.action.left': {
-    text: 'left',
+  'manual.action.strafe.left': {
+    text: 'strafe left',
   },
-  'manual.input.left': {
+  'manual.input.strafe.left': {
+    text: 'a',
+  },
+  'manual.action.strafe.right': {
+    text: 'strafe right',
+  },
+  'manual.input.strafe.right': {
+    text: 'd',
+  },
+  'manual.action.turn.left': {
+    text: 'turn left',
+  },
+  'manual.input.turn.left': {
     text: 'mouse or left',
   },
-  'manual.action.right': {
-    text: 'right',
+  'manual.action.turn.right': {
+    text: 'turn right',
   },
-  'manual.input.right': {
+  'manual.input.turn.right': {
     text: 'mouse or right',
   },
   'manual.action.use': {
@@ -41,11 +53,17 @@ export default {
   'manual.input.shift': {
     text: 'shift',
   },
+  'manual.action.pause': {
+    text: 'pause',
+  },
+  'manual.input.pause': {
+    text: 'q',
+  },
   'manual.action.menu': {
     text: 'menu',
   },
-  'manual.input.escape': {
-    text: 'q',
+  'manual.input.menu': {
+    text: 'up/down/enter',
   },
   'manual.title': {
     text: 'Boom Controls',
