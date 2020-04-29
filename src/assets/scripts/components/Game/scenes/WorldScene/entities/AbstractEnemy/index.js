@@ -85,10 +85,7 @@ class AbstractEnemy extends AbstractActor {
     this.isFloating = isFloating;
     this.floatDirection = 1;
 
-    this.primaryAttack = {
-      ...primaryAttack,
-      spread: [...Array(primaryAttack.spread).keys()].map(i => i),
-    };
+    this.primaryAttack = primaryAttack;
 
     this.setIdle();
   }
@@ -264,9 +261,17 @@ class AbstractEnemy extends AbstractActor {
    */
   updateDead() {
     this.velocity *= FORCE_FADE;
+    this.z -= FLOAT_INCREMENT * 2;
 
-    if (this.velocity < MIN_FORCE) {
+    if (this.velocity <= MIN_FORCE) {
       this.velocity = 0;
+    }
+
+    if (this.z <= 0) {
+      this.z = 0;
+    }
+
+    if (this.velocity === 0 && this.z === 0) {
       this.blocking = false;
       this.parent.stopUpdates(this);
     }
@@ -597,10 +602,9 @@ class AbstractEnemy extends AbstractActor {
   }
 
   attackDamage() {
-    const { power, accuracy, spread } = this.primaryAttack;
+    const { power, accuracy } = this.primaryAttack;
 
-    return spread
-      .reduce(memo => (memo + (power * (Math.floor(Math.random() * accuracy) + 1))), 0);
+    return power * (Math.floor(Math.random() * accuracy) + 1);
   }
 
   /**
