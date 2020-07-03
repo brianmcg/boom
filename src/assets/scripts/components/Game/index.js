@@ -7,6 +7,7 @@ import {
   GAME_SOUNDS,
   GAME_DATA,
   GAME_FONT,
+  SCENE_TYPES,
 } from './constants/assets';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
@@ -14,6 +15,12 @@ import CreditsScene from './scenes/CreditsScene';
 import Loader from './utilities/Loader';
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
+
+const SCENES = {
+  [SCENE_TYPES.TITLE]: TitleScene,
+  [SCENE_TYPES.WORLD]: WorldScene,
+  [SCENE_TYPES.CREDITS]: CreditsScene,
+}
 
 /**
  * A class representing a game.
@@ -42,10 +49,10 @@ class Game extends Application {
     this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
-    this.manual.onClickStart(() => this.start());
-    // this.addManual();
-    this.addCanvas();
-    this.start();
+    this.manual.onClickStart(this.start.bind(this));
+    this.addManual();
+    // this.addCanvas();
+    // this.start();
   }
 
   /**
@@ -77,7 +84,7 @@ class Game extends Application {
 
     this.ticker.start();
 
-    this.showWorldScene();
+    this.showTitleScene();
   }
 
   /**
@@ -114,7 +121,7 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show(TitleScene);
+    this.show(SCENE_TYPES.TITLE);
   }
 
   /**
@@ -122,14 +129,14 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = 1, ...other } = {}) {
-    this.show(WorldScene, { index, ...other });
+    this.show(SCENE_TYPES.WORLD, { index, ...other });
   }
 
   /**
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show(CreditsScene);
+    this.show(SCENE_TYPES.CREDITS);
   }
 
   /**
@@ -138,8 +145,9 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show(Scene, { index, startingProps = {} } = {}) {
-    const type = Scene.name.toLowerCase().split('scene')[0];
+  async show(type, { index, startingProps = {} } = {}) {
+    console.log({ type, index, startingProps });
+    const Scene = SCENES[type];
 
     this.addSpinner();
 
