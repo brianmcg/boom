@@ -69,3 +69,24 @@ export const SCENE_TYPES = {
   WORLD: 'world',
   CREDITS: 'credits',
 };
+
+/**
+ * The enemy types.
+ * @type {Object}
+ */
+export const ENEMY_TYPES = {
+  GUN: 'gunenemy',
+  CHASE: 'chaseenemy',
+  PROJECTILE: 'projectileenemy',
+};
+
+/**
+ * The enemy types.
+ * @type {Object}
+ */
+export const ITEM_TYPES = {
+  KEY: 'keyitem',
+  AMMO: 'ammoitem',
+  HEALTH: 'healthitem',
+  WEAPON: 'weaponitem',
+};

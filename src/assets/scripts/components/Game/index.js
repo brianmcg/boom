@@ -146,7 +146,6 @@ class Game extends Application {
     * @param  {Object} options.props Optional extra props.
     */
   async show(type, { index, startingProps = {} } = {}) {
-    console.log({ type, index, startingProps });
     const Scene = SCENES[type];
 
     this.addSpinner();
