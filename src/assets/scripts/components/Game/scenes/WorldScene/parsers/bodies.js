@@ -31,6 +31,8 @@ const ENEMIES = [
   [type.name.toLowerCase()]: type,
 }), {});
 
+console.log({ ITEMS, ENEMIES });
+
 const createCell = ({ cell, props }) => {
   const sides = Object.keys(cell.sides).reduce((memo, key) => ({
     ...memo,
