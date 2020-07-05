@@ -4,7 +4,7 @@ import './styles/index.scss';
 class Spinner {
   constructor() {
     this.spinner = document.createElement('img');
-    this.spinner.src = '/assets/images/spinner.gif';
+    this.spinner.src = 'assets/images/spinner.gif';
 
     this.view = document.createElement('div');
     this.view.setAttribute('class', 'spinner');
