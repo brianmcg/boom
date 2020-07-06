@@ -71,25 +71,13 @@ module.exports = {
         },
       }],
     }, {
-      test: /\.(gif|jpg|png|ico)\??.*$/,
-      use: {
-        loader: 'url-loader',
-        options: {
-          limit: 1024,
-          name: '[name].[ext]',
-          publicPath: '../../',
-          outputPath: 'assets/styles/',
-        },
-      },
-    }, {
       test: /\.(svg|woff|otf|ttf|eot)\??.*$/,
       use: {
         loader: 'url-loader',
         options: {
           limit: 1024,
           name: '[name].[ext]',
-          publicPath: '../../',
-          outputPath: 'assets/styles/',
+          outputPath: 'assets/fonts/',
         },
       },
     }, {

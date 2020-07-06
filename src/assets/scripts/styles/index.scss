@@ -1,16 +1,16 @@
 @import './colors';
 
 @font-face {
-  font-family: 'fff_forwardregular';
+  font-family: 'doom';
   font-weight: normal;
   font-style: normal;
-  src: url('/assets/fonts/font.woff') format('woff');
+  src: url('../../fonts/font.woff') format('woff');
 }
 
 body {
   background-color: $black;
   color: $white;
-  font-family: 'fff_forwardregular', Arial, sans-serif;
+  font-family: 'doom', Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
