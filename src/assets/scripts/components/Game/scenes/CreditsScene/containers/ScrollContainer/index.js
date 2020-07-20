@@ -56,7 +56,7 @@ class ScrollContainer extends Container {
    */
   update(delta) {
     const lastSprite = this.children[this.children.length - 1];
-    const yEnd = SCREEN.HEIGHT - (lastSprite.height * 2) - this.height;
+    const yEnd = SCREEN.HEIGHT - (lastSprite.height * 4) - this.height;
 
     this.y -= delta * SCROLL_SPEED;
 
