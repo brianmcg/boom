@@ -18,6 +18,7 @@ const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
+const VISION_INCREMENT = 0.02;
 const HURT_RECOIL_MULTIPLIER = 1;
 
 const STATES = {
@@ -304,18 +305,6 @@ class Player extends AbstractActor {
     }
 
     // Update height.
-    if (this.actions.crouch) {
-      this.height = Math.max(
-        this.height - (this.heightVelocity * delta),
-        this.crouchHeight,
-      );
-    } else {
-      this.height = Math.min(
-        this.height + (this.heightVelocity * delta),
-        this.maxHeight,
-      );
-    }
-
     if (crouch) {
       this.height = Math.max(
         this.height - (this.heightVelocity * delta),
@@ -330,7 +319,7 @@ class Player extends AbstractActor {
 
     // Update vision
     if (this.vision < 1) {
-      this.vision += 0.02 * delta;
+      this.vision += VISION_INCREMENT * delta;
 
       if (this.vision > 1) {
         this.vision = 1;
@@ -436,7 +425,7 @@ class Player extends AbstractActor {
 
     // Update vision
     if (this.vision < 1) {
-      this.vision += 0.01 * delta;
+      this.vision += VISION_INCREMENT * delta;
 
       if (this.vision > 1) {
         this.vision = 1;
