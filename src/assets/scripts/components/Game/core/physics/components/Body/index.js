@@ -1,18 +1,10 @@
 import { EventEmitter } from 'game/core/graphics';
 import { CELL_SIZE } from 'game/constants/config';
-import {
-  isBodyCollision,
-  isRayCollision,
-  getDistanceBetween,
-  getRayCollision,
-  getAngleBetween,
-  castRay,
-} from '../../helpers';
+import { isRayCollision, getRayCollision, getDistanceBetween, } from '../../helpers';
 
 const EVENTS = {
   ADDED: 'body:added',
   REMOVED: 'body:removed',
-  COLLISION: 'body:collision',
 };
 
 let idCount = 0;
@@ -85,47 +77,6 @@ class Body extends EventEmitter {
   }
 
   /**
-   * Add a callback for the collision event.
-   * @param  {Function} callback The callback function.
-   */
-  onCollision(callback) {
-    this.on(EVENTS.COLLISION, callback);
-  }
-
-  /**
-   * Get the distance to another body.
-   * @param  {Body} body The other body.
-   * @return {Boolean}   The distance result.
-   */
-  getDistanceTo(body) {
-    return getDistanceBetween(this, body);
-  }
-
-  /**
-   * Get angle to a body.
-   * @param  {Body} body The body.
-   * @return {Number}    The angle to the body.
-   */
-  getAngleTo(body) {
-    return getAngleBetween(this, body);
-  }
-
-  /**
-   * Check for collision with another body.
-   * @param  {Body}    body The other body.
-   * @return {Boolean}      Collision has occurred.
-   */
-  isBodyCollision(body) {
-    const isCollision = isBodyCollision(this, body);
-
-    if (isCollision) {
-      this.emit(EVENTS.COLLISION, body);
-    }
-
-    return isCollision;
-  }
-
-  /**
    * Check for collision with a ray.
    * @param  {Object} ray The ray.
    * @return {Boolean}    Collision has occurred.
@@ -144,12 +95,12 @@ class Body extends EventEmitter {
   }
 
   /**
-   * Cast a ray.
-   * @param  {Number} rayAngle  Optional ray angle.
-   * @return {Ray}              The resulting ray.
+   * Get the distance to another body.
+   * @param  {Body} body The other body.
+   * @return {Boolean}   The distance result.
    */
-  castRay(rayAngle) {
-    return castRay(this, rayAngle);
+  getDistanceTo(body) {
+    return getDistanceBetween(this, body);
   }
 
   /**

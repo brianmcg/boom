@@ -127,7 +127,7 @@ class World extends EventEmitter {
         }
       });
 
-      if (cell.id !== body.id) {
+      if (cell.id !== body.id && cell.blocking) {
         bodies.push(cell);
       }
 

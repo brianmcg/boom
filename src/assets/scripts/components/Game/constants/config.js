@@ -31,8 +31,8 @@ export const CELL_SIZE = 32;
  * @type {Object}
  */
 export const SCREEN = {
-  WIDTH: 256,
-  HEIGHT: 144,
+  WIDTH: 224,
+  HEIGHT: 126,
 };
 
 /**

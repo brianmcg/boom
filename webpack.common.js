@@ -62,7 +62,13 @@ module.exports = {
       include: path.resolve(__dirname, 'src/'),
     }, {
       test: /(\.css|\.scss|\.sass)$/,
-      use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader', {
+      use: [{
+        loader: MiniCssExtractPlugin.loader,
+      }, {
+        loader: 'css-loader',
+      }, {
+        loader: 'sass-loader',
+      }, {
         loader: 'postcss-loader',
         options: {
           plugins: () => [autoprefixer({
@@ -71,9 +77,9 @@ module.exports = {
         },
       }],
     }, {
-      test: /\.(svg|woff|otf|ttf|eot)\??.*$/,
+      test: /\.(woff)\??.*$/,
       use: {
-        loader: 'url-loader',
+        loader: 'file-loader',
         options: {
           limit: 1024,
           name: '[name].[ext]',

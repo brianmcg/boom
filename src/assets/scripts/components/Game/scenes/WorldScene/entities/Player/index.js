@@ -351,9 +351,7 @@ class Player extends AbstractActor {
         if (this.isBodyCollision(body)) {
           if (body.setColliding()) {
             if (this.pickUp(body)) {
-              this.emit(EVENTS.PICK_UP);
-              this.parent.onItemPickup();
-              this.parent.remove(body);
+              this.emit(EVENTS.PICK_UP, body);
               body.setRemoved();
             } else {
               this.addMessage(translate('world.player.cannot.pickup', {
@@ -371,7 +369,7 @@ class Player extends AbstractActor {
           if (body.keyCard) {
             const keyCard = this.keyCards[body.keyCard];
 
-            if (keyCard.isEquiped()) {
+            if (keyCard && keyCard.isEquiped()) {
               if (body.open()) {
                 keyCard.use();
               }

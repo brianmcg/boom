@@ -47,14 +47,16 @@ class Projectile extends DynamicEntity {
     this.explosionType = explosionType;
 
     this.onCollision((body) => {
-      const damage = this.source.attackDamage();
+      if (body.blocking) {
+        const damage = this.source.attackDamage();
 
-      this.setColliding();
-      this.parent.onExplosion(damage * 0.75);
-      this.parent.player.shake(damage * 0.75);
+        this.setColliding();
+        this.parent.onExplosion(damage * 0.75);
+        this.parent.player.shake(damage * 0.75);
 
-      if (body.isPlayer) {
-        body.hurt(damage);
+        if (body.hurt) {
+          body.hurt(damage);
+        }
       }
     });
 

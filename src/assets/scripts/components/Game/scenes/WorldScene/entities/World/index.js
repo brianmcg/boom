@@ -72,6 +72,8 @@ class World extends PhysicsWorld {
 
     player.onDeath(() => this.restart());
 
+    player.onPickUp(item => this.onItemPickup(item));
+
     this.add(player);
   }
 
@@ -179,7 +181,8 @@ class World extends PhysicsWorld {
   /**
    * Set the brightness and enabled item flash.
    */
-  onItemPickup() {
+  onItemPickup(item) {
+    this.remove(item);
     this.flash += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
   }

@@ -1,12 +1,21 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Body from '../Body';
-import { degrees } from '../../helpers';
+import {
+  isBodyCollision,
+  degrees,
+  getAngleBetween,
+  castRay,
+} from '../../helpers';
 
 const DEG_360 = degrees(360);
 
 const DEG_270 = degrees(270);
 
 const DEG_90 = degrees(90);
+
+const EVENTS = {
+  COLLISION: 'body:collision',
+};
 
 /**
  * Class representing a dynamic body.
@@ -31,6 +40,23 @@ class DynamicBody extends Body {
   }
 
   /**
+   * Add a callback for the collision event.
+   * @param  {Function} callback The callback function.
+   */
+  onCollision(callback) {
+    this.on(EVENTS.COLLISION, callback);
+  }
+
+  /**
+   * Check for collision with another body.
+   * @param  {Body}    body The other body.
+   * @return {Boolean}      Collision has occurred.
+   */
+  isBodyCollision(body) {
+    return isBodyCollision(this, body);
+  }
+
+  /**
    * Update the dynamic body.
    * @param  {Number} delta The delta time value.
    */
@@ -48,11 +74,15 @@ class DynamicBody extends Body {
 
     // Check for x axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.isBodyCollision(body)) {
-        if (body.x > this.x) {
-          this.x = (body.x - (body.width / 2)) - (this.width / 2);
-        } else {
-          this.x = body.x + (body.width / 2) + (this.width / 2);
+      if (this.isBodyCollision(body)) {
+        this.emit(EVENTS.COLLISION, body);
+
+        if (body.blocking) {
+          if (body.x > this.x) {
+            this.x = (body.x - (body.width / 2)) - (this.width / 2);
+          } else {
+            this.x = body.x + (body.width / 2) + (this.width / 2);
+          }
         }
       }
     });
@@ -62,17 +92,30 @@ class DynamicBody extends Body {
 
     // Check for y axis collisions
     bodies.forEach((body) => {
-      if (body.blocking && this.isBodyCollision(body)) {
-        if (body.y > this.y) {
-          this.y = (body.y - (body.width / 2)) - (this.width / 2);
-        } else {
-          this.y = body.y + (body.width / 2) + (this.width / 2);
+      if (this.isBodyCollision(body)) {
+        this.emit(EVENTS.COLLISION, body);
+
+        if (body.blocking) {
+          if (body.y > this.y) {
+            this.y = (body.y - (body.width / 2)) - (this.width / 2);
+          } else {
+            this.y = body.y + (body.width / 2) + (this.width / 2);
+          }
         }
       }
     });
 
     // Mark current cell with id
     this.parent.getCell(this.gridX, this.gridY).add(this);
+  }
+
+  /**
+   * Cast a ray.
+   * @param  {Number} rayAngle  Optional ray angle.
+   * @return {Ray}              The resulting ray.
+   */
+  castRay(rayAngle) {
+    return castRay(this, rayAngle);
   }
 
   /**
@@ -83,6 +126,15 @@ class DynamicBody extends Body {
   isFacing(body) {
     const angle = (this.getAngleTo(body) - this.angle + DEG_360) % DEG_360;
     return angle > DEG_270 || angle < DEG_90;
+  }
+
+  /**
+   * Get angle to a body.
+   * @param  {Body} body The body.
+   * @return {Number}    The angle to the body.
+   */
+  getAngleTo(body) {
+    return getAngleBetween(this, body);
   }
 }
 
