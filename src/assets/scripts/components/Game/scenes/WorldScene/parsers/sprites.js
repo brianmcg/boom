@@ -19,6 +19,7 @@ import WeaponSprite from '../sprites/WeaponSprite';
 import HUDKeySprite from '../sprites/HUDKeySprite';
 import HUDSprite from '../sprites/HUDSprite';
 import ExplosionSprite from '../sprites/ExplosionSprite';
+import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -207,6 +208,19 @@ const createExplosionSprites = ({ animations, textures, world }) => {
     return memo;
   }, {});
 
+  const obstacleExplodeSprites = world.obstacles.reduce((memo, obstacle) => {
+    if (obstacle.explosionType) {
+      const explosionTextures = animations[obstacle.explosionType]
+        .map(animation => textures[animation]);
+
+      memo[`${obstacle.id}_${obstacle.explosionType}`] = new ExplosionSprite(explosionTextures, {
+        animationSpeed: 0.2,
+      });
+    }
+
+    return memo;
+  }, {});
+
   const playerBulletSprites = Object.keys(world.player.bullets).reduce((memo, key) => {
     world.player.bullets[key].forEach((bullet) => {
       const explosionTextures = animations[bullet.explosionType]
@@ -226,6 +240,7 @@ const createExplosionSprites = ({ animations, textures, world }) => {
     ...playerBulletSprites,
     ...enemySpurtSprites,
     ...enemyExplodeSprites,
+    ...obstacleExplodeSprites,
   };
 };
 
@@ -241,7 +256,10 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.obstacles.forEach((object) => {
-    if (object.animated) {
+    if (object.explosive) {
+      const animationTextures = animations[object.name].map(t => textures[t]);
+      entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, object);
+    } else if (object.animated) {
       const animationTextures = animations[object.name].map(t => textures[t]);
       entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
     } else {

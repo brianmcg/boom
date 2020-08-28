@@ -550,7 +550,7 @@ class Player extends AbstractActor {
           parent: this.parent,
         }));
 
-        if (body.isEnemy) {
+        if (body.hurt) {
           const damage = power * (Math.floor(Math.random() * accuracy) + 1);
 
           if (!enemyDamage[body.id]) {
@@ -559,7 +559,7 @@ class Player extends AbstractActor {
             enemyDamage[body.id] += damage;
           }
 
-          if (distance - body.distanceToPlayer < SPATTER_DISTANCE) {
+          if (body.isEnemy && distance - body.distanceToPlayer < SPATTER_DISTANCE) {
             if (!side.spatter) {
               side.spatter = body.spatter();
             }
@@ -582,7 +582,7 @@ class Player extends AbstractActor {
 
     // Apply accumulated damage to enemy.
     Object.keys(enemyDamage).forEach((id) => {
-      this.parent.bodies[id].hurt(enemyDamage[id]);
+      this.parent.bodies[id].hurt(enemyDamage[id], this.viewAngle);
     });
 
     this.camera.setRecoil(recoil);

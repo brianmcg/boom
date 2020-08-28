@@ -4,6 +4,7 @@ import Cell from '../entities/Cell';
 import World from '../entities/World';
 import Door from '../entities/Door';
 import Entity from '../entities/Entity';
+import ExplosiveEntity from '../entities/ExplosiveEntity';
 import GunEnemy from '../entities/GunEnemy';
 import ChaseEnemy from '../entities/ChaseEnemy';
 import ProjectileEnemy from '../entities/ProjectileEnemy';
@@ -88,15 +89,26 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const obstacles = data.obstacles.reduce((memo, obstacle) => ([
     ...memo,
-    new Entity({
-      name: obstacle.name,
-      x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
-      y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
-      blocking: obstacle.blocking,
-      width: Math.ceil(CELL_SIZE * obstacle.width),
-      height: Math.ceil(CELL_SIZE * obstacle.height),
-      animated: !!obstacle.animated,
-    }),
+    obstacle.explosive
+      ? new ExplosiveEntity({
+        name: obstacle.name,
+        x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
+        y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
+        blocking: obstacle.blocking,
+        width: Math.ceil(CELL_SIZE * obstacle.width),
+        height: Math.ceil(CELL_SIZE * obstacle.height),
+        animated: !!obstacle.animated,
+        ...props.obstacles[obstacle.name],
+      })
+      : new Entity({
+        name: obstacle.name,
+        x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
+        y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
+        blocking: obstacle.blocking,
+        width: Math.ceil(CELL_SIZE * obstacle.width),
+        height: Math.ceil(CELL_SIZE * obstacle.height),
+        animated: !!obstacle.animated,
+      }),
   ]), []);
 
   const items = data.items.reduce((memo, item) => ([

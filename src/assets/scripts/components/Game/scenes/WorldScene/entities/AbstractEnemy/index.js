@@ -321,14 +321,14 @@ class AbstractEnemy extends AbstractActor {
    * Hurt the enemy
    * @param  {Number} damage The damage to health.
    */
-  hurt(damage) {
+  hurt(damage, angle = 0) {
     if (this.isAlive()) {
       this.health -= damage;
 
       if (this.health > 0) {
         this.setHurting();
       } else {
-        this.angle = this.parent.player.viewAngle;
+        this.angle = angle;
         this.velocity = damage * 0.1;
         this.setDead();
       }

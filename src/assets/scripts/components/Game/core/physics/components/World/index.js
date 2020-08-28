@@ -91,13 +91,18 @@ class World extends EventEmitter {
    * @return {Cell}   The cell.
    */
   getCell(x, y) {
-    return this.grid[y][x];
+    if (x >= 0 && x <= this.maxCellX && y >= 0 && y <= this.maxCellY) {
+      return this.grid[y][x];
+    }
+
+    return null;
   }
 
   /**
    * Get the cells surrounding a given body.
-   * @param  {Body}   body The body.
-   * @return {Array}       The cells surrounding the body.
+   * @param  {Body}   body  The body.
+   * @param  {Number} range The range of cells.
+   * @return {Array}        The cells surrounding the body.
    */
   getAdjacentCells(body, radius = 1) {
     const cells = [];
@@ -105,7 +110,11 @@ class World extends EventEmitter {
 
     for (let i = gridX - radius; i <= gridX + radius; i += 1) {
       for (let j = gridY - radius; j <= gridY + radius; j += 1) {
-        cells.push(this.getCell(i, j));
+        const cell = this.getCell(i, j);
+
+        if (cell) {
+          cells.push(cell);
+        }
       }
     }
 
@@ -117,8 +126,8 @@ class World extends EventEmitter {
    * @param  {Body}   body The body to check.
    * @return {Array}       The bodies surrounding the body.
    */
-  getAdjacentBodies(body) {
-    const cells = this.getAdjacentCells(body);
+  getAdjacentBodies(body, radius = 1) {
+    const cells = this.getAdjacentCells(body, radius);
 
     return cells.reduce((bodies, cell) => {
       cell.bodies.forEach((cellBody) => {
