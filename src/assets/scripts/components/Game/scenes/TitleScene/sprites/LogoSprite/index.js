@@ -1,7 +1,7 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { TIME_STEP, SCREEN } from 'game/constants/config';
 
-const INTERVAL = 4000;
+const INTERVAL = 3000;
 
 /**
  * Class representing a logo sprite.
