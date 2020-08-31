@@ -22,7 +22,7 @@ class Container extends PixiContainer {
   addChild(child) {
     super.addChild(child);
 
-    if (child.play) {
+    if (child.play && !this.playableChildren.includes(child)) {
       this.playableChildren.push(child);
     }
 
@@ -38,7 +38,7 @@ class Container extends PixiContainer {
   removeChild(child) {
     super.removeChild(child);
 
-    if (child.play) {
+    if (child.play && (this.loop || !child.playing)) {
       this.playableChildren = this.playableChildren.filter(p => p !== child);
     }
 

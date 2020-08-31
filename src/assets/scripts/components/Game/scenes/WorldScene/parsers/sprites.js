@@ -214,7 +214,7 @@ const createExplosionSprites = ({ animations, textures, world }) => {
         .map(animation => textures[animation]);
 
       memo[`${obstacle.id}_${obstacle.explosionType}`] = new ExplosionSprite(explosionTextures, {
-        animationSpeed: 0.2,
+        animationSpeed: 0.4,
       });
     }
 
@@ -256,7 +256,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.obstacles.forEach((object) => {
-    if (object.explosive) {
+    if (object.isExplosive) {
       const animationTextures = animations[object.name].map(t => textures[t]);
       entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, object);
     } else if (object.animated) {

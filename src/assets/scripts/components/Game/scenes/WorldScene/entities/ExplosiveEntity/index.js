@@ -42,7 +42,7 @@ class ExplosiveEntity extends DynamicEntity {
     this.health = health;
     this.power = power;
     this.range = range;
-    this.explosive = true;
+    this.isExplosive = true;
   }
 
   /**
@@ -58,28 +58,31 @@ class ExplosiveEntity extends DynamicEntity {
    * @param  {Number} amount The amount to hurt the entity.
    */
   hurt(amount) {
-    this.health -= amount;
+    if (this.isExplosive) {
+      this.health -= amount;
 
-    if (this.health < 0) {
-      this.health = 0;
-      this.emit(EXPLODE_EVENT);
+      if (this.health <= 0) {
+        this.health = 0;
+        this.isExplosive = false;
+        this.emit(EXPLODE_EVENT);
 
-      this.parent.getAdjacentBodies(this, this.range).forEach((body) => {
-        if (body.hurt) {
-          const angle = (body.getAngleTo(this) - DEGREES_180 + DEGREES_360) % DEGREES_360;
-          const distance = this.getDistanceTo(body);
-          const damage = Math.max(1, this.power - Math.round(distance));
+        this.parent.getAdjacentBodies(this, this.range).forEach((body) => {
+          if (body.hurt) {
+            const angle = (body.getAngleTo(this) - DEGREES_180 + DEGREES_360) % DEGREES_360;
+            const distance = this.getDistanceTo(body);
+            const damage = Math.max(1, this.power - Math.round(distance));
 
-          body.hurt(damage, angle);
-        }
-      });
+            body.hurt(damage, angle);
+          }
+        });
 
-      this.parent.addExplosion(new Explosion({
-        x: this.x,
-        y: this.y,
-        sourceId: `${this.id}_${this.explosionType}`,
-        parent: this.parent,
-      }));
+        this.parent.addExplosion(new Explosion({
+          x: this.x,
+          y: this.y,
+          sourceId: `${this.id}_${this.explosionType}`,
+          parent: this.parent,
+        }));
+      }
     }
   }
 }

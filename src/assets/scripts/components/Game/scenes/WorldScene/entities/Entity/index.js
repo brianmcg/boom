@@ -15,11 +15,10 @@ class Entity extends Body {
    * @param  {Boolean} options.animated Is the entity animated.
    * @param  {String}  options.name     The name of entity.
    */
-  constructor({ name, animated = false, explosive = false, ...other }) {
+  constructor({ name, animated = false, ...other }) {
     super(other);
     this.name = name;
     this.animated = animated;
-    this.explosive = explosive;
   }
 }
 
