@@ -2,13 +2,13 @@ import { CELL_SIZE } from 'game/constants/config';
 import { World as PhysicsWorld } from 'game/core/physics';
 import Explosion from '../../effects/Explosion';
 
-const MAX_GUN_FLASH_AMOUNT = 1;
-
 const ITEM_FLASH_AMOUNT = 0.35;
 
-const EXPLOSION_FLASH_DECREMENT = 0.2;
-
 const ITEM_FLASH_DECREMENT = 0.01;
+
+const MAX_EXPLOSION_FLASH_AMOUNT = 1;
+
+const EXPLOSION_FLASH_DECREMENT = 0.15;
 
 /**
  * Class representing a world.
@@ -154,20 +154,20 @@ class World extends PhysicsWorld {
   }
 
   /**
-   * Set the brightness and enabled gun flash.
-   * @param {Number} power The power of the gun shot.
-   */
-  onExplosion(power) {
-    this.flash += Math.min(power / 5, MAX_GUN_FLASH_AMOUNT);
-    this.explosionFlash = true;
-  }
-
-  /**
    * Add an explosion to the world.
    * @param {World} explosion The explosion to add.
    */
-  addExplosion(options) {
+  addExplosion({ flash = 0, shake, ...options }) {
     this.explosions.push(new Explosion(options));
+
+    if (flash) {
+      this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);
+      this.explosionFlash = true;
+    }
+
+    if (shake) {
+      this.player.shake(shake);
+    }
   }
 
   /**

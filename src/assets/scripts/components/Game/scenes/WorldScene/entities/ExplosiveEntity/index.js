@@ -75,11 +75,15 @@ class ExplosiveEntity extends DynamicEntity {
           }
         });
 
+        this.emitSound(this.sounds.explode);
+
         this.parent.addExplosion({
           x: this.x,
           y: this.y,
           sourceId: `${this.id}_${this.explosionType}`,
           parent: this.parent,
+          flash: this.power,
+          shake: this.power,
         });
       }
     }

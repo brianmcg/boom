@@ -49,9 +49,17 @@ class Projectile extends DynamicEntity {
       if (body.blocking) {
         const damage = this.source.attackDamage();
 
-        this.setColliding();
-        this.parent.onExplosion(damage * 0.75);
-        this.parent.player.shake(damage * 0.75);
+        if (this.setColliding()) {
+          this.parent.addExplosion({
+            sourceId: this.id,
+            x: this.x,
+            y: this.y,
+            type: this.explosionType,
+            parent: this.parent,
+            flash: damage * 0.75,
+            shake: damage * 0.75,
+          });
+        }
 
         if (body.hurt) {
           body.hurt(damage);
@@ -86,14 +94,6 @@ class Projectile extends DynamicEntity {
   updateColliding() {
     this.parent.remove(this);
     this.source.projectiles.push(this);
-
-    this.parent.addExplosion({
-      sourceId: this.id,
-      x: this.x,
-      y: this.y,
-      type: this.explosionType,
-      parent: this.parent,
-    });
 
     this.setIdle();
   }

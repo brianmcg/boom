@@ -547,6 +547,7 @@ class Player extends AbstractActor {
           y: point.y + Math.cos(angle) * (bullet.width / 2),
           sourceId: body.spurtType ? `${body.id}_${body.spurtType}` : bullet.id,
           parent: this.parent,
+          flash: power,
         });
 
         if (body.hurt) {
@@ -571,6 +572,7 @@ class Player extends AbstractActor {
           y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
           sourceId: bullet.id,
           parent: this.parent,
+          flash: power,
         });
       }
 
@@ -585,7 +587,6 @@ class Player extends AbstractActor {
     });
 
     this.camera.setRecoil(recoil);
-    this.parent.onExplosion(power);
     this.emitSound(this.weapon.sounds.fire);
     this.emit(EVENTS.FIRE_WEAPON);
   }

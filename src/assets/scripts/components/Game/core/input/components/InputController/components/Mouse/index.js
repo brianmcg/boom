@@ -21,7 +21,7 @@ class Mouse {
    * @param  {Element} options.el          The canvas element.
    * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
-  constructor(el, sensitivity = 0.0004) {
+  constructor(el, sensitivity = 0.0006) {
     this.buttons = {};
     this.el = el;
 
