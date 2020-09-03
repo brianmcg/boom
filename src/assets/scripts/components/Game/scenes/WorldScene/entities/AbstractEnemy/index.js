@@ -1,6 +1,5 @@
 import { CELL_SIZE, UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
-import Explosion from '../../effects/Explosion';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -515,12 +514,12 @@ class AbstractEnemy extends AbstractActor {
 
     if (isStateChanged) {
       if (this.explosionType) {
-        this.parent.addExplosion(new Explosion({
+        this.parent.addExplosion({
           x: this.x,
           y: this.y,
           sourceId: `${this.id}_${this.explosionType}`,
           parent: this.parent,
-        }));
+        });
       }
 
       this.emitSound(this.sounds.death);

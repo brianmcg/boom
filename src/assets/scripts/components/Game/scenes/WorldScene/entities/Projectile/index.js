@@ -1,6 +1,5 @@
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
-import Explosion from '../../effects/Explosion';
 
 const STATES = {
   IDLE: 'projectile:idle',
@@ -88,13 +87,13 @@ class Projectile extends DynamicEntity {
     this.parent.remove(this);
     this.source.projectiles.push(this);
 
-    this.parent.addExplosion(new Explosion({
+    this.parent.addExplosion({
       sourceId: this.id,
       x: this.x,
       y: this.y,
       type: this.explosionType,
       parent: this.parent,
-    }));
+    });
 
     this.setIdle();
   }

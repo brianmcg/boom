@@ -1,5 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { World as PhysicsWorld } from 'game/core/physics';
+import Explosion from '../../effects/Explosion';
 
 const MAX_GUN_FLASH_AMOUNT = 1;
 
@@ -165,8 +166,8 @@ class World extends PhysicsWorld {
    * Add an explosion to the world.
    * @param {World} explosion The explosion to add.
    */
-  addExplosion(explosion) {
-    this.explosions.push(explosion);
+  addExplosion(options) {
+    this.explosions.push(new Explosion(options));
   }
 
   /**

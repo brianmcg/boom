@@ -188,7 +188,7 @@ const createExplosionSprites = ({ animations, textures, world }) => {
   const enemySpurtSprites = world.enemies.reduce((memo, enemy) => {
     const spurtTextures = animations[enemy.spurtType].map(animation => textures[animation]);
 
-    memo[`${enemy.id}_${enemy.spurtType}`]  = new ExplosionSprite(spurtTextures, {
+    memo[`${enemy.id}_${enemy.spurtType}`] = new ExplosionSprite(spurtTextures, {
       animationSpeed: 0.2,
     });
 

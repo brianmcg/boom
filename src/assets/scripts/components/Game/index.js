@@ -1,7 +1,7 @@
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
-import { SCREEN, MAX_FPS } from './constants/config';
+import { SCREEN } from './constants/config';
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -20,7 +20,7 @@ const SCENES = {
   [SCENE_TYPES.TITLE]: TitleScene,
   [SCENE_TYPES.WORLD]: WorldScene,
   [SCENE_TYPES.CREDITS]: CreditsScene,
-}
+};
 
 /**
  * A class representing a game.

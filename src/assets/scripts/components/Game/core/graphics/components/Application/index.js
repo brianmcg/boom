@@ -1,5 +1,4 @@
 import { Application as PixiApplication } from 'pixi.js';
-import EventEmitter from '../EventEmitter';
 
 /**
  * Class representing an application.

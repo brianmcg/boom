@@ -1,6 +1,5 @@
 import { degrees } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
-import Explosion from '../../effects/Explosion';
 
 const EXPLODE_EVENT = 'entity:explode';
 
@@ -76,15 +75,15 @@ class ExplosiveEntity extends DynamicEntity {
           }
         });
 
-        this.parent.addExplosion(new Explosion({
+        this.parent.addExplosion({
           x: this.x,
           y: this.y,
           sourceId: `${this.id}_${this.explosionType}`,
           parent: this.parent,
-        }));
+        });
       }
     }
   }
 }
 
-export default ExplosiveEntity
+export default ExplosiveEntity;

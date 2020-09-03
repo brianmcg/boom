@@ -13,7 +13,7 @@ class ExplosiveEntitySprite extends AnimatedEntitySprite {
    * @param  {Number}  options.alpha          The sprite alpha.
    */
   constructor(textures, entity, options) {
-    super(textures, {...options, loop: false, autoPlay: false });
+    super(textures, { ...options, loop: false, autoPlay: false });
 
     entity.onExplode(() => this.play());
 

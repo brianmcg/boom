@@ -7,7 +7,6 @@ import Camera from './components/Camera';
 import Message from './components/Message';
 import KeyCard from './components/KeyCard';
 import Bullet from '../Bullet';
-import Explosion from '../../effects/Explosion';
 
 const DEG_360 = degrees(360);
 const DEG_270 = degrees(270);
@@ -543,12 +542,12 @@ class Player extends AbstractActor {
         // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
-        this.parent.addExplosion(new Explosion({
+        this.parent.addExplosion({
           x: point.x + Math.cos(angle) * (bullet.width / 2),
           y: point.y + Math.cos(angle) * (bullet.width / 2),
           sourceId: body.spurtType ? `${body.id}_${body.spurtType}` : bullet.id,
           parent: this.parent,
-        }));
+        });
 
         if (body.hurt) {
           const damage = power * (Math.floor(Math.random() * accuracy) + 1);
@@ -567,12 +566,12 @@ class Player extends AbstractActor {
         }
       } else {
         // Handle collision with wall
-        this.parent.addExplosion(new Explosion({
+        this.parent.addExplosion({
           x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
           y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
           sourceId: bullet.id,
           parent: this.parent,
-        }));
+        });
       }
 
       this.bullets[this.weapon.type].push(bullet);

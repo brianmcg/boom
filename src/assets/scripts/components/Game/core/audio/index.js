@@ -1,4 +1,3 @@
-import SoundPlayer from './components/SoundPlayer';
 import SoundLoader from './components/SoundLoader';
 import SoundSpriteController from './components/SoundSpriteController';
 
@@ -7,10 +6,6 @@ import SoundSpriteController from './components/SoundSpriteController';
  */
 
 export {
-  /**
-   * The sound player component.
-   */
-  SoundPlayer,
   /**
    * The sound loader component.
    */
