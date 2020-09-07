@@ -1,7 +1,10 @@
+import { TIME_STEP } from 'game/constants/config';
 import { degrees } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
 
 const EXPLODE_EVENT = 'entity:explode';
+
+const EXPLODE_DELAY = 200;
 
 const DEGREES_360 = degrees(360);
 
@@ -42,6 +45,30 @@ class ExplosiveEntity extends DynamicEntity {
     this.power = power;
     this.range = range;
     this.isExplosive = true;
+    this.timer = 0;
+
+    this.onExplode(() => {
+      this.parent.addExplosion({
+        x: this.x,
+        y: this.y,
+        sourceId: `${this.id}_${this.explosionType}`,
+        parent: this.parent,
+        flash: this.power,
+        shake: this.power,
+      });
+
+      this.parent.getAdjacentBodies(this, this.range).forEach((body) => {
+        if (body.hurt) {
+          const angle = (body.getAngleTo(this) - DEGREES_180 + DEGREES_360) % DEGREES_360;
+          const distance = this.getDistanceTo(body);
+          const damage = Math.max(1, this.power - Math.round(distance));
+
+          body.hurt(damage, angle);
+        }
+      });
+
+      this.emitSound(this.sounds.explode);
+    });
   }
 
   /**
@@ -50,6 +77,21 @@ class ExplosiveEntity extends DynamicEntity {
    */
   onExplode(callback) {
     this.on(EXPLODE_EVENT, callback);
+  }
+
+  /**
+   * Update the entity.
+   * @param  {Number} delta The delta time.
+   */
+  update(delta = 1) {
+    if (!this.isExplosive && this.timer < EXPLODE_DELAY) {
+      this.timer += delta * TIME_STEP;
+
+      if (this.timer >= EXPLODE_DELAY) {
+        this.timer = EXPLODE_DELAY;
+        this.emit(EXPLODE_EVENT);
+      }
+    }
   }
 
   /**
@@ -63,28 +105,6 @@ class ExplosiveEntity extends DynamicEntity {
       if (this.health <= 0) {
         this.health = 0;
         this.isExplosive = false;
-        this.emit(EXPLODE_EVENT);
-
-        this.parent.getAdjacentBodies(this, this.range).forEach((body) => {
-          if (body.hurt) {
-            const angle = (body.getAngleTo(this) - DEGREES_180 + DEGREES_360) % DEGREES_360;
-            const distance = this.getDistanceTo(body);
-            const damage = Math.max(1, this.power - Math.round(distance));
-
-            body.hurt(damage, angle);
-          }
-        });
-
-        this.emitSound(this.sounds.explode);
-
-        this.parent.addExplosion({
-          x: this.x,
-          y: this.y,
-          sourceId: `${this.id}_${this.explosionType}`,
-          parent: this.parent,
-          flash: this.power,
-          shake: this.power,
-        });
       }
     }
   }

@@ -77,6 +77,15 @@ class Body extends EventEmitter {
   }
 
   /**
+   * Remove the body from the parent.
+   */
+  remove() {
+    if (this.parent) {
+      this.parent.remove(this);
+    }
+  }
+
+  /**
    * Check for collision with a ray.
    * @param  {Object} ray The ray.
    * @return {Boolean}    Collision has occurred.

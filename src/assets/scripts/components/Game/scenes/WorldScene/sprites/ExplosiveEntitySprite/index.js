@@ -19,7 +19,7 @@ class ExplosiveEntitySprite extends AnimatedEntitySprite {
 
     this.onComplete = () => {
       this.visible = false;
-      entity.parent.remove(entity);
+      entity.remove();
     };
   }
 }
