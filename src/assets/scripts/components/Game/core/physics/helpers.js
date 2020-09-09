@@ -260,7 +260,7 @@ export const castRay = (caster, rayAngle) => {
   const encounteredBodies = {};
 
   parent.getCell(gridX, gridY).bodies.forEach((body) => {
-    if (body.id !== id && caster.isFacing(body)) {
+    if (caster.isFacing(body)) {
       encounteredBodies[body.id] = body;
     }
   });
@@ -410,6 +410,8 @@ export const castRay = (caster, rayAngle) => {
       }
     }
   }
+
+  delete encounteredBodies[id];
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     Object.values(encounteredBodies).forEach((body) => {
