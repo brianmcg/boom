@@ -1,3 +1,4 @@
+import { DISABLE_SOUNDS, DISABLE_MUSIC } from 'game/constants/config';
 import Sound from '../Sound';
 
 /**
@@ -43,7 +44,7 @@ class SoundLoader {
     return new Promise((resolve) => {
       fetch(spriteSrc).then((response) => {
         response.json().then((sprite) => {
-          const sound = new Sound({ src, sprite });
+          const sound = new Sound({ src, sprite, mute: DISABLE_SOUNDS });
           this.cache[name] = sound;
           sound.onload = resolve(sound);
         });
@@ -59,7 +60,7 @@ class SoundLoader {
    */
   loadSrc({ name, src, loop }) {
     return new Promise((resolve) => {
-      const sound = new Sound({ src, loop });
+      const sound = new Sound({ src, loop, mute: DISABLE_MUSIC });
       this.cache[name] = sound;
       sound.onload = resolve(sound);
     });
