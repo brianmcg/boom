@@ -1,12 +1,11 @@
 /**
- * Class representing and entity sound controller.
+ * Class representing and sound sprite controller.
  */
 class SoundSpriteController {
   /**
-   * Creates an entity sound controller.
+   * Creates an sound sprite controller.
    * @param  {Sound}  options.soundSprite      The sound sprite containing game sounds.
    * @param  {Object} options.sounds           A hash containing entity sound names.
-   * @param  {Number} options.maxSoundDistance The maximum distance a player hears a sound.
    */
   constructor({ soundSprite, sounds }) {
     this.soundSprite = soundSprite;
@@ -22,8 +21,7 @@ class SoundSpriteController {
   /**
    * Emit a sound.
    * @param  {String} name             The name of the sound.
-   * @param  {Number} options.distance The distance from the player.
-   * @return {Number}                  The id of the playing sound.
+   * @param  {Number} volume           The volume to play the sound at.
    */
   emitSound(name, volume) {
     const id = this.soundSprite.play(name);
@@ -39,7 +37,7 @@ class SoundSpriteController {
 
   /**
    * Update the sounds.
-   * @param  {Number} distance The distance from the player.
+   * @param  {Number} volume The volume to play the sound at.
    */
   update(volume) {
     this.playing.forEach(id => this.soundSprite.volume(volume, id));

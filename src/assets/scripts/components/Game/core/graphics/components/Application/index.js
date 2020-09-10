@@ -13,11 +13,7 @@ class Application extends PixiApplication {
    * @param  {Boolean}  options.autoStart       Should the application auto start.
    */
   constructor(...options) {
-    super({
-      ...options,
-      autoStart: false,
-      forceFXAA: true,
-    });
+    super({ ...options, autoStart: false, forceFXAA: true });
 
     delete this.loader;
     delete this.resize;

@@ -4,11 +4,12 @@
 
 import {
   filters,
-  Rectangle,
-  SCALE_MODES,
+  utils,
   settings,
+  Rectangle,
   Texture,
   RenderTexture,
+  SCALE_MODES,
 } from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import TextSprite from './components/TextSprite';
@@ -18,9 +19,7 @@ import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
 import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
-import EventEmitter from './components/EventEmitter';
 import ParticleContainer from './components/ParticleContainer';
-import LineGraphic from './components/LineGraphic';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -28,65 +27,63 @@ settings.SPRITE_BATCH_SIZE = 20000;
 
 const { ColorMatrixFilter } = filters;
 
+const { EventEmitter } = utils;
+
 export {
   /**
    * The application component.
    */
   Application,
   /**
-   * The scene component.
+   * The animated sprite component.
    */
-  Sprite,
-  /**
-   * The bitmap text component.
-   */
-  TextSprite,
+  AnimatedSprite,
   /**
    * The color matrix filter component.
    */
   ColorMatrixFilter,
   /**
-   * The pixelate filter component.
-   */
-  PixelateFilter,
-  /**
    * The container component.
    */
   Container,
-  /**
-   * The animated sprite component.
-   */
-  AnimatedSprite,
-  /**
-   * The rectangle sprite components.
-   */
-  RectangleSprite,
-  /**
-   * The data loader components.
-   */
-  GraphicsLoader,
   /**
    * The event emitter component.
    */
   EventEmitter,
   /**
-   * The particle container component.
+   * The graphics loader component.
    */
-  ParticleContainer,
+  GraphicsLoader,
   /**
-   * The line component.
+   * The pixelate filter component.
    */
-  LineGraphic,
+  PixelateFilter,
   /**
    * The rectangle component.
    */
   Rectangle,
   /**
-   * The texture component.
+   * The particle container component.
    */
-  Texture,
+  ParticleContainer,
   /**
    * The render texture component.
    */
   RenderTexture,
+  /**
+   * The rectangle sprite component.
+   */
+  RectangleSprite,
+  /**
+   * The sprite component.
+   */
+  Sprite,
+  /**
+   * The text sprite component.
+   */
+  TextSprite,
+  /**
+   * The texture component.
+   */
+  Texture,
 };

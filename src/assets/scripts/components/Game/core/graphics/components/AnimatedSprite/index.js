@@ -12,6 +12,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
    * @param  {Number}  options.tint           The sprite tint.
    * @param  {Number}  options.alpha          The sprite alpha.
    * @param  {Boolean} options.loop           The sprite loop.
+   * @param  {Number}  options.anchor         The sprite anchor.
    */
   constructor(textures, {
     animationSpeed = 1,
@@ -50,7 +51,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
 
   /**
    * Set the sprite scale.
-   * @param {Number} amount the scale amount.
+   * @param {Number} amount The scale amount.
    */
   setScale(amount) {
     this.scale.x = amount;
