@@ -18,9 +18,9 @@ let horizontalCell;
 let verticalCell;
 let offsetRatio;
 
-const degreesTable = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
+const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
-export const degrees = value => degreesTable[value];
+export const degrees = value => DEGREES[value];
 
 const DEG_90 = degrees(90);
 const DEG_180 = degrees(180);
@@ -242,11 +242,11 @@ export const getAngleBetween = (bodyA, bodyB) => {
 
 /**
  * Cast a ray from a caster.
- * @param  {Number}         options.rayAngle  The optional ray angle.
+ * @param  {Number}         options.startAngle  The optional ray angle.
  * @param  {DynamicEntity}  options.caster    The caster entity.
  * @return {Object}                           The cast result.
  */
-export const castRay = (caster, rayAngle) => {
+export const castRay = (caster, startAngle, startX, startY) => {
   const {
     id,
     x,
@@ -265,31 +265,39 @@ export const castRay = (caster, rayAngle) => {
     }
   });
 
-  if (rayAngle === undefined) {
-    rayAngle = angle;
+  if (startAngle === undefined) {
+    startAngle = angle;
   }
 
-  if (rayAngle > 0 && rayAngle < DEG_180) {
+  if (startX === undefined) {
+    startX = x;
+  }
+
+  if (startY === undefined) {
+    startY = y;
+  }
+
+  if (startAngle > 0 && startAngle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
     distToNextHorizontalGrid = CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / Math.tan(rayAngle) + x;
+    xIntersection = (horizontalGrid - startY) / Math.tan(startAngle) + startX;
   } else {
     horizontalGrid = gridY * CELL_SIZE;
     distToNextHorizontalGrid = -CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / Math.tan(rayAngle) + x;
+    xIntersection = (horizontalGrid - startY) / Math.tan(startAngle) + startX;
     horizontalGrid -= 1;
   }
 
-  if (rayAngle === 0 || rayAngle === DEG_180) {
+  if (startAngle === 0 || startAngle === DEG_180) {
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (rayAngle >= DEG_90 && rayAngle < DEG_270) {
-      distToNextXIntersection = CELL_SIZE / Math.tan(rayAngle);
+    if (startAngle >= DEG_90 && startAngle < DEG_270) {
+      distToNextXIntersection = CELL_SIZE / Math.tan(startAngle);
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     } else {
-      distToNextXIntersection = CELL_SIZE / Math.tan(rayAngle);
+      distToNextXIntersection = CELL_SIZE / Math.tan(startAngle);
       if (distToNextXIntersection < 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
@@ -320,14 +328,14 @@ export const castRay = (caster, rayAngle) => {
           if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
-            distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(rayAngle);
+            distToHorizontalGridBeingHit = (xIntersection - startX) / Math.cos(startAngle);
             break;
           } else {
             xIntersection += distToNextXIntersection;
             horizontalGrid += distToNextHorizontalGrid;
           }
         } else {
-          distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(rayAngle);
+          distToHorizontalGridBeingHit = (xIntersection - startX) / Math.cos(startAngle);
           break;
         }
       } else {
@@ -340,27 +348,27 @@ export const castRay = (caster, rayAngle) => {
     }
   }
 
-  if (rayAngle < DEG_90 || rayAngle > DEG_270) {
+  if (startAngle < DEG_90 || startAngle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
     distToNextVerticalGrid = CELL_SIZE;
-    yIntersection = Math.tan(rayAngle) * (verticalGrid - x) + y;
+    yIntersection = Math.tan(startAngle) * (verticalGrid - startX) + startY;
   } else {
     verticalGrid = gridX * CELL_SIZE;
     distToNextVerticalGrid = -CELL_SIZE;
-    yIntersection = Math.tan(rayAngle) * (verticalGrid - x) + y;
+    yIntersection = Math.tan(startAngle) * (verticalGrid - startX) + startY;
     verticalGrid -= 1;
   }
 
-  if (rayAngle === DEG_90 || rayAngle === DEG_270) {
+  if (startAngle === DEG_90 || startAngle === DEG_270) {
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (rayAngle >= 0 && rayAngle < DEG_180) {
-      distToNextYIntersection = CELL_SIZE * Math.tan(rayAngle);
+    if (startAngle >= 0 && startAngle < DEG_180) {
+      distToNextYIntersection = CELL_SIZE * Math.tan(startAngle);
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     } else {
-      distToNextYIntersection = CELL_SIZE * Math.tan(rayAngle);
+      distToNextYIntersection = CELL_SIZE * Math.tan(startAngle);
       if (distToNextYIntersection > 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
@@ -391,14 +399,14 @@ export const castRay = (caster, rayAngle) => {
           if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
-            distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(rayAngle);
+            distToVerticalGridBeingHit = (yIntersection - startY) / Math.sin(startAngle);
             break;
           } else {
             yIntersection += distToNextYIntersection;
             verticalGrid += distToNextVerticalGrid;
           }
         } else {
-          distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(rayAngle);
+          distToVerticalGridBeingHit = (yIntersection - startY) / Math.sin(startAngle);
           break;
         }
       } else {
@@ -422,8 +430,8 @@ export const castRay = (caster, rayAngle) => {
 
     return {
       startPoint: {
-        x,
-        y,
+        x: startX,
+        y: startY,
       },
       endPoint: {
         x: xIntersection,
@@ -432,7 +440,7 @@ export const castRay = (caster, rayAngle) => {
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: caster.y < horizontalCell.y
+      side: startY < horizontalCell.y
         ? horizontalCell.left
         : horizontalCell.right,
       cell: horizontalCell,
@@ -447,8 +455,8 @@ export const castRay = (caster, rayAngle) => {
 
   return {
     startPoint: {
-      x,
-      y,
+      x: startX,
+      y: startY,
     },
     endPoint: {
       x: verticalGrid,
@@ -456,7 +464,7 @@ export const castRay = (caster, rayAngle) => {
     },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
-    side: caster.x < verticalCell.x
+    side: startX < verticalCell.x
       ? verticalCell.front
       : verticalCell.back,
     cell: verticalCell,
