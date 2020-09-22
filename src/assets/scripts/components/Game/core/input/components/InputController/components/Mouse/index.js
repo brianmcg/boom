@@ -17,7 +17,7 @@ const BUTTON_CODES = {
  */
 class Mouse {
   /**
-   * [constructor description]
+   * Creates a mouse.
    * @param  {Element} options.el          The canvas element.
    * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
