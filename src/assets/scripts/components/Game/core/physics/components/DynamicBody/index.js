@@ -2,16 +2,10 @@ import { CELL_SIZE } from 'game/constants/config';
 import Body from '../Body';
 import {
   isBodyCollision,
-  degrees,
   getAngleBetween,
   castRay,
+  isFacing,
 } from '../../helpers';
-
-const DEG_360 = degrees(360);
-
-const DEG_270 = degrees(270);
-
-const DEG_90 = degrees(90);
 
 const EVENTS = {
   COLLISION: 'body:collision',
@@ -115,7 +109,14 @@ class DynamicBody extends Body {
    * @return {Ray}              The resulting ray.
    */
   castRay(rayAngle) {
-    return castRay(this, rayAngle);
+    const start = {
+      x: this.x,
+      y: this.y,
+      angle: rayAngle === undefined ? this.angle : rayAngle,
+      world: this.parent,
+    };
+
+    return castRay(start);
   }
 
   /**
@@ -124,8 +125,7 @@ class DynamicBody extends Body {
    * @return {Boolean}    The check is confirmed.
    */
   isFacing(body) {
-    const angle = (this.getAngleTo(body) - this.angle + DEG_360) % DEG_360;
-    return angle > DEG_270 || angle < DEG_90;
+    return isFacing(this, body);
   }
 
   /**

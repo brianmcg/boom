@@ -17,6 +17,8 @@ let yOffsetDist;
 let horizontalCell;
 let verticalCell;
 let offsetRatio;
+let horizontalBody;
+let verticalBody;
 
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
@@ -109,19 +111,6 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   }
 
   return true;
-};
-
-/**
- * Calculate the atan2
- * @param  {Number} dyA The first number.
- * @param  {Number} dxA The second number.
- * @return {Number}     The atan2 result.
- */
-export const atan2 = (dyA = 0, dxA = 0) => {
-  const radians = Math.atan2(dyA, dxA);
-  const angle = Math.round(radians * DEG_180 / Math.PI) % DEG_360;
-
-  return (angle < 0) ? angle + DEG_360 : angle;
 };
 
 /**
@@ -241,63 +230,61 @@ export const getAngleBetween = (bodyA, bodyB) => {
 };
 
 /**
- * Cast a ray from a caster.
- * @param  {Number}         options.startAngle  The optional ray angle.
- * @param  {DynamicEntity}  options.caster    The caster entity.
- * @return {Object}                           The cast result.
+ * Is a dynamic body facing a another body.
+ * @param  {DynamicBody}  bodyA   The dynamic body.
+ * @param  {Body}         bodyB   The second body.
+ * @return {Boolean}              Is the dynamic body facing the body.
  */
-export const castRay = (caster, startAngle, startX, startY) => {
-  const {
-    id,
-    x,
-    y,
-    gridX,
-    gridY,
-    angle,
-    parent,
-  } = caster;
+export const isFacing = (bodyA, bodyB) => {
+  const angle = (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
+  return angle > DEG_270 || angle < DEG_90;
+};
 
+/**
+ * Cast a ray.
+ * @param  {Number} options.x     The x coordinate of the starting point.
+ * @param  {Number} options.y     The y coordinate of the starting point.
+ * @param  {Number} options.angle The angle of the ray.
+ * @param  {World}  options.world The world in which the ray is cast.
+ * @return {Object}               The cast result.
+ */
+export const castRay = ({
+  x,
+  y,
+  angle,
+  world,
+}) => {
   const encounteredBodies = {};
+  const gridX = Math.floor(x / CELL_SIZE);
+  const gridY = Math.floor(y / CELL_SIZE);
 
-  parent.getCell(gridX, gridY).bodies.forEach((body) => {
-    if (caster.isFacing(body)) {
+  world.getCell(gridX, gridY).bodies.forEach((body) => {
+    if ((isFacing({ x, y, angle }, body)) && (x !== body.x && y !== body.y)) {
       encounteredBodies[body.id] = body;
     }
   });
 
-  if (startAngle === undefined) {
-    startAngle = angle;
-  }
-
-  if (startX === undefined) {
-    startX = x;
-  }
-
-  if (startY === undefined) {
-    startY = y;
-  }
-
-  if (startAngle > 0 && startAngle < DEG_180) {
+  if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
     distToNextHorizontalGrid = CELL_SIZE;
-    xIntersection = (horizontalGrid - startY) / Math.tan(startAngle) + startX;
+    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
   } else {
     horizontalGrid = gridY * CELL_SIZE;
     distToNextHorizontalGrid = -CELL_SIZE;
-    xIntersection = (horizontalGrid - startY) / Math.tan(startAngle) + startX;
+    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
     horizontalGrid -= 1;
   }
 
-  if (startAngle === 0 || startAngle === DEG_180) {
+  if (angle === 0 || angle === DEG_180) {
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (startAngle >= DEG_90 && startAngle < DEG_270) {
-      distToNextXIntersection = CELL_SIZE / Math.tan(startAngle);
+    if (angle >= DEG_90 && angle < DEG_270) {
+      distToNextXIntersection = CELL_SIZE / Math.tan(angle);
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     } else {
-      distToNextXIntersection = CELL_SIZE / Math.tan(startAngle);
+      distToNextXIntersection = CELL_SIZE / Math.tan(angle);
       if (distToNextXIntersection < 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
@@ -308,8 +295,8 @@ export const castRay = (caster, startAngle, startX, startY) => {
       yGridIndex = Math.floor(horizontalGrid / CELL_SIZE);
 
       if (
-        xGridIndex >= parent.width
-          || yGridIndex >= parent.height
+        xGridIndex >= world.width
+          || yGridIndex >= world.height
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
@@ -317,7 +304,7 @@ export const castRay = (caster, startAngle, startX, startY) => {
         break;
       }
 
-      horizontalCell = parent.getCell(xGridIndex, yGridIndex);
+      horizontalCell = world.getCell(xGridIndex, yGridIndex);
 
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
@@ -328,47 +315,49 @@ export const castRay = (caster, startAngle, startX, startY) => {
           if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
-            distToHorizontalGridBeingHit = (xIntersection - startX) / Math.cos(startAngle);
+            distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
             break;
           } else {
             xIntersection += distToNextXIntersection;
             horizontalGrid += distToNextHorizontalGrid;
           }
         } else {
-          distToHorizontalGridBeingHit = (xIntersection - startX) / Math.cos(startAngle);
+          distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
           break;
         }
       } else {
-        horizontalCell.bodies.forEach((body) => {
-          encounteredBodies[body.id] = body;
-        });
+        for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
+          horizontalBody = horizontalCell.bodies[i];
+          encounteredBodies[horizontalBody.id] = horizontalBody;
+        }
+
         xIntersection += distToNextXIntersection;
         horizontalGrid += distToNextHorizontalGrid;
       }
     }
   }
 
-  if (startAngle < DEG_90 || startAngle > DEG_270) {
+  if (angle < DEG_90 || angle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
     distToNextVerticalGrid = CELL_SIZE;
-    yIntersection = Math.tan(startAngle) * (verticalGrid - startX) + startY;
+    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
   } else {
     verticalGrid = gridX * CELL_SIZE;
     distToNextVerticalGrid = -CELL_SIZE;
-    yIntersection = Math.tan(startAngle) * (verticalGrid - startX) + startY;
+    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
     verticalGrid -= 1;
   }
 
-  if (startAngle === DEG_90 || startAngle === DEG_270) {
+  if (angle === DEG_90 || angle === DEG_270) {
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
-    if (startAngle >= 0 && startAngle < DEG_180) {
-      distToNextYIntersection = CELL_SIZE * Math.tan(startAngle);
+    if (angle >= 0 && angle < DEG_180) {
+      distToNextYIntersection = CELL_SIZE * Math.tan(angle);
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     } else {
-      distToNextYIntersection = CELL_SIZE * Math.tan(startAngle);
+      distToNextYIntersection = CELL_SIZE * Math.tan(angle);
       if (distToNextYIntersection > 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
@@ -379,8 +368,8 @@ export const castRay = (caster, startAngle, startX, startY) => {
       yGridIndex = Math.floor(yIntersection / CELL_SIZE);
 
       if (
-        xGridIndex >= parent.width
-          || yGridIndex >= parent.height
+        xGridIndex >= world.width
+          || yGridIndex >= world.height
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
@@ -388,7 +377,7 @@ export const castRay = (caster, startAngle, startX, startY) => {
         break;
       }
 
-      verticalCell = parent.getCell(xGridIndex, yGridIndex);
+      verticalCell = world.getCell(xGridIndex, yGridIndex);
 
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
@@ -399,39 +388,39 @@ export const castRay = (caster, startAngle, startX, startY) => {
           if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
             verticalGrid += xOffsetDist;
-            distToVerticalGridBeingHit = (yIntersection - startY) / Math.sin(startAngle);
+            distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
             break;
           } else {
             yIntersection += distToNextYIntersection;
             verticalGrid += distToNextVerticalGrid;
           }
         } else {
-          distToVerticalGridBeingHit = (yIntersection - startY) / Math.sin(startAngle);
+          distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
           break;
         }
       } else {
-        verticalCell.bodies.forEach((body) => {
-          encounteredBodies[body.id] = body;
-        });
+        for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
+          verticalBody = verticalCell.bodies[i];
+          encounteredBodies[verticalBody.id] = verticalBody;
+        }
+
         yIntersection += distToNextYIntersection;
         verticalGrid += distToNextVerticalGrid;
       }
     }
   }
 
-  delete encounteredBodies[id];
-
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     Object.values(encounteredBodies).forEach((body) => {
-      if (getDistanceBetween(caster, body) > distToHorizontalGridBeingHit) {
+      if (getDistanceBetween({ x, y }, body) > distToHorizontalGridBeingHit) {
         delete encounteredBodies[body.id];
       }
     });
 
     return {
       startPoint: {
-        x: startX,
-        y: startY,
+        x,
+        y,
       },
       endPoint: {
         x: xIntersection,
@@ -440,7 +429,7 @@ export const castRay = (caster, startAngle, startX, startY) => {
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: startY < horizontalCell.y
+      side: y < horizontalCell.y
         ? horizontalCell.left
         : horizontalCell.right,
       cell: horizontalCell,
@@ -448,15 +437,15 @@ export const castRay = (caster, startAngle, startX, startY) => {
   }
 
   Object.values(encounteredBodies).forEach((body) => {
-    if (getDistanceBetween(caster, body) > distToVerticalGridBeingHit) {
+    if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
       delete encounteredBodies[body.id];
     }
   });
 
   return {
     startPoint: {
-      x: startX,
-      y: startY,
+      x,
+      y,
     },
     endPoint: {
       x: verticalGrid,
@@ -464,7 +453,7 @@ export const castRay = (caster, startAngle, startX, startY) => {
     },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
-    side: startX < verticalCell.x
+    side: x < verticalCell.x
       ? verticalCell.front
       : verticalCell.back,
     cell: verticalCell,
