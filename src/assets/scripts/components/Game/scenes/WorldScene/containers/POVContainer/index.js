@@ -1,5 +1,5 @@
 import { Container } from 'game/core/graphics';
-import { degrees } from 'game/core/physics';
+import { degrees, castRay } from 'game/core/physics';
 import { SCREEN, CELL_SIZE, FOV } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
@@ -97,7 +97,13 @@ class POVContainer extends Container {
         cell,
         endPoint,
         side,
-      } = player.castRay(rayAngle);
+      } = castRay({
+        x: player.x,
+        y: player.y,
+        angle: rayAngle,
+        world: player.parent,
+        rayAngle,
+      });
 
       const { name, spatter } = side;
 

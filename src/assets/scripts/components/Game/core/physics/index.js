@@ -3,7 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
-import { degrees } from './helpers';
+import { degrees, castRay } from './helpers';
 
 /**
  * @module  game/core/physics
@@ -31,7 +31,11 @@ export {
    */
   DynamicCell,
   /**
-   * The degrees table.
+   * Convert degrees to radians function.
    */
   degrees,
+  /**
+   * cast ray function.
+   */
+  castRay
 };
