@@ -33,6 +33,12 @@ export const DISABLE_MUSIC = false;
 export const CELL_SIZE = 32;
 
 /**
+ * The sensitivity of the mouse movement.
+ * @type {Number}
+ */
+export const MOUSE_SENSITIVITY = 0.5;
+
+/**
  * The screen dimensions.
  * @type {Object}
  */

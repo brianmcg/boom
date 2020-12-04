@@ -1,3 +1,5 @@
+
+import { MOUSE_SENSITIVITY } from 'game/constants/config';
 import Button from './components/Button';
 
 export const BUTTONS = {
@@ -12,6 +14,8 @@ const BUTTON_CODES = {
   2: BUTTONS.RIGHT,
 };
 
+const MOVE_MULTIPLIER = 0.0025;
+
 /**
  * Class representing a mouse.
  */
@@ -21,20 +25,11 @@ class Mouse {
    * @param  {Element} options.el          The canvas element.
    * @param  {Number} options.sensitivity  The mouse sensitivity.
    */
-  constructor(el, sensitivity = 0.0006) {
-    this.buttons = {};
-    this.el = el;
-
-    el.requestPointerLock = el.requestPointerLock
-      || el.mozRequestPointerLock
-      || el.webkitRequestPointerLock;
-
-    document.exitPointerLock = document.exitPointerLock
-      || document.mozExitPointerLock
-      || document.webkitExitPointerLock;
+  constructor(el, sensitivity = MOUSE_SENSITIVITY) {
+    const moveMultiplier = MOVE_MULTIPLIER * sensitivity;
 
     const onMouseMove = (e) => {
-      const x = sensitivity * e.movementX
+      const x = moveMultiplier * e.movementX
         || e.mozMovementX
         || e.webkitMovementX
         || 0;
@@ -72,9 +67,20 @@ class Mouse {
       }
     };
 
+    el.requestPointerLock = el.requestPointerLock
+      || el.mozRequestPointerLock
+      || el.webkitRequestPointerLock;
+
+    document.exitPointerLock = document.exitPointerLock
+      || document.mozExitPointerLock
+      || document.webkitExitPointerLock;
+
     document.addEventListener('pointerlockchange', onChange, false);
     document.addEventListener('mozpointerlockchange', onChange, false);
     document.addEventListener('webkitpointerlockchange', onChange, false);
+
+    this.buttons = {};
+    this.el = el;
   }
 
   /**
