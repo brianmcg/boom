@@ -87,8 +87,6 @@ class POVContainer extends Container {
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      sprite = walls[xIndex];
-
       // Cast ray
       const {
         distance,
@@ -105,12 +103,11 @@ class POVContainer extends Container {
         rayAngle,
       });
 
+      // Update wall sprites.
       const { name, spatter } = side;
 
-      // Update total encountered bodies.
-      Object.assign(totalEncounteredBodies, encounteredBodies);
+      sprite = walls[xIndex];
 
-      // Update wall sprites.
       if (isHorizontal) {
         sliceY = cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
       } else {
@@ -175,6 +172,9 @@ class POVContainer extends Container {
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
+
+      // Update total encountered bodies.
+      Object.assign(totalEncounteredBodies, encounteredBodies);
 
       // Increment ray angle
       rayAngle = (rayAngle + ANGLE_INCREMENT) % DEG_360;

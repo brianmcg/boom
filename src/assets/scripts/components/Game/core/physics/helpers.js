@@ -296,7 +296,7 @@ export const castRay = ({
 
       if (
         xGridIndex >= world.width
-          || yGridIndex >= world.height
+          || yGridIndex >= world.length
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
@@ -369,7 +369,7 @@ export const castRay = ({
 
       if (
         xGridIndex >= world.width
-          || yGridIndex >= world.height
+          || yGridIndex >= world.length
           || xGridIndex < 0
           || yGridIndex < 0
       ) {
