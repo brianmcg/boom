@@ -20,6 +20,14 @@ class World extends EventEmitter {
 
     this.maxCellY = this.length - 1;
     this.maxCellX = this.width - 1;
+
+    this.height = grid.reduce((gridMax, row) => {
+      const max = row.reduce((rowMax, {
+        height,
+      }) => (height > rowMax ? height : rowMax), 0);
+
+      return max > gridMax ? max : gridMax;
+    }, 0);
   }
 
   /**
