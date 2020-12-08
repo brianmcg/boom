@@ -99,7 +99,7 @@ class POVContainer extends Container {
         x: player.x,
         y: player.y,
         angle: rayAngle,
-        world: player.parent,
+        world: this.world,
         rayAngle,
       });
 
@@ -191,8 +191,8 @@ class POVContainer extends Container {
       spriteHeight = CELL_SIZE * spriteScale;
       spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
       sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
-      sprite.y = centerY - body.z
-        - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+      sprite.y = centerY
+        - (spriteHeight / (CELL_SIZE / (CELL_SIZE + body.z - player.viewHeight)));
       sprite.width = spriteWidth;
       sprite.height = spriteHeight;
       sprite.zOrder = actualDistance;
