@@ -55,11 +55,13 @@ class World extends EventEmitter {
 
       if (cell !== body) {
         cell.add(body);
+        body.z = cell.height;
       }
 
       if (body.update) {
         this.dynamicBodies.push(body);
         body.parent = this;
+        body.cell = cell;
       }
 
       this.bodies[body.id] = body;

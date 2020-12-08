@@ -459,3 +459,19 @@ export const castRay = ({
     cell: verticalCell,
   };
 };
+
+export const castLongRay = (options) => {
+  const r1 = castRay(options);
+
+  if (r1.cell.height < options.world.height) {
+    const r2 = castRay({
+      ...options,
+      x: r1.endPoint.x,
+      y: r1.endPoint.y,
+    });
+
+    return [r1, r2];
+  }
+
+  return [r1];
+};

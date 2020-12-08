@@ -100,7 +100,7 @@ class Player extends AbstractActor {
       [weapon.type]: weapon.sounds.fire,
     }), this.sounds);
 
-    this.viewHeight = this.height + this.camera.height;
+    this.viewHeight = this.height + this.z + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
     this.distanceToPlayer = 0;
@@ -170,13 +170,6 @@ class Player extends AbstractActor {
   initialize() {
     super.initialize();
 
-    const { x, y } = this.parent.entrance;
-
-    this.x = (CELL_SIZE * x) + (CELL_SIZE / 2);
-    this.y = (CELL_SIZE * y) + (CELL_SIZE / 2);
-    this.angle = 0;
-    this.velocity = 0;
-
     this.keyCards = this.parent.items.reduce((memo, { isKey, color }) => {
       if (isKey) {
         return {
@@ -245,6 +238,7 @@ class Player extends AbstractActor {
       attack,
       stopAttack,
       use,
+      fly,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -301,6 +295,22 @@ class Player extends AbstractActor {
 
     if (this.moveAngle !== previousMoveAngle) {
       this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
+    }
+
+    if (fly) {
+      this.z += 0.2 * delta;
+
+      if (this.z > this.maxZ) {
+        this.z = this.maxZ;
+      }
+    } else if (this.z > this.cell.height) {
+      this.z -= 0.8 * delta;
+
+      if (this.z < this.cell.height) {
+        this.z = this.cell.height;
+
+        this.height *= 0.6;
+      }
     }
 
     // Update height.
@@ -385,7 +395,7 @@ class Player extends AbstractActor {
     });
 
     // Update view
-    this.viewHeight = this.height + this.camera.height;
+    this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 

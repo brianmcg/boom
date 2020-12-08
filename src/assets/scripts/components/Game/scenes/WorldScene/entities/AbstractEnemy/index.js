@@ -445,7 +445,7 @@ class AbstractEnemy extends AbstractActor {
       const cell = cells[index];
       this.waypoint = cell;
     } else {
-      this.waypoint = this.parent.getCell(this.gridX, this.gridY);
+      this.waypoint = this.cell;
     }
 
     this.velocity = this.speed;

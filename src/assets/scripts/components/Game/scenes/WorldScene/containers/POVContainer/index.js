@@ -21,7 +21,7 @@ let mapX;
 let mapY;
 let pixelX;
 let pixelY;
-let rayAngle;
+let angle;
 let sliceY;
 let sprite;
 let spriteHeight;
@@ -80,7 +80,7 @@ class POVContainer extends Container {
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
-    rayAngle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
+    angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
@@ -98,9 +98,8 @@ class POVContainer extends Container {
       } = castRay({
         x: player.x,
         y: player.y,
-        angle: rayAngle,
+        angle,
         world: this.world,
-        rayAngle,
       });
 
       // Update wall sprites.
@@ -116,7 +115,7 @@ class POVContainer extends Container {
 
       sliceY = CELL_SIZE - (Math.floor(sliceY) % CELL_SIZE) - 1;
 
-      spriteAngle = (rayAngle - player.viewAngle + DEG_360) % DEG_360;
+      spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
       correctedDistance = distance * Math.cos(spriteAngle);
       spriteHeight = CELL_SIZE * CAMERA_DISTANCE / correctedDistance;
       spriteY = centerY
@@ -137,8 +136,8 @@ class POVContainer extends Container {
         if (sprite) {
           actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / Math.cos(spriteAngle);
-          mapX = Math.floor(player.x + (Math.cos(rayAngle) * correctedDistance));
-          mapY = Math.floor(player.y + (Math.sin(rayAngle) * correctedDistance));
+          mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
+          mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
           gridX = Math.floor(mapX / CELL_SIZE);
@@ -158,8 +157,8 @@ class POVContainer extends Container {
         if (sprite) {
           actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / Math.cos(spriteAngle);
-          mapX = Math.floor(player.x + (Math.cos(rayAngle) * correctedDistance));
-          mapY = Math.floor(player.y + (Math.sin(rayAngle) * correctedDistance));
+          mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
+          mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
           gridX = Math.floor(mapX / CELL_SIZE);
@@ -177,7 +176,7 @@ class POVContainer extends Container {
       Object.assign(totalEncounteredBodies, encounteredBodies);
 
       // Increment ray angle
-      rayAngle = (rayAngle + ANGLE_INCREMENT) % DEG_360;
+      angle = (angle + ANGLE_INCREMENT) % DEG_360;
     }
 
     // Update entity sprites

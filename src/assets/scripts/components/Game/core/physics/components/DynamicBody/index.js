@@ -31,6 +31,16 @@ class DynamicBody extends Body {
     this.velocity = 0;
     this.angle = angle;
     this.isDynamicBody = true;
+
+    this.onAdded(() => this.initialize());
+  }
+
+  /**
+   * Initialize the entity.
+   */
+  initialize() {
+    const { height } = this.parent;
+    this.maxZ = (height * 0.75) - this.height;
   }
 
   /**
@@ -61,7 +71,7 @@ class DynamicBody extends Body {
     const velocity = Math.min(this.velocity * delta, CELL_SIZE / 2);
 
     // Unmark id from cell before moving
-    this.parent.getCell(this.gridX, this.gridY).remove(this);
+    this.cell.remove(this);
 
     // Update x coordinate
     this.x += Math.cos(this.angle) * velocity;
@@ -100,7 +110,8 @@ class DynamicBody extends Body {
     });
 
     // Mark current cell with id
-    this.parent.getCell(this.gridX, this.gridY).add(this);
+    this.cell = this.parent.getCell(this.gridX, this.gridY);
+    this.cell.add(this);
   }
 
   /**

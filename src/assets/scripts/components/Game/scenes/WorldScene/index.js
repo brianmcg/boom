@@ -70,6 +70,7 @@ class WorldScene extends Scene {
         [KEYS.NUM_1]: () => this.assignPlayerAction({ selectWeapon: 0 }),
         [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 1 }),
         [KEYS.NUM_3]: () => this.assignPlayerAction({ selectWeapon: 2 }),
+        [KEYS.ALT]: () => this.assignPlayerAction({ fly: true }),
       },
       onKeyUp: {
         [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: false }),
@@ -82,6 +83,7 @@ class WorldScene extends Scene {
         [KEYS.D]: () => this.assignPlayerAction({ strafeRight: false }),
         [KEYS.CTRL]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
         [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: false }),
+        [KEYS.ALT]: () => this.assignPlayerAction({ fly: false }),
       },
       onMouseDown: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),

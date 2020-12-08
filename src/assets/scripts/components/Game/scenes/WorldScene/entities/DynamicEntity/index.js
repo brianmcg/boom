@@ -24,14 +24,14 @@ class DynamicEntity extends DynamicBody {
     this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;
-
-    this.onAdded(() => this.initialize());
   }
 
   /**
    * Initialize the entity.
    */
   initialize() {
+    super.initialize();
+
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
     if (!this.soundController) {

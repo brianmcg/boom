@@ -138,7 +138,11 @@ export const createWorld = ({ scene, data, graphics }) => {
     }),
   ]), []);
 
-  const player = new Player(props.player);
+  const player = new Player({
+    ...props.player,
+    x: (CELL_SIZE * entrance.x) + (CELL_SIZE / 2),
+    y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
+  });
 
   return new World({
     scene,
