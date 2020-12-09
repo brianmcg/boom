@@ -74,7 +74,7 @@ export const createWorld = ({ scene, data, graphics }) => {
   }, []);
 
   const { entrance, exit, props } = data;
-  const { visibility, brightness } = props.world;
+  const { visibility, brightness, gravity } = props.world;
   const { animations } = graphics.data;
   // TODO: Deal with multiple spatter types.
   const spatters = animations[spatterTypes[0]].length;
@@ -155,5 +155,6 @@ export const createWorld = ({ scene, data, graphics }) => {
     exit,
     visibility,
     brightness,
+    gravity,
   });
 };

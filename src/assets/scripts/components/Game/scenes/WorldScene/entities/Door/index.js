@@ -158,6 +158,7 @@ class Door extends DynamicCell {
       const force = this.speed * 2;
 
       this.blocking = false;
+      this.height = 0;
       this.timer = this.interval;
 
       player.shake(force);
@@ -175,6 +176,7 @@ class Door extends DynamicCell {
 
     if (isStateChanged) {
       this.blocking = true;
+      this.height = CELL_SIZE;
 
       this.emitSound(this.sounds.close);
     }

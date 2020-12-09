@@ -298,19 +298,9 @@ class Player extends AbstractActor {
     }
 
     if (fly) {
-      this.z += 0.2 * delta;
-
-      if (this.z > this.maxZ) {
-        this.z = this.maxZ;
-      }
-    } else if (this.z > this.cell.height) {
-      this.z -= 0.8 * delta;
-
-      if (this.z < this.cell.height) {
-        this.z = this.cell.height;
-
-        this.height *= 0.6;
-      }
+      this.horizontalVelocity = this.parent.gravity * 1.2;
+    } else {
+      this.horizontalVelocity = 0;
     }
 
     // Update height.

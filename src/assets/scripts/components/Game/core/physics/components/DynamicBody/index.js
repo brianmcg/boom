@@ -31,6 +31,7 @@ class DynamicBody extends Body {
     this.velocity = 0;
     this.angle = angle;
     this.isDynamicBody = true;
+    this.horizontalVelocity = 0;
 
     this.onAdded(() => this.initialize());
   }
@@ -93,6 +94,17 @@ class DynamicBody extends Body {
 
     // Update y coordinate
     this.y += Math.sin(this.angle) * velocity;
+
+    // Update z coordinate
+    this.z += (this.horizontalVelocity - this.parent.gravity) * delta;
+
+    if (this.z < this.cell.height) {
+      this.z = this.cell.height;
+    }
+
+    if (this.z > this.maxZ) {
+      this.z = this.maxZ;
+    }
 
     // Check for y axis collisions
     bodies.forEach((body) => {
