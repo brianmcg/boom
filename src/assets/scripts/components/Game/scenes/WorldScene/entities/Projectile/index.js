@@ -42,8 +42,8 @@ class Projectile extends DynamicEntity {
     });
 
     this.source = source;
-    this.speed = speed * CELL_SIZE;
     this.explosionType = explosionType;
+    this.velocity = speed * CELL_SIZE;
 
     this.onCollision((body) => {
       if (body.blocking) {
@@ -104,26 +104,25 @@ class Projectile extends DynamicEntity {
    */
   initialize() {
     super.initialize();
-    this.emitSound(this.sounds.travel);
-  }
 
-  /**
-   * Set the projectile properties.
-   * @param {Number} options.x     The x coordinate.
-   * @param {Number} options.y     The y coordinate.
-   * @param {Number} options.z     The y coordinate.
-   * @param {Number} options.angle The angle.
-   * @param {Number} options.width The width.
-   */
-  setProperties({ x = 0, y = 0, z = 0, angle = 0 }) {
-    this.angle = angle;
-    this.x = x;
-    this.y = y;
+    const {
+      x,
+      y,
+      z,
+      angle,
+      width,
+    } = this.source;
+
+    const distance = Math.sqrt((width * width) * 2) + 1;
+
+    this.x = x + Math.cos(angle) * distance;
+    this.y = y + Math.sin(angle) * distance;
     this.z = z;
-    console.log(this.z);
-    this.velocity = this.speed;
+    this.angle = angle;
 
     this.setTravelling();
+
+    this.emitSound(this.sounds.travel);
   }
 
   /**
@@ -150,7 +149,6 @@ class Projectile extends DynamicEntity {
     const isStateChanged = this.setState(STATES.EXPLODING);
 
     if (isStateChanged) {
-      this.velocity = 0;
       this.stop();
       this.emitSound(this.sounds.explode);
     }
