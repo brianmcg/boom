@@ -54,6 +54,7 @@ class Projectile extends DynamicEntity {
             sourceId: this.id,
             x: this.x,
             y: this.y,
+            z:this.z,
             type: this.explosionType,
             parent: this.parent,
             flash: damage * 0.75,
@@ -110,13 +111,16 @@ class Projectile extends DynamicEntity {
    * Set the projectile properties.
    * @param {Number} options.x     The x coordinate.
    * @param {Number} options.y     The y coordinate.
+   * @param {Number} options.z     The y coordinate.
    * @param {Number} options.angle The angle.
    * @param {Number} options.width The width.
    */
-  setProperties({ x = 0, y = 0, angle = 0 }) {
+  setProperties({ x = 0, y = 0, z = 0, angle = 0 }) {
     this.angle = angle;
     this.x = x;
     this.y = y;
+    this.z = z;
+    console.log(this.z);
     this.velocity = this.speed;
 
     this.setTravelling();

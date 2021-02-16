@@ -517,6 +517,7 @@ class AbstractEnemy extends AbstractActor {
         this.parent.addExplosion({
           x: this.x,
           y: this.y,
+          z: this.z,
           sourceId: `${this.id}_${this.explosionType}`,
           parent: this.parent,
         });

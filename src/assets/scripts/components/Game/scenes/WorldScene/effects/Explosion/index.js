@@ -19,10 +19,12 @@ class Explosion {
     type,
     x,
     y,
+    z = 0,
     parent,
   }) {
     this.x = x;
     this.y = y;
+    this.z = z;
     this.sourceId = sourceId;
     this.timer = 0;
     this.parent = parent;

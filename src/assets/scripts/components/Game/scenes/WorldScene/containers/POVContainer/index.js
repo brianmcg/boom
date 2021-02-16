@@ -218,7 +218,7 @@ class POVContainer extends Container {
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
         sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + explosion.z - player.viewHeight)));
         sprite.width = spriteWidth;
         sprite.height = spriteHeight;
         sprite.zOrder = actualDistance;

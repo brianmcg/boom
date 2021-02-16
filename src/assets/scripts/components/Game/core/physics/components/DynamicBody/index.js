@@ -40,8 +40,7 @@ class DynamicBody extends Body {
    * Initialize the entity.
    */
   initialize() {
-    const { height } = this.parent;
-    this.maxZ = (height * 0.75) - this.height;
+    this.cell = this.parent.getCell(this.gridX, this.gridY);
   }
 
   /**
@@ -95,17 +94,6 @@ class DynamicBody extends Body {
     // Update y coordinate
     this.y += Math.sin(this.angle) * velocity;
 
-    // Update z coordinate
-    this.z += (this.horizontalVelocity - this.parent.gravity) * delta;
-
-    if (this.z < this.cell.height) {
-      this.z = this.cell.height;
-    }
-
-    if (this.z > this.maxZ) {
-      this.z = this.maxZ;
-    }
-
     // Check for y axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
@@ -124,6 +112,17 @@ class DynamicBody extends Body {
     // Mark current cell with id
     this.cell = this.parent.getCell(this.gridX, this.gridY);
     this.cell.add(this);
+
+    // Update z coordinate
+    this.z += (this.horizontalVelocity - this.parent.gravity) * delta;
+
+    if (this.z < this.cell.height) {
+      this.z = this.cell.height;
+    }
+
+    if (this.z > this.maxZ) {
+      this.z = this.maxZ;
+    }
   }
 
   /**
@@ -158,6 +157,10 @@ class DynamicBody extends Body {
    */
   getAngleTo(body) {
     return getAngleBetween(this, body);
+  }
+
+  get maxZ() {
+    return this.parent.height - this.cell.height - this.height;
   }
 }
 

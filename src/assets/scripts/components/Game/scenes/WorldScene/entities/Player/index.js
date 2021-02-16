@@ -596,22 +596,22 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount to hurt the player.
    */
   hurt(amount) {
-    this.vision = HURT_VISION_AMOUNT;
-    this.health -= amount;
+    // this.vision = HURT_VISION_AMOUNT;
+    // this.health -= amount;
 
-    this.emit(EVENTS.HURT);
+    // this.emit(EVENTS.HURT);
 
-    if (this.health <= 0) {
-      this.health = 0;
-      this.setDying();
-      this.emitSound(this.sounds.death);
-    } else {
-      this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
+    // if (this.health <= 0) {
+    //   this.health = 0;
+    //   this.setDying();
+    //   this.emitSound(this.sounds.death);
+    // } else {
+    //   this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
 
-      if (!this.isPlaying(this.sounds.pain)) {
-        this.emitSound(this.sounds.pain);
-      }
-    }
+    //   if (!this.isPlaying(this.sounds.pain)) {
+    //     this.emitSound(this.sounds.pain);
+    //   }
+    // }
   }
 
   /**
@@ -786,6 +786,10 @@ class Player extends AbstractActor {
    */
   isDead() {
     return this.state === STATES.DEAD;
+  }
+
+  get maxZ() {
+    return (this.parent.height * 0.75) - this.cell.height - this.height;
   }
 
   /**
