@@ -129,7 +129,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = 1, ...other } = {}) {
-    this.show(SCENE_TYPES.WORLD, { index, ...other });
+    this.show(SCENE_TYPES.WORLD, { index, showLoader: true, ...other });
   }
 
   /**
@@ -145,10 +145,12 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show(type, { index, startingProps = {} } = {}) {
+  async show(type, { index, startingProps = {}, showLoader } = {}) {
     const Scene = SCENES[type];
 
-    this.addSpinner();
+    if (showLoader) {
+      this.addSpinner();
+    }
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;

@@ -25,13 +25,14 @@ class DynamicBody extends Body {
    * @param  {Boolean} options.blocking Is the body blocking.
    * @param  {Number}  options.angle    The angle of the dynamic body.
    */
-  constructor({ angle = 0, ...other } = {}) {
+  constructor({ angle = 0, weight = 1, ...other } = {}) {
     super(other);
 
     this.velocity = 0;
     this.angle = angle;
     this.isDynamicBody = true;
-    this.horizontalVelocity = 0;
+    this.verticalVelocity = 0;
+    this.weight = weight;
 
     this.onAdded(() => this.initialize());
   }
@@ -113,15 +114,17 @@ class DynamicBody extends Body {
     this.cell = this.parent.getCell(this.gridX, this.gridY);
     this.cell.add(this);
 
+    const maxZ = this.getMaxZ();
+
     // Update z coordinate
-    this.z += (this.horizontalVelocity - this.parent.gravity) * delta;
+    this.z += (this.verticalVelocity - (this.parent.gravity * this.weight)) * delta;
 
     if (this.z < this.cell.height) {
       this.z = this.cell.height;
     }
 
-    if (this.z > this.maxZ) {
-      this.z = this.maxZ;
+    if (this.z > maxZ) {
+      this.z = maxZ;
     }
   }
 
@@ -159,7 +162,11 @@ class DynamicBody extends Body {
     return getAngleBetween(this, body);
   }
 
-  get maxZ() {
+  /**
+   * Get the current maxZ value;
+   * @return {[Number} The current max z.
+   */
+  getMaxZ() {
     return this.parent.height - this.cell.height - this.height;
   }
 }

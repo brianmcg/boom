@@ -9,6 +9,8 @@ const STATES = {
   LOCKED: 'door:locked',
 };
 
+const IMPACT_MULTIPLIER = 2;
+
 /**
  * Class representing a door.
  * @extends {DynamicCell}
@@ -154,14 +156,10 @@ class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENED);
 
     if (isStateChanged) {
-      const { player } = this.parent;
-      const force = this.speed * 2;
-
       this.blocking = false;
       this.height = 0;
       this.timer = this.interval;
-
-      player.shake(force);
+      this.parent.player.shake(this.speed * IMPACT_MULTIPLIER);
     }
 
     return isStateChanged;

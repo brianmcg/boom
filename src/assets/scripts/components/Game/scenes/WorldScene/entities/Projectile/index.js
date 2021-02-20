@@ -32,12 +32,14 @@ class Projectile extends DynamicEntity {
     speed = 0,
     source,
     explosionType,
+    weight = 0,
     ...other
   }) {
     super({
       width,
       height,
       blocking: false,
+      weight,
       ...other,
     });
 

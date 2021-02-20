@@ -13,11 +13,10 @@ class Spinner {
 
   resize(scale) {
     const width = SCREEN.HEIGHT / 4 * scale;
-    const height = width / 8;
 
     this.view.style.width = `${width}px`;
-    this.view.style.height = `${height}px`;
-    this.spinner.style.margin = `${-height / 2}px 0px 0px ${-width / 2}px`;
+    this.view.style.height = `${width}px`;
+    this.spinner.style.margin = `${-width / 2}px 0px 0px ${-width / 2}px`;
   }
 }
 

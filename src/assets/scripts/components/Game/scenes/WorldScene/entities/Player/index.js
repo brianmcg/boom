@@ -100,7 +100,7 @@ class Player extends AbstractActor {
       [weapon.type]: weapon.sounds.fire,
     }), this.sounds);
 
-    this.viewHeight = this.height + this.z + this.camera.height;
+    this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
     this.distanceToPlayer = 0;
@@ -298,9 +298,9 @@ class Player extends AbstractActor {
     }
 
     if (fly) {
-      this.horizontalVelocity = this.parent.gravity * 1.2;
+      this.verticalVelocity = this.parent.gravity * 1.2;
     } else {
-      this.horizontalVelocity = 0;
+      this.verticalVelocity = 0;
     }
 
     // Update height.
@@ -430,7 +430,7 @@ class Player extends AbstractActor {
     }
 
     // Update view
-    this.viewHeight = this.height + this.camera.height;
+    this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
@@ -788,7 +788,11 @@ class Player extends AbstractActor {
     return this.state === STATES.DEAD;
   }
 
-  get maxZ() {
+  /**
+   * Get the current maxZ value;
+   * @return {[Number} The current max z.
+   */
+  getMaxZ() {
     return (this.parent.height * 0.75) - this.cell.height - this.height;
   }
 
