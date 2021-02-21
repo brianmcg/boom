@@ -1,4 +1,10 @@
+import { CELL_SIZE } from 'game/constants/config';
 import Body from '../Body';
+
+const AXES = {
+  X: 'x',
+  Y: 'y',
+};
 
 /**
  * Creates a cell
@@ -13,9 +19,20 @@ class Cell extends Body {
    * @param  {Number}  options.height    The height of the cell.
    * @param  {Boolean} options.blocking  Is the cell blocking.
    */
-  constructor(options) {
-    super(options);
+  constructor({ axis, ...other }) {
+    super(other);
     this.bodies = [];
+    this.axis = axis;
+    this.offset = axis ? { x: 0, y: 0 } : null;
+
+    if (this.isHorizontal()) {
+      this.offset.y = CELL_SIZE / 2;
+    }
+
+    if (this.isVertical()) {
+      this.offset.x = CELL_SIZE / 2;
+    }
+
   }
 
   /**
@@ -32,6 +49,22 @@ class Cell extends Body {
    */
   remove(body) {
     this.bodies = this.bodies.filter(b => b.id !== body.id);
+  }
+
+  /**
+   * Is the axis horizontal.
+   * @return  {Boolean}
+   */
+  isHorizontal() {
+    return this.axis === AXES.X;
+  }
+
+  /**
+   * Is the axis vertical.
+   * @return  {Boolean}
+   */
+  isVertical() {
+    return this.axis === AXES.Y;
   }
 }
 

@@ -1,11 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../Cell';
 
-const AXES = {
-  X: 'x',
-  Y: 'y',
-};
-
 /**
  * Class representing a dynamic flat cell.
  */
@@ -23,7 +18,6 @@ class DynamicCell extends Cell {
    */
   constructor({
     speed,
-    axis,
     sounds,
     ...other
   }) {
@@ -31,25 +25,7 @@ class DynamicCell extends Cell {
 
     this.speed = speed * CELL_SIZE;
     this.sounds = sounds;
-    this.axis = axis;
     this.isDynamic = true;
-    this.offset = { x: 0, y: 0 };
-  }
-
-  /**
-   * Is the axis horizontal.
-   * @return  {Boolean}
-   */
-  isHorizontal() {
-    return this.axis === AXES.X;
-  }
-
-  /**
-   * Is the axis vertical.
-   * @return  {Boolean}
-   */
-  isVertical() {
-    return this.axis === AXES.Y;
   }
 }
 

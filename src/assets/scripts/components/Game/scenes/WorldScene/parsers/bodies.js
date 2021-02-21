@@ -50,6 +50,19 @@ const createCell = ({ cell, props }) => {
     });
   }
 
+  if (cell.bars) {
+    return new Cell({
+      x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
+      blocking: cell.blocking,
+      axis: cell.axis,
+      sides,
+      width: CELL_SIZE,
+      height: cell.blocking ? CELL_SIZE : 0,
+      bars: true,
+    });
+  }
+
   return new Cell({
     x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
@@ -142,6 +155,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...props.player,
     x: (CELL_SIZE * entrance.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
+    angle: Math.PI * 1.5,
   });
 
   return new World({

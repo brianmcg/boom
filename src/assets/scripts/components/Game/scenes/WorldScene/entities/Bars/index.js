@@ -1,37 +1,30 @@
 import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
-import DynamicCell from '../DynamicCell';
+import Cell from '../Cell';
 
-const STATES = {
-  OPENING: 'door:opening',
-  OPENED: 'door:opened',
-  CLOSING: 'door:closing',
-  CLOSED: 'door:closed',
-  LOCKED: 'door:locked',
-};
 
 const IMPACT_MULTIPLIER = 2;
 
 /**
  * Class representing a door.
- * @extends {DynamicCell}
+ * @extends {Cell}
  */
-class Door extends DynamicCell {
-  /**
-   * Creates a door cell
-   * @param  {Number} options.x       The x coordinate of the cell.
-   * @param  {Number} options.y       The y coordinate of the cell
-   * @param  {Number} options.width   The width of the cell.
-   * @param  {Number} options.height  The height of the cell.
-   * @param  {Object} options.sides   The ids of the sides of the cell.
-   * @param  {String} options.axis    The axis of the door.
-   * @param  {String} options.key     The key that unlocks the door.
-   */
+class Door extends Cell {
+
   constructor({ key, interval, ...other }) {
     super(other);
 
     this.timer = 0;
     this.keyCard = key;
     this.interval = interval;
+
+    if (this.isHorizontal()) {
+      this.offset.y = CELL_SIZE / 2;
+    }
+
+    if (this.isVertical()) {
+      this.offset.x = CELL_SIZE / 2;
+    }
+
     this.isDoor = true;
 
     this.setClosed();
