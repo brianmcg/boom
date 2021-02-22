@@ -1,3 +1,4 @@
+import { degrees } from 'game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import Cell from '../entities/Cell';
@@ -155,7 +156,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...props.player,
     x: (CELL_SIZE * entrance.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
-    angle: Math.PI * 1.5,
+    angle: degrees(entrance.angle),
   });
 
   return new World({
