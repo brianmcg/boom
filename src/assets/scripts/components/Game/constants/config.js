@@ -39,6 +39,12 @@ export const CELL_SIZE = 32;
 export const MOUSE_SENSITIVITY = 0.5;
 
 /**
+ * The number of layers of wall slices to render.
+ * @type {Number}
+ */
+export const WALL_LAYERS = 3;
+
+/**
  * The screen dimensions.
  * @type {Object}
  */

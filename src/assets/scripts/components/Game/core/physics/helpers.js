@@ -473,19 +473,25 @@ export function castRay({
 
 export const castLongRay = (options) => {
   const result = [];
-  const ray = castRay(options);
+  const r1 = castRay(options);
 
-  result.push(ray)
+  result.push(r1);
 
-  // const {
-  //   distance,
-  //   encounteredBodies,
-  //   isHorizontal,
-  //   cell,
-  //   endPoint,
-  //   side,
-  // } = ray;
 
+  if (r1.cell.bars) {
+    const r2 = castRay(Object.assign(options, r1.endPoint));
+    r2.distance += r1.distance;
+    result.push(r2);
+
+    if (r2.cell.bars) {
+      const r3 = castRay(Object.assign(options, r2.endPoint));
+      r3.distance += r2.distance;
+      result.push(r3);
+    }
+  }
+
+
+  // debugger;
 
   return result;
 };

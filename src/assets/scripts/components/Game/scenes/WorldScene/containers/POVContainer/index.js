@@ -1,6 +1,11 @@
 import { Container } from 'game/core/graphics';
 import { degrees, castLongRay } from 'game/core/physics';
-import { SCREEN, CELL_SIZE, FOV } from 'game/constants/config';
+import {
+  SCREEN,
+  CELL_SIZE,
+  FOV,
+  WALL_LAYERS,
+} from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
@@ -96,44 +101,50 @@ class POVContainer extends Container {
       });
 
       // Update wall sprites.
-      for (let i = 0, len = rays.length; i < len; i += 1) {
+      for (let i = 0; i < WALL_LAYERS; i += 1) {
         const ray = rays[i];
 
-        const {
-          distance,
-          encounteredBodies,
-          isHorizontal,
-          cell,
-          endPoint,
-          side,
-        } = ray;
+        if (ray) {
+          const {
+            distance,
+            encounteredBodies,
+            isHorizontal,
+            cell,
+            endPoint,
+            side,
+          } = ray;
 
-        // Update total encountered bodies.
-        Object.assign(totalEncounteredBodies, encounteredBodies);
+          // Update total encountered bodies.
+          Object.assign(totalEncounteredBodies, encounteredBodies);
 
-        const { name, spatter } = side;
+          const { name, spatter } = side;
 
-        sprite = walls[xIndex];
+          sprite = walls[i][xIndex];
+          sprite.visible = true;
 
-        if (isHorizontal) {
-          sliceY = cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
+          if (isHorizontal) {
+            sliceY = cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
+          } else {
+            sliceY = cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
+          }
+
+          sliceY = Math.floor(sliceY) % CELL_SIZE;
+
+          spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
+          correctedDistance = distance * Math.cos(spriteAngle);
+          spriteHeight = CELL_SIZE * CAMERA_DISTANCE / correctedDistance;
+          spriteY = centerY
+            - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
+          sprite.height = spriteHeight;
+          sprite.y = spriteY;
+          sprite.zOrder = distance;
+          sprite.changeTexture(name, sliceY, spatter);
+          sprite.tint = this.calculateTint(distance, isHorizontal);
         } else {
-          sliceY = cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
+          walls[i][xIndex].visible = false;
         }
-
-        sliceY = Math.floor(sliceY) % CELL_SIZE;
-
-        spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
-        correctedDistance = distance * Math.cos(spriteAngle);
-        spriteHeight = CELL_SIZE * CAMERA_DISTANCE / correctedDistance;
-        spriteY = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)));
-        sprite.height = spriteHeight;
-        sprite.y = spriteY;
-        sprite.zOrder = distance;
-        sprite.changeTexture(name, sliceY, spatter);
-        sprite.tint = this.calculateTint(distance, isHorizontal);
       }
+
 
       // Update background sprites
       bottomIntersection = Math.floor(spriteY + spriteHeight);

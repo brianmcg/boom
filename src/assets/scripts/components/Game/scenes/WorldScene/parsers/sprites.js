@@ -8,7 +8,7 @@ import {
   Container,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
-import { CELL_SIZE, SCREEN } from 'game/constants/config';
+import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
 import { FONT_SIZES } from 'game/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
@@ -60,7 +60,8 @@ const createWallSprites = ({
 }) => {
   const wallImages = [];
   const wallTextures = {};
-  const wallSprites = [];
+  const wallSprites = [...Array(WALL_LAYERS)].map((u, i) => new Array());
+
   const spatterContainer = new Container();
 
   const spatterTypes = world.enemies.reduce((memo, { spatterType }) => {
@@ -118,8 +119,9 @@ const createWallSprites = ({
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    const wallSprite = new WallSprite(wallTextures, i);
-    wallSprites.push(wallSprite);
+    for (let j = 0; j < WALL_LAYERS; j += 1) {
+      wallSprites[j].push(new WallSprite(wallTextures, i));
+    }
   }
 
   return wallSprites;

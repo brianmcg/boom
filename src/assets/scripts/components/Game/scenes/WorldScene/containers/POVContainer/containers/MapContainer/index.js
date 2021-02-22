@@ -15,7 +15,9 @@ class MapContainer extends Container {
     this.walls = walls;
     this.entities = entities;
     this.effects = effects;
-    this.walls.forEach(wall => this.addChild(wall));
+    this.walls.forEach((layer) => {
+      layer.forEach(wall => this.addChild(wall));
+    });
   }
 
   /**
