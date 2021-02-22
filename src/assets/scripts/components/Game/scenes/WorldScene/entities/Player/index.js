@@ -559,10 +559,12 @@ class Player extends AbstractActor {
             enemyDamage[body.id] += damage;
           }
 
-          if (body.isEnemy && distance - body.distanceToPlayer < SPATTER_DISTANCE) {
-            if (!side.spatter) {
-              side.spatter = body.spatter();
-            }
+          if (
+            body.isEnemy
+              && !side.spatter
+              && distance - body.distanceToPlayer < SPATTER_DISTANCE
+          ) {
+            side.spatter = body.spatter();
           }
         }
       } else {

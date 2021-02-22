@@ -6,6 +6,7 @@ import {
   RectangleSprite,
   Sprite,
   Container,
+  ColorMatrixFilter,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
@@ -49,6 +50,30 @@ const createProjectileSprite = ({ animations, textures }) => {
   const projectileTextures = animations.map(animation => textures[animation]);
 
   return new AnimatedEntitySprite(projectileTextures);
+};
+
+const createWallSpriteMask = (wallTexture, renderer) => {
+  const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
+  const maskContainer = new Container();
+  const filter = new ColorMatrixFilter();
+  const maskForeground = new Sprite(wallTexture);
+
+  const maskBackground = new RectangleSprite({
+    width: CELL_SIZE,
+    height: CELL_SIZE,
+  });
+
+  maskForeground.tint = BLACK;
+
+  maskContainer.addChild(maskBackground);
+  maskContainer.addChild(maskForeground);
+  maskContainer.filters = [filter];
+
+  filter.negative();
+
+  renderer.render(maskContainer, renderTexture);
+
+  return new Sprite(renderTexture);
 };
 
 const createWallSprites = ({
@@ -100,10 +125,17 @@ const createWallSprites = ({
     const spatterTextures = spatters.map((spatter) => {
       const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
       const spatterTexture = textures[spatter];
+      const wallSprite = new Sprite(wallTexture);
+      const spatterSprite = new Sprite(spatterTexture);
+
+      spatterSprite.mask = createWallSpriteMask(wallTexture, renderer);
+
       spatterContainer.removeChildren();
-      spatterContainer.addChild(new Sprite(wallTexture));
-      spatterContainer.addChild(new Sprite(spatterTexture));
+      spatterContainer.addChild(wallSprite);
+      spatterContainer.addChild(spatterSprite);
+
       renderer.render(spatterContainer, renderTexture);
+
       return renderTexture;
     });
 
