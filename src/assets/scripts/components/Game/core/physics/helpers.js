@@ -40,7 +40,7 @@ export function getDistanceBetween(bodyA, bodyB) {
   const dy = bodyA.y - bodyB.y;
 
   return Math.sqrt(dx * dx + dy * dy);
-};
+}
 
 function getLineLineIntersection(l1p1, l1p2, l2p1, l2p2) {
   const a1 = l1p2.y - l1p1.y;
@@ -89,7 +89,7 @@ function getLineLineIntersection(l1p1, l1p2, l2p1, l2p2) {
   }
 
   return null;
-};
+}
 
 function lineIntersectsLine(l1p1, l1p2, l2p1, l2p2) {
   let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
@@ -111,7 +111,7 @@ function lineIntersectsLine(l1p1, l1p2, l2p1, l2p2) {
   }
 
   return true;
-};
+}
 
 /**
  * Check if two bodies are colliding.
@@ -127,7 +127,7 @@ export function isBodyCollision(bodyA, bodyB) {
     && shapeA.x + shapeA.width > shapeB.x
     && shapeA.y < shapeB.y + shapeB.width
     && shapeA.width + shapeA.y > shapeB.y;
-};
+}
 
 /**
  * A collision between a ray and a body has occured.
@@ -160,7 +160,7 @@ export function isRayCollision(body, { startPoint, endPoint }) {
     { x, y: y + width },
     { x, y },
   );
-};
+}
 
 /**
  * A collision between a ray and a body has occured.
@@ -212,7 +212,7 @@ export function getRayCollision(body, { startPoint, endPoint }) {
 
     return memo;
   }, null);
-};
+}
 
 /**
  * Get angle between two bodies.
@@ -227,7 +227,7 @@ export function getAngleBetween(bodyA, bodyB) {
   const angle = Math.atan2(dy, dx) % DEG_360;
 
   return angle < 0 ? angle + DEG_360 : angle;
-};
+}
 
 /**
  * Is a dynamic body facing a another body.
@@ -238,7 +238,7 @@ export function getAngleBetween(bodyA, bodyB) {
 export function isFacing(bodyA, bodyB) {
   const angle = (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
   return angle > DEG_270 || angle < DEG_90;
-};
+}
 
 /**
  * Cast a ray.
@@ -469,9 +469,9 @@ export function castRay({
       : verticalCell.back,
     cell: verticalCell,
   };
-};
+}
 
-export const castLongRay = (options) => {
+export function castLongRay(options) {
   const result = [];
   const r1 = castRay(options);
 
@@ -494,4 +494,4 @@ export const castLongRay = (options) => {
   // debugger;
 
   return result;
-};
+}

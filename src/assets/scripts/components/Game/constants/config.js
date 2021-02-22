@@ -18,13 +18,13 @@ export const TIME_STEP = 1000 / MAX_FPS;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = false;
+export const DISABLE_SOUNDS = true;
 
 /**
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = false;
+export const DISABLE_MUSIC = true;
 
 /**
  * The size of mao tile.
@@ -82,3 +82,9 @@ export const UPDATE_DISTANCE = CELL_SIZE * 20;
  * @type {Number}
  */
 export const MAX_SOUND_DISTANCE = CELL_SIZE * 9;
+
+/**
+ * Is the player invincible.
+ * @type {Boolean}
+ */
+export const PLAYER_INVINCIBLE = true;

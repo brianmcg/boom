@@ -38,5 +38,8 @@ export {
    * cast ray function.
    */
   castRay,
-  castLongRay
+  /**
+   * cast a long ray function.
+   */
+  castLongRay,
 };

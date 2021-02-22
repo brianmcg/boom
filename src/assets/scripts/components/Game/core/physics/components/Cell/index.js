@@ -32,7 +32,6 @@ class Cell extends Body {
     if (this.isVertical()) {
       this.offset.x = CELL_SIZE / 2;
     }
-
   }
 
   /**

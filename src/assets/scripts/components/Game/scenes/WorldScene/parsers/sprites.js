@@ -60,7 +60,7 @@ const createWallSprites = ({
 }) => {
   const wallImages = [];
   const wallTextures = {};
-  const wallSprites = [...Array(WALL_LAYERS)].map((u, i) => new Array());
+  const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
 
   const spatterContainer = new Container();
 

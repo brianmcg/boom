@@ -56,7 +56,7 @@ class Projectile extends DynamicEntity {
             sourceId: this.id,
             x: this.x,
             y: this.y,
-            z:this.z,
+            z: this.z,
             type: this.explosionType,
             parent: this.parent,
             flash: damage * 0.75,

@@ -1,6 +1,6 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
-import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
+import { CELL_SIZE, TIME_STEP, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -596,22 +596,24 @@ class Player extends AbstractActor {
    * @param  {Number} amount The amount to hurt the player.
    */
   hurt(amount) {
-    // this.vision = HURT_VISION_AMOUNT;
-    // this.health -= amount;
+    if (!PLAYER_INVINCIBLE) {
+      this.vision = HURT_VISION_AMOUNT;
+      this.health -= amount;
 
-    // this.emit(EVENTS.HURT);
+      this.emit(EVENTS.HURT);
 
-    // if (this.health <= 0) {
-    //   this.health = 0;
-    //   this.setDying();
-    //   this.emitSound(this.sounds.death);
-    // } else {
-    //   this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
+      if (this.health <= 0) {
+        this.health = 0;
+        this.setDying();
+        this.emitSound(this.sounds.death);
+      } else {
+        this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
 
-    //   if (!this.isPlaying(this.sounds.pain)) {
-    //     this.emitSound(this.sounds.pain);
-    //   }
-    // }
+        if (!this.isPlaying(this.sounds.pain)) {
+          this.emitSound(this.sounds.pain);
+        }
+      }
+    }
   }
 
   /**
