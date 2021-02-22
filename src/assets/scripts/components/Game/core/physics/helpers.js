@@ -1,4 +1,4 @@
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, WALL_LAYERS } from 'game/constants/config';
 
 let horizontalGrid;
 let verticalGrid;
@@ -471,27 +471,35 @@ export function castRay({
   };
 }
 
+/**
+ * Cast a long ray that goes through bars.
+ * @param  {Number} options.x     The x coordinate of the starting point.
+ * @param  {Number} options.y     The y coordinate of the starting point.
+ * @param  {Number} options.angle The angle of the ray.
+ * @param  {World}  options.world The world in which the ray is cast.
+ * @return {Array}                The cast results.
+ */
 export function castLongRay(options) {
   const result = [];
-  const r1 = castRay(options);
 
-  result.push(r1);
+  for (let i = 0; i < WALL_LAYERS; i += 1) {
+    const previousRay = result[i - 1];
 
+    let currentRay;
 
-  if (r1.cell.bars) {
-    const r2 = castRay(Object.assign(options, r1.endPoint));
-    r2.distance += r1.distance;
-    result.push(r2);
+    if (previousRay) {
+      currentRay = castRay(Object.assign(options, previousRay.endPoint));
+      currentRay.distance += previousRay.distance;
+    } else {
+      currentRay = castRay(options);
+    }
 
-    if (r2.cell.bars) {
-      const r3 = castRay(Object.assign(options, r2.endPoint));
-      r3.distance += r2.distance;
-      result.push(r3);
+    result.push(currentRay);
+
+    if (!currentRay.cell.bars) {
+      break;
     }
   }
-
-
-  // debugger;
 
   return result;
 }
