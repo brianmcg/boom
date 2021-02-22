@@ -13,9 +13,10 @@ class Cell extends PhysicsCell {
    * @param  {Number} options.height  The height of the cell.
    * @param  {Object} options.sides   The ids of the sides of the cell.
    */
-  constructor({ sides = {}, ...other }) {
+  constructor({ sides = {}, bars, ...other }) {
     super(other);
 
+    this.bars = bars;
     this.front = sides.front;
     this.left = sides.left;
     this.back = sides.back;

@@ -308,13 +308,19 @@ export function castRay({
 
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
-          offsetRatio = CELL_SIZE / horizontalCell.offset.y;
-          xOffsetDist = distToNextXIntersection / offsetRatio;
-          yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+          if (horizontalCell.offset.y) {
+            offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+            xOffsetDist = distToNextXIntersection / offsetRatio;
+            yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+          } else {
+            xOffsetDist = distToNextXIntersection;
+            yOffsetDist = distToNextHorizontalGrid;
+          }
 
           if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
             xIntersection += xOffsetDist;
             horizontalGrid += yOffsetDist;
+
             distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
             break;
           } else {
@@ -381,9 +387,14 @@ export function castRay({
 
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
-          offsetRatio = CELL_SIZE / verticalCell.offset.x;
-          yOffsetDist = distToNextYIntersection / offsetRatio;
-          xOffsetDist = distToNextVerticalGrid / offsetRatio;
+          if (verticalCell.offset.x) {
+            offsetRatio = CELL_SIZE / verticalCell.offset.x;
+            yOffsetDist = distToNextYIntersection / offsetRatio;
+            xOffsetDist = distToNextVerticalGrid / offsetRatio;
+          } else {
+            yOffsetDist = distToNextYIntersection;
+            xOffsetDist = distToNextVerticalGrid;
+          }
 
           if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
             yIntersection += yOffsetDist;
