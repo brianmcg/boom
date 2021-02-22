@@ -313,8 +313,8 @@ export function castRay({
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
           } else {
-            xOffsetDist = distToNextXIntersection;
-            yOffsetDist = distToNextHorizontalGrid;
+            xOffsetDist = Number.MAX_VALUE;
+            yOffsetDist = Number.MAX_VALUE;
           }
 
           if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
@@ -392,8 +392,8 @@ export function castRay({
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
           } else {
-            yOffsetDist = distToNextYIntersection;
-            xOffsetDist = distToNextVerticalGrid;
+            yOffsetDist = Number.MAX_VALUE;
+            xOffsetDist = Number.MAX_VALUE;
           }
 
           if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
