@@ -238,7 +238,6 @@ class Player extends AbstractActor {
       attack,
       stopAttack,
       use,
-      fly,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -295,12 +294,6 @@ class Player extends AbstractActor {
 
     if (this.moveAngle !== previousMoveAngle) {
       this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
-    }
-
-    if (fly) {
-      this.verticalVelocity = this.parent.gravity * 1.2;
-    } else {
-      this.verticalVelocity = 0;
     }
 
     // Update height.

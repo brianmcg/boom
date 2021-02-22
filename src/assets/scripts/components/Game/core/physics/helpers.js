@@ -248,7 +248,7 @@ export function isFacing(bodyA, bodyB) {
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Object}               The cast result.
  */
-export function castRay({
+function castRaySection({
   x,
   y,
   angle,
@@ -479,7 +479,7 @@ export function castRay({
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Array}                The cast results.
  */
-export function castLongRay(options) {
+export function castRay(options) {
   const result = [];
 
   for (let i = 0; i < WALL_LAYERS; i += 1) {
@@ -488,10 +488,11 @@ export function castLongRay(options) {
     let currentRay;
 
     if (previousRay) {
-      currentRay = castRay(Object.assign(options, previousRay.endPoint));
+      currentRay = castRaySection(Object.assign(options, previousRay.endPoint));
       currentRay.distance += previousRay.distance;
+      Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies)
     } else {
-      currentRay = castRay(options);
+      currentRay = castRaySection(options);
     }
 
     result.push(currentRay);

@@ -31,7 +31,6 @@ class DynamicBody extends Body {
     this.velocity = 0;
     this.angle = angle;
     this.isDynamicBody = true;
-    this.verticalVelocity = 0;
     this.weight = weight;
 
     this.onAdded(() => this.initialize());
@@ -58,7 +57,8 @@ class DynamicBody extends Body {
    * @return {Boolean}      Collision has occurred.
    */
   isBodyCollision(body) {
-    return isBodyCollision(this, body);
+    return !(!this.weight && body.bars)
+      && isBodyCollision(this, body);
   }
 
   /**
@@ -80,7 +80,9 @@ class DynamicBody extends Body {
     // Check for x axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        this.emit(EVENTS.COLLISION, body);
+        if (this.emitCollision) {
+          this.emit(EVENTS.COLLISION, body);
+        }
 
         if (body.blocking) {
           if (body.x > this.x) {
@@ -89,6 +91,7 @@ class DynamicBody extends Body {
             this.x = body.x + (body.width / 2) + (this.width / 2);
           }
         }
+
       }
     });
 
@@ -98,7 +101,9 @@ class DynamicBody extends Body {
     // Check for y axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        this.emit(EVENTS.COLLISION, body);
+        if (this.emitCollision) {
+          this.emit(EVENTS.COLLISION, body);
+        }
 
         if (body.blocking) {
           if (body.y > this.y) {
@@ -113,19 +118,6 @@ class DynamicBody extends Body {
     // Mark current cell with id
     this.cell = this.parent.getCell(this.gridX, this.gridY);
     this.cell.add(this);
-
-    const maxZ = this.getMaxZ();
-
-    // Update z coordinate
-    this.z += (this.verticalVelocity - (this.parent.gravity * this.weight)) * delta;
-
-    if (this.z < this.cell.height) {
-      this.z = this.cell.height;
-    }
-
-    if (this.z > maxZ) {
-      this.z = maxZ;
-    }
   }
 
   /**
@@ -134,14 +126,14 @@ class DynamicBody extends Body {
    * @return {Ray}              The resulting ray.
    */
   castRay(rayAngle) {
-    const start = {
+    const rays = castRay({
       x: this.x,
       y: this.y,
       angle: rayAngle === undefined ? this.angle : rayAngle,
       world: this.parent,
-    };
+    });
 
-    return castRay(start);
+    return rays[rays.length - 1];
   }
 
   /**
@@ -160,14 +152,6 @@ class DynamicBody extends Body {
    */
   getAngleTo(body) {
     return getAngleBetween(this, body);
-  }
-
-  /**
-   * Get the current maxZ value;
-   * @return {[Number} The current max z.
-   */
-  getMaxZ() {
-    return this.parent.height - this.cell.height - this.height;
   }
 }
 

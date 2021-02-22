@@ -1,5 +1,5 @@
 import { Container } from 'game/core/graphics';
-import { degrees, castLongRay } from 'game/core/physics';
+import { degrees, castRay } from 'game/core/physics';
 import {
   SCREEN,
   CELL_SIZE,
@@ -93,7 +93,7 @@ class POVContainer extends Container {
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       // Cast ray
-      const rays = castLongRay({
+      const rays = castRay({
         x: player.x,
         y: player.y,
         angle,

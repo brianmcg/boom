@@ -26,7 +26,6 @@ class World extends PhysicsWorld {
    * @param  {Object} options.exit        The exit coordinates.
    * @param  {Number} options.visibility  The visibility of the world.
    * @param  {Number} options.brightness  The brightness of the world.
-   * @param  {Number} options.gravity     The gravity of the world.
    */
   constructor({
     scene,
@@ -39,9 +38,8 @@ class World extends PhysicsWorld {
     exit,
     visibility,
     brightness,
-    gravity,
   }) {
-    super({ grid, gravity });
+    super(grid);
 
     this.scene = scene;
     this.exit = exit;

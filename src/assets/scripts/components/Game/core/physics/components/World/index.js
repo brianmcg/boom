@@ -6,10 +6,9 @@ import { EventEmitter } from 'game/core/graphics';
 class World extends EventEmitter {
   /**
    * Creates a world.
-   * @param  {Array}  options.grid    The map grid of the world.
-   * @param  {Array}  options.gravity The gravity of the world.
+   * @param  {Array}  grid    The map grid of the world.
    */
-  constructor({ grid = [[]], gravity = 0.8 }) {
+  constructor(grid = [[]]) {
     super();
 
     this.grid = grid;
@@ -29,8 +28,6 @@ class World extends EventEmitter {
 
       return max > gridMax ? max : gridMax;
     }, 0);
-
-    this.gravity = gravity;
   }
 
   /**

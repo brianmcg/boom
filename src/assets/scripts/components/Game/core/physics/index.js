@@ -3,7 +3,7 @@ import DynamicBody from './components/DynamicBody';
 import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
-import { degrees, castRay, castLongRay } from './helpers';
+import { degrees, castRay } from './helpers';
 
 /**
  * @module  game/core/physics
@@ -38,8 +38,4 @@ export {
    * cast ray function.
    */
   castRay,
-  /**
-   * cast a long ray function.
-   */
-  castLongRay,
 };

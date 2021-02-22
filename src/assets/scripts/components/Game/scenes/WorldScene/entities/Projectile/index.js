@@ -46,6 +46,7 @@ class Projectile extends DynamicEntity {
     this.source = source;
     this.explosionType = explosionType;
     this.velocity = speed * CELL_SIZE;
+    this.emitCollision = true;
 
     this.onCollision((body) => {
       if (body.blocking) {
