@@ -490,7 +490,7 @@ export function castRay(options) {
     if (previousRay) {
       currentRay = castRaySection(Object.assign(options, previousRay.endPoint));
       currentRay.distance += previousRay.distance;
-      Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies)
+      Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies);
     } else {
       currentRay = castRaySection(options);
     }

@@ -97,8 +97,10 @@ const createWallSprites = ({
     return memo;
   }, []);
 
-  // TODO: Handle multiple spatter types.
-  const spatters = animations[spatterTypes[0]];
+  const spatters = spatterTypes.reduce((memo, spatterType) => [
+    ...memo,
+    ...animations[spatterType],
+  ], []);
 
   world.grid.forEach((row) => {
     row.forEach((cell) => {
@@ -123,6 +125,11 @@ const createWallSprites = ({
     const { frame } = frames[image];
     const wallTexture = textures[image];
 
+    for (let i = 0; i < frame.w; i += 1) {
+      const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
+      wallTextures[image].push([new Texture(wallTexture, clearSlice)]);
+    }
+
     const spatterTextures = spatters.map((spatter) => {
       const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
       const spatterTexture = textures[spatter];
@@ -142,12 +149,10 @@ const createWallSprites = ({
 
     for (let i = 0; i < frame.w; i += 1) {
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
-      const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
 
-      wallTextures[image].push([
-        new Texture(wallTexture, clearSlice),
-        ...spatterTextures.map(texture => new Texture(texture, spatteredSlice)),
-      ]);
+      spatterTextures.forEach((texture) => {
+        wallTextures[image][i].push(new Texture(texture, spatteredSlice));
+      });
     }
   });
 

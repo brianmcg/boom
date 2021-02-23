@@ -51,6 +51,7 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterType,
+    spatterOffset,
     spurtType,
     explosionType,
     isFloating,
@@ -70,6 +71,7 @@ class AbstractEnemy extends AbstractActor {
     this.spurtType = spurtType;
     this.spatterType = spatterType;
     this.spatters = spatters;
+    this.spatterOffset = spatterOffset;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
@@ -339,7 +341,7 @@ class AbstractEnemy extends AbstractActor {
    * @return {Number} The type of blood spatter.
    */
   spatter() {
-    return Math.floor(Math.random() * this.spatters) + 1;
+    return Math.floor(Math.random() * this.spatters) + this.spatterOffset;
   }
 
   /**

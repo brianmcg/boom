@@ -90,8 +90,6 @@ export const createWorld = ({ scene, data, graphics }) => {
   const { entrance, exit, props } = data;
   const { visibility, brightness } = props.world;
   const { animations } = graphics.data;
-  // TODO: Deal with multiple spatter types.
-  const spatters = animations[spatterTypes[0]].length;
 
   const grid = data.grid.reduce((rows, row) => ([
     ...rows,
@@ -138,19 +136,26 @@ export const createWorld = ({ scene, data, graphics }) => {
     }),
   ]), []);
 
-  const enemies = data.enemies.reduce((memo, enemy) => ([
-    ...memo,
-    new ENEMIES[props.enemies[enemy.type].behaviour]({
-      type: enemy.type,
-      name: enemy.name,
-      x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
-      y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
-      width: Math.ceil(CELL_SIZE * enemy.width),
-      height: Math.ceil(CELL_SIZE * enemy.height),
-      ...props.enemies[enemy.type],
-      spatters,
-    }),
-  ]), []);
+  const enemies = data.enemies.reduce((memo, enemy) => {
+    const { spatterType } = data.props.enemies[enemy.name];
+    const spatters = animations[spatterType].length;
+    const spatterOffset = (spatterTypes.indexOf(spatterType) * spatters) + 1;
+
+    return [
+      ...memo,
+      new ENEMIES[props.enemies[enemy.type].behaviour]({
+        type: enemy.type,
+        name: enemy.name,
+        x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
+        y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
+        width: Math.ceil(CELL_SIZE * enemy.width),
+        height: Math.ceil(CELL_SIZE * enemy.height),
+        ...props.enemies[enemy.type],
+        spatterOffset,
+        spatters,
+      }),
+    ];
+  }, []);
 
   const player = new Player({
     ...props.player,

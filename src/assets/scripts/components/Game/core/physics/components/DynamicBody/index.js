@@ -91,7 +91,6 @@ class DynamicBody extends Body {
             this.x = body.x + (body.width / 2) + (this.width / 2);
           }
         }
-
       }
     });
 
