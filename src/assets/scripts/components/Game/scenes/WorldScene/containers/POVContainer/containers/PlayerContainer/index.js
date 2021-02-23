@@ -13,6 +13,8 @@ const MOVE_INCREMENT_Y = 0.1;
 
 const CHANGE_INCREMENT = 6;
 
+const PLAYER_Z_MULTIPLIER = 3;
+
 const STATES = {
   IDLE: 'player:idle',
   UNARMING: 'player:unarming',
@@ -63,6 +65,7 @@ class PlayerContainer extends Container {
   update(delta) {
     const { weapon } = this.sprites;
     const { flash, brightness } = this.player.parent;
+    const playerZ = this.player.z * PLAYER_Z_MULTIPLIER;
     let intensity = brightness + flash;
 
     switch (this.state) {
@@ -94,7 +97,7 @@ class PlayerContainer extends Container {
     }
 
     weapon.x = this.weaponCenterX + this.weaponX;
-    weapon.y = this.weaponCenterY + this.weaponY;
+    weapon.y = this.weaponCenterY + this.weaponY + playerZ;
     weapon.tint = Math.round(intensity * 255) * GREY;
 
     super.update(delta);
