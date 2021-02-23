@@ -19,8 +19,8 @@ const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
 const VISION_INCREMENT = 0.02;
 const HURT_RECOIL_MULTIPLIER = 1;
-const BREATH_INCREMENT = 0.005;
-const MAX_BREATH_AMOUNT = 0.5;
+const BREATH_INCREMENT = 0.002;
+const MAX_BREATH_AMOUNT = 0.3;
 const BREATH_MULTIPLIER = -2;
 
 const STATES = {
@@ -108,6 +108,7 @@ class Player extends AbstractActor {
     this.viewPitch = this.camera.pitch;
     this.distanceToPlayer = 0;
     this.breathDirection = 1;
+    this.breath = 0;
 
     this.setAlive();
   }
@@ -301,13 +302,13 @@ class Player extends AbstractActor {
     }
 
     // update breath
-    this.z += BREATH_INCREMENT * this.breathDirection * delta;
+    this.breath += BREATH_INCREMENT * this.breathDirection * delta;
 
-    if (this.z >= MAX_BREATH_AMOUNT) {
-      this.z = MAX_BREATH_AMOUNT;
+    if (this.breath >= MAX_BREATH_AMOUNT) {
+      this.breath = MAX_BREATH_AMOUNT;
       this.breathDirection *= BREATH_MULTIPLIER;
-    } else if (this.z <= 0) {
-      this.z = 0;
+    } else if (this.breath <= 0) {
+      this.breath = 0;
       this.breathDirection /= BREATH_MULTIPLIER;
     }
 
@@ -393,7 +394,7 @@ class Player extends AbstractActor {
     });
 
     // Update view
-    this.viewHeight = this.z + this.height + this.camera.height;
+    this.viewHeight = this.z + this.height + this.breath + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
