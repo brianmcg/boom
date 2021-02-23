@@ -10,6 +10,7 @@ import {
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
+import { GAME_FONT } from 'game/constants/assets';
 import { FONT_SIZES } from 'game/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
@@ -331,7 +332,8 @@ const createReviewSprites = (text) => {
   });
 
   const title = new TextSprite({
-    font: FONT_SIZES.LARGE,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.LARGE,
     text: text.title,
     color: WHITE,
     anchor: 0.5,
@@ -339,13 +341,15 @@ const createReviewSprites = (text) => {
 
   const enemies = {
     name: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: text.enemies,
       color: WHITE,
       anchor: 0.5,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
       anchor: 0.5,
@@ -354,13 +358,15 @@ const createReviewSprites = (text) => {
 
   const items = {
     name: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: text.items,
       color: WHITE,
       anchor: 0.5,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
       anchor: 0.5,
@@ -369,13 +375,15 @@ const createReviewSprites = (text) => {
 
   const time = {
     name: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: text.time,
       color: WHITE,
       anchor: 0.5,
     }),
     value: new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: '0',
       color: RED,
       anchor: 0.5,
@@ -395,14 +403,16 @@ const createReviewSprites = (text) => {
 
 const createHudSprites = ({ world, textures }) => {
   const healthAmount = new TextSprite({
-    font: FONT_SIZES.MEDIUM,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.MEDIUM,
     text: `${world.player.health}`,
     color: WHITE,
     anchor: 0.5,
   });
 
   const ammoAmount = new TextSprite({
-    font: FONT_SIZES.MEDIUM,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.MEDIUM,
     text: `${world.player.weapon.ammo}`,
     color: WHITE,
     anchor: 0.5,
@@ -431,7 +441,8 @@ const createHudSprites = ({ world, textures }) => {
   }, {});
 
   const messages = [...Array(5)].map(() => new TextSprite({
-    font: FONT_SIZES.SMALL,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.SMALL,
     text: '',
     color: RED,
     anchor: 0.5,

@@ -1,4 +1,5 @@
 import { TextSprite, RectangleSprite } from 'game/core/graphics';
+import { GAME_FONT } from 'game/constants/assets';
 import { FONT_SIZES } from 'game/constants/fonts';
 import { WHITE, RED, BLACK } from 'game/constants/colors';
 import { SCREEN } from 'game/constants/config';
@@ -6,7 +7,8 @@ import MenuIconSprite from '../sprites/MenuIconSprite';
 
 const createPromptSprite = text => (
   new TextSprite({
-    font: FONT_SIZES.SMALL,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.SMALL,
     text,
     color: RED,
     anchor: 0.5,
@@ -24,7 +26,8 @@ const createMenuSprites = (menu, textures, animations) => {
   const labels = menu.reduce((memo, key, index) => ([
     ...memo,
     new TextSprite({
-      font: FONT_SIZES.SMALL,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.SMALL,
       text: key,
       color: index ? WHITE : RED,
       anchor: 0.5,

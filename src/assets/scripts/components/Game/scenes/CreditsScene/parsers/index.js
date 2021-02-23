@@ -1,4 +1,5 @@
 import { AnimatedSprite, TextSprite } from 'game/core/graphics';
+import { GAME_FONT } from 'game/constants/assets';
 import { FONT_SIZES } from 'game/constants/fonts';
 import { RED, WHITE } from 'game/constants/colors';
 
@@ -25,14 +26,16 @@ export const parse = ({ graphics, text }) => {
 
   const credits = text.credits.reduce((memo, credit) => {
     const key = new TextSprite({
-      font: FONT_SIZES.MEDIUM,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
       text: credit.key,
       color: RED,
       anchor: 0.5,
     });
 
     const values = credit.values.map(value => new TextSprite({
-      font: FONT_SIZES.SMALL,
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.SMALL,
       text: value,
       color: WHITE,
       anchor: 0.5,
@@ -44,7 +47,8 @@ export const parse = ({ graphics, text }) => {
   }, []);
 
   const end = new TextSprite({
-    font: FONT_SIZES.LARGE,
+    fontName: GAME_FONT.NAME,
+    fontSize: FONT_SIZES.LARGE,
     text: text.end,
     color: WHITE,
     anchor: 0.5,

@@ -15,14 +15,15 @@ class TextSprite extends BitmapText {
    */
   constructor({
     text,
-    font,
+    fontName,
+    fontSize,
     color,
     x = 0,
     y = 0,
     alpha = 1,
     anchor,
   }) {
-    super(text, { font });
+    super(text, { fontName, fontSize });
 
     this.x = x;
     this.y = y;
