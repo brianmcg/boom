@@ -1,4 +1,3 @@
-import { TIME_STEP } from 'game/constants/config';
 import { degrees } from 'game/core/physics';
 import DynamicEntity from '../DynamicEntity';
 
@@ -84,9 +83,9 @@ class ExplosiveEntity extends DynamicEntity {
    * Update the entity.
    * @param  {Number} delta The delta time.
    */
-  update(delta = 1) {
+  update(delta, elapsedMS) {
     if (!this.isExplosive && this.timer < EXPLODE_DELAY) {
-      this.timer += delta * TIME_STEP;
+      this.timer += elapsedMS;
 
       if (this.timer >= EXPLODE_DELAY) {
         this.timer = EXPLODE_DELAY;

@@ -1,4 +1,4 @@
-import { TIME_STEP, CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import DynamicCell from '../DynamicCell';
 
 const STATES = {
@@ -53,25 +53,25 @@ class Door extends DynamicCell {
    * Update the door.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.OPENING: {
-        this.updateOpening(delta);
+        this.updateOpening(delta, elapsedMS);
         break;
       }
       case STATES.CLOSING: {
-        this.updateClosing(delta);
+        this.updateClosing(delta, elapsedMS);
         break;
       }
       case STATES.OPENED: {
-        this.updateOpened(delta);
+        this.updateOpened(delta, elapsedMS);
         break;
       }
       default:
         break;
     }
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**
@@ -108,9 +108,9 @@ class Door extends DynamicCell {
    * Update the door when in opened state.
    * @param  {Number} delta The delta time.
    */
-  updateOpened(delta) {
+  updateOpened(delta, elapsedMS) {
     if (this.timer) {
-      this.timer -= TIME_STEP * delta;
+      this.timer -= elapsedMS;
 
       if (this.timer <= 0) {
         const blocked = this.parent.getAdjacentBodies(this).some(body => (

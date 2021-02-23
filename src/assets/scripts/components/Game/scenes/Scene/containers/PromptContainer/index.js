@@ -1,5 +1,5 @@
 import { Container } from 'game/core/graphics';
-import { SCREEN, TIME_STEP } from 'game/constants/config';
+import { SCREEN } from 'game/constants/config';
 
 const PULSE_INTERVAL = 100;
 
@@ -47,7 +47,7 @@ class PromptContainer extends Container {
    * Update the container.
    * @param  {Number} delta   The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.FADING_IN:
         this.updateFadingIn(delta);
@@ -56,7 +56,7 @@ class PromptContainer extends Container {
         this.updateGrowing(delta);
         break;
       case STATES.STATIC:
-        this.updateStatic(delta);
+        this.updateStatic(delta, elapsedMS);
         break;
       case STATES.SHRINKING:
         this.updateShrinking(delta);
@@ -100,8 +100,8 @@ class PromptContainer extends Container {
    * Update the container in the static state.
    * @param  {Number} delta     The delta time.
    */
-  updateStatic(delta) {
-    this.timer += delta * TIME_STEP;
+  updateStatic(delta, elapsedMS) {
+    this.timer += elapsedMS;
 
     if (this.timer > PULSE_INTERVAL) {
       this.timer = 0;

@@ -41,8 +41,8 @@ class World extends EventEmitter {
    * Update
    * @param  {Number} delta The delta time value.
    */
-  update(delta) {
-    this.dynamicBodies.forEach(body => body.update(delta));
+  update(delta, elapsedMS) {
+    this.dynamicBodies.forEach(body => body.update(delta, elapsedMS));
   }
 
   /**

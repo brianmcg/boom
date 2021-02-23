@@ -9,12 +9,6 @@
 export const MAX_FPS = 60;
 
 /**
- * The time step.
- * @type {Number}
- */
-export const TIME_STEP = 1000 / MAX_FPS;
-
-/**
  * Enabled the sounds.
  * @type {Boolean}
  */

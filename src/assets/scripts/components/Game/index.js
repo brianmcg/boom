@@ -113,7 +113,7 @@ class Game extends Application {
     // }
 
     if (this.scene) {
-      this.scene.update(delta);
+      this.scene.update(delta, this.ticker.elapsedMS);
     }
   }
 

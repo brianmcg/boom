@@ -1,5 +1,3 @@
-import { TIME_STEP } from 'game/constants/config';
-
 const TIME_TO_LIVE = 2000;
 
 /**
@@ -36,10 +34,10 @@ class Explosion {
    * Updates the explosion.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     this.isTriggered = false;
 
-    this.timer += TIME_STEP * delta;
+    this.timer += elapsedMS;
 
     if (this.timer >= TIME_TO_LIVE) {
       this.timer = 0;

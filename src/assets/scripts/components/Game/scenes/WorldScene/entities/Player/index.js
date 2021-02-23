@@ -1,6 +1,6 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
-import { CELL_SIZE, TIME_STEP, PLAYER_INVINCIBLE } from 'game/constants/config';
+import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
@@ -209,16 +209,16 @@ class Player extends AbstractActor {
    * Update the player.
    * @param  {Number} delta The delta time value.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.ALIVE:
-        this.updateAlive(delta);
+        this.updateAlive(delta, elapsedMS);
         break;
       case STATES.DYING:
-        this.updateDying(delta);
+        this.updateDying(delta, elapsedMS);
         break;
       case STATES.DEAD:
-        this.updateDead(delta);
+        this.updateDead(delta, elapsedMS);
         break;
       default:
         break;
@@ -229,7 +229,7 @@ class Player extends AbstractActor {
    * Update the player in the default state.
    * @param  {Number} delta The delta time value.
    */
-  updateAlive(delta) {
+  updateAlive(delta, elapsedMS) {
     const {
       moveBackward,
       moveForward,
@@ -350,7 +350,7 @@ class Player extends AbstractActor {
       this.weapon.stop();
     }
 
-    this.weapon.update(delta);
+    this.weapon.update(delta, elapsedMS);
 
     // Update interactions
     this.parent.getAdjacentBodies(this).forEach((body) => {
@@ -405,10 +405,10 @@ class Player extends AbstractActor {
     this.actions.stopAttack = false;
 
     // Update messages
-    this.messages.forEach(message => message.update(delta));
+    this.messages.forEach(message => message.update(delta, elapsedMS));
 
     // Update parent
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**
@@ -451,8 +451,8 @@ class Player extends AbstractActor {
    * Update the player in the dead state.
    * @param  {Number} delta The delta time.
    */
-  updateDead(delta) {
-    this.timer += delta * TIME_STEP;
+  updateDead(delta, elapsedMS) {
+    this.timer += elapsedMS;
 
     if (this.timer >= DEATH_INTERVAL) {
       this.timer = 0;

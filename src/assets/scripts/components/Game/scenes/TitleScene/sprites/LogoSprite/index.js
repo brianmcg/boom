@@ -1,5 +1,5 @@
 import { AnimatedSprite } from 'game/core/graphics';
-import { TIME_STEP, SCREEN } from 'game/constants/config';
+import { SCREEN } from 'game/constants/config';
 
 const INTERVAL = 3000;
 
@@ -32,9 +32,9 @@ class LogoSprite extends AnimatedSprite {
    * Update the sprite in the static state.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     if (this.animationEnabled) {
-      this.timer += delta * TIME_STEP;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;

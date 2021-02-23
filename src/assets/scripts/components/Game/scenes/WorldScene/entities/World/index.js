@@ -83,11 +83,11 @@ class World extends PhysicsWorld {
    * @param  {Number} delta            The delta time value.
    * @param  {Object} options.actions  The player actions.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
 
-    this.explosions.forEach(e => e.update(delta));
+    this.explosions.forEach(e => e.update(delta, elapsedMS));
 
     if (this.explosionFlash) {
       this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
@@ -107,7 +107,7 @@ class World extends PhysicsWorld {
       this.scene.setAddingReviewing();
     }
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
 
     // TODO: Use sectors.
     // this.player.enabledSectors.forEach((sector) => {

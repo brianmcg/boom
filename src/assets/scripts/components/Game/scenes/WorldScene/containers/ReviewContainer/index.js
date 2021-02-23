@@ -1,6 +1,6 @@
 import { Container } from 'game/core/graphics';
 import { formatMS } from 'game/core/date';
-import { SCREEN, TIME_STEP } from 'game/constants/config';
+import { SCREEN } from 'game/constants/config';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
@@ -66,19 +66,19 @@ class ReviewContainer extends Container {
    * Updates the containner.
    * @param  {Number} delta the delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.SHOW_TITLE:
-        this.updateShowTitle(delta);
+        this.updateShowTitle(delta, elapsedMS);
         break;
       case STATES.SHOW_ENEMIES:
-        this.updateShowEnemies(delta);
+        this.updateShowEnemies(delta, elapsedMS);
         break;
       case STATES.SHOW_ITEMS:
-        this.updateShowItems(delta);
+        this.updateShowItems(delta, elapsedMS);
         break;
       case STATES.SHOW_TIME:
-        this.updateShowTime(delta);
+        this.updateShowTime(delta, elapsedMS);
         break;
       case STATES.REMOVE_STATS:
         this.updateRemoveStats(delta);
@@ -111,13 +111,13 @@ class ReviewContainer extends Container {
    * Update the container when in the show title state.
    * @param  {Number} delta The delta time.
    */
-  updateShowTitle(delta) {
+  updateShowTitle(delta, elapsedMS) {
     this.titleScale += SCALE_INCREMENT * delta;
 
     if (this.titleScale >= 1) {
       this.titleScale = 1;
 
-      this.timer += TIME_STEP * delta;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
@@ -130,13 +130,13 @@ class ReviewContainer extends Container {
    * Update the container when in the show enemies state.
    * @param  {Number} delta The delta time.
    */
-  updateShowEnemies(delta) {
+  updateShowEnemies(delta, elapsedMS) {
     this.enemiesScale += SCALE_INCREMENT * delta;
 
     if (this.enemiesScale >= 1) {
       this.enemiesScale = 1;
 
-      this.timer += TIME_STEP * delta;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
@@ -149,13 +149,13 @@ class ReviewContainer extends Container {
    * Update the container when in the show items state.
    * @param  {Number} delta The delta time.
    */
-  updateShowItems(delta) {
+  updateShowItems(delta, elapsedMS) {
     this.itemsScale += SCALE_INCREMENT * delta;
 
     if (this.itemsScale >= 1) {
       this.itemsScale = 1;
 
-      this.timer += TIME_STEP * delta;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
@@ -168,13 +168,13 @@ class ReviewContainer extends Container {
    * Update the container when in the show time state.
    * @param  {Number} delta The delta time.
    */
-  updateShowTime(delta) {
+  updateShowTime(delta, elapsedMS) {
     this.timeScale += SCALE_INCREMENT * delta;
 
     if (this.timeScale >= 1) {
       this.timeScale = 1;
 
-      this.timer += TIME_STEP * delta;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;

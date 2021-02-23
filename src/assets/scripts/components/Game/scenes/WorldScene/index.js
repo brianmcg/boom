@@ -147,7 +147,7 @@ class WorldScene extends Scene {
    * Update the scene
    * @param  {[delta} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.ADDING_REVIEW:
         this.updateAddingReview(delta);
@@ -162,15 +162,15 @@ class WorldScene extends Scene {
         break;
     }
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**
    * Update the scene in the running state.
    * @param  {Number} delta The delta time.
    */
-  updateRunning(delta) {
-    this.world.update(delta);
+  updateRunning(delta, elapsedMS) {
+    this.world.update(delta, elapsedMS);
   }
 
   /**

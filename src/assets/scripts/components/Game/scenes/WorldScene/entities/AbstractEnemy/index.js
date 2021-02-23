@@ -1,4 +1,4 @@
-import { CELL_SIZE, UPDATE_DISTANCE, TIME_STEP } from 'game/constants/config';
+import { CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 
 const STATES = {
@@ -93,8 +93,8 @@ class AbstractEnemy extends AbstractActor {
    * Update the enemy.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
-    super.update(delta);
+  update(delta, elapsedMS) {
+    super.update(delta, elapsedMS);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
       if (this.isFloating) {
@@ -107,28 +107,28 @@ class AbstractEnemy extends AbstractActor {
 
       switch (this.state) {
         case STATES.IDLE:
-          this.updateIdle(delta);
+          this.updateIdle(delta, elapsedMS);
           break;
         case STATES.ALERTED:
-          this.updateAlerted(delta);
+          this.updateAlerted(delta, elapsedMS);
           break;
         case STATES.PATROLLING:
-          this.updatePatrolling(delta);
+          this.updatePatrolling(delta, elapsedMS);
           break;
         case STATES.CHASING:
-          this.updateChasing(delta);
+          this.updateChasing(delta, elapsedMS);
           break;
         case STATES.AIMING:
-          this.updateAiming(delta);
+          this.updateAiming(delta, elapsedMS);
           break;
         case STATES.ATTACKING:
-          this.updateAttacking(delta);
+          this.updateAttacking(delta, elapsedMS);
           break;
         case STATES.HURTING:
-          this.updateHurting(delta);
+          this.updateHurting(delta, elapsedMS);
           break;
         case STATES.DEAD:
-          this.updateDead(delta);
+          this.updateDead(delta, elapsedMS);
           break;
         default:
           break;
@@ -149,9 +149,9 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in the alerted state.
    * @param  {Number} delta The delta time.
    */
-  updateAlerted(delta) {
+  updateAlerted(delta, elapsedMS) {
     if (this.findPlayer()) {
-      this.alertTimer += TIME_STEP * delta;
+      this.alertTimer += elapsedMS;
 
       if (this.alertTimer >= this.alertTime) {
         if (this.distanceToPlayer <= this.attackRange) {
@@ -201,10 +201,10 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in aiming state
    * @param  {Number} delta The delta time.
    */
-  updateAiming(delta) {
+  updateAiming(delta, elapsedMS) {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.attackRange) {
-        this.aimTimer += TIME_STEP * delta;
+        this.aimTimer += elapsedMS;
 
         if (this.aimTimer >= this.aimTime) {
           this.setAttacking();
@@ -221,10 +221,10 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in attacking state
    * @param  {Number} delta The delta time.
    */
-  updateAttacking(delta) {
+  updateAttacking(delta, elapsedMS) {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.attackRange) {
-        this.attackTimer += TIME_STEP * delta;
+        this.attackTimer += elapsedMS;
 
         if (this.attackTimer >= this.attackTime) {
           if (this.numberOfAttacks < 1) {
@@ -246,8 +246,8 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in hurt state
    * @param  {Number} delta The delta time.
    */
-  updateHurting(delta) {
-    this.hurtTimer += TIME_STEP * delta;
+  updateHurting(delta, elapsedMS) {
+    this.hurtTimer += elapsedMS;
 
     if (this.hurtTimer >= this.hurtTime) {
       this.onHurtComplete();

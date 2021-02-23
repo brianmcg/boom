@@ -62,8 +62,8 @@ class Container extends PixiContainer {
    * @param  {Number} delta   The delta time.
    * @param  {Object} options The update options.
    */
-  update(delta) {
-    this.playableChildren.forEach(child => child.playing && child.update(delta));
+  update(delta, elapsedMS) {
+    this.playableChildren.forEach(child => child.playing && child.update(delta, elapsedMS));
   }
 
   /**

@@ -1,5 +1,3 @@
-import { TIME_STEP } from 'game/constants/config';
-
 const TIME_TO_LIVE = 1500;
 
 /**
@@ -27,8 +25,8 @@ class Message {
    * Update the message.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
-    this.timer -= delta * TIME_STEP;
+  update(delta, elapsedMS) {
+    this.timer -= elapsedMS;
 
     if (this.timer < 0) {
       this.timer = 0;

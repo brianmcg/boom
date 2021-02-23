@@ -132,31 +132,31 @@ class Scene extends Container {
    * Update the scene.
    * @param  {Number} delta The delta value.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.FADING_IN:
-        this.updateFadingIn(delta);
+        this.updateFadingIn(delta, elapsedMS);
         break;
       case STATES.RUNNING:
-        this.updateRunning(delta);
+        this.updateRunning(delta, elapsedMS);
         break;
       case STATES.PAUSING:
-        this.updatePausing(delta);
+        this.updatePausing(delta, elapsedMS);
         break;
       case STATES.PAUSED:
-        this.updatePaused(delta);
+        this.updatePaused(delta, elapsedMS);
         break;
       case STATES.UNPAUSING:
-        this.updateUnpausing(delta);
+        this.updateUnpausing(delta, elapsedMS);
         break;
       case STATES.FADING_OUT:
-        this.updateFadingOut(delta);
+        this.updateFadingOut(delta, elapsedMS);
         break;
       default:
         break;
     }
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**

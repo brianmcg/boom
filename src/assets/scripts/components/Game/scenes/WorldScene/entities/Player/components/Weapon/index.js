@@ -1,4 +1,4 @@
-import { CELL_SIZE, TIME_STEP } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
 
 const STATES = {
@@ -86,13 +86,13 @@ class Weapon extends Entity {
    * Update the weapon.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.FIRING:
         this.setDisabled();
         break;
       case STATES.DISABLED:
-        this.timer += delta * TIME_STEP;
+        this.timer += elapsedMS;
 
         if (this.timer >= this.rate) {
           this.setIdle();
