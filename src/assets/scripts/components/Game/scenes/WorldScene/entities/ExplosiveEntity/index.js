@@ -84,6 +84,8 @@ class ExplosiveEntity extends DynamicEntity {
    * @param  {Number} delta The delta time.
    */
   update(delta, elapsedMS) {
+    super.update(delta, elapsedMS);
+
     if (!this.isExplosive && this.timer < EXPLODE_DELAY) {
       this.timer += elapsedMS;
 
