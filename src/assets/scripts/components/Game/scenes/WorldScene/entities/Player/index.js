@@ -197,8 +197,8 @@ class Player extends AbstractActor {
   /**
    * Handle the added to world event.
    */
-  initialize() {
-    super.initialize();
+  initialize(parent) {
+    super.initialize(parent);
 
     this.keyCards = this.parent.items.reduce((memo, { isKey, color }) => {
       if (isKey) {

@@ -51,22 +51,14 @@ class World extends EventEmitter {
    */
   add(body) {
     if (!this.bodies[body.id]) {
-      const cell = this.getCell(body.gridX, body.gridY);
-
-      if (cell !== body) {
-        cell.add(body);
-        body.z = cell.height;
-      }
-
-      if (body.update) {
-        this.dynamicBodies.push(body);
-        body.parent = this;
-        body.cell = cell;
-      }
-
+      this.getCell(body.gridX, body.gridY).add(body);
+      this.startUpdates(body);
       this.bodies[body.id] = body;
 
-      body.emitAddedEvent();
+      if (body.initialize) {
+        body.initialize(this);
+      }
+
     }
   }
 
@@ -76,12 +68,19 @@ class World extends EventEmitter {
    */
   remove(body) {
     this.stopUpdates(body);
-
     this.getCell(body.gridX, body.gridY).remove(body);
 
     delete this.bodies[body.id];
+  }
 
-    body.emitRemovedEvent();
+  /**
+   * Start updating this body.
+   * @param  {Body} body The body to stop updating.
+   */
+  startUpdates(body) {
+    if (body.update) {
+      this.dynamicBodies.push(body);
+    }
   }
 
   /**

@@ -35,15 +35,14 @@ class DynamicBody extends Body {
     this.weight = weight;
     this.collisions = [];
     this.trackedCollisions = [];
-
-    this.onAdded(() => this.initialize());
   }
 
   /**
    * Initialize the entity.
    */
-  initialize() {
-    this.cell = this.parent.getCell(this.gridX, this.gridY);
+  initialize(parent) {
+    this.parent = parent;
+    this.cell = parent.getCell(this.gridX, this.gridY);
   }
 
   /**

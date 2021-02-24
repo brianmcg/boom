@@ -39,7 +39,9 @@ class Cell extends Body {
    * @param {Body} body The body to add.
    */
   add(body) {
-    this.bodies.push(body);
+    if (body !== this && !this.bodies.includes(body)) {
+      this.bodies.push(body);
+    }
   }
 
   /**

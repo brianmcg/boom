@@ -23,15 +23,14 @@ class DynamicCell extends PhysicsCell {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
-
-    this.onAdded(() => this.initialize());
   }
 
   /**
    * Initialize the cell.
    */
-  initialize() {
-    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+  initialize(parent) {
+    this.parent = parent;
+    this.distanceToPlayer = this.getDistanceTo(parent.player);
 
     if (!this.soundController) {
       this.soundController = new SoundSpriteController({

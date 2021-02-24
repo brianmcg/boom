@@ -47,36 +47,6 @@ class Body extends EventEmitter {
   }
 
   /**
-   * Emit the added event.
-   */
-  emitAddedEvent() {
-    this.emit(EVENTS.ADDED);
-  }
-
-  /**
-   * Emit the removed event.
-   */
-  emitRemovedEvent() {
-    this.emit(EVENTS.REMOVED);
-  }
-
-  /**
-   * Add a callback for the added event.
-   * @param  {Function} callback The callback function.
-   */
-  onAdded(callback) {
-    this.on(EVENTS.ADDED, callback);
-  }
-
-  /**
-   * Add a callback for the removed event.
-   * @param  {Function} callback The callback function.
-   */
-  onRemoved(callback) {
-    this.on(EVENTS.REMOVED, callback);
-  }
-
-  /**
    * Remove the body from the parent.
    */
   remove() {

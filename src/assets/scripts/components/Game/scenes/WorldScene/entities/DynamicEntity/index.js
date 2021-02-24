@@ -29,10 +29,10 @@ class DynamicEntity extends DynamicBody {
   /**
    * Initialize the entity.
    */
-  initialize() {
-    super.initialize();
+  initialize(parent) {
+    super.initialize(parent);
 
-    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+    this.distanceToPlayer = this.getDistanceTo(parent.player);
 
     if (!this.soundController) {
       this.soundController = new SoundSpriteController({
