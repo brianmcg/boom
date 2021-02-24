@@ -136,6 +136,10 @@ const createWallSprites = ({
       const wallSprite = new Sprite(wallTexture);
       const spatterSprite = new Sprite(spatterTexture);
 
+      spatterSprite.x = CELL_SIZE / 2;
+      spatterSprite.y = CELL_SIZE / 2;
+      spatterSprite.anchor.set(0.5);
+      spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
       spatterSprite.mask = createWallSpriteMask(wallTexture, renderer);
 
       spatterContainer.removeChildren();

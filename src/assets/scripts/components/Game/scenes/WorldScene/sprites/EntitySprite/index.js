@@ -10,7 +10,7 @@ class EntitySprite extends Sprite {
    * @param  {Texture} texture The sprite texture.
    */
   constructor(texture) {
-    super(texture);
+    super(texture, { anchor: 0.5 });
     this.zOrder = Number.MAX_VALUE;
   }
 }

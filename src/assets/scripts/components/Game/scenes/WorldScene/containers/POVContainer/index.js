@@ -203,13 +203,13 @@ class POVContainer extends Container {
       actualDistance = player.getDistanceTo(body);
       correctedDistance = Math.cos(spriteAngle) * actualDistance;
       spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-      spriteWidth = CELL_SIZE * spriteScale;
       spriteHeight = CELL_SIZE * spriteScale;
       spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
-      sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+      sprite.x = CAMERA_CENTER_X + spriteX;
       sprite.y = centerY
-        - (spriteHeight / (CELL_SIZE / (CELL_SIZE + body.z - player.viewHeight)));
-      sprite.width = spriteWidth;
+        - (spriteHeight / (CELL_SIZE / (CELL_SIZE + body.z - player.viewHeight)))
+        + (spriteHeight / 2);
+      sprite.width = spriteHeight;
       sprite.height = spriteHeight;
       sprite.zOrder = actualDistance;
       sprite.tint = this.calculateTint(actualDistance);
@@ -230,13 +230,13 @@ class POVContainer extends Container {
         actualDistance = player.getDistanceTo(explosion);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
-        spriteWidth = CELL_SIZE * spriteScale;
         spriteHeight = CELL_SIZE * spriteScale;
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
-        sprite.x = CAMERA_CENTER_X + spriteX - spriteWidth / 2;
+        sprite.x = CAMERA_CENTER_X + spriteX;
         sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + explosion.z - player.viewHeight)));
-        sprite.width = spriteWidth;
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + explosion.z - player.viewHeight)))
+          + (spriteHeight / 2);
+        sprite.width = spriteHeight;
         sprite.height = spriteHeight;
         sprite.zOrder = actualDistance;
         sprite.tint = this.calculateTint(actualDistance);

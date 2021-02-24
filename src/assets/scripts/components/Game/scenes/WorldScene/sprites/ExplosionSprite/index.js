@@ -17,6 +17,8 @@ class ExplosionSprite extends AnimatedEntitySprite {
       this.parent.removeChild(this);
     };
 
+    this.rotation = Math.random() * Math.PI * 2;
+
     this.on('added', () => this.play());
   }
 }

@@ -12,7 +12,7 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Number}  options.alpha          The sprite alpha.
    */
   constructor(textures, { animationSpeed = 0.2, loop = true, autoPlay = true } = {}) {
-    super(textures, { animationSpeed, loop });
+    super(textures, { animationSpeed, loop, anchor: 0.5 });
 
     this.zOrder = Number.MAX_VALUE;
 
