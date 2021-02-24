@@ -2,7 +2,7 @@ import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
-import Entity from '../Entity';
+import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Message from './components/Message';
@@ -110,6 +110,8 @@ class Player extends AbstractActor {
     this.distanceToPlayer = 0;
     this.breathDirection = 1;
     this.breath = 0;
+
+    this.trackedCollisions = [AbstractItem];
 
     this.onCollisionStart((body) => {
       if (body.isItem) {
@@ -717,14 +719,6 @@ class Player extends AbstractActor {
     this.keyCards[key.color].equip();
 
     return true;
-  }
-
-  /**
-   * Check if a collision event should be emitted for this body.
-   * @param  {Body} body The body to check.
-   */
-  emitCollision(body) {
-    return body instanceof Entity;
   }
 
   /**

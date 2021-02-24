@@ -34,6 +34,7 @@ class DynamicBody extends Body {
     this.isDynamicBody = true;
     this.weight = weight;
     this.collisions = [];
+    this.trackedCollisions = [];
 
     this.onAdded(() => this.initialize());
   }
@@ -100,7 +101,7 @@ class DynamicBody extends Body {
     // Check for x axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        if (this.emitCollision(body)) {
+        if (this.isCollisionTracked(body)) {
           collisions.push(body);
         }
 
@@ -120,7 +121,7 @@ class DynamicBody extends Body {
     // Check for y axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        if (this.emitCollision(body) && !collisions.includes(body)) {
+        if (this.isCollisionTracked(body) && !collisions.includes(body)) {
           collisions.push(body);
         }
 
@@ -134,19 +135,21 @@ class DynamicBody extends Body {
       }
     });
 
-    collisions.forEach((c) => {
-      if (!this.collisions.includes(c)) {
-        this.emit(EVENTS.COLLISION_START, c);
-      }
-    });
+    if (this.trackedCollisions.length) {
+      collisions.forEach((c) => {
+        if (!this.collisions.includes(c)) {
+          this.emit(EVENTS.COLLISION_START, c);
+        }
+      });
 
-    this.collisions.filter((c) => {
-      if (!collisions.includes(c)) {
-        this.emit(EVENTS.COLLISION_END, c);
-      }
-    });
+      this.collisions.filter((c) => {
+        if (!collisions.includes(c)) {
+          this.emit(EVENTS.COLLISION_END, c);
+        }
+      });
 
-    this.collisions = collisions;
+      this.collisions = collisions;
+    }
 
     // Mark current cell with id
     this.cell = this.parent.getCell(this.gridX, this.gridY);
@@ -179,20 +182,21 @@ class DynamicBody extends Body {
   }
 
   /**
+   * Is a collision with this body tracked.
+   * @param  {Body}  body The body to check.
+   * @return {Boolean}
+   */
+  isCollisionTracked(body) {
+    return this.trackedCollisions.some(c => body instanceof c);
+  }
+
+  /**
    * Get angle to a body.
    * @param  {Body} body The body.
    * @return {Number}    The angle to the body.
    */
   getAngleTo(body) {
     return getAngleBetween(this, body);
-  }
-
-  /**
-   * Check if a collision event should be emitted for this body.
-   * @param  {Body} body The body to check.
-   */
-  emitCollision(body) {
-    return !body.id;
   }
 }
 

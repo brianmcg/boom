@@ -1,6 +1,5 @@
 import { Body } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
-
 import DynamicEntity from '../DynamicEntity';
 
 const STATES = {
@@ -48,6 +47,8 @@ class Projectile extends DynamicEntity {
     this.source = source;
     this.explosionType = explosionType;
     this.velocity = speed * CELL_SIZE;
+
+    this.trackedCollisions = [Body];
 
     this.onCollisionStart((body) => {
       if (body.blocking) {
@@ -127,14 +128,6 @@ class Projectile extends DynamicEntity {
     this.setTravelling();
 
     this.emitSound(this.sounds.travel);
-  }
-
-  /**
-   * Check if a collision event should be emitted for this body.
-   * @param  {Body} body The body to check.
-   */
-  emitCollision(body) {
-    return body instanceof Body;
   }
 
   /**

@@ -196,7 +196,7 @@ class World extends PhysicsWorld {
   getStatistics() {
     return {
       timeTaken: performance.now() - this.startTime,
-      itemsFound: this.items.filter(item => item.isRemoved()).length,
+      itemsFound: this.items.filter(item => item.isRemoved).length,
       itemsTotal: this.items.length,
       enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
       enemiesTotal: this.enemies.length,
