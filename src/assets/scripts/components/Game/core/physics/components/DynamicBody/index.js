@@ -8,7 +8,8 @@ import {
 } from '../../helpers';
 
 const EVENTS = {
-  COLLISION: 'body:collision',
+  COLLISION_START: 'body:collision:start',
+  COLLISION_END: 'body:collision:end',
 };
 
 /**
@@ -32,6 +33,7 @@ class DynamicBody extends Body {
     this.angle = angle;
     this.isDynamicBody = true;
     this.weight = weight;
+    this.collisions = [];
 
     this.onAdded(() => this.initialize());
   }
@@ -52,6 +54,22 @@ class DynamicBody extends Body {
   }
 
   /**
+   * Add a callback for the collision start event.
+   * @param  {Function} callback The callback function.
+   */
+  onCollisionStart(callback) {
+    this.on(EVENTS.COLLISION_START, callback);
+  }
+
+  /**
+   * Add a callback for the collision end event.
+   * @param  {Function} callback The callback function.
+   */
+  onCollisionEnd(callback) {
+    this.on(EVENTS.COLLISION_END, callback);
+  }
+
+  /**
    * Check for collision with another body.
    * @param  {Body}    body The other body.
    * @return {Boolean}      Collision has occurred.
@@ -69,6 +87,8 @@ class DynamicBody extends Body {
     // Get bodies from surrounding cells
     const bodies = this.parent.getAdjacentBodies(this);
 
+    const collisions = [];
+
     const velocity = Math.min(this.velocity * delta, CELL_SIZE / 2);
 
     // Unmark id from cell before moving
@@ -80,8 +100,8 @@ class DynamicBody extends Body {
     // Check for x axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        if (this.emitCollision) {
-          this.emit(EVENTS.COLLISION, body);
+        if (this.emitCollision(body)) {
+          collisions.push(body);
         }
 
         if (body.blocking) {
@@ -100,8 +120,8 @@ class DynamicBody extends Body {
     // Check for y axis collisions
     bodies.forEach((body) => {
       if (this.isBodyCollision(body)) {
-        if (this.emitCollision) {
-          this.emit(EVENTS.COLLISION, body);
+        if (this.emitCollision(body) && !collisions.includes(body)) {
+          collisions.push(body);
         }
 
         if (body.blocking) {
@@ -113,6 +133,20 @@ class DynamicBody extends Body {
         }
       }
     });
+
+    collisions.forEach((c) => {
+      if (!this.collisions.includes(c)) {
+        this.emit(EVENTS.COLLISION_START, c);
+      }
+    });
+
+    this.collisions.filter((c) => {
+      if (!collisions.includes(c)) {
+        this.emit(EVENTS.COLLISION_END, c);
+      }
+    });
+
+    this.collisions = collisions;
 
     // Mark current cell with id
     this.cell = this.parent.getCell(this.gridX, this.gridY);
@@ -151,6 +185,14 @@ class DynamicBody extends Body {
    */
   getAngleTo(body) {
     return getAngleBetween(this, body);
+  }
+
+  /**
+   * Check if a collision event should be emitted for this body.
+   * @param  {Body} body The body to check.
+   */
+  emitCollision(body) {
+    return !body.id;
   }
 }
 

@@ -81,4 +81,4 @@ export const MAX_SOUND_DISTANCE = CELL_SIZE * 9;
  * Is the player invincible.
  * @type {Boolean}
  */
-export const PLAYER_INVINCIBLE = false;
+export const PLAYER_INVINCIBLE = true;

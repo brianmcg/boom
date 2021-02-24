@@ -2,6 +2,7 @@ import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
+import Entity from '../Entity';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import Message from './components/Message';
@@ -109,6 +110,22 @@ class Player extends AbstractActor {
     this.distanceToPlayer = 0;
     this.breathDirection = 1;
     this.breath = 0;
+
+    this.onCollisionStart((body) => {
+      if (body.isItem) {
+        if (this.pickUp(body)) {
+          this.emit(EVENTS.PICK_UP, body);
+        } else {
+          this.addMessage(translate('world.player.cannot.pickup', {
+            item: body.title,
+          }));
+        }
+      }
+    });
+
+    // this.onCollisionEnd((body) => {
+      // console.log('end', body.id);
+    // });
 
     this.setAlive();
   }
@@ -352,26 +369,9 @@ class Player extends AbstractActor {
 
     this.weapon.update(delta, elapsedMS);
 
-    // Update interactions
-    this.parent.getAdjacentBodies(this).forEach((body) => {
-      // Update item interactions
-      if (body.isItem) {
-        if (this.isBodyCollision(body)) {
-          if (body.setColliding()) {
-            if (this.pickUp(body)) {
-              this.emit(EVENTS.PICK_UP, body);
-              body.setRemoved();
-            } else {
-              this.addMessage(translate('world.player.cannot.pickup', {
-                item: body.title,
-              }));
-            }
-          }
-        } else {
-          body.setIdle();
-        }
-      } else if (body.isDoor) {
-        // Update door interactions.
+    // Update door interactions.
+    this.parent.getAdjacentCells(this).forEach((body) => {
+      if (body.isDoor) {
         if (use) {
           this.emitSound(this.sounds.use);
           if (body.keyCard) {
@@ -717,6 +717,14 @@ class Player extends AbstractActor {
     this.keyCards[key.color].equip();
 
     return true;
+  }
+
+  /**
+   * Check if a collision event should be emitted for this body.
+   * @param  {Body} body The body to check.
+   */
+  emitCollision(body) {
+    return body instanceof Entity;
   }
 
   /**

@@ -22,11 +22,8 @@ class AbstractItem extends Entity {
   constructor({ type, ...other }) {
     super({ blocking: false, ...other });
 
-    this.setIdle();
-
     this.isItem = true;
     this.type = type;
-    this.emitCollision = true;
 
     if (this.constructor === AbstractItem) {
       throw new TypeError('Can not construct abstract class.');
@@ -34,51 +31,11 @@ class AbstractItem extends Entity {
   }
 
   /**
-   * Set to the idle state.
-   * @return {Boolean} state change successful.
-   */
-  setIdle() {
-    return this.setState(STATES.IDLE);
-  }
-
-  /**
-   * Set to the colliding state.
-   * @return {Boolean} state change successful.
-   */
-  setColliding() {
-    return this.setState(STATES.COLLIDING);
-  }
-
-  /**
    * Set to the removed state.
    * @return {Boolean} state change successful.
    */
   setRemoved() {
-    return this.setState(STATES.REMOVED);
-  }
-
-  /**
-   * Is the item in the idle state.
-   * @return {Boolean}
-   */
-  isIdle() {
-    return this.state === STATES.IDLE;
-  }
-
-  /**
-   * Is the item in the colliding state.
-   * @return {Boolean}
-   */
-  isColliding() {
-    return this.state === STATES.COLLIDING;
-  }
-
-  /**
-   * Is the item in the removed state.
-   * @return {Boolean}
-   */
-  isRemoved() {
-    return this.state === STATES.REMOVED;
+    this.isRemoved = true;
   }
 }
 

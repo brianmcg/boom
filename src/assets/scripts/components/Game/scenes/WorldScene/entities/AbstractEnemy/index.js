@@ -56,6 +56,7 @@ class AbstractEnemy extends AbstractActor {
     explosionType,
     isFloating,
     primaryAttack,
+    proneHeight,
     type,
     ...other
   }) {
@@ -85,9 +86,8 @@ class AbstractEnemy extends AbstractActor {
     this.isEnemy = true;
     this.isFloating = isFloating;
     this.floatDirection = 1;
-
+    this.proneHeight = proneHeight;
     this.primaryAttack = primaryAttack;
-
     this.setIdle();
   }
 
@@ -523,6 +523,8 @@ class AbstractEnemy extends AbstractActor {
           sourceId: `${this.id}_${this.explosionType}`,
           parent: this.parent,
         });
+      } else {
+        this.isProne = true;
       }
 
       this.emitSound(this.sounds.death);
