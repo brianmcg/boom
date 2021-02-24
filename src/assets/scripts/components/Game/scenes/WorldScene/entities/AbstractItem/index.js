@@ -1,11 +1,5 @@
 import Entity from '../Entity';
 
-const STATES = {
-  IDLE: 'item:idle',
-  COLLIDING: 'item:colliding',
-  REMOVED: 'item:removed',
-};
-
 /**
  * Class representing an item.
  * @extends {Entity}

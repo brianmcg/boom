@@ -2,11 +2,6 @@ import { EventEmitter } from 'game/core/graphics';
 import { CELL_SIZE } from 'game/constants/config';
 import { isRayCollision, getRayCollision, getDistanceBetween } from '../../helpers';
 
-const EVENTS = {
-  ADDED: 'body:added',
-  REMOVED: 'body:removed',
-};
-
 let idCount = 0;
 
 const generateId = (body) => {

@@ -31,7 +31,6 @@ let sliceY;
 let sprite;
 let spriteHeight;
 let spriteScale;
-let spriteWidth;
 let spriteX;
 let spriteY;
 let bottomIntersection;

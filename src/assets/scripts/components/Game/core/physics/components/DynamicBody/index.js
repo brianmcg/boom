@@ -141,7 +141,7 @@ class DynamicBody extends Body {
         }
       });
 
-      this.collisions.filter((c) => {
+      this.collisions.forEach((c) => {
         if (!collisions.includes(c)) {
           this.emit(EVENTS.COLLISION_END, c);
         }

@@ -58,7 +58,6 @@ class World extends EventEmitter {
       if (body.initialize) {
         body.initialize(this);
       }
-
     }
   }
 
