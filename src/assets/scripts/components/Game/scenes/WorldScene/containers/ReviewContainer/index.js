@@ -34,7 +34,7 @@ class ReviewContainer extends Container {
     const { title, stats, background } = sprites;
     const { enemies, items, time } = stats;
     const statsHeight = stats.enemies.name.height;
-    const statsStartY = title.height + (TEXT_PADDING * 8);
+    const statsStartY = title.height + (TEXT_PADDING * 10);
 
     title.y = (title.height / 2) + TEXT_PADDING * 4;
 

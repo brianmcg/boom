@@ -13,8 +13,9 @@ const DEG_360 = degrees(360);
 const DEG_270 = degrees(270);
 const DEG_180 = degrees(180);
 const DEG_90 = degrees(90);
-const DEATH_INTERVAL = 1500;
+const HEIGHT_INCREMENT = CELL_SIZE / 32;
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
+const DEATH_INTERVAL = 1500;
 const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
@@ -77,9 +78,9 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.maxSpeed = this.speed;
     this.weaponIndex = weaponIndex;
+
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
-    this.heightVelocity = CELL_SIZE / 32;
 
     this.actions = {};
     this.messages = [];
@@ -88,6 +89,10 @@ class Player extends AbstractActor {
     this.timer = 0;
     this.moveAngle = 0;
     this.isPlayer = true;
+    this.distanceToPlayer = 0;
+    this.breathDirection = 1;
+    this.breath = 0;
+    this.standingOn = [];
 
     this.camera = new Camera(this);
     this.weapons = weapons.map(data => new Weapon({ player: this, ...data }));
@@ -107,11 +112,8 @@ class Player extends AbstractActor {
     this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
-    this.distanceToPlayer = 0;
-    this.breathDirection = 1;
-    this.breath = 0;
 
-    this.trackedCollisions = [AbstractItem];
+    this.trackedCollisions = [AbstractItem, AbstractActor];
 
     this.onCollisionStart((body) => {
       if (body.isItem) {
@@ -122,12 +124,16 @@ class Player extends AbstractActor {
             item: body.title,
           }));
         }
+      } else if (body.isEnemy && body.isProne) {
+        this.standingOn.push(body);
       }
     });
 
-    // this.onCollisionEnd((body) => {
-      // console.log('end', body.id);
-    // });
+    this.onCollisionEnd((body) => {
+      if (body.isEnemy && body.isProne) {
+        this.standingOn = this.standingOn.filter(b => b.id !== body.id);
+      }
+    });
 
     this.setAlive();
   }
@@ -334,17 +340,30 @@ class Player extends AbstractActor {
     // Update height.
     if (crouch) {
       this.height = Math.max(
-        this.height - (this.heightVelocity * delta),
+        this.height - (HEIGHT_INCREMENT * delta),
         this.crouchHeight,
       );
     } else {
       this.height = Math.min(
-        this.height + (this.heightVelocity * delta),
+        this.height + (HEIGHT_INCREMENT * delta),
         this.maxHeight,
       );
     }
 
-    // Update vision
+    // Update elavation.
+
+    if (this.standingOn.length) {
+      this.z = this.standingOn.reduce((maxElavation, body) => {
+        const distance = this.getDistanceTo(body);
+        const { proneHeight, width } = body;
+        const elavation = proneHeight * Math.abs(width - distance) / width;
+        return elavation > maxElavation ? elavation : maxElavation;
+      }, 0);
+    } else {
+      this.z = 0;
+    }
+
+    // Update vision.
     if (this.vision < 1) {
       this.vision += VISION_INCREMENT * delta;
 
@@ -424,7 +443,7 @@ class Player extends AbstractActor {
     this.camera.pitch = Math.min(pitch + (DYING_PITCH_INCREMENT * delta), maxPitch);
 
     // Update height
-    this.height -= this.heightVelocity * DYING_HEIGHT_FADE * delta;
+    this.height -= HEIGHT_INCREMENT * DYING_HEIGHT_FADE * delta;
 
     if (this.height <= this.deadHeight) {
       this.height = this.deadHeight;
