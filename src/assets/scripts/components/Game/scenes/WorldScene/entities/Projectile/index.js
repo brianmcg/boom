@@ -108,8 +108,8 @@ class Projectile extends DynamicEntity {
   /**
    * Initialize the projectile.
    */
-  initialize(parent) {
-    super.initialize(parent);
+  onAdded(parent) {
+    super.onAdded(parent);
 
     const {
       x,

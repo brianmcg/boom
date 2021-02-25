@@ -31,10 +31,17 @@ class DynamicCell extends PhysicsCell {
   }
 
   /**
-   * Initialize the cell.
+   * Called when cell is added to world.
    */
-  initialize(parent) {
+  onAdded(parent) {
     this.parent = parent;
+  }
+
+  /**
+   * Called when cell is removed from world.
+   */
+  onRemoved() {
+    this.parent = null;
   }
 
   /**

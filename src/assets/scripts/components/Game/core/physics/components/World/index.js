@@ -55,8 +55,8 @@ class World extends EventEmitter {
       this.startUpdates(body);
       this.bodies[body.id] = body;
 
-      if (body.initialize) {
-        body.initialize(this);
+      if (body.onAdded) {
+        body.onAdded(this);
       }
     }
   }

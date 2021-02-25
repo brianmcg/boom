@@ -38,11 +38,19 @@ class DynamicBody extends Body {
   }
 
   /**
-   * Initialize the entity.
+   * Called when body is added to world.
    */
-  initialize(parent) {
+  onAdded(parent) {
     this.parent = parent;
     this.cell = parent.getCell(this.gridX, this.gridY);
+  }
+
+  /**
+   * Called when body is removed from world.
+   */
+  onRemoved() {
+    this.parent = null;
+    this.cell = null;
   }
 
   /**
