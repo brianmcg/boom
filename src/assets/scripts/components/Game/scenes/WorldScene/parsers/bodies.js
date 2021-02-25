@@ -48,7 +48,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       sides,
       key: cell.key,
       ...props.door,
-      soundSprite
+      soundSprite,
     });
   }
 
@@ -167,6 +167,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
     angle: degrees(entrance.angle),
     soundSprite,
+    items,
   });
 
   return new World({

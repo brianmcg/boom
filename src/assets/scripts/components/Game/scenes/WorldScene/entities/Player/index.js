@@ -68,6 +68,7 @@ class Player extends AbstractActor {
       rotateAcceleration = 0,
       weapons = {},
       weaponIndex = 0,
+      items,
       ...other
     } = options;
 
@@ -124,6 +125,25 @@ class Player extends AbstractActor {
         }
       },
     });
+
+    this.keyCards = items.reduce((memo, { isKey, color }) => {
+      if (isKey) {
+        return {
+          ...memo,
+          [color]: new KeyCard(color),
+        };
+      }
+      return memo;
+    }, {});
+
+    // Add weapon names to player sound object.
+    this.playing = this.weapons.reduce((weaponMemo, weapon) => ({
+      ...weaponMemo,
+      ...Object.values(weapon.sounds).reduce((soundMemo, sound) => ({
+        ...soundMemo,
+        [sound]: [],
+      }), {}),
+    }), this.playing);
 
     this.setAlive();
   }
@@ -182,32 +202,6 @@ class Player extends AbstractActor {
    */
   onChangeWeapon(callback) {
     this.on(EVENTS.CHANGE_WEAPON, callback);
-  }
-
-  /**
-   * Handle the added to world event.
-   */
-  onAdded(parent) {
-    super.onAdded(parent);
-
-    this.keyCards = parent.items.reduce((memo, { isKey, color }) => {
-      if (isKey) {
-        return {
-          ...memo,
-          [color]: new KeyCard(color),
-        };
-      }
-      return memo;
-    }, {});
-
-    // Add weapon names to player sound object.
-    this.playing = this.weapons.reduce((weaponMemo, weapon) => ({
-      ...weaponMemo,
-      ...Object.values(weapon.sounds).reduce((soundMemo, sound) => ({
-        ...soundMemo,
-        [sound]: [],
-      }), {}),
-    }), this.playing);
   }
 
   /**

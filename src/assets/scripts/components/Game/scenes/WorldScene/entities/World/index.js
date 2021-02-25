@@ -39,43 +39,32 @@ class World extends PhysicsWorld {
     visibility,
     brightness,
   }) {
-    super(grid);
+    super(grid, [
+      ...enemies,
+      ...items,
+      ...obstacles,
+      player,
+    ]);
 
     this.scene = scene;
     this.exit = exit;
     this.entrance = entrance;
-
     this.player = player;
     this.items = items;
     this.enemies = enemies;
     this.obstacles = obstacles;
-
     this.brightness = brightness;
     this.flash = 0;
     this.visibility = visibility * CELL_SIZE;
-
     this.explosionFlash = false;
     this.itemFlash = false;
-
     this.explosions = [];
-
     this.startTime = performance.now();
-
     this.startingProps = Object.assign({}, this.props);
 
-    this.initialize();
+    player.onDeath(() => this.onPlayerDeath());
 
-    enemies.forEach(enemy => this.add(enemy));
-
-    obstacles.forEach(object => this.add(object));
-
-    items.forEach(item => this.add(item));
-
-    player.onDeath(() => this.restart());
-
-    player.onPickUp(item => this.onItemPickup(item));
-
-    this.add(player);
+    player.onPickUp(item => this.onPlayerPickUp(item));
   }
 
   /**
@@ -149,7 +138,7 @@ class World extends PhysicsWorld {
   /**
    * Restart the world scene.
    */
-  restart() {
+  onPlayerDeath() {
     this.scene.triggerRestart();
   }
 
@@ -182,7 +171,7 @@ class World extends PhysicsWorld {
   /**
    * Set the brightness and enabled item flash.
    */
-  onItemPickup(item) {
+  onPlayerPickUp(item) {
     item.setRemoved();
     this.remove(item);
     this.flash += ITEM_FLASH_AMOUNT;

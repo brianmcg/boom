@@ -8,7 +8,7 @@ class World extends EventEmitter {
    * Creates a world.
    * @param  {Array}  grid    The map grid of the world.
    */
-  constructor(grid = [[]]) {
+  constructor(grid = [[]], bodies) {
     super();
 
     this.grid = grid;
@@ -28,13 +28,10 @@ class World extends EventEmitter {
 
       return max > gridMax ? max : gridMax;
     }, 0);
-  }
 
-  /**
-   * Initialize the world.
-   */
-  initialize() {
-    this.grid.forEach(row => row.forEach(cell => this.add(cell)));
+    grid.forEach(row => row.forEach(cell => this.add(cell)));
+
+    bodies.forEach(body => this.add(body));
   }
 
   /**
@@ -68,6 +65,10 @@ class World extends EventEmitter {
   remove(body) {
     this.stopUpdates(body);
     this.getCell(body.gridX, body.gridY).remove(body);
+
+    if (body.onRemoved) {
+      body.onRemoved();
+    }
 
     delete this.bodies[body.id];
   }
