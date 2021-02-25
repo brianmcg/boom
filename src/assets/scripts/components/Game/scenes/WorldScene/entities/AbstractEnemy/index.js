@@ -50,7 +50,6 @@ class AbstractEnemy extends AbstractActor {
     aimTime = 200,
     maxAttacks,
     spatters,
-    spatterType,
     spatterOffset,
     spurtType,
     explosionType,
@@ -58,6 +57,7 @@ class AbstractEnemy extends AbstractActor {
     primaryAttack,
     proneHeight,
     type,
+    bloodColor,
     ...other
   }) {
     super(other);
@@ -70,7 +70,6 @@ class AbstractEnemy extends AbstractActor {
     this.explosionType = explosionType;
     this.type = type;
     this.spurtType = spurtType;
-    this.spatterType = spatterType;
     this.spatters = spatters;
     this.spatterOffset = spatterOffset;
     this.attackTime = attackTime;
@@ -88,6 +87,8 @@ class AbstractEnemy extends AbstractActor {
     this.floatDirection = 1;
     this.proneHeight = proneHeight;
     this.primaryAttack = primaryAttack;
+    this.bloodColor = bloodColor;
+
     this.setIdle();
   }
 

@@ -65,7 +65,7 @@ const createWallSpriteMask = (wallTexture, renderer) => {
   });
 
   maskForeground.tint = BLACK;
-
+  maskForeground.alpha = 0.7;
   maskContainer.addChild(maskBackground);
   maskContainer.addChild(maskForeground);
   maskContainer.filters = [filter];
@@ -90,17 +90,19 @@ const createWallSprites = ({
 
   const spatterContainer = new Container();
 
-  const spatterTypes = world.enemies.reduce((memo, { spatterType }) => {
-    if (!memo.includes(spatterType)) {
-      memo.push(spatterType);
+  const bloodColors = world.enemies.reduce((memo, { bloodColor }) => {
+    if (!memo.includes(bloodColor)) {
+      memo.push(bloodColor);
     }
     return memo;
   }, []);
 
-  const spatters = spatterTypes.reduce((memo, spatterType) => [
-    ...memo,
-    ...animations[spatterType],
-  ], []);
+  const spatters = bloodColors.reduce((memo, bloodColor) => {
+    animations.spatter.forEach((spatter) => {
+      memo.push({ type: spatter, color: bloodColor });
+    });
+    return memo;
+  }, []);
 
   world.grid.forEach((row) => {
     row.forEach((cell) => {
@@ -130,12 +132,13 @@ const createWallSprites = ({
       wallTextures[image].push([new Texture(wallTexture, clearSlice)]);
     }
 
-    const spatterTextures = spatters.map((spatter) => {
+    const spatterTextures = spatters.map(({ type, color }) => {
       const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
-      const spatterTexture = textures[spatter];
+      const spatterTexture = textures[type];
       const wallSprite = new Sprite(wallTexture);
       const spatterSprite = new Sprite(spatterTexture);
 
+      spatterSprite.tint = color;
       spatterSprite.x = CELL_SIZE / 2;
       spatterSprite.y = CELL_SIZE / 2;
       spatterSprite.anchor.set(0.5);
@@ -213,7 +216,12 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
   return backgroundSprites;
 };
 
-const createExplosionSprites = ({ animations, textures, world }) => {
+const createExplosionSprites = ({
+  animations,
+  textures,
+  world,
+  renderer,
+}) => {
   const enemyProjectileSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
@@ -229,12 +237,37 @@ const createExplosionSprites = ({ animations, textures, world }) => {
     return memo;
   }, {});
 
-  const enemySpurtSprites = world.enemies.reduce((memo, enemy) => {
-    const spurtTextures = animations[enemy.spurtType].map(animation => textures[animation]);
+  const spurtTextureHash = {};
 
-    memo[`${enemy.id}_${enemy.spurtType}`] = new ExplosionSprite(spurtTextures, {
+  const enemySpurtSprites = world.enemies.reduce((memo, { id, spurtType, bloodColor }) => {
+    const spurtTextures = animations[spurtType].map((animation) => {
+      const key = `${spurtType}_${bloodColor}_${animation}`;
+
+      if (!spurtTextureHash[key]) {
+        const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
+        const container = new Container();
+        const sprite = new Sprite(textures[animation]);
+
+        sprite.anchor.set(0.5);
+        sprite.x = CELL_SIZE / 2;
+        sprite.y = CELL_SIZE / 2;
+        sprite.width /= 2;
+        sprite.height /= 2;
+        sprite.tint = bloodColor;
+        container.addChild(sprite);
+        renderer.render(sprite, renderTexture);
+
+        spurtTextureHash[key] = renderTexture;
+      }
+
+      return spurtTextureHash[key];
+    });
+
+    const explosionSprite = new ExplosionSprite(spurtTextures, {
       animationSpeed: 0.2,
     });
+
+    memo[`${id}_${spurtType}`] = explosionSprite;
 
     return memo;
   }, {});
@@ -288,8 +321,8 @@ const createExplosionSprites = ({ animations, textures, world }) => {
   };
 };
 
-const createEffectsSprites = ({ animations, textures, world }) => ({
-  explosions: createExplosionSprites({ animations, textures, world }),
+const createEffectsSprites = (options) => ({
+  explosions: createExplosionSprites(options),
 });
 
 const createEntitySprites = ({ animations, textures, world }) => {
@@ -508,7 +541,12 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
   const hud = createHudSprites({ world, textures });
 
-  const effects = createEffectsSprites({ animations, textures, world });
+  const effects = createEffectsSprites({
+    animations,
+    textures,
+    world,
+    renderer,
+  });
 
   return {
     player: {
