@@ -321,7 +321,7 @@ const createExplosionSprites = ({
   };
 };
 
-const createEffectsSprites = (options) => ({
+const createEffectsSprites = options => ({
   explosions: createExplosionSprites(options),
 });
 
