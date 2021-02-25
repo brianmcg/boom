@@ -62,7 +62,7 @@ class AbstractActor extends DynamicEntity {
     super.update(delta, elapsedMS);
 
     // Update elavation.
-    if (this.standingOn.length) {
+    if (this.isAlive() && this.standingOn.length) {
       this.z = this.standingOn.reduce((maxElavation, body) => {
         const distance = this.getDistanceTo(body);
         const { proneHeight, width } = body;

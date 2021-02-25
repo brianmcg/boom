@@ -262,17 +262,13 @@ class AbstractEnemy extends AbstractActor {
    */
   updateDead() {
     this.velocity *= FORCE_FADE;
-    this.z -= FLOAT_INCREMENT * 2;
+    this.z = 0;
 
     if (this.velocity <= MIN_FORCE) {
       this.velocity = 0;
     }
 
-    if (this.z <= 0) {
-      this.z = 0;
-    }
-
-    if (this.velocity === 0 && this.z === 0) {
+    if (this.velocity === 0) {
       this.blocking = false;
       this.parent.stopUpdates(this);
     }

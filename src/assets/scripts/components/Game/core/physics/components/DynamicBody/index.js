@@ -200,7 +200,7 @@ class DynamicBody extends Body {
    * @return {Boolean}
    */
   isCollisionTracked(body) {
-    return this.trackedCollisions.some(({ type }) => body instanceof type);
+    return this.trackedCollisions.some(c => body instanceof c.type);
   }
 
   /**
