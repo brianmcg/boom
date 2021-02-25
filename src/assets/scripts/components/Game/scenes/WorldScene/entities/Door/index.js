@@ -41,7 +41,7 @@ class Door extends DynamicCell {
    * Open the door.
    * @return {Booleam}
    */
-  open() {
+  use() {
     if (this.isClosed()) {
       return this.setOpening();
     }

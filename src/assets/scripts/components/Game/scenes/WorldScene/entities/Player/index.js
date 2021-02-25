@@ -359,31 +359,34 @@ class Player extends AbstractActor {
       this.weapon.stop();
     }
 
-    this.weapon.update(delta, elapsedMS);
+    // Update interactions.
+    if (use) {
+      const { distance, cell } = this.castRay();
 
-    // Update door interactions.
-    this.parent.getAdjacentCells(this).forEach((body) => {
-      if (body.isDoor) {
-        if (use) {
-          this.emitSound(this.sounds.use);
-          if (body.keyCard) {
-            const keyCard = this.keyCards[body.keyCard];
+      if (cell.use && distance <= (CELL_SIZE + this.width / 2)) {
+        this.emitSound(this.sounds.use);
+
+        if (cell.isDoor) {
+          if (cell.keyCard) {
+            const keyCard = this.keyCards[cell.keyCard];
 
             if (keyCard && keyCard.isEquiped()) {
-              if (body.open()) {
+              if (cell.use()) {
                 keyCard.use();
               }
             } else {
               this.addMessage(translate('world.door.locked', {
-                color: translate(`world.color.${body.keyCard}`),
+                color: translate(`world.color.${cell.keyCard}`),
               }));
             }
           } else {
-            body.open();
+            cell.use();
           }
         }
       }
-    });
+    }
+
+    this.weapon.update(delta, elapsedMS);
 
     // Update view
     this.viewHeight = this.z + this.height + this.breath + this.camera.height;
@@ -791,14 +794,6 @@ class Player extends AbstractActor {
    */
   isDead() {
     return this.state === STATES.DEAD;
-  }
-
-  /**
-   * Get the current maxZ value;
-   * @return {[Number} The current max z.
-   */
-  getMaxZ() {
-    return (this.parent.height * 0.75) - this.cell.height - this.height;
   }
 
   /**
