@@ -48,29 +48,30 @@ class Projectile extends DynamicEntity {
     this.explosionType = explosionType;
     this.velocity = speed * CELL_SIZE;
 
-    this.trackedCollisions = [Body];
+    this.addTrackedCollision({
+      type: Body,
+      onStart: (body) => {
+        if (body.blocking) {
+          const damage = this.source.attackDamage();
 
-    this.onCollisionStart((body) => {
-      if (body.blocking) {
-        const damage = this.source.attackDamage();
+          if (this.setColliding()) {
+            this.parent.addExplosion({
+              sourceId: this.id,
+              x: this.x,
+              y: this.y,
+              z: this.z,
+              type: this.explosionType,
+              parent: this.parent,
+              flash: damage * 0.75,
+              shake: damage * 0.75,
+            });
+          }
 
-        if (this.setColliding()) {
-          this.parent.addExplosion({
-            sourceId: this.id,
-            x: this.x,
-            y: this.y,
-            z: this.z,
-            type: this.explosionType,
-            parent: this.parent,
-            flash: damage * 0.75,
-            shake: damage * 0.75,
-          });
+          if (body.hurt) {
+            body.hurt(damage);
+          }
         }
-
-        if (body.hurt) {
-          body.hurt(damage);
-        }
-      }
+      },
     });
 
     this.setIdle();

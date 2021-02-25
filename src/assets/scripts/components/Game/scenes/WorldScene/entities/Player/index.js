@@ -92,7 +92,6 @@ class Player extends AbstractActor {
     this.distanceToPlayer = 0;
     this.breathDirection = 1;
     this.breath = 0;
-    this.standingOn = [];
 
     this.camera = new Camera(this);
     this.weapons = weapons.map(data => new Weapon({ player: this, ...data }));
@@ -113,10 +112,9 @@ class Player extends AbstractActor {
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
-    this.trackedCollisions = [AbstractItem, AbstractActor];
-
-    this.onCollisionStart((body) => {
-      if (body.isItem) {
+    this.addTrackedCollision({
+      type: AbstractItem,
+      onStart: (body) => {
         if (this.pickUp(body)) {
           this.emit(EVENTS.PICK_UP, body);
         } else {
@@ -124,15 +122,7 @@ class Player extends AbstractActor {
             item: body.title,
           }));
         }
-      } else if (body.isEnemy && body.isProne) {
-        this.standingOn.push(body);
-      }
-    });
-
-    this.onCollisionEnd((body) => {
-      if (body.isEnemy && body.isProne) {
-        this.standingOn = this.standingOn.filter(b => b.id !== body.id);
-      }
+      },
     });
 
     this.setAlive();
@@ -348,19 +338,6 @@ class Player extends AbstractActor {
         this.height + (HEIGHT_INCREMENT * delta),
         this.maxHeight,
       );
-    }
-
-    // Update elavation.
-
-    if (this.standingOn.length) {
-      this.z = this.standingOn.reduce((maxElavation, body) => {
-        const distance = this.getDistanceTo(body);
-        const { proneHeight, width } = body;
-        const elavation = proneHeight * Math.abs(width - distance) / width;
-        return elavation > maxElavation ? elavation : maxElavation;
-      }, 0);
-    } else {
-      this.z = 0;
     }
 
     // Update vision.

@@ -36,6 +36,42 @@ class AbstractActor extends DynamicEntity {
     this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;
     this.isActor = true;
+    this.standingOn = [];
+
+    this.addTrackedCollision({
+      type: AbstractActor,
+      onStart: (body) => {
+        if (body.isProne) {
+          this.standingOn.push(body);
+        }
+      },
+      onComplete: (body) => {
+        if (body.isProne) {
+          this.standingOn = this.standingOn.filter(b => b.id !== body.id);
+        }
+      },
+    });
+  }
+
+  /**
+   * Update the actor.
+   * @param  {Number} delta     The time delta.
+   * @param  {Number} elapsedMS The elsapsed time.
+   */
+  update(delta, elapsedMS) {
+    super.update(delta, elapsedMS);
+
+    // Update elavation.
+    if (this.standingOn.length) {
+      this.z = this.standingOn.reduce((maxElavation, body) => {
+        const distance = this.getDistanceTo(body);
+        const { proneHeight, width } = body;
+        const elavation = proneHeight * Math.abs(width - distance) / width;
+        return elavation > maxElavation ? elavation : maxElavation;
+      }, 0);
+    } else {
+      this.z = 0;
+    }
   }
 
   /**

@@ -134,21 +134,25 @@ class DynamicBody extends Body {
       }
     });
 
-    if (this.trackedCollisions.length) {
-      collisions.forEach((c) => {
-        if (!this.collisions.includes(c)) {
-          this.emit(EVENTS.COLLISION_START, c);
-        }
-      });
+    this.trackedCollisions.forEach(({ type, onStart, onComplete }) => {
+      if (onStart) {
+        collisions.forEach((c) => {
+          if (c instanceof type && !this.collisions.includes(c)) {
+            onStart(c);
+          }
+        });
+      }
 
-      this.collisions.forEach((c) => {
-        if (!collisions.includes(c)) {
-          this.emit(EVENTS.COLLISION_END, c);
-        }
-      });
+      if (onComplete) {
+        this.collisions.forEach((c) => {
+          if (c instanceof type && !collisions.includes(c)) {
+            onComplete(c);
+          }
+        });
+      }
+    });
 
-      this.collisions = collisions;
-    }
+    this.collisions = collisions;
 
     // Mark current cell with id
     this.cell = this.parent.getCell(this.gridX, this.gridY);
@@ -181,12 +185,22 @@ class DynamicBody extends Body {
   }
 
   /**
+   * Add a collision type to track.
+   * @param {Class}     options.type       The type of collision to track.
+   * @param {Function}  options.onStart    The cllback to trigger on collision start.
+   * @param {Function}  options.onComplete The callback to trigger on collision complete.
+   */
+  addTrackedCollision(options) {
+    this.trackedCollisions.push(options);
+  }
+
+  /**
    * Is a collision with this body tracked.
    * @param  {Body}  body The body to check.
    * @return {Boolean}
    */
   isCollisionTracked(body) {
-    return this.trackedCollisions.some(c => body instanceof c);
+    return this.trackedCollisions.some(({ type }) => body instanceof type);
   }
 
   /**
