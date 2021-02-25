@@ -28,7 +28,7 @@ const ENEMIES = {
   [ENEMY_TYPES.PROJECTILE]: ProjectileEnemy,
 };
 
-const createCell = ({ cell, props }) => {
+const createCell = ({ cell, props, soundSprite }) => {
   const sides = Object.keys(cell.sides).reduce((memo, key) => ({
     ...memo,
     [key]: {
@@ -48,6 +48,7 @@ const createCell = ({ cell, props }) => {
       sides,
       key: cell.key,
       ...props.door,
+      soundSprite
     });
   }
 
@@ -80,6 +81,7 @@ const createCell = ({ cell, props }) => {
  * @return {World}         The created world.
  */
 export const createWorld = ({ scene, data, graphics }) => {
+  const { soundSprite } = scene.game;
   const spatterTypes = Object.values(data.props.enemies).reduce((memo, { spatterType }) => {
     if (memo.includes(spatterType)) {
       return memo;
@@ -95,7 +97,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     ...rows,
     row.reduce((cells, cell) => ([
       ...cells,
-      createCell({ cell, props }),
+      createCell({ cell, soundSprite, props }),
     ]), []),
   ]), []);
 
@@ -111,6 +113,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         height: Math.ceil(CELL_SIZE * obstacle.height),
         animated: !!obstacle.animated,
         ...props.obstacles[obstacle.name],
+        soundSprite,
       })
       : new Entity({
         name: obstacle.name,
@@ -153,6 +156,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         ...props.enemies[enemy.type],
         spatterOffset,
         spatters,
+        soundSprite,
       }),
     ];
   }, []);
@@ -162,6 +166,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     x: (CELL_SIZE * entrance.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
     angle: degrees(entrance.angle),
+    soundSprite,
   });
 
   return new World({

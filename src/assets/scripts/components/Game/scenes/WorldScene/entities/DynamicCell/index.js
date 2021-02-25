@@ -14,7 +14,7 @@ class DynamicCell extends PhysicsCell {
    * @param  {Number} options.height  The height of the cell.
    * @param  {Object} options.sides   The ids of the sides of the cell.
    */
-  constructor({ sides = {}, ...other }) {
+  constructor({ sides = {}, soundSprite, ...other }) {
     super(other);
 
     this.front = sides.front;
@@ -23,6 +23,11 @@ class DynamicCell extends PhysicsCell {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+
+    this.soundController = new SoundSpriteController({
+      sounds: Object.values(this.sounds),
+      soundSprite,
+    });
   }
 
   /**
@@ -30,14 +35,6 @@ class DynamicCell extends PhysicsCell {
    */
   initialize(parent) {
     this.parent = parent;
-    this.distanceToPlayer = this.getDistanceTo(parent.player);
-
-    if (!this.soundController) {
-      this.soundController = new SoundSpriteController({
-        sounds: Object.values(this.sounds),
-        soundSprite: this.parent.scene.game.soundSprite,
-      });
-    }
   }
 
   /**

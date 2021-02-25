@@ -10,14 +10,16 @@ class ProjectileEnemy extends AbstractEnemy {
     projectiles,
     projectile,
     clipSize,
+    soundSprite,
     ...other
   }) {
-    super(other);
+    super({ soundSprite, ...other });
 
     this.projectiles = [...Array(projectiles).keys()]
       .map(() => new Projectile({
         ...projectile,
         source: this,
+        soundSprite,
       }));
   }
 

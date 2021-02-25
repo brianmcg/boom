@@ -18,28 +18,22 @@ class DynamicEntity extends DynamicBody {
    * @param  {String}  options.texture  The texture of entity.
    * @param  {String}  options.sounds   The sounds of entity.
    */
-  constructor({ name, sounds = {}, ...other }) {
+  constructor({
+    name,
+    sounds = {},
+    soundSprite,
+    ...other
+  }) {
     super(other);
 
     this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;
-  }
 
-  /**
-   * Initialize the entity.
-   */
-  initialize(parent) {
-    super.initialize(parent);
-
-    this.distanceToPlayer = this.getDistanceTo(parent.player);
-
-    if (!this.soundController) {
-      this.soundController = new SoundSpriteController({
-        sounds: Object.values(this.sounds),
-        soundSprite: this.parent.scene.game.soundSprite,
-      });
-    }
+    this.soundController = new SoundSpriteController({
+      sounds: Object.values(this.sounds),
+      soundSprite,
+    });
   }
 
   /**
