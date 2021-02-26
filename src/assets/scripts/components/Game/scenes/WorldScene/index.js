@@ -93,7 +93,7 @@ class WorldScene extends Scene {
         callback: x => this.incrementPlayerAction({ rotate: x }),
       },
       onMouseWheel: {
-        callback: y => this.assignPlayerAction({ scrollWeapon: y }),
+        callback: y => this.assignPlayerAction({ cycleWeapon: y }),
       }
     });
 
