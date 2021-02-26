@@ -5,7 +5,6 @@ import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
-import Message from './components/Message';
 import KeyCard from './components/KeyCard';
 import Bullet from '../Bullet';
 
@@ -37,9 +36,7 @@ const EVENTS = {
   DEATH: 'player:death',
   DYING: 'player:dying',
   CHANGE_WEAPON: 'player:change:weapon',
-  MESSAGES_UPDATED: 'player:update:messages',
   MESSAGE_ADDED: 'player:messages:added',
-  MESSAGE_REMOVED: 'player:messages:removed',
   PICK_UP: 'player:pick:up',
 };
 
@@ -86,7 +83,6 @@ class Player extends AbstractActor {
     this.deadHeight = this.height * 0.45;
 
     this.actions = {};
-    this.messages = [];
     this.vision = 1;
     this.rotateAngle = 0;
     this.timer = 0;
@@ -151,19 +147,11 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback for the message updated event.
+   * Add a callback for the message added event.
    * @param  {Function} callback The callback function.
    */
-  onMessagesUpdated(callback) {
-    this.on(EVENTS.MESSAGES_UPDATED, callback);
-  }
-
   onMessageAdded(callback) {
     this.on(EVENTS.MESSAGE_ADDED, callback);
-  }
-
-  onMessageRemoved(callback) {
-    this.on(EVENTS.MESSAGE_REMOVED, callback);
   }
 
   /**
@@ -437,9 +425,6 @@ class Player extends AbstractActor {
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
 
-    // Update messages
-    this.messages.forEach(message => message.update(delta, elapsedMS));
-
     // Update parent
     super.update(delta, elapsedMS);
   }
@@ -498,16 +483,7 @@ class Player extends AbstractActor {
    * @param {String} text The text of the message.
    */
   addMessage(text) {
-    const message = new Message(text);
-
-    message.onExpired(() => {
-      this.messages = this.messages.filter(m => m !== message);
-      this.emit(EVENTS.MESSAGE_REMOVED, message);
-    });
-
-    this.messages.unshift(message);
-
-    this.emit(EVENTS.MESSAGE_ADDED, message);
+    this.emit(EVENTS.MESSAGE_ADDED, text);
   }
 
   /**

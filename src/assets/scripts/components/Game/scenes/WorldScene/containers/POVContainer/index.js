@@ -67,7 +67,7 @@ class POVContainer extends Container {
   /**
    * Animate the container.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     const {
       player,
       maxCellX,
@@ -245,7 +245,7 @@ class POVContainer extends Container {
       }
     });
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**

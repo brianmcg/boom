@@ -487,28 +487,6 @@ const createHudSprites = ({ world, textures }) => {
     return memo;
   }, {});
 
-  class MessageSprite extends TextSprite {
-    constructor(options) {
-      super(options);
-
-      this.on('added', () => {
-        console.log('added');
-      });
-
-      this.on('removed', () => {
-        console.log('removed');
-      });
-    }
-  }
-
-  const messages = [...Array(5)].map(() => new MessageSprite({
-    fontName: GAME_FONT.NAME,
-    fontSize: FONT_SIZES.SMALL,
-    text: '',
-    color: RED,
-    anchor: 0.5,
-  }));
-
   const foreground = new RectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
@@ -523,7 +501,6 @@ const createHudSprites = ({ world, textures }) => {
     ammoIcon,
     ammoAmount,
     keys,
-    messages,
   };
 };
 

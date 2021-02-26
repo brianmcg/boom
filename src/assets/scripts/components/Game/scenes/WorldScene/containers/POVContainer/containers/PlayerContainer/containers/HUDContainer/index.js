@@ -1,5 +1,6 @@
 import { Container } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
+import MessageSprite from './sprites/MessageSprite';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
 
@@ -24,7 +25,6 @@ class HUDContainer extends Container {
       ammoAmount,
       foreground,
       keys,
-      messages,
     } = sprites;
 
     healthIcon.x = HUD_PADDING + (healthIcon.width / 2);
@@ -60,37 +60,21 @@ class HUDContainer extends Container {
       });
     });
 
-    // Set message sprite positions.
-    messages.forEach((message) => {
-      message.x = SCREEN.WIDTH / 2;
-    });
+    this.messages = [];
 
     player.onMessageAdded((message) => {
-      const sprite = messages.find(m => !m.parent);
-      sprite.text = message.text
+      const sprite = new MessageSprite(message);
+
+      this.messages.push(sprite);
+
+      sprite.onComplete(() => {
+        this.messages = this.messages.filter(m => m !== sprite);
+        this.removeChild(sprite);
+        sprite.destroy();
+      });
+
       this.addChild(sprite);
     });
-
-    player.onMessageRemoved((message) => {
-      const sprite = messages.find(m => m.parent && m.text === message.text);
-      this.removeChild(sprite);
-    })
-
-    // Update message positions on messages updated event.
-    // player.onMessagesUpdated((items) => {
-    //   messages.forEach((message, i) => {
-    //     const item = items[i];
-
-    //     if (item) {
-    //       message.text = item.text;
-    //       message.y = HUD_PADDING + (message.height / 2)
-    //         + ((message.height + (HUD_PADDING / 2)) * i);
-    //       this.addChild(message);
-    //     } else {
-    //       this.removeChild(message);
-    //     }
-    //   });
-    // });
 
     // Update hud on pick up event.
     player.onPickUp(() => {
@@ -124,7 +108,7 @@ class HUDContainer extends Container {
    * Update the container.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     const { foreground, keys } = this.sprites;
 
     // Update each key card sprite if it is active.
@@ -134,8 +118,21 @@ class HUDContainer extends Container {
       }
     });
 
+    // Update messages.
+    this.messages.forEach((message, i) => {
+      let y = HUD_PADDING;
+
+      for (let j = 0; j < i; j += 1) {
+        y += this.messages[j].height + 4;
+      }
+
+      message.y = y;
+    });
+
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;
+
+    super.update(delta, elapsedMS);
   }
 }
 

@@ -54,6 +54,20 @@ class TextSprite extends BitmapText {
   fade(value) {
     this.setScale(1 - value);
   }
+
+  /**
+   * Set the sprite state
+   * @param {String} state The state to set.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default TextSprite;

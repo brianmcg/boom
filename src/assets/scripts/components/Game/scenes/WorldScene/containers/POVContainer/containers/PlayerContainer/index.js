@@ -62,7 +62,7 @@ class PlayerContainer extends Container {
    * Update the container.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     const { weapon } = this.sprites;
     const { flash, brightness } = this.player.parent;
     const breath = this.player.breath * BREATH_MULTIPLIER;
@@ -100,7 +100,7 @@ class PlayerContainer extends Container {
     weapon.y = this.weaponCenterY + this.weaponY + breath;
     weapon.tint = Math.round(intensity * 255) * GREY;
 
-    super.update(delta);
+    super.update(delta, elapsedMS);
   }
 
   /**
