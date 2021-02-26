@@ -65,21 +65,32 @@ class HUDContainer extends Container {
       message.x = SCREEN.WIDTH / 2;
     });
 
-    // Update message positions on messages updated event.
-    player.onMessagesUpdated((items) => {
-      messages.forEach((message, i) => {
-        const item = items[i];
-
-        if (item) {
-          message.text = item.text;
-          message.y = HUD_PADDING + (message.height / 2)
-            + ((message.height + (HUD_PADDING / 2)) * i);
-          this.addChild(message);
-        } else {
-          this.removeChild(message);
-        }
-      });
+    player.onMessageAdded((message) => {
+      const sprite = messages.find(m => !m.parent);
+      sprite.text = message.text
+      this.addChild(sprite);
     });
+
+    player.onMessageRemoved((message) => {
+      const sprite = messages.find(m => m.parent && m.text === message.text);
+      this.removeChild(sprite);
+    })
+
+    // Update message positions on messages updated event.
+    // player.onMessagesUpdated((items) => {
+    //   messages.forEach((message, i) => {
+    //     const item = items[i];
+
+    //     if (item) {
+    //       message.text = item.text;
+    //       message.y = HUD_PADDING + (message.height / 2)
+    //         + ((message.height + (HUD_PADDING / 2)) * i);
+    //       this.addChild(message);
+    //     } else {
+    //       this.removeChild(message);
+    //     }
+    //   });
+    // });
 
     // Update hud on pick up event.
     player.onPickUp(() => {

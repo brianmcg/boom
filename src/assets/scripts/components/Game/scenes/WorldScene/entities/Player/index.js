@@ -502,12 +502,12 @@ class Player extends AbstractActor {
 
     message.onExpired(() => {
       this.messages = this.messages.filter(m => m !== message);
-      this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
+      this.emit(EVENTS.MESSAGE_REMOVED, message);
     });
 
     this.messages.unshift(message);
 
-    this.emit(EVENTS.MESSAGES_UPDATED, this.messages);
+    this.emit(EVENTS.MESSAGE_ADDED, message);
   }
 
   /**

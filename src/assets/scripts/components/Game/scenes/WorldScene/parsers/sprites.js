@@ -487,7 +487,21 @@ const createHudSprites = ({ world, textures }) => {
     return memo;
   }, {});
 
-  const messages = [...Array(5)].map(() => new TextSprite({
+  class MessageSprite extends TextSprite {
+    constructor(options) {
+      super(options);
+
+      this.on('added', () => {
+        console.log('added');
+      });
+
+      this.on('removed', () => {
+        console.log('removed');
+      });
+    }
+  }
+
+  const messages = [...Array(5)].map(() => new MessageSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.SMALL,
     text: '',
