@@ -7,6 +7,7 @@ import {
   Sprite,
   Container,
   ColorMatrixFilter,
+  BLEND_MODES,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
@@ -74,7 +75,11 @@ const createWallSpriteMask = (wallTexture, renderer) => {
 
   renderer.render(maskContainer, renderTexture);
 
-  return new Sprite(renderTexture);
+  const sprite = new Sprite(renderTexture);
+
+  sprite.blendMode = BLEND_MODES.MULTIPLY;
+
+  return sprite;
 };
 
 const createWallSprites = ({

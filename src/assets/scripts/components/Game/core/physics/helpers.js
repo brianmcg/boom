@@ -35,14 +35,14 @@ const DEG_360 = degrees(360);
  * @param  {Body}   bodyB The second body
  * @return {Number}       The distance result.
  */
-export function getDistanceBetween(bodyA, bodyB) {
+export const getDistanceBetween = (bodyA, bodyB) => {
   const dx = bodyA.x - bodyB.x;
   const dy = bodyA.y - bodyB.y;
 
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function getLineLineIntersection(l1p1, l1p2, l2p1, l2p2) {
+const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
   const c1 = (a1 * l1p1.x) + (b1 * l1p1.y);
@@ -91,7 +91,7 @@ function getLineLineIntersection(l1p1, l1p2, l2p1, l2p2) {
   return null;
 }
 
-function lineIntersectsLine(l1p1, l1p2, l2p1, l2p2) {
+const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
 
   const d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
@@ -119,7 +119,7 @@ function lineIntersectsLine(l1p1, l1p2, l2p1, l2p2) {
  * @param  {Body} bodyB The second body.
  * @return {Boolean}    Are the bodies colliding.
  */
-export function isBodyCollision(bodyA, bodyB) {
+export const isBodyCollision = (bodyA, bodyB) => {
   const shapeA = bodyA.shape;
   const shapeB = bodyB.shape;
 
@@ -136,7 +136,7 @@ export function isBodyCollision(bodyA, bodyB) {
  * @param  {Object}  body       The body.
  * @return {Boolean}            Represents whether a collision has occured.
  */
-export function isRayCollision(body, { startPoint, endPoint }) {
+export const isRayCollision = (body, { startPoint, endPoint }) => {
   const { x, y, width } = body.shape;
 
   return lineIntersectsLine(
@@ -169,7 +169,7 @@ export function isRayCollision(body, { startPoint, endPoint }) {
  * @param  {Object}  body       The body.
  * @return {Boolean}            Represents whether a collision has occured.
  */
-export function getRayCollision(body, { startPoint, endPoint }) {
+export const getRayCollision = (body, { startPoint, endPoint }) => {
   const { x, y, width } = body.shape;
 
   return [
@@ -220,7 +220,7 @@ export function getRayCollision(body, { startPoint, endPoint }) {
  * @param  {Body} bodyB The second body.
  * @return {Number}     The angle between two bodies.
  */
-export function getAngleBetween(bodyA, bodyB) {
+export const getAngleBetween = (bodyA, bodyB) => {
   const dx = bodyB.x - bodyA.x;
   const dy = bodyB.y - bodyA.y;
 
@@ -235,7 +235,7 @@ export function getAngleBetween(bodyA, bodyB) {
  * @param  {Body}         bodyB   The second body.
  * @return {Boolean}              Is the dynamic body facing the body.
  */
-export function isFacing(bodyA, bodyB) {
+export const isFacing = (bodyA, bodyB) => {
   const angle = (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
   return angle > DEG_270 || angle < DEG_90;
 }
@@ -248,12 +248,12 @@ export function isFacing(bodyA, bodyB) {
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Object}               The cast result.
  */
-function castRaySection({
+const castRaySection = ({
   x,
   y,
   angle,
   world,
-}) {
+}) => {
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);
@@ -479,7 +479,7 @@ function castRaySection({
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Array}                The cast results.
  */
-export function castRay(options) {
+export const castRay = (options) => {
   const result = [];
 
   for (let i = 0; i < WALL_LAYERS; i += 1) {
