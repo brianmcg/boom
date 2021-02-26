@@ -96,7 +96,7 @@ const createWallSprites = ({
   const spatterContainer = new Container();
 
   const bloodColors = world.enemies.reduce((memo, { bloodColor }) => {
-    if (!memo.includes(bloodColor)) {
+    if (bloodColor && !memo.includes(bloodColor)) {
       memo.push(bloodColor);
     }
     return memo;
@@ -245,6 +245,10 @@ const createExplosionSprites = ({
   const spurtTextureHash = {};
 
   const enemySpurtSprites = world.enemies.reduce((memo, { id, spurtType, bloodColor }) => {
+    if (!spurtType) {
+      return memo;
+    }
+
     const spurtTextures = animations[spurtType].map((animation) => {
       const key = `${spurtType}_${bloodColor}_${animation}`;
 
