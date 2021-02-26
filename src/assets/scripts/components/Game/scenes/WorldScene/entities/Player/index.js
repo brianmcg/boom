@@ -358,14 +358,14 @@ class Player extends AbstractActor {
     this.camera.update(delta);
 
     // Update weapon.
-    if (!this.isChangingWeapon && (selectWeapon || selectWeapon === 0)) {
+    if (this.isWeaponChangeEnabled && (selectWeapon || selectWeapon === 0)) {
       this.selectWeapon(selectWeapon);
     }
 
-    if (!this.isChangingWeapon && cycleWeapon) {
+    if (this.isWeaponChangeEnabled && cycleWeapon) {
       const currentIndex = this.weaponIndex;
 
-      if (cycleWeapon < 0) {
+      if (cycleWeapon > 0) {
         for (let i = 1; i < this.weapons.length; i += 1) {
           const nextIndex = (currentIndex + i) % this.weapons.length;
           const weapon = this.weapons[nextIndex];
@@ -520,9 +520,24 @@ class Player extends AbstractActor {
     if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
       this.weaponIndex = index;
       this.weapon = weapon;
+      this.disableWeaponChange();
       this.emitSound(this.sounds.weapon);
       this.emit(EVENTS.CHANGE_WEAPON);
     }
+  }
+
+  /**
+   * Enable weapon changing.
+   */
+  enableWeaponChange() {
+    this.isWeaponChangeEnabled = true;
+  }
+
+  /**
+   * Disable weapon changing.
+   */
+  disableWeaponChange() {
+    this.isWeaponChangeEnabled = false;
   }
 
   /**
