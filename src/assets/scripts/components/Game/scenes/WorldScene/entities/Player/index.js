@@ -38,6 +38,8 @@ const EVENTS = {
   DYING: 'player:dying',
   CHANGE_WEAPON: 'player:change:weapon',
   MESSAGES_UPDATED: 'player:update:messages',
+  MESSAGE_ADDED: 'player:messages:added',
+  MESSAGE_REMOVED: 'player:messages:removed',
   PICK_UP: 'player:pick:up',
 };
 
@@ -156,6 +158,14 @@ class Player extends AbstractActor {
     this.on(EVENTS.MESSAGES_UPDATED, callback);
   }
 
+  onMessageAdded(callback) {
+    this.on(EVENTS.MESSAGE_ADDED, callback);
+  }
+
+  onMessageRemoved(callback) {
+    this.on(EVENTS.MESSAGE_REMOVED, callback);
+  }
+
   /**
    * Add a callback for the fire weapon event.
    * @param  {Function} callback The callback function.
@@ -252,6 +262,7 @@ class Player extends AbstractActor {
       attack,
       stopAttack,
       use,
+      cycleWeapon
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -347,8 +358,34 @@ class Player extends AbstractActor {
     this.camera.update(delta);
 
     // Update weapon.
-    if (selectWeapon || selectWeapon === 0) {
+    if (!this.isChangingWeapon && (selectWeapon || selectWeapon === 0)) {
       this.selectWeapon(selectWeapon);
+    }
+
+    if (!this.isChangingWeapon && cycleWeapon) {
+      const currentIndex = this.weaponIndex;
+
+      if (cycleWeapon < 0) {
+        for (let i = 1; i < this.weapons.length; i += 1) {
+          const nextIndex = (currentIndex + i) % this.weapons.length;
+          const weapon = this.weapons[nextIndex];
+
+          if (weapon.isEquiped()) {
+            this.selectWeapon(nextIndex);
+            break;
+          }
+        }
+      } else {
+        for (let i = this.weapons.length - 1; i > 0; i -= 1) {
+          const nextIndex = (currentIndex + i) % this.weapons.length;
+          const weapon = this.weapons[nextIndex];
+
+          if (weapon.isEquiped()) {
+            this.selectWeapon(nextIndex);
+            break;
+          }
+        }
+      }
     }
 
     if (attack && this.weapon.fire()) {
@@ -397,6 +434,7 @@ class Player extends AbstractActor {
     this.actions.use = false;
     this.actions.selectWeapon = null;
     this.actions.rotate = 0;
+    this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
 
     // Update messages

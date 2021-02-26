@@ -47,6 +47,7 @@ class InputController {
         onMouseDown,
         onMouseUp,
         onMouseMove,
+        onMouseWheel,
       } = this.states[state];
 
       if (onKeyDown) {
@@ -75,6 +76,10 @@ class InputController {
 
       if (onMouseMove) {
         this.mouse.onMove(onMouseMove.callback);
+      }
+
+      if (onMouseWheel) {
+        this.mouse.onWheel(onMouseWheel.callback);
       }
     }
   }

@@ -92,6 +92,9 @@ class WorldScene extends Scene {
       onMouseMove: {
         callback: x => this.incrementPlayerAction({ rotate: x }),
       },
+      onMouseWheel: {
+        callback: y => this.assignPlayerAction({ cycleWeapon: y }),
+      }
     });
 
     this.game.input.add(STATES.PROMPTING, {
@@ -100,7 +103,6 @@ class WorldScene extends Scene {
       },
     });
   }
-
 
   /**
    * Create the world scene.
