@@ -22,11 +22,12 @@ const MOVE_MULTIPLIER = 0.0025;
 class Mouse {
   /**
    * Creates a mouse.
-   * @param  {Element} options.el          The canvas element.
-   * @param  {Number} options.sensitivity  The mouse sensitivity.
+   * @param  {Element} options.el               The canvas element.
+   * @param  {Number} options.moveSensitivity   The mouse moveSensitivity.
+   * @param  {Number} options.wheelSensitivity  The mouse wheelSensitivity.
    */
-  constructor(el, sensitivity = MOUSE_SENSITIVITY) {
-    const moveMultiplier = MOVE_MULTIPLIER * sensitivity;
+  constructor(el, moveSensitivity = MOUSE_SENSITIVITY, wheelSensitivity = 0.25) {
+    const moveMultiplier = MOVE_MULTIPLIER * moveSensitivity;
 
     const onMouseMove = (e) => {
       const x = moveMultiplier * e.movementX
@@ -55,15 +56,25 @@ class Mouse {
       }
     };
 
+    const onWheel = (e) => {
+      const y = e.deltaY;
+
+      if (this.wheelCallback) {
+        this.wheelCallback(y);
+      }
+    };
+
     const onChange = () => {
       if (this.isPointerLocked()) {
         document.addEventListener('mousemove', onMouseMove, false);
         document.addEventListener('mousedown', onMouseDown, false);
         document.addEventListener('mouseup', onMouseUp, false);
+        document.addEventListener('wheel', onWheel, false);
       } else {
         document.removeEventListener('mousemove', onMouseMove, false);
         document.removeEventListener('mousedown', onMouseDown, false);
         document.removeEventListener('mouseup', onMouseUp, false);
+        document.removeEventListener('wheel', onWheel, false);
       }
     };
 
@@ -104,6 +115,14 @@ class Mouse {
    */
   onMove(callback) {
     this.moveCallback = callback;
+  }
+
+  /**
+   * Add a callback to the wheel event.
+   * @param  {Function} callback The callback.
+   */
+  onWheel(callback) {
+    this.wheelCallback = callback;
   }
 
   /**
