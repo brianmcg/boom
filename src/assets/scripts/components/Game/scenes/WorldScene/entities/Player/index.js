@@ -207,7 +207,7 @@ class Player extends AbstractActor {
    * @param  {String} message The message to display.
    */
   start(message) {
-    this.addMessage(message);
+    this.addMessage(message, { priority: 1 });
     this.emitSound(this.sounds.enter);
     this.actions.use = true;
   }
@@ -250,7 +250,7 @@ class Player extends AbstractActor {
       attack,
       stopAttack,
       use,
-      cycleWeapon
+      cycleWeapon,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -353,7 +353,7 @@ class Player extends AbstractActor {
     if (this.isWeaponChangeEnabled && cycleWeapon) {
       const currentIndex = this.weaponIndex;
 
-      if (cycleWeapon > 0) {
+      if (cycleWeapon < 0) {
         for (let i = 1; i < this.weapons.length; i += 1) {
           const nextIndex = (currentIndex + i) % this.weapons.length;
           const weapon = this.weapons[nextIndex];
@@ -480,10 +480,11 @@ class Player extends AbstractActor {
 
   /**
    * Add a player message.
-   * @param {String} text The text of the message.
+   * @param {String} text             The text of the message.
+   * @param {Number} options.priority The priority of the message.
    */
-  addMessage(text) {
-    this.emit(EVENTS.MESSAGE_ADDED, text);
+  addMessage(text, options) {
+    this.emit(EVENTS.MESSAGE_ADDED, text, options);
   }
 
   /**

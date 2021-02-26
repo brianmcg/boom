@@ -6,6 +6,8 @@ const HUD_PADDING = SCREEN.HEIGHT / 24;
 
 const ICON_PADDING = SCREEN.HEIGHT / 111;
 
+const MESSAGE_PADDING = 3;
+
 /**
  * Class representing a hud container.
  */
@@ -62,13 +64,13 @@ class HUDContainer extends Container {
 
     this.messages = [];
 
-    player.onMessageAdded((message) => {
-      const sprite = new MessageSprite(message);
+    player.onMessageAdded((text, options) => {
+      const sprite = new MessageSprite(text, options);
 
       this.messages.push(sprite);
 
       sprite.onComplete(() => {
-        this.messages = this.messages.filter(m => m !== sprite);
+        this.messages = this.messages.filter(message => message !== sprite);
         this.removeChild(sprite);
         sprite.destroy();
       });
@@ -120,19 +122,18 @@ class HUDContainer extends Container {
 
     // Update messages.
     this.messages.forEach((message, i) => {
-      let y = HUD_PADDING;
+      let y = HUD_PADDING + (this.messages[0].height / 2);
 
       for (let j = 0; j < i; j += 1) {
-        y += this.messages[j].height + 4;
+        y += this.messages[j].height + MESSAGE_PADDING;
       }
 
       message.y = y;
     });
 
+    this.messages.forEach(message => message.update(delta, elapsedMS));
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;
-
-    super.update(delta, elapsedMS);
   }
 }
 

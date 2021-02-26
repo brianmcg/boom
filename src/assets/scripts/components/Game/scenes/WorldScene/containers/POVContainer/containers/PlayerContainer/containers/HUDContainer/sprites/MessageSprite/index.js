@@ -22,13 +22,14 @@ const STATES = {
 class MessageSprite extends TextSprite {
   /**
    * Creates a message sprite.
-   * @param  {String} text The text of the message.
+   * @param  {String} text             The message text.
+   * @param  {Number} options.priority The priority of the message.
    */
-  constructor(text) {
+  constructor(text, { priority = 0 } = {}) {
     super({
       text,
       fontName: GAME_FONT.NAME,
-      fontSize: FONT_SIZES.SMALL,
+      fontSize: Object.values(FONT_SIZES)[priority],
       color: RED,
       anchor: 0.5,
       x: SCREEN.WIDTH / 2,
@@ -40,7 +41,6 @@ class MessageSprite extends TextSprite {
 
     this.setScale(this.scaleAmount);
     this.setGrowing();
-    this.play();
   }
 
   /**
@@ -116,20 +116,6 @@ class MessageSprite extends TextSprite {
   }
 
   /**
-   * Play the sprite..
-   */
-  play() {
-    this.playing = true;
-  }
-
-  /**
-   * Stop the sprite.
-   */
-  stop() {
-    this.playing = false;
-  }
-
-  /**
    * Set the sprite to the growing state.
    */
   setGrowing() {
@@ -163,7 +149,7 @@ class MessageSprite extends TextSprite {
     const isStateChanged = this.setState(STATES.COMPLETE);
 
     if (isStateChanged) {
-      this.emit(STATES.COMPLETE, this);
+      this.emit(STATES.COMPLETE);
     }
 
     return isStateChanged;
