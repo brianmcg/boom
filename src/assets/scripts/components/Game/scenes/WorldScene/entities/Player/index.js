@@ -386,7 +386,8 @@ class Player extends AbstractActor {
 
     // Update interactions.
     if (use) {
-      const { distance, cell } = this.castRay();
+      const ray = this.castRay();
+      const { distance, cell } = ray;
 
       if (cell.use && distance <= (CELL_SIZE + this.width / 2)) {
         this.emitSound(this.sounds.use);

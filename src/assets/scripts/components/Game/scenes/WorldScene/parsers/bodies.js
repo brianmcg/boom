@@ -101,28 +101,28 @@ export const createWorld = ({ scene, data, graphics }) => {
     ]), []),
   ]), []);
 
-  const obstacles = data.obstacles.reduce((memo, obstacle) => ([
+  const objects = data.objects.reduce((memo, object) => ([
     ...memo,
-    obstacle.explosive
+    props.objects[object.name]?.explosive
       ? new ExplosiveEntity({
-        name: obstacle.name,
-        x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
-        y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
-        blocking: obstacle.blocking,
-        width: Math.ceil(CELL_SIZE * obstacle.width),
-        height: Math.ceil(CELL_SIZE * obstacle.height),
-        animated: !!obstacle.animated,
-        ...props.obstacles[obstacle.name],
+        name: object.name,
+        x: (CELL_SIZE * object.x) + (CELL_SIZE / 2),
+        y: (CELL_SIZE * object.y) + (CELL_SIZE / 2),
+        blocking: object.blocking,
+        width: Math.ceil(CELL_SIZE * object.width),
+        height: Math.ceil(CELL_SIZE * object.height),
+        animated: !!object.animated,
+        ...props.objects[object.name],
         soundSprite,
       })
       : new Entity({
-        name: obstacle.name,
-        x: (CELL_SIZE * obstacle.x) + (CELL_SIZE / 2),
-        y: (CELL_SIZE * obstacle.y) + (CELL_SIZE / 2),
-        blocking: obstacle.blocking,
-        width: Math.ceil(CELL_SIZE * obstacle.width),
-        height: Math.ceil(CELL_SIZE * obstacle.height),
-        animated: !!obstacle.animated,
+        name: object.name,
+        x: (CELL_SIZE * object.x) + (CELL_SIZE / 2),
+        y: (CELL_SIZE * object.y) + (CELL_SIZE / 2),
+        blocking: object.blocking,
+        width: Math.ceil(CELL_SIZE * object.width),
+        height: Math.ceil(CELL_SIZE * object.height),
+        animated: !!object.animated,
       }),
   ]), []);
 
@@ -146,14 +146,14 @@ export const createWorld = ({ scene, data, graphics }) => {
 
     return [
       ...memo,
-      new ENEMIES[props.enemies[enemy.type].behaviour]({
+      new ENEMIES[props.enemies[enemy.name].behaviour]({
         type: enemy.type,
         name: enemy.name,
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
         width: Math.ceil(CELL_SIZE * enemy.width),
         height: Math.ceil(CELL_SIZE * enemy.height),
-        ...props.enemies[enemy.type],
+        ...props.enemies[enemy.name],
         spatterOffset,
         spatters,
         soundSprite,
@@ -174,7 +174,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     scene,
     grid,
     player,
-    obstacles,
+    objects,
     items,
     enemies,
     entrance,

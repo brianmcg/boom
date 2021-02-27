@@ -479,20 +479,25 @@ const castRaySection = ({
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Array}                The cast results.
  */
-export const castRay = (options) => {
+export const castRay = ({ angle, ...other }) => {
   const result = [];
 
   for (let i = 0; i < WALL_LAYERS; i += 1) {
     const previousRay = result[i - 1];
+    const fixedAngle = angle ? angle : 0.001;
 
     let currentRay;
 
     if (previousRay) {
-      currentRay = castRaySection(Object.assign(options, previousRay.endPoint));
+      currentRay = castRaySection(Object.assign(other, previousRay.endPoint, {
+        angle: angle ? angle : 0.001,
+      }));
       currentRay.distance += previousRay.distance;
       Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies);
     } else {
-      currentRay = castRaySection(options);
+      currentRay = castRaySection(Object.assign(other, {
+        angle: angle ? angle : 0.001,
+      }));
     }
 
     result.push(currentRay);

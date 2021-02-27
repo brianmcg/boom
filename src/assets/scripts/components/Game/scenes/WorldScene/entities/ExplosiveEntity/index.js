@@ -3,7 +3,7 @@ import DynamicEntity from '../DynamicEntity';
 
 const EXPLODE_EVENT = 'entity:explode';
 
-const EXPLODE_DELAY = 200;
+const EXPLODE_DELAY = 20;
 
 const DEGREES_360 = degrees(360);
 

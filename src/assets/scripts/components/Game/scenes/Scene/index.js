@@ -58,7 +58,7 @@ class Scene extends Container {
 
     this.mainContainer = new MainContainer();
 
-    this.path = `${type}${index ? `/${index}` : ''}`;
+    this.path = `${type}${isNaN(index) ? '' : `/${index}`}`;
 
     this.assets = {
       sound: {

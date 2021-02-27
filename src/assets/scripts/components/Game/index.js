@@ -129,7 +129,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = 1, ...other } = {}) {
-    this.show(SCENE_TYPES.WORLD, { index, showLoader: true, ...other });
+    this.show(SCENE_TYPES.WORLD, { index: 0, showLoader: true, ...other });
   }
 
   /**

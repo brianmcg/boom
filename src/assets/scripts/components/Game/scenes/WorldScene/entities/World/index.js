@@ -19,7 +19,7 @@ class World extends PhysicsWorld {
    * @param  {Number} options.index       The index of the world.
    * @param  {Player} options.player      The player.
    * @param  {Array}  options.enemies     The enemies.
-   * @param  {Array}  options.obstacles   The obstacles.
+   * @param  {Array}  options.objects   The objects.
    * @param  {Array}  options.items       The items.
    * @param  {Array}  options.grid        The cell grid.
    * @param  {Object} options.entrance    The entrance coordinates.
@@ -31,7 +31,7 @@ class World extends PhysicsWorld {
     scene,
     player,
     enemies = [],
-    obstacles = [],
+    objects = [],
     items = [],
     grid = [[]],
     entrance,
@@ -42,7 +42,7 @@ class World extends PhysicsWorld {
     super(grid, [
       ...enemies,
       ...items,
-      ...obstacles,
+      ...objects,
       player,
     ]);
 
@@ -52,7 +52,7 @@ class World extends PhysicsWorld {
     this.player = player;
     this.items = items;
     this.enemies = enemies;
-    this.obstacles = obstacles;
+    this.objects = objects;
     this.brightness = brightness;
     this.flash = 0;
     this.visibility = visibility * CELL_SIZE;
