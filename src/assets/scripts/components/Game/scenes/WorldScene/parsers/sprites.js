@@ -443,13 +443,13 @@ const createHudSprites = ({ world, textures }) => {
   const ammoAmount = new TextSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
-    text: `${world.player.weapon.ammo}`,
+    text: `${world.player.weapon.ammo !== null ? world.player.weapon.ammo : '-'}`,
     color: WHITE,
     anchor: 0.5,
   });
 
   const ammoIcon = new HUDSprite(textures.ammo, {
-    maxScale: ammoAmount.height / textures.ammo.frame.height,
+    maxScale: healthAmount.height / textures.ammo.frame.height,
   });
 
   const healthIcon = new HUDSprite(textures.health, {

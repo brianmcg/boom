@@ -1,6 +1,7 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
+import { WEAPONS } from 'game/constants/types';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
@@ -102,12 +103,18 @@ class Player extends AbstractActor {
 
     this.weapon = this.weapons[this.weaponIndex];
 
-    this.bullets = this.weapons.reduce((memo, weapon) => ({
-      ...memo,
-      [weapon.name]: [...Array(10).keys()].map(() => new Bullet({
-        explosionType: weapon.explosionType,
-      })),
-    }), {});
+    this.bullets = this.weapons.reduce((memo, weapon) => {
+      if (weapon.type === WEAPONS.HITSCAN) {
+        return {
+          ...memo,
+          [weapon.name]: [...Array(10).keys()].map(() => new Bullet({
+            explosionType: weapon.explosionType,
+          })),
+        };
+      }
+
+      return memo;
+    }, {});
 
     this.sounds = this.weapons.reduce((memo, weapon) => ({
       ...memo,
@@ -536,6 +543,8 @@ class Player extends AbstractActor {
       spread,
       spreadAngle,
       pelletAngle,
+      range,
+      type,
     } = this.weapon;
 
     let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
@@ -576,7 +585,8 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = this.bullets[this.weapon.name].shift();
+      const bullet = this.bullets[this.weapon.name]?.shift();
+
       const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       if (collisions.length) {
@@ -584,13 +594,17 @@ class Player extends AbstractActor {
         // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
-        this.parent.addExplosion({
-          x: point.x + Math.cos(angle) * (bullet.width / 2),
-          y: point.y + Math.cos(angle) * (bullet.width / 2),
-          sourceId: body.spurtType ? `${body.id}_${body.spurtType}` : bullet.id,
-          parent: this.parent,
-          flash: power,
-        });
+        const sourceId = body.spurtType ? `${body.id}_${body.spurtType}` : bullet?.id;
+
+        if (sourceId) {
+          this.parent.addExplosion({
+            x: point.x + Math.cos(angle),
+            y: point.y + Math.cos(angle),
+            sourceId,
+            parent: this.parent,
+            flash: power,
+          });
+        }
 
         if (body.hurt) {
           const damage = power * (Math.floor(Math.random() * accuracy) + 1);
@@ -611,16 +625,22 @@ class Player extends AbstractActor {
         }
       } else {
         // Handle collision with wall
-        this.parent.addExplosion({
-          x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
-          y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
-          sourceId: bullet.id,
-          parent: this.parent,
-          flash: power,
-        });
+        const sourceId = bullet?.id;
+
+        if (sourceId) {
+          this.parent.addExplosion({
+            x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
+            y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
+            sourceId: sourceId,
+            parent: this.parent,
+            flash: power,
+          });
+        }
       }
 
-      this.bullets[this.weapon.name].push(bullet);
+      if (bullet) {
+        this.bullets[this.weapon.name].push(bullet);
+      }
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;
     }

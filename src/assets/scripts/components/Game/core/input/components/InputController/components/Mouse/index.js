@@ -57,10 +57,8 @@ class Mouse {
     };
 
     const onWheel = (e) => {
-      const y = Math.sign(e.deltaY);
-
       if (this.wheelCallback) {
-        this.wheelCallback(y);
+        this.wheelCallback(Math.sign(e.deltaY));
       }
     };
 

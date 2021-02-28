@@ -41,9 +41,11 @@ class Weapon extends Entity {
     ammo,
     rate,
     automatic,
+    type,
     ...other
   }) {
     super(other);
+
 
     this.name = name;
     this.explosionType = explosionType;
@@ -55,13 +57,15 @@ class Weapon extends Entity {
     this.player = player;
     this.automatic = automatic;
     this.recoil = recoil;
-    this.ammo = ammo !== undefined ? ammo : maxAmmo / 2;
+    this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
+
     this.maxAmmo = maxAmmo;
     this.timer = 0;
-    this.range = range;
+    this.range = range * CELL_SIZE;
+    this.type = type;
     this.spread = [...Array(spread).keys()].map(i => i);
-    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * range) / 2 : 0;
-    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * range) / spread : 0;
+    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
+    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / spread : 0;
 
     this.setDisabled();
   }
@@ -110,7 +114,7 @@ class Weapon extends Entity {
    * Fire the weapon.
    */
   fire() {
-    if (this.isIdle() && this.ammo) {
+    if (this.isIdle() && (this.type === 0 || this.ammo)) {
       return this.setFiring();
     }
 
