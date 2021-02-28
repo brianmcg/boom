@@ -93,18 +93,25 @@ class Player extends AbstractActor {
     this.breath = 0;
 
     this.camera = new Camera(this);
-    this.weapons = weapons.map(data => new Weapon({ player: this, ...data }));
+
+    this.weapons = Object.keys(weapons).map(name => new Weapon({
+      ...weapons[name],
+      player: this,
+      name,
+    }));
+
     this.weapon = this.weapons[this.weaponIndex];
-    this.bullets = weapons.reduce((memo, data) => ({
+
+    this.bullets = this.weapons.reduce((memo, weapon) => ({
       ...memo,
-      [data.type]: [...Array(10).keys()].map(() => new Bullet({
-        explosionType: data.explosionType,
+      [weapon.name]: [...Array(10).keys()].map(() => new Bullet({
+        explosionType: weapon.explosionType,
       })),
     }), {});
 
     this.sounds = this.weapons.reduce((memo, weapon) => ({
       ...memo,
-      [weapon.type]: weapon.sounds.fire,
+      [weapon.name]: weapon.sounds.fire,
     }), this.sounds);
 
     this.viewHeight = this.z + this.height + this.camera.height;
@@ -569,7 +576,7 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = this.bullets[this.weapon.type].shift();
+      const bullet = this.bullets[this.weapon.name].shift();
       const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       if (collisions.length) {
@@ -613,7 +620,7 @@ class Player extends AbstractActor {
         });
       }
 
-      this.bullets[this.weapon.type].push(bullet);
+      this.bullets[this.weapon.name].push(bullet);
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;
     }
@@ -679,10 +686,10 @@ class Player extends AbstractActor {
 
   /**
    * Pick up a weapon
-   * @param  {Weapon} type  The weapon.
+   * @param  {Weapon} weapon  The weapon.
    */
   pickUpWeapon({ weapon }) {
-    const index = this.weapons.map(({ type }) => type).indexOf(weapon);
+    const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const pickedUpWeapon = this.weapons[index];
 
     if (!pickedUpWeapon.isEquiped()) {
@@ -703,7 +710,7 @@ class Player extends AbstractActor {
    * @param  {Ammo} amount The amount of ammo.
    */
   pickUpAmmo({ weapon, amount }) {
-    const index = this.weapons.map(({ type }) => type).indexOf(weapon);
+    const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const weaponToRefill = this.weapons[index];
 
     if (weaponToRefill.isEquiped()) {
