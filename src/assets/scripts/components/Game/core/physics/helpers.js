@@ -472,7 +472,7 @@ const castRaySection = ({
 }
 
 /**
- * Cast a long ray that goes through bars.
+ * Cast a long ray that goes through transparent cells.
  * @param  {Number} options.x     The x coordinate of the starting point.
  * @param  {Number} options.y     The y coordinate of the starting point.
  * @param  {Number} options.angle The angle of the ray.
@@ -502,7 +502,7 @@ export const castRay = ({ angle, ...other }) => {
 
     result.push(currentRay);
 
-    if (!currentRay.cell.bars) {
+    if (!currentRay.cell.transparency) {
       break;
     }
   }

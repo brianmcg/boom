@@ -83,7 +83,7 @@ class DynamicBody extends Body {
    * @return {Boolean}      Collision has occurred.
    */
   isBodyCollision(body) {
-    return !(!this.weight && body.bars)
+    return !(!this.weight && body.transparency)
       && isBodyCollision(this, body);
   }
 

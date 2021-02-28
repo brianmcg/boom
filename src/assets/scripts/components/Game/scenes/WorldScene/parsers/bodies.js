@@ -52,7 +52,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     });
   }
 
-  if (cell.bars) {
+  if (cell.transparency) {
     return new Cell({
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
@@ -61,7 +61,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       sides,
       width: CELL_SIZE,
       height: cell.blocking ? CELL_SIZE : 0,
-      bars: true,
+      transparency: cell.transparency,
     });
   }
 
@@ -82,9 +82,9 @@ const createCell = ({ cell, props, soundSprite }) => {
  */
 export const createWorld = ({ scene, data, graphics }) => {
   const { soundSprite } = scene.game;
-  const bloodColors = Object.values(data.props.enemies).reduce((memo, { bloodColor }) => {
-    if (bloodColor && !memo.includes(bloodColor)) {
-      return [...memo, bloodColor];
+  const spatterTypes = Object.values(data.props.enemies).reduce((memo, { spatterType }) => {
+    if (spatterType && !memo.includes(spatterType)) {
+      return [...memo, spatterType];
     }
     return memo;
   }, []);
@@ -140,9 +140,9 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const { bloodColor } = data.props.enemies[enemy.name];
-    const spatters = bloodColor ? animations.spatter.length : 0;
-    const spatterOffset = bloodColor ? (bloodColors.indexOf(bloodColor) * spatters) + 1 : 0;
+    const { spatterType } = data.props.enemies[enemy.name];
+    const spatters = spatterType ? animations[spatterType].length : 0;
+    const spatterOffset = spatterType ? (spatterTypes.indexOf(spatterType) * spatters) + 1 : 0;
 
     return [
       ...memo,

@@ -66,7 +66,6 @@ const createWallSpriteMask = (wallTexture, renderer) => {
   });
 
   maskForeground.tint = BLACK;
-  maskForeground.alpha = 0.7;
   maskContainer.addChild(maskBackground);
   maskContainer.addChild(maskForeground);
   maskContainer.filters = [filter];
@@ -95,16 +94,16 @@ const createWallSprites = ({
 
   const spatterContainer = new Container();
 
-  const bloodColors = world.enemies.reduce((memo, { bloodColor }) => {
-    if (bloodColor && !memo.includes(bloodColor)) {
-      memo.push(bloodColor);
+  const spatterTypes = world.enemies.reduce((memo, { spatterType }) => {
+    if (spatterType && !memo.includes(spatterType)) {
+      memo.push(spatterType);
     }
     return memo;
   }, []);
 
-  const spatters = bloodColors.reduce((memo, bloodColor) => {
-    animations.spatter.forEach((spatter) => {
-      memo.push({ type: spatter, color: bloodColor });
+  const spatters = spatterTypes.reduce((memo, spatterType) => {
+    animations[spatterType].forEach((spatter) => {
+      memo.push(spatter);
     });
     return memo;
   }, []);
@@ -116,39 +115,42 @@ const createWallSprites = ({
         left,
         back,
         right,
+        transparency,
       } = cell;
 
       [front, left, back, right].forEach((side) => {
-        if (side && !wallImages.includes(side.type)) {
-          wallImages.push(side.name);
+        if (side && !wallImages.some(w => w.name === side.name)) {
+          wallImages.push({ name: side.name, transparent: !!transparency });
         }
       });
     });
   });
 
-  wallImages.forEach((image) => {
-    wallTextures[image] = [];
+  wallImages.forEach(({ name, transparent }) => {
+    wallTextures[name] = [];
 
-    const { frame } = frames[image];
-    const wallTexture = textures[image];
+    const { frame } = frames[name];
+    const wallTexture = textures[name];
 
     for (let i = 0; i < frame.w; i += 1) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[image].push([new Texture(wallTexture, clearSlice)]);
+      wallTextures[name].push([new Texture(wallTexture, clearSlice)]);
     }
 
-    const spatterTextures = spatters.map(({ type, color }) => {
+    const spatterTextures = spatters.map((spatter) => {
       const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
-      const spatterTexture = textures[type];
+      const spatterTexture = textures[spatter];
       const wallSprite = new Sprite(wallTexture);
       const spatterSprite = new Sprite(spatterTexture);
 
-      spatterSprite.tint = color;
       spatterSprite.x = CELL_SIZE / 2;
       spatterSprite.y = CELL_SIZE / 2;
       spatterSprite.anchor.set(0.5);
       spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
-      spatterSprite.mask = createWallSpriteMask(wallTexture, renderer);
+
+      if (transparent) {
+        spatterSprite.mask = createWallSpriteMask(wallTexture, renderer);
+      }
 
       spatterContainer.removeChildren();
       spatterContainer.addChild(wallSprite);
@@ -163,7 +165,7 @@ const createWallSprites = ({
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
 
       spatterTextures.forEach((texture) => {
-        wallTextures[image][i].push(new Texture(texture, spatteredSlice));
+        wallTextures[name][i].push(new Texture(texture, spatteredSlice));
       });
     }
   });
@@ -242,41 +244,18 @@ const createExplosionSprites = ({
     return memo;
   }, {});
 
-  const spurtTextureHash = {};
+  const enemySpurtSprites = world.enemies.reduce((memo, { id, spurtType }) => {
+    if (spurtType) {
+      const spurtTextures = animations[spurtType].map(animation => textures[animation]);
 
-  const enemySpurtSprites = world.enemies.reduce((memo, { id, spurtType, bloodColor }) => {
-    if (!spurtType) {
+      const explosionSprite = new ExplosionSprite(spurtTextures, {
+        animationSpeed: 0.2,
+      });
+
+      memo[`${id}_${spurtType}`] = explosionSprite;
+
       return memo;
     }
-
-    const spurtTextures = animations[spurtType].map((animation) => {
-      const key = `${spurtType}_${bloodColor}_${animation}`;
-
-      if (!spurtTextureHash[key]) {
-        const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
-        const container = new Container();
-        const sprite = new Sprite(textures[animation]);
-
-        sprite.anchor.set(0.5);
-        sprite.x = CELL_SIZE / 2;
-        sprite.y = CELL_SIZE / 2;
-        sprite.width /= 2;
-        sprite.height /= 2;
-        sprite.tint = bloodColor;
-        container.addChild(sprite);
-        renderer.render(sprite, renderTexture);
-
-        spurtTextureHash[key] = renderTexture;
-      }
-
-      return spurtTextureHash[key];
-    });
-
-    const explosionSprite = new ExplosionSprite(spurtTextures, {
-      animationSpeed: 0.2,
-    });
-
-    memo[`${id}_${spurtType}`] = explosionSprite;
 
     return memo;
   }, {});

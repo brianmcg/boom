@@ -57,7 +57,7 @@ class AbstractEnemy extends AbstractActor {
     primaryAttack,
     proneHeight,
     type,
-    bloodColor,
+    spatterType,
     ...other
   }) {
     super(other);
@@ -87,7 +87,7 @@ class AbstractEnemy extends AbstractActor {
     this.floatDirection = 1;
     this.proneHeight = proneHeight;
     this.primaryAttack = primaryAttack;
-    this.bloodColor = bloodColor;
+    this.spatterType = spatterType;
 
     this.setIdle();
   }
