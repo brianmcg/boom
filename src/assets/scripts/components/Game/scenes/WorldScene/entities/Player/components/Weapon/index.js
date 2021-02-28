@@ -1,5 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
+import Bullet from '../../../Bullet';
 
 const STATES = {
   FIRING: 'weapon:firing',
@@ -46,7 +47,6 @@ class Weapon extends Entity {
   }) {
     super(other);
 
-
     this.name = name;
     this.explosionType = explosionType;
     this.sounds = sounds;
@@ -66,6 +66,12 @@ class Weapon extends Entity {
     this.spread = [...Array(spread).keys()].map(i => i);
     this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
     this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / spread : 0;
+
+    this.bullets = this.type === 1
+      ? [...Array(10).keys()].map(() => new Bullet({
+            explosionType: this.explosionType,
+        }))
+      : null;
 
     this.setDisabled();
   }
@@ -113,7 +119,7 @@ class Weapon extends Entity {
   /**
    * Fire the weapon.
    */
-  fire() {
+  use() {
     if (this.isIdle() && (this.type === 0 || this.ammo)) {
       return this.setFiring();
     }

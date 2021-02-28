@@ -7,7 +7,6 @@ import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
 import Camera from './components/Camera';
 import KeyCard from './components/KeyCard';
-import Bullet from '../Bullet';
 
 const DEG_360 = degrees(360);
 const DEG_270 = degrees(270);
@@ -102,19 +101,6 @@ class Player extends AbstractActor {
     }));
 
     this.weapon = this.weapons[this.weaponIndex];
-
-    this.bullets = this.weapons.reduce((memo, weapon) => {
-      if (weapon.type === WEAPONS.HITSCAN) {
-        return {
-          ...memo,
-          [weapon.name]: [...Array(10).keys()].map(() => new Bullet({
-            explosionType: weapon.explosionType,
-          })),
-        };
-      }
-
-      return memo;
-    }, {});
 
     this.sounds = this.weapons.reduce((memo, weapon) => ({
       ...memo,
@@ -390,7 +376,7 @@ class Player extends AbstractActor {
       }
     }
 
-    if (attack && this.weapon.fire()) {
+    if (attack && this.weapon.use()) {
       this.attack();
     }
 
@@ -545,6 +531,7 @@ class Player extends AbstractActor {
       pelletAngle,
       range,
       type,
+      bullets,
     } = this.weapon;
 
     let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
@@ -585,7 +572,7 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = this.bullets[this.weapon.name]?.shift();
+      const bullet = bullets?.shift();
 
       const angle = (this.viewAngle + DEG_180) % DEG_360;
 
@@ -638,8 +625,8 @@ class Player extends AbstractActor {
         }
       }
 
-      if (bullet) {
-        this.bullets[this.weapon.name].push(bullet);
+      if (bullets && bullet) {
+        bullets.push(bullet);
       }
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;

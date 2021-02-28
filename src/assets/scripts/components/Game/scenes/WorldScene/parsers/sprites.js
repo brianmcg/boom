@@ -286,19 +286,19 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
-  const playerBulletSprites = Object.keys(world.player.bullets).reduce((memo, key) => {
-    world.player.bullets[key].forEach((bullet) => {
-      const explosionTextures = animations[bullet.explosionType]
-        .map(animation => textures[animation]);
+  const playerBulletSprites = {};
 
-      memo[bullet.id] = new ExplosionSprite(explosionTextures, {
-        animationSpeed: 0.4,
+  world.player.weapons.forEach((weapon) => {
+    if (weapon.bullets) {
+      weapon.bullets.forEach((bullet) => {
+        const explosionTextures = animations[bullet.explosionType].map(animation => textures[animation]);
+
+        playerBulletSprites[bullet.id] = new ExplosionSprite(explosionTextures, {
+          animationSpeed: 0.4,
+        });
       });
-    });
-
-
-    return memo;
-  }, {});
+    }
+  });
 
   return {
     ...enemyProjectileSprites,
