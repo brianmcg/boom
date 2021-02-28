@@ -223,7 +223,7 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
   return backgroundSprites;
 };
 
-const createExplosionSprites = ({
+const createEffectsSprites = ({
   animations,
   textures,
   world,
@@ -308,10 +308,6 @@ const createExplosionSprites = ({
     ...objectExplodeSprites,
   };
 };
-
-const createEffectsSprites = options => ({
-  explosions: createExplosionSprites(options),
-});
 
 const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};

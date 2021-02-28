@@ -55,7 +55,7 @@ class Projectile extends DynamicEntity {
           const damage = this.source.attackDamage();
 
           if (this.setColliding()) {
-            this.parent.addExplosion({
+            this.parent.addEffect({
               sourceId: this.id,
               x: this.x,
               y: this.y,

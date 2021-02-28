@@ -1,6 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { World as PhysicsWorld } from 'game/core/physics';
-import Explosion from '../../effects/Explosion';
+import Effect from '../../effects/Effect';
 
 const ITEM_FLASH_AMOUNT = 0.35;
 
@@ -58,7 +58,7 @@ class World extends PhysicsWorld {
     this.visibility = visibility * CELL_SIZE;
     this.explosionFlash = false;
     this.itemFlash = false;
-    this.explosions = [];
+    this.effects = [];
     this.startTime = performance.now();
     this.startingProps = Object.assign({}, this.props);
 
@@ -76,7 +76,7 @@ class World extends PhysicsWorld {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
 
-    this.explosions.forEach(e => e.update(delta, elapsedMS));
+    this.effects.forEach(e => e.update(delta, elapsedMS));
 
     if (this.explosionFlash) {
       this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
@@ -141,8 +141,8 @@ class World extends PhysicsWorld {
    * Add an explosion to the world.
    * @param {World} explosion The explosion to add.
    */
-  addExplosion({ flash = 0, shake, ...options }) {
-    this.explosions.push(new Explosion(options));
+  addEffect({ flash = 0, shake, ...options }) {
+    this.effects.push(new Effect(options));
 
     if (flash) {
       this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);
@@ -156,10 +156,10 @@ class World extends PhysicsWorld {
 
   /**
    * Remove an explosion from the world.
-   * @param  {Explosion} explosion The explosion to remove.
+   * @param  {Effect} explosion The explosion to remove.
    */
-  removeExplosion(explosion) {
-    this.explosions = this.explosions.filter(e => e.id !== explosion.id);
+  removeEffect(explosion) {
+    this.effects = this.effects.filter(e => e.id !== explosion.id);
   }
 
 

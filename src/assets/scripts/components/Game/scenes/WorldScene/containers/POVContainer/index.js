@@ -72,7 +72,7 @@ class POVContainer extends Container {
       player,
       maxCellX,
       maxCellY,
-      explosions,
+      effects,
     } = this.world;
 
     // Remove sprites from previous run.
@@ -80,7 +80,7 @@ class POVContainer extends Container {
     this.displayedEntities = [];
 
     const { background } = this.backgroundContainer;
-    const { walls, entities, effects } = this.mapContainer;
+    const { walls, entities, effects: effectSprites } = this.mapContainer;
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
@@ -216,24 +216,25 @@ class POVContainer extends Container {
       this.displayedEntities.push(sprite);
     });
 
-    // Update effects.
-    explosions.forEach((explosion) => {
-      sprite = effects.explosions[explosion.sourceId];
 
-      if (explosion.isTriggered) {
+    // Update effectSprites.
+    effects.forEach((effects) => {
+      sprite = effectSprites[effects.sourceId];
+
+      if (effects.isTriggered) {
         this.mapContainer.addChild(sprite);
       }
 
-      if (player.isFacing(explosion)) {
-        spriteAngle = (player.getAngleTo(explosion) - player.viewAngle + DEG_360) % DEG_360;
-        actualDistance = player.getDistanceTo(explosion);
+      if (player.isFacing(effects)) {
+        spriteAngle = (player.getAngleTo(effects) - player.viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(effects);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
         sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + explosion.z - player.viewHeight)))
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + effects.z - player.viewHeight)))
           + (spriteHeight / 2);
         sprite.width = spriteHeight;
         sprite.height = spriteHeight;

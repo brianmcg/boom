@@ -47,7 +47,7 @@ class ExplosiveEntity extends DynamicEntity {
     this.timer = 0;
 
     this.onExplode(() => {
-      this.parent.addExplosion({
+      this.parent.addEffect({
         x: this.x,
         y: this.y,
         z: this.z,

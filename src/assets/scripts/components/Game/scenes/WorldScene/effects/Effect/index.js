@@ -3,7 +3,7 @@ const TIME_TO_LIVE = 2000;
 /**
  * Class representing an explosion.
  */
-class Explosion {
+class Effect {
   /**
    * Creates an explosion.
    * @param  {String} options.id    The explosion id.
@@ -41,9 +41,9 @@ class Explosion {
 
     if (this.timer >= TIME_TO_LIVE) {
       this.timer = 0;
-      this.parent.removeExplosion(this);
+      this.parent.removeEffect(this);
     }
   }
 }
 
-export default Explosion;
+export default Effect;

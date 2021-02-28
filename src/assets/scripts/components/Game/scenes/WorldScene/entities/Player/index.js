@@ -597,7 +597,7 @@ class Player extends AbstractActor {
         const sourceId = body.spurtType ? `${body.id}_${body.spurtType}` : bullet?.id;
 
         if (sourceId) {
-          this.parent.addExplosion({
+          this.parent.addEffect({
             x: point.x + Math.cos(angle),
             y: point.y + Math.cos(angle),
             sourceId,
@@ -628,7 +628,7 @@ class Player extends AbstractActor {
         const sourceId = bullet?.id;
 
         if (sourceId) {
-          this.parent.addExplosion({
+          this.parent.addEffect({
             x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
             y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
             sourceId: sourceId,

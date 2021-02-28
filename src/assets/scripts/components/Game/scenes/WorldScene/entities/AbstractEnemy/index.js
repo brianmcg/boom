@@ -513,7 +513,7 @@ class AbstractEnemy extends AbstractActor {
 
     if (isStateChanged) {
       if (this.explosionType) {
-        this.parent.addExplosion({
+        this.parent.addEffect({
           x: this.x,
           y: this.y,
           z: this.z,
