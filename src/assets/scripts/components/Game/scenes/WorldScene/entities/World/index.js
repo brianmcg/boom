@@ -1,6 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { World as PhysicsWorld } from 'game/core/physics';
-import Effect from '../../effects/Effect';
+import Effect from './components/Effect';
 
 const ITEM_FLASH_AMOUNT = 0.35;
 
