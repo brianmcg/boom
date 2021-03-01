@@ -229,7 +229,7 @@ const createEffectsSprites = ({
   world,
   renderer,
 }) => {
-  const enemyProjectileSprites = world.enemies.reduce((memo, enemy) => {
+  const enemyProjectileExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
         const explosionTextures = animations[projectile.explosionType]
@@ -260,7 +260,7 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
-  const enemyExplodeSprites = world.enemies.reduce((memo, enemy) => {
+  const enemyExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.explosionType) {
       const explosionTextures = animations[enemy.explosionType]
         .map(animation => textures[animation]);
@@ -273,7 +273,7 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
-  const objectExplodeSprites = world.objects.reduce((memo, object) => {
+  const objectExplosionSprites = world.objects.reduce((memo, object) => {
     if (object.explosionType) {
       const explosionTextures = animations[object.explosionType]
         .map(animation => textures[animation]);
@@ -301,11 +301,11 @@ const createEffectsSprites = ({
   });
 
   return {
-    ...enemyProjectileSprites,
+    ...enemyProjectileExplosionSprites,
     ...playerBulletSprites,
     ...enemySpurtSprites,
-    ...enemyExplodeSprites,
-    ...objectExplodeSprites,
+    ...enemyExplosionSprites,
+    ...objectExplosionSprites,
   };
 };
 

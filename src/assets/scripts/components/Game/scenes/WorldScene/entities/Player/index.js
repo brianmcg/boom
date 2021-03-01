@@ -588,7 +588,6 @@ class Player extends AbstractActor {
             x: point.x + Math.cos(angle),
             y: point.y + Math.cos(angle),
             sourceId,
-            parent: this.parent,
             flash: power,
           });
         }
@@ -619,7 +618,6 @@ class Player extends AbstractActor {
             x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
             y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
             sourceId: sourceId,
-            parent: this.parent,
             flash: power,
           });
         }

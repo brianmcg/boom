@@ -518,7 +518,6 @@ class AbstractEnemy extends AbstractActor {
           y: this.y,
           z: this.z,
           sourceId: `${this.id}_${this.explosionType}`,
-          parent: this.parent,
         });
       } else {
         this.isProne = true;

@@ -217,24 +217,24 @@ class POVContainer extends Container {
     });
 
 
-    // Update effectSprites.
-    effects.forEach((effects) => {
-      sprite = effectSprites[effects.sourceId];
+    // Update effect sprites.
+    effects.forEach((effect) => {
+      sprite = effectSprites[effect.sourceId];
 
-      if (effects.isTriggered) {
+      if (!effect.isTriggered) {
         this.mapContainer.addChild(sprite);
       }
 
-      if (player.isFacing(effects)) {
-        spriteAngle = (player.getAngleTo(effects) - player.viewAngle + DEG_360) % DEG_360;
-        actualDistance = player.getDistanceTo(effects);
+      if (player.isFacing(effect)) {
+        spriteAngle = (player.getAngleTo(effect) - player.viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(effect);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
         sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + effects.z - player.viewHeight)))
+          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)))
           + (spriteHeight / 2);
         sprite.width = spriteHeight;
         sprite.height = spriteHeight;

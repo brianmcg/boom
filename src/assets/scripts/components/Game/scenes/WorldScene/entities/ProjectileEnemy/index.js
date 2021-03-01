@@ -1,21 +1,23 @@
 import AbstractEnemy from '../AbstractEnemy';
 import Projectile from '../Projectile';
 
+const PROJECTILE_RESERVE = 3;
+
 /**
  * Abstract class representing a gun enemy.
  * @extends {AbstractEnemy}
  */
 class ProjectileEnemy extends AbstractEnemy {
   constructor({
-    projectiles,
+    maxAttacks,
     projectile,
     clipSize,
     soundSprite,
     ...other
   }) {
-    super({ soundSprite, ...other });
+    super({ soundSprite, maxAttacks, ...other });
 
-    this.projectiles = [...Array(projectiles).keys()]
+    this.projectiles = [...Array(maxAttacks * PROJECTILE_RESERVE).keys()]
       .map(() => new Projectile({
         ...projectile,
         source: this,

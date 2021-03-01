@@ -58,7 +58,6 @@ class Weapon extends Entity {
     this.automatic = automatic;
     this.recoil = recoil;
     this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
-
     this.maxAmmo = maxAmmo;
     this.timer = 0;
     this.range = range * CELL_SIZE;

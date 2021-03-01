@@ -142,7 +142,10 @@ class World extends PhysicsWorld {
    * @param {World} explosion The explosion to add.
    */
   addEffect({ flash = 0, shake, ...options }) {
-    this.effects.push(new Effect(options));
+    this.effects.push(new Effect({
+      ...options,
+      parent: this,
+    }));
 
     if (flash) {
       this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);

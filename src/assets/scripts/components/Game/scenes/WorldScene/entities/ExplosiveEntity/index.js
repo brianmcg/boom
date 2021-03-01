@@ -52,7 +52,6 @@ class ExplosiveEntity extends DynamicEntity {
         y: this.y,
         z: this.z,
         sourceId: `${this.id}_${this.explosionType}`,
-        parent: this.parent,
         flash: this.power,
         shake: this.power,
       });
