@@ -3,14 +3,18 @@ import AnimatedEntitySprite from '../AnimatedEntitySprite';
 /**
  * Class representing an explosion sprite.
  */
-class ExplosionSprite extends AnimatedEntitySprite {
+class EffectSprite extends AnimatedEntitySprite {
   /**
    * Creates an explosion sprite.
    * @param  {Array}  textures The explosion textures.
    * @param  {Object} options  The animated sprite options.
    */
   constructor(textures, options) {
-    super(textures, { ...options, loop: false, autoPlay: false });
+    super(textures, {
+      ...options,
+      loop: false,
+      autoPlay: false,
+    });
 
     this.rotation = Math.random() * Math.PI * 2;
 
@@ -21,4 +25,4 @@ class ExplosionSprite extends AnimatedEntitySprite {
   }
 }
 
-export default ExplosionSprite;
+export default EffectSprite;

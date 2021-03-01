@@ -21,7 +21,7 @@ import EnemySprite from '../sprites/EnemySprite';
 import WeaponSprite from '../sprites/WeaponSprite';
 import HUDKeySprite from '../sprites/HUDKeySprite';
 import HUDSprite from '../sprites/HUDSprite';
-import ExplosionSprite from '../sprites/ExplosionSprite';
+import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
@@ -232,10 +232,10 @@ const createEffectsSprites = ({
   const enemyProjectileExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
-        const explosionTextures = animations[projectile.explosionType]
+        const effectTextures = animations[projectile.explosionType]
           .map(animation => textures[animation]);
 
-        memo[projectile.id] = new ExplosionSprite(explosionTextures, {
+        memo[projectile.id] = new EffectSprite(effectTextures, {
           animationSpeed: 0.3,
         });
       });
@@ -248,7 +248,7 @@ const createEffectsSprites = ({
     if (spurtType) {
       const spurtTextures = animations[spurtType].map(animation => textures[animation]);
 
-      const explosionSprite = new ExplosionSprite(spurtTextures, {
+      const explosionSprite = new EffectSprite(spurtTextures, {
         animationSpeed: 0.2,
       });
 
@@ -262,10 +262,10 @@ const createEffectsSprites = ({
 
   const enemyExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.explosionType) {
-      const explosionTextures = animations[enemy.explosionType]
+      const effectTextures = animations[enemy.explosionType]
         .map(animation => textures[animation]);
 
-      memo[`${enemy.id}_${enemy.explosionType}`] = new ExplosionSprite(explosionTextures, {
+      memo[`${enemy.id}_${enemy.explosionType}`] = new EffectSprite(effectTextures, {
         animationSpeed: 0.2,
       });
     }
@@ -275,10 +275,10 @@ const createEffectsSprites = ({
 
   const objectExplosionSprites = world.objects.reduce((memo, object) => {
     if (object.explosionType) {
-      const explosionTextures = animations[object.explosionType]
+      const effectTextures = animations[object.explosionType]
         .map(animation => textures[animation]);
 
-      memo[`${object.id}_${object.explosionType}`] = new ExplosionSprite(explosionTextures, {
+      memo[`${object.id}_${object.explosionType}`] = new EffectSprite(effectTextures, {
         animationSpeed: 0.4,
       });
     }
@@ -291,9 +291,9 @@ const createEffectsSprites = ({
   world.player.weapons.forEach((weapon) => {
     if (weapon.bullets) {
       weapon.bullets.forEach((bullet) => {
-        const explosionTextures = animations[bullet.explosionType].map(animation => textures[animation]);
+        const effectTextures = animations[bullet.explosionType].map(animation => textures[animation]);
 
-        playerBulletSprites[bullet.id] = new ExplosionSprite(explosionTextures, {
+        playerBulletSprites[bullet.id] = new EffectSprite(effectTextures, {
           animationSpeed: 0.4,
         });
       });
