@@ -10,6 +10,8 @@ const MAX_EXPLOSION_FLASH_AMOUNT = 1;
 
 const EXPLOSION_FLASH_DECREMENT = 0.15;
 
+const EFFECT_ADDED_EVENT = 'world:effect:added';
+
 /**
  * Class representing a world.
  */
@@ -142,10 +144,14 @@ class World extends PhysicsWorld {
    * @param {World} explosion The explosion to add.
    */
   addEffect({ flash = 0, shake, ...options }) {
-    this.effects.push(new Effect({
+    const effect = new Effect({
       ...options,
       parent: this,
-    }));
+    });
+
+    this.effects.push(effect);
+
+    this.emit(EFFECT_ADDED_EVENT, effect.sourceId);
 
     if (flash) {
       this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);
@@ -174,6 +180,14 @@ class World extends PhysicsWorld {
     this.remove(item);
     this.flash += ITEM_FLASH_AMOUNT;
     this.itemFlash = true;
+  }
+
+  /**
+   * Add a callback for the effect added event.
+   * @param  {Function} callback The callback to add.
+   */
+  onEffectAdded(callback) {
+    this.on(EFFECT_ADDED_EVENT, callback);
   }
 
   /**

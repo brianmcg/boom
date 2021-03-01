@@ -52,12 +52,16 @@ class POVContainer extends Container {
 
     const { map, background, player } = sprites;
 
+    this.world = world;
     this.backgroundContainer = new BackgroundContainer(background);
     this.mapContainer = new MapContainer(map);
     this.playerContainer = new PlayerContainer(world.player, player);
 
-    this.world = world;
+    const { effects } = this.mapContainer;
+
     this.displayedEntities = [];
+
+    world.onEffectAdded(id => this.mapContainer.addChild(effects[id]));
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
@@ -68,12 +72,14 @@ class POVContainer extends Container {
    * Animate the container.
    */
   update(delta, elapsedMS) {
+    const { world } = this;
+
     const {
       player,
       maxCellX,
       maxCellY,
       effects,
-    } = this.world;
+    } = world;
 
     // Remove sprites from previous run.
     this.displayedEntities.forEach(entity => this.mapContainer.removeChild(entity));
@@ -96,7 +102,7 @@ class POVContainer extends Container {
         x: player.x,
         y: player.y,
         angle,
-        world: this.world,
+        world,
       });
 
       // Update wall sprites.
@@ -165,7 +171,7 @@ class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getCell(gridX, gridY).top.name, pixelX, pixelY);
+          sprite.changeTexture(world.getCell(gridX, gridY).top.name, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -186,7 +192,7 @@ class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
           gridY = (gridY > maxCellY) ? maxCellY : gridY;
           gridY = (gridY < 0) ? 0 : gridY;
-          sprite.changeTexture(this.world.getCell(gridX, gridY).bottom.name, pixelX, pixelY);
+          sprite.changeTexture(world.getCell(gridX, gridY).bottom.name, pixelX, pixelY);
           sprite.tint = this.calculateTint(actualDistance);
         }
       }
@@ -220,10 +226,6 @@ class POVContainer extends Container {
     // Update effect sprites.
     effects.forEach((effect) => {
       sprite = effectSprites[effect.sourceId];
-
-      if (!effect.timer) {
-        this.mapContainer.addChild(sprite);
-      }
 
       if (player.isFacing(effect)) {
         spriteAngle = (player.getAngleTo(effect) - player.viewAngle + DEG_360) % DEG_360;
