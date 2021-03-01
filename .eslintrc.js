@@ -10,6 +10,10 @@ module.exports = {
   parserOptions: {
     sourceType: 'module'
   },
+  "parser": "babel-eslint",
+  "rules": {
+    "strict": 0
+  },
   extends: 'airbnb-base',
   rules: {
     'import/prefer-default-export': 'off',

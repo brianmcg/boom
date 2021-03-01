@@ -489,13 +489,13 @@ export const castRay = ({ angle, ...other }) => {
 
     if (previousRay) {
       currentRay = castRaySection(Object.assign(other, previousRay.endPoint, {
-        angle: angle === 0 ? angle : 0.001,
+        angle: angle === 0 ? 0.001 : angle,
       }));
       currentRay.distance += previousRay.distance;
       Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies);
     } else {
       currentRay = castRaySection(Object.assign(other, {
-        angle: angle === 0 ? angle : 0.001,
+        angle: angle === 0 ? 0.001 : angle,
       }));
     }
 

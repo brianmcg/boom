@@ -1,7 +1,6 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
-import { WEAPONS } from 'game/constants/types';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
@@ -529,8 +528,8 @@ class Player extends AbstractActor {
       spread,
       spreadAngle,
       pelletAngle,
-      range,
-      type,
+      // range,
+      // type,
       bullets,
     } = this.weapon;
 
@@ -617,7 +616,7 @@ class Player extends AbstractActor {
           this.parent.addEffect({
             x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
             y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
-            sourceId: sourceId,
+            sourceId,
             flash: power,
           });
         }
