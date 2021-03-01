@@ -221,7 +221,7 @@ class POVContainer extends Container {
     effects.forEach((effect) => {
       sprite = effectSprites[effect.sourceId];
 
-      if (!effect.isTriggered) {
+      if (!effect.timer) {
         this.mapContainer.addChild(sprite);
       }
 

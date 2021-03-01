@@ -27,7 +27,6 @@ class Effect {
     this.timer = 0;
     this.parent = parent;
     this.type = type;
-    this.isTriggered = false;
   }
 
   /**
@@ -35,12 +34,9 @@ class Effect {
    * @param  {Number} delta The delta time.
    */
   update(delta, elapsedMS) {
-    this.isTriggered = true;
-
     this.timer += elapsedMS;
 
     if (this.timer >= TIME_TO_LIVE) {
-      this.timer = 0;
       this.parent.removeEffect(this);
     }
   }

@@ -10,16 +10,14 @@ class ExplosionSprite extends AnimatedEntitySprite {
    * @param  {Object} options  The animated sprite options.
    */
   constructor(textures, options) {
-    super(textures, { ...options, loop: false });
-
-    this.onComplete = () => {
-      this.gotoAndStop(0);
-      this.parent.removeChild(this);
-    };
+    super(textures, { ...options, loop: false, autoPlay: false });
 
     this.rotation = Math.random() * Math.PI * 2;
 
+    this.onComplete = () => this.parent.removeChild(this);
+
     this.on('added', () => this.play());
+    this.on('removed', () => this.gotoAndStop(0));
   }
 }
 
