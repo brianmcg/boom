@@ -3,13 +3,13 @@ import Entity from '../../../Entity';
 import Bullet from '../../../Bullet';
 
 const STATES = {
-  FIRING: 'weapon:firing',
+  USING: 'weapon:using',
   IDLE: 'weapon:idle',
   DISABLED: 'weapon:disabled',
 };
 
 const EVENTS = {
-  FIRE: 'weapon:fire',
+  USE: 'weapon:use',
   STOP: 'weapon:stop',
 };
 
@@ -60,17 +60,16 @@ class Weapon extends Entity {
     this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
     this.maxAmmo = maxAmmo;
     this.timer = 0;
-    this.range = range ? (range * CELL_SIZE) + (player.width / 4) : Number.MAX_VALUE;
+    this.range = range ? (range * CELL_SIZE) + (player.width / 2) : Number.MAX_VALUE;
     this.type = type;
     this.spread = [...Array(spread).keys()].map(i => i);
     this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
     this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / spread : 0;
 
-    this.bullets = this.type === 1
-      ? [...Array(10).keys()].map(() => new Bullet({
-        explosionType: this.explosionType,
-      }))
-      : null;
+    this.hitScans = [...Array(10).keys()].map(() => new Bullet({
+      explosionType: this.explosionType,
+    }));
+
 
     this.setDisabled();
   }
@@ -79,8 +78,8 @@ class Weapon extends Entity {
    * Add a callback to the fire event.
    * @param  {Function} callback The callback.
    */
-  onFire(callback) {
-    this.on(EVENTS.FIRE, callback);
+  onUse(callback) {
+    this.on(EVENTS.USE, callback);
   }
 
   /**
@@ -97,7 +96,7 @@ class Weapon extends Entity {
    */
   update(delta, elapsedMS) {
     switch (this.state) {
-      case STATES.FIRING:
+      case STATES.USING:
         this.setDisabled();
         break;
       case STATES.DISABLED:
@@ -114,13 +113,12 @@ class Weapon extends Entity {
     }
   }
 
-
   /**
    * Fire the weapon.
    */
   use() {
     if (this.isIdle() && (this.type === 0 || this.ammo)) {
-      return this.setFiring();
+      return this.setUsing();
     }
 
     return false;
@@ -196,11 +194,11 @@ class Weapon extends Entity {
    * Set the state to firing.
    * @return {Boolean} Has the state changed to firing.
    */
-  setFiring() {
-    const isStateChanged = this.setState(STATES.FIRING);
+  setUsing() {
+    const isStateChanged = this.setState(STATES.USING);
 
     if (isStateChanged) {
-      this.emit(EVENTS.FIRE);
+      this.emit(EVENTS.USE);
       this.ammo -= 1;
 
       if (this.ammo === 0) {
@@ -231,8 +229,8 @@ class Weapon extends Entity {
    * Is the weapon in the firing state.
    * @return {Boolean}
    */
-  isFiring() {
-    return this.state === STATES.FIRING;
+  isUsing() {
+    return this.state === STATES.USING;
   }
 
   /**

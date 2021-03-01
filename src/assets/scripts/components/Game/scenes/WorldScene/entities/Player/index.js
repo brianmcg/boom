@@ -157,7 +157,7 @@ class Player extends AbstractActor {
    * Add a callback for the fire weapon event.
    * @param  {Function} callback The callback function.
    */
-  onFireWeapon(callback) {
+  onUseWeapon(callback) {
     this.on(EVENTS.FIRE_WEAPON, callback);
   }
 
@@ -530,7 +530,7 @@ class Player extends AbstractActor {
       pelletAngle,
       range,
       // type,
-      bullets,
+      hitScans,
     } = this.weapon;
 
     let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
@@ -546,6 +546,10 @@ class Player extends AbstractActor {
         side,
         encounteredBodies,
       } = this.castRay(rayAngle);
+
+      const hitScan = hitScans.shift();
+
+      const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       // Get sorted collisions
       const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
@@ -571,22 +575,20 @@ class Player extends AbstractActor {
         return 0;
       });
 
-      const bullet = bullets?.shift();
-
-      const angle = (this.viewAngle + DEG_180) % DEG_360;
-
+      // Handle collision with body
       if (collisions.length) {
-        // Handle collsion with body
         // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
-        if (point.distance <= range) {
-          const sourceId = body.spurtType ? `${body.id}_${body.spurtType}` : bullet?.id;
+        if (point.distance) {
+          const sourceId = body.spurtType
+            ? `${body.id}_${body.spurtType}`
+            : hitScan.explosionType && hitScan.id;
 
           if (sourceId) {
             this.parent.addEffect({
-              x: point.x + Math.cos(angle),
-              y: point.y + Math.cos(angle),
+              x: point.x + Math.cos(angle) * (CELL_SIZE / 16),
+              y: point.y + Math.cos(angle) * (CELL_SIZE / 16),
               sourceId,
               flash: power,
             });
@@ -610,22 +612,22 @@ class Player extends AbstractActor {
             }
           }
         }
-      } else if (distance <= range) {
+      } else if (distance) {
         // Handle collision with wall
-        const sourceId = bullet?.id;
+        const sourceId = hitScan.explosionType && hitScan.id;
 
         if (sourceId) {
           this.parent.addEffect({
-            x: endPoint.x + Math.cos(angle) * (bullet.width / 2),
-            y: endPoint.y + Math.sin(angle) * (bullet.width / 2),
+            x: endPoint.x + Math.cos(angle) * (CELL_SIZE / 16),
+            y: endPoint.y + Math.sin(angle) * (CELL_SIZE / 16),
             sourceId,
             flash: power,
           });
         }
       }
 
-      if (bullets && bullet) {
-        bullets.push(bullet);
+      if (hitScans && hitScan) {
+        hitScans.push(hitScan);
       }
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;

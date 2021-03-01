@@ -27,7 +27,7 @@ class WeaponSprite extends AnimatedSprite {
     this.anchor.set(0.5);
 
     Object.values(player.weapons).forEach((weapon) => {
-      weapon.onFire(() => this.setFiring());
+      weapon.onUse(() => this.setFiring());
 
       if (weapon.automatic) {
         weapon.onStop(() => this.setIdle());

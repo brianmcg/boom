@@ -84,7 +84,11 @@ class Game extends Application {
 
     this.ticker.start();
 
-    this.showTitleScene();
+    if (DEBUG) {
+      this.showWorldScene();
+    } else {
+      this.showTitleScene();
+    }
   }
 
   /**

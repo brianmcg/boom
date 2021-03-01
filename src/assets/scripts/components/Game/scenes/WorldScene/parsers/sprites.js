@@ -285,24 +285,25 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
-  const playerBulletSprites = {};
+  const playerHitScanSprites = {};
 
   world.player.weapons.forEach((weapon) => {
-    if (weapon.bullets) {
-      weapon.bullets.forEach((bullet) => {
-        const effectTextures = animations[bullet.explosionType]
-          .map(animation => textures[animation]);
+    if (weapon.hitScans) {
+      weapon.hitScans.forEach(({ id, explosionType }) => {
+        if (explosionType) {
+          const effectTextures = animations[explosionType].map(animation => textures[animation]);
 
-        playerBulletSprites[bullet.id] = new EffectSprite(effectTextures, {
-          animationSpeed: 0.4,
-        });
+          playerHitScanSprites[id] = new EffectSprite(effectTextures, {
+            animationSpeed: 0.4,
+          });
+        }
       });
     }
   });
 
   return {
     ...enemyProjectileExplosionSprites,
-    ...playerBulletSprites,
+    ...playerHitScanSprites,
     ...enemySpurtSprites,
     ...enemyExplosionSprites,
     ...objectExplosionSprites,

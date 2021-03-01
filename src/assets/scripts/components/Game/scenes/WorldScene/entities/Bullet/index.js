@@ -2,11 +2,11 @@ import { CELL_SIZE } from 'game/constants/config';
 import { Body } from 'game/core/physics';
 
 /**
- * Class representing a bullet.
+ * Class representing a hitScan.
  */
 class Bullet extends Body {
   /**
-   * Creates a bullet.
+   * Creates a hitScan.
    * @extends {Body}
    * @param  {[type]} options.explosionType The explosion type.
    */
