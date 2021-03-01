@@ -40,7 +40,7 @@ export const getDistanceBetween = (bodyA, bodyB) => {
   const dy = bodyA.y - bodyB.y;
 
   return Math.sqrt(dx * dx + dy * dy);
-}
+};
 
 const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   const a1 = l1p2.y - l1p1.y;
@@ -89,7 +89,7 @@ const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   }
 
   return null;
-}
+};
 
 const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   let q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
@@ -111,7 +111,7 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   }
 
   return true;
-}
+};
 
 /**
  * Check if two bodies are colliding.
@@ -127,7 +127,7 @@ export const isBodyCollision = (bodyA, bodyB) => {
     && shapeA.x + shapeA.width > shapeB.x
     && shapeA.y < shapeB.y + shapeB.width
     && shapeA.width + shapeA.y > shapeB.y;
-}
+};
 
 /**
  * A collision between a ray and a body has occured.
@@ -160,7 +160,7 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
     { x, y: y + width },
     { x, y },
   );
-}
+};
 
 /**
  * A collision between a ray and a body has occured.
@@ -212,7 +212,7 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
 
     return memo;
   }, null);
-}
+};
 
 /**
  * Get angle between two bodies.
@@ -227,7 +227,7 @@ export const getAngleBetween = (bodyA, bodyB) => {
   const angle = Math.atan2(dy, dx) % DEG_360;
 
   return angle < 0 ? angle + DEG_360 : angle;
-}
+};
 
 /**
  * Is a dynamic body facing a another body.
@@ -238,7 +238,7 @@ export const getAngleBetween = (bodyA, bodyB) => {
 export const isFacing = (bodyA, bodyB) => {
   const angle = (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
   return angle > DEG_270 || angle < DEG_90;
-}
+};
 
 /**
  * Cast a ray.
@@ -469,7 +469,7 @@ const castRaySection = ({
       : verticalCell.back,
     cell: verticalCell,
   };
-}
+};
 
 /**
  * Cast a long ray that goes through transparent cells.
@@ -484,19 +484,18 @@ export const castRay = ({ angle, ...other }) => {
 
   for (let i = 0; i < WALL_LAYERS; i += 1) {
     const previousRay = result[i - 1];
-    const fixedAngle = angle ? angle : 0.001;
 
     let currentRay;
 
     if (previousRay) {
       currentRay = castRaySection(Object.assign(other, previousRay.endPoint, {
-        angle: angle ? angle : 0.001,
+        angle: angle === 0 ? angle : 0.001,
       }));
       currentRay.distance += previousRay.distance;
       Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies);
     } else {
       currentRay = castRaySection(Object.assign(other, {
-        angle: angle ? angle : 0.001,
+        angle: angle === 0 ? angle : 0.001,
       }));
     }
 
@@ -508,4 +507,4 @@ export const castRay = ({ angle, ...other }) => {
   }
 
   return result;
-}
+};

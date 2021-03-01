@@ -1,4 +1,4 @@
-export const WEAPONS ={
+export const WEAPONS = {
   MELEE: 0,
   HITSCAN: 1,
   PROJECTILE: 2,

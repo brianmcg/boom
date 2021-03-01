@@ -68,8 +68,8 @@ class Weapon extends Entity {
 
     this.bullets = this.type === 1
       ? [...Array(10).keys()].map(() => new Bullet({
-            explosionType: this.explosionType,
-        }))
+        explosionType: this.explosionType,
+      }))
       : null;
 
     this.setDisabled();

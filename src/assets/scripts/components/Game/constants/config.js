@@ -51,7 +51,7 @@ export const SCREEN = {
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = false;
+export const DEBUG = true;
 
 /**
  * The default language to use.

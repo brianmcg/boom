@@ -227,7 +227,6 @@ const createEffectsSprites = ({
   animations,
   textures,
   world,
-  renderer,
 }) => {
   const enemyProjectileExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
@@ -291,7 +290,8 @@ const createEffectsSprites = ({
   world.player.weapons.forEach((weapon) => {
     if (weapon.bullets) {
       weapon.bullets.forEach((bullet) => {
-        const effectTextures = animations[bullet.explosionType].map(animation => textures[animation]);
+        const effectTextures = animations[bullet.explosionType]
+          .map(animation => textures[animation]);
 
         playerBulletSprites[bullet.id] = new EffectSprite(effectTextures, {
           animationSpeed: 0.4,
@@ -520,7 +520,6 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     animations,
     textures,
     world,
-    renderer,
   });
 
   return {

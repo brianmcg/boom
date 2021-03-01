@@ -24,9 +24,8 @@ class Mouse {
    * Creates a mouse.
    * @param  {Element} options.el               The canvas element.
    * @param  {Number} options.moveSensitivity   The mouse moveSensitivity.
-   * @param  {Number} options.wheelSensitivity  The mouse wheelSensitivity.
    */
-  constructor(el, moveSensitivity = MOUSE_SENSITIVITY, wheelSensitivity = 0.25) {
+  constructor(el, moveSensitivity = MOUSE_SENSITIVITY) {
     const moveMultiplier = MOVE_MULTIPLIER * moveSensitivity;
 
     const onMouseMove = (e) => {

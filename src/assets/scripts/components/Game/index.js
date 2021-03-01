@@ -1,7 +1,7 @@
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
-import { SCREEN } from './constants/config';
+import { SCREEN, DEBUG } from './constants/config';
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -129,7 +129,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = 1, ...other } = {}) {
-    this.show(SCENE_TYPES.WORLD, { index: 0, showLoader: true, ...other });
+    this.show(SCENE_TYPES.WORLD, { index: DEBUG ? 0 : index, showLoader: true, ...other });
   }
 
   /**

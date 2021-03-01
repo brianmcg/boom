@@ -94,7 +94,7 @@ class WorldScene extends Scene {
       },
       onMouseWheel: {
         callback: y => this.assignPlayerAction({ cycleWeapon: y }),
-      }
+      },
     });
 
     this.game.input.add(STATES.PROMPTING, {
