@@ -525,7 +525,7 @@ class Player extends AbstractActor {
       power,
       recoil,
       accuracy,
-      spread,
+      pellets,
       spreadAngle,
       pelletAngle,
       range,
@@ -538,7 +538,7 @@ class Player extends AbstractActor {
     // Keep a list of accumulated damage to enemies.
     const enemyDamage = {};
 
-    for (let i = 0; i < spread.length; i += 1) {
+    for (let i = 0; i < pellets.length; i += 1) {
       const {
         startPoint,
         endPoint,

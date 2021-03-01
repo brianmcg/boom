@@ -31,7 +31,7 @@ class Weapon extends Entity {
     player,
     power,
     accuracy,
-    spread,
+    pellets,
     equiped,
     recoil,
     maxAmmo,
@@ -62,9 +62,9 @@ class Weapon extends Entity {
     this.timer = 0;
     this.range = range ? (range * CELL_SIZE) + (player.width / 2) : Number.MAX_VALUE;
     this.type = type;
-    this.spread = [...Array(spread).keys()].map(i => i);
-    this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
-    this.pelletAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / spread : 0;
+    this.pellets = [...Array(pellets).keys()].map(i => i);
+    this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
+    this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, this.range) / pellets : 0;
 
     this.hitScans = [...Array(10).keys()].map(() => new Bullet({
       explosionType: this.explosionType,
@@ -254,7 +254,7 @@ class Weapon extends Entity {
       equiped,
       rate,
       accuracy,
-      spread,
+      pellets,
     } = this;
 
     return {
@@ -269,7 +269,7 @@ class Weapon extends Entity {
       rate,
       accuracy,
       range,
-      spread: spread.length,
+      pellets: pellets.length,
     };
   }
 }
