@@ -60,7 +60,7 @@ class Weapon extends Entity {
     this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
     this.maxAmmo = maxAmmo;
     this.timer = 0;
-    this.range = range * CELL_SIZE;
+    this.range = range ? (range * CELL_SIZE) + (player.width / 4) : Number.MAX_VALUE;
     this.type = type;
     this.spread = [...Array(spread).keys()].map(i => i);
     this.spreadAngle = spread > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;

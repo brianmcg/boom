@@ -528,7 +528,7 @@ class Player extends AbstractActor {
       spread,
       spreadAngle,
       pelletAngle,
-      // range,
+      range,
       // type,
       bullets,
     } = this.weapon;
@@ -580,35 +580,37 @@ class Player extends AbstractActor {
         // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
-        const sourceId = body.spurtType ? `${body.id}_${body.spurtType}` : bullet?.id;
+        if (point.distance <= range) {
+          const sourceId = body.spurtType ? `${body.id}_${body.spurtType}` : bullet?.id;
 
-        if (sourceId) {
-          this.parent.addEffect({
-            x: point.x + Math.cos(angle),
-            y: point.y + Math.cos(angle),
-            sourceId,
-            flash: power,
-          });
-        }
-
-        if (body.hurt) {
-          const damage = power * (Math.floor(Math.random() * accuracy) + 1);
-
-          if (!enemyDamage[body.id]) {
-            enemyDamage[body.id] = damage;
-          } else {
-            enemyDamage[body.id] += damage;
+          if (sourceId) {
+            this.parent.addEffect({
+              x: point.x + Math.cos(angle),
+              y: point.y + Math.cos(angle),
+              sourceId,
+              flash: power,
+            });
           }
 
-          if (
-            body.isEnemy
-              && !side.spatter
-              && distance - body.distanceToPlayer < SPATTER_DISTANCE
-          ) {
-            side.spatter = body.spatter();
+          if (body.hurt) {
+            const damage = power * (Math.floor(Math.random() * accuracy) + 1);
+
+            if (!enemyDamage[body.id]) {
+              enemyDamage[body.id] = damage;
+            } else {
+              enemyDamage[body.id] += damage;
+            }
+
+            if (
+              body.isEnemy
+                && !side.spatter
+                && distance - body.distanceToPlayer < SPATTER_DISTANCE
+            ) {
+              side.spatter = body.spatter();
+            }
           }
         }
-      } else {
+      } else if (distance <= range) {
         // Handle collision with wall
         const sourceId = bullet?.id;
 
@@ -631,7 +633,7 @@ class Player extends AbstractActor {
 
     // Apply accumulated damage to enemy.
     Object.keys(enemyDamage).forEach((id) => {
-      this.parent.bodies[id].hurt(enemyDamage[id], this.viewAngle);
+      this.parent.bodies[id].hurt(enemyDamage[id], this.angle);
     });
 
     this.camera.setRecoil(recoil);
