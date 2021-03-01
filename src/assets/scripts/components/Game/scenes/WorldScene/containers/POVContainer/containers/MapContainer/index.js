@@ -9,14 +9,11 @@ class MapContainer extends Container {
    * @param  {Array}  options.walls    The wall sprites.
    * @param  {Object} options.entities The entity sprites.
    */
-  constructor({ walls, entities, effects }) {
+  constructor(sprites) {
     super();
 
-    this.walls = walls;
-    this.entities = entities;
-    this.effects = effects;
-    this.walls.forEach((layer) => {
-      layer.forEach(wall => this.addChild(wall));
+    sprites.forEach((layer) => {
+      layer.forEach(slice => this.addChild(slice));
     });
   }
 

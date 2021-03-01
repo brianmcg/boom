@@ -12,13 +12,13 @@ export const MAX_FPS = 60;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = false;
+export const DISABLE_SOUNDS = true;
 
 /**
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = false;
+export const DISABLE_MUSIC = true;
 
 /**
  * The size of mao tile.

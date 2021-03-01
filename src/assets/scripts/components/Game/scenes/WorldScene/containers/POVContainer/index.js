@@ -50,26 +50,29 @@ class POVContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    const { map, background, player } = sprites;
+    const { map: mapSprites, background: backgroundSprites, player: playerSprites } = sprites;
+    const { effects: effectSprites, walls: wallSprites } = mapSprites;
+    const { player } = world;
 
     this.world = world;
-    this.backgroundContainer = new BackgroundContainer(background);
-    this.mapContainer = new MapContainer(map);
-    this.playerContainer = new PlayerContainer(world.player, player);
-
-    const { effects } = this.mapContainer;
+    this.backgroundContainer = new BackgroundContainer(backgroundSprites);
+    this.mapContainer = new MapContainer(wallSprites);
+    this.playerContainer = new PlayerContainer(player, playerSprites);
 
     this.displayedEntities = [];
-
-    world.onEffectAdded(id => this.mapContainer.addChild(effects[id]));
+    this.sprites = sprites;
 
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
+
+    world.onEffectAdded(id => this.mapContainer.addChild(effectSprites[id]));
   }
 
   /**
-   * Animate the container.
+   * Update the container.
+   * @param  {Number} delta     The time delta.
+   * @param  {Number} elapsedMS The elapsed time since the last frame.
    */
   update(delta, elapsedMS) {
     const { world } = this;
@@ -85,8 +88,9 @@ class POVContainer extends Container {
     this.displayedEntities.forEach(entity => this.mapContainer.removeChild(entity));
     this.displayedEntities = [];
 
-    const { background } = this.backgroundContainer;
-    const { walls, entities, effects: effectSprites } = this.mapContainer;
+    const { map: mapSprites, background: backgroundSprites } = this.sprites;
+    const { entities: entititySprites, effects: effectSprites, walls: wallSprites } = mapSprites;
+
     const totalEncounteredBodies = {};
 
     // Get initial ray angle 30 deg less than player angle
@@ -124,7 +128,7 @@ class POVContainer extends Container {
 
           const { name, spatter } = side;
 
-          sprite = walls[i][xIndex];
+          sprite = wallSprites[i][xIndex];
           sprite.visible = true;
 
           if (isHorizontal) {
@@ -146,17 +150,16 @@ class POVContainer extends Container {
           sprite.changeTexture(name, sliceY, spatter);
           sprite.tint = this.calculateTint(distance, isHorizontal);
         } else {
-          walls[i][xIndex].visible = false;
+          wallSprites[i][xIndex].visible = false;
         }
       }
-
 
       // Update background sprites
       bottomIntersection = Math.floor(spriteY + spriteHeight);
       topIntersection = Math.ceil(spriteY);
 
       for (let yIndex = 0; yIndex <= topIntersection; yIndex += 1) {
-        sprite = background[xIndex][yIndex];
+        sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
           actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
@@ -177,7 +180,7 @@ class POVContainer extends Container {
       }
 
       for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex += 1) {
-        sprite = background[xIndex][yIndex];
+        sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
           actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
@@ -203,7 +206,7 @@ class POVContainer extends Container {
 
     // Update entity sprites
     Object.values(totalEncounteredBodies).forEach((body) => {
-      sprite = entities[body.id];
+      sprite = entititySprites[body.id];
       spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
       actualDistance = player.getDistanceTo(body);
       correctedDistance = Math.cos(spriteAngle) * actualDistance;
@@ -221,7 +224,6 @@ class POVContainer extends Container {
       this.mapContainer.addChild(sprite);
       this.displayedEntities.push(sprite);
     });
-
 
     // Update effect sprites.
     effects.forEach((effect) => {

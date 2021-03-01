@@ -7,18 +7,16 @@ import { SCREEN } from 'game/constants/config';
 class BackgroundContainer extends ParticleContainer {
   /**
    * Creates a background container.
-   * @param  {Array} background The background sprites.
+   * @param  {Array} sprites The background sprites.
    */
-  constructor(background) {
+  constructor(sprites) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT);
 
-    background.forEach((slice) => {
+    sprites.forEach((slice) => {
       slice.forEach((pixel) => {
         this.addChild(pixel);
       });
     });
-
-    this.background = background;
   }
 }
 
