@@ -36,6 +36,7 @@ class Weapon extends Entity {
     recoil,
     maxAmmo,
     range,
+    spread,
     sounds,
     name,
     explosionType,
@@ -61,10 +62,11 @@ class Weapon extends Entity {
     this.maxAmmo = maxAmmo;
     this.timer = 0;
     this.range = range ? (range * CELL_SIZE) + (player.width / 2) : Number.MAX_VALUE;
+    this.spread = spread;
     this.type = type;
     this.pellets = [...Array(pellets).keys()].map(i => i);
-    this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, this.range) / 2 : 0;
-    this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, this.range) / pellets : 0;
+    this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
+    this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
 
     this.hitScans = [...Array(10).keys()].map(() => new Bullet({
       explosionType: this.explosionType,
@@ -248,6 +250,7 @@ class Weapon extends Entity {
       ammo,
       maxAmmo,
       range,
+      spread,
       type,
       explosionType,
       sounds,
@@ -269,6 +272,7 @@ class Weapon extends Entity {
       rate,
       accuracy,
       range,
+      spread,
       pellets: pellets.length,
     };
   }

@@ -24,17 +24,17 @@ class GunEnemy extends AbstractEnemy {
    * @param  {Number} options.alerTime        The time before attacking adter alert.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
-  constructor({ primaryAttack, attackRange, ...other }) {
-    super({ primaryAttack, attackRange, ...other });
+  constructor({ primaryAttack, ...other }) {
+    super({ primaryAttack, ...other });
 
     this.primaryAttack = {
       ...this.primaryAttack,
       pellets: [...Array(primaryAttack.pellets).keys()].map(i => i),
       spreadAngle: primaryAttack.pellets > 1
-        ? Math.atan2(CELL_SIZE, CELL_SIZE * attackRange) / 2
+        ? Math.atan2(CELL_SIZE, CELL_SIZE * primaryAttack.spread) / 2
         : 0,
       pelletAngle: primaryAttack.pellets > 1
-        ? Math.atan2(CELL_SIZE, CELL_SIZE * attackRange) / primaryAttack.pellets
+        ? Math.atan2(CELL_SIZE, CELL_SIZE * primaryAttack.spread) / primaryAttack.pellets
         : 0,
     };
   }
