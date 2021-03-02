@@ -1,7 +1,7 @@
 const TIME_TO_LIVE = 2000;
 
 /**
- * Class representing an explosion.
+ * Class representing an effect.
  */
 class Effect {
   /**

@@ -1,6 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
-import Bullet from '../../../Bullet';
+import HitScan from '../../../HitScan';
 
 const STATES = {
   USING: 'weapon:using',
@@ -68,7 +68,7 @@ class Weapon extends Entity {
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
 
-    this.hitScans = [...Array(10).keys()].map(() => new Bullet({
+    this.hitScans = [...Array(10).keys()].map(() => new HitScan({
       explosionType: this.explosionType,
     }));
 

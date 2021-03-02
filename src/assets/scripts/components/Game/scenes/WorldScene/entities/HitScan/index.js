@@ -4,7 +4,7 @@ import { Body } from 'game/core/physics';
 /**
  * Class representing a hitScan.
  */
-class Bullet extends Body {
+class HitScan extends Body {
   /**
    * Creates a hitScan.
    * @extends {Body}
@@ -18,6 +18,14 @@ class Bullet extends Body {
 
     this.explosionType = explosionType;
   }
+
+  /**
+   * Set the hit scan ray.
+   * @param {Object} ray The ray information.
+   */
+  setRay(ray) {
+    this.ray = ray;
+  }
 }
 
-export default Bullet;
+export default HitScan;
