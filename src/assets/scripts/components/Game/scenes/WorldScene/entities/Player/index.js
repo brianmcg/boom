@@ -580,7 +580,7 @@ class Player extends AbstractActor {
         // TODO: Handle more than nearest collsion
         const { point, body } = collisions[0];
 
-        if (point.distance) {
+        if (point.distance <= range) {
           const sourceId = body.spurtType
             ? `${body.id}_${body.spurtType}`
             : hitScan.explosionType && hitScan.id;
@@ -612,7 +612,7 @@ class Player extends AbstractActor {
             }
           }
         }
-      } else if (distance) {
+      } else if (distance <= range) {
         // Handle collision with wall
         const sourceId = hitScan.explosionType && hitScan.id;
 

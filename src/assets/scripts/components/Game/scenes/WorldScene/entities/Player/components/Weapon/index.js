@@ -258,6 +258,7 @@ class Weapon extends Entity {
       rate,
       accuracy,
       pellets,
+      player,
     } = this;
 
     return {
@@ -271,7 +272,9 @@ class Weapon extends Entity {
       equiped,
       rate,
       accuracy,
-      range,
+      range: range === Number.MAX_VALUE
+        ? null
+        : (range - (player.width / 2)) / CELL_SIZE,
       spread,
       pellets: pellets.length,
     };
