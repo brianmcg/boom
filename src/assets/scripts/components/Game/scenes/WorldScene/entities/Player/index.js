@@ -539,6 +539,10 @@ class Player extends AbstractActor {
     const enemyDamage = {};
 
     for (let i = 0; i < pellets.length; i += 1) {
+      const hitScan = hitScans.shift();
+
+      // const angle = (rayAngle + DEG_180) % DEG_360;
+
       const {
         startPoint,
         endPoint,
@@ -546,10 +550,6 @@ class Player extends AbstractActor {
         side,
         encounteredBodies,
       } = this.castRay(rayAngle);
-
-      const hitScan = hitScans.shift();
-
-      const angle = (this.viewAngle + DEG_180) % DEG_360;
 
       // Get sorted collisions
       const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
@@ -585,10 +585,12 @@ class Player extends AbstractActor {
             ? `${body.id}_${body.spurtType}`
             : hitScan.explosionType && hitScan.id;
 
+          const angle = (rayAngle + DEG_180) % DEG_360;
+
           if (sourceId) {
             this.parent.addEffect({
               x: point.x + Math.cos(angle) * (CELL_SIZE / 16),
-              y: point.y + Math.cos(angle) * (CELL_SIZE / 16),
+              y: point.y + Math.sin(angle) * (CELL_SIZE / 16),
               sourceId,
               flash: power,
             });
