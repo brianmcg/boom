@@ -1,7 +1,6 @@
 export const WEAPONS = {
-  MELEE: 0,
-  HITSCAN: 1,
-  PROJECTILE: 2,
+  HIT_SCAN: 0,
+  PROJECTILE: 1,
 };
 
 export const TRANSPARENCIES = {

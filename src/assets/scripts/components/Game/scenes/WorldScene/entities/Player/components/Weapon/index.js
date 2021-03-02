@@ -119,11 +119,7 @@ class Weapon extends Entity {
    * Fire the weapon.
    */
   use() {
-    if (this.isIdle() && (this.type === 0 || this.ammo)) {
-      return this.setUsing();
-    }
-
-    return false;
+    return this.isIdle() && this.setUsing();
   }
 
   /**
@@ -197,18 +193,7 @@ class Weapon extends Entity {
    * @return {Boolean} Has the state changed to firing.
    */
   setUsing() {
-    const isStateChanged = this.setState(STATES.USING);
-
-    if (isStateChanged) {
-      this.emit(EVENTS.USE);
-      this.ammo -= 1;
-
-      if (this.ammo === 0) {
-        this.stop();
-      }
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.USING);
   }
 
   /**

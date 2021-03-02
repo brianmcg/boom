@@ -12,7 +12,7 @@ export const MAX_FPS = 60;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = true;
+export const DISABLE_SOUNDS = false;
 
 /**
  * Enabled the music.
@@ -81,4 +81,4 @@ export const MAX_SOUND_DISTANCE = CELL_SIZE * 9;
  * Is the player invincible.
  * @type {Boolean}
  */
-export const PLAYER_INVINCIBLE = true;
+export const PLAYER_INVINCIBLE = false;

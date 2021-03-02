@@ -444,6 +444,7 @@ const castRaySection = ({
         ? horizontalCell.left
         : horizontalCell.right,
       cell: horizontalCell,
+      angle,
     };
   }
 
@@ -468,6 +469,7 @@ const castRaySection = ({
       ? verticalCell.front
       : verticalCell.back,
     cell: verticalCell,
+    angle,
   };
 };
 

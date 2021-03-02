@@ -25,7 +25,7 @@ class HUDContainer extends Container {
       healthAmount,
       ammoIcon,
       ammoAmount,
-      foreground,
+      // foreground,
       keys,
     } = sprites;
 
@@ -44,7 +44,7 @@ class HUDContainer extends Container {
     this.addChild(ammoAmount);
     this.addChild(healthIcon);
     this.addChild(healthAmount);
-    this.addChild(foreground);
+    // this.addChild(foreground);
 
     // Set key card sprite positions
     Object.values(player.keyCards).forEach((keyCard) => {
@@ -111,7 +111,7 @@ class HUDContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta, elapsedMS) {
-    const { foreground, keys } = this.sprites;
+    const { keys } = this.sprites;
 
     // Update each key card sprite if it is active.
     Object.values(keys).forEach((key) => {
@@ -133,7 +133,7 @@ class HUDContainer extends Container {
 
     this.messages.forEach(message => message.update(delta, elapsedMS));
     // Update foreground.
-    foreground.alpha = 1 - this.player.vision;
+    // foreground.alpha = 1 - this.player.vision;
   }
 }
 

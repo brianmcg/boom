@@ -51,7 +51,6 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterOffset,
-    spurtType,
     explosionType,
     isFloating,
     primaryAttack,
@@ -69,7 +68,6 @@ class AbstractEnemy extends AbstractActor {
     this.attackRange = attackRange * CELL_SIZE;
     this.explosionType = explosionType;
     this.type = type;
-    this.spurtType = spurtType;
     this.spatters = spatters;
     this.spatterOffset = spatterOffset;
     this.attackTime = attackTime;
@@ -95,8 +93,9 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Update the enemy.
    * @param  {Number} delta The delta time.
+   * @param  {Number} elapsedMS The elapsed time.
    */
-  update(delta, elapsedMS) {
+  update(delta, elapsedMS = 1) {
     super.update(delta, elapsedMS);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {

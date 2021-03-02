@@ -301,12 +301,24 @@ const createEffectsSprites = ({
     }
   });
 
+  const playerSpurtSprites = {};
+
+  const { id, spurtType } = world.player;
+
+  if (spurtType) {
+    const playerSpurtTextures = animations[spurtType].map(animation => textures[animation]);
+    playerSpurtSprites[`${id}_${spurtType}`] = new EffectSprite(playerSpurtTextures, {
+      animationSpeed: 0.2,
+    });
+  }
+
   return {
     ...enemyProjectileExplosionSprites,
     ...playerHitScanSprites,
     ...enemySpurtSprites,
     ...enemyExplosionSprites,
     ...objectExplosionSprites,
+    ...playerSpurtSprites,
   };
 };
 

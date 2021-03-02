@@ -1,6 +1,7 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { degrees } from 'game/core/physics';
 import AbstractEnemy from '../AbstractEnemy';
+import HitScan from '../HitScan';
 
 const DEG_360 = degrees(360);
 
@@ -37,6 +38,10 @@ class GunEnemy extends AbstractEnemy {
         ? Math.atan2(CELL_SIZE, CELL_SIZE * primaryAttack.spread) / primaryAttack.pellets
         : 0,
     };
+
+    this.hitScans = [...Array(10).keys()].map(() => new HitScan({
+      explosionType: this.explosionType,
+    }));
   }
 
   /**
@@ -58,23 +63,36 @@ class GunEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
-    const { player } = this.parent;
-    const { spreadAngle, pelletAngle, pellets } = this.primaryAttack;
+    const {
+      spreadAngle,
+      pelletAngle,
+      pellets,
+      power,
+    } = this.primaryAttack;
+
+    const { attackRange: range } = this;
 
     let rayAngle = (this.angle - spreadAngle + DEG_360) % DEG_360;
-    let damage = 0;
 
     for (let i = 0; i < pellets.length; i += 1) {
-      if (player.isRayCollision(this.castRay(rayAngle))) {
-        damage += this.attackDamage();
+      const hitScan = this.hitScans.shift();
+
+      if (hitScan) {
+        hitScan.execute({
+          ray: this.castRay(rayAngle),
+          damage: this.attackDamage(),
+          parent: this.parent,
+          range,
+          power,
+        });
+
+        this.hitScans.push(hitScan);
       }
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;
     }
 
     this.emitSound(this.sounds.attack);
-
-    player.hurt(damage);
   }
 }
 

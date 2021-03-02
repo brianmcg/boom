@@ -1,11 +1,11 @@
 import { CELL_SIZE } from 'game/constants/config';
-import DynamicEntity from '../DynamicEntity';
+import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
 
 /**
  * Abstract class representing an actor.
- * @extends {DynamicEntity}
+ * @extends {AbstractDestroyableEntity}
  */
-class AbstractActor extends DynamicEntity {
+class AbstractActor extends AbstractDestroyableEntity {
   /**
    * Creates an abstract actor.
    * @param  {Number}  options.x         The x coordinate of the character.

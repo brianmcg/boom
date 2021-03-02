@@ -1,18 +1,18 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
+import { WEAPONS } from 'game/constants/types';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import Weapon from './components/Weapon';
+import HitScanWeapon from './components/HitScanWeapon';
 import Camera from './components/Camera';
 import KeyCard from './components/KeyCard';
 
 const DEG_360 = degrees(360);
 const DEG_270 = degrees(270);
-const DEG_180 = degrees(180);
 const DEG_90 = degrees(90);
 const HEIGHT_INCREMENT = CELL_SIZE / 32;
-const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 const DEATH_INTERVAL = 1500;
 const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
@@ -93,11 +93,27 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
-    this.weapons = Object.keys(weapons).map(name => new Weapon({
-      ...weapons[name],
-      player: this,
-      name,
-    }));
+    this.weapons = Object.keys(weapons).map((name) => {
+      const weapon = weapons[name].type === WEAPONS.HIT_SCAN
+        ? new HitScanWeapon({
+          ...weapons[name],
+          player: this,
+          name,
+        })
+        : new Weapon({
+          ...weapons[name],
+          player: this,
+          name,
+        });
+
+      weapon.onUse(({ recoil, sound }) => {
+        this.camera.setRecoil(recoil);
+        this.emitSound(sound);
+        this.emit(EVENTS.FIRE_WEAPON);
+      });
+
+      return weapon;
+    });
 
     this.weapon = this.weapons[this.weaponIndex];
 
@@ -375,8 +391,8 @@ class Player extends AbstractActor {
       }
     }
 
-    if (attack && this.weapon.use()) {
-      this.attack();
+    if (attack) {
+      this.weapon.use();
     }
 
     if (stopAttack) {
@@ -515,134 +531,6 @@ class Player extends AbstractActor {
    */
   disableWeaponChange() {
     this.isWeaponChangeEnabled = false;
-  }
-
-  /**
-   * Use the current weapon.
-   */
-  attack() {
-    const {
-      power,
-      recoil,
-      accuracy,
-      pellets,
-      spreadAngle,
-      pelletAngle,
-      range,
-      // type,
-      hitScans,
-    } = this.weapon;
-
-    let rayAngle = (this.viewAngle - spreadAngle + DEG_360) % DEG_360;
-
-    // Keep a list of accumulated damage to enemies.
-    const enemyDamage = {};
-
-    for (let i = 0; i < pellets.length; i += 1) {
-      const hitScan = hitScans.shift();
-
-      // const angle = (rayAngle + DEG_180) % DEG_360;
-
-      const {
-        startPoint,
-        endPoint,
-        distance,
-        side,
-        encounteredBodies,
-      } = this.castRay(rayAngle);
-
-      // Get sorted collisions
-      const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
-        if (body.blocking) {
-          const point = body.getRayCollision({ startPoint, endPoint });
-
-          if (point) {
-            memo.push({ body, point });
-          }
-
-          return memo;
-        }
-        return memo;
-      }, []).sort((a, b) => {
-        if (a.point.distance > b.point.distance) {
-          return 1;
-        }
-
-        if (a.point.distance < b.point.distance) {
-          return -1;
-        }
-
-        return 0;
-      });
-
-      // Handle collision with body
-      if (collisions.length) {
-        // TODO: Handle more than nearest collsion
-        const { point, body } = collisions[0];
-
-        if (point.distance <= range) {
-          const sourceId = body.spurtType
-            ? `${body.id}_${body.spurtType}`
-            : hitScan.explosionType && hitScan.id;
-
-          const angle = (rayAngle + DEG_180) % DEG_360;
-
-          if (sourceId) {
-            this.parent.addEffect({
-              x: point.x + Math.cos(angle) * (CELL_SIZE / 16),
-              y: point.y + Math.sin(angle) * (CELL_SIZE / 16),
-              sourceId,
-              flash: power,
-            });
-          }
-
-          if (body.hurt) {
-            const damage = power * (Math.floor(Math.random() * accuracy) + 1);
-
-            if (!enemyDamage[body.id]) {
-              enemyDamage[body.id] = damage;
-            } else {
-              enemyDamage[body.id] += damage;
-            }
-
-            if (
-              body.isEnemy
-                && !side.spatter
-                && distance - body.distanceToPlayer < SPATTER_DISTANCE
-            ) {
-              side.spatter = body.spatter();
-            }
-          }
-        }
-      } else if (distance <= range) {
-        // Handle collision with wall
-        const sourceId = hitScan.explosionType && hitScan.id;
-
-        if (sourceId) {
-          this.parent.addEffect({
-            x: endPoint.x + Math.cos(angle) * (CELL_SIZE / 16),
-            y: endPoint.y + Math.sin(angle) * (CELL_SIZE / 16),
-            sourceId,
-            flash: power,
-          });
-        }
-      }
-
-      if (hitScans && hitScan) {
-        hitScans.push(hitScan);
-      }
-
-      rayAngle = (rayAngle + pelletAngle) % DEG_360;
-    }
-
-    // Apply accumulated damage to enemy.
-    Object.keys(enemyDamage).forEach((id) => {
-      this.parent.bodies[id].hurt(enemyDamage[id], this.angle);
-    });
-
-    this.camera.setRecoil(recoil);
-    this.emitSound(this.weapon.sounds.fire);
-    this.emit(EVENTS.FIRE_WEAPON);
   }
 
   /**

@@ -1,5 +1,5 @@
 import { degrees } from 'game/core/physics';
-import DynamicEntity from '../DynamicEntity';
+import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
 
 const EXPLODE_EVENT = 'entity:explode';
 
@@ -12,7 +12,7 @@ const DEGREES_180 = degrees(180);
 /**
  * Class representig an explosive entity.
  */
-class ExplosiveEntity extends DynamicEntity {
+class ExplosiveEntity extends AbstractDestroyableEntity {
   /**
    * Creates an explosive entity.
    * @param  {Boolean} options.animated      Is the entity animated.
@@ -32,7 +32,6 @@ class ExplosiveEntity extends DynamicEntity {
   constructor({
     animated,
     explosionType,
-    health,
     power,
     range,
     ...other
@@ -40,7 +39,6 @@ class ExplosiveEntity extends DynamicEntity {
     super(other);
     this.animated = animated;
     this.explosionType = explosionType;
-    this.health = health;
     this.power = power;
     this.range = range;
     this.isExplosive = true;
