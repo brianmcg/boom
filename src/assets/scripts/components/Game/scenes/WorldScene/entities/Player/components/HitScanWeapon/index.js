@@ -74,8 +74,6 @@ class HitScanWeapon extends Weapon {
     this.hitScans = [...Array(10).keys()].map(() => new HitScan({
       explosionType: this.explosionType,
     }));
-
-    this.setDisabled();
   }
 
   /**
@@ -105,7 +103,7 @@ class HitScanWeapon extends Weapon {
    * Use the weapon.
    */
   use() {
-    if (super.use() && (this.ammo > 0 || this.ammo === null)) {
+    if (this.isUseable() && this.setUsing()) {
       const {
         power,
         recoil,
@@ -139,11 +137,6 @@ class HitScanWeapon extends Weapon {
         }
       }
 
-      this.emit(EVENTS.USE, {
-        recoil,
-        sound: sounds.fire,
-      });
-
       if (this.ammo !== null) {
         this.ammo -= 1;
       }
@@ -152,10 +145,11 @@ class HitScanWeapon extends Weapon {
         this.stop();
       }
 
-      return true;
+      this.emit(EVENTS.USE, {
+        recoil,
+        sound: sounds.fire,
+      });
     }
-
-    return false;
   }
 }
 

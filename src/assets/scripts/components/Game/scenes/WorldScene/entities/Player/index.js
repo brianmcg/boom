@@ -740,7 +740,12 @@ class Player extends AbstractActor {
     const { weapons, weaponIndex, health } = this;
 
     return {
-      weapons: weapons.map(weapon => weapon.props),
+      weapons: weapons.reduce((memo, weapon) => {
+        return {
+          ...memo,
+          [weapon.name]: weapon.props,
+        };
+      }, {}),
       weaponIndex,
       health,
     };

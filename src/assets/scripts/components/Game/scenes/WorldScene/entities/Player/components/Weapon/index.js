@@ -73,7 +73,7 @@ class Weapon extends Entity {
     }));
 
 
-    this.setDisabled();
+    this.setIdle();
   }
 
   /**
@@ -120,6 +120,14 @@ class Weapon extends Entity {
    */
   use() {
     return this.isIdle() && this.setUsing();
+  }
+
+  /**
+   * Can the weapon be used.
+   * @return {Boolean}
+   */
+  isUseable() {
+    return this.isIdle() && (this.ammo > 0 || this.ammo === null);
   }
 
   /**
@@ -230,9 +238,9 @@ class Weapon extends Entity {
 
   get props() {
     const {
+      name,
       power,
       recoil,
-      ammo,
       maxAmmo,
       range,
       spread,
@@ -244,12 +252,13 @@ class Weapon extends Entity {
       accuracy,
       pellets,
       player,
+      ammo,
     } = this;
 
     return {
+      name,
       power,
       recoil,
-      ammo,
       maxAmmo,
       type,
       explosionType,
@@ -257,6 +266,7 @@ class Weapon extends Entity {
       equiped,
       rate,
       accuracy,
+      ammo,
       range: range === Number.MAX_VALUE
         ? null
         : (range - (player.width / 2)) / CELL_SIZE,
