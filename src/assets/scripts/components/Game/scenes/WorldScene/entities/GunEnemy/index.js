@@ -28,18 +28,16 @@ class GunEnemy extends AbstractEnemy {
   constructor({ primaryAttack, ...other }) {
     super({ primaryAttack, ...other });
 
+    const { pellets, spread } = primaryAttack;
+
     this.primaryAttack = {
-      ...this.primaryAttack,
-      pellets: [...Array(primaryAttack.pellets).keys()].map(i => i),
-      spreadAngle: primaryAttack.pellets > 1
-        ? Math.atan2(CELL_SIZE, CELL_SIZE * primaryAttack.spread) / 2
-        : 0,
-      pelletAngle: primaryAttack.pellets > 1
-        ? Math.atan2(CELL_SIZE, CELL_SIZE * primaryAttack.spread) / primaryAttack.pellets
-        : 0,
+      ...primaryAttack,
+      pellets: [...Array(pellets).keys()].map(i => i),
+      spreadAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / 2 : 0,
+      pelletAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
     };
 
-    this.hitScans = [...Array(10).keys()].map(() => new HitScan({
+    this.hitScans = [...Array(primaryAttack.pellets).keys()].map(() => new HitScan({
       explosionType: this.explosionType,
     }));
   }
