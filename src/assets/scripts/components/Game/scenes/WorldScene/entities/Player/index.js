@@ -4,7 +4,6 @@ import { WEAPONS } from 'game/constants/types';
 import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
-import Weapon from './components/Weapon';
 import HitScanWeapon from './components/HitScanWeapon';
 import Camera from './components/Camera';
 import KeyCard from './components/KeyCard';
@@ -100,7 +99,7 @@ class Player extends AbstractActor {
           player: this,
           name,
         })
-        : new Weapon({
+        : new HitScanWeapon({
           ...weapons[name],
           player: this,
           name,
@@ -740,12 +739,10 @@ class Player extends AbstractActor {
     const { weapons, weaponIndex, health } = this;
 
     return {
-      weapons: weapons.reduce((memo, weapon) => {
-        return {
-          ...memo,
-          [weapon.name]: weapon.props,
-        };
-      }, {}),
+      weapons: weapons.reduce((memo, { name, props }) => ({
+        ...memo,
+        [name]: props,
+      }), {}),
       weaponIndex,
       health,
     };

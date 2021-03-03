@@ -1,6 +1,5 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
-import HitScan from '../../../HitScan';
 
 const STATES = {
   USING: 'weapon:using',
@@ -16,7 +15,7 @@ const EVENTS = {
 /**
  * Class representing a weapon.
  */
-class Weapon extends Entity {
+class AbstractWeapon extends Entity {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player   The player.
@@ -44,6 +43,7 @@ class Weapon extends Entity {
     rate,
     automatic,
     type,
+    maxAttacks,
     ...other
   }) {
     super(other);
@@ -67,13 +67,13 @@ class Weapon extends Entity {
     this.pellets = [...Array(pellets).keys()].map(i => i);
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
-
-    this.hitScans = [...Array(10).keys()].map(() => new HitScan({
-      explosionType: this.explosionType,
-    }));
-
+    this.maxAttacks = maxAttacks;
 
     this.setIdle();
+
+    if (this.constructor === AbstractWeapon) {
+      throw new TypeError('Can not construct abstract class.');
+    }
   }
 
   /**
@@ -93,8 +93,25 @@ class Weapon extends Entity {
   }
 
   /**
+   * Add a callback to the diabled event.
+   * @param  {Function} callback The callback.
+   */
+  onDisabled(callback) {
+    this.on(STATES.DISABLED, callback);
+  }
+
+  /**
+   * Add a callback to the diabled event.
+   * @param  {Function} callback The callback.
+   */
+  onIdle(callback) {
+    this.on(STATES.IDLE, callback);
+  }
+
+  /**
    * Update the weapon.
    * @param  {Number} delta The delta time.
+   * @param  {Number} elapsedMS The elapsed time.
    */
   update(delta, elapsedMS) {
     switch (this.state) {
@@ -119,7 +136,41 @@ class Weapon extends Entity {
    * Fire the weapon.
    */
   use() {
-    return this.isIdle() && this.setUsing();
+    if (this.constructor === AbstractWeapon) {
+      throw new TypeError('You have to implement this method.');
+    }
+
+    if (this.ammo !== null) {
+      this.ammo -= 1;
+    }
+
+    if (this.ammo === 0) {
+      this.stop();
+    }
+
+    this.emit(EVENTS.USE, {
+      recoil: this.recoil,
+      sound: this.sounds.fire,
+    });
+  }
+
+  /**
+   * Add ammo to the weapon.
+   * @param  {Number}  amount The amount of ammo to add.
+   * @return {Boolean} Representing add ammo success.
+   */
+  addAmmo(amount = 0) {
+    if (this.ammo < this.maxAmmo) {
+      this.ammo += amount;
+
+      if (this.ammo > this.maxAmmo) {
+        this.ammo = this.maxAmmo;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -151,41 +202,6 @@ class Weapon extends Entity {
    */
   isEquiped() {
     return this.equiped;
-  }
-
-  /**
-   * Add ammo to the weapon.
-   * @param  {Number}  amount The amount of ammo to add.
-   * @return {Boolean} Representing add ammo success.
-   */
-  addAmmo(amount = 0) {
-    if (this.ammo < this.maxAmmo) {
-      this.ammo += amount;
-
-      if (this.ammo > this.maxAmmo) {
-        this.ammo = this.maxAmmo;
-      }
-
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onDisabledEvent(callback) {
-    this.on(STATES.DISABLED, callback);
-  }
-
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onIdleEvent(callback) {
-    this.on(STATES.IDLE, callback);
   }
 
   /**
@@ -253,6 +269,7 @@ class Weapon extends Entity {
       pellets,
       player,
       ammo,
+      maxAttacks,
     } = this;
 
     return {
@@ -267,6 +284,7 @@ class Weapon extends Entity {
       rate,
       accuracy,
       ammo,
+      maxAttacks,
       range: range === Number.MAX_VALUE
         ? null
         : (range - (player.width / 2)) / CELL_SIZE,
@@ -276,4 +294,4 @@ class Weapon extends Entity {
   }
 }
 
-export default Weapon;
+export default AbstractWeapon;
