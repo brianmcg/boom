@@ -514,7 +514,7 @@ class Player extends AbstractActor {
       this.weaponIndex = index;
       this.weapon = weapon;
       this.disableWeaponChange();
-      this.emitSound(this.sounds.weapon);
+      this.emitSound(weapon.sounds.equip);
       this.emit(EVENTS.CHANGE_WEAPON);
     }
   }
@@ -612,7 +612,7 @@ class Player extends AbstractActor {
     const weaponToRefill = this.weapons[index];
 
     if (weaponToRefill.isEquiped()) {
-      this.emitSound(this.sounds.weapon);
+      this.emitSound(weaponToRefill.sounds.equip);
       return weaponToRefill.addAmmo(amount);
     }
 
