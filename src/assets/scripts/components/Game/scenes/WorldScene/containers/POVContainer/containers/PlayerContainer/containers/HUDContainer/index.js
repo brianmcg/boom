@@ -92,13 +92,15 @@ class HUDContainer extends Container {
 
     // Update ammo sprites on fore weapon event.
     player.onUseWeapon(() => {
-      ammoAmount.text = player.weapon.ammo;
+      const { ammo } = player.weapon;
+      ammoAmount.text = ammo !== null ? ammo : '-';
       ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
     });
 
     // Update ammo sprites on change weapon event.
     player.onChangeWeapon(() => {
-      ammoAmount.text = player.weapon.ammo !== null ? player.weapon.ammo : '-';
+      const { ammo } = player.weapon;
+      ammoAmount.text = ammo !== null ? ammo : '-';
       ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
     });
 
