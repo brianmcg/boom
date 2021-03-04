@@ -18,11 +18,13 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Number}  options.range    The range of the weapon.
    * @param  {String}  options.texture  The weapon texture.
    */
-  constructor({ explosionType, maxAttacks, ...other }) {
-    super({ explosionType, maxAttacks, ...other });
+  constructor({ projectile, ...other }) {
+    super({ projectile, ...other });
 
-    this.hitScans = [...Array(maxAttacks).keys()].map(() => new HitScan({
-      explosionType: this.explosionType,
+    const { amount, effects } = projectile;
+
+    this.projectiles = [...Array(amount).keys()].map(() => new HitScan({
+      effect: effects?.impact,
     }));
   }
 
@@ -38,17 +40,17 @@ class HitScanWeapon extends AbstractWeapon {
         spreadAngle,
         pelletAngle,
         range,
-        hitScans,
+        projectiles,
         player,
       } = this;
 
       let rayAngle = (player.angle - spreadAngle + DEG_360) % DEG_360;
 
       for (let i = 0; i < pellets.length; i += 1) {
-        const hitScan = hitScans.shift();
+        const projectile = projectiles.shift();
 
-        if (hitScan) {
-          hitScan.execute({
+        if (projectile) {
+          projectile.execute({
             ray: player.castRay(rayAngle),
             damage: power * (Math.floor(Math.random() * accuracy) + 1),
             parent: player.parent,
@@ -56,7 +58,7 @@ class HitScanWeapon extends AbstractWeapon {
             power,
           });
 
-          hitScans.push(hitScan);
+          projectiles.push(projectile);
 
           rayAngle = (rayAngle + pelletAngle) % DEG_360;
         }

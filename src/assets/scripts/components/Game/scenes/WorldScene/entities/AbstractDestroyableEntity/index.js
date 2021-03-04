@@ -16,12 +16,18 @@ class AbstractDestroyableEntity extends DynamicEntity {
    * @param  {Number}  options.health    The current health of the actor.
    * @param  {Number}  options.maxHealth The maximum health of the actor.
    */
-  constructor({ health, spurtType, ...other }) {
+  constructor({
+    maxHealth = 100,
+    health,
+    effects,
+    ...other
+  }) {
     super(other);
 
-    this.health = health;
+    this.health = health !== undefined ? health : maxHealth;
+    this.maxHealth = maxHealth;
+    this.effects = effects;
     this.hits = [];
-    this.spurtType = spurtType;
     this.isDestroyable = true;
   }
 

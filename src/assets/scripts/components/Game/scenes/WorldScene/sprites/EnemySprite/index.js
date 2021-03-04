@@ -36,7 +36,7 @@ class EnemySprite extends AnimatedEntitySprite {
 
     this.textureCollection = textureCollection;
 
-    if (enemy.explosionType) {
+    if (enemy.effects.explode) {
       this.onComplete = () => enemy.isDead() && enemy.remove();
     }
   }

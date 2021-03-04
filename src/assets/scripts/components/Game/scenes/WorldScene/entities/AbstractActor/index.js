@@ -18,13 +18,7 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Number}  options.health    The current health of the actor.
    * @param  {Number}  options.maxHealth The maximum health of the actor.
    */
-  constructor({
-    maxHealth = 100,
-    health,
-    speed,
-    acceleration,
-    ...other
-  }) {
+  constructor({ speed, acceleration, ...other }) {
     super(other);
 
     if (this.constructor === AbstractActor) {
@@ -33,8 +27,7 @@ class AbstractActor extends AbstractDestroyableEntity {
 
     this.speed = speed * CELL_SIZE;
     this.acceleration = acceleration * CELL_SIZE;
-    this.health = health !== undefined ? health : maxHealth;
-    this.maxHealth = maxHealth;
+
     this.isActor = true;
     this.standingOn = [];
 

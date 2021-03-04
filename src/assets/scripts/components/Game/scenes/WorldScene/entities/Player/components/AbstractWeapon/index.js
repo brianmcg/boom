@@ -12,6 +12,17 @@ const EVENTS = {
   STOP: 'weapon:stop',
 };
 
+const transformRangeForWorld = (
+  range,
+  offset,
+) => (range ? (range * CELL_SIZE) + offset : Number.MAX_VALUE);
+
+const transformRangeForData = (
+  range,
+  offset,
+) => (range === Number.MAX_VALUE ? null : (range - offset) / CELL_SIZE);
+
+
 /**
  * Class representing a weapon.
  */
@@ -38,18 +49,17 @@ class AbstractWeapon extends Entity {
     spread,
     sounds,
     name,
-    explosionType,
     ammo,
     rate,
     automatic,
     type,
     maxAttacks,
+    projectile,
     ...other
   }) {
     super(other);
 
     this.name = name;
-    this.explosionType = explosionType;
     this.sounds = sounds;
     this.power = power;
     this.accuracy = accuracy;
@@ -61,13 +71,14 @@ class AbstractWeapon extends Entity {
     this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
     this.maxAmmo = maxAmmo;
     this.timer = 0;
-    this.range = range ? (range * CELL_SIZE) + (player.width / 2) : Number.MAX_VALUE;
+    this.range = transformRangeForWorld(range, player.width / 2);
     this.spread = spread;
     this.type = type;
     this.pellets = [...Array(pellets).keys()].map(i => i);
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.maxAttacks = maxAttacks;
+    this.projectile = projectile;
 
     this.setIdle();
 
@@ -261,7 +272,6 @@ class AbstractWeapon extends Entity {
       range,
       spread,
       type,
-      explosionType,
       sounds,
       equiped,
       rate,
@@ -270,6 +280,7 @@ class AbstractWeapon extends Entity {
       player,
       ammo,
       maxAttacks,
+      projectile,
     } = this;
 
     return {
@@ -278,16 +289,14 @@ class AbstractWeapon extends Entity {
       recoil,
       maxAmmo,
       type,
-      explosionType,
       sounds,
       equiped,
       rate,
       accuracy,
       ammo,
       maxAttacks,
-      range: range === Number.MAX_VALUE
-        ? null
-        : (range - (player.width / 2)) / CELL_SIZE,
+      projectile,
+      range: transformRangeForData(range, player.width / 2),
       spread,
       pellets: pellets.length,
     };

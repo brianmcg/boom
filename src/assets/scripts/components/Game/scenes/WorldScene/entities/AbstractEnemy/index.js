@@ -36,14 +36,12 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle           The angle of the character.
    * @param  {Number} options.maxHealth       The maximum health of the character.
    * @param  {Number} options.speed           The maximum speed of the enemy.
-   * @param  {Number} options.attackRange     The attack range of the enemy.
    * @param  {Number} options.attackTime      The time between attacks.
    * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
    * @param  {Number} options.alerTime        The time before attacking adter alert.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
   constructor({
-    attackRange = 2,
     attackTime = 1000,
     hurtTime = 1000,
     alertTime = 1000,
@@ -51,12 +49,10 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterOffset,
-    explosionType,
     isFloating,
     primaryAttack,
     proneHeight,
     type,
-    spatterType,
     ...other
   }) {
     super(other);
@@ -65,8 +61,6 @@ class AbstractEnemy extends AbstractActor {
       throw new TypeError('Can not construct abstract class.');
     }
 
-    this.attackRange = attackRange * CELL_SIZE;
-    this.explosionType = explosionType;
     this.type = type;
     this.spatters = spatters;
     this.spatterOffset = spatterOffset;
@@ -84,8 +78,11 @@ class AbstractEnemy extends AbstractActor {
     this.isFloating = isFloating;
     this.floatDirection = 1;
     this.proneHeight = proneHeight;
-    this.primaryAttack = primaryAttack;
-    this.spatterType = spatterType;
+
+    this.primaryAttack = {
+      ...primaryAttack,
+      range: primaryAttack.range * CELL_SIZE,
+    };
 
     this.setIdle();
   }
@@ -156,7 +153,7 @@ class AbstractEnemy extends AbstractActor {
       this.alertTimer += elapsedMS;
 
       if (this.alertTimer >= this.alertTime) {
-        if (this.distanceToPlayer <= this.attackRange) {
+        if (this.distanceToPlayer <= this.primaryAttack.range) {
           this.setAiming();
         } else {
           this.setChasing();
@@ -172,7 +169,7 @@ class AbstractEnemy extends AbstractActor {
    */
   updateChasing() {
     if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
+      if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.setAiming();
       }
     } else {
@@ -205,7 +202,7 @@ class AbstractEnemy extends AbstractActor {
    */
   updateAiming(delta, elapsedMS) {
     if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
+      if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.aimTimer += elapsedMS;
 
         if (this.aimTimer >= this.aimTime) {
@@ -225,7 +222,7 @@ class AbstractEnemy extends AbstractActor {
    */
   updateAttacking(delta, elapsedMS) {
     if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.attackRange) {
+      if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.attackTimer += elapsedMS;
 
         if (this.attackTimer >= this.attackTime) {
@@ -333,8 +330,8 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Get the type of blood spatter.
-   * @return {Number} The type of blood spatter.
+   * Get the type of effects spatter.
+   * @return {Number} The type of effects spatter.
    */
   spatter() {
     return Math.floor(Math.random() * this.spatters) + this.spatterOffset;
@@ -509,14 +506,15 @@ class AbstractEnemy extends AbstractActor {
    */
   setDead() {
     const isStateChanged = this.setState(STATES.DEAD);
+    const { explode } = this.effects;
 
     if (isStateChanged) {
-      if (this.explosionType) {
+      if (explode) {
         this.parent.addEffect({
           x: this.x,
           y: this.y,
           z: this.z,
-          sourceId: `${this.id}_${this.explosionType}`,
+          sourceId: `${this.id}_${explode}`,
         });
       } else {
         this.isProne = true;

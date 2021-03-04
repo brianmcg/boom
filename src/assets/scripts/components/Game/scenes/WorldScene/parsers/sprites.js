@@ -94,9 +94,9 @@ const createWallSprites = ({
 
   const spatterContainer = new Container();
 
-  const spatterTypes = world.enemies.reduce((memo, { spatterType }) => {
-    if (spatterType && !memo.includes(spatterType)) {
-      memo.push(spatterType);
+  const spatterTypes = world.enemies.reduce((memo, { effects }) => {
+    if (effects.spatter && !memo.includes(effects.spatter)) {
+      memo.push(effects.spatter);
     }
     return memo;
   }, []);
@@ -231,27 +231,29 @@ const createEffectsSprites = ({
   const enemyProjectileExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
-        const effectTextures = animations[projectile.explosionType]
-          .map(animation => textures[animation]);
+        if (projectile.effects?.impact) {
+          const effectTextures = animations[projectile.effects.impact]
+            .map(animation => textures[animation]);
 
-        memo[projectile.id] = new EffectSprite(effectTextures, {
-          animationSpeed: 0.3,
-        });
+          memo[projectile.id] = new EffectSprite(effectTextures, {
+            animationSpeed: 0.3,
+          });
+        }
       });
     }
 
     return memo;
   }, {});
 
-  const enemySpurtSprites = world.enemies.reduce((memo, { id, spurtType }) => {
-    if (spurtType) {
-      const spurtTextures = animations[spurtType].map(animation => textures[animation]);
+  const enemySpurtSprites = world.enemies.reduce((memo, { id, effects }) => {
+    if (effects.spurt) {
+      const spurtTextures = animations[effects.spurt].map(animation => textures[animation]);
 
       const explosionSprite = new EffectSprite(spurtTextures, {
         animationSpeed: 0.2,
       });
 
-      memo[`${id}_${spurtType}`] = explosionSprite;
+      memo[`${id}_${effects.spurt}`] = explosionSprite;
 
       return memo;
     }
@@ -260,11 +262,12 @@ const createEffectsSprites = ({
   }, {});
 
   const enemyExplosionSprites = world.enemies.reduce((memo, enemy) => {
-    if (enemy.explosionType) {
-      const effectTextures = animations[enemy.explosionType]
-        .map(animation => textures[animation]);
+    const { explode } = enemy.effects;
 
-      memo[`${enemy.id}_${enemy.explosionType}`] = new EffectSprite(effectTextures, {
+    if (explode) {
+      const effectTextures = animations[explode].map(animation => textures[animation]);
+
+      memo[`${enemy.id}_${explode}`] = new EffectSprite(effectTextures, {
         animationSpeed: 0.2,
       });
     }
@@ -273,11 +276,12 @@ const createEffectsSprites = ({
   }, {});
 
   const objectExplosionSprites = world.objects.reduce((memo, object) => {
-    if (object.explosionType) {
-      const effectTextures = animations[object.explosionType]
-        .map(animation => textures[animation]);
+    const explode = object.effects?.explode;
 
-      memo[`${object.id}_${object.explosionType}`] = new EffectSprite(effectTextures, {
+    if (explode) {
+      const effectTextures = animations[explode].map(animation => textures[animation]);
+
+      memo[`${object.id}_${explode}`] = new EffectSprite(effectTextures, {
         animationSpeed: 0.4,
       });
     }
@@ -288,10 +292,10 @@ const createEffectsSprites = ({
   const playerHitScanSprites = {};
 
   world.player.weapons.forEach((weapon) => {
-    if (weapon.hitScans) {
-      weapon.hitScans.forEach(({ id, explosionType }) => {
-        if (explosionType) {
-          const effectTextures = animations[explosionType].map(animation => textures[animation]);
+    if (weapon.projectiles) {
+      weapon.projectiles.forEach(({ id, effect }) => {
+        if (effect) {
+          const effectTextures = animations[effect].map(animation => textures[animation]);
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
             animationSpeed: 0.4,
@@ -303,11 +307,11 @@ const createEffectsSprites = ({
 
   const playerSpurtSprites = {};
 
-  const { id, spurtType } = world.player;
+  const { id, effects } = world.player;
 
-  if (spurtType) {
-    const playerSpurtTextures = animations[spurtType].map(animation => textures[animation]);
-    playerSpurtSprites[`${id}_${spurtType}`] = new EffectSprite(playerSpurtTextures, {
+  if (effects.spurt) {
+    const playerSpurtTextures = animations[effects.spurt].map(animation => textures[animation]);
+    playerSpurtSprites[`${id}_${effects.spurt}`] = new EffectSprite(playerSpurtTextures, {
       animationSpeed: 0.2,
     });
   }
@@ -353,10 +357,12 @@ const createEntitySprites = ({ animations, textures, world }) => {
     ...memo,
     ...enemy.projectiles || [],
   ]), []).forEach((projectile) => {
-    entitySprites[projectile.id] = createProjectileSprite({
-      animations: animations[projectile.name],
-      textures,
-    });
+    if (projectile.name) {
+      entitySprites[projectile.id] = createProjectileSprite({
+        animations: animations[projectile.name],
+        textures,
+      });
+    }
   });
 
   return entitySprites;

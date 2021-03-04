@@ -16,7 +16,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
   /**
    * Creates an explosive entity.
    * @param  {Boolean} options.animated      Is the entity animated.
-   * @param  {String}  options.explosionType The explosion type.
+   * @param  {Object}  options.effects       The effects.
    * @param  {Number}  options.health        The health of the entity.
    * @param  {Number}  options.power         The power of the entity.
    * @param  {Number}  options.range         The range of the entity.
@@ -31,14 +31,12 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
    */
   constructor({
     animated,
-    explosionType,
     power,
     range,
     ...other
   }) {
     super(other);
     this.animated = animated;
-    this.explosionType = explosionType;
     this.power = power;
     this.range = range;
     this.isExplosive = true;
@@ -49,7 +47,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
         x: this.x,
         y: this.y,
         z: this.z,
-        sourceId: `${this.id}_${this.explosionType}`,
+        sourceId: `${this.id}_${this.effects.explode}`,
         flash: this.power,
         shake: this.power,
       });

@@ -32,7 +32,7 @@ class Projectile extends DynamicEntity {
     height = CELL_SIZE / 4,
     speed = 0,
     source,
-    explosionType,
+    effects,
     weight = 0,
     ...other
   }) {
@@ -45,7 +45,7 @@ class Projectile extends DynamicEntity {
     });
 
     this.source = source;
-    this.explosionType = explosionType;
+    this.effects = effects;
     this.velocity = speed * CELL_SIZE;
 
     this.addTrackedCollision({
@@ -60,7 +60,7 @@ class Projectile extends DynamicEntity {
               x: this.x,
               y: this.y,
               z: this.z,
-              type: this.explosionType,
+              type: effects.impact,
               flash: damage * 0.75,
               shake: damage * 0.75,
             });

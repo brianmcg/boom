@@ -8,21 +8,21 @@ const DEG_360 = degrees(360);
 const SPATTER_DISTANCE = CELL_SIZE * 1.5;
 
 /**
- * Class representing a hitScan.
+ * Class representing a hit scan.
  */
 class HitScan extends Body {
   /**
-   * Creates a hitScan.
+   * Creates a hit scan.
    * @extends {Body}
-   * @param   {String} options.explosionType The explosion type.
+   * @param   {String} options.effect The impact effect.
    */
-  constructor({ explosionType }) {
+  constructor({ effect } = {}) {
     super({
       width: CELL_SIZE / 8,
       height: CELL_SIZE / 8,
     });
 
-    this.explosionType = explosionType;
+    this.effect = effect;
   }
 
   /**
@@ -34,11 +34,11 @@ class HitScan extends Body {
    * @param  {Number} options.power     The power of the hit.
    */
   execute({
-    ray = {},
-    damage = 1,
-    parent = {},
-    range = 1,
-    power = 1,
+    ray,
+    damage,
+    parent,
+    range,
+    power,
   }) {
     const {
       startPoint,
@@ -81,9 +81,9 @@ class HitScan extends Body {
       if (point.distance <= range) {
         if (body.isDestroyable) {
           // Handle destroyable object collision.
-          const sourceId = body.spurtType
-            ? `${body.id}_${body.spurtType}`
-            : this.explosionType && this.id;
+          const sourceId = body.effects?.spurt
+            ? `${body.id}_${body.effects.spurt}`
+            : this.effect && this.id;
 
           if (sourceId) {
             parent.addEffect({
@@ -106,7 +106,7 @@ class HitScan extends Body {
           }
         } else {
           // Handle static object collision.
-          const sourceId = this.explosionType && this.id;
+          const sourceId = this.effect && this.id;
 
           if (sourceId) {
             parent.addEffect({
@@ -120,7 +120,7 @@ class HitScan extends Body {
       }
     } else if (distance <= range) {
       // Handle collision with wall
-      const sourceId = this.explosionType && this.id;
+      const sourceId = this.effect && this.id;
 
       if (sourceId) {
         parent.addEffect({

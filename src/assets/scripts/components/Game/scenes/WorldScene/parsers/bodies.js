@@ -82,9 +82,9 @@ const createCell = ({ cell, props, soundSprite }) => {
  */
 export const createWorld = ({ scene, data, graphics }) => {
   const { soundSprite } = scene.game;
-  const spatterTypes = Object.values(data.props.enemies).reduce((memo, { spatterType }) => {
-    if (spatterType && !memo.includes(spatterType)) {
-      return [...memo, spatterType];
+  const spatterTypes = Object.values(data.props.enemies).reduce((memo, { effects }) => {
+    if (effects.spatter && !memo.includes(effects.spatter)) {
+      return [...memo, effects.spatter];
     }
     return memo;
   }, []);
@@ -140,9 +140,9 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const { spatterType } = data.props.enemies[enemy.name];
-    const spatters = spatterType ? animations[spatterType].length : 0;
-    const spatterOffset = spatterType ? (spatterTypes.indexOf(spatterType) * spatters) + 1 : 0;
+    const { effects } = data.props.enemies[enemy.name];
+    const spatters = effects.spatter ? animations[effects.spatter].length : 0;
+    const spatterOffset = effects.spatter ? (spatterTypes.indexOf(effects.spatter) * spatters) + 1 : 0;
 
     return [
       ...memo,

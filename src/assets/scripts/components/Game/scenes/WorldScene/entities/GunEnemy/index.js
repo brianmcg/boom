@@ -31,15 +31,13 @@ class GunEnemy extends AbstractEnemy {
     const { pellets, spread } = primaryAttack;
 
     this.primaryAttack = {
-      ...primaryAttack,
+      ...this.primaryAttack,
       pellets: [...Array(pellets).keys()].map(i => i),
       spreadAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / 2 : 0,
       pelletAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
     };
 
-    this.hitScans = [...Array(primaryAttack.pellets).keys()].map(() => new HitScan({
-      explosionType: this.explosionType,
-    }));
+    this.projectiles = [...Array(pellets).keys()].map(() => new HitScan());
   }
 
   /**
@@ -66,17 +64,16 @@ class GunEnemy extends AbstractEnemy {
       pelletAngle,
       pellets,
       power,
+      range,
     } = this.primaryAttack;
-
-    const { attackRange: range } = this;
 
     let rayAngle = (this.angle - spreadAngle + DEG_360) % DEG_360;
 
     for (let i = 0; i < pellets.length; i += 1) {
-      const hitScan = this.hitScans.shift();
+      const projectile = this.projectiles.shift();
 
-      if (hitScan) {
-        hitScan.execute({
+      if (projectile) {
+        projectile.execute({
           ray: this.castRay(rayAngle),
           damage: this.attackDamage(),
           parent: this.parent,
@@ -84,7 +81,7 @@ class GunEnemy extends AbstractEnemy {
           power,
         });
 
-        this.hitScans.push(hitScan);
+        this.projectiles.push(projectile);
       }
 
       rayAngle = (rayAngle + pelletAngle) % DEG_360;
