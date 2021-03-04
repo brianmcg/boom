@@ -30,7 +30,7 @@ const STATES = {
 
 const EVENTS = {
   HURT: 'player:hurt',
-  FIRE_WEAPON: 'player:fire:weapon',
+  USE_WEAPON: 'player:use:weapon',
   DEATH: 'player:death',
   DYING: 'player:dying',
   CHANGE_WEAPON: 'player:change:weapon',
@@ -108,7 +108,7 @@ class Player extends AbstractActor {
       weapon.onUse(({ recoil, sound }) => {
         this.camera.setRecoil(recoil);
         this.emitSound(sound);
-        this.emit(EVENTS.FIRE_WEAPON);
+        this.emit(EVENTS.USE_WEAPON);
       });
 
       return weapon;
@@ -118,7 +118,7 @@ class Player extends AbstractActor {
 
     this.sounds = this.weapons.reduce((memo, weapon) => ({
       ...memo,
-      [weapon.name]: weapon.sounds.fire,
+      [weapon.name]: weapon.sounds.use,
     }), this.sounds);
 
     this.viewHeight = this.z + this.height + this.camera.height;
@@ -169,11 +169,11 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback for the fire weapon event.
+   * Add a callback for the use weapon event.
    * @param  {Function} callback The callback function.
    */
   onUseWeapon(callback) {
-    this.on(EVENTS.FIRE_WEAPON, callback);
+    this.on(EVENTS.USE_WEAPON, callback);
   }
 
   /**

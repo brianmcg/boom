@@ -36,16 +36,11 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} options.angle           The angle of the character.
    * @param  {Number} options.maxHealth       The maximum health of the character.
    * @param  {Number} options.speed           The maximum speed of the enemy.
-   * @param  {Number} options.attackTime      The time between attacks.
-   * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
-   * @param  {Number} options.alerTime        The time before attacking adter alert.
+   * @param  {Number} options.stateDurations  The time to stay in a state.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
   constructor({
-    attackTime = 1000,
-    hurtTime = 1000,
-    alertTime = 1000,
-    aimTime = 200,
+    stateDurations,
     maxAttacks,
     spatters,
     spatterOffset,
@@ -60,6 +55,13 @@ class AbstractEnemy extends AbstractActor {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
+
+    const {
+      attack: attackTime = 1000,
+      hurt: hurtTime = 1000,
+      alert: alertTime = 1000,
+      aim: aimTime = 200,
+    } = stateDurations;
 
     this.type = type;
     this.spatters = spatters;

@@ -88,7 +88,7 @@ class AbstractWeapon extends Entity {
   }
 
   /**
-   * Add a callback to the fire event.
+   * Add a callback to the use event.
    * @param  {Function} callback The callback.
    */
   onUse(callback) {
@@ -161,7 +161,7 @@ class AbstractWeapon extends Entity {
 
     this.emit(EVENTS.USE, {
       recoil: this.recoil,
-      sound: this.sounds.fire,
+      sound: this.sounds.use,
     });
   }
 

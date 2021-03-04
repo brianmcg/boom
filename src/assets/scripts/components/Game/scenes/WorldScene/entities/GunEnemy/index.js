@@ -20,9 +20,7 @@ class GunEnemy extends AbstractEnemy {
    * @param  {Number} options.maxHealth       The maximum health of the character.
    * @param  {Number} options.speed           The maximum speed of the enemy.
    * @param  {Number} options.attackRange     The attack range of the enemy.
-   * @param  {Number} options.attackTime      The time between attacks.
-   * @param  {Number} options.hurtTime        The time the enemy remains hurt when hit.
-   * @param  {Number} options.alerTime        The time before attacking adter alert.
+   * @param  {Number} options.stateDurations  The time to stay in a state.
    * @param  {Number} options.acceleration    The acceleration of the enemy.
    */
   constructor({ primaryAttack, ...other }) {
