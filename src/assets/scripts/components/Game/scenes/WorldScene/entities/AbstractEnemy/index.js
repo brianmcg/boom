@@ -44,7 +44,7 @@ class AbstractEnemy extends AbstractActor {
     maxAttacks,
     spatters,
     spatterOffset,
-    isFloating,
+    float,
     primaryAttack,
     proneHeight,
     type,
@@ -77,8 +77,9 @@ class AbstractEnemy extends AbstractActor {
     this.alertTimer = 0;
     this.aimTimer = 0;
     this.isEnemy = true;
-    this.isFloating = isFloating;
+    this.float = float;
     this.floatDirection = 1;
+    this.floatAmount = 0;
     this.proneHeight = proneHeight;
 
     this.primaryAttack = {
@@ -98,10 +99,10 @@ class AbstractEnemy extends AbstractActor {
     super.update(delta, elapsedMS);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
-      if (this.isFloating) {
-        this.z += FLOAT_INCREMENT * this.floatDirection * delta;
+      if (this.float) {
+        this.floatAmount += FLOAT_INCREMENT * this.floatDirection * delta;
 
-        if (Math.abs(this.z) >= FLOAT_BOUNDARY) {
+        if (Math.abs(this.floatAmount) >= FLOAT_BOUNDARY) {
           this.floatDirection *= -1;
         }
       }
@@ -622,6 +623,14 @@ class AbstractEnemy extends AbstractActor {
     }
 
     return isStateChanged;
+  }
+
+  /**
+   * The elavation.
+   * @member {Number}
+   */
+  get elavation() {
+    return this.z + this.floatAmount;
   }
 }
 

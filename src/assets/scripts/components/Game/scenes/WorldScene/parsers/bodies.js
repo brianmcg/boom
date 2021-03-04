@@ -142,7 +142,9 @@ export const createWorld = ({ scene, data, graphics }) => {
   const enemies = data.enemies.reduce((memo, enemy) => {
     const { effects } = data.props.enemies[enemy.name];
     const spatters = effects.spatter ? animations[effects.spatter].length : 0;
-    const spatterOffset = effects.spatter ? (spatterTypes.indexOf(effects.spatter) * spatters) + 1 : 0;
+    const spatterOffset = effects.spatter
+      ? (spatterTypes.indexOf(effects.spatter) * spatters) + 1
+      : 0;
 
     return [
       ...memo,
@@ -153,6 +155,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
         width: Math.ceil(CELL_SIZE * enemy.width),
         height: Math.ceil(CELL_SIZE * enemy.height),
+        float: enemy.float,
         ...props.enemies[enemy.name],
         spatterOffset,
         spatters,

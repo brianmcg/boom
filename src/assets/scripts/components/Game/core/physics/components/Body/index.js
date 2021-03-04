@@ -99,6 +99,14 @@ class Body extends EventEmitter {
   }
 
   /**
+   * The elavation.
+   * @member {Number}
+   */
+  get elavation() {
+    return this.z;
+  }
+
+  /**
    * The grid x position.
    * @member {Number}
    */
