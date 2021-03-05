@@ -62,6 +62,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       width: CELL_SIZE,
       height: cell.blocking ? CELL_SIZE : 0,
       transparency: cell.transparency,
+      offset: cell.offset,
     });
   }
 

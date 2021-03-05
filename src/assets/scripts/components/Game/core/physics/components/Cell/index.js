@@ -19,18 +19,18 @@ class Cell extends Body {
    * @param  {Number}  options.height    The height of the cell.
    * @param  {Boolean} options.blocking  Is the cell blocking.
    */
-  constructor({ axis, ...other }) {
+  constructor({ axis, offset = 0.5, ...other }) {
     super(other);
     this.bodies = [];
     this.axis = axis;
     this.offset = axis ? { x: 0, y: 0 } : null;
 
     if (this.isHorizontal()) {
-      this.offset.y = CELL_SIZE / 2;
+      this.offset.y = CELL_SIZE * offset;
     }
 
     if (this.isVertical()) {
-      this.offset.x = CELL_SIZE / 2;
+      this.offset.x = CELL_SIZE * offset;
     }
   }
 
