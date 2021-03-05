@@ -1,19 +1,21 @@
 import { degrees } from 'game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
-import Cell from '../entities/Cell';
-import World from '../entities/World';
-import Door from '../entities/Door';
-import Entity from '../entities/Entity';
-import ExplosiveEntity from '../entities/ExplosiveEntity';
-import GunEnemy from '../entities/GunEnemy';
-import ChaseEnemy from '../entities/ChaseEnemy';
-import ProjectileEnemy from '../entities/ProjectileEnemy';
-import Player from '../entities/Player';
-import KeyItem from '../entities/KeyItem';
-import AmmoItem from '../entities/AmmoItem';
-import HealthItem from '../entities/HealthItem';
-import WeaponItem from '../entities/WeaponItem';
+import {
+  Cell,
+  World,
+  Door,
+  Entity,
+  ExplosiveEntity,
+  GunEnemy,
+  ChaseEnemy,
+  ProjectileEnemy,
+  Player,
+  KeyItem,
+  AmmoItem,
+  HealthItem,
+  WeaponItem,
+} from 'game/engine';
 
 const ITEMS = {
   [ITEM_TYPES.KEY]: KeyItem,
