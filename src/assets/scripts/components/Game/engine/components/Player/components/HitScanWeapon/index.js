@@ -25,6 +25,10 @@ class HitScanWeapon extends AbstractWeapon {
 
     this.projectiles = [...Array(amount).keys()].map(() => new HitScan({
       effect: effects?.impact,
+      source: this.player,
+      power: this.power,
+      range: this.range,
+      accuracy: this.accuracy,
     }));
   }
 
@@ -34,12 +38,9 @@ class HitScanWeapon extends AbstractWeapon {
   use() {
     if (this.isUseable() && this.setUsing()) {
       const {
-        power,
-        accuracy,
         pellets,
         spreadAngle,
         pelletAngle,
-        range,
         projectiles,
         player,
       } = this;
@@ -50,16 +51,8 @@ class HitScanWeapon extends AbstractWeapon {
         const projectile = projectiles.shift();
 
         if (projectile) {
-          projectile.execute({
-            ray: player.castRay(rayAngle),
-            damage: power * (Math.floor(Math.random() * accuracy) + 1),
-            parent: player.parent,
-            range,
-            power,
-          });
-
+          projectile.run(rayAngle);
           projectiles.push(projectile);
-
           rayAngle = (rayAngle + pelletAngle) % DEG_360;
         }
       }

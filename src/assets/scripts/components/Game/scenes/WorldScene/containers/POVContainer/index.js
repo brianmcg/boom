@@ -66,7 +66,16 @@ class POVContainer extends Container {
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
 
-    world.onEffectAdded(id => this.mapContainer.addChild(effectSprites[id]));
+    world.onEffectAdded((effect) => {
+      const effectSprite = effectSprites[effect.sourceId];
+
+      effectSprite.onComplete = () => {
+        this.mapContainer.removeChild(effectSprite);
+        effect.remove();
+      };
+
+      this.mapContainer.addChild(effectSprite);
+    });
   }
 
   /**

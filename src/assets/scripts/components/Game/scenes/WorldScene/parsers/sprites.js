@@ -276,12 +276,12 @@ const createEffectsSprites = ({
   }, {});
 
   const objectExplosionSprites = world.objects.reduce((memo, object) => {
-    const explode = object.effects?.explode;
+    const explode = object.explosion?.effects.explode;
 
     if (explode) {
       const effectTextures = animations[explode].map(animation => textures[animation]);
 
-      memo[`${object.id}_${explode}`] = new EffectSprite(effectTextures, {
+      memo[`${object.explosion.id}_${explode}`] = new EffectSprite(effectTextures, {
         animationSpeed: 0.4,
       });
     }

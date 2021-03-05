@@ -18,8 +18,6 @@ class EffectSprite extends AnimatedEntitySprite {
 
     this.rotation = Math.random() * Math.PI * 2;
 
-    this.onComplete = () => this.parent.removeChild(this);
-
     this.on('added', () => this.play());
     this.on('removed', () => this.gotoAndStop(0));
   }

@@ -16,13 +16,21 @@ class HitScan extends Body {
    * @extends {Body}
    * @param   {String} options.effect The impact effect.
    */
-  constructor({ effect } = {}) {
-    super({
-      width: CELL_SIZE / 8,
-      height: CELL_SIZE / 8,
-    });
+  constructor({
+    effect,
+    source,
+    power,
+    range,
+    accuracy,
+    ...other
+  } = {}) {
+    super(other);
 
+    this.source = source;
     this.effect = effect;
+    this.power = power;
+    this.range = range;
+    this.accuracy = accuracy;
   }
 
   /**
@@ -33,23 +41,18 @@ class HitScan extends Body {
    * @param  {Number} options.range     The range of the hit.
    * @param  {Number} options.power     The power of the hit.
    */
-  execute({
-    ray,
-    damage,
-    parent,
-    range,
-    power,
-  }) {
+  run(angle) {
     const {
       startPoint,
       endPoint,
       distance,
       side,
       encounteredBodies,
-      angle,
-    } = ray;
+    } = this.source.castRay(angle);
 
     const originAngle = (angle + DEG_180) % DEG_360;
+
+    const damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
 
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
@@ -78,7 +81,7 @@ class HitScan extends Body {
     if (collisions.length) {
       const { point, body } = collisions[0];
 
-      if (point.distance <= range) {
+      if (point.distance <= this.range) {
         if (body.isDestroyable) {
           // Handle destroyable object collision.
           const sourceId = body.effects?.spurt
@@ -86,11 +89,11 @@ class HitScan extends Body {
             : this.effect && this.id;
 
           if (sourceId) {
-            parent.addEffect({
+            this.source.parent.addEffect({
               x: point.x + Math.cos(originAngle) * (CELL_SIZE / 16),
               y: point.y + Math.sin(originAngle) * (CELL_SIZE / 16),
               sourceId,
-              flash: power,
+              flash: this.power,
             });
           }
 
@@ -109,25 +112,25 @@ class HitScan extends Body {
           const sourceId = this.effect && this.id;
 
           if (sourceId) {
-            parent.addEffect({
+            this.source.parent.addEffect({
               x: point.x + Math.cos(originAngle) * (CELL_SIZE / 16),
               y: point.y + Math.sin(originAngle) * (CELL_SIZE / 16),
               sourceId,
-              flash: power,
+              flash: this.power,
             });
           }
         }
       }
-    } else if (distance <= range) {
+    } else if (distance <= this.range) {
       // Handle collision with wall
       const sourceId = this.effect && this.id;
 
       if (sourceId) {
-        parent.addEffect({
+        this.source.parent.addEffect({
           x: endPoint.x + Math.cos(originAngle) * (CELL_SIZE / 16),
           y: endPoint.y + Math.sin(originAngle) * (CELL_SIZE / 16),
           sourceId,
-          flash: power,
+          flash: this.power,
         });
       }
     }

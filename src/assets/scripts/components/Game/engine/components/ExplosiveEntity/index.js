@@ -1,13 +1,10 @@
 import { degrees } from 'game/core/physics';
 import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
+import Explosion from '../Explosion';
 
 const EXPLODE_EVENT = 'entity:explode';
 
 const EXPLODE_DELAY = 20;
-
-const DEGREES_360 = degrees(360);
-
-const DEGREES_180 = degrees(180);
 
 /**
  * Class representig an explosive entity.
@@ -33,37 +30,18 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
     animated,
     power,
     range,
+    explosion,
     ...other
   }) {
     super(other);
     this.animated = animated;
-    this.power = power;
-    this.range = range;
+
     this.isExplosive = true;
     this.timer = 0;
 
-    this.onExplode(() => {
-      this.parent.addEffect({
-        x: this.x,
-        y: this.y,
-        z: this.z,
-        sourceId: `${this.id}_${this.effects.explode}`,
-        flash: this.power,
-        shake: this.power,
-      });
+    this.explosion = new Explosion({ source: this, ...explosion });
 
-      this.parent.getAdjacentBodies(this, this.range).forEach((body) => {
-        if (body.hurt) {
-          const angle = (body.getAngleTo(this) - DEGREES_180 + DEGREES_360) % DEGREES_360;
-          const distance = this.getDistanceTo(body);
-          const damage = Math.max(1, this.power - Math.round(distance));
-
-          body.hurt(damage, angle);
-        }
-      });
-
-      this.emitSound(this.sounds.explode);
-    });
+    this.onExplode(() => this.explosion.run());
   }
 
   /**

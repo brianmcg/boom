@@ -1,5 +1,3 @@
-const TIME_TO_LIVE = 2000;
-
 /**
  * Class representing an effect.
  */
@@ -24,21 +22,15 @@ class Effect {
     this.y = y;
     this.z = z;
     this.sourceId = sourceId;
-    this.timer = 0;
     this.parent = parent;
     this.type = type;
   }
 
   /**
-   * Updates the explosion.
-   * @param  {Number} delta The delta time.
+   * Remove the effect from its parent.
    */
-  update(delta, elapsedMS) {
-    this.timer += elapsedMS;
-
-    if (this.timer >= TIME_TO_LIVE) {
-      this.parent.removeEffect(this);
-    }
+  remove() {
+    this.parent.removeEffect(this);
   }
 }
 

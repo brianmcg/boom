@@ -78,8 +78,6 @@ class World extends PhysicsWorld {
     const { gridX, gridY } = this.player;
     const { x, y } = this.exit;
 
-    this.effects.forEach(e => e.update(delta, elapsedMS));
-
     if (this.explosionFlash) {
       this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
     }
@@ -151,7 +149,7 @@ class World extends PhysicsWorld {
 
     this.effects.push(effect);
 
-    this.emit(EFFECT_ADDED_EVENT, effect.sourceId);
+    this.emit(EFFECT_ADDED_EVENT, effect);
 
     if (flash) {
       this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);
@@ -165,10 +163,10 @@ class World extends PhysicsWorld {
 
   /**
    * Remove an explosion from the world.
-   * @param  {Effect} explosion The explosion to remove.
+   * @param  {Effect} effect The effect to remove.
    */
-  removeEffect(explosion) {
-    this.effects = this.effects.filter(e => e.id !== explosion.id);
+  removeEffect(effect) {
+    this.effects = this.effects.filter(e => e.sourceId !== effect.sourceId);
   }
 
 
