@@ -245,6 +245,23 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
+  const playerExplosionSprites = world.player.weapons.reduce((memo, weapon) => {
+    if (weapon.projectiles) {
+      weapon.projectiles.forEach((projectile) => {
+        if (projectile.effects?.impact) {
+          const effectTextures = animations[projectile.effects.impact]
+            .map(animation => textures[animation]);
+
+          memo[projectile.id] = new EffectSprite(effectTextures, {
+            animationSpeed: 0.3,
+          });
+        }
+      });
+    }
+
+    return memo;
+  }, {});
+
   const enemySpurtSprites = world.enemies.reduce((memo, { id, effects }) => {
     if (effects.spurt) {
       const spurtTextures = animations[effects.spurt].map(animation => textures[animation]);
@@ -317,6 +334,7 @@ const createEffectsSprites = ({
   }
 
   return {
+    ...playerExplosionSprites,
     ...enemyProjectileExplosionSprites,
     ...playerHitScanSprites,
     ...enemySpurtSprites,
@@ -364,6 +382,20 @@ const createEntitySprites = ({ animations, textures, world }) => {
       });
     }
   });
+
+  world.player.weapons.reduce((memo, weapon) => ([
+    ...memo,
+    ...weapon.projectiles || [],
+  ]), []).forEach((projectile) => {
+    if (projectile.name) {
+      entitySprites[projectile.id] = createProjectileSprite({
+        animations: animations[projectile.name],
+        textures,
+      });
+    }
+  });
+
+
 
   return entitySprites;
 };

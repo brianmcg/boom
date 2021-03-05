@@ -16,11 +16,16 @@ class ProjectileEnemy extends AbstractEnemy {
 
     const { amount, ...projectileProps } = primaryAttack.projectile;
 
-    this.projectiles = [...Array(amount).keys()].map(() => new Projectile({
-      ...projectileProps,
-      source: this,
-      soundSprite,
-    }));
+    this.projectiles = [];
+
+    [...Array(amount).keys()].forEach(() => {
+      this.projectiles.push(new Projectile({
+        ...projectileProps,
+        source: this,
+        soundSprite,
+        queue: this.projectiles,
+      }));
+    });
   }
 
   /**
@@ -42,7 +47,9 @@ class ProjectileEnemy extends AbstractEnemy {
    */
   attack() {
     if (this.projectiles.length) {
-      this.parent.add(this.projectiles.shift());
+      const projectile = this.projectiles.shift();
+      projectile.setDamage(this.attackDamage());
+      this.parent.add(projectile);
     }
   }
 }

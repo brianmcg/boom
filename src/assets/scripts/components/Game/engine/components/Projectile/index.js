@@ -1,4 +1,4 @@
-import { Body } from 'game/core/physics';
+import { Body, degrees } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 
@@ -34,6 +34,7 @@ class Projectile extends DynamicEntity {
     source,
     effects,
     weight = 0,
+    queue,
     ...other
   }) {
     super({
@@ -47,12 +48,13 @@ class Projectile extends DynamicEntity {
     this.source = source;
     this.effects = effects;
     this.velocity = speed * CELL_SIZE;
+    this.queue = queue;
 
     this.addTrackedCollision({
       type: Body,
       onStart: (body) => {
         if (body.blocking) {
-          const damage = this.source.attackDamage();
+          const { damage, angle } = this;
 
           if (this.setColliding()) {
             this.parent.addEffect({
@@ -66,8 +68,8 @@ class Projectile extends DynamicEntity {
             });
           }
 
-          if (body.hurt) {
-            body.hurt(damage);
+          if (body.isDestroyable) {
+            body.addHit({ damage, angle });
           }
         }
       },
@@ -99,7 +101,7 @@ class Projectile extends DynamicEntity {
    */
   updateColliding() {
     this.remove();
-    this.source.projectiles.push(this);
+    this.queue.push(this);
 
     this.setIdle();
   }
@@ -118,16 +120,24 @@ class Projectile extends DynamicEntity {
       width,
     } = this.source;
 
-    const distance = Math.sqrt((width * width) * 2) + 1;
+    const distance = Math.sqrt((width * width)) + 1;
 
     this.x = x + Math.cos(angle) * distance;
     this.y = y + Math.sin(angle) * distance;
-    this.z = z;
+    this.z = z - (CELL_SIZE / 16);
     this.angle = angle;
 
     this.setTravelling();
 
     this.emitSound(this.sounds.travel);
+  }
+
+  /**
+   * Set the damage caused by the projectile.
+   * @param {Number} amount The damage amount.
+   */
+  setDamage(amount) {
+    this.damage = amount;
   }
 
   /**

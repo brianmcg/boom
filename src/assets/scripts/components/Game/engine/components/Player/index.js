@@ -5,6 +5,7 @@ import { CELL_SIZE, PLAYER_INVINCIBLE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import HitScanWeapon from './components/HitScanWeapon';
+import ProjectileWeapon from './components/ProjectileWeapon';
 import Camera from './components/Camera';
 import KeyCard from './components/KeyCard';
 
@@ -66,10 +67,10 @@ class Player extends AbstractActor {
       weapons = {},
       weaponIndex = 0,
       items,
+      soundSprite,
       ...other
     } = options;
-
-    super(other);
+    super({ soundSprite, ...other });
 
     this.rotateSpeed = rotateSpeed;
     this.rotateAcceleration = rotateAcceleration;
@@ -99,10 +100,11 @@ class Player extends AbstractActor {
           player: this,
           name,
         })
-        : new HitScanWeapon({
+        : new ProjectileWeapon({
           ...weapons[name],
           player: this,
           name,
+          soundSprite,
         });
 
       weapon.onUse(({ recoil, sound }) => {

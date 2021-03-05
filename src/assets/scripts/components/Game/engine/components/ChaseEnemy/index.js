@@ -1,4 +1,9 @@
+import { degrees } from 'game/core/physics';
 import AbstractEnemy from '../AbstractEnemy';
+
+const DEG_180 = degrees(180);
+
+const DEG_360 = degrees(360);
 
 /**
  * Abstract class representing a gun enemy.
@@ -27,7 +32,10 @@ class ChaseEnemy extends AbstractEnemy {
 
     this.emitSound(this.sounds.attack);
 
-    player.hurt(this.attackDamage());
+    const angle = (this.getAngleTo(player) - DEG_180 + DEG_360) % DEG_360;
+    const damage = this.attackDamage();
+
+    player.addHit({ damage, angle });
   }
 }
 
