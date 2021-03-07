@@ -1,6 +1,7 @@
 import { Body, degrees } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
+import Explosion from '../Explosion';
 
 const STATES = {
   IDLE: 'projectile:idle',
@@ -35,6 +36,7 @@ class Projectile extends DynamicEntity {
     effects,
     weight = 0,
     queue,
+    explosion,
     ...other
   }) {
     super({
@@ -49,6 +51,10 @@ class Projectile extends DynamicEntity {
     this.effects = effects;
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
+
+    if (explosion) {
+      this.explosion = new Explosion({ source: this, ...explosion });
+    }
 
     this.addTrackedCollision({
       type: Body,
@@ -70,6 +76,10 @@ class Projectile extends DynamicEntity {
 
           if (body.isDestroyable) {
             body.addHit({ damage, angle });
+          }
+
+          if (this.explosion) {
+            this.explosion.run();
           }
         }
       },
@@ -165,7 +175,9 @@ class Projectile extends DynamicEntity {
 
     if (isStateChanged) {
       this.stop();
-      this.emitSound(this.sounds.explode);
+      if (this.sounds?.impact) {
+        this.emitSound(this.sounds.impact);
+      }
     }
 
     return isStateChanged;
