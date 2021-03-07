@@ -6,9 +6,11 @@ const ITEM_FLASH_AMOUNT = 0.35;
 
 const ITEM_FLASH_DECREMENT = 0.01;
 
-const MAX_EXPLOSION_FLASH_AMOUNT = 1;
+const MAX_EXPLOSION_FLASH_AMOUNT = 1.5;
 
 const EXPLOSION_FLASH_DECREMENT = 0.15;
+
+const FLASH_MULTIPLIER = 0.2;
 
 const EFFECT_ADDED_EVENT = 'world:effect:added';
 
@@ -152,8 +154,12 @@ class World extends PhysicsWorld {
     this.emit(EFFECT_ADDED_EVENT, effect);
 
     if (flash) {
-      this.flash = Math.min(this.flash + (flash / 5), MAX_EXPLOSION_FLASH_AMOUNT);
       this.explosionFlash = true;
+
+      this.flash = Math.min(
+        this.flash + (flash * FLASH_MULTIPLIER),
+        MAX_EXPLOSION_FLASH_AMOUNT,
+      );
     }
 
     if (shake) {

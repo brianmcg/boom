@@ -524,7 +524,9 @@ class AbstractEnemy extends AbstractActor {
         this.isProne = true;
       }
 
-      this.emitSound(this.sounds.death);
+      if (this.sounds.death) {
+        this.emitSound(this.sounds.death);
+      }
     }
 
     return isStateChanged;
