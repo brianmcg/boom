@@ -5,7 +5,9 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-const SPATTER_DISTANCE = CELL_SIZE * 1.5;
+const SPATTER_DISTANCE = Math.sqrt((CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE));
+
+const OFFSET_MULTIPLIER = CELL_SIZE * 0.0625;
 
 /**
  * Class representing a hit scan.
@@ -90,8 +92,8 @@ class HitScan extends Body {
 
           if (sourceId) {
             this.source.parent.addEffect({
-              x: point.x + Math.cos(originAngle) * (CELL_SIZE / 16),
-              y: point.y + Math.sin(originAngle) * (CELL_SIZE / 16),
+              x: point.x + Math.cos(originAngle) * OFFSET_MULTIPLIER,
+              y: point.y + Math.sin(originAngle) * OFFSET_MULTIPLIER,
               sourceId,
               flash: this.power,
             });
@@ -113,8 +115,8 @@ class HitScan extends Body {
 
           if (sourceId) {
             this.source.parent.addEffect({
-              x: point.x + Math.cos(originAngle) * (CELL_SIZE / 16),
-              y: point.y + Math.sin(originAngle) * (CELL_SIZE / 16),
+              x: point.x + Math.cos(originAngle) * OFFSET_MULTIPLIER,
+              y: point.y + Math.sin(originAngle) * OFFSET_MULTIPLIER,
               sourceId,
               flash: this.power,
             });
@@ -127,8 +129,8 @@ class HitScan extends Body {
 
       if (sourceId) {
         this.source.parent.addEffect({
-          x: endPoint.x + Math.cos(originAngle) * (CELL_SIZE / 16),
-          y: endPoint.y + Math.sin(originAngle) * (CELL_SIZE / 16),
+          x: endPoint.x + Math.cos(originAngle) * OFFSET_MULTIPLIER,
+          y: endPoint.y + Math.sin(originAngle) * OFFSET_MULTIPLIER,
           sourceId,
           flash: this.power,
         });

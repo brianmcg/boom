@@ -40,10 +40,17 @@ class ProjectileWeapon extends AbstractWeapon {
    */
   use() {
     if (this.projectiles.length && this.isUseable() && this.setUsing()) {
+      const { angle, moveAngle, parent } = this.player;
       const damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
       const projectile = this.projectiles.shift();
-      projectile.setDamage(damage);
-      this.player.parent.add(projectile);
+
+      projectile.set({
+        angle: (angle - moveAngle + DEG_360) % DEG_360,
+        damage,
+      });
+
+      parent.add(projectile);
+
       super.use();
     }
   }

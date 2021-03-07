@@ -239,6 +239,16 @@ const createEffectsSprites = ({
             animationSpeed: 0.3,
           });
         }
+
+        const explode = projectile.explosion?.effects.explode;
+
+        if (explode) {
+          const effectTextures = animations[explode].map(animation => textures[animation]);
+
+          memo[`${projectile.explosion.id}_${explode}`] = new EffectSprite(effectTextures, {
+            animationSpeed: 0.2,
+          });
+        }
       });
     }
 
@@ -253,7 +263,7 @@ const createEffectsSprites = ({
             .map(animation => textures[animation]);
 
           memo[projectile.id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.3,
+            animationSpeed: 0.2,
           });
         }
 
@@ -263,7 +273,7 @@ const createEffectsSprites = ({
           const effectTextures = animations[explode].map(animation => textures[animation]);
 
           memo[`${projectile.explosion.id}_${explode}`] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.4,
+            animationSpeed: 0.2,
           });
         }
       });

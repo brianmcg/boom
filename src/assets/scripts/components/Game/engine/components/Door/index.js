@@ -9,7 +9,7 @@ const STATES = {
   LOCKED: 'door:locked',
 };
 
-const IMPACT_MULTIPLIER = 2;
+const SHAKE_MULTIPLIER = 0.2;
 
 /**
  * Class representing a door.
@@ -147,10 +147,12 @@ class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENED);
 
     if (isStateChanged) {
+      const shake = CELL_SIZE / this.distanceToPlayer * this.speed * SHAKE_MULTIPLIER;
+
       this.blocking = false;
       this.height = 0;
       this.timer = this.interval;
-      this.parent.player.shake(this.speed * IMPACT_MULTIPLIER);
+      this.parent.player.shake(shake);
     }
 
     return isStateChanged;

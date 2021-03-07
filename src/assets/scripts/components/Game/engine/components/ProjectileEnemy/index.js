@@ -48,7 +48,7 @@ class ProjectileEnemy extends AbstractEnemy {
   attack() {
     if (this.projectiles.length) {
       const projectile = this.projectiles.shift();
-      projectile.setDamage(this.attackDamage());
+      projectile.set({ angle: this.angle, damage: this.attackDamage() });
       this.parent.add(projectile);
     }
   }

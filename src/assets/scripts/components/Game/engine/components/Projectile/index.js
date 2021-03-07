@@ -9,6 +9,8 @@ const STATES = {
   COLLIDING: 'projectile:colliding',
 };
 
+const ELEVATION = CELL_SIZE * 0.0625;
+
 /**
  * Class representing a projectile
  */
@@ -58,34 +60,31 @@ class Projectile extends DynamicEntity {
 
     this.addTrackedCollision({
       type: Body,
-      onStart: (body) => {
-        if (body.blocking) {
-          const { damage, angle } = this;
-
-          if (this.setColliding()) {
-            this.parent.addEffect({
-              sourceId: this.id,
-              x: this.x,
-              y: this.y,
-              z: this.z,
-              type: effects.impact,
-              flash: damage * 0.75,
-              shake: damage * 0.75,
-            });
-          }
-
-          if (body.isDestroyable) {
-            body.addHit({ damage, angle });
-          }
-
-          if (this.explosion) {
-            this.explosion.run();
-          }
-        }
-      },
+      onStart: (body) => this.handleCollision(body),
     });
 
     this.setIdle();
+  }
+
+  /**
+   * Handle a collision event.
+   * @param  {Body} body The body the projectile has collided with.
+   */
+  handleCollision(body) {
+    if (body.blocking) {
+      if (this.setColliding()) {
+        if (body.isDestroyable) {
+          body.addHit({
+            damage: this.damage,
+            angle: this.angle,
+          });
+        }
+
+        if (this.explosion) {
+          this.explosion.run();
+        }
+      }
+    }
   }
 
   /**
@@ -126,16 +125,15 @@ class Projectile extends DynamicEntity {
       x,
       y,
       z,
-      angle,
       width,
+      velocity,
     } = this.source;
 
-    const distance = Math.sqrt((width * width)) + 1;
+    const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
-    this.x = x + Math.cos(angle) * distance;
-    this.y = y + Math.sin(angle) * distance;
-    this.z = z - (CELL_SIZE / 16);
-    this.angle = angle;
+    this.x = x + Math.cos(this.angle) * distance;
+    this.y = y + Math.sin(this.angle) * distance;
+    this.z = z - ELEVATION;
 
     this.setTravelling();
 
@@ -144,10 +142,12 @@ class Projectile extends DynamicEntity {
 
   /**
    * Set the damage caused by the projectile.
-   * @param {Number} amount The damage amount.
+   * @param {Number} options.angle  The angle of the projectile.
+   * @param {Number} options.damage The damage the projectile inflicts.
    */
-  setDamage(amount) {
-    this.damage = amount;
+  set({ angle = 0, damage = 0 }) {
+    this.angle = angle;
+    this.damage = damage;
   }
 
   /**

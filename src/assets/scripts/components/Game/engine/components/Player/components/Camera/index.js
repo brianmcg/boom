@@ -10,6 +10,7 @@ const RECOIL_FADE = 0.2;
 const SHAKE_FADE = 0.55;
 const MIN_SHAKE = degrees(1) * 0.1;
 const MAX_SHAKE = degrees(10);
+const SHAKE_MULTIPLIER = 10;
 
 /**
  * Class representing a camera.
@@ -126,8 +127,9 @@ class Camera {
    * @param {Number} amount The amount to shake.
    */
   setShake(amount, { direction = 1 } = {}) {
+    const shakeAngle = degrees(Math.round(amount * SHAKE_MULTIPLIER));
     this.shakeDirection = direction;
-    this.shakeAmount = Math.min(MAX_SHAKE, degrees(amount) * SHAKE_FADE);
+    this.shakeAmount = Math.min(MAX_SHAKE, shakeAngle * SHAKE_FADE);
   }
 
   /**
