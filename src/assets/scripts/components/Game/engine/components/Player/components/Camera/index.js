@@ -139,7 +139,7 @@ class Camera {
    */
   setRecoil(amount, { direction = 1 } = {}) {
     this.recoilDirection = direction;
-    this.recoilAmount = Math.min(MAX_RECOIL, amount * 2);
+    this.recoilAmount = Math.min(MAX_RECOIL, amount);
   }
 }
 

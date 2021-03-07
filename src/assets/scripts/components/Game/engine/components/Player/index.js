@@ -18,7 +18,6 @@ const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
 const VISION_INCREMENT = 0.02;
-const HURT_RECOIL_MULTIPLIER = 1;
 const BREATH_INCREMENT = 0.002;
 const MAX_BREATH_AMOUNT = 0.4;
 const BREATH_MULTIPLIER = -2;
@@ -550,7 +549,7 @@ class Player extends AbstractActor {
         this.setDying();
         this.emitSound(this.sounds.death);
       } else {
-        this.recoil(amount * HURT_RECOIL_MULTIPLIER, { direction: -1 });
+        this.recoil(amount, { direction: -1 });
 
         if (!this.isPlaying(this.sounds.pain)) {
           this.emitSound(this.sounds.pain);
