@@ -1,5 +1,6 @@
 import { CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
+import Explosion from '../Explosion';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -47,6 +48,7 @@ class AbstractEnemy extends AbstractActor {
     float,
     primaryAttack,
     proneHeight,
+    explosion,
     type,
     ...other
   }) {
@@ -86,6 +88,10 @@ class AbstractEnemy extends AbstractActor {
       ...primaryAttack,
       range: primaryAttack.range * CELL_SIZE,
     };
+
+    if (explosion) {
+      this.explosion = new Explosion({ source: this, ...explosion });
+    }
 
     this.setIdle();
   }
@@ -510,16 +516,10 @@ class AbstractEnemy extends AbstractActor {
    */
   setDead() {
     const isStateChanged = this.setState(STATES.DEAD);
-    const { explode } = this.effects;
 
     if (isStateChanged) {
-      if (explode) {
-        this.parent.addEffect({
-          x: this.x,
-          y: this.y,
-          z: this.z,
-          sourceId: `${this.id}_${explode}`,
-        });
+      if (this.explosion) {
+        this.explosion.run();
       } else {
         this.isProne = true;
       }

@@ -299,14 +299,16 @@ const createEffectsSprites = ({
   }, {});
 
   const enemyExplosionSprites = world.enemies.reduce((memo, enemy) => {
-    const { explode } = enemy.effects;
+    if (enemy.explosion) {
+      const explode = enemy.explosion?.effects.explode;
 
-    if (explode) {
-      const effectTextures = animations[explode].map(animation => textures[animation]);
+      if (explode) {
+        const effectTextures = animations[explode].map(animation => textures[animation]);
 
-      memo[`${enemy.id}_${explode}`] = new EffectSprite(effectTextures, {
-        animationSpeed: 0.2,
-      });
+        memo[`${enemy.explosion.id}_${explode}`] = new EffectSprite(effectTextures, {
+          animationSpeed: 0.2,
+        });
+      }
     }
 
     return memo;
