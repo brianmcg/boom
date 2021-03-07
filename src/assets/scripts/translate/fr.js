@@ -1,57 +1,57 @@
 export default {
   'manual.action.forward': {
-    text: 'vers l\'avant',
+    text: 'forward',
   },
   'manual.input.up': {
-    text: 'w ou en haut',
+    text: 'w or up',
   },
   'manual.action.backward': {
-    text: 'en arriere',
+    text: 'backward',
   },
   'manual.input.down': {
-    text: 's ou vers le bas',
+    text: 's or down',
   },
   'manual.action.strafe.left': {
-    text: 'strafe gauche',
+    text: 'strafe left',
   },
   'manual.input.strafe.left': {
     text: 'a',
   },
   'manual.action.strafe.right': {
-    text: 'droit strafe',
+    text: 'strafe right',
   },
   'manual.input.strafe.right': {
     text: 'd',
   },
   'manual.action.turn.left': {
-    text: 'tournez a gauche',
+    text: 'turn left',
   },
   'manual.input.turn.left': {
-    text: 'souris ou gauche',
+    text: 'mouse or left',
   },
   'manual.action.turn.right': {
-    text: 'tournez a droite',
+    text: 'turn right',
   },
   'manual.input.turn.right': {
-    text: 'souris ou droite',
+    text: 'mouse or right',
   },
   'manual.action.use': {
-    text: 'utilisation',
+    text: 'use',
   },
   'manual.input.space': {
-    text: 'e ou barre d\'espace',
+    text: 'e or space',
   },
   'manual.action.attack': {
-    text: 'attaque',
+    text: 'attack',
   },
   'manual.input.ctrl': {
-    text: 'click gauche ou ctrl',
+    text: 'left click or ctrl',
   },
   'manual.action.crouch': {
-    text: 'accroupissement',
+    text: 'crouch',
   },
   'manual.input.shift': {
-    text: 'touche majuscule',
+    text: 'shift',
   },
   'manual.action.pause': {
     text: 'pause',
@@ -63,13 +63,13 @@ export default {
     text: 'menu',
   },
   'manual.input.menu': {
-    text: 'en haut/en arriere/entrer',
+    text: 'up/down/enter',
   },
   'manual.title': {
-    text: 'Controles de Boom',
+    text: 'Boom Controls',
   },
   'manual.play': {
-    text: 'cliquez pour jouer',
+    text: 'click to play',
   },
   'scene.menu.continue': {
     text: 'Continue',
@@ -127,11 +127,17 @@ export default {
   'world.item.chaingun': {
     text: 'Chaingun',
   },
+  'world.item.launcher': {
+    text: 'Rocket Launcher',
+  },
   'world.color.yellow': {
     text: 'Yellow',
   },
   'world.color.blue': {
     text: 'Blue',
+  },
+  'world.color.green': {
+    text: 'Green',
   },
   'world.color.red': {
     text: 'Red',

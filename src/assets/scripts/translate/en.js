@@ -127,11 +127,17 @@ export default {
   'world.item.chaingun': {
     text: 'Chaingun',
   },
+  'world.item.launcher': {
+    text: 'Rocket Launcher',
+  },
   'world.color.yellow': {
     text: 'Yellow',
   },
   'world.color.blue': {
     text: 'Blue',
+  },
+  'world.color.green': {
+    text: 'Green',
   },
   'world.color.red': {
     text: 'Red',
