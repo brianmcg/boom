@@ -59,7 +59,7 @@ class AbstractDestroyableEntity extends DynamicEntity {
    * @param {Number} options.damage The damage of the hit.
    * @param {Number} options.angle  The angle of the hit.
    */
-  addHit(options) {
+  hit(options) {
     this.hits.push(options);
   }
 

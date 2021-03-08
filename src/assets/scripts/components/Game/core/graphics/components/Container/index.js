@@ -22,7 +22,7 @@ class Container extends PixiContainer {
   addChild(child) {
     super.addChild(child);
 
-    if (child.play && !this.playableChildren.includes(child)) {
+    if (child.play && !child.isComplete && !this.playableChildren.includes(child)) {
       this.playableChildren.push(child);
     }
 

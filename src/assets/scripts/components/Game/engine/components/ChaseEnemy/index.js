@@ -35,7 +35,7 @@ class ChaseEnemy extends AbstractEnemy {
     const angle = (this.getAngleTo(player) - DEG_180 + DEG_360) % DEG_360;
     const damage = this.attackDamage();
 
-    player.addHit({ damage, angle });
+    player.hit({ damage, angle });
   }
 }
 

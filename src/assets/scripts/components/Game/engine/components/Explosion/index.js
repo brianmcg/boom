@@ -54,7 +54,7 @@ class Explosion extends Body {
             body.parent.startUpdates(body);
           }
 
-          body.addHit({ damage, angle });
+          body.hit({ damage, angle });
         }
       });
     }

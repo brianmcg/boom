@@ -99,7 +99,7 @@ class HitScan extends Body {
             });
           }
 
-          body.addHit({ damage, angle });
+          body.hit({ damage, angle });
 
           if (
             body.spatter

@@ -1,5 +1,10 @@
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
+const EVENTS = {
+  ANIMATION_CHANGE: 'sprite:animation:change',
+  ANIMATION_COMPLETE: 'sprite:animation:complete',
+};
+
 /**
  * Class representing an explosive sprite.
  */
@@ -15,12 +20,32 @@ class ExplosiveEntitySprite extends AnimatedEntitySprite {
   constructor(textures, entity, options) {
     super(textures, { ...options, loop: false, autoPlay: false });
 
-    entity.onExplode(() => this.play());
+    entity.onExplode(() => {
+      this.emit(EVENTS.ANIMATION_CHANGE);
+      this.play();
+    });
 
     this.onComplete = () => {
-      this.visible = false;
+      this.isComplete = true;
+      this.emit(EVENTS.ANIMATION_COMPLETE);
       entity.remove();
     };
+  }
+
+  /**
+   * Add a callback for the animation change event.
+   * @param  {Function} callback The callback function.
+   */
+  onAnimationChange(callback) {
+    this.on(EVENTS.ANIMATION_CHANGE, callback);
+  }
+
+  /**
+   * Add a callback for the animation complete event.
+   * @param  {Function} callback The callback function.
+   */
+  onAnimationComplete(callback) {
+    this.on(EVENTS.ANIMATION_COMPLETE, callback);
   }
 }
 

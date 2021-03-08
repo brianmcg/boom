@@ -10,6 +10,11 @@ const STATES = {
   DEAD: 'dead',
 };
 
+const EVENTS = {
+  ANIMATION_CHANGE: 'sprite:animation:change',
+  ANIMATION_COMPLETE: 'sprite:animation:complete',
+};
+
 /**
  * Class representing an EnemySprite.
  * @extends {AnimatedEntitySprite}
@@ -37,10 +42,15 @@ class EnemySprite extends AnimatedEntitySprite {
     this.textureCollection = textureCollection;
 
     this.onComplete = () => {
-      if (enemy.explosion && enemy.isDead()) {
-        enemy.remove();
+      if (enemy.isDead()) {
+        this.isComplete = true;
+        this.emit(EVENTS.ANIMATION_COMPLETE);
+
+        if (enemy.explosion) {
+          enemy.remove();
+        }
       }
-    }
+    };
   }
 
   /**
@@ -54,6 +64,24 @@ class EnemySprite extends AnimatedEntitySprite {
     this.textures = textures;
     this.loop = loop;
     this.play();
+
+    this.emit(EVENTS.ANIMATION_CHANGE);
+  }
+
+  /**
+   * Add a callback for the animation change event.
+   * @param  {Function} callback The callback function.
+   */
+  onAnimationChange(callback) {
+    this.on(EVENTS.ANIMATION_CHANGE, callback);
+  }
+
+  /**
+   * Add a callback for the animation complete event.
+   * @param  {Function} callback The callback function.
+   */
+  onAnimationComplete(callback) {
+    this.on(EVENTS.ANIMATION_COMPLETE, callback);
   }
 }
 

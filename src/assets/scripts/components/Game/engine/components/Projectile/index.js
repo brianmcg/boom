@@ -69,22 +69,41 @@ class Projectile extends DynamicEntity {
   }
 
   /**
+   * Initialize the projectile.
+   */
+  onAdded(parent) {
+    super.onAdded(parent);
+
+    const {
+      x,
+      y,
+      z,
+      width,
+    } = this.source;
+
+    const distance = Math.sqrt((width * width) + (width * width)) + 1;
+
+    this.x = x + Math.cos(this.angle) * distance;
+    this.y = y + Math.sin(this.angle) * distance;
+    this.z = z - ELEVATION;
+
+    this.setTravelling();
+
+    this.emitSound(this.sounds.travel);
+  }
+
+  /**
    * Handle a collision event.
    * @param  {Body} body The body the projectile has collided with.
    */
   handleCollision(body) {
-    if (body.blocking) {
-      if (this.setColliding()) {
-        if (body.isDestroyable) {
-          body.addHit({
-            damage: this.damage,
-            angle: this.angle,
-          });
-        }
+    if (body.blocking && this.setColliding()) {
+      if (body.isDestroyable) {
+        body.hit({ damage: this.damage, angle: this.angle });
+      }
 
-        if (this.explosion) {
-          this.explosion.run();
-        }
+      if (this.explosion) {
+        this.explosion.run();
       }
     }
   }
@@ -113,36 +132,11 @@ class Projectile extends DynamicEntity {
   updateColliding() {
     this.remove();
     this.queue.push(this);
-
     this.setIdle();
   }
 
   /**
-   * Initialize the projectile.
-   */
-  onAdded(parent) {
-    super.onAdded(parent);
-
-    const {
-      x,
-      y,
-      z,
-      width,
-    } = this.source;
-
-    const distance = Math.sqrt((width * width) + (width * width)) + 1;
-
-    this.x = x + Math.cos(this.angle) * distance;
-    this.y = y + Math.sin(this.angle) * distance;
-    this.z = z - ELEVATION;
-
-    this.setTravelling();
-
-    this.emitSound(this.sounds.travel);
-  }
-
-  /**
-   * Set the damage caused by the projectile.
+   * Set the projectile damage and angle properties.
    * @param {Number} options.angle  The angle of the projectile.
    * @param {Number} options.damage The damage the projectile inflicts.
    */
@@ -176,6 +170,7 @@ class Projectile extends DynamicEntity {
 
     if (isStateChanged) {
       this.stop();
+
       if (this.sounds?.impact) {
         this.emitSound(this.sounds.impact);
       }

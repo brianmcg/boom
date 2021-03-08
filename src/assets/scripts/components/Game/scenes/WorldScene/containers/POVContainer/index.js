@@ -51,7 +51,7 @@ class POVContainer extends Container {
     super();
 
     const { map: mapSprites, background: backgroundSprites, player: playerSprites } = sprites;
-    const { effects: effectSprites, walls: wallSprites } = mapSprites;
+    const { effects: effectSprites, walls: wallSprites, entities: entitySprites } = mapSprites;
     const { player } = world;
 
     this.world = world;
@@ -75,6 +75,21 @@ class POVContainer extends Container {
       };
 
       this.mapContainer.addChild(effectSprite);
+    });
+
+    Object.values(entitySprites).forEach((entitySprite) => {
+      if (entitySprite.onAnimationChange) {
+        entitySprite.onAnimationChange(() => {
+          if (!this.mapContainer.playableChildren.includes(entitySprite)) {
+            this.mapContainer.playableChildren.push(entitySprite);
+          }
+        });
+
+        entitySprite.onAnimationComplete(() => {
+          this.mapContainer.playableChildren = this.mapContainer.playableChildren
+            .filter(c => c !== entitySprite);
+        });
+      }
     });
   }
 
