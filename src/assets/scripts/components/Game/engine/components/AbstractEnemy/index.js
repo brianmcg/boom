@@ -19,7 +19,7 @@ const FLOAT_INCREMENT = 0.075;
 
 const FLOAT_BOUNDARY = 4;
 
-const FORCE_FADE = 0.8;
+const FORCE_FADE = 0.85;
 
 const MIN_FORCE = 0.1;
 
@@ -336,6 +336,9 @@ class AbstractEnemy extends AbstractActor {
         this.velocity = damage * 0.1;
         this.setDead();
       }
+    } else {
+      this.angle = angle;
+      this.velocity = damage * 0.05;
     }
   }
 
