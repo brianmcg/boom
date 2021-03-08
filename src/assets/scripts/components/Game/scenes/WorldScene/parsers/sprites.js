@@ -23,6 +23,7 @@ import HUDKeySprite from '../sprites/HUDKeySprite';
 import HUDSprite from '../sprites/HUDSprite';
 import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
+import ProjectileSprite from '../sprites/ProjectileSprite';
 
 const createEnemySprite = ({ animations, textures, enemy }) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
@@ -48,10 +49,10 @@ const createWeaponSprite = ({ animations, textures, player }) => {
   return new WeaponSprite(textureCollection, player);
 };
 
-const createProjectileSprite = ({ animations, textures }) => {
+const createProjectileSprite = ({ animations, textures, rotate }) => {
   const projectileTextures = animations.map(animation => textures[animation]);
 
-  return new AnimatedEntitySprite(projectileTextures);
+  return new ProjectileSprite(projectileTextures, { rotate });
 };
 
 const createWallSpriteMask = (wallTexture, renderer) => {
@@ -413,6 +414,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
       entitySprites[projectile.id] = createProjectileSprite({
         animations: animations[projectile.name],
         textures,
+        rotate: projectile.rotate,
       });
     }
   });

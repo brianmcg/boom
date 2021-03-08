@@ -38,7 +38,7 @@ class Container extends PixiContainer {
   removeChild(child) {
     super.removeChild(child);
 
-    if (child.play && (this.loop || !child.playing)) {
+    if (child.play && (child.loop || !child.playing)) {
       this.playableChildren = this.playableChildren.filter(p => p !== child);
     }
 

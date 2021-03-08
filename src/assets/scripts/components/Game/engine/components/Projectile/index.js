@@ -39,6 +39,7 @@ class Projectile extends DynamicEntity {
     weight = 0,
     queue,
     explosion,
+    rotate,
     ...other
   }) {
     super({
@@ -53,6 +54,7 @@ class Projectile extends DynamicEntity {
     this.effects = effects;
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
+    this.rotate = rotate;
 
     if (explosion) {
       this.explosion = new Explosion({ source: this, ...explosion });
