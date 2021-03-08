@@ -417,8 +417,6 @@ const createEntitySprites = ({ animations, textures, world }) => {
     }
   });
 
-
-
   return entitySprites;
 };
 

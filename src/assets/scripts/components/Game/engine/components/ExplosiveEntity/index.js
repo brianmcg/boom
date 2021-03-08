@@ -1,4 +1,3 @@
-import { degrees } from 'game/core/physics';
 import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
 import Explosion from '../Explosion';
 

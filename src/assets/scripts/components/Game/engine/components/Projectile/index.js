@@ -1,4 +1,4 @@
-import { Body, degrees } from 'game/core/physics';
+import { Body } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 import Explosion from '../Explosion';
@@ -60,7 +60,7 @@ class Projectile extends DynamicEntity {
 
     this.addTrackedCollision({
       type: Body,
-      onStart: (body) => this.handleCollision(body),
+      onStart: body => this.handleCollision(body),
     });
 
     this.setIdle();
@@ -126,7 +126,6 @@ class Projectile extends DynamicEntity {
       y,
       z,
       width,
-      velocity,
     } = this.source;
 
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
