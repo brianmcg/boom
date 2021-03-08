@@ -50,14 +50,10 @@ class POVContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    const { map: mapSprites, background: backgroundSprites, player: playerSprites } = sprites;
-    const { effects: effectSprites, walls: wallSprites, entities: entitySprites } = mapSprites;
-    const { player } = world;
-
     this.world = world;
-    this.backgroundContainer = new BackgroundContainer(backgroundSprites);
-    this.mapContainer = new MapContainer(wallSprites);
-    this.playerContainer = new PlayerContainer(player, playerSprites);
+    this.backgroundContainer = new BackgroundContainer(sprites.background);
+    this.mapContainer = new MapContainer(world, sprites.map);
+    this.playerContainer = new PlayerContainer(world.player, sprites.player);
 
     this.displayedEntities = [];
     this.sprites = sprites;
@@ -65,32 +61,6 @@ class POVContainer extends Container {
     this.addChild(this.backgroundContainer);
     this.addChild(this.mapContainer);
     this.addChild(this.playerContainer);
-
-    world.onEffectAdded((effect) => {
-      const effectSprite = effectSprites[effect.sourceId];
-
-      effectSprite.onComplete = () => {
-        this.mapContainer.removeChild(effectSprite);
-        effect.remove();
-      };
-
-      this.mapContainer.addChild(effectSprite);
-    });
-
-    Object.values(entitySprites).forEach((entitySprite) => {
-      if (entitySprite.onAnimationChange) {
-        entitySprite.onAnimationChange(() => {
-          if (!this.mapContainer.playableChildren.includes(entitySprite)) {
-            this.mapContainer.playableChildren.push(entitySprite);
-          }
-        });
-
-        entitySprite.onAnimationComplete(() => {
-          this.mapContainer.playableChildren = this.mapContainer.playableChildren
-            .filter(c => c !== entitySprite);
-        });
-      }
-    });
   }
 
   /**
