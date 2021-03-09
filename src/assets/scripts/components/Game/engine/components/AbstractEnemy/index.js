@@ -23,6 +23,10 @@ const FORCE_FADE = 0.85;
 
 const MIN_FORCE = 0.1;
 
+const NEARBY = CELL_SIZE * 6;
+
+const NEARBY_SOUND_GAP = 8000;
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -83,6 +87,7 @@ class AbstractEnemy extends AbstractActor {
     this.floatDirection = 1;
     this.floatAmount = 0;
     this.proneHeight = proneHeight;
+    this.nearbyTimer = 0;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -147,9 +152,19 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Update enemy in idle state
    */
-  updateIdle() {
+  updateIdle(delta, elapsedMS) {
     if (this.findPlayer()) {
-      this.setAlerted();
+      return this.setAlerted();
+    }
+
+    this.nearbyTimer += elapsedMS;
+
+    if (this.nearbyTimer > NEARBY_SOUND_GAP) {
+      this.nearbyTimer = 0;
+    }
+
+    if (this.nearbyTimer === 0 && this.distanceToPlayer < NEARBY) {
+      this.emitSound(this.sounds.nearby);
     }
   }
 
