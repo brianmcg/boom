@@ -483,7 +483,7 @@ const castRaySection = ({
  */
 export const castRay = ({ angle, ...other }) => {
   const result = [];
-  const rayAngle = angle % DEG_90 === 0 ? angle + 0.01 : angle;
+  const rayAngle = angle % DEG_90 === 0 ? angle + 0.0001 : angle;
   for (let i = 0; i < WALL_LAYERS; i += 1) {
     const previousRay = result[i - 1];
 

@@ -433,9 +433,9 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAlerted() {
-    const isStateChangedd = this.setState(STATES.ALERTED);
+    const isStateChanged = this.setState(STATES.ALERTED);
 
-    if (isStateChangedd) {
+    if (isStateChanged) {
       this.emitSound(this.sounds.alert);
     }
   }
