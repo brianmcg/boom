@@ -13,6 +13,7 @@ import {
   BLEND_MODES,
 } from 'pixi.js';
 import { PixelateFilter } from '@pixi/filter-pixelate';
+import { SCREEN } from 'game/constants/config';
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
@@ -24,7 +25,7 @@ import ParticleContainer from './components/ParticleContainer';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-settings.SPRITE_BATCH_SIZE = 20000;
+settings.SPRITE_BATCH_SIZE = SCREEN.WIDTH * SCREEN.HEIGHT;
 
 const { ColorMatrixFilter } = filters;
 

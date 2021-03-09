@@ -19,7 +19,7 @@ const FLOAT_INCREMENT = 0.075;
 
 const FLOAT_BOUNDARY = 4;
 
-const FORCE_FADE = 0.85;
+const FORCE_FADE = 0.82;
 
 const MIN_FORCE = 0.1;
 
@@ -154,17 +154,17 @@ class AbstractEnemy extends AbstractActor {
    */
   updateIdle(delta, elapsedMS) {
     if (this.findPlayer()) {
-      return this.setAlerted();
-    }
+      this.setAlerted();
+    } else {
+      this.nearbyTimer += elapsedMS;
 
-    this.nearbyTimer += elapsedMS;
+      if (this.nearbyTimer > NEARBY_SOUND_GAP) {
+        this.nearbyTimer = 0;
+      }
 
-    if (this.nearbyTimer > NEARBY_SOUND_GAP) {
-      this.nearbyTimer = 0;
-    }
-
-    if (this.nearbyTimer === 0 && this.distanceToPlayer < NEARBY) {
-      this.emitSound(this.sounds.nearby);
+      if (this.nearbyTimer === 0 && this.distanceToPlayer < NEARBY) {
+        this.emitSound(this.sounds.nearby);
+      }
     }
   }
 
@@ -348,12 +348,12 @@ class AbstractEnemy extends AbstractActor {
         this.setHurting();
       } else {
         this.angle = angle;
-        this.velocity = damage * 0.1;
+        this.velocity = Math.sqrt(damage);
         this.setDead();
       }
     } else {
       this.angle = angle;
-      this.velocity = damage * 0.05;
+      this.velocity = Math.sqrt(damage) * 0.5;
     }
   }
 

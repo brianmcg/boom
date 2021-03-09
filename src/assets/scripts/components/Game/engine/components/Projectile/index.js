@@ -1,4 +1,4 @@
-import { Body } from 'game/core/physics';
+import { Body, degrees } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 import Explosion from '../Explosion';
@@ -9,7 +9,13 @@ const STATES = {
   COLLIDING: 'projectile:colliding',
 };
 
-const ELEVATION = CELL_SIZE * 0.0625;
+const HEIGHT_MULTIPLIER = 0.6;
+
+const HALF_HEIGHT = CELL_SIZE / 2;
+
+const DEG_180 = degrees(180);
+
+const DEG_360 = degrees(360);
 
 /**
  * Class representing a projectile
@@ -77,15 +83,16 @@ class Projectile extends DynamicEntity {
     const {
       x,
       y,
-      z,
+      elavation,
       width,
+      height,
     } = this.source;
 
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
     this.x = x + Math.cos(this.angle) * distance;
     this.y = y + Math.sin(this.angle) * distance;
-    this.z = z - ELEVATION;
+    this.z = elavation - (HALF_HEIGHT - (height * HEIGHT_MULTIPLIER));
 
     this.setTravelling();
 
@@ -99,7 +106,9 @@ class Projectile extends DynamicEntity {
   handleCollision(body) {
     if (body.blocking && this.setColliding()) {
       if (body.isDestroyable) {
-        body.hit({ damage: this.damage, angle: this.angle });
+        const angle = (body.getAngleTo(this) + DEG_180) % DEG_360;
+
+        body.hit({ damage: this.damage, angle });
       }
 
       if (this.explosion) {

@@ -114,22 +114,6 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
 };
 
 /**
- * Check if two bodies are colliding.
- * @param  {Body} bodyA The first body.
- * @param  {Body} bodyB The second body.
- * @return {Boolean}    Are the bodies colliding.
- */
-export const isBodyCollision = (bodyA, bodyB) => {
-  const shapeA = bodyA.shape;
-  const shapeB = bodyB.shape;
-
-  return shapeA.x < shapeB.x + shapeB.width
-    && shapeA.x + shapeA.width > shapeB.x
-    && shapeA.y < shapeB.y + shapeB.width
-    && shapeA.width + shapeA.y > shapeB.y;
-};
-
-/**
  * A collision between a ray and a body has occured.
  * @param  {Object}  startPoint The first point of the ray.
  * @param  {Object}  endPoint   The second point of the ray.
@@ -137,7 +121,12 @@ export const isBodyCollision = (bodyA, bodyB) => {
  * @return {Boolean}            Represents whether a collision has occured.
  */
 export const isRayCollision = (body, { startPoint, endPoint }) => {
-  const { x, y, width } = body.shape;
+  const {
+    x,
+    y,
+    width,
+    length,
+  } = body.shape;
 
   return lineIntersectsLine(
     startPoint,
@@ -148,16 +137,16 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
     startPoint,
     endPoint,
     { x: x + width, y },
-    { x: x + width, y: y + width },
+    { x: x + width, y: y + length },
   ) || lineIntersectsLine(
     startPoint,
     endPoint,
-    { x: x + width, y: y + width },
-    { x, y: y + width },
+    { x: x + width, y: y + length },
+    { x, y: y + length },
   ) || lineIntersectsLine(
     startPoint,
     endPoint,
-    { x, y: y + width },
+    { x, y: y + length },
     { x, y },
   );
 };
@@ -212,6 +201,30 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
 
     return memo;
   }, null);
+};
+
+/**
+ * Check if two bodies are colliding.
+ * @param  {Body} bodyA The first body.
+ * @param  {Body} bodyB The second body.
+ * @return {Boolean}    Are the bodies colliding.
+ */
+export const isBodyCollision = (bodyA, bodyB) => {
+  // Note: Alternative collision code.
+  // const startPoint = bodyA.previousPos;
+  // const endPoint = { x: bodyA.x, y: bodyA.y };
+  // return collision || isRayCollision(bodyB, {
+  //   startPoint,
+  //   endPoint,
+  // });
+
+  const shapeA = bodyA.shape;
+  const shapeB = bodyB.shape;
+
+  return shapeA.x < shapeB.x + shapeB.width
+    && shapeA.x + shapeA.width > shapeB.x
+    && shapeA.y < shapeB.y + shapeB.length
+    && shapeA.length + shapeA.y > shapeB.y;
 };
 
 /**

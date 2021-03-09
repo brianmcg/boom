@@ -4,6 +4,7 @@ import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
 import { degrees, castRay } from './helpers';
+import { AXES } from './constants';
 
 /**
  * @module  game/core/physics
@@ -38,4 +39,8 @@ export {
    * cast ray function.
    */
   castRay,
+  /**
+   * The axes constant.
+   */
+  AXES,
 };

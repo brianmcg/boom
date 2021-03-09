@@ -21,7 +21,7 @@ class ChaseEnemy extends AbstractEnemy {
    * Execute recovery behaviour.
    */
   onHurtComplete() {
-    this.setAiming();
+    this.setChasing();
   }
 
   /**

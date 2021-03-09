@@ -1,10 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
+import { AXES } from '../../constants';
 import Body from '../Body';
-
-const AXES = {
-  X: 'x',
-  Y: 'y',
-};
 
 /**
  * Creates a cell

@@ -47,7 +47,7 @@ class Explosion extends Body {
       parent.getAdjacentBodies(this.source, this.range).forEach((body) => {
         if (body.isDestroyable) {
           const distance = this.source.getDistanceTo(body);
-          const angle = (body.getAngleTo(this.source) - DEG_180 + DEG_360) % DEG_360;
+          const angle = (body.getAngleTo(this.source) + DEG_180) % DEG_360;
           const damage = Math.max(1, this.power - Math.round(distance));
 
           if (body.isActor && body.isDead()) {

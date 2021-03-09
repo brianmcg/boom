@@ -27,6 +27,7 @@ class Body extends EventEmitter {
     y = 0,
     z = 0,
     width = CELL_SIZE * 0.5,
+    length = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
     blocking = true,
   } = {}) {
@@ -37,6 +38,7 @@ class Body extends EventEmitter {
     this.y = y;
     this.z = z;
     this.width = width;
+    this.length = length;
     this.height = height;
     this.blocking = blocking;
   }
@@ -129,8 +131,9 @@ class Body extends EventEmitter {
   get shape() {
     return {
       x: this.x - this.width / 2,
-      y: this.y - this.width / 2,
+      y: this.y - this.length / 2,
       width: this.width,
+      length: this.length,
     };
   }
 }

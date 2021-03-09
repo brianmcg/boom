@@ -12,6 +12,8 @@ const EVENTS = {
   COLLISION_END: 'body:collision:end',
 };
 
+const VELOCITY_LIMIT = CELL_SIZE / 2;
+
 /**
  * Class representing a dynamic body.
  * @extends {Body}
@@ -97,7 +99,7 @@ class DynamicBody extends Body {
 
     const collisions = [];
 
-    const velocity = Math.min(this.velocity * delta, CELL_SIZE / 2);
+    const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
     // Unmark id from cell before moving
     this.cell.remove(this);

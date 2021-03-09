@@ -47,8 +47,7 @@ class GunEnemy extends AbstractEnemy {
    * Execute completed attack behavior.
    */
   onAttackComplete() {
-    this.setIdle();
-    this.setAttacking();
+    this.setAiming();
   }
 
   /**
