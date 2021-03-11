@@ -19,7 +19,7 @@ const FLOAT_INCREMENT = 0.075;
 
 const FLOAT_BOUNDARY = 4;
 
-const FORCE_FADE = 0.82;
+const FORCE_FADE = 0.85;
 
 const MIN_FORCE = 0.1;
 

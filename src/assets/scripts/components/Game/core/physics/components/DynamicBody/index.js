@@ -101,6 +101,12 @@ class DynamicBody extends Body {
 
     const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
+    // Note: For alternative collision detection.
+    // this.previousPos = {
+    //   x: this.x,
+    //   y: this.y,
+    // };
+
     // Unmark id from cell before moving
     this.cell.remove(this);
 
@@ -136,9 +142,9 @@ class DynamicBody extends Body {
 
         if (body.blocking) {
           if (body.y > this.y) {
-            this.y = (body.y - (body.width / 2)) - (this.width / 2);
+            this.y = (body.y - (body.length / 2)) - (this.length / 2);
           } else {
-            this.y = body.y + (body.width / 2) + (this.width / 2);
+            this.y = body.y + (body.length / 2) + (this.length / 2);
           }
         }
       }

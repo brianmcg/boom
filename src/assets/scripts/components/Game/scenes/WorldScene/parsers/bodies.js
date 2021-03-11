@@ -49,6 +49,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       axis: cell.axis,
       blocking: cell.blocking,
       sides,
+      offset: cell.offset,
       key: cell.key,
       ...props.door,
       soundSprite,
@@ -78,6 +79,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     width: CELL_SIZE,
     length: CELL_SIZE,
     height: cell.blocking ? CELL_SIZE : 0,
+    offset: cell.offset,
   });
 };
 
