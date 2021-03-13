@@ -53,8 +53,9 @@ class PushWall extends DynamicCell {
     }
 
     if (this.canMove()) {
-      const distance = this.getDistanceTo(user);
-      const shake = CELL_SIZE / distance * this.speed * SHAKE_MULTIPLIER;
+      this.distanceToPlayer = this.getDistanceTo(user);
+      this.emitSound(this.sounds.move);
+      const shake = CELL_SIZE / this.distanceToPlayer * this.speed * SHAKE_MULTIPLIER;
 
       this.parent.player.shake(shake);
       this.startUpdates();

@@ -59,6 +59,7 @@ class SoundLoader {
    * @return {Promise}                Promise that is resolwved when the sound is loaded.
    */
   loadSrc({ name, src, loop }) {
+    console.log({ loop });
     return new Promise((resolve) => {
       const sound = new Sound({ src, loop, mute: DISABLE_MUSIC });
       this.cache[name] = sound;
