@@ -109,6 +109,14 @@ class DynamicCell extends PhysicsCell {
   stop() {
     this.soundController.stop();
   }
+
+  /**
+   * Add body to update list.
+   */
+  startUpdates() {
+    super.startUpdates();
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+  }
 }
 
 export default DynamicCell;

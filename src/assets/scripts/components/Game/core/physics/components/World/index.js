@@ -49,7 +49,11 @@ class World extends EventEmitter {
   add(body) {
     if (!this.bodies[body.id]) {
       this.getCell(body.gridX, body.gridY).add(body);
-      this.startUpdates(body);
+
+      if (body.autoPlay) {
+        this.startUpdates(body);
+      }
+
       this.bodies[body.id] = body;
 
       if (body.onAdded) {

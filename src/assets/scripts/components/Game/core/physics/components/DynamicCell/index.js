@@ -16,12 +16,18 @@ class DynamicCell extends Cell {
    * @param  {Number}  options.speed     The speed of the cell.
    * @param  {Object}  options.sounds    The door sounds.
    */
-  constructor({ speed, sounds, ...other }) {
+  constructor({
+    speed,
+    sounds,
+    autoPlay = false,
+    ...other
+  }) {
     super(other);
 
     this.speed = speed * CELL_SIZE;
     this.sounds = sounds;
     this.isDynamic = true;
+    this.autoPlay = autoPlay;
   }
 
   /**

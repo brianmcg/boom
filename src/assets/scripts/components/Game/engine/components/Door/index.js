@@ -147,6 +147,7 @@ class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENING);
 
     if (isStateChanged) {
+      this.startUpdates();
       this.emitSound(this.sounds.open);
     }
 
@@ -192,7 +193,13 @@ class Door extends DynamicCell {
    * Set the door to the closed state.
    */
   setClosed() {
-    return this.setState(STATES.CLOSED);
+    const isStateChanged = this.setState(STATES.CLOSED);
+
+    if (isStateChanged) {
+      this.stopUpdates();
+    }
+
+    return isStateChanged;
   }
 
   /**

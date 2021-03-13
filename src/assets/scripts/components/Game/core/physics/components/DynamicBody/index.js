@@ -28,7 +28,12 @@ class DynamicBody extends Body {
    * @param  {Boolean} options.blocking Is the body blocking.
    * @param  {Number}  options.angle    The angle of the dynamic body.
    */
-  constructor({ angle = 0, weight = 1, ...other } = {}) {
+  constructor({
+    angle = 0,
+    weight = 1,
+    autoPlay = true,
+    ...other
+  } = {}) {
     super(other);
 
     this.velocity = 0;
@@ -37,6 +42,7 @@ class DynamicBody extends Body {
     this.weight = weight;
     this.collisions = [];
     this.trackedCollisions = [];
+    this.autoPlay = autoPlay;
   }
 
   /**

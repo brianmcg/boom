@@ -27,15 +27,6 @@ class PushWall extends DynamicCell {
   }
 
   /**
-   * Called when cell is added to world.
-   */
-  onAdded(parent) {
-    super.onAdded(parent);
-
-    this.stopUpdates();
-  }
-
-  /**
    * Push the wall.
    * @param  {AbstractActor} user The user of the wall.
    */
