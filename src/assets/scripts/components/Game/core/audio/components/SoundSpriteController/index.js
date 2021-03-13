@@ -20,11 +20,16 @@ class SoundSpriteController {
 
   /**
    * Emit a sound.
-   * @param  {String} name             The name of the sound.
-   * @param  {Number} volume           The volume to play the sound at.
+   * @param  {String}  name     The name of the sound.
+   * @param  {Number}  volume   The volume to play the sound at.
+   * @param  {Boolean} loop     Loop the sound.
    */
-  emitSound(name, volume) {
+  emitSound(name, volume, loop) {
     const id = this.soundSprite.play(name);
+
+    if (loop) {
+      this.soundSprite.loop(true, id);
+    }
 
     this.soundSprite.volume(volume, id);
     this.playing.push(id);
@@ -33,6 +38,16 @@ class SoundSpriteController {
     this.soundSprite.once('end', () => {
       this.playing = this.playing.filter(playingId => playingId !== id);
     }, id);
+  }
+
+  /**
+   * Stop a sound.
+   * @param  {String} name The name of the sound.
+   */
+  stopSound(name) {
+    const id = this.lastPlayed[name];
+
+    this.soundSprite.stop(id);
   }
 
   /**

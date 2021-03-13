@@ -38,14 +38,23 @@ class DynamicEntity extends DynamicBody {
 
   /**
    * Emit a sound.
-   * @param  {String} id The id of the sound.
+   * @param {String}  name The name of the sound.
+   * @param {Boolean} loop Loop the sound.
    */
-  emitSound(name) {
+  emitSound(name, loop) {
     const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
       ? 0
       : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
-    this.soundController.emitSound(name, volume);
+    this.soundController.emitSound(name, volume, loop);
+  }
+
+  /**
+   * Stop a sound.
+   * @param  {String} name The name of the sound.
+   */
+  stopSound(name) {
+    this.soundController.stopSound(name);
   }
 
   /**

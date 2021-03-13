@@ -405,7 +405,7 @@ class Player extends AbstractActor {
       const { distance, cell } = ray;
 
       if (cell.use && distance <= (CELL_SIZE + this.width / 2)) {
-        // this.emitSound(this.sounds.use);
+        this.emitSound(this.sounds.use);
         cell.use(this);
       }
     }
