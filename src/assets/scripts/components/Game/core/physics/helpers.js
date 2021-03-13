@@ -210,14 +210,9 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
  * @return {Boolean}    Are the bodies colliding.
  */
 export const isBodyCollision = (bodyA, bodyB) => {
-  // Note: Alternative collision code.
-  // const startPoint = bodyA.previousPos;
-  // const endPoint = { x: bodyA.x, y: bodyA.y };
-  // return collision || isRayCollision(bodyB, {
-  //   startPoint,
-  //   endPoint,
-  // });
-
+  // Note: used for alternative collision detection.
+  //  const startPoint = bodyA.previousPos;
+  //  const endPoint = { x: bodyA.x, y: bodyA.y };
   const shapeA = bodyA.shape;
   const shapeB = bodyB.shape;
 
@@ -321,24 +316,56 @@ const castRaySection = ({
 
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
-          if (horizontalCell.offset.y) {
+          if (horizontalCell.isDoor) {
             offsetRatio = CELL_SIZE / horizontalCell.offset.y;
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+
+            if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
+              xIntersection += xOffsetDist;
+              horizontalGrid += yOffsetDist;
+              distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+              break;
+            } else {
+              xIntersection += distToNextXIntersection;
+              horizontalGrid += distToNextHorizontalGrid;
+            }
+          } else if (horizontalCell.isPushWall) {
+            offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+            xOffsetDist = distToNextXIntersection / offsetRatio;
+            yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+
+            if (Math.floor((xIntersection + xOffsetDist) / CELL_SIZE) === horizontalCell.gridX) {
+              xIntersection += xOffsetDist;
+              horizontalGrid += yOffsetDist;
+              distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+              break;
+            } else {
+              xIntersection += distToNextXIntersection;
+              horizontalGrid += distToNextHorizontalGrid;
+            }
+          } else if (horizontalCell.transparency) {
+            if (horizontalCell.offset.y) {
+              offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+              xOffsetDist = distToNextXIntersection / offsetRatio;
+              yOffsetDist = distToNextHorizontalGrid / offsetRatio;
+            } else {
+              xOffsetDist = Number.MAX_VALUE;
+              yOffsetDist = Number.MAX_VALUE;
+            }
+
+            if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
+              xIntersection += xOffsetDist;
+              horizontalGrid += yOffsetDist;
+              distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+              break;
+            } else {
+              xIntersection += distToNextXIntersection;
+              horizontalGrid += distToNextHorizontalGrid;
+            }
           } else {
-            xOffsetDist = Number.MAX_VALUE;
-            yOffsetDist = Number.MAX_VALUE;
-          }
-
-          if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
-            xIntersection += xOffsetDist;
-            horizontalGrid += yOffsetDist;
-
             distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
             break;
-          } else {
-            xIntersection += distToNextXIntersection;
-            horizontalGrid += distToNextHorizontalGrid;
           }
         } else {
           distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
@@ -400,23 +427,56 @@ const castRaySection = ({
 
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
-          if (verticalCell.offset.x) {
+          if (verticalCell.isDoor) {
             offsetRatio = CELL_SIZE / verticalCell.offset.x;
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
-          } else {
-            yOffsetDist = Number.MAX_VALUE;
-            xOffsetDist = Number.MAX_VALUE;
-          }
 
-          if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
-            yIntersection += yOffsetDist;
-            verticalGrid += xOffsetDist;
+            if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+              break;
+            } else {
+              yIntersection += distToNextYIntersection;
+              verticalGrid += distToNextVerticalGrid;
+            }
+          } else if (verticalCell.isPushWall) {
+            offsetRatio = CELL_SIZE / verticalCell.offset.x;
+            yOffsetDist = distToNextYIntersection / offsetRatio;
+            xOffsetDist = distToNextVerticalGrid / offsetRatio;
+
+            if (Math.floor((yIntersection + yOffsetDist) / CELL_SIZE) === verticalCell.gridY) {
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+              break;
+            } else {
+              yIntersection += distToNextYIntersection;
+              verticalGrid += distToNextVerticalGrid;
+            }
+          } else if (verticalCell.transparency) {
+            if (verticalCell.offset.x) {
+              offsetRatio = CELL_SIZE / verticalCell.offset.x;
+              yOffsetDist = distToNextYIntersection / offsetRatio;
+              xOffsetDist = distToNextVerticalGrid / offsetRatio;
+            } else {
+              yOffsetDist = Number.MAX_VALUE;
+              xOffsetDist = Number.MAX_VALUE;
+            }
+
+            if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+              break;
+            } else {
+              yIntersection += distToNextYIntersection;
+              verticalGrid += distToNextVerticalGrid;
+            }
+          } else {
             distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
             break;
-          } else {
-            yIntersection += distToNextYIntersection;
-            verticalGrid += distToNextVerticalGrid;
           }
         } else {
           distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
@@ -441,6 +501,11 @@ const castRaySection = ({
       }
     });
 
+    // for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
+    //   horizontalBody = horizontalCell.bodies[i];
+    //   encounteredBodies[horizontalBody.id] = horizontalBody;
+    // }
+
     return {
       startPoint: {
         x,
@@ -460,6 +525,11 @@ const castRaySection = ({
       angle,
     };
   }
+
+  // for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
+  //   verticalBody = verticalCell.bodies[i];
+  //   encounteredBodies[verticalBody.id] = verticalBody;
+  // }
 
   Object.values(encounteredBodies).forEach((body) => {
     if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
@@ -494,23 +564,36 @@ const castRaySection = ({
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Array}                The cast results.
  */
-export const castRay = ({ angle, ...other }) => {
+export const castRay = ({
+  x,
+  y,
+  angle,
+  ...other
+}) => {
+  let currentRay;
+  let previousRay;
+
   const result = [];
   const rayAngle = angle % DEG_90 === 0 ? angle + 0.0001 : angle;
-  for (let i = 0; i < WALL_LAYERS; i += 1) {
-    const previousRay = result[i - 1];
+  const startPoint = { x, y };
 
-    let currentRay;
+  for (let i = 0; i < WALL_LAYERS; i += 1) {
+    previousRay = result[i - 1];
 
     if (previousRay) {
       currentRay = castRaySection(Object.assign(other, previousRay.endPoint, {
         angle: rayAngle,
       }));
+
       currentRay.distance += previousRay.distance;
-      currentRay.startPoint = previousRay.startPoint;
-      Object.assign(currentRay.encounteredBodies, previousRay.encounteredBodies);
+      currentRay.startPoint = startPoint;
+
+      Object.assign(
+        currentRay.encounteredBodies,
+        previousRay.encounteredBodies,
+      );
     } else {
-      currentRay = castRaySection(Object.assign(other, {
+      currentRay = castRaySection(Object.assign(other, startPoint, {
         angle: rayAngle,
       }));
     }

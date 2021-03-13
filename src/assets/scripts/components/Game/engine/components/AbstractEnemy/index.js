@@ -292,7 +292,7 @@ class AbstractEnemy extends AbstractActor {
 
     if (this.velocity === 0) {
       this.blocking = false;
-      this.parent.stopUpdates(this);
+      this.stopUpdates();
     }
   }
 

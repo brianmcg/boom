@@ -101,11 +101,10 @@ class DynamicBody extends Body {
 
     const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
-    // Note: For alternative collision detection.
-    // this.previousPos = {
-    //   x: this.x,
-    //   y: this.y,
-    // };
+    this.previousPos = {
+      x: this.x,
+      y: this.y,
+    };
 
     // Unmark id from cell before moving
     this.cell.remove(this);
@@ -121,10 +120,14 @@ class DynamicBody extends Body {
         }
 
         if (body.blocking) {
-          if (body.x > this.x) {
-            this.x = (body.x - (body.width / 2)) - (this.width / 2);
+          const { shape } = body;
+          const { x, width } = shape;
+          const halfWidth = this.shape.width / 2;
+
+          if (this.previousPos.x < body.x) {
+            this.x = x - halfWidth;
           } else {
-            this.x = body.x + (body.width / 2) + (this.width / 2);
+            this.x = x + width + halfWidth;
           }
         }
       }
@@ -141,10 +144,14 @@ class DynamicBody extends Body {
         }
 
         if (body.blocking) {
-          if (body.y > this.y) {
-            this.y = (body.y - (body.length / 2)) - (this.length / 2);
+          const { shape } = body;
+          const { y, length } = shape;
+          const halfLength = this.shape.length / 2;
+
+          if (this.previousPos.y < body.y) {
+            this.y = y - halfLength;
           } else {
-            this.y = body.y + (body.length / 2) + (this.length / 2);
+            this.y = y + length + halfLength;
           }
         }
       }
@@ -189,6 +196,24 @@ class DynamicBody extends Body {
     });
 
     return rays[rays.length - 1];
+  }
+
+  /**
+   * Add body to update list.
+   */
+  startUpdates() {
+    if (this.parent) {
+      this.parent.startUpdates(this);
+    }
+  }
+
+  /**
+   * Remove body from update list.
+   */
+  stopUpdates() {
+    if (this.parent) {
+      this.parent.stopUpdates(this);
+    }
   }
 
   /**

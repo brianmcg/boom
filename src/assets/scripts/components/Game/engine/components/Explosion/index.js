@@ -51,7 +51,7 @@ class Explosion extends Body {
           const damage = Math.max(1, this.power - Math.round(distance));
 
           if (body.isActor && body.isDead()) {
-            body.parent.startUpdates(body);
+            body.startUpdates();
           }
 
           body.hit({ damage, angle });

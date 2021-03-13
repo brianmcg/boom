@@ -3,6 +3,7 @@ import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import {
   Cell,
+  PushWall,
   World,
   Door,
   Entity,
@@ -41,6 +42,7 @@ const createCell = ({ cell, props, soundSprite }) => {
 
   if (cell.door) {
     return new Door({
+      ...props.door,
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       width: CELL_SIZE,
@@ -48,10 +50,25 @@ const createCell = ({ cell, props, soundSprite }) => {
       height: CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
-      sides,
-      offset: cell.offset,
       key: cell.key,
-      ...props.door,
+      offset: 0.5,
+      sides,
+      soundSprite,
+    });
+  }
+
+  if (cell.pushable) {
+    return new PushWall({
+      ...props.pushWall,
+      x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
+      y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
+      width: CELL_SIZE,
+      length: CELL_SIZE,
+      height: CELL_SIZE,
+      axis: cell.axis,
+      blocking: cell.blocking,
+      offset: 0.1,
+      sides,
       soundSprite,
     });
   }
@@ -62,12 +79,12 @@ const createCell = ({ cell, props, soundSprite }) => {
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       blocking: cell.blocking,
       axis: cell.axis,
-      sides,
       width: CELL_SIZE,
       length: CELL_SIZE,
       height: cell.blocking ? CELL_SIZE : 0,
       transparency: cell.transparency,
       offset: cell.offset,
+      sides,
     });
   }
 
@@ -75,11 +92,10 @@ const createCell = ({ cell, props, soundSprite }) => {
     x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
     blocking: cell.blocking,
-    sides,
     width: CELL_SIZE,
     length: CELL_SIZE,
     height: cell.blocking ? CELL_SIZE : 0,
-    offset: cell.offset,
+    sides,
   });
 };
 

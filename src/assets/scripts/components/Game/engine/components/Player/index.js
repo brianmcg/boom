@@ -406,24 +406,7 @@ class Player extends AbstractActor {
 
       if (cell.use && distance <= (CELL_SIZE + this.width / 2)) {
         this.emitSound(this.sounds.use);
-
-        if (cell.isDoor) {
-          if (cell.keyCard) {
-            const keyCard = this.keyCards[cell.keyCard];
-
-            if (keyCard && keyCard.isEquiped()) {
-              if (cell.use()) {
-                keyCard.use();
-              }
-            } else {
-              this.addMessage(translate('world.door.locked', {
-                color: translate(`world.color.${cell.keyCard}`),
-              }));
-            }
-          } else {
-            cell.use();
-          }
-        }
+        cell.use(this);
       }
     }
 

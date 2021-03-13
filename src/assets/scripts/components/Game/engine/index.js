@@ -11,6 +11,7 @@ import KeyItem from './components/KeyItem';
 import AmmoItem from './components/AmmoItem';
 import HealthItem from './components/HealthItem';
 import WeaponItem from './components/WeaponItem';
+import PushWall from './components/PushWall';
 
 export {
   Cell,
@@ -26,4 +27,5 @@ export {
   AmmoItem,
   HealthItem,
   WeaponItem,
+  PushWall,
 };

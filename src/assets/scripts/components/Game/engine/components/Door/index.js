@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import { CELL_SIZE } from 'game/constants/config';
 import DynamicCell from '../DynamicCell';
 
@@ -41,12 +42,24 @@ class Door extends DynamicCell {
    * Open the door.
    * @return {Booleam}
    */
-  use() {
+  use(user) {
     if (this.isClosed()) {
-      return this.setOpening();
-    }
+      if (this.keyCard) {
+        const keyCard = user.keyCards[this.keyCard];
 
-    return false;
+        if (keyCard && keyCard.isEquiped()) {
+          if (this.setOpening()) {
+            keyCard.use();
+          }
+        } else {
+          user.addMessage(translate('world.door.locked', {
+            color: translate(`world.color.${this.keyCard}`),
+          }));
+        }
+      } else {
+        this.setOpening();
+      }
+    }
   }
 
   /**

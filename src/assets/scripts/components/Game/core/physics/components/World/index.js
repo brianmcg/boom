@@ -108,6 +108,15 @@ class World extends EventEmitter {
   }
 
   /**
+   * Set the cell at the given coordinates.
+   * @param {Number} x    The x coordinate.
+   * @param {Number} y    The y coordinate.
+   */
+  setCell(x, y, cell) {
+    this.grid[y][x] = cell;
+  }
+
+  /**
    * Get the cells surrounding a given body.
    * @param  {Body}   body  The body.
    * @param  {Number} range The range of cells.
