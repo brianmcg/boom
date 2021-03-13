@@ -22,7 +22,6 @@ class PushWall extends DynamicCell {
     super(options);
 
     this.isPushWall = true;
-    this.speed = 2;
     this.direction = { x: 0, y: 0 };
   }
 
