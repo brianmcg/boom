@@ -223,7 +223,7 @@ class Player extends AbstractActor {
    */
   start(message) {
     this.addMessage(message, { priority: 1 });
-    this.emitSound(this.sounds.enter);
+    this.emitSound(this.weapon.sounds.equip);
     this.actions.use = true;
   }
 

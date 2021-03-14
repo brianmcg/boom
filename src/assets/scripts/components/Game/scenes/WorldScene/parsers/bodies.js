@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees, AXES } from 'game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
 import { CELL_SIZE } from 'game/constants/config';
 import {
@@ -45,8 +45,8 @@ const createCell = ({ cell, props, soundSprite }) => {
       ...props.door,
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
-      width: CELL_SIZE,
-      length: CELL_SIZE,
+      width: cell.axis === AXES.X ? CELL_SIZE : CELL_SIZE / 2,
+      length: cell.axis === AXES.Y ? CELL_SIZE : CELL_SIZE / 2,
       height: CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
@@ -79,8 +79,8 @@ const createCell = ({ cell, props, soundSprite }) => {
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       blocking: cell.blocking,
       axis: cell.axis,
-      width: CELL_SIZE,
-      length: CELL_SIZE,
+      width: cell.axis === AXES.X ? CELL_SIZE : CELL_SIZE / 2,
+      length: cell.axis === AXES.Y ? CELL_SIZE : CELL_SIZE / 2,
       height: cell.blocking ? CELL_SIZE : 0,
       transparency: cell.transparency,
       offset: cell.offset,
@@ -180,8 +180,8 @@ export const createWorld = ({ scene, data, graphics }) => {
         name: enemy.name,
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
-        width: Math.ceil(CELL_SIZE * enemy.width),
-        length: Math.ceil(CELL_SIZE * enemy.length),
+        width: Math.max(Math.ceil(CELL_SIZE * enemy.width), CELL_SIZE / 2),
+        length: Math.max(Math.ceil(CELL_SIZE * enemy.length), CELL_SIZE / 2),
         height: Math.ceil(CELL_SIZE * enemy.height),
         float: enemy.float,
         proneHeight: enemy.proneHeight,
