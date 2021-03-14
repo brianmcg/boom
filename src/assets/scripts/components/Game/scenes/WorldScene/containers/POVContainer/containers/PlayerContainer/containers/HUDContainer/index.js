@@ -8,6 +8,8 @@ const ICON_PADDING = SCREEN.HEIGHT / 111;
 
 const MESSAGE_PADDING = 3;
 
+const displayHealth = ({ health, maxHealth }) => Math.round(health / maxHealth * 100);
+
 /**
  * Class representing a hud container.
  */
@@ -25,12 +27,13 @@ class HUDContainer extends Container {
       healthAmount,
       ammoIcon,
       ammoAmount,
-      // foreground,
+      foreground,
       keys,
     } = sprites;
 
     healthIcon.x = HUD_PADDING + (healthIcon.width / 2);
     healthIcon.y = SCREEN.HEIGHT - (healthIcon.height / 2) - HUD_PADDING;
+    healthAmount.text = displayHealth(player);
     healthAmount.x = healthIcon.x + (healthIcon.width / 2)
       + (healthAmount.width / 2) + (HUD_PADDING / 2);
     healthAmount.y = healthIcon.y;
@@ -44,7 +47,7 @@ class HUDContainer extends Container {
     this.addChild(ammoAmount);
     this.addChild(healthIcon);
     this.addChild(healthAmount);
-    // this.addChild(foreground);
+    this.addChild(foreground);
 
     // Set key card sprite positions
     Object.values(player.keyCards).forEach((keyCard) => {
@@ -82,12 +85,12 @@ class HUDContainer extends Container {
     player.onPickUp(() => {
       ammoAmount.text = player.weapon.ammo;
       ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
-      healthAmount.text = player.health;
+      healthAmount.text = displayHealth(player);
     });
 
     // Update health sprite on player hurt event.
     player.onHurt(() => {
-      healthAmount.text = player.health;
+      healthAmount.text = displayHealth(player);
     });
 
     // Update ammo sprites on fore weapon event.
@@ -113,7 +116,7 @@ class HUDContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   update(delta, elapsedMS) {
-    const { keys } = this.sprites;
+    const { keys, foreground } = this.sprites;
 
     // Update each key card sprite if it is active.
     Object.values(keys).forEach((key) => {
@@ -134,8 +137,9 @@ class HUDContainer extends Container {
     });
 
     this.messages.forEach(message => message.update(delta, elapsedMS));
+
     // Update foreground.
-    // foreground.alpha = 1 - this.player.vision;
+    foreground.alpha = 1 - this.player.vision;
   }
 }
 

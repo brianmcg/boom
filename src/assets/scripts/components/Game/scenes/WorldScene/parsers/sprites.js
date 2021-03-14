@@ -504,7 +504,7 @@ const createHudSprites = ({ world, textures }) => {
   const healthAmount = new TextSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
-    text: `${world.player.health}`,
+    text: '100',
     color: WHITE,
     anchor: 0.5,
   });

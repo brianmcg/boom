@@ -15,10 +15,16 @@ export const MAX_FPS = 60;
 export const DISABLE_SOUNDS = false;
 
 /**
+ * The difficulty level.
+ * @type {Number}
+ */
+export const DIFFICULTY = 0;
+
+/**
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = true;
+export const DISABLE_MUSIC = false;
 
 /**
  * The size of mao tile.
@@ -51,7 +57,7 @@ export const SCREEN = {
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = true;
+export const DEBUG = false;
 
 /**
  * The default language to use.
@@ -75,4 +81,4 @@ export const UPDATE_DISTANCE = CELL_SIZE * 20;
  * The max distance a sound can travel.
  * @type {Number}
  */
-export const MAX_SOUND_DISTANCE = CELL_SIZE * 9;
+export const MAX_SOUND_DISTANCE = CELL_SIZE * 16;
