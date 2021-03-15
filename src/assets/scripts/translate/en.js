@@ -110,6 +110,9 @@ export default {
   'world.review.items': {
     text: 'Items',
   },
+  'world.review.secrets': {
+    text: 'Secrets',
+  },
   'world.review.time': {
     text: 'Time',
   },

@@ -16,6 +16,7 @@ const STATES = {
   SHOW_TITLE: 'review:show:title',
   SHOW_ENEMIES: 'review:show:enemies',
   SHOW_ITEMS: 'review:show:items',
+  SHOW_SECRETS: 'review:show:secrets',
   SHOW_TIME: 'review:show:time',
   REMOVE_STATS: 'review:remove:stats',
 };
@@ -32,13 +33,20 @@ class ReviewContainer extends Container {
     super();
 
     const { title, stats, background } = sprites;
-    const { enemies, items, time } = stats;
+
+    const {
+      enemies,
+      items,
+      secrets,
+      time,
+    } = stats;
+
     const statsHeight = stats.enemies.name.height;
     const statsStartY = title.height + (TEXT_PADDING * 10);
 
     title.y = (title.height / 2) + TEXT_PADDING * 4;
 
-    [enemies, items, time].forEach(({ name, value }, i) => {
+    [enemies, items, secrets, time].forEach(({ name, value }, i) => {
       name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
       value.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
     });
@@ -47,6 +55,7 @@ class ReviewContainer extends Container {
     this.titleScale = 0;
     this.enemiesScale = 0;
     this.itemsScale = 0;
+    this.secretsScale = 0;
     this.timeScale = 0;
 
     this.sprites = sprites;
@@ -77,6 +86,9 @@ class ReviewContainer extends Container {
       case STATES.SHOW_ITEMS:
         this.updateShowItems(delta, elapsedMS);
         break;
+      case STATES.SHOW_SECRETS:
+        this.updateShowSecrets(delta, elapsedMS);
+        break;
       case STATES.SHOW_TIME:
         this.updateShowTime(delta, elapsedMS);
         break;
@@ -95,6 +107,7 @@ class ReviewContainer extends Container {
 
     Object.values(stats.enemies).forEach(sprite => sprite.setScale(this.enemiesScale));
     Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
+    Object.values(stats.secrets).forEach(sprite => sprite.setScale(this.secretsScale));
     Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
 
@@ -159,6 +172,25 @@ class ReviewContainer extends Container {
 
       if (this.timer >= INTERVAL) {
         this.timer = 0;
+        this.setShowSecrets();
+      }
+    }
+  }
+
+  /**
+   * Update the container when in the show items state.
+   * @param  {Number} delta The delta time.
+   */
+  updateShowSecrets(delta, elapsedMS) {
+    this.secretsScale += SCALE_INCREMENT * delta;
+
+    if (this.secretsScale >= 1) {
+      this.secretsScale = 1;
+
+      this.timer += elapsedMS;
+
+      if (this.timer >= INTERVAL) {
+        this.timer = 0;
         this.setShowTime();
       }
     }
@@ -190,6 +222,7 @@ class ReviewContainer extends Container {
     this.titleScale = this.scaleFactor;
     this.enemiesScale = this.scaleFactor;
     this.itemsScale = this.scaleFactor;
+    this.secretsScale = this.scaleFactor;
     this.timeScale = this.scaleFactor;
   }
 
@@ -240,6 +273,24 @@ class ReviewContainer extends Container {
   }
 
   /**
+   * Set the state to show items.
+   */
+  setShowSecrets() {
+    const isStateChanged = this.setState(STATES.SHOW_SECRETS);
+
+    if (isStateChanged) {
+      this.emit(SHOW_STAT_EVENT);
+
+      Object.values(this.sprites.stats.secrets).forEach((sprite) => {
+        sprite.setScale(0);
+        this.addChild(sprite);
+      });
+    }
+
+    return isStateChanged;
+  }
+
+  /**
    * Set the state to show time.
    */
   setShowTime() {
@@ -277,18 +328,27 @@ class ReviewContainer extends Container {
     enemiesTotal,
     itemsFound,
     itemsTotal,
+    secretsFound,
+    secretsTotal,
     timeTaken,
   }) {
     const { title, stats } = this.sprites;
-    const { enemies, items, time } = stats;
+
+    const {
+      enemies,
+      items,
+      secrets,
+      time,
+    } = stats;
 
     title.x = SCREEN.WIDTH / 2;
 
     time.value.text = formatMS(timeTaken);
     enemies.value.text = `${Math.round(enemiesKilled / enemiesTotal * 100)}%`;
     items.value.text = `${Math.round(itemsFound / itemsTotal * 100)}%`;
+    secrets.value.text = `${Math.round(secretsFound / secretsTotal * 100)}%`;
 
-    [enemies, items, time].forEach(({ name, value }) => {
+    [enemies, items, secrets, time].forEach(({ name, value }) => {
       name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
       value.x = (SCREEN.WIDTH / 2) + (value.width / 2) + TEXT_PADDING;
     });

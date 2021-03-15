@@ -94,6 +94,7 @@ class PushWall extends DynamicCell {
         this.stopSound(this.sounds.move);
         this.emitSound(this.sounds.stop);
         this.stopUpdates();
+        this.isOpened = true;
       }
     }
   }

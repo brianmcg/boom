@@ -472,6 +472,23 @@ const createReviewSprites = (text) => {
     }),
   };
 
+  const secrets = {
+    name: new TextSprite({
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
+      text: text.secrets,
+      color: WHITE,
+      anchor: 0.5,
+    }),
+    value: new TextSprite({
+      fontName: GAME_FONT.NAME,
+      fontSize: FONT_SIZES.MEDIUM,
+      text: '0',
+      color: RED,
+      anchor: 0.5,
+    }),
+  };
+
   const time = {
     name: new TextSprite({
       fontName: GAME_FONT.NAME,
@@ -495,6 +512,7 @@ const createReviewSprites = (text) => {
     stats: {
       enemies,
       items,
+      secrets,
       time,
     },
   };

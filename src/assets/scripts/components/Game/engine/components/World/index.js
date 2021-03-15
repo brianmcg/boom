@@ -66,6 +66,11 @@ class World extends PhysicsWorld {
     this.startTime = performance.now();
     this.startingProps = Object.assign({}, this.props);
 
+    this.secrets = this.grid.reduce((memo, row) => ([
+      ...memo,
+      ...row.filter(cell => cell.isPushWall),
+    ]), []);
+
     player.onDeath(() => this.onPlayerDeath());
 
     player.onPickUp(item => this.onPlayerPickUp(item));
@@ -205,6 +210,8 @@ class World extends PhysicsWorld {
       itemsTotal: this.items.length,
       enemiesKilled: this.enemies.filter(enemy => enemy.isDead()).length,
       enemiesTotal: this.enemies.length,
+      secretsFound: this.secrets.filter(secret => secret.isOpened).length,
+      secretsTotal: this.secrets.length,
     };
   }
 

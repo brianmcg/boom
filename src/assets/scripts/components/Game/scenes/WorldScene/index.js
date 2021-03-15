@@ -118,6 +118,7 @@ class WorldScene extends Scene {
         title: translate(`world.title.${this.index}`),
         enemies: translate('world.review.enemies'),
         items: translate('world.review.items'),
+        secrets: translate('world.review.secrets'),
         time: translate('world.review.time'),
       },
     };
