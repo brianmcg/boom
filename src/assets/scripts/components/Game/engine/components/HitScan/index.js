@@ -1,5 +1,5 @@
 import { CELL_SIZE } from 'game/constants/config';
-import { Body, degrees } from 'game/core/physics';
+import { Body, degrees, castRay } from 'game/core/physics';
 
 const DEG_180 = degrees(180);
 
@@ -44,13 +44,20 @@ class HitScan extends Body {
    * @param  {Number} options.power     The power of the hit.
    */
   run(angle) {
+    const rays = castRay({
+      x: this.source.x,
+      y: this.source.y,
+      angle,
+      world: this.source.parent,
+    });
+
     const {
       startPoint,
       endPoint,
       distance,
-      side,
       encounteredBodies,
-    } = this.source.castRay(angle);
+    } = rays[rays.length - 1];
+
 
     const originAngle = (angle + DEG_180) % DEG_360;
 
@@ -101,10 +108,23 @@ class HitScan extends Body {
 
           body.hit({ damage, angle });
 
+          const { side, distance: sectionDistance } = rays.reduce((memo, ray) => {
+            if (ray.distance > point.distance) {
+              if (ray.distance < memo.distance) {
+                return ray;
+              }
+              return memo;
+            }
+            return memo;
+          }, {
+            side: {},
+            distance: Number.MAX_VALUE,
+          });
+
           if (
             body.spatter
               && !side.spatter
-              && distance - point.distance < SPATTER_DISTANCE
+              && sectionDistance - point.distance < SPATTER_DISTANCE
 
           ) {
             side.spatter = body.spatter();
