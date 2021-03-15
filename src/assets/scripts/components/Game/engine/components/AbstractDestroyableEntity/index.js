@@ -61,6 +61,8 @@ class AbstractDestroyableEntity extends DynamicEntity {
    * Add a hit to the entity.
    * @param {Number} options.damage The damage of the hit.
    * @param {Number} options.angle  The angle of the hit.
+   * @param {Array}  options.rays   The ray sections.
+   * @param {Object} options.point  The point of the collision.
    */
   hit(options) {
     this.hits.push(options);

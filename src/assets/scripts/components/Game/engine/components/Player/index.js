@@ -522,11 +522,12 @@ class Player extends AbstractActor {
 
   /**
    * Hurt the player.
-   * @param  {Number} amount The amount to hurt the player.
+   * @param  {Number} damage The amount to hurt the player.
+   * @param  {Number} angle  The angle the damage came from.
    */
-  hurt(amount) {
+  hurt(damage, angle) {
     this.vision = HURT_VISION_AMOUNT;
-    this.health -= amount;
+    this.health -= damage;
 
     this.emit(EVENTS.HURT);
 
@@ -535,12 +536,14 @@ class Player extends AbstractActor {
       this.setDying();
       this.emitSound(this.sounds.death);
     } else {
-      this.recoil(amount, { direction: -1 });
+      this.recoil(damage, { direction: -1 });
 
       if (!this.isPlaying(this.sounds.pain)) {
         this.emitSound(this.sounds.pain);
       }
     }
+
+    super.hurt(damage, angle);
   }
 
   /**

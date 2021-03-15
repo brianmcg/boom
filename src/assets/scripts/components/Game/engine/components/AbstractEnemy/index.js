@@ -47,8 +47,6 @@ class AbstractEnemy extends AbstractActor {
   constructor({
     stateDurations,
     maxAttacks,
-    spatters,
-    spatterOffset,
     float,
     primaryAttack,
     proneHeight,
@@ -70,8 +68,6 @@ class AbstractEnemy extends AbstractActor {
     } = stateDurations;
 
     this.type = type;
-    this.spatters = spatters;
-    this.spatterOffset = spatterOffset;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
@@ -339,8 +335,11 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Hurt the enemy
    * @param  {Number} damage The damage to health.
+   * @param  {Number} angle  The angle the damage came from.
    */
   hurt(damage, angle = 0) {
+    super.hurt(damage, angle);
+
     if (this.isAlive()) {
       this.health -= damage;
 
@@ -355,14 +354,6 @@ class AbstractEnemy extends AbstractActor {
       this.angle = angle;
       this.velocity = Math.sqrt(damage) * 0.5;
     }
-  }
-
-  /**
-   * Get the type of effects spatter.
-   * @return {Number} The type of effects spatter.
-   */
-  spatter() {
-    return Math.floor(Math.random() * this.spatters) + this.spatterOffset;
   }
 
   /**

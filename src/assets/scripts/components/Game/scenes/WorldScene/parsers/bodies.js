@@ -167,11 +167,13 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const { effects } = data.props.enemies[enemy.name];
-    const spatters = effects.spatter ? animations[effects.spatter].length : 0;
-    const spatterOffset = effects.spatter
-      ? (spatterTypes.indexOf(effects.spatter) * spatters) + 1
+    const { spatter } = data.props.enemies[enemy.name].effects;
+    const numberOfSpatters = spatter ? animations[spatter].length : 0;
+    const spatterOffset = spatter
+      ? (spatterTypes.indexOf(spatter) * numberOfSpatters) + 1
       : 0;
+
+    const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
 
     return [
       ...memo,
@@ -186,12 +188,21 @@ export const createWorld = ({ scene, data, graphics }) => {
         float: enemy.float,
         proneHeight: enemy.proneHeight,
         ...props.enemies[enemy.name],
-        spatterOffset,
         spatters,
         soundSprite,
       }),
     ];
   }, []);
+
+  const { spatter } = props.player.effects;
+
+  const numberOfSpatters = spatter ? animations[spatter].length : 0;
+
+  const spatterOffset = spatter
+    ? (spatterTypes.indexOf(spatter) * numberOfSpatters) + 1
+    : 0;
+
+  const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
 
   const player = new Player({
     ...props.player,
@@ -200,6 +211,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     angle: degrees(entrance.angle),
     soundSprite,
     items,
+    spatters,
   });
 
   return new World({

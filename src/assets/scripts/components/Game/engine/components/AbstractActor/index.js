@@ -1,5 +1,14 @@
+import { degrees } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
+
+const DEG_180 = degrees(180);
+
+const DEG_360 = degrees(360);
+
+const OFFSET = CELL_SIZE * 0.0625;
+
+const SPATTER_DISTANCE = Math.sqrt((CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE));
 
 /**
  * Abstract class representing an actor.
@@ -18,7 +27,12 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Number}  options.health    The current health of the actor.
    * @param  {Number}  options.maxHealth The maximum health of the actor.
    */
-  constructor({ speed, acceleration, ...other }) {
+  constructor({
+    speed,
+    acceleration,
+    spatters,
+    ...other
+  }) {
     super(other);
 
     if (this.constructor === AbstractActor) {
@@ -27,6 +41,7 @@ class AbstractActor extends AbstractDestroyableEntity {
 
     this.speed = speed * CELL_SIZE;
     this.acceleration = acceleration * CELL_SIZE;
+    this.spatters = spatters;
 
     this.isActor = true;
     this.standingOn = [];
@@ -83,6 +98,77 @@ class AbstractActor extends AbstractDestroyableEntity {
    */
   face(body) {
     this.angle = this.getAngleTo(body);
+  }
+
+  /**
+   * Add a hit to the entity.
+   * @param {Number} options.damage The damage of the hit.
+   * @param {Number} options.angle  The angle of the hit.
+   * @param {Array}  options.rays   The ray sections.
+   * @param {Object} options.point  The point of the collision.
+   */
+  hit({ rays, point, ...options }) {
+    super.hit(options);
+
+    if (point && rays) {
+      const { side, distance: sectionDistance } = rays.reduce((memo, ray) => {
+        if (ray.distance > point.distance) {
+          if (ray.distance < memo.distance) {
+            return ray;
+          }
+          return memo;
+        }
+        return memo;
+      }, {
+        side: {},
+        distance: Number.MAX_VALUE,
+      });
+
+      if (
+        this.spatter
+          && !side.spatter
+          && sectionDistance - point.distance < SPATTER_DISTANCE
+
+      ) {
+        side.spatter = this.spatter();
+      }
+    }
+  }
+
+  /**
+   * Hurt the actor.
+   * @param  {Number} damage The amount to hurt the actor.
+   * @param  {Number} angle  The angle the damage came from.
+   */
+  hurt(damage, angle) {
+    if (this.health > 0) {
+      const originAngle = (angle + DEG_180) % DEG_360;
+      const sourceId = this.effects.spurt ? `${this.id}_${this.effects.spurt}` : null;
+
+      if (sourceId) {
+        this.parent.addEffect({
+          x: this.x + Math.cos(originAngle) * (this.width + OFFSET),
+          y: this.y + Math.sin(originAngle) * (this.length + OFFSET),
+          sourceId,
+        });
+      }
+    }
+
+    super.hurt(damage, angle);
+  }
+
+  /**
+   * Get the type of effects spatter.
+   * @return {Number} The type of effects spatter.
+   */
+  spatter() {
+    if (this.spatters.length) {
+      const randomIndex = Math.floor(Math.random() * this.spatters.length);
+
+      return this.spatters[randomIndex];
+    }
+
+    return 0;
   }
 }
 
