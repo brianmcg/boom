@@ -48,31 +48,38 @@ class GameManual {
         action: translate('manual.action.attack'),
         key: translate('manual.input.ctrl'),
       }, {
+        action: translate('manual.action.weapon'),
+        key: translate('manual.input.weapon'),
+      }, {
         action: translate('manual.action.crouch'),
         key: translate('manual.input.shift'),
       }, {
         action: translate('manual.action.pause'),
         key: translate('manual.input.pause'),
       }, {
-        action: translate('manual.action.menu'),
-        key: translate('manual.input.menu'),
+        action: translate('manual.action.menu.nav'),
+        key: translate('manual.input.menu.nav'),
+      }, {
+        action: translate('manual.action.menu.select'),
+        key: translate('manual.input.menu.select'),
       }],
     });
 
     content.setAttribute('class', 'content');
     span.setAttribute('class', 'title');
 
+    this.button = new Button(translate('manual.play'));
+
     span.appendChild(text);
     content.appendChild(span);
+    content.appendChild(table.view);
+    content.appendChild(this.button.view);
 
-    this.button = new Button(translate('manual.play'));
 
     this.view = document.createElement('div');
     this.view.setAttribute('class', 'container');
     this.view.setAttribute('id', 'container');
     this.view.appendChild(content);
-    this.view.appendChild(table.view);
-    this.view.appendChild(this.button.view);
   }
 
   /**

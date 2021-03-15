@@ -3,13 +3,13 @@ export default {
     text: 'forward',
   },
   'manual.input.up': {
-    text: 'w or up',
+    text: 'w / up',
   },
   'manual.action.backward': {
     text: 'backward',
   },
   'manual.input.down': {
-    text: 's or down',
+    text: 's / down',
   },
   'manual.action.strafe.left': {
     text: 'strafe left',
@@ -27,25 +27,31 @@ export default {
     text: 'turn left',
   },
   'manual.input.turn.left': {
-    text: 'mouse or left',
+    text: 'mouse move / left arrow',
   },
   'manual.action.turn.right': {
     text: 'turn right',
   },
   'manual.input.turn.right': {
-    text: 'mouse or right',
+    text: 'mouse move / right arrow',
   },
   'manual.action.use': {
-    text: 'use',
+    text: 'open / push',
   },
   'manual.input.space': {
-    text: 'e or space',
+    text: 'e / space',
   },
   'manual.action.attack': {
     text: 'attack',
   },
   'manual.input.ctrl': {
-    text: 'left click or ctrl',
+    text: 'mouse left click / ctrl',
+  },
+  'manual.action.weapon': {
+    text: 'select weapon',
+  },
+  'manual.input.weapon': {
+    text: 'mouse wheel / num keys',
   },
   'manual.action.crouch': {
     text: 'crouch',
@@ -54,16 +60,22 @@ export default {
     text: 'shift',
   },
   'manual.action.pause': {
-    text: 'pause',
+    text: 'pause / unpause',
   },
   'manual.input.pause': {
     text: 'q',
   },
-  'manual.action.menu': {
-    text: 'menu',
+  'manual.action.menu.nav': {
+    text: 'menu highlight',
   },
-  'manual.input.menu': {
-    text: 'up/down/enter',
+  'manual.input.menu.nav': {
+    text: 'up arrow / down arrow',
+  },
+  'manual.action.menu.select': {
+    text: 'menu select',
+  },
+  'manual.input.menu.select': {
+    text: 'enter',
   },
   'manual.title': {
     text: 'Boom Controls',
@@ -86,9 +98,11 @@ export default {
   'title.prompt.start': {
     text: 'Press space to start',
   },
-  'world.title': {
-    text: 'Level INDEX',
-    keys: ['index'],
+  'world.title.0': {
+    text: 'Debug Level',
+  },
+  'world.title.1': {
+    text: 'Hangar',
   },
   'world.review.enemies': {
     text: 'Kills',
@@ -106,6 +120,13 @@ export default {
   'world.player.cannot.pickup': {
     text: 'Cannot pick up ITEM',
     keys: ['item'],
+  },
+  'world.player.pickup': {
+    text: 'Picked up ITEM',
+    keys: ['item'],
+  },
+  'world.wall.secret': {
+    text: 'Found secret area',
   },
   'world.item.key': {
     text: 'COLOR Key',

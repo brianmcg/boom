@@ -131,6 +131,10 @@ class Player extends AbstractActor {
       onStart: (body) => {
         if (this.pickUp(body)) {
           this.emit(EVENTS.PICK_UP, body);
+
+          this.addMessage(translate('world.player.pickup', {
+            item: body.title,
+          }));
         } else {
           this.addMessage(translate('world.player.cannot.pickup', {
             item: body.title,

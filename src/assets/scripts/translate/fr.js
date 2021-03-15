@@ -1,163 +1,184 @@
 export default {
   'manual.action.forward': {
-    text: 'forward',
+    text: '[FR] forward',
   },
   'manual.input.up': {
-    text: 'w or up',
+    text: '[FR] w / up',
   },
   'manual.action.backward': {
-    text: 'backward',
+    text: '[FR] backward',
   },
   'manual.input.down': {
-    text: 's or down',
+    text: '[FR] s / down',
   },
   'manual.action.strafe.left': {
-    text: 'strafe left',
+    text: '[FR] strafe left',
   },
   'manual.input.strafe.left': {
-    text: 'a',
+    text: '[FR] a',
   },
   'manual.action.strafe.right': {
-    text: 'strafe right',
+    text: '[FR] strafe right',
   },
   'manual.input.strafe.right': {
-    text: 'd',
+    text: '[FR] d',
   },
   'manual.action.turn.left': {
-    text: 'turn left',
+    text: '[FR] turn left',
   },
   'manual.input.turn.left': {
-    text: 'mouse or left',
+    text: '[FR] mouse move / left arrow',
   },
   'manual.action.turn.right': {
-    text: 'turn right',
+    text: '[FR] turn right',
   },
   'manual.input.turn.right': {
-    text: 'mouse or right',
+    text: '[FR] mouse move / right arrow',
   },
   'manual.action.use': {
-    text: 'use',
+    text: '[FR] open / push',
   },
   'manual.input.space': {
-    text: 'e or space',
+    text: '[FR] e / space',
   },
   'manual.action.attack': {
-    text: 'attack',
+    text: '[FR] attack',
   },
   'manual.input.ctrl': {
-    text: 'left click or ctrl',
+    text: '[FR] mouse left click / ctrl',
+  },
+  'manual.action.weapon': {
+    text: '[FR] select weapon',
+  },
+  'manual.input.weapon': {
+    text: '[FR] mouse wheel / num keys',
   },
   'manual.action.crouch': {
-    text: 'crouch',
+    text: '[FR] crouch',
   },
   'manual.input.shift': {
-    text: 'shift',
+    text: '[FR] shift',
   },
   'manual.action.pause': {
-    text: 'pause',
+    text: '[FR] pause / unpause',
   },
   'manual.input.pause': {
-    text: 'q',
+    text: '[FR] q',
   },
-  'manual.action.menu': {
-    text: 'menu',
+  'manual.action.menu.nav': {
+    text: '[FR] menu highlight',
   },
-  'manual.input.menu': {
-    text: 'up/down/enter',
+  'manual.input.menu.nav': {
+    text: '[FR] up arrow / down arrow',
+  },
+  'manual.action.menu.select': {
+    text: '[FR] menu select',
+  },
+  'manual.input.menu.select': {
+    text: '[FR] enter',
   },
   'manual.title': {
-    text: 'Boom Controls',
+    text: '[FR] Boom Controls',
   },
   'manual.play': {
-    text: 'click to play',
+    text: '[FR] click to play',
   },
   'scene.menu.continue': {
-    text: 'Continue',
+    text: '[FR] Continue',
   },
   'scene.menu.restart': {
-    text: 'Restart',
+    text: '[FR] Restart',
   },
   'scene.menu.quit': {
-    text: 'Quit',
+    text: '[FR] Quit',
   },
   'scene.prompt.continue': {
-    text: 'Press space to continue',
+    text: '[FR] Press space to continue',
   },
   'title.prompt.start': {
-    text: 'Press space to start',
+    text: '[FR] Press space to start',
   },
-  'world.title': {
-    text: 'Level INDEX',
-    keys: ['index'],
+  'world.title.0': {
+    text: '[FR] Debug Level',
+  },
+  'world.title.1': {
+    text: '[FR] Hangar',
   },
   'world.review.enemies': {
-    text: 'Kills',
+    text: '[FR] Kills',
   },
   'world.review.items': {
-    text: 'Items',
+    text: '[FR] Items',
   },
   'world.review.time': {
-    text: 'Time',
+    text: '[FR] Time',
   },
   'world.door.locked': {
-    text: 'COLOR key required',
+    text: '[FR] COLOR key required',
     keys: ['color'],
   },
   'world.player.cannot.pickup': {
-    text: 'Cannot pick up ITEM',
+    text: '[FR] Cannot pick up ITEM',
     keys: ['item'],
   },
+  'world.player.pickup': {
+    text: '[FR] Picked up ITEM',
+    keys: ['item'],
+  },
+  'world.wall.secret': {
+    text: '[FR] Found secret area',
+  },
   'world.item.key': {
-    text: 'COLOR Key',
+    text: '[FR] COLOR Key',
     keys: ['color'],
   },
   'world.item.ammo': {
-    text: 'WEAPON Ammo',
+    text: '[FR] WEAPON Ammo',
     keys: ['weapon'],
   },
   'world.item.health': {
-    text: 'Health',
+    text: '[FR] Health',
   },
   'world.item.pistol': {
-    text: 'Pistol',
+    text: '[FR] Pistol',
   },
   'world.item.shotgun': {
-    text: 'Shotgun',
+    text: '[FR] Shotgun',
   },
   'world.item.chaingun': {
-    text: 'Chaingun',
+    text: '[FR] Chaingun',
   },
   'world.item.launcher': {
-    text: 'Rocket Launcher',
+    text: '[FR] Rocket Launcher',
   },
   'world.color.yellow': {
-    text: 'Yellow',
+    text: '[FR] Yellow',
   },
   'world.color.blue': {
-    text: 'Blue',
+    text: '[FR] Blue',
   },
   'world.color.green': {
-    text: 'Green',
+    text: '[FR] Green',
   },
   'world.color.red': {
-    text: 'Red',
+    text: '[FR] Red',
   },
   'credits.scroll.end': {
-    text: 'The End',
+    text: '[FR] The End',
   },
   'credits.scroll.coding': {
-    text: 'Coding',
+    text: '[FR] Coding',
   },
   'credits.scroll.graphics': {
-    text: 'Graphics',
+    text: '[FR] Graphics',
   },
   'credits.scroll.sound': {
-    text: 'Sound',
+    text: '[FR] Sound',
   },
   'credits.scroll.screenplay': {
-    text: 'Script',
+    text: '[FR] Script',
   },
   'credits.scroll.author': {
-    text: 'Brian McGrath',
+    text: '[FR] Brian McGrath',
   },
 };

@@ -1,3 +1,4 @@
+import translate from 'root/translate';
 import { CELL_SIZE } from 'game/constants/config';
 import { AXES } from 'game/core/physics';
 import DynamicCell from '../DynamicCell';
@@ -29,7 +30,7 @@ class PushWall extends DynamicCell {
    * Push the wall.
    * @param  {AbstractActor} user The user of the wall.
    */
-  use(user = {}) {
+  use(user) {
     if (this.axis === AXES.X) {
       this.direction = {
         x: 0,
@@ -50,6 +51,8 @@ class PushWall extends DynamicCell {
 
       this.parent.player.shake(shake);
       this.startUpdates();
+
+      user.addMessage(translate('world.wall.secret'));
     }
   }
 

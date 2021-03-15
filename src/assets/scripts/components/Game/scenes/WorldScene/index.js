@@ -49,9 +49,7 @@ class WorldScene extends Scene {
 
     this.promptOption = translate('scene.prompt.continue');
 
-    this.title = translate('world.title', {
-      index: this.index,
-    });
+    this.title = translate(`world.title.${this.index}`);
 
     this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
@@ -117,9 +115,7 @@ class WorldScene extends Scene {
 
     const text = {
       review: {
-        title: translate('world.title', {
-          index: this.index,
-        }),
+        title: translate(`world.title.${this.index}`),
         enemies: translate('world.review.enemies'),
         items: translate('world.review.items'),
         time: translate('world.review.time'),
