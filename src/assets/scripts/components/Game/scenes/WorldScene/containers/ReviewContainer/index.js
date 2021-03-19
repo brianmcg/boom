@@ -1,24 +1,16 @@
 import { Container } from 'game/core/graphics';
 import { formatMS } from 'game/core/date';
 import { SCREEN } from 'game/constants/config';
+import StatContainer from './containers/StatContainer';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;
 
-const INTERVAL = 200;
-
 const MAX_ALPHA = 0.7;
 
-const SCALE_INCREMENT = 0.1;
+const INTERVAL = 500;
 
-const SHOW_STAT_EVENT = 'review:container:show:stat';
-
-const STATES = {
-  SHOW_TITLE: 'review:show:title',
-  SHOW_ENEMIES: 'review:show:enemies',
-  SHOW_ITEMS: 'review:show:items',
-  SHOW_SECRETS: 'review:show:secrets',
-  SHOW_TIME: 'review:show:time',
-  REMOVE_STATS: 'review:remove:stats',
+const EVENTS = {
+  SHOW_STAT: 'review:show:stat',
 };
 
 /**
@@ -29,38 +21,35 @@ class ReviewContainer extends Container {
    * Creates a review container.
    * @param  {Object} sprites   The sprites for the container.
    */
-  constructor(sprites) {
+  constructor(sprites, sounds) {
     super();
 
     const { title, stats, background } = sprites;
-
-    const {
-      enemies,
-      items,
-      secrets,
-      time,
-    } = stats;
-
     const statsHeight = stats.enemies.name.height;
     const statsStartY = title.height + (TEXT_PADDING * 10);
 
-    title.y = (title.height / 2) + TEXT_PADDING * 4;
-
-    [enemies, items, secrets, time].forEach(({ name, value }, i) => {
-      name.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
-      value.y = statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight));
-    });
+    this.statContainers = Object.values(stats).reduce((memo, { name, value }, i) => [
+      ...memo,
+      new StatContainer({
+        sprites: [name, value],
+        y: statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight)),
+        sound: sounds.pause,
+      }),
+    ], [
+      new StatContainer({
+        sprites: [title],
+        y: (title.height / 2) + TEXT_PADDING * 4,
+        sound: sounds.complete,
+      }),
+    ]);
 
     this.timer = 0;
-    this.titleScale = 0;
-    this.enemiesScale = 0;
-    this.itemsScale = 0;
-    this.secretsScale = 0;
-    this.timeScale = 0;
-
+    this.currentIndex = 0;
     this.sprites = sprites;
 
     this.addChild(background);
+
+    this.on('added', () => this.showNext());
   }
 
   /**
@@ -68,7 +57,15 @@ class ReviewContainer extends Container {
    * @param  {Function} callback The callback function.
    */
   onShowStat(callback) {
-    this.on(SHOW_STAT_EVENT, callback);
+    this.on(EVENTS.SHOW_STAT, callback);
+  }
+
+  /**
+   * Emit the show stat event.
+   * @param {String} sound  The sound to play.
+   */
+  emitShowStat(sound) {
+    this.emit(EVENTS.SHOW_STAT, sound);
   }
 
   /**
@@ -76,39 +73,18 @@ class ReviewContainer extends Container {
    * @param  {Number} delta the delta time.
    */
   update(delta, elapsedMS) {
-    switch (this.state) {
-      case STATES.SHOW_TITLE:
-        this.updateShowTitle(delta, elapsedMS);
-        break;
-      case STATES.SHOW_ENEMIES:
-        this.updateShowEnemies(delta, elapsedMS);
-        break;
-      case STATES.SHOW_ITEMS:
-        this.updateShowItems(delta, elapsedMS);
-        break;
-      case STATES.SHOW_SECRETS:
-        this.updateShowSecrets(delta, elapsedMS);
-        break;
-      case STATES.SHOW_TIME:
-        this.updateShowTime(delta, elapsedMS);
-        break;
-      case STATES.REMOVE_STATS:
-        this.updateRemoveStats(delta);
-        break;
-      default:
-        break;
+    super.update(delta, elapsedMS);
+
+    this.sprites.background.alpha = this.alphaFactor;
+
+    if (this.currentIndex === this.statContainers.length) {
+      this.timer += elapsedMS;
+
+      if (this.timer >= INTERVAL) {
+        this.stop();
+        this.parent.setPrompting();
+      }
     }
-
-    const { background, title, stats } = this.sprites;
-
-    background.alpha = this.alphaFactor;
-
-    title.setScale(this.titleScale);
-
-    Object.values(stats.enemies).forEach(sprite => sprite.setScale(this.enemiesScale));
-    Object.values(stats.items).forEach(sprite => sprite.setScale(this.itemsScale));
-    Object.values(stats.secrets).forEach(sprite => sprite.setScale(this.secretsScale));
-    Object.values(stats.time).forEach(sprite => sprite.setScale(this.timeScale));
   }
 
   /**
@@ -116,203 +92,21 @@ class ReviewContainer extends Container {
    * @param  {Number} value The value of the effect.
    */
   fade(value) {
+    super.fade(1 - value);
     this.alphaFactor = value * MAX_ALPHA;
-    this.scaleFactor = value;
   }
 
   /**
-   * Update the container when in the show title state.
-   * @param  {Number} delta The delta time.
+   * Show the next stat.
+   * @return {[type]} [description]
    */
-  updateShowTitle(delta, elapsedMS) {
-    this.titleScale += SCALE_INCREMENT * delta;
+  showNext() {
+    const next = this.statContainers[this.currentIndex];
 
-    if (this.titleScale >= 1) {
-      this.titleScale = 1;
-
-      this.timer += elapsedMS;
-
-      if (this.timer >= INTERVAL) {
-        this.timer = 0;
-        this.setShowEnemies();
-      }
+    if (next) {
+      this.addChild(next);
+      this.currentIndex += 1;
     }
-  }
-
-  /**
-   * Update the container when in the show enemies state.
-   * @param  {Number} delta The delta time.
-   */
-  updateShowEnemies(delta, elapsedMS) {
-    this.enemiesScale += SCALE_INCREMENT * delta;
-
-    if (this.enemiesScale >= 1) {
-      this.enemiesScale = 1;
-
-      this.timer += elapsedMS;
-
-      if (this.timer >= INTERVAL) {
-        this.timer = 0;
-        this.setShowItems();
-      }
-    }
-  }
-
-  /**
-   * Update the container when in the show items state.
-   * @param  {Number} delta The delta time.
-   */
-  updateShowItems(delta, elapsedMS) {
-    this.itemsScale += SCALE_INCREMENT * delta;
-
-    if (this.itemsScale >= 1) {
-      this.itemsScale = 1;
-
-      this.timer += elapsedMS;
-
-      if (this.timer >= INTERVAL) {
-        this.timer = 0;
-        this.setShowSecrets();
-      }
-    }
-  }
-
-  /**
-   * Update the container when in the show items state.
-   * @param  {Number} delta The delta time.
-   */
-  updateShowSecrets(delta, elapsedMS) {
-    this.secretsScale += SCALE_INCREMENT * delta;
-
-    if (this.secretsScale >= 1) {
-      this.secretsScale = 1;
-
-      this.timer += elapsedMS;
-
-      if (this.timer >= INTERVAL) {
-        this.timer = 0;
-        this.setShowTime();
-      }
-    }
-  }
-
-  /**
-   * Update the container when in the show time state.
-   * @param  {Number} delta The delta time.
-   */
-  updateShowTime(delta, elapsedMS) {
-    this.timeScale += SCALE_INCREMENT * delta;
-
-    if (this.timeScale >= 1) {
-      this.timeScale = 1;
-
-      this.timer += elapsedMS;
-
-      if (this.timer >= INTERVAL) {
-        this.timer = 0;
-        this.parent.setPrompting();
-      }
-    }
-  }
-
-  /**
-   * Update in the remove stats state.
-   */
-  updateRemoveStats() {
-    this.titleScale = this.scaleFactor;
-    this.enemiesScale = this.scaleFactor;
-    this.itemsScale = this.scaleFactor;
-    this.secretsScale = this.scaleFactor;
-    this.timeScale = this.scaleFactor;
-  }
-
-  /**
-   * Set the state to show title.
-   */
-  setShowTitle() {
-    if (this.setState(STATES.SHOW_TITLE)) {
-      this.sprites.title.setScale(0);
-      this.addChild(this.sprites.title);
-    }
-  }
-
-  /**
-   * Set the state to show enemies.
-   */
-  setShowEnemies() {
-    const isStateChanged = this.setState(STATES.SHOW_ENEMIES);
-
-    if (isStateChanged) {
-      this.emit(SHOW_STAT_EVENT);
-
-      Object.values(this.sprites.stats.enemies).forEach((sprite) => {
-        sprite.setScale(0);
-        this.addChild(sprite);
-      });
-    }
-
-    return isStateChanged;
-  }
-
-  /**
-   * Set the state to show items.
-   */
-  setShowItems() {
-    const isStateChanged = this.setState(STATES.SHOW_ITEMS);
-
-    if (isStateChanged) {
-      this.emit(SHOW_STAT_EVENT);
-
-      Object.values(this.sprites.stats.items).forEach((sprite) => {
-        sprite.setScale(0);
-        this.addChild(sprite);
-      });
-    }
-
-    return isStateChanged;
-  }
-
-  /**
-   * Set the state to show items.
-   */
-  setShowSecrets() {
-    const isStateChanged = this.setState(STATES.SHOW_SECRETS);
-
-    if (isStateChanged) {
-      this.emit(SHOW_STAT_EVENT);
-
-      Object.values(this.sprites.stats.secrets).forEach((sprite) => {
-        sprite.setScale(0);
-        this.addChild(sprite);
-      });
-    }
-
-    return isStateChanged;
-  }
-
-  /**
-   * Set the state to show time.
-   */
-  setShowTime() {
-    const isStateChanged = this.setState(STATES.SHOW_TIME);
-
-    if (isStateChanged) {
-      this.emit(SHOW_STAT_EVENT);
-
-      Object.values(this.sprites.stats.time).forEach((sprite) => {
-        sprite.setScale(0);
-        this.addChild(sprite);
-      });
-    }
-
-    return isStateChanged;
-  }
-
-  /**
-   * Set to the remove stats state.
-   */
-  setRemoveStats() {
-    return this.setState(STATES.REMOVE_STATS);
   }
 
   /**

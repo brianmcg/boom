@@ -3,10 +3,22 @@
  */
 
 /**
+ * Debug mode on or off.
+ * @type {Boolean}
+ */
+export const DEBUG = false;
+
+/**
  * The maximum frames per second.
  * @type {Number}
  */
 export const MAX_FPS = 60;
+
+/**
+ * Enabled the music.
+ * @type {Boolean}
+ */
+export const DISABLE_MUSIC = DEBUG ? true : false;
 
 /**
  * Enabled the sounds.
@@ -19,12 +31,6 @@ export const DISABLE_SOUNDS = false;
  * @type {Number}
  */
 export const DIFFICULTY = 0;
-
-/**
- * Enabled the music.
- * @type {Boolean}
- */
-export const DISABLE_MUSIC = false;
 
 /**
  * The size of mao tile.
@@ -52,12 +58,6 @@ export const SCREEN = {
   WIDTH: 224,
   HEIGHT: 126,
 };
-
-/**
- * Debug mode on or off.
- * @type {Boolean}
- */
-export const DEBUG = false;
 
 /**
  * The default language to use.

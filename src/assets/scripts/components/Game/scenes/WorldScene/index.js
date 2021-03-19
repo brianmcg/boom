@@ -111,6 +111,8 @@ class WorldScene extends Scene {
    * @param  {Object} options.sounds   The scene sounds.
    */
   create({ graphics, data, sounds }) {
+    super.create({ graphics, sounds });
+
     const { renderer } = this.game;
 
     const text = {
@@ -136,12 +138,10 @@ class WorldScene extends Scene {
       sprites: sprites.world,
     }));
 
-    this.reviewContainer = new ReviewContainer(sprites.review);
-    this.reviewContainer.onShowStat(() => this.soundController.emitSound(this.sounds.pause));
+    this.reviewContainer = new ReviewContainer(sprites.review, this.sounds);
+    this.reviewContainer.onShowStat(sound => this.soundController.emitSound(sound));
 
     this.world = world;
-
-    super.create({ graphics, sounds });
   }
 
   /**
@@ -264,27 +264,14 @@ class WorldScene extends Scene {
    * Set the scene to the displaying review state.
    */
   setDisplayingReview() {
-    const isStateChanged = this.setState(STATES.DISPLAYING_REVIEW);
-
-    if (isStateChanged) {
-      this.soundController.emitSound(this.sounds.complete);
-      this.reviewContainer.setShowTitle();
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.DISPLAYING_REVIEW);
   }
 
   /**
    * Set the state to removing review.
    */
   setRemovingReview() {
-    const isStateChanged = this.setState(STATES.REMOVING_REVIEW);
-
-    if (isStateChanged) {
-      this.reviewContainer.setRemoveStats();
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.REMOVING_REVIEW);
   }
 
   /**
