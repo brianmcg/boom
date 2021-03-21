@@ -14,7 +14,7 @@ Object.assign(STATES, {
 
 const FADE_INCREMENT = 0.05;
 
-const FADE_PIXEL_SIZE = 8;
+const FADE_PIXEL_SIZE = 4;
 
 /**
  * Class representing a world scene.
@@ -133,12 +133,12 @@ class WorldScene extends Scene {
       text,
     });
 
-    this.mainContainer.addChild(new POVContainer({
-      world,
-      sprites: sprites.world,
-    }));
+    this.povContainer = new POVContainer({ world, sprites: sprites.world });
+
+    this.mainContainer.addChild(this.povContainer);
 
     this.reviewContainer = new ReviewContainer(sprites.review, this.sounds);
+
     this.reviewContainer.onShowStat(sound => this.soundController.emitSound(sound));
 
     this.world = world;
@@ -271,6 +271,7 @@ class WorldScene extends Scene {
    * Set the state to removing review.
    */
   setRemovingReview() {
+    this.povContainer.removeHud();
     return this.setState(STATES.REMOVING_REVIEW);
   }
 

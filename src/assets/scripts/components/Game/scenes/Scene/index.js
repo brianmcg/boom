@@ -31,7 +31,7 @@ const FADE_INCREMENT = 0.05;
 
 const FADE_PIXEL_SIZE = 80;
 
-const PAUSE_PIXEL_SIZE = 8;
+const PAUSE_PIXEL_SIZE = 4;
 
 /**
  * Class representing a scene.
@@ -89,7 +89,6 @@ class Scene extends Container {
 
     this.game.input.add(STATES.PROMPTING, {
       onKeyDown: {
-        [KEYS.Q]: () => this.showMenu(),
         [KEYS.SPACE]: () => this.triggerComplete(),
       },
     });
@@ -118,7 +117,7 @@ class Scene extends Container {
 
     this.menuContainer.onClose(() => this.setRunning());
 
-    this.promptContainer = new PromptContainer(sprites.prompt);
+    this.promptContainer = new PromptContainer(sprites.prompt, this.sounds.complete);
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),
@@ -363,7 +362,6 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.PROMPTING);
 
     if (isStateChanged) {
-      this.soundController.emitSound(this.sounds.complete);
       this.addChild(this.promptContainer);
     }
 
@@ -496,7 +494,7 @@ class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
-    this.game.input.removeCallbacks();
+    this.game.input.reset();
     this.mainContainer.destroy();
     this.menuContainer.destroy();
     this.promptContainer.destroy();

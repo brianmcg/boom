@@ -24,7 +24,7 @@ class StatContainer extends Container {
 
     sprites.forEach((sprite) => {
       sprite.y = y;
-      this.addChild(sprite)
+      this.addChild(sprite);
     });
 
     this.on('added', () => {
@@ -43,14 +43,14 @@ class StatContainer extends Container {
     if (this.scaleAmount >= 1) {
       this.scaleAmount = 1;
 
-      if (this.timer === 0) {
+      if (this.timer === 0 && !this.isComplete) {
+        this.isComplete = true;
         this.parent.emitShowStat(this.sound);
       }
 
       this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
-        this.timer = 0;
         this.parent.showNext();
         this.stop();
       }

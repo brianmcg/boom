@@ -37,8 +37,10 @@ class PlayerContainer extends Container {
 
     const { weapon, hud } = sprites;
 
+    this.hudContainer = new HUDContainer(player, hud);
+
     this.addChild(weapon);
-    this.addChild(new HUDContainer(player, hud));
+    this.addChild(this.hudContainer);
     this.player = player;
     this.sprites = sprites;
 
@@ -56,6 +58,13 @@ class PlayerContainer extends Container {
     this.setArming();
 
     this.fadeAmount = 0;
+  }
+
+  /**
+   * Remove the HUD diplay.
+   */
+  removeHud() {
+    this.removeChild(this.hudContainer);
   }
 
   /**

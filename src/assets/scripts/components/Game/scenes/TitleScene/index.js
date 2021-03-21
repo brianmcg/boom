@@ -1,8 +1,9 @@
 import translate from 'root/translate';
+import { KEYS } from 'game/core/input';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';
-import Scene from '../Scene';
+import Scene, { STATES } from '../Scene';
 
 /**
  * Class representing a TitleScene.
@@ -26,6 +27,12 @@ class TitleScene extends Scene {
     }];
 
     this.promptOption = translate('title.prompt.start');
+
+    this.game.input.add(STATES.PROMPTING, {
+      onKeyDown: {
+        [KEYS.Q]: () => this.showMenu(),
+      },
+    });
   }
 
   /**

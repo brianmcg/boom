@@ -85,6 +85,14 @@ class InputController {
   }
 
   /**
+   * Reset the input controller.
+   */
+  reset() {
+    this.removeCallbacks();
+    this.states = {};
+  }
+
+  /**
    * Remove all added callbacks.
    */
   removeCallbacks() {

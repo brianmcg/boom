@@ -11,6 +11,12 @@ const PULSE_INCREMENT = 0.0075;
 
 const FADE_INCREMENT = 0.1;
 
+const SHAKE_FADE = 0.55;
+
+const MIN_SHAKE = 0.1;
+
+const MAX_SHAKE = 16;
+
 const STATES = {
   FADING_IN: 'prompt:fading:in',
   GROWING: 'prompt:growing',
@@ -26,7 +32,7 @@ class PromptContainer extends Container {
    * Create a prompt container.
    * @param {TextSprite} sprite The prompt text sprite.
    */
-  constructor(sprite) {
+  constructor(sprite, sound) {
     super();
 
     sprite.x = (SCREEN.WIDTH / 2);
@@ -35,9 +41,14 @@ class PromptContainer extends Container {
 
     this.minHeight = sprite.height;
     this.minWidth = sprite.width;
+    this.sprite = sprite;
+    this.sound = sound;
+
     this.scaleFactor = 0;
     this.timer = 0;
-    this.sprite = sprite;
+    this.shakeDirection = 1;
+    this.shakeValue = 0;
+    this.shakeAmount = 0;
 
     this.addChild(sprite);
     this.setFadingIn();
@@ -66,6 +77,36 @@ class PromptContainer extends Container {
     }
 
     this.sprite.setScale(this.scaleFactor);
+
+    // Update screen shake.
+    if (this.shakeValue) {
+      if (this.shakeValue) {
+        if (this.shakeDirection > 0) {
+          this.shakeAmount += this.shakeValue * delta;
+
+          if (this.shakeAmount >= this.shakeValue) {
+            this.shakeDirection *= -1;
+            this.shakeValue *= SHAKE_FADE;
+          }
+        } else if (this.shakeDirection < 0) {
+          this.shakeAmount -= this.shakeValue * delta;
+
+          if (this.shakeAmount <= -this.shakeValue) {
+            this.shakeValue *= SHAKE_FADE;
+            this.shakeDirection *= -1;
+          }
+        }
+
+        if (this.shakeValue < MIN_SHAKE) {
+          this.shakeValue = 0;
+          this.shakeAmount = 0;
+        }
+      }
+
+      if (this.parent) {
+        this.parent.x = this.shakeAmount;
+      }
+    }
   }
 
   /**
@@ -78,7 +119,11 @@ class PromptContainer extends Container {
     if (this.scaleFactor > 1) {
       this.scaleFactor = 1;
 
-      this.setGrowing();
+      this.parent.soundController.emitSound(this.sound);
+
+      this.shakeParent(MAX_SHAKE);
+
+      this.setStatic();
     }
   }
 
@@ -122,6 +167,17 @@ class PromptContainer extends Container {
       this.setGrowing();
     }
   }
+
+  /**
+   * Shake the parent of this container.
+   * @param {Number} amount            The amount to shake.
+   * @param {Number} options.direction The direction of the shake;
+   */
+  shakeParent(amount, { direction = 1 } = {}) {
+    this.shakeDirection = direction;
+    this.shakeValue = Math.min(MAX_SHAKE, amount * SHAKE_FADE);
+  }
+
 
   /**
    * Set the container to the fading in state.

@@ -251,6 +251,13 @@ class POVContainer extends Container {
   }
 
   /**
+   * Remove the HUD diplay.
+   */
+  removeHud() {
+    this.playerContainer.removeHud();
+  }
+
+  /**
    * Calculate the tint.
    * @param  {Number}  distance The distance.
    * @param  {Boolean} darken   Darken the sprite.
