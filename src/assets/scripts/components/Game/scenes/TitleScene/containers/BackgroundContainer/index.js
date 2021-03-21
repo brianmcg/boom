@@ -1,4 +1,6 @@
-import { Container } from 'game/core/graphics';
+import { Container, PixelateFilter } from 'game/core/graphics';
+
+const PIXEL_SIZE = 1.75;
 
 /**
  * Class representing a background container.
@@ -14,6 +16,18 @@ class BackgroundContainer extends Container {
 
     this.addChild(background);
     this.addChild(sparks);
+
+    this.pixelateFilter = new PixelateFilter();
+
+    this.filters = [this.pixelateFilter];
+  }
+
+  update(delta) {
+    super.update(delta);
+
+    const { parent } = this.parent;
+
+    this.pixelateFilter.size = PIXEL_SIZE * parent.getScale();
   }
 }
 
