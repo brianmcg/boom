@@ -451,8 +451,11 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setPatrolling() {
-    const cells = this.parent.getAdjacentCells(this)
-      .filter(s => !s.blocking && !s.bodies.length && s !== this.waypoint);
+    const cells = this.parent.getAdjacentCells(this).filter((s) => (
+      !s.blocking
+        && !s.bodies.some(b => b.blocking)
+        && s !== this.waypoint
+    ));
 
     if (cells.length) {
       const index = Math.floor(Math.random() * cells.length);
