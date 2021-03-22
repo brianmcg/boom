@@ -1,7 +1,7 @@
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
-import { SCREEN, DEBUG } from './constants/config';
+import { SCREEN, DEBUG, MUSIC_VOLUME } from './constants/config';
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -201,7 +201,7 @@ class Game extends Application {
       };
 
       this.music = sound;
-      this.music.volume(0.2);
+      this.music.volume(MUSIC_VOLUME);
 
       this.scene.create({
         sounds,

@@ -324,12 +324,15 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean} Was the player located.
    */
   findPlayer() {
-    const { distance } = this.castRay();
     const { player } = this.parent;
 
     this.face(player);
 
-    return player.isAlive() && distance > this.distanceToPlayer;
+    const { distance, encounteredBodies } = this.castRay();
+
+    return encounteredBodies[player.id]
+      && player.isAlive()
+      && distance > this.distanceToPlayer;
   }
 
   /**
@@ -451,18 +454,32 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setPatrolling() {
-    const cells = this.parent.getAdjacentCells(this).filter((s) => (
-      !s.blocking
-        && !s.bodies.some(b => b.blocking)
-        && s !== this.waypoint
-    ));
+    const { player } = this.parent;
+
+    const cells = this.parent.getAdjacentCells(this).filter((cell) => (
+      !cell.blocking
+        && !cell.bodies.some(b => b.blocking)
+        // && cell !== this.waypoint
+    )).sort((a, b) => {
+      const distanceA = player.getDistanceTo(a);
+      const distanceB = player.getDistanceTo(b);
+
+      if (distanceA > distanceB) {
+        return 1;
+      }
+
+      if (distanceA < distanceB) {
+        return -1;
+      }
+
+      return 0;
+    });
 
     if (cells.length) {
-      const index = Math.floor(Math.random() * cells.length);
-      const cell = cells[index];
-      this.waypoint = cell;
+      this.waypoint = cells[0];
     } else {
-      this.waypoint = this.cell;
+      this.setIdle();
+      // this.waypoint = this.cell;
     }
 
     this.velocity = this.speed;

@@ -1,6 +1,7 @@
 import { KEYS } from 'game/core/input';
 import { Container } from 'game/core/graphics';
 import { SoundSpriteController } from 'game/core/audio';
+import { MUSIC_VOLUME } from 'game/constants/config';
 import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
 import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
@@ -27,7 +28,7 @@ const EVENTS = {
 
 const PAUSE_INCREMENT = 0.1;
 
-const FADE_INCREMENT = 0.05;
+const FADE_INCREMENT = 0.035;
 
 const FADE_PIXEL_SIZE = 80;
 
@@ -89,7 +90,7 @@ class Scene extends Container {
 
     this.game.input.add(STATES.PROMPTING, {
       onKeyDown: {
-        [KEYS.SPACE]: () => this.triggerComplete(),
+        [KEYS.SPACE]: () => this.onPromptInput(),
       },
     });
 
@@ -125,6 +126,14 @@ class Scene extends Container {
     });
 
     this.setFadingIn();
+  }
+
+  /**
+   * Handle the prompt input.
+   */
+  onPromptInput() {
+    this.soundController.emitSound(this.sounds.complete);
+    this.triggerComplete();
   }
 
   /**
@@ -376,8 +385,7 @@ class Scene extends Container {
 
     if (isStateChanged) {
       this.stop();
-      this.soundController.emitSound(this.sounds.complete);
-      // this.game.fadeMusic();
+      this.game.music.fade(MUSIC_VOLUME, 0, 750);
     }
 
     return isStateChanged;

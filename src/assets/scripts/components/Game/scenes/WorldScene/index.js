@@ -96,12 +96,14 @@ class WorldScene extends Scene {
         callback: y => this.assignPlayerAction({ cycleWeapon: y }),
       },
     });
+  }
 
-    this.game.input.add(STATES.PROMPTING, {
-      onKeyDown: {
-        [KEYS.SPACE]: () => this.setRemovingReview(),
-      },
-    });
+  /**
+   * Handle the prompt input.
+   */
+  onPromptInput() {
+    this.soundController.emitSound(this.sounds.complete);
+    this.setRemovingReview();
   }
 
   /**
