@@ -80,32 +80,30 @@ class PromptContainer extends Container {
 
     // Update screen shake.
     if (this.shakeValue) {
-      if (this.shakeValue) {
-        if (this.shakeDirection > 0) {
-          this.shakeAmount += this.shakeValue * delta;
+      if (this.shakeDirection > 0) {
+        this.shakeAmount += this.shakeValue * delta;
 
-          if (this.shakeAmount >= this.shakeValue) {
-            this.shakeDirection *= -1;
-            this.shakeValue *= SHAKE_FADE;
-          }
-        } else if (this.shakeDirection < 0) {
-          this.shakeAmount -= this.shakeValue * delta;
-
-          if (this.shakeAmount <= -this.shakeValue) {
-            this.shakeValue *= SHAKE_FADE;
-            this.shakeDirection *= -1;
-          }
+        if (this.shakeAmount >= this.shakeValue) {
+          this.shakeValue *= SHAKE_FADE;
+          this.shakeDirection *= -1;
         }
+      } else if (this.shakeDirection < 0) {
+        this.shakeAmount -= this.shakeValue * delta;
 
-        if (this.shakeValue < MIN_SHAKE) {
-          this.shakeValue = 0;
-          this.shakeAmount = 0;
+        if (this.shakeAmount <= -this.shakeValue) {
+          this.shakeValue *= SHAKE_FADE;
+          this.shakeDirection *= -1;
         }
       }
 
-      if (this.parent) {
-        this.parent.x = this.shakeAmount * this.parent.getScale();
+      if (this.shakeValue < MIN_SHAKE) {
+        this.shakeValue = 0;
+        this.shakeAmount = 0;
       }
+    }
+
+    if (this.parent) {
+      this.parent.moveX(this.shakeAmount);
     }
   }
 

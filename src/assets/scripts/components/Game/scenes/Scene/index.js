@@ -419,6 +419,22 @@ class Scene extends Container {
   }
 
   /**
+   * Move the x coordinate of the container.
+   * @param  {Number} x The c x coordinate.
+   */
+  moveX(x) {
+    this.x = x * this.scale.x;
+  }
+
+  /**
+   * Move the y coordinate of the container.
+   * @param  {Number} y The c y coordinate.
+   */
+  moveY(y) {
+    this.y = y * this.scale.y;
+  }
+
+  /**
    * Check if the scene is in the running state.
    * @return {Boolean} The result of the check.
    */
