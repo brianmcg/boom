@@ -15,7 +15,7 @@ const SHAKE_FADE = 0.55;
 
 const MIN_SHAKE = 0.1;
 
-const MAX_SHAKE = 16;
+const MAX_SHAKE = 8;
 
 const STATES = {
   FADING_IN: 'prompt:fading:in',
@@ -104,7 +104,7 @@ class PromptContainer extends Container {
       }
 
       if (this.parent) {
-        this.parent.x = this.shakeAmount;
+        this.parent.x = this.shakeAmount * this.parent.getScale();
       }
     }
   }
