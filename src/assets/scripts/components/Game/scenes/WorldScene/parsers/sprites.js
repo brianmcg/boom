@@ -183,7 +183,7 @@ const createWallSprites = ({
 const createBackgroundSprites = ({ world, frames, textures }) => {
   const backgroundImages = [];
   const backgroundTextures = {};
-  const backgroundSprites = [];
+  const inner = [];
 
   world.grid.forEach((row) => {
     row.forEach((cell) => {
@@ -218,10 +218,39 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
     for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
       row.push(new BackgroundSprite(backgroundTextures, i, j));
     }
-    backgroundSprites.push(row);
+
+    inner.push(row);
   }
 
-  return backgroundSprites;
+  const outer = world.sky.reduce((memo, skyObject) => {
+    if (skyObject.repeat) {
+      const sprite = new Sprite(textures[skyObject.name]);
+
+      sprite.width = SCREEN.WIDTH;
+      sprite.height = SCREEN.HEIGHT * 3;
+      sprite.anchor.y = 0.5;
+
+      return {
+        ...memo,
+        [skyObject.name]: sprite,
+      };
+    }
+
+    const sprite = new Sprite(textures[skyObject.name]);
+
+    sprite.updateX = true;
+
+    sprite.width = SCREEN.WIDTH / 5;
+    sprite.height = sprite.width;
+    sprite.anchor.set(0.5);
+
+    return {
+      ...memo,
+      [skyObject.name]: sprite,
+    };
+  }, {});
+
+  return { inner, outer };
 };
 
 const createEffectsSprites = ({

@@ -47,7 +47,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       width: cell.axis === AXES.X ? CELL_SIZE : CELL_SIZE / 2,
       length: cell.axis === AXES.Y ? CELL_SIZE : CELL_SIZE / 2,
-      height: CELL_SIZE,
+      height: cell.height * CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
       key: cell.key,
@@ -64,7 +64,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       width: CELL_SIZE,
       length: CELL_SIZE,
-      height: CELL_SIZE,
+      height: cell.height * CELL_SIZE,
       axis: cell.axis,
       blocking: cell.blocking,
       offset: 0.1,
@@ -81,7 +81,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       axis: cell.axis,
       width: cell.axis === AXES.X ? CELL_SIZE : CELL_SIZE / 2,
       length: cell.axis === AXES.Y ? CELL_SIZE : CELL_SIZE / 2,
-      height: cell.blocking ? CELL_SIZE : 0,
+      height: cell.height * CELL_SIZE,
       transparency: cell.transparency,
       offset: cell.offset,
       sides,
@@ -94,7 +94,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     blocking: cell.blocking,
     width: CELL_SIZE,
     length: CELL_SIZE,
-    height: cell.blocking ? CELL_SIZE : 0,
+    height: cell.height * CELL_SIZE,
     sides,
   });
 };
@@ -113,7 +113,13 @@ export const createWorld = ({ scene, data, graphics }) => {
     return memo;
   }, []);
 
-  const { entrance, exit, props } = data;
+  const {
+    entrance,
+    exit,
+    props,
+    sky,
+  } = data;
+
   const { visibility, brightness } = props.world;
   const { animations } = graphics.data;
 
@@ -225,5 +231,6 @@ export const createWorld = ({ scene, data, graphics }) => {
     exit,
     visibility,
     brightness,
+    sky,
   });
 };

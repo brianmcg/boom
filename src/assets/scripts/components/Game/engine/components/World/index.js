@@ -42,6 +42,7 @@ class World extends PhysicsWorld {
     exit,
     visibility,
     brightness,
+    sky,
   }) {
     super(grid, [
       ...enemies,
@@ -65,6 +66,7 @@ class World extends PhysicsWorld {
     this.effects = [];
     this.startTime = performance.now();
     this.startingProps = Object.assign({}, this.props);
+    this.sky = sky;
 
     this.secrets = this.grid.reduce((memo, row) => ([
       ...memo,

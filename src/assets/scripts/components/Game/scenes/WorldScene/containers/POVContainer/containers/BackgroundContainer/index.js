@@ -9,10 +9,12 @@ class BackgroundContainer extends ParticleContainer {
    * Creates a background container.
    * @param  {Array} sprites The background sprites.
    */
-  constructor(sprites) {
+  constructor({ inner, outer }) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT);
 
-    sprites.forEach((slice) => {
+    Object.values(outer).forEach(sprite => this.addChild(sprite));
+
+    inner.forEach((slice) => {
       slice.forEach((pixel) => {
         this.addChild(pixel);
       });
