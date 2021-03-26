@@ -6,7 +6,7 @@
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = false;
+export const DEBUG = 1;
 
 /**
  * The maximum frames per second.
@@ -18,7 +18,7 @@ export const MAX_FPS = 60;
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = DEBUG || true;
+export const DISABLE_MUSIC = DEBUG || false;
 
 /**
  * The volume of the music.

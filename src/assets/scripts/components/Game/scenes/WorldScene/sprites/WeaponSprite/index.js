@@ -27,7 +27,7 @@ class WeaponSprite extends AnimatedSprite {
     this.anchor.set(0.5);
 
     Object.values(player.weapons).forEach((weapon) => {
-      weapon.onUse(() => this.setFiring());
+      weapon.onUse(() => this.setUsing());
 
       if (weapon.automatic) {
         weapon.onStop(() => this.setIdle());
@@ -45,9 +45,9 @@ class WeaponSprite extends AnimatedSprite {
   }
 
   /**
-   * Set the firing animation.
+   * Set the using animation.
    */
-  setFiring() {
+  setUsing() {
     const { name, automatic } = this.player.weapon;
 
     if ((automatic && !this.playing) || !automatic) {

@@ -144,25 +144,30 @@ class AbstractWeapon extends Entity {
   }
 
   /**
-   * Fire the weapon.
+   * Use the weapon.
    */
   use() {
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('You have to implement this method.');
     }
 
-    if (this.ammo !== null) {
+    if (this.ammo === null) {
+      this.emit(EVENTS.USE, {
+        recoil: this.recoil,
+        sound: this.sounds.use,
+      });
+    } else if (this.ammo > 0) {
       this.ammo -= 1;
+
+      this.emit(EVENTS.USE, {
+        recoil: this.recoil,
+        sound: this.sounds.use,
+      });
     }
 
     if (this.ammo === 0) {
       this.stop();
     }
-
-    this.emit(EVENTS.USE, {
-      recoil: this.recoil,
-      sound: this.sounds.use,
-    });
   }
 
   /**
@@ -224,8 +229,8 @@ class AbstractWeapon extends Entity {
   }
 
   /**
-   * Set the state to firing.
-   * @return {Boolean} Has the state changed to firing.
+   * Set the state to using.
+   * @return {Boolean} Has the state changed to using.
    */
   setUsing() {
     return this.setState(STATES.USING);
@@ -248,7 +253,7 @@ class AbstractWeapon extends Entity {
   }
 
   /**
-   * Is the weapon in the firing state.
+   * Is the weapon in the using state.
    * @return {Boolean}
    */
   isUsing() {
