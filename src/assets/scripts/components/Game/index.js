@@ -1,7 +1,13 @@
+import * as Stats from 'stats.js';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
-import { SCREEN, DEBUG, MUSIC_VOLUME } from './constants/config';
+import {
+  SCREEN,
+  DEBUG,
+  MUSIC_VOLUME,
+  DISPLAY_FPS,
+} from './constants/config';
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -22,6 +28,12 @@ const SCENES = {
   [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
+const STAT_PANELS = {
+  FPS: 0,
+  MS: 1,
+  MB: 2,
+};
+
 /**
  * A class representing a game.
  */
@@ -40,8 +52,18 @@ class Game extends Application {
       top: '50%',
     };
 
-    // this.ticker.maxFPS = MAX_FPS;
-    this.ticker.add(this.loop, this);
+    if (DISPLAY_FPS) {
+      this.stats = new Stats();
+      this.stats.showPanel(STAT_PANELS.FPS);
+
+      document.body.appendChild(this.stats.dom);
+
+      this.ticker.add(this.fpsLoop, this);
+    } else {
+      // this.ticker.maxFPS = MAX_FPS;
+      this.ticker.add(this.loop, this);
+    }
+
     this.frameCount = 0;
     this.timer = 0;
 
@@ -107,6 +129,16 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
+    if (this.scene) {
+      this.scene.update(delta, this.ticker.elapsedMS);
+    }
+  }
+
+  /**
+   * Execute a game loop and display fps.
+   * @param  {Number} delta The delta value.
+   */
+  fpsLoop(delta) {
     // NOTE: Uncomment below code to log frame rate in console.
     // this.timer += this.ticker.elapsedMS;
     // this.frameCount += 1;
@@ -116,9 +148,13 @@ class Game extends Application {
     //   this.frameCount = 0;
     // }
 
+    this.stats.begin();
+
     if (this.scene) {
       this.scene.update(delta, this.ticker.elapsedMS);
     }
+
+    this.stats.end();
   }
 
   /**

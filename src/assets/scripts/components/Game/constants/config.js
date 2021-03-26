@@ -9,6 +9,12 @@
 export const DEBUG = 1;
 
 /**
+ * Display the frames per second on screen.
+ * @type {Boolean}
+ */
+export const DISPLAY_FPS = true;
+
+/**
  * The maximum frames per second.
  * @type {Number}
  */
@@ -61,8 +67,8 @@ export const WALL_LAYERS = 3;
  * @type {Object}
  */
 export const SCREEN = {
-  WIDTH: 224,
-  HEIGHT: 126,
+  WIDTH: 256,
+  HEIGHT: 144,
 };
 
 /**

@@ -76,8 +76,8 @@ class POVContainer extends Container {
 
     const {
       player,
-      maxCellX,
-      maxCellY,
+      maxMapX,
+      maxMapY,
       effects,
       sky,
     } = world;
@@ -164,15 +164,19 @@ class POVContainer extends Container {
           actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / Math.cos(spriteAngle);
           mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
+          mapX = (mapX > maxMapX) ? maxMapX : mapX;
+          mapX = (mapX < 0) ? 0 : mapX;
+
           mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
+          mapY = (mapY > maxMapY) ? maxMapY : mapY;
+          mapY = (mapY < 0) ? 0 : mapY;
+
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+
           gridX = Math.floor(mapX / CELL_SIZE);
-          gridX = (gridX > maxCellX) ? maxCellX : gridX;
-          gridX = (gridX < 0) ? 0 : gridX;
           gridY = Math.floor(mapY / CELL_SIZE);
-          gridY = (gridY > maxCellY) ? maxCellY : gridY;
-          gridY = (gridY < 0) ? 0 : gridY;
+
           pixelSource = world.getCell(gridX, gridY).top;
 
           if (pixelSource) {
@@ -200,15 +204,19 @@ class POVContainer extends Container {
           actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / Math.cos(spriteAngle);
           mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
+          mapX = (mapX > maxMapX) ? maxMapX : mapX;
+          mapX = (mapX < 0) ? 0 : mapX;
+
           mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
+          mapY = (mapY > maxMapY) ? maxMapY : mapY;
+          mapY = (mapY < 0) ? 0 : mapY;
+
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+
           gridX = Math.floor(mapX / CELL_SIZE);
-          gridX = (gridX > maxCellX) ? maxCellX : gridX;
-          gridX = (gridX < 0) ? 0 : gridX;
           gridY = Math.floor(mapY / CELL_SIZE);
-          gridY = (gridY > maxCellY) ? maxCellY : gridY;
-          gridY = (gridY < 0) ? 0 : gridY;
+
           pixelSource = world.getCell(gridX, gridY).bottom;
 
           if (pixelSource) {
