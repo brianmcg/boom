@@ -599,9 +599,9 @@ class Player extends AbstractActor {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const weaponToRefill = this.weapons[index];
 
-    if (weaponToRefill.isEquiped()) {
+    if (weaponToRefill.isEquiped() && weaponToRefill.addAmmo(amount)) {
       this.emitSound(weaponToRefill.sounds.equip);
-      return weaponToRefill.addAmmo(amount);
+      return true;
     }
 
     return false;

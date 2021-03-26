@@ -1,9 +1,16 @@
 import { CELL_SIZE } from 'game/constants/config';
 import { Body, degrees } from 'game/core/physics';
+import HitScan from '../HitScan';
 
 const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
+
+const SPREAD = 24;
+
+const INCREMENT = 360 / 24;
+
+const ANGLES = [...Array(SPREAD).keys()].map(i => degrees(i * INCREMENT));
 
 /**
  * Class representing a hit scan.
@@ -29,37 +36,48 @@ class Explosion extends Body {
     super(other);
 
     this.source = source;
-    this.range = range;
+    this.range = range * CELL_SIZE;
     this.sounds = sounds;
     this.power = power;
     this.effects = effects;
+    this.parent = source.parent;
   }
 
   /**
    * Run the explosion.
    */
   run() {
-    const { parent } = this.source;
-    const distanceToPlayer = this.source.getDistanceTo(parent.player);
+    this.parent = this.source.parent;
+    this.x = this.source.x;
+    this.y = this.source.y;
+
+    const distanceToPlayer = this.source.getDistanceTo(this.parent.player);
     const shake = (CELL_SIZE / distanceToPlayer) * (this.power / (CELL_SIZE));
 
     if (this.range > 0) {
-      parent.getAdjacentBodies(this.source, this.range).forEach((body) => {
-        if (body.isDestroyable) {
-          const distance = this.source.getDistanceTo(body);
-          const angle = (body.getAngleTo(this.source) + DEG_180) % DEG_360;
-          const damage = Math.max(1, this.power - Math.round(distance));
+      ANGLES.forEach((angle) => new HitScan({
+        source: this,
+        power: this.power,
+        range: this.range,
+        fade: true,
+      }).run(angle));
 
-          if (body.isActor && body.isDead()) {
-            body.startUpdates();
-          }
+      // parent.getAdjacentBodies(this.source, this.range).forEach((body) => {
+      //   if (body.isDestroyable) {
+      //     const distance = this.source.getDistanceTo(body);
+      //     const angle = (body.getAngleTo(this.source) + DEG_180) % DEG_360;
+      //     const damage = Math.max(1, this.power - Math.round(distance));
 
-          body.hit({ damage, angle });
-        }
-      });
+      //     if (body.isActor && body.isDead()) {
+      //       body.startUpdates();
+      //     }
+
+      //     body.hit({ damage, angle });
+      //   }
+      // });
     }
 
-    parent.addEffect({
+    this.parent.addEffect({
       x: this.source.x,
       y: this.source.y,
       z: this.source.z,

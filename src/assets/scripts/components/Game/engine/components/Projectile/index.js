@@ -39,6 +39,7 @@ class Projectile extends DynamicEntity {
   constructor({
     width = CELL_SIZE / 4,
     height = CELL_SIZE / 4,
+    length = CELL_SIZE / 4,
     speed = 0,
     source,
     effects,
@@ -51,6 +52,7 @@ class Projectile extends DynamicEntity {
     super({
       width,
       height,
+      length,
       blocking: false,
       weight,
       ...other,
@@ -88,15 +90,25 @@ class Projectile extends DynamicEntity {
       height,
     } = this.source;
 
+    const gridX = Math.floor(x / CELL_SIZE);
+    const gridY = Math.floor(y / CELL_SIZE);
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
     this.x = x + Math.cos(this.angle) * distance;
     this.y = y + Math.sin(this.angle) * distance;
     this.z = elavation - (HALF_HEIGHT - (height * HEIGHT_MULTIPLIER));
 
-    this.setTravelling();
+    const cell = parent.getCell(this.gridX, this.gridY);
 
+    if (cell.blocking && this.isBodyCollision(cell)) {
+      this.x = x;
+      this.y = y;
+    }
+
+    this.setTravelling();
     this.emitSound(this.sounds.travel);
+
+
   }
 
   /**

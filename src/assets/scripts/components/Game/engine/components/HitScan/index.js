@@ -21,7 +21,8 @@ class HitScan extends Body {
     source,
     power,
     range,
-    accuracy,
+    accuracy = 0,
+    fade,
     ...other
   } = {}) {
     super(other);
@@ -31,6 +32,7 @@ class HitScan extends Body {
     this.power = power;
     this.range = range;
     this.accuracy = accuracy;
+    this.fade = fade;
   }
 
   /**
@@ -90,7 +92,11 @@ class HitScan extends Body {
       const { point, body } = collisions[0];
 
       if (point.distance <= this.range) {
-        const damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
+        let damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
+
+        if (this.fade) {
+          damage *= ((this.range - point.distance) / this.range);
+        }
 
         if (sourceId) {
           this.source.parent.addEffect({
