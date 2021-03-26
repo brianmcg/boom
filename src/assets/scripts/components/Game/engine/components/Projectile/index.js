@@ -107,8 +107,6 @@ class Projectile extends DynamicEntity {
 
     this.setTravelling();
     this.emitSound(this.sounds.travel);
-
-
   }
 
   /**

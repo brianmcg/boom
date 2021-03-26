@@ -53,8 +53,21 @@ class Explosion extends Body {
 
     const distanceToPlayer = this.source.getDistanceTo(this.parent.player);
     const shake = (CELL_SIZE / distanceToPlayer) * (this.power / (CELL_SIZE));
+    const range = Math.ceil(this.range / CELL_SIZE);
+    const deadBodies = [];
 
     if (this.range > 0) {
+      // Make dead bodies collideable and updateable for this frame,
+      // so that an explosion will apply a force to them.
+      this.parent.getAdjacentBodies(this.source, range).forEach((body) => {
+        if (body.isActor && body.isDead()) {
+          body.startUpdates();
+          body.blocking = true;
+          deadBodies.push(body);
+        }
+      });
+
+      // Fire rays in all directions.
       ANGLES.forEach((angle) => new HitScan({
         source: this,
         power: this.power,
@@ -62,19 +75,10 @@ class Explosion extends Body {
         fade: true,
       }).run(angle));
 
-      // parent.getAdjacentBodies(this.source, this.range).forEach((body) => {
-      //   if (body.isDestroyable) {
-      //     const distance = this.source.getDistanceTo(body);
-      //     const angle = (body.getAngleTo(this.source) + DEG_180) % DEG_360;
-      //     const damage = Math.max(1, this.power - Math.round(distance));
-
-      //     if (body.isActor && body.isDead()) {
-      //       body.startUpdates();
-      //     }
-
-      //     body.hit({ damage, angle });
-      //   }
-      // });
+      // Stop dead bodies from colliding.
+      deadBodies.forEach((body) => {
+        body.blocking = false;
+      });
     }
 
     this.parent.addEffect({

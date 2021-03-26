@@ -25,7 +25,9 @@ const MIN_FORCE = 0.1;
 
 const NEARBY = CELL_SIZE * 6;
 
-const NEARBY_SOUND_GAP = 8000;
+const GROWL_INTERVAL = 8000;
+
+const DEAD_VELOCITY_MULTIPLIER = 0.25;
 
 /**
  * Abstract class representing an enemy.
@@ -154,7 +156,7 @@ class AbstractEnemy extends AbstractActor {
     } else {
       this.nearbyTimer += elapsedMS;
 
-      if (this.nearbyTimer > NEARBY_SOUND_GAP) {
+      if (this.nearbyTimer > GROWL_INTERVAL) {
         this.nearbyTimer = 0;
       }
 
@@ -355,7 +357,7 @@ class AbstractEnemy extends AbstractActor {
       }
     } else {
       this.angle = angle;
-      this.velocity = Math.sqrt(damage) * 0.5;
+      this.velocity = Math.sqrt(damage) * DEAD_VELOCITY_MULTIPLIER;
     }
   }
 
