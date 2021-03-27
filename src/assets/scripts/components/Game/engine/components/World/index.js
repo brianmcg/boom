@@ -113,6 +113,10 @@ class World extends PhysicsWorld {
    * @param  {String} message The message for the player.
    */
   start(message) {
+    const { x, y } = this.entrance;
+
+    this.getCell(x + 1, y).use();
+
     this.player.start(message);
   }
 

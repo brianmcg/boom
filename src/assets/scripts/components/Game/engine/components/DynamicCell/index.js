@@ -1,6 +1,8 @@
-import { MAX_SOUND_DISTANCE } from 'game/constants/config';
+import { MAX_SOUND_DISTANCE, CELL_SIZE } from 'game/constants/config';
 import { DynamicCell as PhysicsCell } from 'game/core/physics';
 import { SoundSpriteController } from 'game/core/audio';
+
+const HALF_CELL_SIZE = CELL_SIZE / 2;
 
 /**
  * Class representing a game cell.
@@ -116,6 +118,24 @@ class DynamicCell extends PhysicsCell {
   startUpdates() {
     super.startUpdates();
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+  }
+
+  get shape() {
+    if (this.axis === 'y') {
+      return {
+        x: this.x - HALF_CELL_SIZE + (CELL_SIZE - this.offset.x),
+        y: this.y - HALF_CELL_SIZE + this.offset.y,
+        width: this.width,
+        length: this.length,
+      };
+    }
+
+    return {
+      x: this.x - this.width / 2,
+      y: this.y - this.length / 2,
+      width: this.width,
+      length: this.length,
+    };
   }
 }
 

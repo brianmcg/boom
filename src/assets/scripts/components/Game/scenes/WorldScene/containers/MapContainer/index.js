@@ -12,13 +12,7 @@ class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    // debugger;
-
-    sprites.grid.forEach((row) => {
-      row.forEach((sector) => {
-        this.addChild(sector);
-      });
-    });
+    Object.values(sprites.grid).forEach(sprite => this.addChild(sprite));
 
     sprites.lines.forEach(line => this.addChild(line));
 
@@ -32,9 +26,9 @@ class MapContainer extends Container {
   }
 
   update() {
-    const { player } = this.world;
+    const { player, grid } = this.world;
 
-    const { player: playerSprite, lines } = this.sprites;
+    const { player: playerSprite, grid: gridSprites, lines } = this.sprites;
 
     playerSprite.x = player.shape.x;
     playerSprite.y = player.shape.y;
@@ -57,6 +51,19 @@ class MapContainer extends Container {
 
       angle = (angle + ANGLE_INCREMENT) % DEG_360;
     }
+
+    grid.forEach((row) => {
+      row.forEach((sector) => {
+        if (sector.isDynamic) {
+          const sprite = gridSprites[sector.id];
+          const { shape } = sector;
+          sprite.x = shape.x;
+          sprite.y = shape.y;
+          sprite.width = shape.width;
+          sprite.height = shape.length;
+        }
+      });
+    });
   }
 }
 

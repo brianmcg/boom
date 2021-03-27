@@ -317,7 +317,12 @@ const castRaySection = ({
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {
-            offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+            if (y < horizontalGrid) {
+              offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.x);
+            } else {
+              offsetRatio = CELL_SIZE / horizontalCell.offset.x;
+            }
+
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
@@ -428,7 +433,11 @@ const castRaySection = ({
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
           if (verticalCell.isDoor) {
-            offsetRatio = CELL_SIZE / verticalCell.offset.x;
+            if (x < verticalGrid) {
+              offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
+            } else {
+              offsetRatio = CELL_SIZE / verticalCell.offset.x;
+            }
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
 

@@ -673,22 +673,25 @@ const createWorldGraphics = ({ world }) => {
 
   const lines = [...Array(SCREEN.WIDTH).keys()].map(() => new Line({ color: 0xFFFF00 }));
 
-  const grid = world.grid.reduce((rowMemo, row) => ([
+  const grid = world.grid.reduce((rowMemo, row) => ({
     ...rowMemo,
-    row.reduce((sectorMemo, sector) => {
+    ...row.reduce((sectorMemo, sector) => {
       if (sector.blocking) {
-        sectorMemo.push(new RectangleSprite({
-          color: color(sector),
-          x: sector.shape.x,
-          y: sector.shape.y,
-          width: sector.shape.width,
-          height: sector.shape.length,
-        }));
+        return {
+          ...sectorMemo,
+          [sector.id]: new RectangleSprite({
+            color: color(sector),
+            x: sector.shape.x,
+            y: sector.shape.y,
+            width: sector.shape.width,
+            height: sector.shape.length,
+          }),
+        };
       }
 
       return sectorMemo;
-    }, []),
-  ]), []);
+    }, {}),
+  }), {});
 
   const player = new RectangleSprite({
     color: color(world.player),
