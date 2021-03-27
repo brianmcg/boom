@@ -15,6 +15,7 @@ export const parse = ({
   data,
   text,
   renderer,
+  mapView,
 }) => {
   const world = createWorld({
     data,
@@ -27,6 +28,7 @@ export const parse = ({
     graphics,
     text,
     renderer,
+    mapView,
   });
 
   return {

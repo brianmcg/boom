@@ -20,6 +20,9 @@ class Application extends PixiApplication {
     delete this.start;
     delete this.stop;
 
+    // this.renderer.preserveDrawingBuffer = true;
+    // this.renderer.clearBeforeRender = false;
+
     window.addEventListener('resize', () => this.resize());
   }
 

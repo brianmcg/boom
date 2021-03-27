@@ -22,6 +22,7 @@ import Sprite from './components/Sprite';
 import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
+import Line from './components/Line';
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
@@ -89,4 +90,5 @@ export {
    */
   Texture,
   BLEND_MODES,
+  Line,
 };

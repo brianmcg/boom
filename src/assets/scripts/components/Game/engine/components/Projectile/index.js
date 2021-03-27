@@ -90,8 +90,6 @@ class Projectile extends DynamicEntity {
       height,
     } = this.source;
 
-    const gridX = Math.floor(x / CELL_SIZE);
-    const gridY = Math.floor(y / CELL_SIZE);
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
     this.x = x + Math.cos(this.angle) * distance;

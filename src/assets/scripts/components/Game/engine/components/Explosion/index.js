@@ -2,10 +2,6 @@ import { CELL_SIZE } from 'game/constants/config';
 import { Body, degrees } from 'game/core/physics';
 import HitScan from '../HitScan';
 
-const DEG_180 = degrees(180);
-
-const DEG_360 = degrees(360);
-
 const SPREAD = 24;
 
 const INCREMENT = 360 / 24;
@@ -68,7 +64,7 @@ class Explosion extends Body {
       });
 
       // Fire rays in all directions.
-      ANGLES.forEach((angle) => new HitScan({
+      ANGLES.forEach(angle => new HitScan({
         source: this,
         power: this.power,
         range: this.range,

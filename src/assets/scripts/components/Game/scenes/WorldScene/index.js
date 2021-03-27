@@ -1,8 +1,10 @@
 import translate from 'root/translate';
+import { DEBUG } from 'game/constants/config';
 import { KEYS, BUTTONS } from 'game/core/input';
 import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
+import MapContainer from './containers/MapContainer';
 import ReviewContainer from './containers/ReviewContainer';
 import Scene, { STATES } from '../Scene';
 
@@ -15,6 +17,8 @@ Object.assign(STATES, {
 const FADE_INCREMENT = 0.05;
 
 const FADE_PIXEL_SIZE = 4;
+
+const MAP_VIEW = DEBUG === 2;
 
 /**
  * Class representing a world scene.
@@ -129,18 +133,19 @@ class WorldScene extends Scene {
 
     const { world, sprites } = parse({
       scene: this,
+      mapView: MAP_VIEW,
       renderer,
       graphics,
       data,
       text,
     });
 
-    this.povContainer = new POVContainer({ world, sprites: sprites.world });
+    this.viewContainer = MAP_VIEW
+      ? new MapContainer({ world, sprites: sprites.world })
+      : new POVContainer({ world, sprites: sprites.world });
 
-    this.mainContainer.addChild(this.povContainer);
-
+    this.mainContainer.addChild(this.viewContainer);
     this.reviewContainer = new ReviewContainer(sprites.review, this.sounds);
-
     this.reviewContainer.onShowStat(sound => this.soundController.emitSound(sound));
 
     this.world = world;
@@ -273,7 +278,7 @@ class WorldScene extends Scene {
    * Set the state to removing review.
    */
   setRemovingReview() {
-    this.povContainer.removeHud();
+    this.viewContainer.removeHud();
     return this.setState(STATES.REMOVING_REVIEW);
   }
 

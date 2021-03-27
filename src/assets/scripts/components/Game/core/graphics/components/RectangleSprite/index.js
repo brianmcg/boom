@@ -20,6 +20,7 @@ class RectangleSprite extends Sprite {
     width = 10,
     height = 10,
     alpha = 1,
+    anchor = 0,
   }) {
     super();
 
@@ -32,6 +33,10 @@ class RectangleSprite extends Sprite {
 
     if (color || color === 0) {
       this.tint = color;
+    }
+
+    if (anchor) {
+      this.anchor.set(anchor);
     }
   }
 }

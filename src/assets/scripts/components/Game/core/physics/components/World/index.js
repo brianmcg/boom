@@ -1,5 +1,5 @@
 import { EventEmitter } from 'game/core/graphics';
-import { CELL_SIZE }from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 
 /**
  * Class representing a world.

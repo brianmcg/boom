@@ -8,6 +8,7 @@ import {
   Container,
   ColorMatrixFilter,
   BLEND_MODES,
+  Line,
 } from 'game/core/graphics';
 import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
@@ -56,7 +57,7 @@ const createProjectileSprite = ({ animations, textures, rotate }) => {
 };
 
 const createWallSpriteMask = (wallTexture, renderer) => {
-  const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
+  const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: CELL_SIZE });
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
@@ -73,7 +74,7 @@ const createWallSpriteMask = (wallTexture, renderer) => {
 
   filter.negative();
 
-  renderer.render(maskContainer, renderTexture);
+  renderer.render(maskContainer, { renderTexture });
 
   const sprite = new Sprite(renderTexture);
 
@@ -139,7 +140,7 @@ const createWallSprites = ({
     }
 
     const spatterTextures = spatters.map((spatter) => {
-      const renderTexture = RenderTexture.create(CELL_SIZE, CELL_SIZE);
+      const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: CELL_SIZE });
       const spatterTexture = textures[spatter];
       const wallSprite = new Sprite(wallTexture);
       const spatterSprite = new Sprite(spatterTexture);
@@ -157,7 +158,7 @@ const createWallSprites = ({
       spatterContainer.addChild(wallSprite);
       spatterContainer.addChild(spatterSprite);
 
-      renderer.render(spatterContainer, renderTexture);
+      renderer.render(spatterContainer, { renderTexture });
 
       return renderTexture;
     });
@@ -656,6 +657,54 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
   };
 };
 
+
+const createWorldGraphics = ({ world }) => {
+  const color = ((body) => {
+    if (body.isPlayer) {
+      return 0x00FF00;
+    }
+
+    if (body.isDoor) {
+      return 0x0000FF;
+    }
+
+    return 0xFF0000;
+  });
+
+  const lines = [...Array(SCREEN.WIDTH).keys()].map(() => new Line({ color: 0xFFFF00 }));
+
+  const grid = world.grid.reduce((rowMemo, row) => ([
+    ...rowMemo,
+    row.reduce((sectorMemo, sector) => {
+      if (sector.blocking) {
+        sectorMemo.push(new RectangleSprite({
+          color: color(sector),
+          x: sector.shape.x,
+          y: sector.shape.y,
+          width: sector.shape.width,
+          height: sector.shape.length,
+        }));
+      }
+
+      return sectorMemo;
+    }, []),
+  ]), []);
+
+  const player = new RectangleSprite({
+    color: color(world.player),
+    x: world.player.shape.x,
+    y: world.player.shape.y,
+    width: world.player.shape.width,
+    height: world.player.shape.length,
+  });
+
+  return {
+    grid,
+    player,
+    lines,
+  };
+};
+
 /**
  * Creates the sprites for the scene.
  * @param  {World}  options.world     The world.
@@ -669,7 +718,10 @@ export const createSprites = ({
   graphics,
   text,
   renderer,
+  mapView,
 }) => ({
-  world: createWorldSprites({ world, graphics, renderer }),
+  world: mapView
+    ? createWorldGraphics({ world })
+    : createWorldSprites({ world, graphics, renderer }),
   review: createReviewSprites(text.review),
 });

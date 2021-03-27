@@ -458,24 +458,23 @@ class AbstractEnemy extends AbstractActor {
   setPatrolling() {
     const { player } = this.parent;
 
-    const cells = this.parent.getAdjacentCells(this).filter((cell) => (
-      !cell.blocking
-        && !cell.bodies.some(b => b.blocking)
-        // && cell !== this.waypoint
-    )).sort((a, b) => {
-      const distanceA = player.getDistanceTo(a);
-      const distanceB = player.getDistanceTo(b);
+    const cells = this.parent.getAdjacentCells(this)
+      // && cell !== this.waypoint
+      .filter(cell => !cell.blocking && !cell.bodies.some(b => b.blocking))
+      .sort((a, b) => {
+        const distanceA = player.getDistanceTo(a);
+        const distanceB = player.getDistanceTo(b);
 
-      if (distanceA > distanceB) {
-        return 1;
-      }
+        if (distanceA > distanceB) {
+          return 1;
+        }
 
-      if (distanceA < distanceB) {
-        return -1;
-      }
+        if (distanceA < distanceB) {
+          return -1;
+        }
 
-      return 0;
-    });
+        return 0;
+      });
 
     if (cells.length) {
       this.waypoint = cells[0];
