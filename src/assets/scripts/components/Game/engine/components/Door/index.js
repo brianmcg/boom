@@ -10,6 +10,8 @@ const STATES = {
   LOCKED: 'door:locked',
 };
 
+const HALF_CELL_SIZE = CELL_SIZE / 2;
+
 const SHAKE_MULTIPLIER = 0.2;
 
 /**
@@ -232,6 +234,24 @@ class Door extends DynamicCell {
    */
   isClosed() {
     return this.state === STATES.CLOSED;
+  }
+
+  get shape() {
+    if (this.axis === 'y') {
+      return {
+        x: this.x - HALF_CELL_SIZE + (CELL_SIZE - this.offset.x),
+        y: this.y - HALF_CELL_SIZE + this.offset.y,
+        width: this.width,
+        length: this.length,
+      };
+    }
+
+    return {
+      x: this.x - HALF_CELL_SIZE + this.offset.x,
+      y: this.y - HALF_CELL_SIZE + (CELL_SIZE - this.offset.y),
+      width: this.width,
+      length: this.length,
+    };
   }
 }
 

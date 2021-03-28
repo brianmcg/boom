@@ -17,7 +17,6 @@ class Line extends Graphics {
   }
 
   update(startPoint, endPoint) {
-    // debugger;
     this.clear();
 
     this.lineStyle(this.thickness, this.color);

@@ -211,15 +211,18 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
  */
 export const isBodyCollision = (bodyA, bodyB) => {
   // Note: used for alternative collision detection.
-  //  const startPoint = bodyA.previousPos;
-  //  const endPoint = { x: bodyA.x, y: bodyA.y };
+  const startPoint = bodyA.previousPos;
+  const endPoint = { x: bodyA.x, y: bodyA.y };
+
   const shapeA = bodyA.shape;
   const shapeB = bodyB.shape;
 
-  return shapeA.x < shapeB.x + shapeB.width
+  const collision = shapeA.x < shapeB.x + shapeB.width
     && shapeA.x + shapeA.width > shapeB.x
     && shapeA.y < shapeB.y + shapeB.length
     && shapeA.length + shapeA.y > shapeB.y;
+
+  return collision || isRayCollision(bodyB, { startPoint, endPoint });
 };
 
 /**
@@ -318,9 +321,9 @@ const castRaySection = ({
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {
             if (y < horizontalGrid) {
-              offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.x);
+              offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
             } else {
-              offsetRatio = CELL_SIZE / horizontalCell.offset.x;
+              offsetRatio = CELL_SIZE / horizontalCell.offset.y;
             }
 
             xOffsetDist = distToNextXIntersection / offsetRatio;
