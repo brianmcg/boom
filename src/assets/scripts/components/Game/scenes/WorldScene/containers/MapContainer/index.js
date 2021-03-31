@@ -14,7 +14,7 @@ class MapContainer extends Container {
 
     Object.values(sprites.grid).forEach(sprite => this.addChild(sprite));
 
-    sprites.lines.forEach((line, i) => !i && this.addChild(line));
+    sprites.lines.forEach(line => this.addChild(line));
 
     this.addChild(sprites.player);
 
@@ -27,42 +27,27 @@ class MapContainer extends Container {
 
   update() {
     const { player, grid } = this.world;
-
     const { player: playerSprite, grid: gridSprites, lines } = this.sprites;
+    let angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
 
     playerSprite.x = player.shape.x;
     playerSprite.y = player.shape.y;
 
-    let angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
+    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
+      // Cast ray
+      const rays = castRay({
+        x: player.x,
+        y: player.y,
+        angle,
+        world: this.world,
+      });
 
-    // for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-    //   // Cast ray
-    //   const rays = castRay({
-    //     x: player.x,
-    //     y: player.y,
-    //     angle,
-    //     world: this.world,
-    //   });
+      const { endPoint } = rays[rays.length - 1];
 
-    //   const { endPoint } = rays[rays.length - 1];
+      lines[xIndex].update(player, endPoint);
 
-
-    //   lines[xIndex].update(player, endPoint);
-
-    //   angle = (angle + ANGLE_INCREMENT) % DEG_360;
-    // }
-
-    const rays = castRay({
-      x: player.x,
-      y: player.y,
-      angle: player.viewAngle,
-      world: this.world,
-    });
-
-    const { endPoint } = rays[rays.length - 1];
-
-    lines[0].update(player, endPoint);
-
+      angle = (angle + ANGLE_INCREMENT) % DEG_360;
+    }
 
     grid.forEach((row) => {
       row.forEach((sector) => {

@@ -1,4 +1,5 @@
 import { CELL_SIZE, WALL_LAYERS } from 'game/constants/config';
+import { AXES } from './constants';
 
 let horizontalGrid;
 let verticalGrid;
@@ -21,6 +22,8 @@ let horizontalBody;
 let verticalBody;
 
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
+
+const { X, Y } = AXES;
 
 export const degrees = value => DEGREES[value];
 
@@ -249,6 +252,134 @@ export const getAngleBetween = (bodyA, bodyB) => {
 export const isFacing = (bodyA, bodyB) => {
   const angle = (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
   return angle > DEG_270 || angle < DEG_90;
+};
+
+export const castCellRay = ({
+  x,
+  y,
+  angle,
+  world,
+}) => {
+  const encounteredBodies = {};
+  const gridX = Math.floor(x / CELL_SIZE);
+  const gridY = Math.floor(y / CELL_SIZE);
+
+  const cell = world.getCell(gridX, gridY);
+
+  cell.bodies.forEach((body) => {
+    if ((isFacing({ x, y, angle }, body)) && (x !== body.x && y !== body.y)) {
+      encounteredBodies[body.id] = body;
+    }
+  });
+
+  if (angle > 0 && angle < DEG_180) {
+    horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
+
+    if (cell.blocking && cell.axis === X && y < horizontalGrid - cell.offset.y) {
+      horizontalGrid -= cell.offset.y;
+    }
+
+    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+  } else {
+    horizontalGrid = gridY * CELL_SIZE;
+
+    if (cell.blocking && cell.axis === X && y > horizontalGrid + (CELL_SIZE - cell.offset.y)) {
+      horizontalGrid += (CELL_SIZE - cell.offset.y);
+    }
+
+    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+    horizontalGrid -= 1;
+  }
+
+  distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+
+  if (angle < DEG_90 || angle > DEG_270) {
+    verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
+
+    if (cell.blocking && cell.axis === Y && x < verticalGrid - cell.offset.x) {
+      verticalGrid -= cell.offset.x;
+    }
+
+    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+  } else {
+    verticalGrid = gridX * CELL_SIZE;
+
+    if (cell.blocking && cell.axis === Y && verticalGrid + (CELL_SIZE - cell.offset.x) < x) {
+      verticalGrid += (CELL_SIZE - cell.offset.x);
+    }
+
+    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+    verticalGrid -= 1;
+  }
+
+  distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+
+  if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
+    if (horizontalGrid % CELL_SIZE === 0 || horizontalGrid % CELL_SIZE === CELL_SIZE - 1) {
+      return null;
+    }
+
+    if (cell.offset.x && xIntersection % CELL_SIZE < cell.offset.x) {
+      return null;
+    }
+
+    Object.values(encounteredBodies).forEach((body) => {
+      if (getDistanceBetween({ x, y }, body) > distToHorizontalGridBeingHit) {
+        delete encounteredBodies[body.id];
+      }
+    });
+
+    return {
+      startPoint: {
+        x,
+        y,
+      },
+      endPoint: {
+        x: xIntersection,
+        y: horizontalGrid,
+      },
+      distance: distToHorizontalGridBeingHit,
+      encounteredBodies,
+      isHorizontal: true,
+      side: y < cell.y
+        ? cell.left
+        : cell.right,
+      cell,
+      angle,
+    };
+  }
+
+  if (verticalGrid % CELL_SIZE === 0 || verticalGrid % CELL_SIZE === CELL_SIZE - 1) {
+    return null;
+  }
+
+  if (cell.offset.y % CELL_SIZE > 0 && yIntersection % CELL_SIZE < cell.offset.y) {
+    return null;
+  }
+
+  Object.values(encounteredBodies).forEach((body) => {
+    if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
+      delete encounteredBodies[body.id];
+    }
+  });
+
+  return {
+    startPoint: {
+      x,
+      y,
+    },
+    endPoint: {
+      x: verticalGrid,
+      y: yIntersection,
+    },
+    distance: distToVerticalGridBeingHit,
+    encounteredBodies,
+    side: x < cell.x
+      ? cell.front
+      : cell.back,
+    cell,
+    angle,
+  };
 };
 
 /**
@@ -580,6 +711,7 @@ export const castRay = ({
   x,
   y,
   angle,
+  world,
   ...other
 }) => {
   let currentRay;
@@ -588,12 +720,16 @@ export const castRay = ({
   const result = [];
   const rayAngle = angle % DEG_90 === 0 ? angle + 0.0001 : angle;
   const startPoint = { x, y };
+  const gridX = Math.floor(x / CELL_SIZE);
+  const gridY = Math.floor(y / CELL_SIZE);
+  const cell = world.getCell(gridX, gridY);
 
   for (let i = 0; i < WALL_LAYERS; i += 1) {
     previousRay = result[i - 1];
 
     if (previousRay) {
       currentRay = castRaySection(Object.assign(other, previousRay.endPoint, {
+        world,
         angle: rayAngle,
       }));
 
@@ -605,9 +741,12 @@ export const castRay = ({
         previousRay.encounteredBodies,
       );
     } else {
-      currentRay = castRaySection(Object.assign(other, startPoint, {
+      const options = Object.assign(other, startPoint, {
+        world,
         angle: rayAngle,
-      }));
+      });
+
+      currentRay = (cell.blocking && castCellRay(options)) || castRaySection(options);
     }
 
     result.push(currentRay);
