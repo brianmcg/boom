@@ -114,8 +114,11 @@ class World extends PhysicsWorld {
    */
   start(message) {
     const { x, y } = this.entrance;
+    const entrance = this.getCell(x, y)
 
-    this.getCell(x + 1, y).use();
+    if (entrance.use) {
+      entrance.use();
+    }
 
     this.player.start(message);
   }

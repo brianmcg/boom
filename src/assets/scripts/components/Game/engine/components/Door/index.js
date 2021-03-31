@@ -163,7 +163,8 @@ class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENED);
 
     if (isStateChanged) {
-      const shake = CELL_SIZE / this.distanceToPlayer * this.speed * SHAKE_MULTIPLIER;
+      const distance = this.distanceToPlayer || CELL_SIZE;
+      const shake = CELL_SIZE / distance * this.speed * SHAKE_MULTIPLIER;
 
       this.blocking = false;
       this.height = 0;

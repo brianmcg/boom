@@ -131,7 +131,7 @@ class DynamicBody extends Body {
           const halfWidth = this.shape.width / 2;
 
           if (this.previousPos.x < shape.x) {
-            this.x = x - halfWidth;
+            this.x = x - halfWidth - 0.001;
           } else {
             this.x = x + width + halfWidth;
           }
@@ -155,7 +155,7 @@ class DynamicBody extends Body {
           const halfLength = this.shape.length / 2;
 
           if (this.previousPos.y < shape.y) {
-            this.y = y - halfLength;
+            this.y = y - halfLength - 0.001;
           } else {
             this.y = y + length + halfLength;
           }
