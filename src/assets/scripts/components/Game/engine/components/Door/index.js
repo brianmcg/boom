@@ -38,7 +38,6 @@ class Door extends DynamicCell {
     this.isDoor = true;
     this.double = double;
 
-    this.speed *= 0.2;
     this.setClosed();
   }
 
