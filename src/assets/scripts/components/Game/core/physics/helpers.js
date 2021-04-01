@@ -323,8 +323,20 @@ export const castCellRay = ({
       return null;
     }
 
-    if (cell.offset.x && xIntersection % CELL_SIZE < cell.offset.x) {
-      return null;
+    // if door offset miss.
+    if (cell.isDoor) {
+      xOffsetHit = xIntersection % CELL_SIZE;
+
+      if (cell.double) {
+        if (cell.offset.x % CELL_SIZE > 0
+          && xOffsetHit > HALF_CELL - (cell.offset.x / 2)
+          && xOffsetHit < CELL_SIZE - (HALF_CELL - (cell.offset.x / 2))
+        ) {
+          return null;
+        }
+      } else if (cell.offset.x && xOffsetHit < cell.offset.x) {
+        return null;
+      }
     }
 
     Object.values(encounteredBodies).forEach((body) => {
@@ -360,15 +372,16 @@ export const castCellRay = ({
 
   // if door offset miss.
   if (cell.isDoor) {
+    yOffsetHit = yIntersection % CELL_SIZE;
+
     if (cell.double) {
-      yOffsetHit = yIntersection % CELL_SIZE;
       if (cell.offset.y % CELL_SIZE > 0
         && yOffsetHit > HALF_CELL - (cell.offset.y / 2)
         && yOffsetHit < CELL_SIZE - (HALF_CELL - (cell.offset.y / 2))
       ) {
         return null;
       }
-    } else if (cell.offset.y % CELL_SIZE > 0 && yIntersection % CELL_SIZE < cell.offset.y) {
+    } else if (cell.offset.y % CELL_SIZE > 0 && yOffsetHit < cell.offset.y) {
       return null;
     }
   }
@@ -476,14 +489,21 @@ const castRaySection = ({
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
-            if (horizontalCell.double &&
-              ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x
-                )
-            ) {
-              xIntersection += xOffsetDist;
-              horizontalGrid += yOffsetDist;
-              distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
-              break;
+            xOffsetHit = (xIntersection + xOffsetDist) % CELL_SIZE;
+
+            if (horizontalCell.double) {
+              if (
+                xOffsetHit < HALF_CELL - (horizontalCell.offset.x / 2)
+                  || xOffsetHit > CELL_SIZE - (HALF_CELL - (horizontalCell.offset.x / 2))
+              ) {
+                xIntersection += xOffsetDist;
+                horizontalGrid += yOffsetDist;
+                distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+                break;
+              } else {
+                xIntersection += distToNextXIntersection;
+                horizontalGrid += distToNextHorizontalGrid;
+              }
             } else if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;

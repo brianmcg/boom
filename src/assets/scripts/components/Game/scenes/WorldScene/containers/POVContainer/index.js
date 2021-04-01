@@ -135,7 +135,11 @@ class POVContainer extends Container {
           if (cell.isDoor) {
             if (cell.double) {
               if (isHorizontal) {
-                sliceY = endPoint.x - cell.offset.x;
+                if (endPoint.x % CELL_SIZE < HALF_CELL) {
+                  sliceY = endPoint.x - (CELL_SIZE - (cell.offset.x / 2));
+                } else {
+                  sliceY = endPoint.x + (CELL_SIZE - (cell.offset.x / 2));
+                }
               } else if (endPoint.y % CELL_SIZE < HALF_CELL) {
                 sliceY = endPoint.y - (CELL_SIZE - (cell.offset.y / 2));
               } else {

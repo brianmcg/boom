@@ -6,7 +6,7 @@
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = 2;
+export const DEBUG = 1;
 
 /**
  * Display the frames per second on screen.
