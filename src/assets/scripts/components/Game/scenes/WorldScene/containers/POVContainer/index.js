@@ -15,6 +15,7 @@ const DEG_360 = degrees(360);
 const DEG_270 = degrees(270);
 const DEG_90 = degrees(90);
 const HALF_FOV = degrees(FOV) / 2;
+const HALF_CELL = CELL_SIZE / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
@@ -130,10 +131,25 @@ class POVContainer extends Container {
           sprite = wallSprites[i][xIndex];
           sprite.visible = true;
 
-          if (isHorizontal) {
-            sliceY = false && cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
+          // Determine the slice to render.
+          if (cell.isDoor) {
+            if (cell.double) {
+              if (isHorizontal) {
+                sliceY = endPoint.x - cell.offset.x;
+              } else if (endPoint.y % CELL_SIZE < HALF_CELL) {
+                sliceY = endPoint.y - (CELL_SIZE - (cell.offset.y / 2));
+              } else {
+                sliceY = endPoint.y + (CELL_SIZE - (cell.offset.y / 2));
+              }
+            } else if (isHorizontal) {
+              sliceY = endPoint.x - cell.offset.x;
+            } else {
+              sliceY = endPoint.y - cell.offset.y;
+            }
+          } else if (isHorizontal) {
+            sliceY = endPoint.x;
           } else {
-            sliceY = false && cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
+            sliceY = endPoint.y;
           }
 
           sliceY = Math.floor(sliceY) % CELL_SIZE;
