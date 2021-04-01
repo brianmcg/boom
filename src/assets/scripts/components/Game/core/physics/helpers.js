@@ -704,10 +704,10 @@ const castRaySection = ({
       }
     });
 
-    // for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
-    //   horizontalBody = horizontalCell.bodies[i];
-    //   encounteredBodies[horizontalBody.id] = horizontalBody;
-    // }
+    for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
+      horizontalBody = horizontalCell.bodies[i];
+      encounteredBodies[horizontalBody.id] = horizontalBody;
+    }
 
     return {
       startPoint: {
@@ -729,10 +729,10 @@ const castRaySection = ({
     };
   }
 
-  // for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
-  //   verticalBody = verticalCell.bodies[i];
-  //   encounteredBodies[verticalBody.id] = verticalBody;
-  // }
+  for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
+    verticalBody = verticalCell.bodies[i];
+    encounteredBodies[verticalBody.id] = verticalBody;
+  }
 
   Object.values(encounteredBodies).forEach((body) => {
     if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
