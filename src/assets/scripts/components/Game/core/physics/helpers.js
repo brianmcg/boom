@@ -15,6 +15,8 @@ let xGridIndex;
 let yGridIndex;
 let xOffsetDist;
 let yOffsetDist;
+let xOffsetHit;
+let yOffsetHit;
 let horizontalCell;
 let verticalCell;
 let offsetRatio;
@@ -24,6 +26,8 @@ let verticalBody;
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
 const { X, Y } = AXES;
+
+const HALF_CELL = CELL_SIZE / 2;
 
 export const degrees = value => DEGREES[value];
 
@@ -584,20 +588,22 @@ const castRaySection = ({
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
 
-            if (
-              verticalCell.double &&
-              (
-                (yIntersection + yOffsetDist) % CELL_SIZE > (verticalCell.offset.y / 1)
-                || (yIntersection + yOffsetDist) % CELL_SIZE < (CELL_SIZE - (verticalCell.offset.y / 1))
-              )
+            yOffsetHit = (yIntersection + yOffsetDist) % CELL_SIZE;
 
-            ) {
-              debugger;
-              yIntersection += yOffsetDist;
-              verticalGrid += xOffsetDist;
-              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
-              break;
-            } else if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
+            if (verticalCell.double) {
+              if (
+                yOffsetHit < HALF_CELL - (verticalCell.offset.y / 2)
+                  || yOffsetHit > CELL_SIZE - (HALF_CELL - (verticalCell.offset.y / 2))
+              ) {
+                yIntersection += yOffsetDist;
+                verticalGrid += xOffsetDist;
+                distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+                break;
+              } else {
+                yIntersection += distToNextYIntersection;
+                verticalGrid += distToNextVerticalGrid;
+              }
+            } else if (yOffsetHit > verticalCell.offset.y) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
