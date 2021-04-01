@@ -52,6 +52,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       blocking: cell.blocking,
       key: cell.key,
       offset: cell.offset || 0.5,
+      double: cell.double,
       sides,
       soundSprite,
     });

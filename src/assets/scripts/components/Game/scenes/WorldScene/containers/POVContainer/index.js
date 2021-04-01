@@ -131,9 +131,9 @@ class POVContainer extends Container {
           sprite.visible = true;
 
           if (isHorizontal) {
-            sliceY = cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
+            sliceY = false && cell.offset ? endPoint.x - cell.offset.x : endPoint.x;
           } else {
-            sliceY = cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
+            sliceY = false && cell.offset ? endPoint.y - cell.offset.y : endPoint.y;
           }
 
           sliceY = Math.floor(sliceY) % CELL_SIZE;

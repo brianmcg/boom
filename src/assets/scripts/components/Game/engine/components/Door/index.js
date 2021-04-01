@@ -29,14 +29,16 @@ class Door extends DynamicCell {
    * @param  {String} options.axis    The axis of the door.
    * @param  {String} options.key     The key that unlocks the door.
    */
-  constructor({ key, interval, ...other }) {
+  constructor({ key, interval, double, ...other }) {
     super(other);
 
     this.timer = 0;
     this.keyCard = key;
     this.interval = interval;
     this.isDoor = true;
+    this.double = double;
 
+    this.speed *= 0.2;
     this.setClosed();
   }
 

@@ -460,7 +460,15 @@ const castRaySection = ({
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
 
-            if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
+            if (horizontalCell.double &&
+              ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x
+                )
+            ) {
+              xIntersection += xOffsetDist;
+              horizontalGrid += yOffsetDist;
+              distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+              break;
+            } else if ((xIntersection + xOffsetDist) % CELL_SIZE > horizontalCell.offset.x) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
@@ -572,10 +580,24 @@ const castRaySection = ({
             } else {
               offsetRatio = CELL_SIZE / verticalCell.offset.x;
             }
+
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
 
-            if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
+            if (
+              verticalCell.double &&
+              (
+                (yIntersection + yOffsetDist) % CELL_SIZE > (verticalCell.offset.y / 1)
+                || (yIntersection + yOffsetDist) % CELL_SIZE < (CELL_SIZE - (verticalCell.offset.y / 1))
+              )
+
+            ) {
+              debugger;
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+              break;
+            } else if ((yIntersection + yOffsetDist) % CELL_SIZE > verticalCell.offset.y) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
