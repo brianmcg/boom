@@ -353,12 +353,24 @@ export const castCellRay = ({
     };
   }
 
+  // If no offset
   if (verticalGrid % CELL_SIZE === 0 || verticalGrid % CELL_SIZE === CELL_SIZE - 1) {
     return null;
   }
 
-  if (cell.offset.y % CELL_SIZE > 0 && yIntersection % CELL_SIZE < cell.offset.y) {
-    return null;
+  // if door offset miss.
+  if (cell.isDoor) {
+    if (cell.double) {
+      yOffsetHit = yIntersection % CELL_SIZE;
+      if (cell.offset.y % CELL_SIZE > 0
+        && yOffsetHit > HALF_CELL - (cell.offset.y / 2)
+        && yOffsetHit < CELL_SIZE - (HALF_CELL - (cell.offset.y / 2))
+      ) {
+        return null;
+      }
+    } else if (cell.offset.y % CELL_SIZE > 0 && yIntersection % CELL_SIZE < cell.offset.y) {
+      return null;
+    }
   }
 
   Object.values(encounteredBodies).forEach((body) => {
