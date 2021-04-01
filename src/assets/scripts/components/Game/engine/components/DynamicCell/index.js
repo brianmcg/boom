@@ -1,8 +1,6 @@
-import { MAX_SOUND_DISTANCE, CELL_SIZE } from 'game/constants/config';
+import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 import { DynamicCell as PhysicsCell } from 'game/core/physics';
 import { SoundSpriteController } from 'game/core/audio';
-
-// const HALF_CELL_SIZE = CELL_SIZE / 2;
 
 /**
  * Class representing a game cell.

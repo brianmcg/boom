@@ -51,7 +51,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       axis: cell.axis,
       blocking: cell.blocking,
       key: cell.key,
-      offset: 0.2,
+      offset: cell.offset || 0.5,
       sides,
       soundSprite,
     });
@@ -88,6 +88,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     });
   }
 
+
   return new Cell({
     x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
     y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
@@ -95,6 +96,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     width: CELL_SIZE,
     length: CELL_SIZE,
     height: cell.height * CELL_SIZE,
+    reverse: cell.reverse,
     sides,
   });
 };
