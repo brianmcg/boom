@@ -319,8 +319,24 @@ export const castCellRay = ({
   distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-    if (horizontalGrid % CELL_SIZE === 0 || horizontalGrid % CELL_SIZE === CELL_SIZE - 1) {
+    // if (horizontalGrid % CELL_SIZE === 0 || horizontalGrid % CELL_SIZE === CELL_SIZE - 1) {
+    //   return null;
+    // }
+
+    if (cell.offset.y === 0) {
       return null;
+    }
+
+    if (cell.transparency === 2) {
+      if (cell.reverse) {
+        if (y < horizontalGrid) {
+          return null;
+        }
+      } else {
+        if (y > horizontalGrid) {
+          return null;
+        }
+      }
     }
 
     // if door offset miss.
@@ -374,7 +390,7 @@ export const castCellRay = ({
     return null;
   }
 
-  if (cell.transparency === 1) {
+  if (cell.transparency === 2) {
     if (cell.reverse) {
       if (x < verticalGrid) {
         return null;
@@ -545,7 +561,20 @@ const castRaySection = ({
             }
           } else if (horizontalCell.transparency) {
             if (horizontalCell.offset.y) {
-              offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+              if (horizontalCell.reverse) {
+                if (y < horizontalCell.y) {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
+                } else {
+                  offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+                }
+              } else {
+                if (y < horizontalCell.y) {
+                   offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+                } else {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
+                }
+              }
+
               xOffsetDist = distToNextXIntersection / offsetRatio;
               yOffsetDist = distToNextHorizontalGrid / offsetRatio;
             } else {
