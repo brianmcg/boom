@@ -15,7 +15,12 @@ class DynamicCell extends PhysicsCell {
    * @param  {Number} options.height  The height of the cell.
    * @param  {Object} options.sides   The ids of the sides of the cell.
    */
-  constructor({ sides = {}, soundSprite, ...other }) {
+  constructor({
+    sides = {},
+    soundSprite,
+    reverse,
+    ...other
+  }) {
     super(other);
 
     this.front = sides.front;
@@ -24,6 +29,7 @@ class DynamicCell extends PhysicsCell {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+    this.reverse = reverse;
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),

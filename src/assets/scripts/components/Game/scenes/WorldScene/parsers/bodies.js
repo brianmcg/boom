@@ -55,6 +55,7 @@ const createCell = ({ cell, props, soundSprite }) => {
       double: cell.double,
       sides,
       soundSprite,
+      reverse: cell.reverse,
     });
   }
 

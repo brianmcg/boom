@@ -512,10 +512,18 @@ const castRaySection = ({
       if (horizontalCell.blocking) {
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {
-            if (y < horizontalGrid) {
-              offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
+            if (horizontalCell.reverse) {
+              if (y < horizontalCell.y) {
+                offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
+              } else {
+                offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+              }
             } else {
-              offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+              if (y < horizontalCell.y) {
+                 offsetRatio = CELL_SIZE / horizontalCell.offset.y;
+              } else {
+                offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
+              }
             }
 
             xOffsetDist = distToNextXIntersection / offsetRatio;
@@ -656,11 +664,19 @@ const castRaySection = ({
       if (verticalCell.blocking) {
         if (verticalCell.axis) {
           if (verticalCell.isDoor) {
-            if (x < verticalGrid) {
-              offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
-            } else {
-              offsetRatio = CELL_SIZE / verticalCell.offset.x;
-            }
+            if (verticalCell.reverse) {
+              if (x < verticalCell.x) {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
+                } else {
+                  offsetRatio = CELL_SIZE / verticalCell.offset.x;
+                }
+              } else {
+                if (x < verticalCell.x) {
+                  offsetRatio = CELL_SIZE / verticalCell.offset.x;
+                } else {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
+                }
+              }
 
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
