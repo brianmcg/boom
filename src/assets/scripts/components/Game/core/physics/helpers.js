@@ -263,6 +263,7 @@ export const castCellRay = ({
   y,
   angle,
   world,
+  ignoreOverlay,
 }) => {
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
@@ -296,6 +297,10 @@ export const castCellRay = ({
   }
 
   distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+
+  if (!ignoreOverlay && cell.overlay) {
+    distToHorizontalGridBeingHit -= 0.01;
+  }
 
   if (angle < DEG_90 || angle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
@@ -340,7 +345,7 @@ export const castCellRay = ({
     }
 
     // if door offset miss.
-    if (cell.isDoor) {
+    if (!((!ignoreOverlay && cell.overlay)) && cell.isDoor) {
       xOffsetHit = xIntersection % CELL_SIZE;
 
       if (cell.double) {
@@ -373,11 +378,14 @@ export const castCellRay = ({
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: y < cell.y
-        ? cell.left
-        : cell.right,
+      side: (!ignoreOverlay && cell.overlay)
+        ? cell.overlay
+        : y < cell.y
+          ? cell.left
+          : cell.right,
       cell,
       angle,
+      isOverlay: (!ignoreOverlay && cell.overlay),
     };
   }
 
@@ -456,6 +464,7 @@ const castRaySection = ({
   y,
   angle,
   world,
+  ignoreOverlay = true,
 }) => {
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
@@ -509,7 +518,7 @@ const castRaySection = ({
 
       horizontalCell = world.getCell(xGridIndex, yGridIndex);
 
-      if (horizontalCell.blocking) {
+      if (horizontalCell.blocking || horizontalCell.overlay) {
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {
             if (horizontalCell.reverse) {
@@ -531,7 +540,12 @@ const castRaySection = ({
 
             xOffsetHit = (xIntersection + xOffsetDist) % CELL_SIZE;
 
-            if (horizontalCell.double) {
+            if (!ignoreOverlay && horizontalCell.overlay) {
+                xIntersection += xOffsetDist;
+                horizontalGrid += yOffsetDist;
+                distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle) - 0.01;
+                break;
+            } else if (horizontalCell.double) {
               if (
                 xOffsetHit < HALF_CELL - (horizontalCell.offset.x / 2)
                   || xOffsetHit > CELL_SIZE - (HALF_CELL - (horizontalCell.offset.x / 2))
@@ -794,11 +808,14 @@ const castRaySection = ({
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: y < horizontalCell.y
-        ? horizontalCell.left
-        : horizontalCell.right,
+      side: (!ignoreOverlay && horizontalCell.overlay)
+        ? horizontalCell.overlay
+        : y < horizontalCell.y
+          ? horizontalCell.left
+          : horizontalCell.right,
       cell: horizontalCell,
       angle,
+      isOverlay: (!ignoreOverlay && horizontalCell.overlay),
     };
   }
 
@@ -884,7 +901,7 @@ export const castRay = ({
 
     result.push(currentRay);
 
-    if (!currentRay.cell.transparency) {
+    if (!(currentRay.cell.transparency || currentRay.isOverlay)) {
       break;
     }
   }

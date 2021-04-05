@@ -118,9 +118,10 @@ const createWallSprites = ({
         back,
         right,
         transparency,
+        overlay,
       } = cell;
 
-      [front, left, back, right].forEach((side) => {
+      [front, left, back, right, overlay].forEach((side) => {
         if (side && !wallImages.some(w => w.name === side.name)) {
           wallImages.push({ name: side.name, transparent: !!transparency });
         }

@@ -101,13 +101,34 @@ class POVContainer extends Container {
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
+      const rays = [];
+
       // Cast ray
-      const rays = castRay({
+      const raySections = castRay({
         x: player.x,
         y: player.y,
         angle,
         world,
+        ignoreOverlay: false,
       });
+
+      for (let i = 0; i < raySections.length; i += 1) {
+        rays.push(raySections[i]);
+
+        if (raySections[i].cell.overlay) {
+          const overlayRay = castRay({
+            x: player.x,
+            y: player.y,
+            angle,
+            world,
+            ignoreOverlay: true,
+          }).find(r => r.cell.overlay);
+
+          if (overlayRay) {
+            rays.push(overlayRay);
+          }
+        }
+      }
 
       // Update wall sprites.
       for (let i = 0; i < WALL_LAYERS; i += 1) {
@@ -121,6 +142,7 @@ class POVContainer extends Container {
             cell,
             endPoint,
             side,
+            isOverlay,
           } = ray;
 
           // Update total encountered bodies.
@@ -132,7 +154,7 @@ class POVContainer extends Container {
           sprite.visible = true;
 
           // Determine the slice to render.
-          if (cell.isDoor) {
+          if (!isOverlay && cell.isDoor) {
             if (cell.double) {
               if (isHorizontal) {
                 if (endPoint.x % CELL_SIZE < HALF_CELL) {

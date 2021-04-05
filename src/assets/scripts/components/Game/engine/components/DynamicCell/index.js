@@ -29,6 +29,7 @@ class DynamicCell extends PhysicsCell {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+    this.overlay = sides.overlay;
     this.reverse = reverse;
 
     this.soundController = new SoundSpriteController({
