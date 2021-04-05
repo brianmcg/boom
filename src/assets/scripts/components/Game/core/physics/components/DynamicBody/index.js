@@ -125,7 +125,7 @@ class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking) {
+        if (body.blocking && body.transparency !== 1) {
           const { shape } = body;
           const { x, width } = shape;
           const halfWidth = this.shape.width / 2;
@@ -149,7 +149,7 @@ class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking) {
+        if (body.blocking && body.transparency !== 1) {
           const { shape } = body;
           const { y, length } = shape;
           const halfLength = this.shape.length / 2;

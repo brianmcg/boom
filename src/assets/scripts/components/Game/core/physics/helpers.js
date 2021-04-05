@@ -366,8 +366,24 @@ export const castCellRay = ({
   }
 
   // If no offset
-  if (verticalGrid % CELL_SIZE === 0 || verticalGrid % CELL_SIZE === CELL_SIZE - 1) {
+  // if (verticalGrid % CELL_SIZE === 0 || verticalGrid % CELL_SIZE === CELL_SIZE - 1) {
+  //   return null;
+  // }
+
+  if (cell.offset.x === 0) {
     return null;
+  }
+
+  if (cell.transparency === 1) {
+    if (cell.reverse) {
+      if (x < verticalGrid) {
+        return null;
+      }
+    } else {
+      if (x > verticalGrid) {
+        return null;
+      }
+    }
   }
 
   // if door offset miss.
@@ -660,7 +676,19 @@ const castRaySection = ({
             }
           } else if (verticalCell.transparency) {
             if (verticalCell.offset.x) {
-              offsetRatio = CELL_SIZE / verticalCell.offset.x;
+              if (verticalCell.reverse) {
+                if (x < verticalCell.x) {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
+                } else {
+                  offsetRatio = CELL_SIZE / verticalCell.offset.x;
+                }
+              } else {
+                if (x < verticalCell.x) {
+                  offsetRatio = CELL_SIZE / verticalCell.offset.x;
+                } else {
+                  offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
+                }
+              }
               yOffsetDist = distToNextYIntersection / offsetRatio;
               xOffsetDist = distToNextVerticalGrid / offsetRatio;
             } else {
