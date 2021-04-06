@@ -17,6 +17,8 @@ const MIN_SHAKE = 0.1;
 
 const MAX_SHAKE = 8;
 
+const SHAKE_AMOUNT = 4;
+
 const STATES = {
   FADING_IN: 'prompt:fading:in',
   GROWING: 'prompt:growing',
@@ -119,7 +121,7 @@ class PromptContainer extends Container {
 
       this.parent.soundController.emitSound(this.sound);
 
-      this.shakeParent(MAX_SHAKE);
+      this.shakeParent(SHAKE_AMOUNT);
 
       this.setStatic();
     }
