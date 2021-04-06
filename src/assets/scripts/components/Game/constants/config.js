@@ -36,7 +36,7 @@ export const MUSIC_VOLUME = 0.2;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = false;
+export const DISABLE_SOUNDS = true;
 
 /**
  * The difficulty level.
