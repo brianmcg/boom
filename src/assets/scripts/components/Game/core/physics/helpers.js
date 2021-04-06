@@ -1,5 +1,5 @@
 import { CELL_SIZE, WALL_LAYERS } from 'game/constants/config';
-import { AXES } from './constants';
+import { AXES, TRANSPARENCY } from './constants';
 
 let horizontalGrid;
 let verticalGrid;
@@ -29,6 +29,8 @@ let side;
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
 const { X, Y } = AXES;
+
+const { FULL } = TRANSPARENCY;
 
 const HALF_CELL = CELL_SIZE / 2;
 
@@ -359,7 +361,7 @@ export const castCellRay = ({
       return null;
     }
 
-    if (horizontalOverlay || cell.transparency === 2) {
+    if (horizontalOverlay || cell.transparency === FULL) {
       if (cell.reverse) {
         if (y < horizontalGrid) {
           return null;
@@ -414,7 +416,7 @@ export const castCellRay = ({
     return null;
   }
 
-  if (verticalOverlay || cell.transparency === 2) {
+  if (verticalOverlay || cell.transparency === FULL) {
     if (cell.reverse) {
       if (x < verticalGrid) {
         return null;
