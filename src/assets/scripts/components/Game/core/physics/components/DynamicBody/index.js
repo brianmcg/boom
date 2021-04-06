@@ -1,5 +1,6 @@
 import { CELL_SIZE } from 'game/constants/config';
 import Body from '../Body';
+import { TRANSPARENCY } from '../../constants';
 import {
   isBodyCollision,
   getAngleBetween,
@@ -13,6 +14,8 @@ const EVENTS = {
 };
 
 const VELOCITY_LIMIT = CELL_SIZE / 2;
+
+const { FULL } = TRANSPARENCY;
 
 /**
  * Class representing a dynamic body.
@@ -125,7 +128,7 @@ class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking && body.transparency !== 2) {
+        if (body.blocking && body.transparency !== FULL) {
           const { shape } = body;
           const { x, width } = shape;
           const halfWidth = this.shape.width / 2;
@@ -149,7 +152,7 @@ class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking && body.transparency !== 2) {
+        if (body.blocking && body.transparency !== FULL) {
           const { shape } = body;
           const { y, length } = shape;
           const halfLength = this.shape.length / 2;
