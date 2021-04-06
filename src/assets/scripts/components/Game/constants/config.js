@@ -6,7 +6,7 @@
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = 1;
+export const DEBUG = 0;
 
 /**
  * Display the frames per second on screen.
@@ -67,8 +67,10 @@ export const WALL_LAYERS = 3;
  * @type {Object}
  */
 export const SCREEN = {
-  WIDTH: 256,
-  HEIGHT: 144,
+  // WIDTH: 256,
+  // HEIGHT: 144,
+  WIDTH: 224,
+  HEIGHT: 126,
 };
 
 /**

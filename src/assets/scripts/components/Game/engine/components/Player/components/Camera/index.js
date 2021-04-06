@@ -117,6 +117,8 @@ class Camera {
         this.shakeAmount = 0;
         this.shakeAngle = 0;
       }
+    } else {
+      this.shakeAngle = 0;
     }
 
     this.angle = (this.shakeAngle - this.player.moveAngle + DEG_360) % DEG_360;

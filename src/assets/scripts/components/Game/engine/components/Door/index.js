@@ -241,25 +241,29 @@ class Door extends DynamicCell {
   }
 
   get shape() {
-    if (this.axis === 'y') {
-      const offsetX = this.reverse ? this.offset.x : CELL_SIZE - this.offset.x + this.width;
+    if (this.offset.x === CELL_SIZE || this.offset.y === CELL_SIZE) {
+      if (this.axis === 'y') {
+        const offsetX = this.reverse ? this.offset.x : CELL_SIZE - this.offset.x + this.width;
+
+        return {
+          x: this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
+          y: this.y - HALF_CELL_SIZE + this.offset.y,
+          width: this.width,
+          length: this.length,
+        };
+      }
+
+      const offsetY = this.reverse ? this.offset.y : CELL_SIZE - this.offset.y + this.length;
 
       return {
-        x: this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
-        y: this.y - HALF_CELL_SIZE + this.offset.y,
+        x: this.x - HALF_CELL_SIZE + this.offset.x,
+        y: this.y - HALF_CELL_SIZE + (CELL_SIZE - offsetY),
         width: this.width,
         length: this.length,
       };
     }
 
-    const offsetY = this.reverse ? this.offset.y : CELL_SIZE - this.offset.y + this.length;
-
-    return {
-      x: this.x - HALF_CELL_SIZE + this.offset.x,
-      y: this.y - HALF_CELL_SIZE + (CELL_SIZE - offsetY),
-      width: this.width,
-      length: this.length,
-    };
+    return super.shape;
   }
 }
 
