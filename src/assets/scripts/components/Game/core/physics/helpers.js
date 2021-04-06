@@ -24,6 +24,7 @@ let horizontalBody;
 let verticalBody;
 let horizontalOverlay;
 let verticalOverlay;
+let side;
 
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
@@ -267,9 +268,6 @@ export const castCellRay = ({
   world,
   ignoreOverlay,
 }) => {
-
-  debugger;
-
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);
@@ -293,7 +291,10 @@ export const castCellRay = ({
   } else {
     horizontalGrid = gridY * CELL_SIZE;
 
-    if ((cell.blocking || cell.overlay) && cell.axis === X && y > horizontalGrid + (CELL_SIZE - cell.offset.y)) {
+    if (
+      (cell.blocking || cell.overlay) && cell.axis === X
+        && y > horizontalGrid + (CELL_SIZE - cell.offset.y)
+    ) {
       horizontalGrid += (CELL_SIZE - cell.offset.y);
     }
 
@@ -371,7 +372,7 @@ export const castCellRay = ({
       }
     });
 
-    const side = y < cell.y ? cell.left : cell.right;
+    side = y < cell.y ? cell.left : cell.right;
 
     return {
       startPoint: {
@@ -669,7 +670,9 @@ const castRaySection = ({
 
       verticalCell = world.getCell(xGridIndex, yGridIndex);
 
-      if (verticalCell.blocking) {
+      verticalOverlay = !ignoreOverlay && verticalCell.overlay;
+
+      if (verticalCell.blocking || verticalOverlay) {
         if (verticalCell.axis) {
           if (verticalCell.isDoor) {
             if (verticalCell.reverse) {
@@ -689,7 +692,12 @@ const castRaySection = ({
 
             yOffsetHit = (yIntersection + yOffsetDist) % CELL_SIZE;
 
-            if (verticalCell.double) {
+            if (verticalOverlay) {
+              yIntersection += yOffsetDist;
+              verticalGrid += xOffsetDist;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle) - 0.01;;
+              break;
+            } else if (verticalCell.double) {
               if (
                 yOffsetHit < HALF_CELL - (verticalCell.offset.y / 2)
                   || yOffsetHit > CELL_SIZE - (HALF_CELL - (verticalCell.offset.y / 2))
@@ -787,7 +795,7 @@ const castRaySection = ({
       encounteredBodies[horizontalBody.id] = horizontalBody;
     }
 
-    const side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
+    side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
     return {
       startPoint: {
@@ -819,22 +827,17 @@ const castRaySection = ({
     }
   });
 
+  side = x < verticalCell.x ? verticalCell.front : verticalCell.back;
+
   return {
-    startPoint: {
-      x,
-      y,
-    },
-    endPoint: {
-      x: verticalGrid,
-      y: yIntersection,
-    },
+    startPoint: { x, y },
+    endPoint: { x: verticalGrid, y: yIntersection },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
-    side: x < verticalCell.x
-      ? verticalCell.front
-      : verticalCell.back,
+    side: verticalOverlay ? verticalCell.overlay : side,
     cell: verticalCell,
     angle,
+    isOverlay: verticalOverlay,
   };
 };
 
