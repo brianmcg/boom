@@ -162,6 +162,8 @@ class Player extends AbstractActor {
       }), {}),
     }), this.playing);
 
+    this.angle += 0.01;
+
     this.setAlive();
   }
 
@@ -416,7 +418,7 @@ class Player extends AbstractActor {
     this.weapon.update(delta, elapsedMS);
 
     // Update view
-    this.viewHeight = this.z + this.height + this.breath + this.camera.height;
+    this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
