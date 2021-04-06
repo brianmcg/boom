@@ -283,7 +283,11 @@ export const castCellRay = ({
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
 
-    if ((cell.blocking || cell.overlay) && cell.axis === X && y < horizontalGrid - cell.offset.y) {
+    if (
+      (cell.blocking || cell.overlay)
+        && cell.axis === X
+        && y < horizontalGrid - cell.offset.y
+    ) {
       horizontalGrid -= cell.offset.y;
     }
 
@@ -292,7 +296,8 @@ export const castCellRay = ({
     horizontalGrid = gridY * CELL_SIZE;
 
     if (
-      (cell.blocking || cell.overlay) && cell.axis === X
+      (cell.blocking || cell.overlay)
+        && cell.axis === X
         && y > horizontalGrid + (CELL_SIZE - cell.offset.y)
     ) {
       horizontalGrid += (CELL_SIZE - cell.offset.y);
@@ -313,7 +318,11 @@ export const castCellRay = ({
   if (angle < DEG_90 || angle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
 
-    if ((cell.blocking || cell.overlay) && cell.axis === Y && x < verticalGrid - cell.offset.x) {
+    if (
+      (cell.blocking || cell.overlay)
+        && cell.axis === Y
+        && x < verticalGrid - cell.offset.x
+    ) {
       verticalGrid -= cell.offset.x;
     }
 
@@ -321,7 +330,11 @@ export const castCellRay = ({
   } else {
     verticalGrid = gridX * CELL_SIZE;
 
-    if ((cell.blocking || cell.overlay) && cell.axis === Y && verticalGrid + (CELL_SIZE - cell.offset.x) < x) {
+    if (
+      (cell.blocking || cell.overlay)
+        && cell.axis === Y
+        && verticalGrid + (CELL_SIZE - cell.offset.x) < x
+    ) {
       verticalGrid += (CELL_SIZE - cell.offset.x);
     }
 
@@ -700,7 +713,7 @@ const castRaySection = ({
             if (verticalOverlay) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
-              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle) - 0.01;;
+              distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle) - 0.01;
               break;
             } else if (verticalCell.double) {
               if (
