@@ -162,8 +162,6 @@ class Player extends AbstractActor {
       }), {}),
     }), this.playing);
 
-    this.angle += 0.01;
-
     this.setAlive();
   }
 
