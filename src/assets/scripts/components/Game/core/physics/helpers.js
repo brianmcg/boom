@@ -435,7 +435,7 @@ export const castCellRay = ({
       ) {
         return null;
       }
-    } else if (cell.offset.y % CELL_SIZE > 0 && yOffsetHit < cell.offset.y) {
+    } else if (cell.offset.y && yOffsetHit < cell.offset.y) {
       return null;
     }
   }
