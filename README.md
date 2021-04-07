@@ -9,6 +9,6 @@ You must have npm 10.4.0 or higher
 * Install:
     * `npm install` - installs dependencies
 * Run:
-    * `npm start` - starts project
+    * `npm start` - starts app
 * Build:
-    * `npm run build` - builds you project
+    * `npm run build` - builds the app
