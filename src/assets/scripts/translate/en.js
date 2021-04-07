@@ -102,7 +102,7 @@ export default {
     text: 'Debug Level',
   },
   'world.title.1': {
-    text: 'Hangar',
+    text: 'Dungeon',
   },
   'world.review.enemies': {
     text: 'Kills',
