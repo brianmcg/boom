@@ -51,9 +51,6 @@ class GameManual {
         action: translate('manual.action.weapon'),
         key: translate('manual.input.weapon'),
       }, {
-        action: translate('manual.action.crouch'),
-        key: translate('manual.input.shift'),
-      }, {
         action: translate('manual.action.pause'),
         key: translate('manual.input.pause'),
       }, {
