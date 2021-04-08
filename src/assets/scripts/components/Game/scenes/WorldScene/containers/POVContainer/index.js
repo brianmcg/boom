@@ -19,7 +19,9 @@ const HALF_CELL = CELL_SIZE / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
-const ANGLE_INCREMENT = degrees(FOV) / SCREEN.WIDTH;
+const RAY_ANGLES = [...Array(SCREEN.WIDTH).keys()]
+  .map(i => Math.atan((i - CAMERA_CENTER_X) / CAMERA_DISTANCE));
+
 
 let spriteAngle;
 let centerY;
@@ -93,14 +95,13 @@ class POVContainer extends Container {
 
     const totalEncounteredBodies = {};
 
-    // Get initial ray angle 30 deg less than player angle
-    angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
-
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
+      angle = (player.viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
+
       const rays = [];
 
       // Cast ray
@@ -274,9 +275,6 @@ class POVContainer extends Container {
           }
         }
       }
-
-      // Increment ray angle
-      angle = (angle + ANGLE_INCREMENT) % DEG_360;
     }
 
     // Update sky
