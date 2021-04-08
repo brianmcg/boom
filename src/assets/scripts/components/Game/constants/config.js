@@ -36,7 +36,7 @@ export const MUSIC_VOLUME = 0.2;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = false;
+export const DISABLE_SOUNDS = !!DEBUG || false;
 
 /**
  * The difficulty level.
@@ -83,7 +83,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 60;
+export const FOV = 95;
 
 /**
  * The distance from the player inside which entities should update;
