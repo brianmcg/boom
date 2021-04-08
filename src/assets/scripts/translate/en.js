@@ -104,6 +104,9 @@ export default {
   'world.title.1': {
     text: 'Dungeon',
   },
+  'world.title.2': {
+    text: 'Sewers',
+  },
   'world.review.enemies': {
     text: 'Kills',
   },

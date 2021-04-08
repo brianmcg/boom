@@ -102,13 +102,19 @@ export default {
     text: '[FR] Debug Level',
   },
   'world.title.1': {
-    text: '[FR] Hangar',
+    text: '[FR] Dungeon',
+  },
+  'world.title.2': {
+    text: '[FR] Sewers',
   },
   'world.review.enemies': {
     text: '[FR] Kills',
   },
   'world.review.items': {
     text: '[FR] Items',
+  },
+  'world.review.secrets': {
+    text: '[FR] Secrets',
   },
   'world.review.time': {
     text: '[FR] Time',
