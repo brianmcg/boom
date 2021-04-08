@@ -12,7 +12,7 @@ const STATES = {
 
 const HALF_CELL_SIZE = CELL_SIZE / 2;
 
-const SHAKE_MULTIPLIER = 0.2;
+const SHAKE_MULTIPLIER = 0.15;
 
 /**
  * Class representing a door.
