@@ -83,10 +83,12 @@ class POVContainer extends Container {
       maxMapY,
       effects,
       sky,
+      floorOffset,
     } = world;
 
     // Remove sprites from previous run.
     this.displayedEntities.forEach(entity => this.mapContainer.removeChild(entity));
+
     this.displayedEntities = [];
 
     const { map: mapSprites, background: backgroundSprites } = this.sprites;
@@ -94,6 +96,9 @@ class POVContainer extends Container {
     const { entities: entititySprites, effects: effectSprites, walls: wallSprites } = mapSprites;
 
     const totalEncounteredBodies = {};
+
+    const floorHeight = CELL_SIZE * floorOffset;
+    const doubleFloorHeight = floorHeight * 2;
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + player.viewPitch;
@@ -187,10 +192,26 @@ class POVContainer extends Container {
 
           spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
           correctedDistance = distance * Math.cos(spriteAngle);
-          spriteHeight = Math.abs(cell.height * CAMERA_DISTANCE / correctedDistance);
+
+          spriteHeight = Math.abs((cell.height) * CAMERA_DISTANCE / correctedDistance);
+
           spriteY = centerY
             - (spriteHeight / (cell.height / (cell.height - player.viewHeight)));
+
+          if (floorHeight) {
+            spriteHeight = Math.abs(
+              (cell.height - floorHeight) * CAMERA_DISTANCE / correctedDistance,
+            );
+          }
+
           sprite.height = spriteHeight;
+
+          if (floorHeight) {
+            spriteHeight = Math.abs(
+              (cell.height - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
+            );
+          }
+
           sprite.y = spriteY;
           sprite.zOrder = distance;
           sprite.changeTexture(name, sliceY, spatter);
@@ -228,7 +249,7 @@ class POVContainer extends Container {
 
           if (pixelSource) {
             sprite.changeTexture(pixelSource.name, pixelX, pixelY);
-            sprite.tint = this.calculateTint(actualDistance);
+            sprite.tint = this.calculateTint(correctedDistance);
             sprite.alpha = 1;
           } else {
             sprite.alpha = 0;
@@ -248,8 +269,9 @@ class POVContainer extends Container {
         sprite = innerSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = player.viewHeight / (yIndex - centerY) * CAMERA_DISTANCE;
+          actualDistance = (player.viewHeight - floorHeight) / (yIndex - centerY) * CAMERA_DISTANCE;
           correctedDistance = actualDistance / Math.cos(spriteAngle);
+
           mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
           mapX = (mapX > maxMapX) ? maxMapX : mapX;
           mapX = (mapX < 0) ? 0 : mapX;
@@ -268,7 +290,7 @@ class POVContainer extends Container {
 
           if (pixelSource) {
             sprite.changeTexture(pixelSource.name, pixelX, pixelY);
-            sprite.tint = this.calculateTint(actualDistance);
+            sprite.tint = this.calculateTint(correctedDistance);
             sprite.alpha = 1;
           } else {
             sprite.alpha = 0;
@@ -316,12 +338,30 @@ class POVContainer extends Container {
         sprite.y = centerY
           - (spriteHeight / (CELL_SIZE / (CELL_SIZE + body.elavation - player.viewHeight)))
           + (spriteHeight / 2);
+
         sprite.width = spriteHeight;
         sprite.height = spriteHeight;
         sprite.zOrder = actualDistance;
+
         sprite.tint = this.calculateTint(actualDistance);
+
         this.mapContainer.addChild(sprite);
         this.displayedEntities.push(sprite);
+
+        if (sprite.mask) {
+          sprite.mask.x = sprite.x;
+          sprite.mask.y = centerY
+            - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)))
+            + (spriteHeight / 2) - (spriteHeight / 2);
+
+          sprite.mask.width = spriteHeight;
+          sprite.mask.height = spriteHeight - (spriteHeight * floorOffset);
+          sprite.mask.zOrder = actualDistance + 0.01;
+          sprite.mask.x = sprite.x - (spriteHeight / 2);
+
+          this.mapContainer.addChild(sprite.mask);
+          this.displayedEntities.push(sprite.mask);
+        }
       }
     });
 

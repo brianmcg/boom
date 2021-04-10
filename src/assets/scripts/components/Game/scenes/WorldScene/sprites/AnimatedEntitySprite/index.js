@@ -1,4 +1,4 @@
-import { AnimatedSprite } from 'game/core/graphics';
+import { AnimatedSprite, RectangleSprite } from 'game/core/graphics';
 
 /**
  * Class representing an AnimatedSprite.
@@ -11,10 +11,20 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Number}  options.tint           The sprite tint.
    * @param  {Number}  options.alpha          The sprite alpha.
    */
-  constructor(textures, { animationSpeed = 0.2, loop = true, autoPlay = true } = {}) {
+  constructor(textures, {
+    animationSpeed = 0.2,
+    loop = true,
+    autoPlay = true,
+    floorOffset = 0,
+  } = {}) {
     super(textures, { animationSpeed, loop, anchor: 0.5 });
 
     this.zOrder = Number.MAX_VALUE;
+
+    if (floorOffset) {
+      this.mask = new RectangleSprite();
+      this.mask.zOrder = Number.MAX_VALUE;
+    }
 
     if (autoPlay) {
       this.play();

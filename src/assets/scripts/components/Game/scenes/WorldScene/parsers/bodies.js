@@ -124,9 +124,11 @@ export const createWorld = ({ scene, data, graphics }) => {
     exit,
     props,
     sky,
+    brightness = 0.8,
+    visibility = 16,
+    floorOffset = 0,
   } = data;
 
-  const { visibility, brightness } = props.world;
   const { animations } = graphics.data;
 
   const grid = data.grid.reduce((rows, row) => ([
@@ -175,6 +177,7 @@ export const createWorld = ({ scene, data, graphics }) => {
       width: CELL_SIZE / 2,
       length: CELL_SIZE / 2,
       height: CELL_SIZE / 2,
+      floorOffset,
     }),
   ]), []);
 
@@ -238,5 +241,6 @@ export const createWorld = ({ scene, data, graphics }) => {
     visibility,
     brightness,
     sky,
+    floorOffset,
   });
 };

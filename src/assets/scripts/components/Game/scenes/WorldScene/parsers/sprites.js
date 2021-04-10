@@ -26,7 +26,12 @@ import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 import ProjectileSprite from '../sprites/ProjectileSprite';
 
-const createEnemySprite = ({ animations, textures, enemy }) => {
+const createEnemySprite = ({
+  animations,
+  textures,
+  enemy,
+  floorOffset,
+}) => {
   const textureCollection = Object.keys(animations).reduce((animationMemo, state) => ({
     ...animationMemo,
     [state]: {
@@ -35,7 +40,7 @@ const createEnemySprite = ({ animations, textures, enemy }) => {
     },
   }), {});
 
-  return new EnemySprite(enemy, textureCollection);
+  return new EnemySprite(textureCollection, { enemy, floorOffset });
 };
 
 const createWeaponSprite = ({ animations, textures, player }) => {
@@ -402,18 +407,27 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.name]);
+    entitySprites[item.id] = new EntitySprite(textures[item.name], {
+      floorOffset: world.floorOffset,
+    });
   });
 
   world.objects.forEach((object) => {
     if (object.isExplosive) {
       const animationTextures = animations[object.name].map(t => textures[t]);
-      entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, object);
+      entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, {
+        entity: object,
+        floorOffset: world.floorOffset,
+      });
     } else if (object.animated) {
       const animationTextures = animations[object.name].map(t => textures[t]);
-      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
+      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures, {
+        floorOffset: world.floorOffset,
+      });
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.name]);
+      entitySprites[object.id] = new EntitySprite(textures[object.name], {
+        floorOffset: world.floorOffset,
+      });
     }
   });
 
@@ -422,6 +436,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
       animations: animations[enemy.name],
       textures,
       enemy,
+      floorOffset: world.floorOffset,
     });
   });
 

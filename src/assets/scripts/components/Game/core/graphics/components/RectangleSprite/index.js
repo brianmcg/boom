@@ -21,7 +21,7 @@ class RectangleSprite extends Sprite {
     height = 10,
     alpha = 1,
     anchor = 0,
-  }) {
+  } = {}) {
     super();
 
     this.x = x;

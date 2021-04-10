@@ -268,7 +268,7 @@ export const castCellRay = ({
   y,
   angle,
   world,
-  ignoreOverlay,
+  ignoreOverlay = true,
 }) => {
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
@@ -277,7 +277,7 @@ export const castCellRay = ({
   const cell = world.getCell(gridX, gridY);
 
   cell.bodies.forEach((body) => {
-    if ((isFacing({ x, y, angle }, body)) && (x !== body.x && y !== body.y)) {
+    if (isFacing({ x, y, angle }, body) && x !== body.x && y !== body.y) {
       encounteredBodies[body.id] = body;
     }
   });
@@ -353,13 +353,18 @@ export const castCellRay = ({
   }
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
+    if (cell.axis === Y) {
+      return null;
+    }
+
+
     if (!cell.blocking && !horizontalOverlay) {
       return null;
     }
 
-    if (cell.offset.y === 0) {
-      return null;
-    }
+    // if (cell.offset.y === 0) {
+    //   return null;
+    // }
 
     if (horizontalOverlay || cell.transparency === FULL) {
       if (cell.reverse) {
@@ -388,7 +393,12 @@ export const castCellRay = ({
     }
 
     Object.values(encounteredBodies).forEach((body) => {
-      if (getDistanceBetween({ x, y }, body) > distToHorizontalGridBeingHit) {
+      if (
+        !isRayCollision(body, {
+          startPoint: { x, y },
+          endPoint: { x: xIntersection, y: horizontalGrid },
+        })
+      ) {
         delete encounteredBodies[body.id];
       }
     });
@@ -408,13 +418,17 @@ export const castCellRay = ({
     };
   }
 
+  if (cell.axis === X) {
+    return null;
+  }
+
   if (!cell.blocking && !verticalOverlay) {
     return null;
   }
 
-  if (cell.offset.x === 0) {
-    return null;
-  }
+  // if (cell.offset.x === 0) {
+  //   return null;
+  // }
 
   if (verticalOverlay || cell.transparency === FULL) {
     if (cell.reverse) {
@@ -442,8 +456,14 @@ export const castCellRay = ({
     }
   }
 
+
   Object.values(encounteredBodies).forEach((body) => {
-    if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
+    if (
+      !isRayCollision(body, {
+        startPoint: { x, y },
+        endPoint: { x: verticalGrid, y: yIntersection },
+      })
+    ) {
       delete encounteredBodies[body.id];
     }
   });
@@ -451,14 +471,8 @@ export const castCellRay = ({
   side = x < cell.x ? cell.front : cell.back;
 
   return {
-    startPoint: {
-      x,
-      y,
-    },
-    endPoint: {
-      x: verticalGrid,
-      y: yIntersection,
-    },
+    startPoint: { x, y },
+    endPoint: { x: verticalGrid, y: yIntersection },
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
     side: verticalOverlay ? cell.overlay : side,
@@ -488,7 +502,7 @@ const castRaySection = ({
   const gridY = Math.floor(y / CELL_SIZE);
 
   world.getCell(gridX, gridY).bodies.forEach((body) => {
-    if ((isFacing({ x, y, angle }, body)) && (x !== body.x && y !== body.y)) {
+    if (isFacing({ x, y, angle }, body) && x !== body.x && y !== body.y) {
       encounteredBodies[body.id] = body;
     }
   });
@@ -804,28 +818,27 @@ const castRaySection = ({
   }
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-    Object.values(encounteredBodies).forEach((body) => {
-      if (getDistanceBetween({ x, y }, body) > distToHorizontalGridBeingHit) {
-        delete encounteredBodies[body.id];
-      }
-    });
-
     for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
       horizontalBody = horizontalCell.bodies[i];
       encounteredBodies[horizontalBody.id] = horizontalBody;
     }
 
+    Object.values(encounteredBodies).forEach((body) => {
+      if (
+        !isRayCollision(body, {
+          startPoint: { x, y },
+          endPoint: { x: xIntersection, y: horizontalGrid },
+        })
+      ) {
+        delete encounteredBodies[body.id];
+      }
+    });
+
     side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
     return {
-      startPoint: {
-        x,
-        y,
-      },
-      endPoint: {
-        x: xIntersection,
-        y: horizontalGrid,
-      },
+      startPoint: { x, y },
+      endPoint: { x: xIntersection, y: horizontalGrid },
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
@@ -842,7 +855,12 @@ const castRaySection = ({
   }
 
   Object.values(encounteredBodies).forEach((body) => {
-    if (getDistanceBetween({ x, y }, body) > distToVerticalGridBeingHit) {
+    if (
+      !isRayCollision(body, {
+        startPoint: { x, y },
+        endPoint: { x: verticalGrid, y: yIntersection },
+      })
+    ) {
       delete encounteredBodies[body.id];
     }
   });

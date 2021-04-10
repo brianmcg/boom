@@ -22,13 +22,14 @@ const EVENTS = {
 class EnemySprite extends AnimatedEntitySprite {
   /**
    * Creates an EnemySprite.
-   * @param  {Enemy}  enemy             The enemy.
-   * @param  {Array}  textureCollection The textures for the sprite.
+   * @param  {Array}          textureCollection   The textures for the sprite.
+   * @param  {AbstractEnemy}  options.enemy       The enemy the sprite represents.
+   * @param  {Number}         options.floorOffset The offset of the floor.
    */
-  constructor(enemy, textureCollection = []) {
+  constructor(textureCollection = [], { enemy, floorOffset }) {
     const { textures } = textureCollection[STATES.IDLE];
 
-    super(textures, { animationSpeed: 0.15 });
+    super(textures, { animationSpeed: 0.15, floorOffset });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));

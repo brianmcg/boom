@@ -1,3 +1,4 @@
+import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../Entity';
 
 /**
@@ -13,11 +14,15 @@ class AbstractItem extends Entity {
    * @param  {Number} options.height  The height of the body.
    * @param  {String} options.texture The texture of entity.
    */
-  constructor({ type, ...other }) {
+  constructor({ type, floorOffset, ...other }) {
     super({ blocking: false, ...other });
 
     this.isItem = true;
     this.type = type;
+
+    if (floorOffset) {
+      this.z = CELL_SIZE * floorOffset * 0.75;
+    }
 
     if (this.constructor === AbstractItem) {
       throw new TypeError('Can not construct abstract class.');
