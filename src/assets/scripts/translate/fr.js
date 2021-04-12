@@ -107,6 +107,12 @@ export default {
   'world.title.2': {
     text: '[FR] Sewers',
   },
+  'world.title.3': {
+    text: '[FR] Mansion',
+  },
+  'world.title.4': {
+    text: '[FR] Rooftop',
+  },
   'world.review.enemies': {
     text: '[FR] Kills',
   },

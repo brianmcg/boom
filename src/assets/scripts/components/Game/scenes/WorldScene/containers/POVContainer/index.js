@@ -247,6 +247,8 @@ class POVContainer extends Container {
       bottomIntersection = Math.floor(spriteY + spriteHeight);
       topIntersection = Math.ceil(spriteY);
 
+      sideHeight = Math.max(CELL_SIZE, sideHeight);
+
       for (let yIndex = 0; yIndex <= topIntersection; yIndex += 1) {
         sprite = innerSprites[xIndex][yIndex];
 

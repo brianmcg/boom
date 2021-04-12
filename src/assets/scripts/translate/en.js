@@ -110,6 +110,9 @@ export default {
   'world.title.3': {
     text: 'Mansion',
   },
+  'world.title.4': {
+    text: 'Rooftop',
+  },
   'world.review.enemies': {
     text: 'Kills',
   },
