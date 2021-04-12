@@ -43,6 +43,8 @@ let bottomIntersection;
 let topIntersection;
 let actualDistance;
 let correctedDistance;
+let ceilingCell;
+let sideHeight;
 
 /**
  * Class representing a POVContainer.
@@ -119,9 +121,22 @@ class POVContainer extends Container {
       });
 
       for (let i = 0; i < raySections.length; i += 1) {
+        const { side, cell } = raySections[i];
+        const { overlay, closed } = cell;
+
         rays.push(raySections[i]);
 
-        if (raySections[i].cell.overlay) {
+        if (!closed && side.height < world.height) {
+          castRay({
+            x: player.x,
+            y: player.y,
+            angle,
+            world,
+            elavation: side.height,
+          }).forEach(r => rays.push(r));
+        }
+
+        if (overlay) {
           const overlayRay = castRay({
             x: player.x,
             y: player.y,
@@ -159,6 +174,8 @@ class POVContainer extends Container {
           sprite = wallSprites[i][xIndex];
           sprite.visible = true;
 
+          sideHeight = side.height;
+
           // Determine the slice to render.
           if (!isOverlay && cell.isDoor) {
             if (cell.double) {
@@ -193,14 +210,19 @@ class POVContainer extends Container {
           spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
           correctedDistance = distance * Math.cos(spriteAngle);
 
-          spriteHeight = Math.abs((cell.height) * CAMERA_DISTANCE / correctedDistance);
-
-          spriteY = centerY
-            - (spriteHeight / (cell.height / (cell.height - player.viewHeight)));
+          if (isOverlay) {
+            spriteHeight = Math.abs((cell.overlay.height) * CAMERA_DISTANCE / correctedDistance);
+            spriteY = centerY
+              - (spriteHeight / (cell.overlay.height / (cell.overlay.height - player.viewHeight)));
+          } else {
+            spriteHeight = Math.abs((sideHeight) * CAMERA_DISTANCE / correctedDistance);
+            spriteY = centerY
+              - (spriteHeight / (sideHeight / (sideHeight - player.viewHeight)));
+          }
 
           if (floorHeight) {
             spriteHeight = Math.abs(
-              (cell.height - floorHeight) * CAMERA_DISTANCE / correctedDistance,
+              (sideHeight - floorHeight) * CAMERA_DISTANCE / correctedDistance,
             );
           }
 
@@ -208,7 +230,7 @@ class POVContainer extends Container {
 
           if (floorHeight) {
             spriteHeight = Math.abs(
-              (cell.height - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
+              (sideHeight - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
             );
           }
 
@@ -229,8 +251,11 @@ class POVContainer extends Container {
         sprite = innerSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (CELL_SIZE - player.viewHeight) / (centerY - yIndex) * CAMERA_DISTANCE;
+          actualDistance = (sideHeight - player.viewHeight)
+            / (centerY - yIndex) * CAMERA_DISTANCE;
+
           correctedDistance = actualDistance / Math.cos(spriteAngle);
+
           mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
           mapX = (mapX > maxMapX) ? maxMapX : mapX;
           mapX = (mapX < 0) ? 0 : mapX;
@@ -239,13 +264,30 @@ class POVContainer extends Container {
           mapY = (mapY > maxMapY) ? maxMapY : mapY;
           mapY = (mapY < 0) ? 0 : mapY;
 
-          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
-          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
-
           gridX = Math.floor(mapX / CELL_SIZE);
           gridY = Math.floor(mapY / CELL_SIZE);
 
-          pixelSource = world.getCell(gridX, gridY).top;
+          ceilingCell = world.getCell(gridX, gridY);
+
+          if (ceilingCell.height !== sideHeight) {
+            actualDistance = (world.height - player.viewHeight)
+              / (centerY - yIndex) * CAMERA_DISTANCE;
+
+            correctedDistance = actualDistance / Math.cos(spriteAngle);
+
+            mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
+            mapX = (mapX > maxMapX) ? maxMapX : mapX;
+            mapX = (mapX < 0) ? 0 : mapX;
+
+            mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
+            mapY = (mapY > maxMapY) ? maxMapY : mapY;
+            mapY = (mapY < 0) ? 0 : mapY;
+          }
+
+          pixelSource = ceilingCell.top;
+
+          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
+          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
 
           if (pixelSource) {
             sprite.changeTexture(pixelSource.name, pixelX, pixelY);

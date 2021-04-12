@@ -35,7 +35,8 @@ const createCell = ({ cell, props, soundSprite }) => {
   const sides = Object.keys(cell.sides).reduce((memo, key) => ({
     ...memo,
     [key]: {
-      name: cell.sides[key],
+      name: cell.sides[key].name,
+      height: (cell.sides[key].height || cell.height) * CELL_SIZE,
       spatter: 0,
     },
   }), {});
@@ -102,6 +103,7 @@ const createCell = ({ cell, props, soundSprite }) => {
     height: cell.height * CELL_SIZE,
     reverse: cell.reverse,
     sides,
+    closed: cell.closed,
   });
 };
 

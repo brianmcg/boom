@@ -17,6 +17,7 @@ class Cell extends PhysicsCell {
     sides = {},
     transparency,
     reverse,
+    closed,
     ...other
   }) {
     super(other);
@@ -29,6 +30,8 @@ class Cell extends PhysicsCell {
     this.right = sides.right;
     this.bottom = sides.bottom;
     this.top = sides.top;
+
+    this.closed = closed;
   }
 }
 

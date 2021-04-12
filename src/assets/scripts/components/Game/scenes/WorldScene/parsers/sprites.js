@@ -61,20 +61,33 @@ const createProjectileSprite = ({ animations, textures, rotate }) => {
   return new ProjectileSprite(projectileTextures, { rotate });
 };
 
-const createWallSpriteMask = (wallTexture, renderer) => {
-  const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: CELL_SIZE });
+const createWallSpriteMask = ({
+  wallTexture,
+  floorHeight,
+  wallHeight,
+  renderer,
+}) => {
+  const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: wallHeight });
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
 
   const maskBackground = new RectangleSprite({
     width: CELL_SIZE,
-    height: CELL_SIZE,
+    height: wallHeight,
   });
+
+  const floorOffset = new RectangleSprite({
+    width: CELL_SIZE,
+    height: floorHeight,
+  });
+
+  floorOffset.y = wallHeight - floorHeight;
 
   maskForeground.tint = BLACK;
   maskContainer.addChild(maskBackground);
   maskContainer.addChild(maskForeground);
+  maskContainer.addChild(floorOffset);
   maskContainer.filters = [filter];
 
   filter.negative();
@@ -98,7 +111,6 @@ const createWallSprites = ({
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
-
   const spatterContainer = new Container();
 
   const spatterTypes = world.enemies.reduce((memo, { effects }) => {
@@ -127,7 +139,7 @@ const createWallSprites = ({
       } = cell;
 
       [front, left, back, right, overlay].forEach((side) => {
-        if (side && !wallImages.some(w => w.name === side.name)) {
+        if (side && side.name && !wallImages.some(w => w.name === side.name)) {
           wallImages.push({ name: side.name, transparent: !!transparency });
         }
       });
@@ -146,18 +158,27 @@ const createWallSprites = ({
     }
 
     const spatterTextures = spatters.map((spatter) => {
-      const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: CELL_SIZE });
+      const renderTexture = RenderTexture.create({
+        width: CELL_SIZE,
+        height: wallTexture.height,
+      });
+
       const spatterTexture = textures[spatter];
       const wallSprite = new Sprite(wallTexture);
       const spatterSprite = new Sprite(spatterTexture);
 
       spatterSprite.x = CELL_SIZE / 2;
-      spatterSprite.y = CELL_SIZE / 2;
+      spatterSprite.y = wallTexture.height - (spatterSprite.height / 2);
       spatterSprite.anchor.set(0.5);
       spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
 
-      if (transparent) {
-        spatterSprite.mask = createWallSpriteMask(wallTexture, renderer);
+      if (transparent || world.floorOffset) {
+        spatterSprite.mask = createWallSpriteMask({
+          wallTexture,
+          floorHeight: (wallTexture.height * world.floorOffset) + 1,
+          wallHeight: wallTexture.height,
+          renderer,
+        });
       }
 
       spatterContainer.removeChildren();

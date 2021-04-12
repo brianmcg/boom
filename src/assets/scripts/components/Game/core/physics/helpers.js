@@ -357,7 +357,6 @@ export const castCellRay = ({
       return null;
     }
 
-
     if (!cell.blocking && !horizontalOverlay) {
       return null;
     }
@@ -496,6 +495,7 @@ const castRaySection = ({
   angle,
   world,
   ignoreOverlay = true,
+  elavation = 0,
 }) => {
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
@@ -551,7 +551,10 @@ const castRaySection = ({
 
       horizontalOverlay = !ignoreOverlay && horizontalCell.overlay;
 
-      if (horizontalCell.blocking || horizontalCell.overlay) {
+      if (
+        (horizontalCell.blocking && horizontalCell.height > elavation)
+          || horizontalCell.overlay
+      ) {
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {
             if (horizontalCell.reverse) {
@@ -706,7 +709,10 @@ const castRaySection = ({
 
       verticalOverlay = !ignoreOverlay && verticalCell.overlay;
 
-      if (verticalCell.blocking || verticalOverlay) {
+      if (
+        (verticalCell.blocking && verticalCell.height > elavation)
+          || verticalOverlay
+      ) {
         if (verticalCell.axis) {
           if (verticalCell.isDoor) {
             if (verticalCell.reverse) {
