@@ -162,6 +162,8 @@ class Player extends AbstractActor {
       }), {}),
     }), this.playing);
 
+    this.radius = Math.sqrt((this.width * this.width) + (this.width * this.width)) / 2;
+
     this.setAlive();
   }
 

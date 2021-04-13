@@ -102,21 +102,30 @@ class POVContainer extends Container {
     const floorHeight = CELL_SIZE * floorOffset;
     const doubleFloorHeight = floorHeight * 2;
 
+    const {
+      x,
+      y,
+      viewAngle,
+      viewPitch,
+      radius,
+    } = player;
+
     // Get center of screen
-    centerY = CAMERA_CENTER_Y + player.viewPitch;
+    centerY = CAMERA_CENTER_Y + viewPitch;
 
     // Iterate over screen width
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
-      angle = (player.viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
+      angle = (viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
 
       const rays = [];
 
       // Cast ray
       const raySections = castRay({
-        x: player.x,
-        y: player.y,
+        x,
+        y,
         angle,
         world,
+        radius,
         ignoreOverlay: false,
       });
 
@@ -128,20 +137,22 @@ class POVContainer extends Container {
 
         if (!closed && side.height < world.height) {
           castRay({
-            x: player.x,
-            y: player.y,
+            x,
+            y,
             angle,
             world,
+            radius,
             elavation: side.height,
           }).forEach(r => rays.push(r));
         }
 
         if (overlay) {
           const overlayRay = castRay({
-            x: player.x,
-            y: player.y,
+            x,
+            y,
             angle,
             world,
+            radius,
             ignoreOverlay: true,
           }).find(r => r.cell.overlay);
 
@@ -207,7 +218,7 @@ class POVContainer extends Container {
             sliceY = CELL_SIZE - sliceY - 1;
           }
 
-          spriteAngle = (angle - player.viewAngle + DEG_360) % DEG_360;
+          spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
           correctedDistance = distance * Math.cos(spriteAngle);
 
           if (isOverlay) {
@@ -350,7 +361,7 @@ class POVContainer extends Container {
       spriteAngle = (player.getAngleTo({
         x: skyObject.x,
         y: skyObject.y,
-      }) - player.viewAngle + DEG_360) % DEG_360;
+      }) - viewAngle + DEG_360) % DEG_360;
 
       spriteScale = Math.abs(CAMERA_DISTANCE / skyObject.distance);
       spriteHeight = CELL_SIZE * spriteScale;
@@ -372,7 +383,7 @@ class POVContainer extends Container {
       sprite = entititySprites[body.id];
 
       if (sprite) {
-        spriteAngle = (player.getAngleTo(body) - player.viewAngle + DEG_360) % DEG_360;
+        spriteAngle = (player.getAngleTo(body) - viewAngle + DEG_360) % DEG_360;
         actualDistance = player.getDistanceTo(body);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
@@ -414,7 +425,7 @@ class POVContainer extends Container {
       sprite = effectSprites[effect.sourceId];
 
       if (player.isFacing(effect)) {
-        spriteAngle = (player.getAngleTo(effect) - player.viewAngle + DEG_360) % DEG_360;
+        spriteAngle = (player.getAngleTo(effect) - viewAngle + DEG_360) % DEG_360;
         actualDistance = player.getDistanceTo(effect);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
