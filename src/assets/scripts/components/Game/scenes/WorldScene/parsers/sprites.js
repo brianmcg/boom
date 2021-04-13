@@ -446,9 +446,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
         floorOffset: world.floorOffset,
       });
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.name], {
-        floorOffset: world.floorOffset,
-      });
+      entitySprites[object.id] = new EntitySprite(textures[object.name]);
     }
   });
 
