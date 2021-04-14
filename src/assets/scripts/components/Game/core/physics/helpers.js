@@ -831,6 +831,12 @@ const castRaySection = ({
       }
     });
 
+    Object.values(encounteredBodies).forEach((body) => {
+      if (!isRayCollision(body, { startPoint: { x, y }, endPoint: rayEndPoint })) {
+        delete encounteredBodies[body.id];
+      }
+    });
+
     side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
     return {
@@ -861,6 +867,12 @@ const castRaySection = ({
       })
     ) {
       encounteredBodies[body.id] = body;
+    }
+  });
+
+  Object.values(encounteredBodies).forEach((body) => {
+    if (!isRayCollision(body, { startPoint: { x, y }, endPoint: rayEndPoint })) {
+      delete encounteredBodies[body.id];
     }
   });
 

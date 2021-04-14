@@ -434,7 +434,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.objects.forEach((object) => {
-    if (object.isExplosive) {
+    if (object.explosion) {
       const animationTextures = animations[object.name].map(t => textures[t]);
       entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, {
         entity: object,

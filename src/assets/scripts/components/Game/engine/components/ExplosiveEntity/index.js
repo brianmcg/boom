@@ -35,7 +35,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
     super(other);
     this.animated = animated;
 
-    this.isExplosive = true;
+    this.isExploding = false;
     this.timer = 0;
 
     this.explosion = new Explosion({ source: this, ...explosion });
@@ -58,7 +58,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
 
-    if (!this.isExplosive && this.timer < EXPLODE_DELAY) {
+    if (this.isExploding && this.timer < EXPLODE_DELAY) {
       this.timer += elapsedMS;
 
       if (this.timer >= EXPLODE_DELAY) {
@@ -73,12 +73,12 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
    * @param  {Number} amount The amount to hurt the entity.
    */
   hurt(amount) {
-    if (this.isExplosive) {
+    if (!this.isExploding) {
       this.health -= amount;
 
       if (this.health <= 0) {
         this.health = 0;
-        this.isExplosive = false;
+        this.isExploding = true;
       }
     }
   }

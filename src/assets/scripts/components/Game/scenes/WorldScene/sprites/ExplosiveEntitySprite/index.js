@@ -30,6 +30,14 @@ class ExplosiveEntitySprite extends AnimatedEntitySprite {
       this.emit(EVENTS.ANIMATION_COMPLETE);
       entity.remove();
     };
+
+    this.entity = entity;
+  }
+
+  play() {
+    if (this.entity.isExploding) {
+      super.play();
+    }
   }
 
   /**
