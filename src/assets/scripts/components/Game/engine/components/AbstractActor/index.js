@@ -6,7 +6,7 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-const OFFSET = CELL_SIZE * 0.0625;
+const OFFSET = CELL_SIZE * 0.001;
 
 const SPATTER_DISTANCE = Math.sqrt((CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE));
 
