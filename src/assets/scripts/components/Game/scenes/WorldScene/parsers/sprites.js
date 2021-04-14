@@ -438,13 +438,10 @@ const createEntitySprites = ({ animations, textures, world }) => {
       const animationTextures = animations[object.name].map(t => textures[t]);
       entitySprites[object.id] = new ExplosiveEntitySprite(animationTextures, {
         entity: object,
-        floorOffset: world.floorOffset,
       });
     } else if (object.animated) {
       const animationTextures = animations[object.name].map(t => textures[t]);
-      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures, {
-        floorOffset: world.floorOffset,
-      });
+      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
     } else {
       entitySprites[object.id] = new EntitySprite(textures[object.name]);
     }

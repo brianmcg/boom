@@ -831,6 +831,7 @@ const castRaySection = ({
       }
     });
 
+    // isFacing({ x, y, angle }, body)
     Object.values(encounteredBodies).forEach((body) => {
       if (!isRayCollision(body, { startPoint: { x, y }, endPoint: rayEndPoint })) {
         delete encounteredBodies[body.id];
