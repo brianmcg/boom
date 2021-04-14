@@ -388,10 +388,10 @@ export const castCellRay = ({
 
     initialCell.bodies.forEach((body) => {
       if (
-        isRayCollision(body, {
+        x !== body.x && y !== body.y && isRayCollision(body, {
           startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
           endPoint: rayEndPoint,
-        }) && x !== body.x && y !== body.y
+        })
       ) {
         encounteredBodies[body.id] = body;
       }
@@ -452,10 +452,10 @@ export const castCellRay = ({
 
   initialCell.bodies.forEach((body) => {
     if (
-      isRayCollision(body, {
+      x !== body.x && y !== body.y && isRayCollision(body, {
         startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
         endPoint: rayEndPoint,
-      }) && x !== body.x && y !== body.y
+      })
     ) {
       encounteredBodies[body.id] = body;
     }
@@ -822,10 +822,10 @@ const castRaySection = ({
 
     initialCell.bodies.forEach((body) => {
       if (
-        isRayCollision(body, {
+        x !== body.x && y !== body.y && isRayCollision(body, {
           startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
           endPoint: rayEndPoint,
-        }) && x !== body.x && y !== body.y
+        })
       ) {
         encounteredBodies[body.id] = body;
       }
@@ -855,10 +855,10 @@ const castRaySection = ({
 
   initialCell.bodies.forEach((body) => {
     if (
-      isRayCollision(body, {
+      x !== body.x && y !== body.y && isRayCollision(body, {
         startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
         endPoint: rayEndPoint,
-      }) && x !== body.x && y !== body.y
+      })
     ) {
       encounteredBodies[body.id] = body;
     }
