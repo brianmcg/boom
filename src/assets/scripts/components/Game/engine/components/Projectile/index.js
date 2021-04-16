@@ -17,6 +17,8 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
+const SMOKE_INVERVAL = 60;
+
 /**
  * Class representing a projectile
  */
@@ -47,6 +49,7 @@ class Projectile extends DynamicEntity {
     queue,
     explosion,
     rotate,
+    tail,
     ...other
   }) {
     super({
@@ -63,6 +66,17 @@ class Projectile extends DynamicEntity {
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
     this.rotate = rotate;
+
+    if (tail) {
+      this.tail = {
+        name: tail.effects.smoke,
+        ids: [...Array(tail.length).keys()].map(i => `${this.id}_${tail.effects.smoke}_${i}`),
+      };
+
+      this.tailId = 0;
+    }
+
+    this.timer = 0;
 
     if (explosion) {
       this.explosion = new Explosion({ source: this, ...explosion });
@@ -130,16 +144,38 @@ class Projectile extends DynamicEntity {
    * @param  {Number} delta The delta time.
    * @return {[type]}       [description]
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.TRAVELLING:
-        super.update(delta);
+        this.updateTravalling(delta, elapsedMS);
         break;
       case STATES.EXPLODING:
-        this.updateColliding(delta);
+        this.updateColliding();
         break;
       default:
         break;
+    }
+  }
+
+  updateTravalling(delta, elapsedMS) {
+    super.update(delta);
+
+    this.timer += elapsedMS;
+
+    if (this.timer >= SMOKE_INVERVAL) {
+      this.parent.addEffect({
+        x: this.x,
+        y: this.y,
+        z: this.z,
+        sourceId: this.tail.ids[this.tailId],
+      });
+
+      this.timer = 0;
+      this.tailId += 1;
+
+      if (this.tailId >= this.tail.ids.length) {
+        this.tailId = 0;
+      }
     }
   }
 
