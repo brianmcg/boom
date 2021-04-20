@@ -6,7 +6,7 @@
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = 1;
+export const DEBUG = 0;
 
 /**
  * Display the frames per second on screen.
@@ -83,7 +83,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 75;
+export const FOV = 90;
 
 /**
  * The distance from the player inside which entities should update;
