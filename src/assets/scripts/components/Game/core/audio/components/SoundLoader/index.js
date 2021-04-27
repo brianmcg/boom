@@ -56,7 +56,7 @@ class SoundLoader {
    * Load the sound
    * @param  {String}   options.name  The name of the sound file.
    * @param  {String}   options.src   The path to the sound file.
-   * @return {Promise}                Promise that is resolwved when the sound is loaded.
+   * @return {Promise}                Promise that is resolved when the sound is loaded.
    */
   loadSrc({ name, src, loop }) {
     return new Promise((resolve) => {

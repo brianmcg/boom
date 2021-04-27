@@ -89,6 +89,12 @@ export {
    * The texture component.
    */
   Texture,
+  /**
+   * Blend modes constant.
+   */
   BLEND_MODES,
+  /**
+   * The line component.
+   */
   Line,
 };
