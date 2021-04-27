@@ -9,6 +9,12 @@
 export const DEBUG = 1;
 
 /**
+ * The level to load in debug mode.
+ * @type {Number}
+ */
+export const DEBUG_LEVEL = 4;
+
+/**
  * Display the frames per second on screen.
  * @type {Boolean}
  */
@@ -83,7 +89,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 75;
+export const FOV = 90;
 
 /**
  * The distance from the player inside which entities should update;

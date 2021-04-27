@@ -5,6 +5,7 @@ import { BLACK } from './constants/colors';
 import {
   SCREEN,
   DEBUG,
+  DEBUG_LEVEL,
   MUSIC_VOLUME,
   DISPLAY_FPS,
 } from './constants/config';
@@ -169,7 +170,11 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = 1, ...other } = {}) {
-    this.show(SCENE_TYPES.WORLD, { index: DEBUG ? 2 : index, showLoader: true, ...other });
+    this.show(SCENE_TYPES.WORLD, {
+      index: DEBUG ? DEBUG_LEVEL : index,
+      showLoader: true,
+      ...other,
+    });
   }
 
   /**

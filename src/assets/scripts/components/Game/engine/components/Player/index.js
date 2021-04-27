@@ -727,6 +727,14 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Get the elavation offset for projectiles.
+   * @return {Number} The elavation offset.
+   */
+  get elavationOffset() {
+    return this.height - (CELL_SIZE / 2);
+  }
+
+  /**
    * Get the player props.
    * @return {Object} The player props.
    */

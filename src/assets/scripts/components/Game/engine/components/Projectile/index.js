@@ -9,7 +9,7 @@ const STATES = {
   COLLIDING: 'projectile:colliding',
 };
 
-const HEIGHT_MULTIPLIER = 0.6;
+// const HEIGHT_MULTIPLIER = 0.6;
 
 const HALF_HEIGHT = CELL_SIZE / 2;
 
@@ -17,7 +17,7 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-const SMOKE_INVERVAL = 60;
+const SMOKE_INVERVAL = 25;
 
 /**
  * Class representing a projectile
@@ -50,6 +50,7 @@ class Projectile extends DynamicEntity {
     explosion,
     rotate,
     tail,
+    elavation = 0,
     ...other
   }) {
     super({
@@ -66,6 +67,7 @@ class Projectile extends DynamicEntity {
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
     this.rotate = rotate;
+    this.baseElavation = elavation * CELL_SIZE;
 
     if (tail) {
       this.tail = {
@@ -100,15 +102,15 @@ class Projectile extends DynamicEntity {
       x,
       y,
       elavation,
+      elavationOffset = 0,
       width,
-      height,
     } = this.source;
 
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
     this.x = x + Math.cos(this.angle) * distance;
     this.y = y + Math.sin(this.angle) * distance;
-    this.z = elavation - (HALF_HEIGHT - (height * HEIGHT_MULTIPLIER));
+    this.z = this.baseElavation + elavation + elavationOffset;
 
     const cell = parent.getCell(this.gridX, this.gridY);
 
@@ -160,21 +162,23 @@ class Projectile extends DynamicEntity {
   updateTravalling(delta, elapsedMS) {
     super.update(delta);
 
-    this.timer += elapsedMS;
+    if (this.tail) {
+      this.timer += elapsedMS;
 
-    if (this.timer >= SMOKE_INVERVAL) {
-      this.parent.addEffect({
-        x: this.x,
-        y: this.y,
-        z: this.z,
-        sourceId: this.tail.ids[this.tailId],
-      });
+      if (this.timer >= SMOKE_INVERVAL) {
+        this.parent.addEffect({
+          x: this.x,
+          y: this.y,
+          z: this.z,
+          sourceId: this.tail.ids[this.tailId],
+        });
 
-      this.timer = 0;
-      this.tailId += 1;
+        this.timer = 0;
+        this.tailId += 1;
 
-      if (this.tailId >= this.tail.ids.length) {
-        this.tailId = 0;
+        if (this.tailId >= this.tail.ids.length) {
+          this.tailId = 0;
+        }
       }
     }
   }

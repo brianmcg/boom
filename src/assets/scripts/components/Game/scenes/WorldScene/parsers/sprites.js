@@ -307,6 +307,17 @@ const createEffectsSprites = ({
             animationSpeed: 0.2,
           });
         }
+
+        if (projectile.tail) {
+          const effectTextures = animations[projectile.tail.name]
+            .map(animation => textures[animation]);
+
+          projectile.tail.ids.forEach((id) => {
+            memo[id] = new EffectSprite(effectTextures, {
+              animationSpeed: 0.12,
+            });
+          });
+        }
       });
     }
 
@@ -341,7 +352,7 @@ const createEffectsSprites = ({
 
           projectile.tail.ids.forEach((id) => {
             memo[id] = new EffectSprite(effectTextures, {
-              animationSpeed: 0.08,
+              animationSpeed: 0.12,
             });
           });
         }
