@@ -9,10 +9,6 @@ const STATES = {
   COLLIDING: 'projectile:colliding',
 };
 
-// const HEIGHT_MULTIPLIER = 0.6;
-
-const HALF_HEIGHT = CELL_SIZE / 2;
-
 const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
