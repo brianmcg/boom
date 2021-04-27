@@ -50,6 +50,7 @@ class Projectile extends DynamicEntity {
     explosion,
     rotate,
     tail,
+    elavation = 0,
     ...other
   }) {
     super({
@@ -66,6 +67,7 @@ class Projectile extends DynamicEntity {
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
     this.rotate = rotate;
+    this.baseElavation = elavation * CELL_SIZE;
 
     if (tail) {
       this.tail = {
@@ -100,15 +102,15 @@ class Projectile extends DynamicEntity {
       x,
       y,
       elavation,
+      elavationOffset = 0,
       width,
-      height,
     } = this.source;
 
     const distance = Math.sqrt((width * width) + (width * width)) + 1;
 
     this.x = x + Math.cos(this.angle) * distance;
     this.y = y + Math.sin(this.angle) * distance;
-    this.z = -4; // elavation - (HALF_HEIGHT - (height * HEIGHT_MULTIPLIER));
+    this.z = this.baseElavation + elavation + elavationOffset;
 
     const cell = parent.getCell(this.gridX, this.gridY);
 

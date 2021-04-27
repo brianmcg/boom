@@ -9,6 +9,12 @@
 export const DEBUG = 1;
 
 /**
+ * The level to load in debug mode.
+ * @type {Number}
+ */
+export const DEBUG_LEVEL = 4;
+
+/**
  * Display the frames per second on screen.
  * @type {Boolean}
  */
