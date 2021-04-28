@@ -542,7 +542,7 @@ const castRaySection = ({
 
       if (
         (horizontalCell.blocking && horizontalCell.height > elavation)
-          || horizontalCell.overlay
+          || horizontalOverlay
       ) {
         if (horizontalCell.axis) {
           if (horizontalCell.isDoor) {

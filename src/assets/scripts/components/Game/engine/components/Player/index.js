@@ -75,7 +75,16 @@ class Player extends AbstractActor {
     this.rotateAcceleration = rotateAcceleration;
     this.maxHeight = this.height;
     this.maxSpeed = this.speed;
-    this.weaponIndex = weaponIndex;
+
+    if (weaponIndex) {
+      this.weaponIndex = weaponIndex;
+    } else if (Object.values(weapons).filter(w => w.equiped).length > 1) {
+      // Use pistol if no weapon index given and pistol available.
+      this.weaponIndex = 1;
+    } else {
+      // Use knife if no other weapons equiped.
+      this.weaponIndex = 0;
+    }
 
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;

@@ -6,13 +6,13 @@
  * Debug mode on or off.
  * @type {Boolean}
  */
-export const DEBUG = 1;
+export const DEBUG = 0;
 
 /**
  * The level to load in debug mode.
  * @type {Number}
  */
-export const DEBUG_LEVEL = 4;
+export const DEBUG_LEVEL = 3;
 
 /**
  * Display the frames per second on screen.

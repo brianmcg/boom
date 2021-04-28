@@ -1,6 +1,6 @@
 import { degrees, AXES } from 'game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, DEBUG } from 'game/constants/config';
 import {
   Cell,
   PushWall,
@@ -57,7 +57,6 @@ const createCell = ({ cell, props, soundSprite }) => {
       sides,
       soundSprite,
       reverse: cell.reverse,
-      overlay: cell.overlay,
     });
   }
 
@@ -222,6 +221,14 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
 
+  const weapons = Object.keys(props.player.weapons).reduce((memo, key) => ({
+    ...memo,
+    [key]: {
+      ...props.player.weapons[key],
+      equiped: !!DEBUG || props.player.weapons[key].equiped,
+    },
+  }), {});
+
   const player = new Player({
     ...props.player,
     x: (CELL_SIZE * entrance.x) + (CELL_SIZE / 2),
@@ -230,6 +237,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     soundSprite,
     items,
     spatters,
+    weapons,
   });
 
   return new World({

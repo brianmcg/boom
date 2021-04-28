@@ -1,4 +1,4 @@
-import { CELL_SIZE, DEBUG } from 'game/constants/config';
+import { CELL_SIZE } from 'game/constants/config';
 import Entity from '../../../Entity';
 
 const STATES = {
@@ -64,7 +64,7 @@ class AbstractWeapon extends Entity {
     this.power = power;
     this.accuracy = accuracy;
     this.rate = rate;
-    this.equiped = DEBUG || equiped;
+    this.equiped = equiped;
     this.player = player;
     this.automatic = automatic;
     this.recoil = recoil;
