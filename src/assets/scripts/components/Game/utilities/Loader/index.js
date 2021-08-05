@@ -13,6 +13,11 @@ class Loader {
     this.graphicsLoader = new GraphicsLoader();
     this.soundLoader = new SoundLoader();
     this.dataLoader = new DataLoader();
+
+    this.cache = {
+      graphics: this.graphicsLoader.cache,
+      sound: this.soundLoader.cache,
+    };
   }
 
   /**
@@ -22,24 +27,16 @@ class Loader {
    * @param  {Object}   options.data      The data options.
    * @return {Promise}                    Resolves when the assets are loaded.
    */
-  load({ sound, graphics, data }) {
-    return new Promise((resolve) => {
-      Promise.all([
-        this.soundLoader.load(sound),
-        this.graphicsLoader.load(graphics),
-        this.dataLoader.load(data),
-      ]).then(([
-        loadedSound,
-        loadedGraphics,
-        loadedData,
-      ]) => {
-        resolve({
-          graphics: loadedGraphics,
-          sound: loadedSound,
-          data: loadedData,
-        });
-      });
-    });
+  async load({ sound, graphics, data }) {
+    const soundResources = this.soundLoader.load(sound);
+    const graphicsResources = this.graphicsLoader.load(graphics);
+    const dataResources = this.dataLoader.load(data);
+
+    return {
+      graphics: await graphicsResources,
+      sound: await soundResources,
+      data: await dataResources,
+    };
   }
 
   /**
@@ -50,17 +47,6 @@ class Loader {
   unload({ graphics, sound } = {}) {
     this.graphicsLoader.unload(graphics);
     this.soundLoader.unload(sound);
-  }
-
-  /**
-   * The loader cache
-   * @member
-   */
-  get cache() {
-    return {
-      graphics: this.graphicsLoader.cache,
-      sound: this.soundLoader.cache,
-    };
   }
 }
 

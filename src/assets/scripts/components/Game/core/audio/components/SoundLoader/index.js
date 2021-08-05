@@ -40,16 +40,14 @@ class SoundLoader {
    * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
-  loadSprite({ name, src, spriteSrc }) {
-    return new Promise((resolve) => {
-      fetch(spriteSrc).then((response) => {
-        response.json().then((sprite) => {
-          const sound = new Sound({ src, sprite, mute: DISABLE_SOUNDS });
-          this.cache[name] = sound;
-          sound.onload = resolve(sound);
-        });
-      });
-    });
+  async loadSprite({ name, src, spriteSrc }) {
+    const response = await fetch(spriteSrc);
+    const sprite = await response.json();
+    const sound = new Sound({ src, sprite, mute: DISABLE_SOUNDS });
+
+    this.cache[name] = sound;
+
+    return sound.load();
   }
 
   /**
@@ -58,12 +56,12 @@ class SoundLoader {
    * @param  {String}   options.src   The path to the sound file.
    * @return {Promise}                Promise that is resolved when the sound is loaded.
    */
-  loadSrc({ name, src, loop }) {
-    return new Promise((resolve) => {
-      const sound = new Sound({ src, loop, mute: DISABLE_MUSIC });
-      this.cache[name] = sound;
-      sound.onload = resolve(sound);
-    });
+  async loadSrc({ name, src, loop }) {
+    const sound = await new Sound({ src, loop, mute: DISABLE_MUSIC });
+
+    this.cache[name] = sound;
+
+    return sound.load();
   }
 
   /**

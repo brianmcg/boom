@@ -21,8 +21,7 @@ class GraphicsLoader {
   load({ name, src }) {
     this.loader.add(name, src);
 
-    return new Promise(resolve => this.loader
-      .load((loader, resources) => resolve(resources[name])));
+    return new Promise(resolve => this.loader.load((_, resources) => resolve(resources[name])));
   }
 
   /**

@@ -30,7 +30,7 @@ export const MAX_FPS = 60;
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = !!DEBUG || false;
+export const DISABLE_MUSIC = true; // !!DEBUG || false;
 
 /**
  * The volume of the music.
@@ -77,6 +77,8 @@ export const SCREEN = {
   // HEIGHT: 144,
   WIDTH: 224,
   HEIGHT: 126,
+  // WIDTH: 256,
+  // HEIGHT: 224,
 };
 
 /**

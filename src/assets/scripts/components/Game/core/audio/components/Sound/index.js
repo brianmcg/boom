@@ -19,7 +19,14 @@ class Sound extends Howl {
       sprite,
       loop,
       mute,
+      preload: false,
     });
+  }
+
+  load() {
+    super.load();
+
+    return new Promise(resolve => this.on('load', () => resolve(this)));
   }
 }
 
