@@ -30,6 +30,7 @@ class Body extends EventEmitter {
     length = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
     blocking = true,
+    anchor = 1,
   } = {}) {
     super();
 
@@ -41,6 +42,7 @@ class Body extends EventEmitter {
     this.length = length;
     this.height = height;
     this.blocking = blocking;
+    this.anchor = anchor;
   }
 
   /**

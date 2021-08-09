@@ -52,7 +52,7 @@ class TitleScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    this.game.showWorldScene({ index: 1 });
+    this.game.showWorldScene();
   }
 
   /**
