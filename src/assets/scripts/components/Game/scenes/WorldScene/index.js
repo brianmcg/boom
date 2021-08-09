@@ -29,7 +29,7 @@ class WorldScene extends Scene {
    * @param  {Number} options.index   The index of the scene.
    * @param  {String} options.game    The game running the scene.
    */
-  constructor(options) {
+  constructor({ id, ...options }) {
     super(options);
 
     this.assets = {
@@ -53,7 +53,7 @@ class WorldScene extends Scene {
 
     this.promptOption = translate('scene.prompt.continue');
 
-    this.title = translate(`world.title.${this.index}`);
+    this.title = translate(`world.title.${id}`);
 
     this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
@@ -123,7 +123,7 @@ class WorldScene extends Scene {
 
     const text = {
       review: {
-        title: translate(`world.title.${this.index}`),
+        title: this.title,
         enemies: translate('world.review.enemies'),
         items: translate('world.review.items'),
         secrets: translate('world.review.secrets'),
@@ -310,7 +310,7 @@ class WorldScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    if (this.index < this.game.data.world.levels) {
+    if (this.index < this.game.data.world.levels.length) {
       this.game.showWorldScene({
         index: this.index + 1,
         startingProps: this.world.props,

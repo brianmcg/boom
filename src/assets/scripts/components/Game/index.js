@@ -173,6 +173,7 @@ class Game extends Application {
     this.show(SCENE_TYPES.WORLD, {
       index: LEVEL ? LEVEL : index,
       showLoader: true,
+      id: this.data.world.levels[index - 1],
       ...other,
     });
   }
@@ -190,7 +191,12 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show(type, { index, startingProps = {}, showLoader } = {}) {
+  async show(type, {
+    index,
+    id,
+    startingProps = {},
+    showLoader,
+  } = {}) {
     const Scene = SCENES[type];
 
     if (showLoader) {
@@ -214,6 +220,7 @@ class Game extends Application {
 
     if (Scene) {
       this.scene = new Scene({
+        id,
         type,
         index,
         game: this,

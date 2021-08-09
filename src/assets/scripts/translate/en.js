@@ -98,19 +98,25 @@ export default {
   'title.prompt.start': {
     text: 'Press space to start',
   },
-  'world.title.0': {
+  'world.title.debug': {
     text: 'Debug Level',
   },
-  'world.title.1': {
+  'world.title.dungeon_1': {
     text: 'Dungeon',
   },
-  'world.title.2': {
+  'world.title.sewers_1': {
     text: 'Sewers',
   },
-  'world.title.3': {
+  'world.title.sewers_2': {
+    text: 'Cistern',
+  },
+  'world.title.cellar_1': {
+    text: 'Cellar',
+  },
+  'world.title.mansion_1': {
     text: 'Mansion',
   },
-  'world.title.4': {
+  'world.title.roof_1': {
     text: 'Rooftop',
   },
   'world.review.enemies': {
