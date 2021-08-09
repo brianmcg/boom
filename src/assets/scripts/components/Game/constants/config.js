@@ -2,17 +2,19 @@
  * @module  game/constants/config
  */
 
+const urlParams = new URLSearchParams(window.location.search);
+
 /**
- * Debug mode on or off.
- * @type {Boolean}
+ * Debug mode.
+ * @type {Number}
  */
-export const DEBUG = 0;
+export const DEBUG = parseInt(urlParams.get('debug'), 10);
 
 /**
  * The level to load in debug mode.
  * @type {Number}
  */
-export const DEBUG_LEVEL = 3;
+export const LEVEL = parseInt(urlParams.get('level'), 10);
 
 /**
  * Display the frames per second on screen.
@@ -30,13 +32,13 @@ export const MAX_FPS = 60;
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = true; // !!DEBUG || false;
+export const DISABLE_MUSIC = !!DEBUG || false;
 
 /**
  * The volume of the music.
  * @type {Number}
  */
-export const MUSIC_VOLUME = 0.8;
+export const MUSIC_VOLUME = 1;
 
 /**
  * Enabled the sounds.

@@ -4,10 +4,10 @@ import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
 import {
   SCREEN,
-  DEBUG,
-  DEBUG_LEVEL,
   MUSIC_VOLUME,
   DISPLAY_FPS,
+  DEBUG,
+  LEVEL,
 } from './constants/config';
 import {
   GAME_PATH,
@@ -162,16 +162,16 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show(SCENE_TYPES.TITLE);
+    this.show(SCENE_TYPES.TITLE, { showLoader: true });
   }
 
   /**
    * Show the world scene.
    * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene({ index = 1, ...other } = {}) {
+  showWorldScene({ index = 0, ...other } = {}) {
     this.show(SCENE_TYPES.WORLD, {
-      index: DEBUG ? DEBUG_LEVEL : index,
+      index: LEVEL ? LEVEL : index,
       showLoader: true,
       ...other,
     });

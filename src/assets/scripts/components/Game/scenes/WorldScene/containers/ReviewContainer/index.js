@@ -1,5 +1,4 @@
 import { Container } from 'game/core/graphics';
-import { formatMS } from 'game/core/date';
 import { SCREEN } from 'game/constants/config';
 import StatContainer from './containers/StatContainer';
 
@@ -11,6 +10,23 @@ const INTERVAL = 500;
 
 const EVENTS = {
   SHOW_STAT: 'review:show:stat',
+};
+
+const formatMS = (ms) => {
+  let seconds = parseInt((ms / 1000) % 60, 10);
+  let minutes = parseInt((ms / (1000 * 60)) % 60, 10);
+  let hours = parseInt((ms / (1000 * 60 * 60)) % 24, 10);
+
+  hours = (hours < 10) ? `0${hours}` : hours;
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+  seconds = (seconds < 10) ? `0${seconds}` : seconds;
+
+  return `${hours}:${minutes}:${seconds}`;
+};
+
+const formatPercent = (achieved, total) => {
+  const percent = Math.round(achieved / total * 100);
+  return isNaN(percent) ? '-' : `${percent}%`;
 };
 
 /**
@@ -138,9 +154,9 @@ class ReviewContainer extends Container {
     title.x = SCREEN.WIDTH / 2;
 
     time.value.text = formatMS(timeTaken);
-    enemies.value.text = `${Math.round(enemiesKilled / enemiesTotal * 100)}%`;
-    items.value.text = `${Math.round(itemsFound / itemsTotal * 100)}%`;
-    secrets.value.text = `${Math.round(secretsFound / secretsTotal * 100)}%`;
+    enemies.value.text = formatPercent(enemiesKilled, enemiesTotal);
+    items.value.text = formatPercent(itemsFound, itemsTotal);
+    secrets.value.text = formatPercent(secretsFound, secretsTotal);
 
     [enemies, items, secrets, time].forEach(({ name, value }) => {
       name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
