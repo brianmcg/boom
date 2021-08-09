@@ -169,9 +169,9 @@ class Game extends Application {
    * Show the world scene.
    * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene({ index = 0, ...other } = {}) {
+  showWorldScene({ index = LEVEL ? LEVEL : index, ...other } = {}) {
     this.show(SCENE_TYPES.WORLD, {
-      index: LEVEL ? LEVEL : index,
+      index,
       showLoader: true,
       id: this.data.world.levels[index - 1],
       ...other,
