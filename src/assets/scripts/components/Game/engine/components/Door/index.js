@@ -33,6 +33,8 @@ class Door extends DynamicCell {
     key,
     interval,
     double,
+    entrance = false,
+    active = true,
     ...other
   }) {
     super(other);
@@ -41,7 +43,9 @@ class Door extends DynamicCell {
     this.keyCard = key;
     this.interval = interval;
     this.isDoor = true;
+    this.active = active;
     this.double = double;
+    this.entrance = entrance;
 
     this.setClosed();
   }
@@ -51,7 +55,7 @@ class Door extends DynamicCell {
    * @return {Booleam}
    */
   use(user) {
-    if (this.isClosed()) {
+    if (this.active && this.isClosed()) {
       if (this.keyCard) {
         const keyCard = user.keyCards[this.keyCard];
 
@@ -120,6 +124,10 @@ class Door extends DynamicCell {
     this.offset[axis] -= speed * 0.5 * delta;
 
     if (this.offset[axis] < 0) {
+      if (this.entrance) {
+        this.active = false;
+      }
+
       this.offset[axis] = 0;
       this.setClosed();
     }

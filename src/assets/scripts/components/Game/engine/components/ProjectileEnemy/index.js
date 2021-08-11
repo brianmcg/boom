@@ -46,6 +46,8 @@ class ProjectileEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
+    this.emitSound(this.sounds.attack);
+
     if (this.projectiles.length) {
       const projectile = this.projectiles.shift();
       projectile.set({ angle: this.angle, damage: this.attackDamage() });
