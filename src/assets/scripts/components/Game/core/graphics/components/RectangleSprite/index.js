@@ -22,11 +22,10 @@ class RectangleSprite extends Sprite {
     alpha = 1,
     anchor = 0,
   } = {}) {
-    super();
+    super(Texture.WHITE);
 
     this.x = x;
     this.y = y;
-    this.texture = Texture.WHITE;
     this.width = width;
     this.height = height;
     this.alpha = alpha;
@@ -36,7 +35,11 @@ class RectangleSprite extends Sprite {
     }
 
     if (anchor) {
-      this.anchor.set(anchor);
+      if (Array.isArray(anchor)) {
+        this.anchor.set(...anchor);
+      } else {
+        this.anchor.set(anchor);
+      }
     }
   }
 }

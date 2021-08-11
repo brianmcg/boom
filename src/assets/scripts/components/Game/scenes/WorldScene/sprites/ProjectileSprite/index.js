@@ -6,17 +6,16 @@ import AnimatedEntitySprite from '../AnimatedEntitySprite';
 class ProjectileSprite extends AnimatedEntitySprite {
   constructor(textures, { rotate = 0, ...other } = {}) {
     super(textures, other);
-
     this.rotate = rotate;
   }
 
-  update(delta) {
-    super.update(delta);
+  // update(delta) {
+  //   super.update(delta);
 
-    if (this.rotate) {
-      this.rotation += this.rotate * delta;
-    }
-  }
+  //   if (this.rotate) {
+  //     this.rotation += this.rotate * delta;
+  //   }
+  // }
 }
 
 export default ProjectileSprite;

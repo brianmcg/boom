@@ -16,13 +16,14 @@ class AnimatedEntitySprite extends AnimatedSprite {
     loop = true,
     autoPlay = true,
     floorOffset = 0,
+    anchor = [0.5, 1],
   } = {}) {
-    super(textures, { animationSpeed, loop, anchor: 0.5 });
+    super(textures, { animationSpeed, loop, anchor });
 
     this.zOrder = Number.MAX_VALUE;
 
     if (floorOffset) {
-      this.mask = new RectangleSprite();
+      this.mask = new RectangleSprite({ anchor });
       this.mask.zOrder = Number.MAX_VALUE;
     }
 

@@ -19,7 +19,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
     tint,
     alpha = 1,
     loop = false,
-    anchor,
+    anchor = 0,
   } = {}) {
     super(textures, false);
 
@@ -38,7 +38,11 @@ class AnimatedSprite extends PixiAnimatedSprite {
     }
 
     if (anchor) {
-      this.anchor.set(anchor);
+      if (Array.isArray(anchor)) {
+        this.anchor.set(...anchor);
+      } else {
+        this.anchor.set(anchor);
+      }
     }
   }
 

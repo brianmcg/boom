@@ -10,13 +10,17 @@ class Sprite extends PixiSprite {
    * @param  {Texture} texture      The sprite texture.
    * @param  {Number} options.alpha The alpha value.
    */
-  constructor(texture, { alpha = 1, anchor } = {}) {
+  constructor(texture, { alpha = 1, anchor = 0 } = {}) {
     super(texture);
 
     this.alpha = alpha;
 
     if (anchor) {
-      this.anchor.set(anchor);
+      if (Array.isArray(anchor)) {
+        this.anchor.set(...anchor);
+      } else {
+        this.anchor.set(anchor);
+      }
     }
   }
 

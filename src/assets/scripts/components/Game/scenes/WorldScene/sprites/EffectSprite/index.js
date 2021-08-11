@@ -14,6 +14,7 @@ class EffectSprite extends AnimatedEntitySprite {
       ...options,
       loop: false,
       autoPlay: false,
+      anchor: 0.5,
     });
 
     this.rotation = Math.random() * Math.PI * 2;

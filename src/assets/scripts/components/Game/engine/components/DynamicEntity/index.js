@@ -17,15 +17,18 @@ class DynamicEntity extends DynamicBody {
    * @param  {Boolean} options.blocking Is the dynamic entity blocking.
    * @param  {String}  options.texture  The texture of entity.
    * @param  {String}  options.sounds   The sounds of entity.
+   * @param  {Boolean} options.scale    The scale of the entity.
    */
   constructor({
     name,
     sounds = {},
     soundSprite,
+    scale = 1,
     ...other
   }) {
     super(other);
 
+    this.scale = scale;
     this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;

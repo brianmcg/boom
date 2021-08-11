@@ -204,6 +204,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         length: Math.max(Math.ceil(CELL_SIZE * enemy.length), CELL_SIZE / 2),
         height: Math.ceil(CELL_SIZE * enemy.height),
         float: enemy.float,
+        scale: enemy.scale,
         proneHeight: enemy.proneHeight,
         ...props.enemies[enemy.name],
         spatters,

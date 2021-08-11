@@ -390,12 +390,13 @@ class POVContainer extends Container {
         spriteHeight = CELL_SIZE * spriteScale;
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
+
         sprite.y = centerY
           - (spriteHeight / (CELL_SIZE / ((CELL_SIZE * body.anchor) + body.elavation - player.viewHeight)))
-          + (spriteHeight / 2);
+          + spriteHeight;
 
-        sprite.width = spriteHeight;
-        sprite.height = spriteHeight;
+        sprite.width = spriteHeight * body.scale;
+        sprite.height = spriteHeight * body.scale;
         sprite.zOrder = actualDistance;
 
         sprite.tint = this.calculateTint(actualDistance);
@@ -405,14 +406,15 @@ class POVContainer extends Container {
 
         if (sprite.mask) {
           sprite.mask.x = sprite.x;
+
           sprite.mask.y = centerY
             - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)))
-            + (spriteHeight / 2) - (spriteHeight / 2);
+            + (spriteHeight - (spriteHeight * floorOffset));
 
-          sprite.mask.width = spriteHeight;
-          sprite.mask.height = spriteHeight - (spriteHeight * floorOffset);
+          sprite.mask.width = sprite.width;
+          sprite.mask.height = sprite.height;
+
           sprite.mask.zOrder = actualDistance + 0.01;
-          sprite.mask.x = sprite.x - (spriteHeight / 2);
 
           this.mapContainer.addChild(sprite.mask);
           this.displayedEntities.push(sprite.mask);
@@ -435,6 +437,7 @@ class POVContainer extends Container {
         sprite.y = centerY
           - (spriteHeight / (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)))
           + (spriteHeight / 2);
+
         sprite.width = spriteHeight;
         sprite.height = spriteHeight;
         sprite.zOrder = actualDistance;
