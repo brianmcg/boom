@@ -180,7 +180,7 @@ class Projectile extends DynamicEntity {
    * @param {Number} options.angle  The angle of the projectile.
    * @param {Number} options.damage The damage the projectile inflicts.
    */
-  set({ angle = 0, damage = 0, offset }) {
+  set({ angle = 0, damage = 0, offset = 0 }) {
     const {
       x,
       y,

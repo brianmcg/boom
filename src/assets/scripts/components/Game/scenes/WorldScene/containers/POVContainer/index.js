@@ -391,9 +391,11 @@ class POVContainer extends Container {
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
 
-        sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / ((CELL_SIZE * body.anchor) + body.elavation - player.viewHeight)))
-          + spriteHeight;
+        sprite.y = centerY - (
+          spriteHeight / (
+            CELL_SIZE / ((CELL_SIZE * body.anchor) + body.elavation - player.viewHeight)
+          )
+        ) + spriteHeight;
 
         sprite.width = spriteHeight * body.scale;
         sprite.height = spriteHeight * body.scale;

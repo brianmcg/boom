@@ -17,7 +17,6 @@ class EntitySprite extends Sprite {
       this.mask = new RectangleSprite({ anchor });
       this.mask.zOrder = Number.MAX_VALUE;
     }
-
   }
 }
 

@@ -29,7 +29,7 @@ class ProjectileEnemy extends AbstractEnemy {
       }));
     });
 
-    this.offsets = (pellets % 2 == 0)
+    this.offsets = (pellets % 2 === 0)
       ? [...new Array(pellets + 1).keys()]
         .map(i => (i - Math.round(pellets / 2)) * degrees(30) / pellets)
         .filter(i => i)
@@ -69,7 +69,6 @@ class ProjectileEnemy extends AbstractEnemy {
 
         this.parent.add(projectile);
       });
-
     }
   }
 }

@@ -24,9 +24,12 @@ const formatMS = (ms) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
+const isNumber = value => !Number.isNaN(Number(value));
+
 const formatPercent = (achieved, total) => {
   const percent = Math.round(achieved / total * 100);
-  return isNaN(percent) ? '-' : `${percent}%`;
+
+  return isNumber(percent) ? `${percent}%` : '-';
 };
 
 /**
