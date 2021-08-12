@@ -94,20 +94,7 @@ class Projectile extends DynamicEntity {
   onAdded(parent) {
     super.onAdded(parent);
 
-    const {
-      x,
-      y,
-      elavation,
-      elavationOffset = 0,
-      width,
-    } = this.source;
-
-    const distance = Math.sqrt((width * width) + (width * width)) + 1;
-
-    this.x = x + Math.cos(this.angle) * distance;
-    this.y = y + Math.sin(this.angle) * distance;
-    this.z = this.baseElavation + elavation + elavationOffset;
-
+    const { x, y } = this.source;
     const cell = parent.getCell(this.gridX, this.gridY);
 
     if (cell.blocking && this.isBodyCollision(cell)) {
@@ -193,7 +180,21 @@ class Projectile extends DynamicEntity {
    * @param {Number} options.angle  The angle of the projectile.
    * @param {Number} options.damage The damage the projectile inflicts.
    */
-  set({ angle = 0, damage = 0 }) {
+  set({ angle = 0, damage = 0, offset }) {
+    const {
+      x,
+      y,
+      elavation,
+      elavationOffset = 0,
+      width,
+    } = this.source;
+
+    const distance = Math.sqrt((width * width) + (width * width)) + 1;
+
+    this.x = x + Math.cos(angle + offset) * distance;
+    this.y = y + Math.sin(angle + offset) * distance;
+    this.z = this.baseElavation + elavation + elavationOffset;
+
     this.angle = angle;
     this.damage = damage;
   }
