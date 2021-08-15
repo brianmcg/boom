@@ -373,7 +373,7 @@ class AbstractEnemy extends AbstractActor {
         && player.isAlive()
         && distance > this.distanceToPlayer
     ) {
-      return player.cell;
+      return player;
     }
 
     return null;
@@ -536,8 +536,11 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.CHASING);
 
     if (isStateChanged) {
-      this.path = this.parent.findPath(this.cell, this.target);
       this.velocity = this.speed;
+
+      if (this.target) {
+        this.path = this.parent.findPath(this.cell, this.target);
+      }
     }
 
     return isStateChanged;
