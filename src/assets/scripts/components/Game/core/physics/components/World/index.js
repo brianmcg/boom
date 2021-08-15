@@ -1,5 +1,6 @@
 import { EventEmitter } from 'game/core/graphics';
 import { CELL_SIZE } from 'game/constants/config';
+import { search, Graph } from 'game/core/ai';
 
 /**
  * Class representing a world.
@@ -36,6 +37,20 @@ class World extends EventEmitter {
     grid.forEach(row => row.forEach(cell => this.add(cell)));
 
     bodies.forEach(body => this.add(body));
+
+    this.graph = new Graph(grid.map(row => row.map(cell => {
+      if (cell.blocking && !cell.isDoor) {
+        return 0;
+      }
+
+      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+        return 100;
+      }
+
+      return 1;
+    })), {
+      diagonal: true,
+    });
   }
 
   /**
@@ -44,6 +59,19 @@ class World extends EventEmitter {
    */
   update(delta, elapsedMS) {
     this.dynamicBodies.forEach(body => body.update(delta, elapsedMS));
+  }
+
+  /**
+   * Find a path between two cells.
+   * @param  {Cell} from The starting cell.
+   * @param  {Cell} to   The destination cell.
+   * @return {Array}     A list of cells.
+   */
+  findPath(from, to) {
+    const start = this.graph.grid[from.gridY][from.gridX];
+    const end = this.graph.grid[to.gridY][to.gridX];
+
+    return search(this.graph, start, end).map(node => this.getCell(node.y, node.x));
   }
 
   /**

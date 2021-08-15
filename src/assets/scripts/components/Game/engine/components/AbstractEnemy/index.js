@@ -13,8 +13,6 @@ const STATES = {
   DEAD: 'enemy:dead',
 };
 
-const WAYPOINT_SIZE = CELL_SIZE / 4;
-
 const FLOAT_INCREMENT = 0.075;
 
 const FLOAT_BOUNDARY = 4;
@@ -28,6 +26,8 @@ const NEARBY = CELL_SIZE * 6;
 const GROWL_INTERVAL = 8000;
 
 const DEAD_VELOCITY_MULTIPLIER = 0.25;
+
+const SEARCH_INTERVAL = 500;
 
 /**
  * Abstract class representing an enemy.
@@ -96,6 +96,8 @@ class AbstractEnemy extends AbstractActor {
       this.explosion = new Explosion({ source: this, ...explosion });
     }
 
+    this.path = [];
+
     this.setIdle();
   }
 
@@ -151,7 +153,9 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in idle state
    */
   updateIdle(delta, elapsedMS) {
-    if (this.findPlayer()) {
+    this.target = this.findPlayer();
+
+    if (this.target) {
       this.setAlerted();
     } else {
       this.nearbyTimer += elapsedMS;
@@ -171,7 +175,9 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAlerted(delta, elapsedMS) {
-    if (this.findPlayer()) {
+    this.target = this.findPlayer();
+
+    if (this.target) {
       this.alertTimer += elapsedMS;
 
       if (this.alertTimer >= this.alertTime) {
@@ -189,13 +195,41 @@ class AbstractEnemy extends AbstractActor {
   /**
    * Update enemy in chasing state
    */
-  updateChasing() {
-    if (this.findPlayer()) {
-      if (this.distanceToPlayer <= this.primaryAttack.range) {
-        this.setAiming();
-      }
+  updateChasing(delta, elapsedMS) {
+    this.target = this.findPlayer();
+
+    if (this.target && this.distanceToPlayer <= this.primaryAttack.range) {
+      this.setAiming();
     } else {
-      this.setPatrolling();
+      const next = this.path[0];
+
+      this.searchTimer += elapsedMS;
+
+      if (this.searchTimer >= SEARCH_INTERVAL) {
+        this.searchTimer = 0;
+
+        if (this.target) {
+          this.path = this.parent.findPath(this, this.target);
+        }
+      }
+
+      if (next) {
+        this.face(next);
+
+        if (next.isDoor) {
+          next.use(this);
+        }
+
+        if (this.isArrivedAt(next)) {
+          this.path.shift();
+        }
+      } else if (this.target) {
+        this.setIdle();
+        this.setChasing();
+      } else {
+        this.setIdle()
+      }
+
     }
   }
 
@@ -203,11 +237,10 @@ class AbstractEnemy extends AbstractActor {
    * Update the enemy in the patrolling state.
    */
   updatePatrolling() {
-    if (
-      Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
-        && Math.abs(this.x - this.waypoint.x) <= WAYPOINT_SIZE
-    ) {
-      if (this.findPlayer()) {
+    this.target = this.findPlayer();
+
+    if (this.isArrivedAt(this.waypoint)) {
+      if (this.target) {
         this.setChasing();
       } else {
         this.setIdle();
@@ -223,7 +256,9 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAiming(delta, elapsedMS) {
-    if (this.findPlayer()) {
+    this.target = this.findPlayer();
+
+    if (this.target) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.aimTimer += elapsedMS;
 
@@ -243,7 +278,9 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAttacking(delta, elapsedMS) {
-    if (this.findPlayer()) {
+    this.target = this.findPlayer();
+
+    if (this.target) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.attackTimer += elapsedMS;
 
@@ -332,9 +369,15 @@ class AbstractEnemy extends AbstractActor {
 
     const { distance, encounteredBodies } = this.castRay();
 
-    return encounteredBodies[player.id]
-      && player.isAlive()
-      && distance > this.distanceToPlayer;
+    if (
+      encounteredBodies[player.id]
+        && player.isAlive()
+        && distance > this.distanceToPlayer
+    ) {
+      return player.cell;
+    }
+
+    return null;
   }
 
   /**
@@ -459,7 +502,6 @@ class AbstractEnemy extends AbstractActor {
     const { player } = this.parent;
 
     const cells = this.parent.getAdjacentCells(this)
-      // && cell !== this.waypoint
       .filter(cell => !cell.blocking && !cell.bodies.some(b => b.blocking))
       .sort((a, b) => {
         const distanceA = player.getDistanceTo(a);
@@ -480,7 +522,6 @@ class AbstractEnemy extends AbstractActor {
       this.waypoint = cells[0];
     } else {
       this.setIdle();
-      // this.waypoint = this.cell;
     }
 
     this.velocity = this.speed;
@@ -493,8 +534,14 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setChasing() {
-    this.velocity = this.speed;
-    return this.setState(STATES.CHASING);
+    const isStateChanged = this.setState(STATES.CHASING);
+
+    if (isStateChanged) {
+      this.path = this.parent.findPath(this.cell, this.target);
+      this.velocity = this.speed;
+    }
+
+    return isStateChanged;
   }
 
   /**
@@ -502,8 +549,13 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}  State change successful.
    */
   setAiming() {
-    this.velocity = 0;
-    return this.setState(STATES.AIMING);
+    const isStateChanged = this.setState(STATES.AIMING);
+
+    if (isStateChanged) {
+      this.velocity = 0;
+    }
+
+    return isStateChanged;
   }
 
   /**
@@ -652,6 +704,7 @@ class AbstractEnemy extends AbstractActor {
       this.hurtTimer = 0;
       this.alertTimer = 0;
       this.aimTimer = 0;
+      this.searchTimer = 0;
       this.emit(state);
     }
 

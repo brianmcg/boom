@@ -10,6 +10,8 @@ const OFFSET = CELL_SIZE * 0.001;
 
 const SPATTER_DISTANCE = Math.sqrt((CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE));
 
+const CELL_CENTER = CELL_SIZE / 4;
+
 /**
  * Abstract class representing an actor.
  * @extends {AbstractDestroyableEntity}
@@ -157,6 +159,15 @@ class AbstractActor extends AbstractDestroyableEntity {
     super.hurt(damage, angle);
   }
 
+/**
+   * Check if actor has arrived at a cell.
+   * @param  {Cell}     cell The cell to check.
+   * @return {Boolean}
+   */
+  isArrivedAt(cell) {
+    return Math.abs(this.x - cell.x) <= CELL_CENTER
+      && Math.abs(this.y - cell.y) <= CELL_CENTER;
+  }
   /**
    * Get the type of effects spatter.
    * @return {Number} The type of effects spatter.
