@@ -41,7 +41,7 @@ class DynamicBody extends Body {
 
     this.velocity = 0;
     this.angle = angle;
-    this.isDynamicBody = true;
+    this.isDynamic = true;
     this.weight = weight;
     this.collisions = [];
     this.trackedCollisions = [];

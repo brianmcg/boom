@@ -144,7 +144,7 @@ class Door extends DynamicCell {
       if (this.timer <= 0) {
         const blocked = this.parent.getAdjacentBodies(this).some(body => (
           body.isActor && body.isAlive()
-        )) || this.bodies.some(b => b.isDynamicBody);
+        )) || this.bodies.some(b => b.isDynamic);
 
         if (!blocked) {
           this.timer = 0;

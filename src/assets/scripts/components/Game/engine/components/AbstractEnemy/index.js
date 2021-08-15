@@ -175,21 +175,18 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} delta The delta time.
    */
   updateAlerted(delta, elapsedMS) {
-    this.target = this.findPlayer();
+    this.target = this.parent.player;
 
-    if (this.target) {
-      this.alertTimer += elapsedMS;
+    this.alertTimer += elapsedMS;
 
-      if (this.alertTimer >= this.alertTime) {
-        if (this.distanceToPlayer <= this.primaryAttack.range) {
-          this.setAiming();
-        } else {
-          this.setChasing();
-        }
+    if (this.alertTimer >= this.alertTime) {
+      if (this.distanceToPlayer <= this.primaryAttack.range) {
+        this.setAiming();
+      } else {
+        this.setChasing();
       }
-    } else {
-      this.setPatrolling();
     }
+
   }
 
   /**
@@ -236,9 +233,9 @@ class AbstractEnemy extends AbstractActor {
    * Update the enemy in the patrolling state.
    */
   updatePatrolling() {
-    this.target = this.findPlayer();
-
     if (this.isArrivedAt(this.waypoint)) {
+      this.target = this.findPlayer();
+
       if (this.target) {
         this.setChasing();
       } else {
@@ -268,7 +265,8 @@ class AbstractEnemy extends AbstractActor {
         this.setChasing();
       }
     } else {
-      this.setPatrolling();
+      this.target = this.parent.player;
+      this.setChasing();
     }
   }
 
@@ -292,6 +290,7 @@ class AbstractEnemy extends AbstractActor {
           }
         }
       } else {
+
         this.setChasing();
       }
     } else {
