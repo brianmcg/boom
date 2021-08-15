@@ -56,7 +56,7 @@ class Door extends DynamicCell {
    */
   use(user) {
     if (this.active && this.isClosed()) {
-      if (this.keyCard) {
+      if (this.keyCard && user.isPlayer) {
         const keyCard = user.keyCards[this.keyCard];
 
         if (keyCard && keyCard.isEquiped()) {

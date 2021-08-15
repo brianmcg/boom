@@ -227,9 +227,8 @@ class AbstractEnemy extends AbstractActor {
         this.setIdle();
         this.setChasing();
       } else {
-        this.setIdle()
+        this.setIdle();
       }
-
     }
   }
 

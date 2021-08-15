@@ -159,7 +159,7 @@ class AbstractActor extends AbstractDestroyableEntity {
     super.hurt(damage, angle);
   }
 
-/**
+  /**
    * Check if actor has arrived at a cell.
    * @param  {Cell}     cell The cell to check.
    * @return {Boolean}
@@ -168,6 +168,7 @@ class AbstractActor extends AbstractDestroyableEntity {
     return Math.abs(this.x - cell.x) <= CELL_CENTER
       && Math.abs(this.y - cell.y) <= CELL_CENTER;
   }
+
   /**
    * Get the type of effects spatter.
    * @return {Number} The type of effects spatter.

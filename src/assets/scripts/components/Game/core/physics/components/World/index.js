@@ -38,7 +38,7 @@ class World extends EventEmitter {
 
     bodies.forEach(body => this.add(body));
 
-    this.graph = new Graph(grid.map(row => row.map(cell => {
+    this.graph = new Graph(grid.map(row => row.map((cell) => {
       if (cell.blocking && !cell.isDoor) {
         return 0;
       }

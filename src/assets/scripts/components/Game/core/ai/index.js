@@ -7,9 +7,9 @@ const search = (graph, start, end) => {
     graph,
     start,
     end,
-    { heuristic: astar.heuristics.diagonal }
+    { heuristic: astar.heuristics.diagonal },
   );
-}
+};
 
 export {
   /**
