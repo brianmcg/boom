@@ -1,15 +1,12 @@
-import { Graph, astar } from 'javascript-astar';
+import { astarSearch, heuristics } from './helpers';
+import Graph from './components/Graph';
 
-const search = (graph, start, end) => {
-  graph.init();
-
-  return astar.search(
-    graph,
-    start,
-    end,
-    { heuristic: astar.heuristics.diagonal },
-  );
-};
+const search = (graph, start, end) => astarSearch(
+  graph,
+  start,
+  end,
+  { heuristic: heuristics.diagonal },
+);
 
 export {
   /**

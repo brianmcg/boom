@@ -16,6 +16,9 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
+    'no-continue': 0,
+    'no-bitwise': [2, { allow: ['<<', '>>'] }],
     'import/prefer-default-export': 'off',
     'no-constant-condition': 0,
     'no-param-reassign': 0,
