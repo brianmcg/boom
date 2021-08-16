@@ -75,7 +75,7 @@ class OrthogonalEnemySprite extends AnimatedEntitySprite {
         frame: 0,
         loop: false,
       });
-    } else if (enemy.isPatrolling() || enemy.isChasing()) {
+    } else if (enemy.isEvading() || enemy.isChasing()) {
       this.updateTextures({
         actionId: ACTIONS.MOVING,
         angleId: Math.floor(enemy.angleDiff / degrees(45)),

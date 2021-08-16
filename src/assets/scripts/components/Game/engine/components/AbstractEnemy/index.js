@@ -1,3 +1,4 @@
+import { degrees } from 'game/core/physics';
 import { CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import Explosion from '../Explosion';
@@ -5,7 +6,7 @@ import Explosion from '../Explosion';
 const STATES = {
   IDLE: 'enemy:idle',
   ALERTED: 'enemy:alerted',
-  PATROLLING: 'enemy:patrolling',
+  EVADING: 'enemy:evading',
   CHASING: 'enemy:chasing',
   AIMING: 'enemy:aiming',
   ATTACKING: 'enemy:attacking',
@@ -28,6 +29,10 @@ const GROWL_INTERVAL = 8000;
 const DEAD_VELOCITY_MULTIPLIER = 0.25;
 
 const SEARCH_INTERVAL = 500;
+
+const DEG_90 = degrees(90);
+
+const DEG_360 = degrees(360);
 
 /**
  * Abstract class representing an enemy.
@@ -125,8 +130,8 @@ class AbstractEnemy extends AbstractActor {
         case STATES.ALERTED:
           this.updateAlerted(delta, elapsedMS);
           break;
-        case STATES.PATROLLING:
-          this.updatePatrolling(delta, elapsedMS);
+        case STATES.EVADING:
+          this.updateEvading(delta, elapsedMS);
           break;
         case STATES.CHASING:
           this.updateChasing(delta, elapsedMS);
@@ -186,7 +191,6 @@ class AbstractEnemy extends AbstractActor {
         this.setChasing();
       }
     }
-
   }
 
   /**
@@ -230,20 +234,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Update the enemy in the patrolling state.
+   * Update the enemy in the evading state.
    */
-  updatePatrolling() {
-    if (this.isArrivedAt(this.waypoint)) {
-      this.target = this.findPlayer();
-
-      if (this.target) {
-        this.setChasing();
-      } else {
-        this.setIdle();
-        this.setPatrolling();
-      }
+  updateEvading() {
+    if (this.isArrivedAt(this.evadeDestination)) {
+      this.target = this.parent.player;
+      this.setChasing();
     } else {
-      this.face(this.waypoint);
+      this.face(this.evadeDestination);
     }
   }
 
@@ -284,17 +282,17 @@ class AbstractEnemy extends AbstractActor {
         if (this.attackTimer >= this.attackTime) {
           if (this.numberOfAttacks < 1) {
             this.numberOfAttacks = this.maxAttacks;
-            this.setPatrolling();
+            this.setEvading();
           } else {
             this.onAttackComplete();
           }
         }
       } else {
-
         this.setChasing();
       }
     } else {
-      this.setPatrolling();
+      this.target = this.parent.player;
+      this.setChasing();
     }
   }
 
@@ -419,11 +417,11 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the patrolling state change.
+   * Add a callback to the evading state change.
    * @param  {Function} callback The callback function.
    */
-  onPatrolling(callback) {
-    this.on(STATES.PATROLLING, callback);
+  onEvading(callback) {
+    this.on(STATES.EVADING, callback);
   }
 
   /**
@@ -493,38 +491,52 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Set the enemy to the patrolling state.
+   * Set the enemy to the evading state.
    * @return {Boolean}  State change successful.
    */
-  setPatrolling() {
-    const { player } = this.parent;
+  setEvading() {
+    const isStateChanged = this.setState(STATES.EVADING);
 
-    const cells = this.parent.getAdjacentCells(this)
-      .filter(cell => !cell.blocking && !cell.bodies.some(b => b.blocking))
-      .sort((a, b) => {
-        const distanceA = player.getDistanceTo(a);
-        const distanceB = player.getDistanceTo(b);
+    if (isStateChanged) {
+      const { player } = this.parent;
 
-        if (distanceA > distanceB) {
-          return 1;
+      // Randomly pick an right angle to the left or right and
+      // get x and y grid coordinates, to priorities lateral evasion.
+      const angleOffset = Math.round(Math.random()) ? DEG_90 : -DEG_90;
+      const angle = (this.angle + angleOffset + DEG_360) % DEG_360;
+      const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
+      const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+
+      // Get cell to move to, prioritizing the x and y grid cooridinates above
+      // and getting the cell nearest to player, if left or right not free.
+      this.evadeDestination = this.parent.getAdjacentCells(this).reduce((memo, cell) => {
+        if (!cell.blocking && !cell.bodies.some(b => b.blocking)) {
+          if (!memo) {
+            return cell;
+          }
+
+          if (cell.gridX === x && cell.gridY === y) {
+            return cell;
+          }
+
+          if (player.getDistanceTo(cell) < player.getDistanceTo(memo)) {
+            return cell;
+          }
+
+          return memo;
         }
 
-        if (distanceA < distanceB) {
-          return -1;
-        }
+        return memo;
+      }, null);
 
-        return 0;
-      });
+      if (!this.evadeDestination) {
+        this.setIdle();
+      }
 
-    if (cells.length) {
-      this.waypoint = cells[0];
-    } else {
-      this.setIdle();
+      this.velocity = this.speed;
     }
 
-    this.velocity = this.speed;
-
-    return this.setState(STATES.PATROLLING);
+    return isStateChanged;
   }
 
   /**
@@ -632,11 +644,11 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Is the enemy in the patrolling state.
+   * Is the enemy in the evading state.
    * @return {Boolean} [description]
    */
-  isPatrolling() {
-    return this.state === STATES.PATROLLING;
+  isEvading() {
+    return this.state === STATES.EVADING;
   }
 
   /**

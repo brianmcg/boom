@@ -54,7 +54,7 @@ class GunEnemy extends AbstractEnemy {
    * Execute recovery behaviour.
    */
   onHurtComplete() {
-    this.setPatrolling();
+    this.setEvading();
   }
 
   /**

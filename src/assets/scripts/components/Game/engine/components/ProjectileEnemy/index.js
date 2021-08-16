@@ -48,7 +48,7 @@ class ProjectileEnemy extends AbstractEnemy {
    * Execute recovery behaviour.
    */
   onHurtComplete() {
-    this.setPatrolling();
+    this.setEvading();
   }
 
   /**
