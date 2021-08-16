@@ -2,19 +2,17 @@ import { ParticleContainer } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
 
 /**
- * Class representing a background container.
+ * Class representing an inner background container.
  */
-class BackgroundContainer extends ParticleContainer {
+class InnerContainer extends ParticleContainer {
   /**
-   * Creates a background container.
+   * Creates an inner background container.
    * @param  {Array} sprites The background sprites.
    */
-  constructor({ inner, outer }) {
+  constructor(sprites) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT);
 
-    Object.values(outer).forEach(sprite => this.addChild(sprite));
-
-    inner.forEach((slice) => {
+    sprites.forEach((slice) => {
       slice.forEach((pixel) => {
         this.addChild(pixel);
       });
@@ -22,4 +20,4 @@ class BackgroundContainer extends ParticleContainer {
   }
 }
 
-export default BackgroundContainer;
+export default InnerContainer;

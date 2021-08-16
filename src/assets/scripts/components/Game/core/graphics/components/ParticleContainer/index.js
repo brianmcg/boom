@@ -1,4 +1,4 @@
-import { ParticleContainer as PixiParticleContainer } from "@pixi/particles";
+import { ParticleContainer as PixiParticleContainer } from '@pixi/particle-container';
 
 /**
  * @class ParticleContainer

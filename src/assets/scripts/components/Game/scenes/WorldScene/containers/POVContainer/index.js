@@ -8,7 +8,8 @@ import {
 } from 'game/constants/config';
 import { GREY, WHITE } from 'game/constants/colors';
 import MapContainer from './containers/MapContainer';
-import BackgroundContainer from './containers/BackgroundContainer';
+import InnerContainer from './containers/InnerContainer';
+import OuterContainer from './containers/OuterContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
 const DEG_360 = degrees(360);
@@ -59,15 +60,21 @@ class POVContainer extends Container {
     super();
 
     this.world = world;
-    this.backgroundContainer = new BackgroundContainer(sprites.background);
-    this.mapContainer = new MapContainer(world, sprites.map);
-    this.playerContainer = new PlayerContainer(world.player, sprites.player);
-
-    this.displayedEntities = [];
     this.sprites = sprites;
+    this.displayedEntities = [];
 
+    if (Object.keys(sprites.background.outer).length) {
+      this.outerContainer = new OuterContainer(sprites.background.outer);
+      this.addChild(this.outerContainer);
+    }
+
+    this.backgroundContainer = new InnerContainer(sprites.background.inner);
     this.addChild(this.backgroundContainer);
+
+    this.mapContainer = new MapContainer(world, sprites.map);
     this.addChild(this.mapContainer);
+
+    this.playerContainer = new PlayerContainer(world.player, sprites.player);
     this.addChild(this.playerContainer);
   }
 

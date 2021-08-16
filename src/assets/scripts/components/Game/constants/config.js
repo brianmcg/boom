@@ -79,8 +79,6 @@ export const SCREEN = {
   // HEIGHT: 144,
   WIDTH: 224,
   HEIGHT: 126,
-  // WIDTH: 256,
-  // HEIGHT: 224,
 };
 
 /**
