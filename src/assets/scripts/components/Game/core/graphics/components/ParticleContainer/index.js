@@ -1,4 +1,4 @@
-import { ParticleContainer as PixiParticleContainer } from 'pixi.js';
+import { ParticleContainer as PixiParticleContainer } from "@pixi/particles";
 
 /**
  * @class ParticleContainer
@@ -12,6 +12,7 @@ class ParticleContainer extends PixiParticleContainer {
     super(maxSize, {
       uvs: true,
       tint: true,
+      position: false,
     });
   }
 }
