@@ -225,8 +225,7 @@ class AbstractEnemy extends AbstractActor {
           this.path.shift();
         }
       } else if (this.target) {
-        this.setIdle();
-        this.setChasing();
+        this.path = this.parent.findPath(this, this.target);
       } else {
         this.setIdle();
       }
