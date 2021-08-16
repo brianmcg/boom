@@ -36,6 +36,7 @@ const EVENTS = {
   CHANGE_WEAPON: 'player:change:weapon',
   MESSAGE_ADDED: 'player:messages:added',
   PICK_UP: 'player:pick:up',
+  EXIT: 'player:at:exit',
 };
 
 /**
@@ -190,6 +191,14 @@ class Player extends AbstractActor {
    */
   onUseWeapon(callback) {
     this.on(EVENTS.USE_WEAPON, callback);
+  }
+
+/**
+ * Add a callback for player arriving at exit.
+ * @param  {Function} callback The callback function.
+ */
+  onExit(callback) {
+    this.on(EVENTS.EXIT, callback);
   }
 
   /**
@@ -442,6 +451,10 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
+
+    if (this.isArrivedAt(this.parent.exit)) {
+      this.emit(EVENTS.EXIT);
+    }
 
     // Update parent
     super.update(delta, elapsedMS);

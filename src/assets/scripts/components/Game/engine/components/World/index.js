@@ -13,6 +13,8 @@ const EXPLOSION_FLASH_DECREMENT = 0.15;
 
 const FLASH_MULTIPLIER = 0.2;
 
+const ENTRANCE_INTERVAL = 500;
+
 const EFFECT_ADDED_EVENT = 'world:effect:added';
 
 /**
@@ -54,8 +56,6 @@ class World extends PhysicsWorld {
     ]);
 
     this.scene = scene;
-    this.exit = exit;
-    this.entrance = entrance;
     this.player = player;
     this.items = items;
     this.enemies = enemies;
@@ -67,6 +67,8 @@ class World extends PhysicsWorld {
     this.itemFlash = false;
     this.effects = [];
     this.startTime = performance.now();
+    this.exit = this.getCell(...Object.values(exit));
+    this.entrance = this.getCell(...Object.values(entrance));
     this.startingProps = Object.assign({}, this.props);
     this.sky = sky;
     this.floorOffset = floorOffset;
@@ -79,6 +81,8 @@ class World extends PhysicsWorld {
     player.onDeath(() => this.onPlayerDeath());
 
     player.onPickUp(item => this.onPlayerPickUp(item));
+
+    player.onExit(() => this.scene.setAddingReviewing());
 
     // Create graph for pathfinding.
     this.graph = new Graph(grid.map(row => row.map((cell) => {
@@ -102,9 +106,6 @@ class World extends PhysicsWorld {
    * @param  {Object} options.actions  The player actions.
    */
   update(delta, elapsedMS) {
-    const { gridX, gridY } = this.player;
-    const { x, y } = this.exit;
-
     if (this.explosionFlash) {
       this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
     }
@@ -119,8 +120,13 @@ class World extends PhysicsWorld {
       this.flash = 0;
     }
 
-    if (x === gridX && y === gridY) {
-      this.scene.setAddingReviewing();
+    if (this.entranceTimer) {
+      this.entranceTimer -= elapsedMS;
+
+      if (this.entranceTimer <= 0) {
+        this.entranceTimer = null;
+        this.entrance.use();
+      }
     }
 
     super.update(delta, elapsedMS);
@@ -144,13 +150,7 @@ class World extends PhysicsWorld {
    * @param  {String} message The message for the player.
    */
   start(message) {
-    const { x, y } = this.entrance;
-    const entrance = this.getCell(x, y);
-
-    if (entrance.use) {
-      entrance.use();
-    }
-
+    this.entranceTimer = ENTRANCE_INTERVAL;
     this.player.start(message);
   }
 
