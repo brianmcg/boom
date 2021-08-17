@@ -17,8 +17,14 @@ class AnimatedEntitySprite extends AnimatedSprite {
     autoPlay = true,
     floorOffset = 0,
     anchor = [0.5, 1],
+    ...other
   } = {}) {
-    super(textures, { animationSpeed, loop, anchor });
+    super(textures, {
+      ...other,
+      animationSpeed,
+      loop,
+      anchor,
+    });
 
     this.zOrder = Number.MAX_VALUE;
 

@@ -290,7 +290,10 @@ const createEffectsSprites = ({
   animations,
   textures,
   world,
+  renderer,
 }) => {
+  const spurtContainer = new Container();
+
   const enemyProjectileExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.projectiles) {
       enemy.projectiles.forEach((projectile) => {
@@ -367,9 +370,26 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
-  const enemySpurtSprites = world.enemies.reduce((memo, { id, effects }) => {
+  const enemySpurtSprites = world.enemies.reduce((memo, enemy) => {
+    const { id, effects, bloodColor } = enemy;
+
     if (effects.spurt) {
-      const spurtTextures = animations[effects.spurt].map(animation => textures[animation]);
+      const spurtTextures = animations[effects.spurt].map(animation => {
+        const spurtSprite = new Sprite(textures[animation], {
+          tint: bloodColor,
+        });
+
+        const renderTexture = RenderTexture.create({
+          width: spurtSprite.width,
+          height: spurtSprite.height,
+        });
+
+        spurtContainer.removeChildren();
+        spurtContainer.addChild(spurtSprite);
+        renderer.render(spurtContainer, { renderTexture });
+
+        return renderTexture;
+      });
 
       const explosionSprite = new EffectSprite(spurtTextures, {
         animationSpeed: 0.2,
@@ -431,10 +451,26 @@ const createEffectsSprites = ({
 
   const playerSpurtSprites = {};
 
-  const { id, effects } = world.player;
+  const { id, effects, bloodColor } = world.player;
 
   if (effects.spurt) {
-    const playerSpurtTextures = animations[effects.spurt].map(animation => textures[animation]);
+    const playerSpurtTextures = animations[effects.spurt].map(animation => {
+      const spurtSprite = new Sprite(textures[animation], {
+        tint: bloodColor,
+      });
+
+      const renderTexture = RenderTexture.create({
+        width: spurtSprite.width,
+        height: spurtSprite.height,
+      });
+
+      spurtContainer.removeChildren();
+      spurtContainer.addChild(spurtSprite);
+      renderer.render(spurtContainer, { renderTexture });
+
+      return renderTexture;
+    });
+
     playerSpurtSprites[`${id}_${effects.spurt}`] = new EffectSprite(playerSpurtTextures, {
       animationSpeed: 0.2,
     });
@@ -702,6 +738,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     animations,
     textures,
     world,
+    renderer,
   });
 
   return {

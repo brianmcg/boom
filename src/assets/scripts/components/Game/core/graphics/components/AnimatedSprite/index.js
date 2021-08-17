@@ -33,7 +33,7 @@ class AnimatedSprite extends PixiAnimatedSprite {
       this.alpha = alpha;
     }
 
-    if (tint) {
+    if (tint || tint === 0) {
       this.tint = tint;
     }
 
