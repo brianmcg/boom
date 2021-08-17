@@ -18,6 +18,7 @@ class Sprite extends PixiSprite {
     anchor = 0,
     width,
     height,
+    tint,
   } = {}) {
     super(texture);
 
@@ -37,6 +38,10 @@ class Sprite extends PixiSprite {
 
     if (height || width === 0) {
       this.height = height;
+    }
+
+    if (tint || tint === 0) {
+      this.tint = tint;
     }
   }
 

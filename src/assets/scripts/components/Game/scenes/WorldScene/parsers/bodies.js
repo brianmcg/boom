@@ -122,6 +122,14 @@ export const createWorld = ({ scene, data, graphics }) => {
     return memo;
   }, []);
 
+  const bloodColors = Object.values(data.props.enemies).reduce((memo, { bloodColor }) => {
+    if (!memo.includes(bloodColor)) {
+      memo.push(bloodColor);
+    }
+
+    return memo;
+  }, []);
+
   const {
     entrance,
     exit,
@@ -187,12 +195,12 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const { spatter } = data.props.enemies[enemy.name].effects;
+    const { bloodColor, effects } = data.props.enemies[enemy.name];
+    const { spatter } = effects;
     const numberOfSpatters = spatter ? animations[spatter].length : 0;
-    const spatterOffset = spatter
-      ? (spatterTypes.indexOf(spatter) * numberOfSpatters) + 1
-      : 0;
-
+    const spatterTypeOffset = spatterTypes.indexOf(spatter) * numberOfSpatters;
+    const spatterColorOffset = bloodColors.indexOf(bloodColor) * numberOfSpatters;
+    const spatterOffset = spatter ? spatterTypeOffset + spatterColorOffset + 1 : 0;
     const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
 
     return [
@@ -215,16 +223,13 @@ export const createWorld = ({ scene, data, graphics }) => {
     ];
   }, []);
 
-  const { spatter } = props.player.effects;
-
+  const { bloodColor, effects } = props.player;
+  const { spatter } = effects;
   const numberOfSpatters = spatter ? animations[spatter].length : 0;
-
-  const spatterOffset = spatter
-    ? (spatterTypes.indexOf(spatter) * numberOfSpatters) + 1
-    : 0;
-
+  const spatterTypeOffset = spatterTypes.indexOf(spatter) * numberOfSpatters;
+  const spatterColorOffset = bloodColors.indexOf(bloodColor) * numberOfSpatters;
+  const spatterOffset = spatter ? spatterTypeOffset + spatterColorOffset + 1 : 0;
   const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
-
   const weapons = Object.keys(props.player.weapons).reduce((memo, key) => ({
     ...memo,
     [key]: {

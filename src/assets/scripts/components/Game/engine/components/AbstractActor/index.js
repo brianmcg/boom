@@ -33,6 +33,7 @@ class AbstractActor extends AbstractDestroyableEntity {
     speed,
     acceleration,
     spatters,
+    bloodColor,
     ...other
   }) {
     super(other);
@@ -41,9 +42,11 @@ class AbstractActor extends AbstractDestroyableEntity {
       throw new TypeError('Can not construct abstract class.');
     }
 
+
     this.speed = speed * CELL_SIZE;
     this.acceleration = acceleration * CELL_SIZE;
     this.spatters = spatters;
+    this.bloodColor = bloodColor;
 
     this.isActor = true;
     this.standingOn = [];

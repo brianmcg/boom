@@ -113,6 +113,14 @@ const createWallSprites = ({
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
   const spatterContainer = new Container();
 
+  const bloodColors = world.enemies.reduce((memo, { bloodColor }) => {
+    if (!memo.includes(bloodColor)) {
+      memo.push(bloodColor);
+    }
+
+    return memo;
+  }, []);
+
   const spatterTypes = world.enemies.reduce((memo, { effects }) => {
     if (effects.spatter && !memo.includes(effects.spatter)) {
       memo.push(effects.spatter);
@@ -157,38 +165,44 @@ const createWallSprites = ({
       wallTextures[name].push([new Texture(wallTexture, clearSlice)]);
     }
 
-    const spatterTextures = spatters.map((spatter) => {
-      const renderTexture = RenderTexture.create({
-        width: CELL_SIZE,
-        height: wallTexture.height,
+    const spatterTextures = bloodColors.reduce((memo, color) => {
+      const spatterColorTextures = spatters.map((spatter) => {
+        const renderTexture = RenderTexture.create({
+          width: CELL_SIZE,
+          height: wallTexture.height,
+        });
+
+        const spatterTexture = textures[spatter];
+        const wallSprite = new Sprite(wallTexture);
+        const spatterSprite = new Sprite(spatterTexture, {
+          tint: color,
+        });
+
+        spatterSprite.x = CELL_SIZE / 2;
+        spatterSprite.y = wallTexture.height - (spatterSprite.height / 2);
+        spatterSprite.anchor.set(0.5);
+        spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
+
+        if (transparent || world.floorOffset) {
+          spatterSprite.mask = createWallSpriteMask({
+            wallTexture,
+            floorHeight: (wallTexture.height * world.floorOffset) + 1,
+            wallHeight: wallTexture.height,
+            renderer,
+          });
+        }
+
+        spatterContainer.removeChildren();
+        spatterContainer.addChild(wallSprite);
+        spatterContainer.addChild(spatterSprite);
+
+        renderer.render(spatterContainer, { renderTexture });
+
+        return renderTexture;
       });
 
-      const spatterTexture = textures[spatter];
-      const wallSprite = new Sprite(wallTexture);
-      const spatterSprite = new Sprite(spatterTexture);
-
-      spatterSprite.x = CELL_SIZE / 2;
-      spatterSprite.y = wallTexture.height - (spatterSprite.height / 2);
-      spatterSprite.anchor.set(0.5);
-      spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
-
-      if (transparent || world.floorOffset) {
-        spatterSprite.mask = createWallSpriteMask({
-          wallTexture,
-          floorHeight: (wallTexture.height * world.floorOffset) + 1,
-          wallHeight: wallTexture.height,
-          renderer,
-        });
-      }
-
-      spatterContainer.removeChildren();
-      spatterContainer.addChild(wallSprite);
-      spatterContainer.addChild(spatterSprite);
-
-      renderer.render(spatterContainer, { renderTexture });
-
-      return renderTexture;
-    });
+      return [...memo, ...spatterColorTextures];
+    }, []);
 
     for (let i = 0; i < frame.w; i += 1) {
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
