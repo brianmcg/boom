@@ -23,7 +23,6 @@ const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
 const RAY_ANGLES = [...Array(SCREEN.WIDTH).keys()]
   .map(i => Math.atan((i - CAMERA_CENTER_X) / CAMERA_DISTANCE));
 
-
 let spriteAngle;
 let centerY;
 let gridX;
@@ -63,12 +62,12 @@ class POVContainer extends Container {
     this.sprites = sprites;
     this.displayedEntities = [];
 
-    if (Object.keys(sprites.background.outer).length) {
-      this.outerContainer = new OuterContainer(sprites.background.outer);
+    if (sprites.sky.length) {
+      this.outerContainer = new OuterContainer(sprites.sky);
       this.addChild(this.outerContainer);
     }
 
-    this.backgroundContainer = new InnerContainer(sprites.background.inner);
+    this.backgroundContainer = new InnerContainer(sprites.background);
     this.addChild(this.backgroundContainer);
 
     this.mapContainer = new MapContainer(world, sprites.map);
@@ -100,8 +99,7 @@ class POVContainer extends Container {
 
     this.displayedEntities = [];
 
-    const { map: mapSprites, background: backgroundSprites } = this.sprites;
-    const { inner: innerSprites, outer: outerSprites } = backgroundSprites;
+    const { map: mapSprites, background: backgroundSprites, sky: outerSprites } = this.sprites;
     const { entities: entititySprites, effects: effectSprites, walls: wallSprites } = mapSprites;
 
     const totalEncounteredBodies = {};
@@ -268,7 +266,7 @@ class POVContainer extends Container {
       sideHeight = Math.max(CELL_SIZE, sideHeight);
 
       for (let yIndex = 0; yIndex <= topIntersection; yIndex += 1) {
-        sprite = innerSprites[xIndex][yIndex];
+        sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
           actualDistance = (sideHeight - player.viewHeight)
@@ -320,7 +318,7 @@ class POVContainer extends Container {
       }
 
       for (let yIndex = topIntersection + 1; yIndex < bottomIntersection - 1; yIndex += 1) {
-        sprite = innerSprites[xIndex][yIndex];
+        sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
           sprite.alpha = 0;
@@ -328,7 +326,7 @@ class POVContainer extends Container {
       }
 
       for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex += 1) {
-        sprite = innerSprites[xIndex][yIndex];
+        sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
           actualDistance = (player.viewHeight - floorHeight) / (yIndex - centerY) * CAMERA_DISTANCE;
@@ -361,29 +359,13 @@ class POVContainer extends Container {
       }
     }
 
-    // Update sky
-    sky.forEach((skyObject) => {
-      sprite = outerSprites[skyObject.name];
-
-      spriteAngle = (player.getAngleTo({
-        x: skyObject.x,
-        y: skyObject.y,
-      }) - viewAngle + DEG_360) % DEG_360;
-
-      spriteScale = Math.abs(CAMERA_DISTANCE / skyObject.distance);
-      spriteHeight = CELL_SIZE * spriteScale;
-      sprite.y = centerY
-        - (spriteHeight / (CELL_SIZE / (CELL_SIZE + (skyObject.elavation) - player.viewHeight)));
-
-      if (sprite.updateX) {
-        if (spriteAngle > DEG_90 && spriteAngle < DEG_270) {
-          sprite.x = CAMERA_CENTER_X + (Math.tan(spriteAngle) * CAMERA_DISTANCE);
-          sprite.alpha = 1;
-        } else {
-          sprite.alpha = 0;
-        }
-      }
-    });
+    // Update sky sprites;
+    for (let i = 0; i < outerSprites.length; i++) {
+      sprite = outerSprites[i];
+      spriteHeight = sprite.width * (SCREEN.HEIGHT / sprite.height);
+      sprite.x = ((viewAngle / DEG_360) * -spriteHeight) + (i * spriteHeight);
+      sprite.y = centerY - CAMERA_CENTER_Y;
+    }
 
     // Update entity sprites
     Object.values(totalEncounteredBodies).forEach((body) => {

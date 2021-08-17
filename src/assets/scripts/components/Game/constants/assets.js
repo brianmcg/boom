@@ -20,7 +20,7 @@ export const SCENE_PATH = `${GAME_PATH}/scenes`;
  */
 export const GAME_SOUNDS = {
   NAME: 'sounds',
-  FILE: 'sounds.mp3',
+  FILE: 'sounds.ogg',
   SPRITE: 'sounds.json',
 };
 

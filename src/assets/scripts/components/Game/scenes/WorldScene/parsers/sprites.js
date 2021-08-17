@@ -208,10 +208,29 @@ const createWallSprites = ({
   return wallSprites;
 };
 
+const createSkySprites = ({ world, textures }) => {
+  const numberOfSprites = 2;
+
+  if (world.sky) {
+    const texture = textures[world.sky];
+    const ratio = SCREEN.HEIGHT / texture.height;
+    const height = texture.height * ratio;
+    const width = texture.width * ratio;
+
+    return [...Array(numberOfSprites).keys()]
+      .map(() => new Sprite(texture, {
+        width,
+        height,
+      }));
+  }
+
+  return [];
+}
+
 const createBackgroundSprites = ({ world, frames, textures }) => {
   const backgroundImages = [];
   const backgroundTextures = {};
-  const inner = [];
+  const sprites = [];
 
   world.grid.forEach((row) => {
     row.forEach((cell) => {
@@ -247,38 +266,10 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
       row.push(new BackgroundSprite(backgroundTextures, i, j));
     }
 
-    inner.push(row);
+    sprites.push(row);
   }
 
-  const outer = world.sky.reduce((memo, skyObject) => {
-    if (skyObject.repeat) {
-      const sprite = new Sprite(textures[skyObject.name]);
-
-      sprite.width = SCREEN.WIDTH;
-      sprite.height = SCREEN.HEIGHT * 3;
-      sprite.anchor.y = 0.5;
-
-      return {
-        ...memo,
-        [skyObject.name]: sprite,
-      };
-    }
-
-    const sprite = new Sprite(textures[skyObject.name]);
-
-    sprite.updateX = true;
-
-    sprite.width = SCREEN.WIDTH / 5;
-    sprite.height = sprite.width;
-    sprite.anchor.set(0.5);
-
-    return {
-      ...memo,
-      [skyObject.name]: sprite,
-    };
-  }, {});
-
-  return { inner, outer };
+  return sprites;
 };
 
 const createEffectsSprites = ({
@@ -689,6 +680,8 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     world,
   });
 
+  const sky = createSkySprites({ world, textures });
+
   const hud = createHudSprites({ world, textures });
 
   const effects = createEffectsSprites({
@@ -707,6 +700,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
       entities,
       effects,
     },
+    sky,
     background,
   };
 };

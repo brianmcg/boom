@@ -7,10 +7,18 @@ import { Sprite as PixiSprite } from 'pixi.js';
 class Sprite extends PixiSprite {
   /**
    * Creates a sprite.
-   * @param  {Texture} texture      The sprite texture.
-   * @param  {Number} options.alpha The alpha value.
+   * @param  {Texture} texture       The sprite texture.
+   * @param  {Number} options.alpha  The alpha value.
+   * @param  {Number} options.anchor The sprite anchor.
+   * @param  {Number} options.width  The sprite width.
+   * @param  {Number} options.height The sprite height.
    */
-  constructor(texture, { alpha = 1, anchor = 0 } = {}) {
+  constructor(texture, {
+    alpha = 1,
+    anchor = 0,
+    width,
+    height,
+  } = {}) {
     super(texture);
 
     this.alpha = alpha;
@@ -21,6 +29,14 @@ class Sprite extends PixiSprite {
       } else {
         this.anchor.set(anchor);
       }
+    }
+
+    if (width || width === 0) {
+      this.width = width;
+    }
+
+    if (height || width === 0) {
+      this.height = height;
     }
   }
 
