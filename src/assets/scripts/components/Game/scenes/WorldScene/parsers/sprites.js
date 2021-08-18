@@ -165,7 +165,7 @@ const createWallSprites = ({
       wallTextures[name].push([new Texture(wallTexture, clearSlice)]);
     }
 
-    const spatterTextures = bloodColors.reduce((memo, color) => {
+    const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
       const spatterColorTextures = spatters.map((spatter) => {
         const renderTexture = RenderTexture.create({
           width: CELL_SIZE,
@@ -175,7 +175,7 @@ const createWallSprites = ({
         const spatterTexture = textures[spatter];
         const wallSprite = new Sprite(wallTexture);
         const spatterSprite = new Sprite(spatterTexture, {
-          tint: color,
+          tint: parseInt(bloodColor, 16),
         });
 
         spatterSprite.x = CELL_SIZE / 2;
@@ -376,7 +376,7 @@ const createEffectsSprites = ({
     if (effects.spurt) {
       const spurtTextures = animations[effects.spurt].map((animation) => {
         const spurtSprite = new Sprite(textures[animation], {
-          tint: bloodColor,
+          tint: parseInt(bloodColor, 16),
         });
 
         const renderTexture = RenderTexture.create({
@@ -456,7 +456,7 @@ const createEffectsSprites = ({
   if (effects.spurt) {
     const playerSpurtTextures = animations[effects.spurt].map((animation) => {
       const spurtSprite = new Sprite(textures[animation], {
-        tint: bloodColor,
+        tint: parseInt(bloodColor, 16),
       });
 
       const renderTexture = RenderTexture.create({

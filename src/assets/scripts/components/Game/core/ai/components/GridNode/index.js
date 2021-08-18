@@ -1,3 +1,5 @@
+const DIAGONAL_LENGTH = Math.sqrt(2);
+
 /**
  * Class representing a grid node.
  */
@@ -22,7 +24,7 @@ class GridNode {
   getCost(neighbour) {
     // Take diagonal weight into consideration.
     if (neighbour && neighbour.x !== this.x && neighbour.y !== this.y) {
-      return this.weight * 1.41421;
+      return this.weight * DIAGONAL_LENGTH;
     }
     return this.weight;
   }
