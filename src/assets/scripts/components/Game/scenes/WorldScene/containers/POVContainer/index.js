@@ -13,8 +13,6 @@ import OuterContainer from './containers/OuterContainer';
 import PlayerContainer from './containers/PlayerContainer';
 
 const DEG_360 = degrees(360);
-const DEG_270 = degrees(270);
-const DEG_90 = degrees(90);
 const HALF_FOV = degrees(FOV) / 2;
 const HALF_CELL = CELL_SIZE / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
@@ -90,7 +88,6 @@ class POVContainer extends Container {
       maxMapX,
       maxMapY,
       effects,
-      sky,
       floorOffset,
     } = world;
 

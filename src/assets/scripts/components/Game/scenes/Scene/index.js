@@ -398,7 +398,7 @@ class Scene extends Container {
     const isStateChanged = this.setState(STATES.STOPPED);
 
     if (isStateChanged) {
-      this.game.renderer.clear()
+      this.game.renderer.clear();
 
       switch (this.stopEvent) {
         case EVENTS.COMPLETE:

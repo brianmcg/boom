@@ -239,7 +239,7 @@ const createSkySprites = ({ world, textures }) => {
   }
 
   return [];
-}
+};
 
 const createBackgroundSprites = ({ world, frames, textures }) => {
   const backgroundImages = [];
@@ -374,7 +374,7 @@ const createEffectsSprites = ({
     const { id, effects, bloodColor } = enemy;
 
     if (effects.spurt) {
-      const spurtTextures = animations[effects.spurt].map(animation => {
+      const spurtTextures = animations[effects.spurt].map((animation) => {
         const spurtSprite = new Sprite(textures[animation], {
           tint: bloodColor,
         });
@@ -454,7 +454,7 @@ const createEffectsSprites = ({
   const { id, effects, bloodColor } = world.player;
 
   if (effects.spurt) {
-    const playerSpurtTextures = animations[effects.spurt].map(animation => {
+    const playerSpurtTextures = animations[effects.spurt].map((animation) => {
       const spurtSprite = new Sprite(textures[animation], {
         tint: bloodColor,
       });

@@ -1,4 +1,5 @@
-import { ParticleContainer as PixiParticleContainer } from '@pixi/particle-container';
+// import { ParticleContainer as PixiParticleContainer } from '@pixi/particle-container';
+import { ParticleContainer as PixiParticleContainer } from 'pixi.js';
 
 /**
  * @class ParticleContainer
