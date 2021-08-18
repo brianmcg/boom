@@ -17,6 +17,13 @@ const ENTRANCE_INTERVAL = 500;
 
 const EFFECT_ADDED_EVENT = 'world:effect:added';
 
+const NODE_WEIGHTS = {
+  WALL: 0,
+  FREE: 1,
+  DYNAMIC_BODY: 20,
+  STATIC_BODY: 100,
+};
+
 /**
  * Class representing a world.
  */
@@ -87,14 +94,14 @@ class World extends PhysicsWorld {
     // Create graph for pathfinding.
     this.graph = new Graph(grid.map(row => row.map((cell) => {
       if (cell.blocking && !cell.isDoor) {
-        return 0;
+        return NODE_WEIGHTS.WALL;
       }
 
       if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-        return 100;
+        return NODE_WEIGHTS.STATIC_BODY;
       }
 
-      return 1;
+      return NODE_WEIGHTS.FREE;
     })), {
       diagonal: true,
     });
@@ -141,8 +148,21 @@ class World extends PhysicsWorld {
   findPath(from, to) {
     const start = this.graph.grid[from.gridY][from.gridX];
     const end = this.graph.grid[to.gridY][to.gridX];
+    const initialWeights = [];
 
-    return search(this.graph, start, end).map(node => this.getCell(node.y, node.x));
+    this.dynamicBodies.forEach(({ gridX, gridY }) => {
+      const node = this.graph.grid[gridY][gridX];
+      initialWeights.push({ x: gridX, y: gridY, weight: node.weight });
+      node.weight = NODE_WEIGHTS.DYNAMIC_BODY;
+    });
+
+    const path = search(this.graph, start, end);
+
+    initialWeights.forEach(({ x, y, weight }) => {
+      this.graph.grid[y][x].weight = weight;
+    });
+
+    return path.map(node => this.getCell(node.y, node.x));
   }
 
   /**
