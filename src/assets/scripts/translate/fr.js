@@ -3,13 +3,13 @@ export default {
     text: '[FR] forward',
   },
   'manual.input.up': {
-    text: '[FR] w / up',
+    text: '[FR] w',
   },
   'manual.action.backward': {
     text: '[FR] backward',
   },
   'manual.input.down': {
-    text: '[FR] s / down',
+    text: '[FR] s',
   },
   'manual.action.strafe.left': {
     text: '[FR] strafe left',
@@ -27,25 +27,25 @@ export default {
     text: '[FR] turn left',
   },
   'manual.input.turn.left': {
-    text: '[FR] mouse move / left arrow',
+    text: '[FR] mouse move',
   },
   'manual.action.turn.right': {
     text: '[FR] turn right',
   },
   'manual.input.turn.right': {
-    text: '[FR] mouse move / right arrow',
+    text: '[FR] mouse move',
   },
   'manual.action.use': {
     text: '[FR] open / push',
   },
   'manual.input.space': {
-    text: '[FR] e / space',
+    text: '[FR] e',
   },
   'manual.action.attack': {
     text: '[FR] attack',
   },
   'manual.input.ctrl': {
-    text: '[FR] mouse left click / ctrl',
+    text: '[FR] mouse left click',
   },
   'manual.action.weapon': {
     text: '[FR] select weapon',
@@ -60,7 +60,7 @@ export default {
     text: '[FR] shift',
   },
   'manual.action.pause': {
-    text: '[FR] pause / unpause',
+    text: '[FR] menu',
   },
   'manual.input.pause': {
     text: '[FR] q',
