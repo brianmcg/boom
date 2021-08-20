@@ -337,14 +337,17 @@ class AbstractEnemy extends AbstractActor {
 
         if (this.stainRadius <= MAX_STAIN_RADIUS) {
           this.stain(this.stainRadius);
-          this.stainRadius += 2;
+          this.stainRadius += 1.5;
         }
       }
 
       if (this.velocity === 0) {
+
         this.stain(MAX_STAIN_RADIUS);
         this.stopUpdates();
         this.blocking = false;
+        this.stainTimer = STAIN_INTERVAL;
+        this.stainRadius = 2;
       }
     }
   }
