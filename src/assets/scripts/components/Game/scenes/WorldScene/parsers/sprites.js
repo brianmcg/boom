@@ -107,19 +107,12 @@ const createWallSprites = ({
   animations,
   textures,
   renderer,
+  bloodColors,
 }) => {
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
   const spatterContainer = new Container();
-
-  const bloodColors = world.enemies.reduce((memo, { bloodColor }) => {
-    if (!memo.includes(bloodColor)) {
-      memo.push(bloodColor);
-    }
-
-    return memo;
-  }, []);
 
   const spatterTypes = world.enemies.reduce((memo, { effects }) => {
     if (effects.spatter && !memo.includes(effects.spatter)) {
@@ -241,7 +234,12 @@ const createSkySprites = ({ world, textures }) => {
   return [];
 };
 
-const createBackgroundSprites = ({ world, frames, textures }) => {
+const createBackgroundSprites = ({
+  world,
+  frames,
+  textures,
+  bloodColors,
+}) => {
   const backgroundImages = [];
   const backgroundTextures = {};
   const sprites = [];
@@ -250,27 +248,40 @@ const createBackgroundSprites = ({ world, frames, textures }) => {
     row.forEach((cell) => {
       const { top, bottom } = cell;
 
-      [top, bottom].forEach((side) => {
-        if (side && !backgroundImages.includes(side.type)) {
-          backgroundImages.push(side.name);
+      if (top && !backgroundImages.includes(top.name)) {
+          backgroundImages.push(top.name);
         }
-      });
+
+      if (bottom && !backgroundImages.includes(bottom.name)) {
+        backgroundImages.push(bottom.name);
+
+        bloodColors.forEach((bloodColor) => {
+          const colorName = `${bloodColor}_${bottom.name}`;
+
+          if (!backgroundImages.includes(colorName)) {
+            backgroundImages.push(colorName);
+          }
+        })
+      }
     });
   });
 
   backgroundImages.forEach((image) => {
-    backgroundTextures[image] = [];
-
-    const { frame } = frames[image];
     const texture = textures[image];
 
-    for (let i = 0; i < CELL_SIZE; i += 1) {
-      const row = [];
-      for (let j = 0; j < CELL_SIZE; j += 1) {
-        const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-        row.push(new Texture(texture, pixel));
+    if (texture) {
+      const { frame } = frames[image];
+      backgroundTextures[image] = [];
+
+
+      for (let i = 0; i < CELL_SIZE; i += 1) {
+        const row = [];
+        for (let j = 0; j < CELL_SIZE; j += 1) {
+          const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
+          row.push(new Texture(texture, pixel));
+        }
+        backgroundTextures[image].push(row);
       }
-      backgroundTextures[image].push(row);
     }
   });
 
@@ -702,7 +713,15 @@ const createHudSprites = ({ world, textures }) => {
 const createWorldSprites = ({ world, graphics, renderer }) => {
   const { textures, data } = graphics;
   const { frames, animations } = data;
-  const { player } = world;
+  const { player, enemies } = world;
+
+  const bloodColors = [player, ...enemies].reduce((memo, { bloodColor }) => {
+    if (bloodColor && !memo.includes(bloodColor)) {
+      return [...memo, bloodColor];
+    }
+
+    return memo;
+  }, []);
 
   const entities = createEntitySprites({
     animations,
@@ -722,12 +741,14 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
     textures,
     world,
     renderer,
+    bloodColors,
   });
 
   const background = createBackgroundSprites({
     frames,
     textures,
     world,
+    bloodColors,
   });
 
   const sky = createSkySprites({ world, textures });

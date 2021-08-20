@@ -34,6 +34,10 @@ const DEG_90 = degrees(90);
 
 const DEG_360 = degrees(360);
 
+const MAX_STAIN_RADIUS = CELL_SIZE / 4;
+
+const STAIN_INTERVAL = 50;
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -311,7 +315,7 @@ class AbstractEnemy extends AbstractActor {
    * Update enemy in hurt state
    * @param  {Number} delta The delta time.
    */
-  updateDead() {
+  updateDead(delta, elapsedMS) {
     this.velocity *= FORCE_FADE;
     this.z = 0;
     this.floatAmount = 0;
@@ -320,9 +324,21 @@ class AbstractEnemy extends AbstractActor {
       this.velocity = 0;
     }
 
-    if (this.velocity === 0) {
-      this.blocking = false;
+    this.stainTimer += elapsedMS;
+
+    if (this.stainTimer > STAIN_INTERVAL) {
+      this.stainTimer = 0;
+
+      if (!this.parent.floorOffset && this.stainRadius <= MAX_STAIN_RADIUS) {
+        this.stain(this.stainRadius);
+        this.stainRadius += 2;
+      }
+    }
+
+    if (!this.parent.floorOffset && this.velocity === 0) {
+      this.stain(MAX_STAIN_RADIUS);
       this.stopUpdates();
+      this.blocking = false;
     }
   }
 
@@ -612,6 +628,9 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
+      this.stainTimer = 0;
+      this.stainRadius = 1;
+
       if (this.explosion) {
         this.explosion.run();
       } else {

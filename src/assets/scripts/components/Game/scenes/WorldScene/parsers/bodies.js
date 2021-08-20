@@ -122,8 +122,11 @@ export const createWorld = ({ scene, data, graphics }) => {
     return memo;
   }, []);
 
-  const bloodColors = Object.values(data.props.enemies).reduce((memo, { bloodColor }) => {
-    if (!memo.includes(bloodColor)) {
+  const bloodColors = [
+    data.props.player,
+    ...Object.values(data.props.enemies),
+  ].reduce((memo, { bloodColor }) => {
+    if (bloodColor && !memo.includes(bloodColor)) {
       memo.push(bloodColor);
     }
 

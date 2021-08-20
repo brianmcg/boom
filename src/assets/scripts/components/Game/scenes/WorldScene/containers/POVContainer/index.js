@@ -29,7 +29,7 @@ let mapX;
 let mapY;
 let pixelX;
 let pixelY;
-let pixelSource;
+let backgroundName;
 let angle;
 let sliceY;
 let sprite;
@@ -41,8 +41,9 @@ let bottomIntersection;
 let topIntersection;
 let actualDistance;
 let correctedDistance;
-let ceilingCell;
+let backgroundCell;
 let sideHeight;
+let stainColor;
 
 /**
  * Class representing a POVContainer.
@@ -282,9 +283,9 @@ class POVContainer extends Container {
           gridX = Math.floor(mapX / CELL_SIZE);
           gridY = Math.floor(mapY / CELL_SIZE);
 
-          ceilingCell = world.getCell(gridX, gridY);
+          backgroundCell = world.getCell(gridX, gridY);
 
-          if (ceilingCell.height !== sideHeight) {
+          if (backgroundCell.height !== sideHeight) {
             actualDistance = (world.height - player.viewHeight)
               / (centerY - yIndex) * CAMERA_DISTANCE;
 
@@ -299,13 +300,13 @@ class POVContainer extends Container {
             mapY = (mapY < 0) ? 0 : mapY;
           }
 
-          pixelSource = ceilingCell.top;
+          backgroundName = backgroundCell.top && backgroundCell.top.name;
 
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
 
-          if (pixelSource) {
-            sprite.changeTexture(pixelSource.name, pixelX, pixelY);
+          if (backgroundName) {
+            sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
             sprite.alpha = 1;
           } else {
@@ -343,10 +344,17 @@ class POVContainer extends Container {
           gridX = Math.floor(mapX / CELL_SIZE);
           gridY = Math.floor(mapY / CELL_SIZE);
 
-          pixelSource = world.getCell(gridX, gridY).bottom;
+          backgroundCell = world.getCell(gridX, gridY);
+          backgroundName = backgroundCell.bottom && backgroundCell.bottom.name;
 
-          if (pixelSource) {
-            sprite.changeTexture(pixelSource.name, pixelX, pixelY);
+          if (backgroundName) {
+            stainColor = world.stains[mapX][mapY];
+
+            if (stainColor) {
+              backgroundName = `${stainColor}_${backgroundName}`;
+            }
+
+            sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
             sprite.alpha = 1;
           } else {

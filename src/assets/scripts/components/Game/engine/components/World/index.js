@@ -105,6 +105,11 @@ class World extends PhysicsWorld {
     })), {
       diagonal: true,
     });
+
+    // Create grid for floor stains.
+    this.stains = [...Array(this.maxMapX + 1).keys()].map(() => [
+      ...Array(this.maxMapY + 1).keys(),
+    ].map(() => 0));
   }
 
   /**
