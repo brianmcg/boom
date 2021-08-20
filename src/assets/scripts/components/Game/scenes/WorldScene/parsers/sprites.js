@@ -249,8 +249,8 @@ const createBackgroundSprites = ({
       const { top, bottom } = cell;
 
       if (top && !backgroundImages.includes(top.name)) {
-          backgroundImages.push(top.name);
-        }
+        backgroundImages.push(top.name);
+      }
 
       if (bottom && !backgroundImages.includes(bottom.name)) {
         backgroundImages.push(bottom.name);
@@ -261,7 +261,7 @@ const createBackgroundSprites = ({
           if (!backgroundImages.includes(colorName)) {
             backgroundImages.push(colorName);
           }
-        })
+        });
       }
     });
   });

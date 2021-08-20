@@ -193,10 +193,10 @@ class Player extends AbstractActor {
     this.on(EVENTS.USE_WEAPON, callback);
   }
 
-/**
- * Add a callback for player arriving at exit.
- * @param  {Function} callback The callback function.
- */
+  /**
+   * Add a callback for player arriving at exit.
+   * @param  {Function} callback The callback function.
+   */
   onExit(callback) {
     this.on(EVENTS.EXIT, callback);
   }

@@ -191,7 +191,12 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Number} radius The radius of the stain.
    */
   stain(radius) {
-    const { x, y, parent, bloodColor } = this;
+    const {
+      x,
+      y,
+      parent,
+      bloodColor,
+    } = this;
 
     if (bloodColor) {
       for (let i = Math.round(x - radius); i < x + radius; i++) {
