@@ -324,21 +324,28 @@ class AbstractEnemy extends AbstractActor {
       this.velocity = 0;
     }
 
-    this.stainTimer += elapsedMS;
-
-    if (this.stainTimer > STAIN_INTERVAL) {
-      this.stainTimer = 0;
-
-      if (!this.parent.floorOffset && this.stainRadius <= MAX_STAIN_RADIUS) {
-        this.stain(this.stainRadius);
-        this.stainRadius += 2;
+    if (this.parent.floorOffset) {
+      if (this.velocity === 0) {
+        this.stopUpdates();
+        this.blocking = false;
       }
-    }
+    } else {
+      this.stainTimer += elapsedMS;
 
-    if (!this.parent.floorOffset && this.velocity === 0) {
-      this.stain(MAX_STAIN_RADIUS);
-      this.stopUpdates();
-      this.blocking = false;
+      if (this.stainTimer > STAIN_INTERVAL) {
+        this.stainTimer = 0;
+
+        if (this.stainRadius <= MAX_STAIN_RADIUS) {
+          this.stain(this.stainRadius);
+          this.stainRadius += 2;
+        }
+      }
+
+      if (this.velocity === 0) {
+        this.stain(MAX_STAIN_RADIUS);
+        this.stopUpdates();
+        this.blocking = false;
+      }
     }
   }
 
