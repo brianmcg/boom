@@ -139,15 +139,20 @@ const createWallSprites = ({
         overlay,
       } = cell;
 
-      [front, left, back, right, overlay].forEach((side) => {
+      [front, left, back, right].forEach((side) => {
         if (side && side.name && !wallImages.some(w => w.name === side.name)) {
-          wallImages.push({ name: side.name, transparent: !!transparency });
+          wallImages.push({ name: side.name, transparent: !!transparency, rotate: !overlay });
         }
+
       });
+
+      if (overlay && overlay.name && !wallImages.some(w => w.name === overlay.name)) {
+        wallImages.push({ name: overlay.name, transparent: true, rotate: false });
+      }
     });
   });
 
-  wallImages.forEach(({ name, transparent }) => {
+  wallImages.forEach(({ name, transparent, rotate }) => {
     wallTextures[name] = [];
 
     const { frame } = frames[name];
@@ -174,9 +179,9 @@ const createWallSprites = ({
         spatterSprite.x = CELL_SIZE / 2;
         spatterSprite.y = wallTexture.height - (spatterSprite.height / 2);
         spatterSprite.anchor.set(0.5);
-        spatterSprite.rotation = Math.floor((Math.random() * 4)) * Math.PI / 2;
+        spatterSprite.rotation = rotate ? Math.floor((Math.random() * 4)) * Math.PI / 2 : 0;
 
-        if (transparent || world.floorOffset) {
+        if (transparent || world.floorOffset ) {
           spatterSprite.mask = createWallSpriteMask({
             wallTexture,
             floorHeight: (wallTexture.height * world.floorOffset) + 1,

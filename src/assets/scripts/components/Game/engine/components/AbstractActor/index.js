@@ -116,7 +116,7 @@ class AbstractActor extends AbstractDestroyableEntity {
     super.hit(options);
 
     if (point && rays) {
-      const { side, distance: sectionDistance } = rays.reduce((memo, ray) => {
+      const { side, cell, distance: sectionDistance } = rays.reduce((memo, ray) => {
         if (ray.distance > point.distance) {
           if (ray.distance < memo.distance) {
             return ray;
@@ -135,7 +135,13 @@ class AbstractActor extends AbstractDestroyableEntity {
           && sectionDistance - point.distance < SPATTER_DISTANCE
 
       ) {
-        side.spatter = this.spatter();
+        const spatter = this.spatter();
+
+        side.spatter = spatter;
+
+        if (cell.overlay) {
+          cell.overlay.spatter = spatter;
+        }
       }
     }
   }
