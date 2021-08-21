@@ -342,7 +342,6 @@ class AbstractEnemy extends AbstractActor {
       }
 
       if (this.velocity === 0) {
-
         this.stain(MAX_STAIN_RADIUS);
         this.stopUpdates();
         this.blocking = false;

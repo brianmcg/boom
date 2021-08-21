@@ -143,7 +143,6 @@ const createWallSprites = ({
         if (side && side.name && !wallImages.some(w => w.name === side.name)) {
           wallImages.push({ name: side.name, transparent: !!transparency, rotate: !overlay });
         }
-
       });
 
       if (overlay && overlay.name && !wallImages.some(w => w.name === overlay.name)) {
@@ -181,7 +180,7 @@ const createWallSprites = ({
         spatterSprite.anchor.set(0.5);
         spatterSprite.rotation = rotate ? Math.floor((Math.random() * 4)) * Math.PI / 2 : 0;
 
-        if (transparent || world.floorOffset ) {
+        if (transparent || world.floorOffset) {
           spatterSprite.mask = createWallSpriteMask({
             wallTexture,
             floorHeight: (wallTexture.height * world.floorOffset) + 1,

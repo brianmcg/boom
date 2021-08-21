@@ -136,7 +136,7 @@ class POVContainer extends Container {
         const { side, cell } = raySections[i];
         const { overlay, closed, transparency } = cell;
 
-        sideHeight = side?.height || world.height
+        sideHeight = side?.height || world.height;
 
         rays.push(raySections[i]);
 
@@ -230,7 +230,8 @@ class POVContainer extends Container {
             if (isOverlay) {
               spriteHeight = Math.abs((cell.overlay.height) * CAMERA_DISTANCE / correctedDistance);
               spriteY = centerY
-                - (spriteHeight / (cell.overlay.height / (cell.overlay.height - player.viewHeight)));
+                - (spriteHeight / (cell.overlay.height
+                / (cell.overlay.height - player.viewHeight)));
             } else {
               spriteHeight = Math.abs((sideHeight) * CAMERA_DISTANCE / correctedDistance);
               spriteY = centerY
