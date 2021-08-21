@@ -13,8 +13,6 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-const SMOKE_INVERVAL = 25;
-
 /**
  * Class representing a projectile
  */
@@ -45,7 +43,6 @@ class Projectile extends DynamicEntity {
     queue,
     explosion,
     rotate,
-    tail,
     elavation = 0,
     ...other
   }) {
@@ -64,15 +61,6 @@ class Projectile extends DynamicEntity {
     this.queue = queue;
     this.rotate = rotate;
     this.baseElavation = elavation * CELL_SIZE;
-
-    if (tail) {
-      this.tail = {
-        name: tail.effects.smoke,
-        ids: [...Array(tail.length).keys()].map(i => `${this.id}_${tail.effects.smoke}_${i}`),
-      };
-
-      this.tailId = 0;
-    }
 
     this.timer = 0;
 
@@ -142,28 +130,11 @@ class Projectile extends DynamicEntity {
     }
   }
 
+  /**
+   * Update the projectile in the travelling state.
+   */
   updateTravalling(delta, elapsedMS) {
-    super.update(delta);
-
-    if (this.tail) {
-      this.timer += elapsedMS;
-
-      if (this.timer >= SMOKE_INVERVAL) {
-        this.parent.addEffect({
-          x: this.x,
-          y: this.y,
-          z: this.z,
-          sourceId: this.tail.ids[this.tailId],
-        });
-
-        this.timer = 0;
-        this.tailId += 1;
-
-        if (this.tailId >= this.tail.ids.length) {
-          this.tailId = 0;
-        }
-      }
-    }
+    super.update(delta, elapsedMS);
   }
 
   /**

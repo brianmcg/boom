@@ -2,6 +2,8 @@ import { DynamicBody } from 'game/core/physics';
 import { SoundSpriteController } from 'game/core/audio';
 import { MAX_SOUND_DISTANCE } from 'game/constants/config';
 
+const TAIL_INTERVAL = 25;
+
 /**
  * Class representing a dynamic entity.
  * @extends {DynamicBody}
@@ -24,6 +26,7 @@ class DynamicEntity extends DynamicBody {
     sounds = {},
     soundSprite,
     scale = 1,
+    tail,
     ...other
   }) {
     super(other);
@@ -32,6 +35,17 @@ class DynamicEntity extends DynamicBody {
     this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;
+
+    if (tail) {
+      this.tail = {
+        name: tail.effects.smoke,
+        ids: [...Array(tail.length).keys()].map(i => `${this.id}_${tail.effects.smoke}_${i}`),
+      };
+
+      this.tailTimer = 0;
+
+      this.tailId = 0;
+    }
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),
@@ -64,7 +78,7 @@ class DynamicEntity extends DynamicBody {
    * Update the entity.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
+  update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
     const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
@@ -72,6 +86,26 @@ class DynamicEntity extends DynamicBody {
       : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
     this.soundController.update(volume);
+
+    if (this.tail) {
+      this.tailTimer += elapsedMS;
+
+      if (this.tailTimer >= TAIL_INTERVAL) {
+        this.parent.addEffect({
+          x: this.x,
+          y: this.y,
+          z: this.z,
+          sourceId: this.tail.ids[this.tailId],
+        });
+
+        this.tailTimer = 0;
+        this.tailId += 1;
+
+        if (this.tailId >= this.tail.ids.length) {
+          this.tailId = 0;
+        }
+      }
+    }
 
     super.update(delta);
   }

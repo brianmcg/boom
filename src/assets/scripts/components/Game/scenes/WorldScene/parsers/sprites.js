@@ -430,6 +430,17 @@ const createEffectsSprites = ({
           animationSpeed: 0.2,
         });
       }
+
+      if (enemy.tail) {
+        const effectTextures = animations[enemy.tail.name]
+          .map(animation => textures[animation]);
+
+        enemy.tail.ids.forEach((id) => {
+          memo[id] = new EffectSprite(effectTextures, {
+            animationSpeed: 0.12,
+          });
+        });
+      }
     }
 
     return memo;
