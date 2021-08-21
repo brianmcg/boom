@@ -134,13 +134,13 @@ class POVContainer extends Container {
 
       for (let i = 0; i < raySections.length; i += 1) {
         const { side, cell } = raySections[i];
-        const { overlay, closed } = cell;
+        const { overlay, closed, transparency } = cell;
 
         sideHeight = side?.height || world.height
 
         rays.push(raySections[i]);
 
-        if (!closed && sideHeight < world.height) {
+        if (!closed && !transparency && sideHeight < world.height) {
           castRay({
             x,
             y,
@@ -243,7 +243,7 @@ class POVContainer extends Container {
               );
             }
 
-            sprite.height = spriteHeight;
+            sprite.height = spriteHeight + 1;
 
             if (floorHeight) {
               spriteHeight = Math.abs(
@@ -354,6 +354,25 @@ class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
 
           backgroundCell = world.getCell(gridX, gridY);
+
+          // if (backgroundCell.id === initialCellId) {
+          //   if (initialIsHorizontal) {
+          //     if (playerGridY > gridY) {
+          //       gridY += 1;
+          //     } else {
+          //       gridY -= 1;
+          //     }
+          //   } else {
+          //     if (playerGridX > gridX) {
+          //       gridX += 1;
+          //     } else {
+          //       gridX -= 1;
+          //     }
+          //   }
+
+          //   backgroundCell = world.getCell(gridX, gridY);
+          // }
+
           backgroundName = backgroundCell.bottom?.name;
 
           if (backgroundName) {

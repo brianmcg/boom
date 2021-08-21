@@ -60,6 +60,7 @@ class HitScan extends Body {
       endPoint,
       distance,
       encounteredBodies,
+      cell,
     } = rays[rays.length - 1];
 
     // Get sorted collisions
@@ -116,7 +117,7 @@ class HitScan extends Body {
           });
         }
       }
-    } else if (distance <= this.range) {
+    } else if (!cell.edge && distance <= this.range) {
       // Handle collision with wall
       if (sourceId) {
         this.source.parent.addEffect({
