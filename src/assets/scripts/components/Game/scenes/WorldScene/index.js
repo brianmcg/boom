@@ -334,7 +334,7 @@ class WorldScene extends Scene {
   restart() {
     this.game.showWorldScene({
       index: this.index,
-      props: this.world.startingProps,
+      startingProps: this.world.startingProps,
     });
   }
 
