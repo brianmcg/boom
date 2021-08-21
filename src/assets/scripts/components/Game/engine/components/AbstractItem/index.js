@@ -1,11 +1,13 @@
 import { CELL_SIZE } from 'game/constants/config';
-import Entity from '../Entity';
+import DynamicEntity from '../DynamicEntity';
+
+const SCALE_INCREMENT = 0.05;
 
 /**
  * Class representing an item.
- * @extends {Entity}
+ * @extends {DynamicEntity}
  */
-class AbstractItem extends Entity {
+class AbstractItem extends DynamicEntity {
   /**
    * Creates an item.
    * @param  {Number} options.x       The x coordinate of the body.
@@ -14,11 +16,18 @@ class AbstractItem extends Entity {
    * @param  {Number} options.height  The height of the body.
    * @param  {String} options.texture The texture of entity.
    */
-  constructor({ type, floorOffset, ...other }) {
-    super({ blocking: false, ...other });
+  constructor({
+    type,
+    floorOffset,
+    spawnTime,
+    ...other
+  }) {
+    super({ blocking: false, autoPlay: false, ...other });
 
     this.isItem = true;
     this.type = type;
+    this.spawnTime = spawnTime;
+    this.timer = 0;
 
     if (floorOffset) {
       this.z = CELL_SIZE * floorOffset * 0.75;
@@ -26,6 +35,54 @@ class AbstractItem extends Entity {
 
     if (this.constructor === AbstractItem) {
       throw new TypeError('Can not construct abstract class.');
+    }
+  }
+
+  /**
+   * Called when body is added to world.
+   * @param  {World} parent  The world that the body was added to.
+   */
+  onAdded(parent) {
+    super.onAdded(parent);
+    this.nextParent = parent;
+  }
+
+  /**
+   * Called when body is removed from world.
+   */
+  onRemoved() {
+    if (this.spawnTime) {
+      this.startUpdates();
+    } else {
+      super.onRemoved();
+    }
+  }
+
+  /**
+   * Update the item.
+   * @param  {Number} delta            The delta time value.
+   * @param  {Object} options.actions  The player actions.
+   */
+  update(delta, elapsedMS) {
+    this.timer += elapsedMS;
+
+    if (
+      !this.cell.bodies.some(b => b.blocking)
+        && this.timer >= this.spawnTime
+    ) {
+      this.timer = 0;
+      this.scale = 0;
+      this.parent.add(this);
+    }
+
+    if (this.scale < 1) {
+      this.scale += SCALE_INCREMENT * delta;
+
+      if (this.scale >= 1) {
+        this.scale = 1;
+
+        this.stopUpdates();
+      }
     }
   }
 

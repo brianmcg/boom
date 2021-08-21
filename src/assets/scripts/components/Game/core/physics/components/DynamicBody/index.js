@@ -50,6 +50,7 @@ class DynamicBody extends Body {
 
   /**
    * Called when body is added to world.
+   * @param  {World} parent  The world that the body was added to.
    */
   onAdded(parent) {
     this.parent = parent;
