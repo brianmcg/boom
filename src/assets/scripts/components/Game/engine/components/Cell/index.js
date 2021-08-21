@@ -18,10 +18,12 @@ class Cell extends PhysicsCell {
     transparency,
     reverse,
     closed,
+    edge,
     ...other
   }) {
     super(other);
 
+    this.edge = edge;
     this.transparency = transparency;
     this.reverse = reverse;
     this.front = sides.front;

@@ -136,16 +136,18 @@ class POVContainer extends Container {
         const { side, cell } = raySections[i];
         const { overlay, closed } = cell;
 
+        sideHeight = side?.height || world.height
+
         rays.push(raySections[i]);
 
-        if (!closed && side.height < world.height) {
+        if (!closed && sideHeight < world.height) {
           castRay({
             x,
             y,
             angle,
             world,
             radius,
-            elavation: side.height,
+            elavation: sideHeight,
           }).forEach(r => rays.push(r));
         }
 
@@ -183,75 +185,82 @@ class POVContainer extends Container {
           // Update total encountered bodies.
           Object.assign(totalEncounteredBodies, encounteredBodies);
 
-          const { name, spatter } = side;
+          if (side) {
+            const { name, spatter } = side;
 
-          sprite = wallSprites[i][xIndex];
-          sprite.visible = true;
+            sprite = wallSprites[i][xIndex];
+            sprite.visible = true;
 
-          sideHeight = side.height;
+            sideHeight = side.height;
 
-          // Determine the slice to render.
-          if (!isOverlay && cell.isDoor) {
-            if (cell.double) {
-              if (isHorizontal) {
-                if (endPoint.x % CELL_SIZE < HALF_CELL) {
-                  sliceY = endPoint.x - (CELL_SIZE - (cell.offset.x / 2));
+            // Determine the slice to render.
+            if (!isOverlay && cell.isDoor) {
+              if (cell.double) {
+                if (isHorizontal) {
+                  if (endPoint.x % CELL_SIZE < HALF_CELL) {
+                    sliceY = endPoint.x - (CELL_SIZE - (cell.offset.x / 2));
+                  } else {
+                    sliceY = endPoint.x + (CELL_SIZE - (cell.offset.x / 2));
+                  }
+                } else if (endPoint.y % CELL_SIZE < HALF_CELL) {
+                  sliceY = endPoint.y - (CELL_SIZE - (cell.offset.y / 2));
                 } else {
-                  sliceY = endPoint.x + (CELL_SIZE - (cell.offset.x / 2));
+                  sliceY = endPoint.y + (CELL_SIZE - (cell.offset.y / 2));
                 }
-              } else if (endPoint.y % CELL_SIZE < HALF_CELL) {
-                sliceY = endPoint.y - (CELL_SIZE - (cell.offset.y / 2));
+              } else if (isHorizontal) {
+                sliceY = endPoint.x - cell.offset.x;
               } else {
-                sliceY = endPoint.y + (CELL_SIZE - (cell.offset.y / 2));
+                sliceY = endPoint.y - cell.offset.y;
               }
             } else if (isHorizontal) {
-              sliceY = endPoint.x - cell.offset.x;
+              sliceY = endPoint.x;
             } else {
-              sliceY = endPoint.y - cell.offset.y;
+              sliceY = endPoint.y;
             }
-          } else if (isHorizontal) {
-            sliceY = endPoint.x;
+
+            sliceY = Math.floor(sliceY) % CELL_SIZE;
+
+            if (cell.reverse) {
+              sliceY = CELL_SIZE - sliceY - 1;
+            }
+
+            spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
+            correctedDistance = distance * Math.cos(spriteAngle);
+
+            if (isOverlay) {
+              spriteHeight = Math.abs((cell.overlay.height) * CAMERA_DISTANCE / correctedDistance);
+              spriteY = centerY
+                - (spriteHeight / (cell.overlay.height / (cell.overlay.height - player.viewHeight)));
+            } else {
+              spriteHeight = Math.abs((sideHeight) * CAMERA_DISTANCE / correctedDistance);
+              spriteY = centerY
+                - (spriteHeight / (sideHeight / (sideHeight - player.viewHeight)));
+            }
+
+            if (floorHeight) {
+              spriteHeight = Math.abs(
+                (sideHeight - floorHeight) * CAMERA_DISTANCE / correctedDistance,
+              );
+            }
+
+            sprite.height = spriteHeight;
+
+            if (floorHeight) {
+              spriteHeight = Math.abs(
+                (sideHeight - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
+              );
+            }
+
+            sprite.y = spriteY;
+            sprite.zOrder = distance;
+            sprite.changeTexture(name, sliceY, spatter);
+            sprite.tint = this.calculateTint(distance, isHorizontal);
           } else {
-            sliceY = endPoint.y;
+            wallSprites[i][xIndex].visible = false;
+            spriteY = centerY;
+            spriteHeight = 0;
+            spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
           }
-
-          sliceY = Math.floor(sliceY) % CELL_SIZE;
-
-          if (cell.reverse) {
-            sliceY = CELL_SIZE - sliceY - 1;
-          }
-
-          spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
-          correctedDistance = distance * Math.cos(spriteAngle);
-
-          if (isOverlay) {
-            spriteHeight = Math.abs((cell.overlay.height) * CAMERA_DISTANCE / correctedDistance);
-            spriteY = centerY
-              - (spriteHeight / (cell.overlay.height / (cell.overlay.height - player.viewHeight)));
-          } else {
-            spriteHeight = Math.abs((sideHeight) * CAMERA_DISTANCE / correctedDistance);
-            spriteY = centerY
-              - (spriteHeight / (sideHeight / (sideHeight - player.viewHeight)));
-          }
-
-          if (floorHeight) {
-            spriteHeight = Math.abs(
-              (sideHeight - floorHeight) * CAMERA_DISTANCE / correctedDistance,
-            );
-          }
-
-          sprite.height = spriteHeight;
-
-          if (floorHeight) {
-            spriteHeight = Math.abs(
-              (sideHeight - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
-            );
-          }
-
-          sprite.y = spriteY;
-          sprite.zOrder = distance;
-          sprite.changeTexture(name, sliceY, spatter);
-          sprite.tint = this.calculateTint(distance, isHorizontal);
         } else {
           wallSprites[i][xIndex].visible = false;
         }
@@ -300,7 +309,7 @@ class POVContainer extends Container {
             mapY = (mapY < 0) ? 0 : mapY;
           }
 
-          backgroundName = backgroundCell.top && backgroundCell.top.name;
+          backgroundName = backgroundCell.top?.name;
 
           pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
           pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
@@ -345,7 +354,7 @@ class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
 
           backgroundCell = world.getCell(gridX, gridY);
-          backgroundName = backgroundCell.bottom && backgroundCell.bottom.name;
+          backgroundName = backgroundCell.bottom?.name;
 
           if (backgroundName) {
             stainColor = world.stains[mapX][mapY];
