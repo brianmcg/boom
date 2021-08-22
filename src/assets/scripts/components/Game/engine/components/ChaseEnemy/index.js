@@ -38,6 +38,15 @@ class ChaseEnemy extends AbstractEnemy {
 
     player.hit({ damage, angle });
   }
+
+    /**
+   * Set the enemy to the attacking state.
+   * @return {Boolean}  State change successful.
+   */
+  setAttacking() {
+    super.setAttacking();
+    this.velocity = this.speed;
+  }
 }
 
 export default ChaseEnemy;
