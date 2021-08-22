@@ -140,15 +140,6 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   fpsLoop(delta) {
-    // NOTE: Uncomment below code to log frame rate in console.
-    // this.timer += this.ticker.elapsedMS;
-    // this.frameCount += 1;
-    // if (this.timer >= 1000) {
-    //   console.log(this.frameCount);
-    //   this.timer = this.timer - 1000;
-    //   this.frameCount = 0;
-    // }
-
     this.stats.begin();
 
     if (this.scene) {

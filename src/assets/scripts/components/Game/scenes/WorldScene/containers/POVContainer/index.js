@@ -337,7 +337,9 @@ class POVContainer extends Container {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (player.viewHeight - floorHeight) / (yIndex - centerY + 1) * CAMERA_DISTANCE;
+          actualDistance = (player.viewHeight - floorHeight)
+            / (yIndex - centerY + 1) * CAMERA_DISTANCE;
+
           correctedDistance = actualDistance / Math.cos(spriteAngle);
 
           mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
@@ -355,24 +357,6 @@ class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
 
           backgroundCell = world.getCell(gridX, gridY);
-
-          // if (backgroundCell.id === initialCell.id) {
-          //   if (initialIsHorizontal) {
-          //     if (playerGridY > gridY) {
-          //       gridY += 1;
-          //     } else {
-          //       gridY -= 1;
-          //     }
-          //   } else {
-          //     if (playerGridX > gridX) {
-          //       gridX += 1;
-          //     } else {
-          //       gridX -= 1;
-          //     }
-          //   }
-          //   backgroundCell = world.getCell(gridX, gridY);
-          // }
-
           backgroundName = backgroundCell.bottom?.name;
 
           if (backgroundName) {
