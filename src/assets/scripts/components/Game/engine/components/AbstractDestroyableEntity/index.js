@@ -42,18 +42,20 @@ class AbstractDestroyableEntity extends DynamicEntity {
     if (this.hits.length) {
       const totalDamage = this.hits.reduce((memo, { damage }) => memo + damage, 0);
 
-      const { length } = this.hits;
+      if (totalDamage) {
+        const { length } = this.hits;
 
-      const { x, y } = this.hits.reduce((memo, { angle }) => ({
-        x: memo.x + Math.cos(angle),
-        y: memo.y + Math.sin(angle),
-      }), { x: 0, y: 0 });
+        const { x, y } = this.hits.reduce((memo, { angle }) => ({
+          x: memo.x + Math.cos(angle),
+          y: memo.y + Math.sin(angle),
+        }), { x: 0, y: 0 });
 
-      const meanAngle = Math.atan2(y / length, x / length);
+        const meanAngle = Math.atan2(y / length, x / length);
 
-      this.hurt(totalDamage, meanAngle);
+        this.hurt(totalDamage, meanAngle);
 
-      this.hits = [];
+        this.hits = [];
+      }
     }
   }
 

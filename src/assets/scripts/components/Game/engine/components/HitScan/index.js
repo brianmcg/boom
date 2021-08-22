@@ -7,6 +7,10 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
+const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(
+  (CELL_SIZE * CELL_SIZE)+ (CELL_SIZE * CELL_SIZE)
+);
+
 /**
  * Class representing a hit scan.
  */
@@ -89,32 +93,41 @@ class HitScan extends Body {
 
     if (collisions.length) {
       // Handle collision with object.
-      // TODO: handle multiple collisions.
-      const { point, body } = collisions[0];
+      for (let i = 0; i < collisions.length; i++) {
+        const { point, body } = collisions[i];
 
-      if (point.distance <= this.range) {
-        let damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
+        if (point.distance <= this.range) {
+          let damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
 
-        if (this.fade) {
-          damage *= ((this.range - point.distance) / this.range);
-        }
+          if (this.fade) {
+            damage *= ((this.range - point.distance) / this.range);
+          }
 
-        if (sourceId) {
-          this.source.parent.addEffect({
-            x: point.x + Math.cos(originAngle) * OFFSET,
-            y: point.y + Math.sin(originAngle) * OFFSET,
-            sourceId,
-            flash: this.power,
-          });
-        }
+          if (i > 0) {
+            const distance = body.getDistanceTo(collisions[i - 1].body);
 
-        if (body.isDestroyable) {
-          body.hit({
-            damage,
-            angle,
-            point,
-            rays,
-          });
+            if (distance < SECONDARY_DAMAGE_DISTANCE) {
+              damage *= 0.3;
+            }
+          } else {
+            if (sourceId) {
+              this.source.parent.addEffect({
+                x: point.x + Math.cos(originAngle) * OFFSET,
+                y: point.y + Math.sin(originAngle) * OFFSET,
+                sourceId,
+                flash: this.power,
+              });
+            }
+          }
+
+          if (body.isDestroyable) {
+            body.hit({
+              damage,
+              angle,
+              point,
+              rays,
+            });
+          }
         }
       }
     } else if (!cell.edge && distance <= this.range) {
