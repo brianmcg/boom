@@ -7,6 +7,8 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
+const SECONDARY_DAMAGE_FADE = 0.6;
+
 const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(
   (CELL_SIZE * CELL_SIZE)+ (CELL_SIZE * CELL_SIZE)
 );
@@ -27,6 +29,7 @@ class HitScan extends Body {
     range,
     accuracy = 0,
     fade,
+    highCalibre = false,
     ...other
   } = {}) {
     super(other);
@@ -37,6 +40,7 @@ class HitScan extends Body {
     this.range = range;
     this.accuracy = accuracy;
     this.fade = fade;
+    this.highCalibre = highCalibre;
   }
 
   /**
@@ -104,12 +108,18 @@ class HitScan extends Body {
           }
 
           if (i > 0) {
-            const distance = body.getDistanceTo(collisions[i - 1].body);
-
-            if (distance < SECONDARY_DAMAGE_DISTANCE) {
-              damage *= 0.3;
+            if (this.highCalibre) {
+              if (body.getDistanceTo(collisions[0].body) < SECONDARY_DAMAGE_DISTANCE) {
+                damage *= (SECONDARY_DAMAGE_FADE / i);
+              } else {
+                damage = 0;
+              }
+            } else {
+              damage = 0;
             }
-          } else {
+          }
+
+          if (damage) {
             if (sourceId) {
               this.source.parent.addEffect({
                 x: point.x + Math.cos(originAngle) * OFFSET,
@@ -118,15 +128,15 @@ class HitScan extends Body {
                 flash: this.power,
               });
             }
-          }
 
-          if (body.isDestroyable) {
-            body.hit({
-              damage,
-              angle,
-              point,
-              rays,
-            });
+            if (body.isDestroyable) {
+              body.hit({
+                damage,
+                angle,
+                point,
+                rays,
+              });
+            }
           }
         }
       }

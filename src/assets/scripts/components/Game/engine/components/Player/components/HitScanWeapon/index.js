@@ -18,10 +18,12 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Number}  options.range    The range of the weapon.
    * @param  {String}  options.texture  The weapon texture.
    */
-  constructor({ projectile, ...other }) {
+  constructor({ projectile, highCalibre, ...other }) {
     super({ projectile, ...other });
 
     const { amount, effects } = projectile;
+
+    this.highCalibre = highCalibre;
 
     this.projectiles = [...Array(amount).keys()].map(() => new HitScan({
       effect: effects?.impact,
@@ -29,6 +31,7 @@ class HitScanWeapon extends AbstractWeapon {
       power: this.power,
       range: this.range,
       accuracy: this.accuracy,
+      highCalibre,
     }));
   }
 

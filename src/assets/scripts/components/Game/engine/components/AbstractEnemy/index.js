@@ -327,7 +327,6 @@ class AbstractEnemy extends AbstractActor {
     if (this.parent.floorOffset) {
       if (this.velocity === 0) {
         this.stopUpdates();
-        this.blocking = false;
       }
     } else {
       this.stainTimer += elapsedMS;
@@ -344,7 +343,6 @@ class AbstractEnemy extends AbstractActor {
       if (this.velocity === 0) {
         this.stain(MAX_STAIN_RADIUS);
         this.stopUpdates();
-        this.blocking = false;
         this.stainTimer = STAIN_INTERVAL;
         this.stainRadius = 2;
       }
@@ -637,6 +635,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
+      this.blocking = false;
       this.stainTimer = 0;
       this.stainRadius = 1;
 

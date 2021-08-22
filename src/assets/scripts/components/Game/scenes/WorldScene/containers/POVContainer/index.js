@@ -244,7 +244,7 @@ class POVContainer extends Container {
               );
             }
 
-            sprite.height = spriteHeight + 1;
+            sprite.height = spriteHeight;
 
             if (floorHeight) {
               spriteHeight = Math.abs(

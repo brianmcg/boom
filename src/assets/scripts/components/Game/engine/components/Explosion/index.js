@@ -69,6 +69,7 @@ class Explosion extends Body {
         power: this.power,
         range: this.range,
         fade: true,
+        highCalibre: true,
       }).run(angle));
 
       // Stop dead bodies from colliding.

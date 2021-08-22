@@ -286,6 +286,7 @@ class AbstractWeapon extends Entity {
       ammo,
       maxAttacks,
       projectile,
+      highCalibre,
     } = this;
 
     return {
@@ -304,6 +305,7 @@ class AbstractWeapon extends Entity {
       range: transformRangeForData(range, player.width / 2),
       spread,
       pellets: pellets.length,
+      highCalibre,
     };
   }
 }
