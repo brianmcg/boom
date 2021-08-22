@@ -116,7 +116,11 @@ class AbstractActor extends AbstractDestroyableEntity {
     super.hit(options);
 
     if (point && rays) {
-      const { side, cell, distance: sectionDistance } = rays.reduce((memo, ray) => {
+      const {
+        side,
+        cell, distance: sectionDistance,
+        encounteredBodies,
+      } = rays.reduce((memo, ray) => {
         if (ray.distance > point.distance) {
           if (ray.distance < memo.distance) {
             return ray;
@@ -129,8 +133,23 @@ class AbstractActor extends AbstractDestroyableEntity {
         distance: Number.MAX_VALUE,
       });
 
+      const nearest = Object.values(encounteredBodies).sort((a, b) => {
+        const distanceA = a.getDistanceTo(cell);
+        const distanceB = b.getDistanceTo(cell);
+        if (distanceA < distanceB) {
+          return 1;
+        }
+
+        if (distanceA > distanceB) {
+          return -1;
+        }
+
+        return 0;
+      }).pop();
+
       if (
         this.spatter
+          && nearest.id === this.id
           && !side.spatter
           && sectionDistance - point.distance < SPATTER_DISTANCE
 
