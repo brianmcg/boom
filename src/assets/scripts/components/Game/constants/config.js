@@ -20,7 +20,7 @@ export const LEVEL = parseInt(urlParams.get('level'), 10);
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = !!DEBUG || false;
+export const DISPLAY_FPS = parseInt(urlParams.get('fps'), 10) || !!DEBUG || false;
 
 /**
  * The maximum frames per second.
