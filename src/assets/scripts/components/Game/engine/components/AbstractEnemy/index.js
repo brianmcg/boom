@@ -240,6 +240,10 @@ class AbstractEnemy extends AbstractActor {
    * Update the enemy in the evading state.
    */
   updateEvading() {
+    if (this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking)) {
+      this.evadeDestination = this.findEvadeDestination();
+    }
+
     if (this.isArrivedAt(this.evadeDestination)) {
       this.target = this.parent.player;
       this.setChasing();
@@ -423,6 +427,45 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Find a free cell to move to.
+   * @return {Cell} The cell to move to.
+   */
+  findEvadeDestination() {
+    const { player } = this.parent;
+    // Randomly pick an right angle to the left or right and
+    // get x and y grid coordinates, to priorities lateral evasion.
+    // Otherwise go to the nearest cell to the player.
+    return (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
+      .reduce((memo, angleOffset) => {
+        const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
+        const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
+        const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+        const cell = this.parent.getCell(x, y);
+
+        if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+          return memo;
+        }
+
+        return [...memo, cell];
+      }, []).pop() || this.parent.getAdjacentCells(this)
+      .reduce((memo, cell) => {
+        if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+          return memo;
+        }
+
+        if (!memo) {
+          return cell;
+        }
+
+        if (player.getDistanceTo(cell) < player.getDistanceTo(memo)) {
+          return cell;
+        }
+
+        return memo;
+      }, null);
+  }
+
+  /**
    * Add a callback to the idle state change.
    * @param  {Function} callback The callback function.
    */
@@ -520,42 +563,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.EVADING);
 
     if (isStateChanged) {
-      const { player } = this.parent;
-
-      // Randomly pick an right angle to the left or right and
-      // get x and y grid coordinates, to priorities lateral evasion.
-      this.evadeDestination = (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
-        .reduce((memo, angleOffset) => {
-          const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
-          const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
-          const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
-          const cell = this.parent.getCell(x, y);
-
-          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
-            return memo;
-          }
-
-          return [...memo, cell];
-        }, []).pop();
-
-      // Otherwise go to the nearest cell to the player.
-      if (!this.evadeDestination) {
-        this.evadeDestination = this.parent.getAdjacentCells(this).reduce((memo, cell) => {
-          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
-            return memo;
-          }
-
-          if (!memo) {
-            return cell;
-          }
-
-          if (player.getDistanceTo(cell) < player.getDistanceTo(memo)) {
-            return cell;
-          }
-
-          return memo;
-        }, null);
-      }
+      this.evadeDestination = this.findEvadeDestination();
 
       if (!this.evadeDestination) {
         this.setIdle();

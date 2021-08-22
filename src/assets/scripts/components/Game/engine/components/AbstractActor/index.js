@@ -134,8 +134,13 @@ class AbstractActor extends AbstractDestroyableEntity {
       });
 
       const nearest = Object.values(encounteredBodies).sort((a, b) => {
+        if (!b.blocking) {
+          return 1;
+        }
+
         const distanceA = a.getDistanceTo(cell);
         const distanceB = b.getDistanceTo(cell);
+
         if (distanceA < distanceB) {
           return 1;
         }
