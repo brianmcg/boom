@@ -524,20 +524,28 @@ class AbstractEnemy extends AbstractActor {
 
       // Randomly pick an right angle to the left or right and
       // get x and y grid coordinates, to priorities lateral evasion.
-      const angleOffset = Math.round(Math.random()) ? DEG_90 : -DEG_90;
-      const angle = (this.angle + angleOffset + DEG_360) % DEG_360;
-      const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
-      const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+      this.evadeDestination = (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
+        .reduce((memo, angleOffset) => {
+          const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
+          const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
+          const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+          const cell = this.parent.getCell(x, y);
 
-      // Get cell to move to, prioritizing the x and y grid cooridinates above
-      // and getting the cell nearest to player, if left or right not free.
-      this.evadeDestination = this.parent.getAdjacentCells(this).reduce((memo, cell) => {
-        if (!cell.blocking && !cell.bodies.some(b => b.blocking)) {
-          if (!memo) {
-            return cell;
+          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+            return memo;
           }
 
-          if (cell.gridX === x && cell.gridY === y) {
+          return [...memo, cell];
+        }, []).pop();
+
+      // Otherwise go to the nearest cell to the player.
+      if (!this.evadeDestination) {
+        this.evadeDestination = this.parent.getAdjacentCells(this).reduce((memo, cell) => {
+          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+            return memo;
+          }
+
+          if (!memo) {
             return cell;
           }
 
@@ -546,10 +554,8 @@ class AbstractEnemy extends AbstractActor {
           }
 
           return memo;
-        }
-
-        return memo;
-      }, null);
+        }, null);
+      }
 
       if (!this.evadeDestination) {
         this.setIdle();
