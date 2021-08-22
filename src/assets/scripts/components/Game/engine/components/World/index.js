@@ -80,9 +80,9 @@ class World extends PhysicsWorld {
     this.sky = sky;
     this.floorOffset = floorOffset;
 
-    this.secrets = this.grid.reduce((memo, row) => ([
+    this.secrets = this.grid.reduce((memo, col) => ([
       ...memo,
-      ...row.filter(cell => cell.isPushWall),
+      ...col.filter(cell => cell.isPushWall),
     ]), []);
 
     player.onDeath(() => this.onPlayerDeath());
@@ -92,7 +92,7 @@ class World extends PhysicsWorld {
     player.onExit(() => this.scene.setAddingReviewing());
 
     // Create graph for pathfinding.
-    this.graph = new Graph(grid.map(row => row.map((cell) => {
+    this.graph = new Graph(grid.map(col => col.map((cell) => {
       if (cell.blocking && !cell.isDoor) {
         return NODE_WEIGHTS.WALL;
       }

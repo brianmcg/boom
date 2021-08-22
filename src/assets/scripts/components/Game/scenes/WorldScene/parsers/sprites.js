@@ -10,7 +10,7 @@ import {
   BLEND_MODES,
   Line,
 } from 'game/core/graphics';
-import { BLACK, WHITE, RED } from 'game/constants/colors';
+import { BLACK, WHITE, RED, BLUE } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
 import { GAME_FONT } from 'game/constants/assets';
 import { FONT_SIZES } from 'game/constants/fonts';
@@ -128,8 +128,8 @@ const createWallSprites = ({
     return memo;
   }, []);
 
-  world.grid.forEach((row) => {
-    row.forEach((cell) => {
+  world.grid.forEach((col) => {
+    col.forEach((cell) => {
       const {
         front,
         left,
@@ -248,8 +248,8 @@ const createBackgroundSprites = ({
   const backgroundTextures = {};
   const sprites = [];
 
-  world.grid.forEach((row) => {
-    row.forEach((cell) => {
+  world.grid.forEach((col) => {
+    col.forEach((cell) => {
       const { top, bottom } = cell;
 
       if (top && !backgroundImages.includes(top.name)) {
@@ -279,23 +279,23 @@ const createBackgroundSprites = ({
 
 
       for (let i = 0; i < CELL_SIZE; i += 1) {
-        const row = [];
+        const col = [];
         for (let j = 0; j < CELL_SIZE; j += 1) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-          row.push(new Texture(texture, pixel));
+          col.push(new Texture(texture, pixel));
         }
-        backgroundTextures[image].push(row);
+        backgroundTextures[image].push(col);
       }
     }
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    const row = [];
+    const col = [];
     for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
-      row.push(new BackgroundSprite(backgroundTextures, i, j));
+      col.push(new BackgroundSprite(backgroundTextures, i, j));
     }
 
-    sprites.push(row);
+    sprites.push(col);
   }
 
   return sprites;
@@ -803,21 +803,33 @@ const createWorldGraphics = ({ world }) => {
       return 0x0000FF;
     }
 
-    return 0xFF0000;
+    return 0xD3D3D3;
   });
 
-  const lines = [...Array(SCREEN.WIDTH).keys()].map(() => new Line({ color: 0xFFFF00 }));
+  const alpha = ((body) => {
+    if (body.transparency) {
+      return 1 - (0.5 / body.transparency)
+    }
 
-  const grid = world.grid.reduce((rowMemo, row) => ({
-    ...rowMemo,
-    ...row.reduce((sectorMemo, sector) => {
-      if (sector.blocking) {
+    return 1;
+  })
+
+  const lines = [...Array(SCREEN.WIDTH).keys()].map(() => new Line({
+    color: 0xFFFF00,
+    alpha: 0.25,
+  }));
+
+  const grid = world.grid.reduce((colMemo, col) => ({
+    ...colMemo,
+    ...col.reduce((sectorMemo, sector) => {
+      if (sector.blocking && !sector.edge) {
         return {
           ...sectorMemo,
           [sector.id]: new RectangleSprite({
             color: color(sector),
             x: sector.shape.x,
             y: sector.shape.y,
+            alpha: alpha(sector),
             width: sector.shape.width,
             height: sector.shape.length,
           }),

@@ -240,7 +240,10 @@ class AbstractEnemy extends AbstractActor {
    * Update the enemy in the evading state.
    */
   updateEvading() {
-    if (this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking)) {
+    if (
+      this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking)
+        || this.cell.bodies.some(b => b.id !== this.id && b.blocking)
+    ) {
       this.evadeDestination = this.findEvadeDestination();
     }
 

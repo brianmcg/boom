@@ -25,15 +25,15 @@ class World extends EventEmitter {
     this.maxMapX = (this.width * CELL_SIZE) - 1;
     this.maxMapY = (this.length * CELL_SIZE) - 1;
 
-    this.height = grid.reduce((gridMax, row) => {
-      const max = row.reduce((rowMax, {
+    this.height = grid.reduce((gridMax, col) => {
+      const max = col.reduce((colMax, {
         height,
-      }) => (height > rowMax ? height : rowMax), 0);
+      }) => (height > colMax ? height : colMax), 0);
 
       return max > gridMax ? max : gridMax;
     }, 0);
 
-    grid.forEach(row => row.forEach(cell => this.add(cell)));
+    grid.forEach(col => col.forEach(cell => this.add(cell)));
 
     bodies.forEach(body => this.add(body));
   }

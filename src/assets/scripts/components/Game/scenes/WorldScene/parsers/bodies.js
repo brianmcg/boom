@@ -146,9 +146,9 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const { animations } = graphics.data;
 
-  const grid = data.grid.reduce((rows, row) => ([
-    ...rows,
-    row.reduce((cells, cell) => ([
+  const grid = data.grid.reduce((cols, col) => ([
+    ...cols,
+    col.reduce((cells, cell) => ([
       ...cells,
       createCell({ cell, soundSprite, props }),
     ]), []),
