@@ -151,12 +151,12 @@ class World extends PhysicsWorld {
    * @return {Array}     A list of cells.
    */
   findPath(from, to) {
-    const start = this.graph.grid[from.gridY][from.gridX];
-    const end = this.graph.grid[to.gridY][to.gridX];
+    const start = this.graph.grid[from.gridX][from.gridY];
+    const end = this.graph.grid[to.gridX][to.gridY];
     const initialWeights = [];
 
     this.dynamicBodies.forEach(({ gridX, gridY }) => {
-      const node = this.graph.grid[gridY][gridX];
+      const node = this.graph.grid[gridX][gridY];
       initialWeights.push({ x: gridX, y: gridY, weight: node.weight });
       node.weight = NODE_WEIGHTS.DYNAMIC_BODY;
     });
@@ -164,10 +164,10 @@ class World extends PhysicsWorld {
     const path = search(this.graph, start, end);
 
     initialWeights.forEach(({ x, y, weight }) => {
-      this.graph.grid[y][x].weight = weight;
+      this.graph.grid[x][y].weight = weight;
     });
 
-    return path.map(node => this.getCell(node.y, node.x));
+    return path.map(node => this.getCell(node.x, node.y));
   }
 
   /**

@@ -16,8 +16,8 @@ class World extends EventEmitter {
     this.bodies = {};
     this.dynamicBodies = [];
 
-    this.width = this.grid[0].length;
-    this.length = this.grid.length;
+    this.width = this.grid.length;
+    this.length = this.grid[0].length;
 
     this.maxCellX = this.width - 1;
     this.maxCellY = this.length - 1;
@@ -109,7 +109,7 @@ class World extends EventEmitter {
    */
   getCell(x, y) {
     if (x >= 0 && x <= this.maxCellX && y >= 0 && y <= this.maxCellY) {
-      return this.grid[y][x];
+      return this.grid[x][y];
     }
 
     return null;
@@ -121,7 +121,7 @@ class World extends EventEmitter {
    * @param {Number} y    The y coordinate.
    */
   setCell(x, y, cell) {
-    this.grid[y][x] = cell;
+    this.grid[x][y] = cell;
   }
 
   /**
