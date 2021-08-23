@@ -32,7 +32,7 @@ export const MAX_FPS = 60;
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = !!DEBUG || false;
+export const DISABLE_MUSIC = !!DEBUG || true;
 
 /**
  * The volume of the music.
@@ -44,7 +44,7 @@ export const MUSIC_VOLUME = 1;
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUNDS = false;
+export const DISABLE_SOUNDS = true;
 
 /**
  * The difficulty level.

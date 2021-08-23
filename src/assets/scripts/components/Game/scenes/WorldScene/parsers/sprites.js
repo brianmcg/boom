@@ -796,15 +796,29 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 const createWorldGraphics = ({ world }) => {
   const color = ((body) => {
     if (body.isPlayer) {
-      return 0x00FF00;
+      return 0xA6E22E;
     }
 
     if (body.isDoor) {
-      return 0x0000FF;
+      return 0xFFFFFF;
     }
 
+    // if (body.isCell) {
+    //   sector.blocking && !sector.edge
+    // }
+
+    if (body.isItem) {
+      return 0x66D9EF;
+    }
+
+    // orange = FD971F;
+    // blue = 66D9EF;
+    // purple = AE81FF
+    //
+    // black = 0x272822;
+
     if (body.isEnemy) {
-      return 0xFF0000;
+      return 0xF92672;
     }
 
     return 0xD3D3D3;
@@ -812,14 +826,14 @@ const createWorldGraphics = ({ world }) => {
 
   const alpha = ((body) => {
     if (body.transparency) {
-      return 1 - (0.5 / body.transparency)
+      return 1 - (0.5 / body.transparency);
     }
 
     return 1;
-  })
+  });
 
   const lines = [...Array(SCREEN.WIDTH).keys()].map(() => new Line({
-    color: 0xFFFF00,
+    color: 0xE6DB74,
     alpha: 0.25,
   }));
 
@@ -831,8 +845,6 @@ const createWorldGraphics = ({ world }) => {
           ...sectorMemo,
           [sector.id]: new RectangleSprite({
             color: color(sector),
-            x: sector.shape.x,
-            y: sector.shape.y,
             alpha: alpha(sector),
             width: sector.shape.width,
             height: sector.shape.length,
@@ -851,8 +863,6 @@ const createWorldGraphics = ({ world }) => {
       [body.id]: {
         rectangle: new RectangleSprite({
           color: color(body),
-          x: body.x,
-          y: body.y,
           width: body.width,
           height: body.length,
           anchor: 0.5,
@@ -862,23 +872,41 @@ const createWorldGraphics = ({ world }) => {
     }
   }, {});
 
+  const items = world.items.reduce((memo, body) => {
+    return {
+      ...memo,
+      [body.id]: new RectangleSprite({
+        color: color(body),
+        width: body.width,
+        height: body.length,
+        anchor: 0.5,
+      }),
+    }
+  }, {});
+
   const player = {
     rectangle: new RectangleSprite({
       color: color(world.player),
-      x: world.player.shape.x,
-      y: world.player.shape.y,
       width: world.player.shape.width,
       height: world.player.shape.length,
       anchor: 0.5,
     }),
-    line: new Line({ color: WHITE })
+    line: new Line({ color: WHITE }),
   };
+
+  const background = new RectangleSprite({
+    color: color(world.player),
+    width: world.player.shape.width,
+    height: world.player.shape.length,
+    anchor: 0.5,
+  });
 
   return {
     grid,
     player,
     lines,
     enemies,
+    items,
   };
 };
 

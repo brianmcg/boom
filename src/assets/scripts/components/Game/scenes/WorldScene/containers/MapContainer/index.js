@@ -15,13 +15,19 @@ const CENTER = {
   Y: SCREEN.HEIGHT / 2 / SCALE,
 };
 
+const ANGLE_SPRITE_LENGTH = CELL_SIZE / 2;
+
 class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
     // console.log(sprites);
 
-    const { player, enemies, lines, grid } = sprites;
+    const { player, enemies, lines, grid, items } = sprites;
+
+    Object.values(items).forEach((sprite) => {
+      this.addChild(sprite);
+    });
 
     Object.values(grid).forEach(sprite => this.addChild(sprite));
 
@@ -32,8 +38,8 @@ class MapContainer extends Container {
       this.addChild(line);
     });
 
-    player.rectangle.x =  CENTER.X;
-    player.rectangle.y =  CENTER.Y;
+    player.rectangle.x = CENTER.X;
+    player.rectangle.y = CENTER.Y;
 
     this.addChild(player.rectangle);
     this.addChild(player.line);
@@ -47,11 +53,12 @@ class MapContainer extends Container {
   }
 
   update(delta) {
-    const { player, enemies, grid } = this.world;
+    const { player, enemies, grid, items } = this.world;
     const {
       player: playerSprite,
       grid: gridSprites,
       enemies: enemySprites,
+      items: itemSprites,
       lines,
     } = this.sprites;
 
@@ -86,8 +93,8 @@ class MapContainer extends Container {
         if (sector.isDoor || (sector.blocking && !sector.edge)) {
           const sprite = gridSprites[sector.id];
           const { shape } = sector;
-          sprite.x = (CENTER.X) - (player.x - sector.x);
-          sprite.y = (CENTER.Y) - (player.y - sector.y);
+          sprite.x = (CENTER.X) - (player.x - (shape.x + shape.width / 2));
+          sprite.y = (CENTER.Y) - (player.y - (shape.y + shape.length / 2));
           sprite.width = shape.width;
           sprite.height = shape.length;
         }
@@ -96,8 +103,8 @@ class MapContainer extends Container {
 
     // Update player
     const endPoint = {
-      x: player.x + Math.cos(player.angle) * CELL_SIZE * delta,
-      y: player.y + Math.sin(player.angle) * CELL_SIZE * delta,
+      x: player.x + Math.cos(player.viewAngle) * ANGLE_SPRITE_LENGTH * delta,
+      y: player.y + Math.sin(player.viewAngle) * ANGLE_SPRITE_LENGTH * delta,
     };
 
     playerSprite.line.update({
@@ -108,13 +115,45 @@ class MapContainer extends Container {
       y: (CENTER.Y) - (player.y - endPoint.y),
     });
 
+    items.forEach((item) => {
+      const sprite = itemSprites[item.id];
+
+      sprite.x = (CENTER.X) - (player.x - item.x);
+      sprite.y = (CENTER.Y) - (player.y - item.y);
+
+      if (item.isRemoved) {
+        this.removeChild(sprite);
+      }
+    });
+
     enemies.forEach((enemy) => {
       const { rectangle, line } = enemySprites[enemy.id];
+
+      const ep = {
+        x: enemy.x + Math.cos(enemy.angle) * ANGLE_SPRITE_LENGTH * delta,
+        y: enemy.y + Math.sin(enemy.angle) * ANGLE_SPRITE_LENGTH * delta,
+      };
+
+      line.update({
+        x: (CENTER.X) - (player.x - enemy.x),
+        y: (CENTER.Y) - (player.y - enemy.y),
+      }, {
+        x: (CENTER.X) - (player.x - ep.x),
+        y: (CENTER.Y) - (player.y - ep.y),
+      });
+
       rectangle.x = (CENTER.X) - (player.x - enemy.x);
       rectangle.y = (CENTER.Y) - (player.y - enemy.y);
 
       if (enemy.isDead()) {
-        rectangle.alpha = 0.25;
+        rectangle.scale.x -= 0.1 * delta;
+        rectangle.scale.y -= 0.1 * delta;
+
+        if (rectangle.scale.x <= 0) {
+          this.removeChild(rectangle);
+        }
+
+        this.removeChild(line);
       }
     });
   }

@@ -191,9 +191,9 @@ export const createWorld = ({ scene, data, graphics }) => {
       name: item.name,
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
-      width: CELL_SIZE / 2,
-      length: CELL_SIZE / 2,
-      height: CELL_SIZE / 2,
+      width: CELL_SIZE / 4,
+      length: CELL_SIZE / 4,
+      height: CELL_SIZE / 4,
       floorOffset,
     }),
   ]), []);
