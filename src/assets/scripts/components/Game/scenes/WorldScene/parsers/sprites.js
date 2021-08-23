@@ -575,8 +575,10 @@ const createEntitySprites = ({ animations, textures, world }) => {
 
 const createReviewSprites = (text) => {
   const background = new RectangleSprite({
-    width: SCREEN.WIDTH,
-    height: SCREEN.HEIGHT,
+    x: -SCREEN.WIDTH / 2,
+    y: -SCREEN.HEIGHT / 2,
+    width: SCREEN.WIDTH * 2,
+    height: SCREEN.HEIGHT * 2,
     color: BLACK,
     alpha: 0,
   });
