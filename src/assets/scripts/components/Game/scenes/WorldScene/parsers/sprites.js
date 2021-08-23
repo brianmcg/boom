@@ -10,7 +10,7 @@ import {
   BLEND_MODES,
   Line,
 } from 'game/core/graphics';
-import { BLACK, WHITE, RED, BLUE } from 'game/constants/colors';
+import { BLACK, WHITE, RED } from 'game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
 import { GAME_FONT } from 'game/constants/assets';
 import { FONT_SIZES } from 'game/constants/fonts';
@@ -794,10 +794,10 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
 
 const createWorldGraphics = ({ world }) => {
-  const orange = 0xFD971F;
-  const blue = 0x66D9EF;
+  // const orange = 0xFD971F;
+  // const blue = 0x66D9EF;
   const purple = 0xAE81FF;
-  const black = 0x272822;
+  // const black = 0x272822;
   const green = 0xA6E22E;
   const white = 0xFFFFFF;
   const pink = 0xF92672;
@@ -856,20 +856,18 @@ const createWorldGraphics = ({ world }) => {
     }, {}),
   }), {});
 
-  const enemies = world.enemies.reduce((memo, body) => {
-    return {
-      ...memo,
-      [body.id]: {
-        rectangle: new RectangleSprite({
-          color: color(body),
-          width: body.width,
-          height: body.length,
-          anchor: 0.5,
-        }),
-        line: new Line({ color: WHITE })
-      }
-    }
-  }, {});
+  const enemies = world.enemies.reduce((memo, body) => ({
+    ...memo,
+    [body.id]: {
+      rectangle: new RectangleSprite({
+        color: color(body),
+        width: body.width,
+        height: body.length,
+        anchor: 0.5,
+      }),
+      line: new Line({ color: WHITE }),
+    },
+  }), {});
 
   const objects = world.objects.reduce((memo, body) => {
     if (body.blocking) {
@@ -881,23 +879,21 @@ const createWorldGraphics = ({ world }) => {
           height: body.length,
           anchor: 0.5,
         }),
-      }
+      };
     }
 
     return memo;
   }, {});
 
-  const items = world.items.reduce((memo, body) => {
-    return {
-      ...memo,
-      [body.id]: new RectangleSprite({
-        color: color(body),
-        width: body.width,
-        height: body.length,
-        anchor: 0.5,
-      }),
-    }
-  }, {});
+  const items = world.items.reduce((memo, body) => ({
+    ...memo,
+    [body.id]: new RectangleSprite({
+      color: color(body),
+      width: body.width,
+      height: body.length,
+      anchor: 0.5,
+    }),
+  }), {});
 
   const player = {
     rectangle: new RectangleSprite({
@@ -908,13 +904,6 @@ const createWorldGraphics = ({ world }) => {
     }),
     line: new Line({ color: WHITE }),
   };
-
-  const background = new RectangleSprite({
-    color: color(world.player),
-    width: world.player.shape.width,
-    height: world.player.shape.length,
-    anchor: 0.5,
-  });
 
   return {
     grid,

@@ -21,9 +21,14 @@ class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    // console.log(sprites);
-
-    const { player, enemies, lines, grid, items, objects } = sprites;
+    const {
+      player,
+      enemies,
+      lines,
+      grid,
+      items,
+      objects,
+    } = sprites;
 
     Object.values(items).forEach((sprite) => {
       this.addChild(sprite);
@@ -57,7 +62,14 @@ class MapContainer extends Container {
   }
 
   update(delta) {
-    const { player, enemies, grid, items, objects } = this.world;
+    const {
+      player,
+      enemies,
+      grid,
+      items,
+      objects,
+    } = this.world;
+
     const {
       player: playerSprite,
       grid: gridSprites,
@@ -135,7 +147,9 @@ class MapContainer extends Container {
       sprite.x = (CENTER.X) - (player.x - item.x);
       sprite.y = (CENTER.Y) - (player.y - item.y);
 
-      if (item.isRemoved) {
+      if (this.world.bodies[item.id]) {
+        this.addChild(sprite);
+      } else {
         this.removeChild(sprite);
       }
     });

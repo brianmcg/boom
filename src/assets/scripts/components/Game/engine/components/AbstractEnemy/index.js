@@ -1,6 +1,7 @@
 import { degrees } from 'game/core/physics';
 import { CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
+import TransparentCell from '../TransparentCell';
 import Explosion from '../Explosion';
 
 const STATES = {
@@ -95,6 +96,7 @@ class AbstractEnemy extends AbstractActor {
     this.floatAmount = 0;
     this.proneHeight = proneHeight;
     this.nearbyTimer = 0;
+    this.graphIndex = 0;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -106,6 +108,26 @@ class AbstractEnemy extends AbstractActor {
     }
 
     this.path = [];
+
+    this.addTrackedCollision({
+      type: AbstractEnemy,
+      onStart: (enemy) => {
+        if (enemy.isIdle()) {
+          this.setIdle();
+        }
+      },
+    });
+
+    this.addTrackedCollision({
+      type: TransparentCell,
+      onStart: () => {
+        if (this.projectiles) {
+          this.setRange(this.primaryAttack.range * 2);
+        }
+
+        this.setIdle();
+      },
+    });
 
     this.setIdle();
   }
@@ -214,7 +236,7 @@ class AbstractEnemy extends AbstractActor {
         this.searchTimer = 0;
 
         if (this.target) {
-          this.path = this.parent.findPath(this, this.target);
+          this.path = this.findPath(this.target);
         }
       }
 
@@ -229,7 +251,7 @@ class AbstractEnemy extends AbstractActor {
           this.path.shift();
         }
       } else if (this.target) {
-        this.path = this.parent.findPath(this, this.target);
+        this.path = this.findPath(this.target);
       } else {
         this.setIdle();
       }
@@ -589,11 +611,19 @@ class AbstractEnemy extends AbstractActor {
       this.velocity = this.speed;
 
       if (this.target) {
-        this.path = this.parent.findPath(this.cell, this.target);
+        this.path = this.findPath(this.target);
       }
     }
 
     return isStateChanged;
+  }
+
+  findPath(target) {
+    return this.parent.findPath(this, target, this.graphIndex);
+  }
+
+  setRange(range) {
+    this.primaryAttack.range = range;
   }
 
   /**
@@ -753,7 +783,7 @@ class AbstractEnemy extends AbstractActor {
    * @param {String} state The new state.
    */
   setState(state) {
-    const isStateChanged = super.setState(state);
+    const isStateChanged = this.isAlive() && super.setState(state);
 
     if (isStateChanged) {
       this.attackTimer = 0;

@@ -35,6 +35,8 @@ class GunEnemy extends AbstractEnemy {
       pelletAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
     };
 
+    this.graphIndex = 1;
+
     this.projectiles = [...Array(pellets).keys()].map(() => new HitScan({
       source: this,
       power: this.primaryAttack.power,
@@ -77,6 +79,14 @@ class GunEnemy extends AbstractEnemy {
     }
 
     this.emitSound(this.sounds.attack);
+  }
+
+  setRange(range) {
+    super.setRange(range);
+
+    this.projectiles.forEach((projectile) => {
+      projectile.range = range;
+    });
   }
 }
 

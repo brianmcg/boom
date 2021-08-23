@@ -16,6 +16,7 @@ import {
   AmmoItem,
   HealthItem,
   WeaponItem,
+  TransparentCell,
 } from 'game/engine';
 
 const ITEMS = {
@@ -42,10 +43,6 @@ const createCell = ({ cell, props, soundSprite }) => {
   }), {});
 
   if (cell.door) {
-    console.log({
-            width: cell.width * CELL_SIZE,
-      length: cell.length * CELL_SIZE,
-    })
     return new Door({
       ...props.door,
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
@@ -83,7 +80,7 @@ const createCell = ({ cell, props, soundSprite }) => {
   }
 
   if (cell.transparency) {
-    return new Cell({
+    return new TransparentCell({
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       blocking: cell.blocking,
