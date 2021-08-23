@@ -80,9 +80,9 @@ class World extends PhysicsWorld {
     this.sky = sky;
     this.floorOffset = floorOffset;
 
-    this.secrets = this.grid.reduce((memo, row) => ([
+    this.secrets = this.grid.reduce((memo, col) => ([
       ...memo,
-      ...row.filter(cell => cell.isPushWall),
+      ...col.filter(cell => cell.isPushWall),
     ]), []);
 
     player.onDeath(() => this.onPlayerDeath());
@@ -92,19 +92,34 @@ class World extends PhysicsWorld {
     player.onExit(() => this.scene.setAddingReviewing());
 
     // Create graph for pathfinding.
-    this.graph = new Graph(grid.map(row => row.map((cell) => {
-      if (cell.blocking && !cell.isDoor) {
-        return NODE_WEIGHTS.WALL;
-      }
+    this.graphs = [
+      new Graph(grid.map(col => col.map((cell) => {
+        if (cell.blocking && !cell.isDoor) {
+          return NODE_WEIGHTS.WALL;
+        }
 
-      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-        return NODE_WEIGHTS.STATIC_BODY;
-      }
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
 
-      return NODE_WEIGHTS.FREE;
-    })), {
-      diagonal: true,
-    });
+        return NODE_WEIGHTS.FREE;
+      })), {
+        diagonal: true,
+      }),
+      new Graph(grid.map(col => col.map((cell) => {
+        if (cell.blocking && !cell.isDoor && !cell.transparency) {
+          return NODE_WEIGHTS.WALL;
+        }
+
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
+
+        return NODE_WEIGHTS.FREE;
+      })), {
+        diagonal: true,
+      }),
+    ];
 
     // Create grid for floor stains.
     this.stains = [...Array(this.maxMapX + 1).keys()].map(() => [
@@ -150,21 +165,22 @@ class World extends PhysicsWorld {
    * @param  {Cell} to   The destination cell.
    * @return {Array}     A list of cells.
    */
-  findPath(from, to) {
-    const start = this.graph.grid[from.gridX][from.gridY];
-    const end = this.graph.grid[to.gridX][to.gridY];
+  findPath(from, to, index = 0) {
+    const graph = this.graphs[index];
+    const start = graph.grid[from.gridX][from.gridY];
+    const end = graph.grid[to.gridX][to.gridY];
     const initialWeights = [];
 
     this.dynamicBodies.forEach(({ gridX, gridY }) => {
-      const node = this.graph.grid[gridX][gridY];
+      const node = graph.grid[gridX][gridY];
       initialWeights.push({ x: gridX, y: gridY, weight: node.weight });
       node.weight = NODE_WEIGHTS.DYNAMIC_BODY;
     });
 
-    const path = search(this.graph, start, end);
+    const path = search(graph, start, end);
 
     initialWeights.forEach(({ x, y, weight }) => {
-      this.graph.grid[x][y].weight = weight;
+      graph.grid[x][y].weight = weight;
     });
 
     return path.map(node => this.getCell(node.x, node.y));

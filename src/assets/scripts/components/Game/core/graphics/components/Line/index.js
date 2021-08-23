@@ -4,6 +4,7 @@ class Line extends Graphics {
   constructor({
     thickness = 1,
     color = 0x000000,
+    alpha = 1,
   }) {
     super();
 
@@ -11,6 +12,8 @@ class Line extends Graphics {
     this.color = color;
 
     this.lineStyle(thickness, color);
+
+    this.alpha = alpha;
 
     this.moveTo(0, 0);
     this.lineTo(1, 1);

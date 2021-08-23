@@ -16,6 +16,7 @@ import {
   AmmoItem,
   HealthItem,
   WeaponItem,
+  TransparentCell,
 } from 'game/engine';
 
 const ITEMS = {
@@ -79,7 +80,7 @@ const createCell = ({ cell, props, soundSprite }) => {
   }
 
   if (cell.transparency) {
-    return new Cell({
+    return new TransparentCell({
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * cell.y) + (CELL_SIZE / 2),
       blocking: cell.blocking,
@@ -146,9 +147,9 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const { animations } = graphics.data;
 
-  const grid = data.grid.reduce((rows, row) => ([
-    ...rows,
-    row.reduce((cells, cell) => ([
+  const grid = data.grid.reduce((cols, col) => ([
+    ...cols,
+    col.reduce((cells, cell) => ([
       ...cells,
       createCell({ cell, soundSprite, props }),
     ]), []),
@@ -191,9 +192,9 @@ export const createWorld = ({ scene, data, graphics }) => {
       name: item.name,
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
-      width: CELL_SIZE / 2,
-      length: CELL_SIZE / 2,
-      height: CELL_SIZE / 2,
+      width: CELL_SIZE / 4,
+      length: CELL_SIZE / 4,
+      height: CELL_SIZE / 4,
       floorOffset,
     }),
   ]), []);
@@ -214,9 +215,9 @@ export const createWorld = ({ scene, data, graphics }) => {
         name: enemy.name,
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
-        width: Math.max(Math.ceil(CELL_SIZE * enemy.width), CELL_SIZE / 2),
-        length: Math.max(Math.ceil(CELL_SIZE * enemy.length), CELL_SIZE / 2),
-        height: Math.ceil(CELL_SIZE * enemy.height),
+        width: Math.round(CELL_SIZE * enemy.width),
+        length: Math.round(CELL_SIZE * enemy.length),
+        height: Math.round(CELL_SIZE * enemy.height),
         float: enemy.float,
         scale: enemy.scale,
         proneHeight: enemy.proneHeight,

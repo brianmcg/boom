@@ -17,8 +17,8 @@ const createPromptSprite = text => (
 
 const createMenuSprites = (menu, textures, animations) => {
   const background = new RectangleSprite({
-    width: SCREEN.WIDTH,
-    height: SCREEN.HEIGHT,
+    width: SCREEN.WIDTH * 1.5,
+    height: SCREEN.HEIGHT * 1.5,
     color: BLACK,
     alpha: 0.75,
   });
