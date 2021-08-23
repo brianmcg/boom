@@ -803,6 +803,10 @@ const createWorldGraphics = ({ world }) => {
       return 0x0000FF;
     }
 
+    if (body.isEnemy) {
+      return 0xFF0000;
+    }
+
     return 0xD3D3D3;
   });
 
@@ -832,6 +836,7 @@ const createWorldGraphics = ({ world }) => {
             alpha: alpha(sector),
             width: sector.shape.width,
             height: sector.shape.length,
+            anchor: 0.5,
           }),
         };
       }
@@ -840,18 +845,40 @@ const createWorldGraphics = ({ world }) => {
     }, {}),
   }), {});
 
-  const player = new RectangleSprite({
-    color: color(world.player),
-    x: world.player.shape.x,
-    y: world.player.shape.y,
-    width: world.player.shape.width,
-    height: world.player.shape.length,
-  });
+  const enemies = world.enemies.reduce((memo, body) => {
+    return {
+      ...memo,
+      [body.id]: {
+        rectangle: new RectangleSprite({
+          color: color(body),
+          x: body.x,
+          y: body.y,
+          width: body.width,
+          height: body.length,
+          anchor: 0.5,
+        }),
+        line: new Line({ color: WHITE })
+      }
+    }
+  }, {});
+
+  const player = {
+    rectangle: new RectangleSprite({
+      color: color(world.player),
+      x: world.player.shape.x,
+      y: world.player.shape.y,
+      width: world.player.shape.width,
+      height: world.player.shape.length,
+      anchor: 0.5,
+    }),
+    line: new Line({ color: WHITE })
+  };
 
   return {
     grid,
     player,
     lines,
+    enemies,
   };
 };
 

@@ -1,4 +1,4 @@
-import { SCREEN, FOV } from 'game/constants/config';
+import { SCREEN, FOV, CELL_SIZE } from 'game/constants/config';
 import { Container } from 'game/core/graphics';
 import { degrees, castRay } from 'game/core/physics';
 
@@ -19,16 +19,25 @@ class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    const { player, lines, grid } = sprites;
+    // console.log(sprites);
+
+    const { player, enemies, lines, grid } = sprites;
 
     Object.values(grid).forEach(sprite => this.addChild(sprite));
 
     lines.forEach(line => this.addChild(line));
 
-    player.x =  CENTER.X;
-    player.y =  CENTER.Y;
+    Object.values(enemies).forEach(({ rectangle, line }) => {
+      this.addChild(rectangle);
+      this.addChild(line);
+    });
 
-    this.addChild(player);
+    player.rectangle.x =  CENTER.X;
+    player.rectangle.y =  CENTER.Y;
+
+    this.addChild(player.rectangle);
+    this.addChild(player.line);
+
 
     this.sprites = sprites;
 
@@ -37,13 +46,18 @@ class MapContainer extends Container {
     this.scale.set(SCALE);
   }
 
-  update() {
-    const { player, grid } = this.world;
-    const { player: playerSprite, grid: gridSprites, lines } = this.sprites;
+  update(delta) {
+    const { player, enemies, grid } = this.world;
+    const {
+      player: playerSprite,
+      grid: gridSprites,
+      enemies: enemySprites,
+      lines,
+    } = this.sprites;
+
     let angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
 
-
-
+    // Update FOV
     for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
       // Cast ray
       const rays = castRay({
@@ -56,27 +70,52 @@ class MapContainer extends Container {
       const { endPoint } = rays[rays.length - 1];
 
       lines[xIndex].update({
-        x: (CENTER.X) + (player.width / 2),
-        y: (CENTER.Y) + (player.width / 2),
+        x: CENTER.X,
+        y: CENTER.Y,
       }, {
-        x: (CENTER.X) - (player.shape.x - endPoint.x),
-        y: (CENTER.Y) - (player.shape.y - endPoint.y),
+        x: (CENTER.X) - (player.x - endPoint.x),
+        y: (CENTER.Y) - (player.y - endPoint.y),
       });
 
       angle = (angle + ANGLE_INCREMENT) % DEG_360;
     }
 
+    // Update cells
     grid.forEach((col) => {
       col.forEach((sector) => {
         if (sector.isDoor || (sector.blocking && !sector.edge)) {
           const sprite = gridSprites[sector.id];
           const { shape } = sector;
-          sprite.x = (CENTER.X) - (player.shape.x - shape.x);
-          sprite.y = (CENTER.Y) - (player.shape.y - shape.y);
+          sprite.x = (CENTER.X) - (player.x - sector.x);
+          sprite.y = (CENTER.Y) - (player.y - sector.y);
           sprite.width = shape.width;
           sprite.height = shape.length;
         }
       });
+    });
+
+    // Update player
+    const endPoint = {
+      x: player.x + Math.cos(player.angle) * CELL_SIZE * delta,
+      y: player.y + Math.sin(player.angle) * CELL_SIZE * delta,
+    };
+
+    playerSprite.line.update({
+      x: CENTER.X,
+      y: CENTER.Y,
+    }, {
+      x: (CENTER.X) - (player.x - endPoint.x),
+      y: (CENTER.Y) - (player.y - endPoint.y),
+    });
+
+    enemies.forEach((enemy) => {
+      const { rectangle, line } = enemySprites[enemy.id];
+      rectangle.x = (CENTER.X) - (player.x - enemy.x);
+      rectangle.y = (CENTER.Y) - (player.y - enemy.y);
+
+      if (enemy.isDead()) {
+        rectangle.alpha = 0.25;
+      }
     });
   }
 }
