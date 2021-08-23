@@ -42,6 +42,10 @@ const createCell = ({ cell, props, soundSprite }) => {
   }), {});
 
   if (cell.door) {
+    console.log({
+            width: cell.width * CELL_SIZE,
+      length: cell.length * CELL_SIZE,
+    })
     return new Door({
       ...props.door,
       x: (CELL_SIZE * cell.x) + (CELL_SIZE / 2),
@@ -214,9 +218,9 @@ export const createWorld = ({ scene, data, graphics }) => {
         name: enemy.name,
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
-        width: Math.max(Math.ceil(CELL_SIZE * enemy.width), CELL_SIZE / 2),
-        length: Math.max(Math.ceil(CELL_SIZE * enemy.length), CELL_SIZE / 2),
-        height: Math.ceil(CELL_SIZE * enemy.height),
+        width: Math.round(CELL_SIZE * enemy.width),
+        length: Math.round(CELL_SIZE * enemy.length),
+        height: Math.round(CELL_SIZE * enemy.height),
         float: enemy.float,
         scale: enemy.scale,
         proneHeight: enemy.proneHeight,

@@ -794,34 +794,33 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
 
 const createWorldGraphics = ({ world }) => {
+  const orange = 0xFD971F;
+  const blue = 0x66D9EF;
+  const purple = 0xAE81FF;
+  const black = 0x272822;
+  const green = 0xA6E22E;
+  const white = 0xFFFFFF;
+  const pink = 0xF92672;
+  const grey = 0xD3D3D3;
+
   const color = ((body) => {
     if (body.isPlayer) {
-      return 0xA6E22E;
+      return green;
     }
 
     if (body.isDoor) {
-      return 0xFFFFFF;
+      return white;
     }
-
-    // if (body.isCell) {
-    //   sector.blocking && !sector.edge
-    // }
 
     if (body.isItem) {
-      return 0x66D9EF;
+      return purple;
     }
-
-    // orange = FD971F;
-    // blue = 66D9EF;
-    // purple = AE81FF
-    //
-    // black = 0x272822;
 
     if (body.isEnemy) {
-      return 0xF92672;
+      return pink;
     }
 
-    return 0xD3D3D3;
+    return grey;
   });
 
   const alpha = ((body) => {
@@ -872,6 +871,22 @@ const createWorldGraphics = ({ world }) => {
     }
   }, {});
 
+  const objects = world.objects.reduce((memo, body) => {
+    if (body.blocking) {
+      return {
+        ...memo,
+        [body.id]: new RectangleSprite({
+          color: color(body),
+          width: body.width,
+          height: body.length,
+          anchor: 0.5,
+        }),
+      }
+    }
+
+    return memo;
+  }, {});
+
   const items = world.items.reduce((memo, body) => {
     return {
       ...memo,
@@ -907,6 +922,7 @@ const createWorldGraphics = ({ world }) => {
     lines,
     enemies,
     items,
+    objects,
   };
 };
 
