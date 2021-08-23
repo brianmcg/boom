@@ -278,7 +278,10 @@ class WorldScene extends Scene {
    * Set the state to removing review.
    */
   setRemovingReview() {
-    this.viewContainer.removeHud();
+    if (this.viewContainer.removeHud) {
+      this.viewContainer.removeHud();
+    }
+
     return this.setState(STATES.REMOVING_REVIEW);
   }
 

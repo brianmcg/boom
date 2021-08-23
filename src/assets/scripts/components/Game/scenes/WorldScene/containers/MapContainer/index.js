@@ -53,12 +53,27 @@ class MapContainer extends Container {
     this.addChild(player.rectangle);
     this.addChild(player.line);
 
-
     this.sprites = sprites;
-
     this.world = world;
-
     this.scale.set(SCALE);
+
+    this.projectiles = [];
+
+    world.enemies.forEach((enemy) => {
+      (enemy.projectiles || []).forEach((projectile) => {
+        if (projectile.name) {
+          this.projectiles.push(projectile);
+        }
+      });
+    });
+
+    world.player.weapons.forEach((weapon) => {
+      (weapon.projectiles || []).forEach((projectile) => {
+        if (projectile.name) {
+          this.projectiles.push(projectile);
+        }
+      });
+    });
   }
 
   update(delta) {
@@ -68,6 +83,7 @@ class MapContainer extends Container {
       grid,
       items,
       objects,
+      bodies,
     } = this.world;
 
     const {
@@ -76,8 +92,22 @@ class MapContainer extends Container {
       enemies: enemySprites,
       items: itemSprites,
       objects: objectSprites,
+      projectiles: projectileSprites,
       lines,
     } = this.sprites;
+
+    this.projectiles.forEach((projectile) => {
+      const sprite = projectileSprites[projectile.id];
+
+      if (projectile.parent) {
+        this.addChild(sprite);
+
+        sprite.x = (CENTER.X) - (player.x - projectile.x);
+        sprite.y = (CENTER.Y) - (player.y - projectile.y);
+      } else {
+        this.removeChild(sprite);
+      }
+    });
 
     let angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
 
@@ -182,6 +212,16 @@ class MapContainer extends Container {
         }
 
         this.removeChild(line);
+      }
+    });
+
+    items.forEach((item) => {
+      const sprite = itemSprites[item.id];
+
+      if (bodies[item.id]) {
+        this.addChild(sprite);
+      } else {
+        this.removeChild(sprite);
       }
     });
   }

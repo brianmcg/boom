@@ -794,7 +794,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
 
 const createWorldGraphics = ({ world }) => {
-  // const orange = 0xFD971F;
+  const orange = 0xFD971F;
   // const blue = 0x66D9EF;
   const purple = 0xAE81FF;
   // const black = 0x272822;
@@ -905,6 +905,34 @@ const createWorldGraphics = ({ world }) => {
     line: new Line({ color: WHITE }),
   };
 
+  const projectiles = {};
+
+  world.enemies.forEach((enemy) => {
+    (enemy.projectiles || []).forEach((projectile) => {
+      if (projectile.name) {
+        projectiles[projectile.id] = new RectangleSprite({
+          color: orange,
+          width: projectile.shape.width,
+          height: projectile.shape.length,
+          anchor: 0.5,
+        });
+      }
+    });
+  });
+
+  world.player.weapons.forEach((weapon) => {
+    (weapon.projectiles || []).forEach((projectile) => {
+      if (projectile.name) {
+        projectiles[projectile.id] = new RectangleSprite({
+          color: orange,
+          width: projectile.shape.width,
+          height: projectile.shape.length,
+          anchor: 0.5,
+        });
+      }
+    });
+  });
+
   return {
     grid,
     player,
@@ -912,6 +940,7 @@ const createWorldGraphics = ({ world }) => {
     enemies,
     items,
     objects,
+    projectiles,
   };
 };
 
