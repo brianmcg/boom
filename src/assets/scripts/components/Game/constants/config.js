@@ -32,7 +32,7 @@ export const MAX_FPS = 60;
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = !!DEBUG || true;
+export const DISABLE_MUSIC = !!DEBUG || false;
 
 /**
  * The volume of the music.

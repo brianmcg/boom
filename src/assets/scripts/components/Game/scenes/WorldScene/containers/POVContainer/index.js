@@ -460,6 +460,21 @@ class POVContainer extends Container {
   }
 
   /**
+   * Expand the edge wall slices.
+   */
+  expandEdge() {
+    const margin = 20;
+
+    this.sprites.map.walls.forEach((layer) => {
+      layer[0].x = -margin;
+      layer[0].width = margin + 1;
+
+      layer[layer.length - 1].x = layer.length - 1;
+      layer[layer.length - 1].width = margin + 1;
+    });
+  }
+
+  /**
    * Remove the HUD diplay.
    */
   removeHud() {

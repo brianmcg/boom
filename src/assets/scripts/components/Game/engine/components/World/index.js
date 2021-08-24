@@ -22,6 +22,7 @@ const NODE_WEIGHTS = {
   FREE: 1,
   DYNAMIC_BODY: 20,
   STATIC_BODY: 100,
+  TRANSPARENT_CELL: 30,
 };
 
 /**
@@ -107,7 +108,11 @@ class World extends PhysicsWorld {
         diagonal: true,
       }),
       new Graph(grid.map(col => col.map((cell) => {
-        if (cell.blocking && !cell.isDoor && !cell.transparency) {
+        if (cell.blocking && cell.transparency) {
+          return NODE_WEIGHTS.TRANSPARENT_CELL;
+        }
+
+        if (cell.blocking && !cell.isDoor) {
           return NODE_WEIGHTS.WALL;
         }
 
