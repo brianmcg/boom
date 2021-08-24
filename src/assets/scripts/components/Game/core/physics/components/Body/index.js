@@ -16,11 +16,14 @@ const generateId = (body) => {
 class Body extends EventEmitter {
   /**
    * Creates a body.
-   * @param  {Number}  options.x         The x coordinate of the body.
-   * @param  {Number}  options.y         The y coordinate of the body
-   * @param  {Number}  options.width     The width of the body.
-   * @param  {Number}  options.height    The height of the body.
-   * @param  {Boolean} options.blocking. Is the body blocking.
+   * @param  {Number}  options.x        The x coordinate of the body.
+   * @param  {Number}  options.y        The y coordinate of the body.
+   * @param  {Number}  options.z        The z coordinate of the body.
+   * @param  {Number}  options.width    The width of the body.
+   * @param  {Number}  options.height   The length of the body.
+   * @param  {Number}  options.height   The height of the body.
+   * @param  {Boolean} options.blocking The blocking value of the body.
+   * @param  {Number}  options.anchor   The anchor of the body.
    */
   constructor({
     x = 0,

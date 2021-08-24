@@ -8,16 +8,27 @@ import { SoundSpriteController } from 'game/core/audio';
  */
 class DynamicCell extends PhysicsCell {
   /**
-   * Creates a cell.
-   * @param  {Number} options.x       The x coordinate of the cell.
-   * @param  {Number} options.y       The y coordinate of the cell
-   * @param  {Number} options.width   The width of the cell.
-   * @param  {Number} options.height  The height of the cell.
-   * @param  {Object} options.sides   The ids of the sides of the cell.
+   * Creates a dynamic cell.
+   * @param  {Number}  options.x            The x coordinate of the cell.
+   * @param  {Number}  options.y            The y coordinate of the cell.
+   * @param  {Number}  options.z            The z coordinate of the cell.
+   * @param  {Number}  options.width        The width of the cell.
+   * @param  {Number}  options.height       The length of the cell.
+   * @param  {Number}  options.height       The height of the cell.
+   * @param  {Boolean} options.blocking     The blocking value of the cell.
+   * @param  {Number}  options.anchor       The anchor of the cell.
+   * @param  {String}  options.axis         The anchor of the cell.
+   * @param  {Number}  options.offset       The offset of the cell.
+   * @param  {Boolean} options.autoPlay     The cell autoPlay value.
+   * @param  {Object}  options.sides        The sides of the cell.
+   * @param  {Sound}   options.soundSprite  The soundSprite.
+   * @param  {Object}  options.sounds       The sounds.
+   * @param  {Boolean} options.reverse      Reverse the offset.
    */
   constructor({
     sides = {},
     soundSprite,
+    sounds,
     reverse,
     ...other
   }) {
@@ -31,6 +42,7 @@ class DynamicCell extends PhysicsCell {
     this.top = sides.top;
     this.overlay = sides.overlay;
     this.reverse = reverse;
+    this.sounds = sounds;
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),

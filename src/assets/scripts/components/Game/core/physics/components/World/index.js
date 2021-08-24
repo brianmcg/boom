@@ -8,6 +8,7 @@ class World extends EventEmitter {
   /**
    * Creates a world.
    * @param  {Array}  grid    The map grid of the world.
+   * @param  {Array}  bodies  The bodies to add to the map.
    */
   constructor(grid = [[]], bodies) {
     super();
@@ -40,7 +41,8 @@ class World extends EventEmitter {
 
   /**
    * Update
-   * @param  {Number} delta The delta time value.
+   * @param  {Number} delta     The delta time value.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     this.dynamicBodies.forEach(body => body.update(delta, elapsedMS));
@@ -126,11 +128,11 @@ class World extends EventEmitter {
 
   /**
    * Get the cells surrounding a given body.
-   * @param  {Body}   body  The body.
-   * @param  {Number} range The range of cells.
-   * @return {Array}        The cells surrounding the body.
+   * @param  {Body}   body    The body.
+   * @param  {Number} radius  The radius of neighbours to return.
+   * @return {Array}          The cells surrounding the body.
    */
-  getAdjacentCells(body, radius = 1) {
+  getNeighbourCells(body, radius = 1) {
     const cells = [];
     const { gridX, gridY } = body;
 
@@ -149,11 +151,12 @@ class World extends EventEmitter {
 
   /**
    * Get the bodies surrounding a given body.
-   * @param  {Body}   body The body to check.
-   * @return {Array}       The bodies surrounding the body.
+   * @param  {Body}   body    The body.
+   * @param  {Number} radius  The radius of neighbours to return.
+   * @return {Array}          The neighbouring bodies.
    */
-  getAdjacentBodies(body, radius = 1) {
-    const cells = this.getAdjacentCells(body, radius);
+  getNeighbourBodies(body, radius = 1) {
+    const cells = this.getNeighbourCells(body, radius);
 
     return cells.reduce((bodies, cell) => {
       cell.bodies.forEach((cellBody) => {

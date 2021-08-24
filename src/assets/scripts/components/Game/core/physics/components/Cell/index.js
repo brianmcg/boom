@@ -9,11 +9,16 @@ import Body from '../Body';
 class Cell extends Body {
   /**
    * Creates a cell
-   * @param  {Number}  options.x         The x coordinate of the cell.
-   * @param  {Number}  options.y         The y coordinate of the cell
-   * @param  {Number}  options.width     The width of the cell.
-   * @param  {Number}  options.height    The height of the cell.
-   * @param  {Boolean} options.blocking  Is the cell blocking.
+   * @param  {Number}  options.x        The x coordinate of the cell.
+   * @param  {Number}  options.y        The y coordinate of the cell.
+   * @param  {Number}  options.z        The z coordinate of the cell.
+   * @param  {Number}  options.width    The width of the cell.
+   * @param  {Number}  options.height   The length of the cell.
+   * @param  {Number}  options.height   The height of the cell.
+   * @param  {Boolean} options.blocking The blocking value of the cell.
+   * @param  {Number}  options.anchor   The anchor of the cell.
+   * @param  {String}  options.axis     The anchor of the cell.
+   * @param  {Number}  options.offset   The offset of the cell.
    */
   constructor({ axis, offset = 0, ...other }) {
     super(other);

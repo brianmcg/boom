@@ -55,7 +55,7 @@ class Explosion extends Body {
     if (this.range > 0) {
       // Make dead bodies collideable and updateable for this frame,
       // so that an explosion will apply a force to them.
-      this.parent.getAdjacentBodies(this.source, range).forEach((body) => {
+      this.parent.getNeighbourBodies(this.source, range).forEach((body) => {
         if (body.isActor && body.isDead()) {
           body.startUpdates();
           body.blocking = true;

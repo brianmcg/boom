@@ -24,12 +24,17 @@ const { FULL } = TRANSPARENCY;
 class DynamicBody extends Body {
   /**
    * Creates a dynamic body.
-   * @param  {Number}  options.x        The x coordinate of the dynamic body.
-   * @param  {Number}  options.y        The y coordinate of the dynamic body
-   * @param  {Number}  options.width    The width of the dynamic body.
-   * @param  {Number}  options.height   The height of the dynamic body.
-   * @param  {Boolean} options.blocking Is the body blocking.
-   * @param  {Number}  options.angle    The angle of the dynamic body.
+   * @param  {Number}  options.x        The x coordinate of the body.
+   * @param  {Number}  options.y        The y coordinate of the body.
+   * @param  {Number}  options.z        The z coordinate of the body.
+   * @param  {Number}  options.width    The width of the body.
+   * @param  {Number}  options.height   The length of the body.
+   * @param  {Number}  options.height   The height of the body.
+   * @param  {Boolean} options.blocking The blocking value of the body.
+   * @param  {Number}  options.anchor   The anchor of the body.
+   * @param  {Number}  options.angle    The angle of the body.
+   * @param  {Number}  options.weight   The weight of the body.
+   * @param  {Number}  options.autoPlay The autopPlay value of the body.
    */
   constructor({
     angle = 0,
@@ -105,7 +110,7 @@ class DynamicBody extends Body {
    */
   update(delta) {
     // Get bodies from surrounding cells
-    const bodies = this.parent.getAdjacentBodies(this);
+    const bodies = this.parent.getNeighbourBodies(this);
 
     const collisions = [];
 
@@ -195,7 +200,7 @@ class DynamicBody extends Body {
   /**
    * Cast a ray.
    * @param  {Number} rayAngle  Optional ray angle.
-   * @return {Ray}              The resulting ray.
+   * @return {Object}           The ray.
    */
   castRay(rayAngle) {
     const rays = castRay({

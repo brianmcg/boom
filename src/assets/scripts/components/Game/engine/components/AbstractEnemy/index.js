@@ -472,7 +472,7 @@ class AbstractEnemy extends AbstractActor {
         }
 
         return [...memo, cell];
-      }, []).pop() || this.parent.getAdjacentCells(this)
+      }, []).pop() || this.parent.getNeighbourCells(this)
       .reduce((memo, cell) => {
         if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
           return memo;
