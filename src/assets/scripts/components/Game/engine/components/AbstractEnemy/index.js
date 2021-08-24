@@ -46,15 +46,36 @@ const STAIN_INTERVAL = 50;
 class AbstractEnemy extends AbstractActor {
   /**
    * Creates an abstract enemy.
-   * @param  {Number} options.x               The x coordinate of the character.
-   * @param  {Number} options.y               The y coordinate of the character
-   * @param  {Number} options.width           The width of the character.
-   * @param  {Number} options.height          The height of the character.
-   * @param  {Number} options.angle           The angle of the character.
-   * @param  {Number} options.maxHealth       The maximum health of the character.
-   * @param  {Number} options.speed           The maximum speed of the enemy.
-   * @param  {Number} options.stateDurations  The time to stay in a state.
-   * @param  {Number} options.acceleration    The acceleration of the enemy.
+   * @param  {Number}  options.x              The x coordinate of the enemy.
+   * @param  {Number}  options.y              The y coordinate of the enemy.
+   * @param  {Number}  options.z              The z coordinate of the enemy.
+   * @param  {Number}  options.width          The width of the enemy.
+   * @param  {Number}  options.height         The length of the enemy.
+   * @param  {Number}  options.height         The height of the enemy.
+   * @param  {Boolean} options.blocking       The blocking value of the enemy.
+   * @param  {Number}  options.anchor         The anchor of the enemy.
+   * @param  {Number}  options.angle          The angle of the enemy.
+   * @param  {Number}  options.weight         The weight of the enemy.
+   * @param  {Number}  options.autoPlay       The autopPlay value of the enemy.
+   * @param  {String}  options.name           The name of the enemy.
+   * @param  {Object}  options.sounds         The enemy sounds.
+   * @param  {Object}  options.soundSprite    The enemy sound sprite.
+   * @param  {Number}  options.scale          The enemy scale.
+   * @param  {Object}  options.tail           The enemy tail.
+   * @param  {Number}  options.health         The current health of the enemy.
+   * @param  {Number}  options.maxHealth      The maximum health of the enemy.
+   * @param  {Object}  options.effects        The effects of the enemy.
+   * @param  {Number}  options.speed          The speed of the enemy.
+   * @param  {Number}  options.acceleration   The acceleration of the enemy.
+   * @param  {Array}   options.spatters       The spatter values of the enemy.
+   * @param  {String}  options.bloodColor     The blood color of the enemy.
+   * @param  {Number}  options.stateDurations The times to stay in each state.
+   * @param  {Number}  options.maxAttacks     The max number of attacks before evading.
+   * @param  {Boolean} options.float          The float enemy property.
+   * @param  {Object}  options.primaryAttack  The primary attack properties.
+   * @param  {Number}  options.proneHeight    The height of the enemy while prone.
+   * @param  {Object}  options.explosion      The enemy explosion properties.
+   * @param  {String}  options.type           The type of enemy.
    */
   constructor({
     stateDurations,
@@ -134,10 +155,10 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update the enemy.
-   * @param  {Number} delta The delta time.
-   * @param  {Number} elapsedMS The elapsed time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
-  update(delta, elapsedMS = 1) {
+  update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
@@ -182,6 +203,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in idle state
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateIdle(delta, elapsedMS) {
     this.target = this.findPlayer();
@@ -203,7 +226,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in the alerted state.
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAlerted(delta, elapsedMS) {
     this.target = this.parent.player;
@@ -221,6 +245,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in chasing state
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateChasing(delta, elapsedMS) {
     this.target = this.findPlayer();
@@ -279,7 +305,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in aiming state
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAiming(delta, elapsedMS) {
     this.target = this.findPlayer();
@@ -302,7 +329,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in attacking state
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAttacking(delta, elapsedMS) {
     this.target = this.findPlayer();
@@ -330,7 +358,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in hurt state
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateHurting(delta, elapsedMS) {
     this.hurtTimer += elapsedMS;
@@ -342,7 +371,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in hurt state
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta      The delta time.
+   * @param  {Number} elapsedMS  The elapsed time.
    */
   updateDead(delta, elapsedMS) {
     this.velocity *= FORCE_FADE;
@@ -407,7 +437,7 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Try and locate the player
-   * @return {Boolean} Was the player located.
+   * @return {Cell} The cell the player was located at.
    */
   findPlayer() {
     const { player } = this.parent;
@@ -618,10 +648,19 @@ class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
+  /**
+   * Find the path to a target.
+   * @param  {Body}   target The target to find a path to.
+   * @return {Array}         The path to the target.
+   */
   findPath(target) {
     return this.parent.findPath(this, target, this.graphIndex);
   }
 
+  /**
+   * Set the attack range.
+   * @param {Number} range The range to set.
+   */
   setRange(range) {
     this.primaryAttack.range = range;
   }
@@ -772,6 +811,10 @@ class AbstractEnemy extends AbstractActor {
     return this.state !== STATES.DEAD;
   }
 
+  /**
+   * Get the generated damage of an attack.
+   * @return {Number} The amount of damage.
+   */
   attackDamage() {
     const { power, accuracy } = this.primaryAttack;
 
@@ -780,7 +823,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Set the state.
-   * @param {String} state The new state.
+   * @param  {String} state The new state.
+   * @return {Boolean}      State change succesful.
    */
   setState(state) {
     const isStateChanged = this.isAlive() && super.setState(state);

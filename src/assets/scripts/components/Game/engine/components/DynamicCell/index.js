@@ -1,12 +1,12 @@
 import { MAX_SOUND_DISTANCE } from 'game/constants/config';
-import { DynamicCell as PhysicsCell } from 'game/core/physics';
+import { DynamicCell as PhysicsDynamicCell } from 'game/core/physics';
 import { SoundSpriteController } from 'game/core/audio';
 
 /**
  * Class representing a game cell.
  * @extends {Cell}
  */
-class DynamicCell extends PhysicsCell {
+class DynamicCell extends PhysicsDynamicCell {
   /**
    * Creates a dynamic cell.
    * @param  {Number}  options.x            The x coordinate of the cell.
@@ -52,6 +52,7 @@ class DynamicCell extends PhysicsCell {
 
   /**
    * Called when cell is added to world.
+   * @param  {World} parent The parent world.
    */
   onAdded(parent) {
     this.parent = parent;
@@ -87,7 +88,6 @@ class DynamicCell extends PhysicsCell {
 
   /**
    * Update the entity.
-   * @param  {Number} delta The delta time.
    */
   update() {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);

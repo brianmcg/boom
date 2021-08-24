@@ -15,22 +15,33 @@ const DEG_360 = degrees(360);
 
 /**
  * Class representing a projectile
+ * @extends {DynamicEntity}
  */
 class Projectile extends DynamicEntity {
   /**
    * Creates a projectile.
-   * @param  {Number}           options.x         The x coordinate of the projectile.
-   * @param  {Number}           options.y         The y coordinate of the projectile
-   * @param  {Number}           options.width     The width of the projectile.
-   * @param  {Number}           options.height    The height of the projectile.
-   * @param  {Number}           options.angle     The angle of the projectile.
-   * @param  {Boolean}          options.blocking  Is the projectile blocking.
-   * @param  {String}           options.texture   The texture of projectile.
-   * @param  {String}           options.sounds    The sounds of projectile.
-   * @param  {Number}           options.power     The power of the projectile.
-   * @param  {Number}           options.speed     The speed of the projectile.
-   * @param  {String}           options.type      The type of projectile.
-   * @param  {ProjectileEnemy}  options.source    The source of the projectile.
+   * @param  {Number}         options.x          The x coordinate of the projectile.
+   * @param  {Number}         options.y          The y coordinate of the projectile.
+   * @param  {Number}         options.z          The z coordinate of the projectile.
+   * @param  {Number}         options.width      The width of the projectile.
+   * @param  {Number}         options.height     The length of the projectile.
+   * @param  {Number}         options.height     The height of the projectile.
+   * @param  {Boolean}        options.blocking   The blocking value of the projectile.
+   * @param  {Number}         options.anchor     The anchor of the projectile.
+   * @param  {Number}         options.angle      The angle of the projectile.
+   * @param  {Number}         options.weight     The weight of the projectile.
+   * @param  {Number}         options.autoPlay   The autopPlay value of the projectile.
+   * @param  {String}         options.name       The name of the projectile.
+   * @param  {Object}         options.sounds     The projectile sounds.
+   * @param  {Object}         soundSprite        The projectile sound sprite.
+   * @param  {Number}         options.scale      The projectile scale.
+   * @param  {Object}         options.tail       The projectile tail.
+   * @param  {Number}         options.speed      The speed of the projectile.
+   * @param  {DynamicEntity}  options.source     The source of the projectile.
+   * @param  {Object}         options.effects    The effects of the projectile.
+   * @param  {Array}          options.queue      The queue that holds the projectile.
+   * @param  {Object}         options.explosion  The projectile explosion options.
+   * @param  {Number}         options.elavation  The elavation of the projectile.
    */
   constructor({
     width = CELL_SIZE / 4,
@@ -42,7 +53,6 @@ class Projectile extends DynamicEntity {
     weight = 0,
     queue,
     explosion,
-    rotate,
     elavation = 0,
     ...other
   }) {
@@ -59,7 +69,6 @@ class Projectile extends DynamicEntity {
     this.effects = effects;
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
-    this.rotate = rotate;
     this.baseElavation = elavation * CELL_SIZE;
 
     this.timer = 0;
@@ -114,8 +123,8 @@ class Projectile extends DynamicEntity {
 
   /**
    * Update the projectile.
-   * @param  {Number} delta The delta time.
-   * @return {[type]}       [description]
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     switch (this.state) {
@@ -132,6 +141,8 @@ class Projectile extends DynamicEntity {
 
   /**
    * Update the projectile in the travelling state.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   updateTravalling(delta, elapsedMS) {
     super.update(delta, elapsedMS);
@@ -150,6 +161,7 @@ class Projectile extends DynamicEntity {
    * Set the projectile damage and angle properties.
    * @param {Number} options.angle  The angle of the projectile.
    * @param {Number} options.damage The damage the projectile inflicts.
+   * @param {Number} options.offset The offset of the projectile.
    */
   set({ angle = 0, damage = 0, offset = 0 }) {
     const {

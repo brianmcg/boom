@@ -21,13 +21,26 @@ const SHAKE_MULTIPLIER = 0.15;
 class Door extends DynamicCell {
   /**
    * Creates a door cell
-   * @param  {Number} options.x       The x coordinate of the cell.
-   * @param  {Number} options.y       The y coordinate of the cell
-   * @param  {Number} options.width   The width of the cell.
-   * @param  {Number} options.height  The height of the cell.
-   * @param  {Object} options.sides   The ids of the sides of the cell.
-   * @param  {String} options.axis    The axis of the door.
-   * @param  {String} options.key     The key that unlocks the door.
+   * @param  {Number}  options.x            The x coordinate of the door.
+   * @param  {Number}  options.y            The y coordinate of the door.
+   * @param  {Number}  options.z            The z coordinate of the door.
+   * @param  {Number}  options.width        The width of the door.
+   * @param  {Number}  options.height       The length of the door.
+   * @param  {Number}  options.height       The height of the door.
+   * @param  {Boolean} options.blocking     The blocking value of the door.
+   * @param  {Number}  options.anchor       The anchor of the door.
+   * @param  {String}  options.axis         The anchor of the door.
+   * @param  {Number}  options.offset       The offset of the door.
+   * @param  {Boolean} options.autoPlay     The cell autoPlay value.
+   * @param  {Object}  options.sides        The sides of the door.
+   * @param  {Sound}   options.soundSprite  The soundSprite.
+   * @param  {Object}  options.sounds       The sounds.
+   * @param  {Boolean} options.reverse      Reverse the offset.
+   * @param  {String}  options.key          The key that unlocks the door.
+   * @param  {Number}  options.interval     The time the door remains open.
+   * @param  {Boolean} options.double       Double door options.
+   * @param  {Boolean} options.entrance     Entrance door option.
+   * @param  {Boolean} options.active       Active door option.
    */
   constructor({
     key,
@@ -52,7 +65,7 @@ class Door extends DynamicCell {
 
   /**
    * Open the door.
-   * @return {Booleam}
+   * @param  {AbstractActor} user The user of the door.
    */
   use(user) {
     if (this.active && this.isClosed()) {
@@ -76,7 +89,8 @@ class Door extends DynamicCell {
 
   /**
    * Update the door.
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     switch (this.state) {
@@ -136,6 +150,7 @@ class Door extends DynamicCell {
   /**
    * Update the door when in opened state.
    * @param  {Number} delta The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   updateOpened(delta, elapsedMS) {
     if (this.timer) {
@@ -158,6 +173,7 @@ class Door extends DynamicCell {
 
   /**
    * Set the door to the opening state.
+   * @return {Boolean} State change successful.
    */
   setOpening() {
     const isStateChanged = this.setState(STATES.OPENING);
@@ -172,6 +188,7 @@ class Door extends DynamicCell {
 
   /**
    * Set the door to the opened state.
+   * @return {Boolean} State change successful.
    */
   setOpened() {
     const isStateChanged = this.setState(STATES.OPENED);
@@ -205,6 +222,7 @@ class Door extends DynamicCell {
 
   /**
    * Set the door to the closed state.
+   * @return {Boolean} State change successful.
    */
   setClosed() {
     const isStateChanged = this.setState(STATES.CLOSED);
@@ -248,6 +266,10 @@ class Door extends DynamicCell {
     return this.state === STATES.CLOSED;
   }
 
+  /**
+   * Get the shape of the door.
+   * @return {Object} The door shape properties.
+   */
   get shape() {
     if (this.offset.x === CELL_SIZE || this.offset.y === CELL_SIZE) {
       if (this.axis === 'y') {

@@ -11,15 +11,22 @@ const TAIL_INTERVAL = 25;
 class DynamicEntity extends DynamicBody {
   /**
    * Creates a dynamic entity.
-   * @param  {Number}  options.x        The x coordinate of the dynamic entity.
-   * @param  {Number}  options.y        The y coordinate of the dynamic entity
-   * @param  {Number}  options.width    The width of the dynamic entity.
-   * @param  {Number}  options.height   The height of the dynamic entity.
-   * @param  {Number}  options.angle    The angle of the dynamic entity.
-   * @param  {Boolean} options.blocking Is the dynamic entity blocking.
-   * @param  {String}  options.texture  The texture of entity.
-   * @param  {String}  options.sounds   The sounds of entity.
-   * @param  {Boolean} options.scale    The scale of the entity.
+   * @param  {Number}  options.x            The x coordinate of the entity.
+   * @param  {Number}  options.y            The y coordinate of the entity.
+   * @param  {Number}  options.z            The z coordinate of the entity.
+   * @param  {Number}  options.width        The width of the entity.
+   * @param  {Number}  options.height       The length of the entity.
+   * @param  {Number}  options.height       The height of the entity.
+   * @param  {Boolean} options.blocking     The blocking value of the entity.
+   * @param  {Number}  options.anchor       The anchor of the entity.
+   * @param  {Number}  options.angle        The angle of the entity.
+   * @param  {Number}  options.weight       The weight of the entity.
+   * @param  {Number}  options.autoPlay     The autopPlay value of the entity.
+   * @param  {String}  options.name         The name of the entity.
+   * @param  {Object}  options.sounds       The entity sounds.
+   * @param  {Object}  options.soundSprite  The entity sound sprite.
+   * @param  {Number}  options.scale        The entity scale.
+   * @param  {Object}  options.tail         The entity tail.
    */
   constructor({
     name,
@@ -54,29 +61,9 @@ class DynamicEntity extends DynamicBody {
   }
 
   /**
-   * Emit a sound.
-   * @param {String}  name The name of the sound.
-   * @param {Boolean} loop Loop the sound.
-   */
-  emitSound(name, loop) {
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
-
-    this.soundController.emitSound(name, volume, loop);
-  }
-
-  /**
-   * Stop a sound.
-   * @param  {String} name The name of the sound.
-   */
-  stopSound(name) {
-    this.soundController.stopSound(name);
-  }
-
-  /**
    * Update the entity.
-   * @param  {Number} delta The delta time.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
@@ -109,6 +96,28 @@ class DynamicEntity extends DynamicBody {
 
     super.update(delta);
   }
+
+  /**
+   * Emit a sound.
+   * @param {String}  name The name of the sound.
+   * @param {Boolean} loop Loop the sound.
+   */
+  emitSound(name, loop) {
+    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
+      ? 0
+      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+
+    this.soundController.emitSound(name, volume, loop);
+  }
+
+  /**
+   * Stop a sound.
+   * @param  {String} name The name of the sound.
+   */
+  stopSound(name) {
+    this.soundController.stopSound(name);
+  }
+
 
   /**
    * Play the entity.

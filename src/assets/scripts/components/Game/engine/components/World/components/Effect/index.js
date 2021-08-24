@@ -3,12 +3,13 @@
  */
 class Effect {
   /**
-   * Creates an explosion.
-   * @param  {String} options.id    The explosion id.
-   * @param  {String} options.type  The explosion type.
-   * @param  {Number} options.x     The x coordinate.
-   * @param  {Number} options.y     The y coordinate.
-   * @param  {World}  options.world The world.
+   * Creates an effect.
+   * @param  {String} options.sourceId  The id of the source.
+   * @param  {String} options.type      The effect type.
+   * @param  {Number} options.x         The x coordinate.
+   * @param  {Number} options.y         The y coordinate.
+   * @param  {Number} options.z         The z coordinate.
+   * @param  {World}  options.parent    The world.
    */
   constructor({
     sourceId,

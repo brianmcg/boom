@@ -15,12 +15,26 @@ const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(
 
 /**
  * Class representing a hit scan.
+ * @extends {Body}
  */
 class HitScan extends Body {
   /**
    * Creates a hit scan.
-   * @extends {Body}
-   * @param   {String} options.effect The impact effect.
+   * @param  {Number}  options.x            The x coordinate of the body.
+   * @param  {Number}  options.y            The y coordinate of the body.
+   * @param  {Number}  options.z            The z coordinate of the body.
+   * @param  {Number}  options.width        The width of the body.
+   * @param  {Number}  options.height       The length of the body.
+   * @param  {Number}  options.height       The height of the body.
+   * @param  {Boolean} options.blocking     The blocking value of the body.
+   * @param  {Number}  options.anchor       The anchor of the body.
+   * @param  {String}  options.effect       The impact effect.
+   * @param  {Body}    options.source       The source of the hitscan.
+   * @param  {Number}  options.power        The power of the hitscan.
+   * @param  {[type]}  options.range        The range of the hitscan.
+   * @param  {Number}  options.accuracy     The accuracy of the hitscan.
+   * @param  {Number}  options.fade         The fade of the hitscan.
+   * @param  {Boolean} options.highCalibre  The calibre of the hitscan.
    */
   constructor({
     effect,
@@ -45,11 +59,7 @@ class HitScan extends Body {
 
   /**
    * Execute the hit scan.
-   * @param  {Object} options.ray       The ray data.
-   * @param  {Number} options.damage    The damage amount.
-   * @param  {World}  options.parent    The world.
-   * @param  {Number} options.range     The range of the hit.
-   * @param  {Number} options.power     The power of the hit.
+   * @param  {Number} angle The angle of the hitscan.
    */
   run(angle) {
     const rays = castRay({

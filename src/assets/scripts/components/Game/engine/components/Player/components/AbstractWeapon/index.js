@@ -1,5 +1,5 @@
 import { CELL_SIZE } from 'game/constants/config';
-import Entity from '../../../Entity';
+import { EventEmitter } from 'game/core/graphics';
 
 const STATES = {
   USING: 'weapon:using',
@@ -25,17 +25,27 @@ const transformRangeForData = (
 
 /**
  * Class representing a weapon.
+ * @extends {EventEmitter}
  */
-class AbstractWeapon extends Entity {
+class AbstractWeapon extends EventEmitter {
   /**
    * Creates a weapon.
-   * @param  {Player}  options.player   The player.
-   * @param  {Number}  options.power    The power of the weapon.
-   * @param  {Boolean} options.equiped  Is the weapon equiped.
-   * @param  {Number}  options.recoil   The recoil of the weapon.
-   * @param  {Number}  options.maxAmmo  The max amount of ammo the weapon can hold.
-   * @param  {Number}  options.range    The range of the weapon.
-   * @param  {String}  options.texture  The weapon texture.
+   * @param  {Player}  options.player     The player.
+   * @param  {Number}  options.power      The power of the weapon.
+   * @param  {Boolean} options.equiped    Is the weapon equiped.
+   * @param  {Number}  options.recoil     The recoil of the weapon.
+   * @param  {Number}  options.maxAmmo    The max amount of ammo the weapon can hold.
+   * @param  {Number}  options.range      The range of the weapon.
+   * @param  {Number}  options.accuracy   The accuracy of the weapon.
+   * @param  {Number}  options.pellets    The number of pellets per use.
+   * @param  {Number}  options.spread     The spread of the pellets.
+   * @param  {Object}  options.sounds     The weapon sounds.
+   * @param  {String}  options.name       The weapon name.
+   * @param  {Number}  options.ammo       The ammo of the weapon.
+   * @param  {Number}  options.rate       The rate of fire.
+   * @param  {Number}  options.automatic  Automatic weapon option.
+   * @param  {Number}  options.type       The type of weapon.
+   * @param  {Object}  options.projectile The weapon projectile data.
    */
   constructor({
     player,
@@ -53,11 +63,9 @@ class AbstractWeapon extends Entity {
     rate,
     automatic,
     type,
-    maxAttacks,
     projectile,
-    ...other
   }) {
-    super(other);
+    super();
 
     this.name = name;
     this.sounds = sounds;
@@ -77,7 +85,6 @@ class AbstractWeapon extends Entity {
     this.pellets = [...Array(pellets).keys()].map(i => i);
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
-    this.maxAttacks = maxAttacks;
     this.projectile = projectile;
 
     this.setIdle();
@@ -122,7 +129,7 @@ class AbstractWeapon extends Entity {
   /**
    * Update the weapon.
    * @param  {Number} delta The delta time.
-   * @param  {Number} elapsedMS The elapsed time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     switch (this.state) {
@@ -268,6 +275,10 @@ class AbstractWeapon extends Entity {
     return this.state === STATES.DISABLED;
   }
 
+  /**
+   * Get the weapon props.
+   * @return {Object} The weapon props.
+   */
   get props() {
     const {
       name,
@@ -284,7 +295,6 @@ class AbstractWeapon extends Entity {
       pellets,
       player,
       ammo,
-      maxAttacks,
       projectile,
       highCalibre,
     } = this;
@@ -300,13 +310,26 @@ class AbstractWeapon extends Entity {
       rate,
       accuracy,
       ammo,
-      maxAttacks,
       projectile,
       range: transformRangeForData(range, player.width / 2),
       spread,
       pellets: pellets.length,
       highCalibre,
     };
+  }
+
+  /**
+   * Set the weapon state.
+   * @param {String} state The new state.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 }
 

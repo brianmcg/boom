@@ -10,11 +10,25 @@ const SCALE_INCREMENT = 0.05;
 class AbstractItem extends DynamicEntity {
   /**
    * Creates an item.
-   * @param  {Number} options.x       The x coordinate of the body.
-   * @param  {Number} options.y       The y coordinate of the body
-   * @param  {Number} options.width   The width of the body.
-   * @param  {Number} options.height  The height of the body.
-   * @param  {String} options.texture The texture of entity.
+   * @param  {Number}  options.x              The x coordinate of the item.
+   * @param  {Number}  options.y              The y coordinate of the item.
+   * @param  {Number}  options.z              The z coordinate of the item.
+   * @param  {Number}  options.width          The width of the item.
+   * @param  {Number}  options.height         The length of the item.
+   * @param  {Number}  options.height         The height of the item.
+   * @param  {Boolean} options.blocking       The blocking value of the item.
+   * @param  {Number}  options.anchor         The anchor of the item.
+   * @param  {Number}  options.angle          The angle of the item.
+   * @param  {Number}  options.weight         The weight of the item.
+   * @param  {Number}  options.autoPlay       The autopPlay value of the item.
+   * @param  {String}  options.name           The name of the item.
+   * @param  {Object}  options.sounds         The item sounds.
+   * @param  {Object}  options.soundSprite    The item sound sprite.
+   * @param  {Number}  options.scale          The item scale.
+   * @param  {Object}  options.tail           The item tail.
+   * @param  {String}  options.type           The type of item.
+   * @param  {Number}  options.floorOffset    The floor offset.
+   * @param  {Number}  options.spawnTime      The time to respawn.
    */
   constructor({
     type,
@@ -60,8 +74,8 @@ class AbstractItem extends DynamicEntity {
 
   /**
    * Update the item.
-   * @param  {Number} delta            The delta time value.
-   * @param  {Object} options.actions  The player actions.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     this.timer += elapsedMS;

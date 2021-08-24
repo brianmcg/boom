@@ -3,6 +3,7 @@ import { CELL_SIZE } from 'game/constants/config';
 
 /**
  * Class representing a world.
+ * @extends {EventEmitter}
  */
 class World extends EventEmitter {
   /**

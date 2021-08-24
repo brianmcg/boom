@@ -19,15 +19,29 @@ const CELL_CENTER = CELL_SIZE / 4;
 class AbstractActor extends AbstractDestroyableEntity {
   /**
    * Creates an abstract actor.
-   * @param  {Number}  options.x         The x coordinate of the character.
-   * @param  {Number}  options.y         The y coordinate of the character
-   * @param  {Number}  options.width     The width of the character.
-   * @param  {Number}  options.height    The height of the character.
-   * @param  {Number}  options.angle     The angle of the character.
-   * @param  {Boolean} options.blocking  Is the dynamic entity blocking.
-   * @param  {String}  options.texture   The texture of the actor.
-   * @param  {Number}  options.health    The current health of the actor.
-   * @param  {Number}  options.maxHealth The maximum health of the actor.
+   * @param  {Number}  options.x            The x coordinate of the actor.
+   * @param  {Number}  options.y            The y coordinate of the actor.
+   * @param  {Number}  options.z            The z coordinate of the actor.
+   * @param  {Number}  options.width        The width of the actor.
+   * @param  {Number}  options.height       The length of the actor.
+   * @param  {Number}  options.height       The height of the actor.
+   * @param  {Boolean} options.blocking     The blocking value of the actor.
+   * @param  {Number}  options.anchor       The anchor of the actor.
+   * @param  {Number}  options.angle        The angle of the actor.
+   * @param  {Number}  options.weight       The weight of the actor.
+   * @param  {Number}  options.autoPlay     The autopPlay value of the actor.
+   * @param  {String}  options.name         The name of the actor.
+   * @param  {Object}  options.sounds       The actor sounds.
+   * @param  {Object}  options.soundSprite  The actor sound sprite.
+   * @param  {Number}  options.scale        The actor scale.
+   * @param  {Object}  options.tail         The actor tail.
+   * @param  {Number}  options.health       The current health of the actor.
+   * @param  {Number}  options.maxHealth    The maximum health of the actor.
+   * @param  {Object}  options.effects      The effects of the actor.
+   * @param  {Number}  options.speed        The speed of the actor.
+   * @param  {Number}  options.acceleration The acceleration of the actor.
+   * @param  {Array}   options.spatters     The spatter values of the actor.
+   * @param  {String}  options.bloodColor   The blood color of the actor.
    */
   constructor({
     speed,
@@ -41,7 +55,6 @@ class AbstractActor extends AbstractDestroyableEntity {
     if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
-
 
     this.speed = speed * CELL_SIZE;
     this.acceleration = acceleration * CELL_SIZE;
@@ -69,7 +82,7 @@ class AbstractActor extends AbstractDestroyableEntity {
   /**
    * Update the actor.
    * @param  {Number} delta     The time delta.
-   * @param  {Number} elapsedMS The elsapsed time.
+   * @param  {Number} elapsedMS The elsapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
@@ -106,7 +119,7 @@ class AbstractActor extends AbstractDestroyableEntity {
   }
 
   /**
-   * Add a hit to the entity.
+   * Add a hit to the actor.
    * @param {Number} options.damage The damage of the hit.
    * @param {Number} options.angle  The angle of the hit.
    * @param {Array}  options.rays   The ray sections.

@@ -129,10 +129,10 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
 
 /**
  * A collision between a ray and a body has occured.
- * @param  {Object}  startPoint The first point of the ray.
- * @param  {Object}  endPoint   The second point of the ray.
- * @param  {Object}  body       The body.
- * @return {Boolean}            Represents whether a collision has occured.
+ * @param  {Body}    body           The body.
+ * @param  {Object}  ray.startPoint The first point of the ray.
+ * @param  {Object}  ray.endPoint   The second point of the ray.
+ * @return {Boolean}                Represents whether a collision has occured.
  */
 export const isRayCollision = (body, { startPoint, endPoint }) => {
   const {
@@ -167,10 +167,10 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
 
 /**
  * A collision between a ray and a body has occured.
- * @param  {Object}  startPoint The first point of the ray.
- * @param  {Object}  endPoint   The second point of the ray.
- * @param  {Object}  body       The body.
- * @return {Boolean}            Represents whether a collision has occured.
+ * @param  {Body}    body           The body.
+ * @param  {Object}  ray.startPoint The first point of the ray.
+ * @param  {Object}  ray.endPoint   The second point of the ray.
+ * @return {Object}                 The point where the collision occurred.
  */
 export const getRayCollision = (body, { startPoint, endPoint }) => {
   const { x, y, width } = body.shape;
@@ -256,7 +256,7 @@ export const getAngleBetween = (bodyA, bodyB) => {
 
 /**
  * Is a dynamic body facing a another body.
- * @param  {DynamicBody}  bodyA   The dynamic body.
+ * @param  {DynamicBody}  bodyA   The first body.
  * @param  {Body}         bodyB   The second body.
  * @return {Boolean}              Is the dynamic body facing the body.
  */
@@ -265,7 +265,7 @@ export const isFacing = (bodyA, bodyB) => {
   return angle > DEG_270 || angle < DEG_90;
 };
 
-export const castCellRay = ({
+const castCellRay = ({
   x,
   y,
   angle,
@@ -892,12 +892,12 @@ const castRaySection = ({
 };
 
 /**
- * Cast a long ray that goes through transparent cells.
+ * Cast a ray that goes through transparent cells.
  * @param  {Number} options.x     The x coordinate of the starting point.
  * @param  {Number} options.y     The y coordinate of the starting point.
  * @param  {Number} options.angle The angle of the ray.
  * @param  {World}  options.world The world in which the ray is cast.
- * @return {Array}                The cast results.
+ * @return {Array}                The raycast results.
  */
 export const castRay = ({
   x,

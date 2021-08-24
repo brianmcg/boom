@@ -2,19 +2,30 @@ import DynamicEntity from '../DynamicEntity';
 
 /**
  * Class representig an explosive entity.
+ * @extends {DynamicEntity}
  */
 class AbstractDestroyableEntity extends DynamicEntity {
   /**
    * Creates an abstract destroyable entity.
-   * @param  {Number}  options.x         The x coordinate of the character.
-   * @param  {Number}  options.y         The y coordinate of the character
-   * @param  {Number}  options.width     The width of the character.
-   * @param  {Number}  options.height    The height of the character.
-   * @param  {Number}  options.angle     The angle of the character.
-   * @param  {Boolean} options.blocking  Is the dynamic entity blocking.
-   * @param  {String}  options.texture   The texture of the actor.
-   * @param  {Number}  options.health    The current health of the actor.
-   * @param  {Number}  options.maxHealth The maximum health of the actor.
+   * @param  {Number}  options.x            The x coordinate of the entity.
+   * @param  {Number}  options.y            The y coordinate of the entity.
+   * @param  {Number}  options.z            The z coordinate of the entity.
+   * @param  {Number}  options.width        The width of the entity.
+   * @param  {Number}  options.height       The length of the entity.
+   * @param  {Number}  options.height       The height of the entity.
+   * @param  {Boolean} options.blocking     The blocking value of the entity.
+   * @param  {Number}  options.anchor       The anchor of the entity.
+   * @param  {Number}  options.angle        The angle of the entity.
+   * @param  {Number}  options.weight       The weight of the entity.
+   * @param  {Number}  options.autoPlay     The autopPlay value of the entity.
+   * @param  {String}  options.name         The name of the entity.
+   * @param  {Object}  options.sounds       The entity sounds.
+   * @param  {Object}  options.soundSprite  The entity sound sprite.
+   * @param  {Number}  options.scale        The entity scale.
+   * @param  {Object}  options.tail         The entity tail.
+   * @param  {Number}  options.health       The current health of the entity.
+   * @param  {Number}  options.maxHealth    The maximum health of the entity.
+   * @param  {Object}  options.effects      The effects of the entity.
    */
   constructor({
     maxHealth = 100,
@@ -33,8 +44,8 @@ class AbstractDestroyableEntity extends DynamicEntity {
 
   /**
    * Update the enemy.
-   * @param  {Number} delta The delta time.
-   * @param  {Number} elapsedMS The elapsed time.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);

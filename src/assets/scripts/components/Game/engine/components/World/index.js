@@ -27,20 +27,25 @@ const NODE_WEIGHTS = {
 
 /**
  * Class representing a world.
+ * @extends {World}
  */
 class World extends PhysicsWorld {
   /**
    * Creates a world.
+   * @param  {Array}  grid    The map grid of the world.
+   * @param  {Array}  bodies  The bodies to add to the map.
    * @param  {Number} options.index       The index of the world.
    * @param  {Player} options.player      The player.
    * @param  {Array}  options.enemies     The enemies.
-   * @param  {Array}  options.objects   The objects.
+   * @param  {Array}  options.objects     The objects.
    * @param  {Array}  options.items       The items.
-   * @param  {Array}  options.grid        The cell grid.
    * @param  {Object} options.entrance    The entrance coordinates.
    * @param  {Object} options.exit        The exit coordinates.
    * @param  {Number} options.visibility  The visibility of the world.
    * @param  {Number} options.brightness  The brightness of the world.
+   * @param  {Scene}  options.scene       The scene the world is in.
+   * @param  {String} options.sky         The name of the sky.
+   * @param  {Number} options.floorOffset The floor offset.
    */
   constructor({
     scene,
@@ -134,8 +139,8 @@ class World extends PhysicsWorld {
 
   /**
    * Update the world.
-   * @param  {Number} delta            The delta time value.
-   * @param  {Object} options.actions  The player actions.
+   * @param  {Number} delta     The delta time value.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
     if (this.explosionFlash) {
@@ -166,9 +171,10 @@ class World extends PhysicsWorld {
 
   /**
    * Find a path between two cells.
-   * @param  {Cell} from The starting cell.
-   * @param  {Cell} to   The destination cell.
-   * @return {Array}     A list of cells.
+   * @param  {Cell}   from  The starting cell.
+   * @param  {Cell}   to    The destination cell.
+   * @param  {Number} index The graph index.
+   * @return {Array}        A list of cells.
    */
   findPath(from, to, index = 0) {
     const graph = this.graphs[index];
@@ -231,8 +237,14 @@ class World extends PhysicsWorld {
   }
 
   /**
-   * Add an explosion to the world.
-   * @param {World} explosion The explosion to add.
+   * Add an effect to the world.
+   * @param {Number}  options.flash     The flash amount.
+   * @param {Number}  options.shake     The shake amount.
+   * @param {String}  options.sourceId  The id of the source.
+   * @param {String}  options.type      The effect type.
+   * @param {Number}  options.x         The x coordinate.
+   * @param {Number}  options.y         The y coordinate.
+   * @param {Number}  options.z         The z coordinate.
    */
   addEffect({ flash = 0, shake, ...options }) {
     const effect = new Effect({
@@ -269,6 +281,7 @@ class World extends PhysicsWorld {
 
   /**
    * Set the brightness and enabled item flash.
+   * @param  {AbstractItem} item The item to pick up.
    */
   onPlayerPickUp(item) {
     item.setRemoved();

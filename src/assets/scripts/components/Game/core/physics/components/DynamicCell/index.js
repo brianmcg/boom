@@ -3,6 +3,7 @@ import Cell from '../Cell';
 
 /**
  * Class representing a dynamic flat cell.
+ * @extends {Cell}
  */
 class DynamicCell extends Cell {
   /**

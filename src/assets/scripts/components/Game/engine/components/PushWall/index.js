@@ -12,12 +12,21 @@ const SHAKE_MULTIPLIER = 0.2;
 class PushWall extends DynamicCell {
   /**
    * Creates a door cell
-   * @param  {Number} options.x       The x coordinate of the cell.
-   * @param  {Number} options.y       The y coordinate of the cell
-   * @param  {Number} options.width   The width of the cell.
-   * @param  {Number} options.height  The height of the cell.
-   * @param  {Object} options.sides   The ids of the sides of the cell.
-   * @param  {String} options.axis    The axis of the door.
+   * @param  {Number}  options.x            The x coordinate of the cell.
+   * @param  {Number}  options.y            The y coordinate of the cell.
+   * @param  {Number}  options.z            The z coordinate of the cell.
+   * @param  {Number}  options.width        The width of the cell.
+   * @param  {Number}  options.height       The length of the cell.
+   * @param  {Number}  options.height       The height of the cell.
+   * @param  {Boolean} options.blocking     The blocking value of the cell.
+   * @param  {Number}  options.anchor       The anchor of the cell.
+   * @param  {String}  options.axis         The anchor of the cell.
+   * @param  {Number}  options.offset       The offset of the cell.
+   * @param  {Boolean} options.autoPlay     The cell autoPlay value.
+   * @param  {Object}  options.sides        The sides of the cell.
+   * @param  {Sound}   options.soundSprite  The soundSprite.
+   * @param  {Object}  options.sounds       The sounds.
+   * @param  {Boolean} options.reverse      Reverse the offset.
    */
   constructor(options) {
     super(options);
