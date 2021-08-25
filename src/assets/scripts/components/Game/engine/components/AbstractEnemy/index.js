@@ -9,6 +9,7 @@ const STATES = {
   ALERTED: 'enemy:alerted',
   EVADING: 'enemy:evading',
   CHASING: 'enemy:chasing',
+  RETREATING: 'enemy:retreating',
   AIMING: 'enemy:aiming',
   ATTACKING: 'enemy:attacking',
   HURTING: 'enemy:hurting',
@@ -38,6 +39,8 @@ const DEG_360 = degrees(360);
 const MAX_STAIN_RADIUS = CELL_SIZE / 4;
 
 const STAIN_INTERVAL = 50;
+
+const MAX_PATH_INDEX = 2;
 
 /**
  * Abstract class representing an enemy.
@@ -133,8 +136,8 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: (enemy) => {
-        if (enemy.isIdle()) {
-          this.setIdle();
+        if (enemy.isIdle() && this.isChasing()) {
+          this.setRetreating();
         }
       },
     });
@@ -143,10 +146,12 @@ class AbstractEnemy extends AbstractActor {
       type: TransparentCell,
       onStart: () => {
         if (this.projectiles) {
-          this.setRange(this.primaryAttack.range * 2);
+          if (this.findPlayer()) {
+            this.setRange(this.primaryAttack.range * 2);
+          } else {
+            this.setIdle();
+          }
         }
-
-        this.setIdle();
       },
     });
 
@@ -183,6 +188,9 @@ class AbstractEnemy extends AbstractActor {
         case STATES.CHASING:
           this.updateChasing(delta, elapsedMS);
           break;
+        case STATES.RETREATING:
+          this.updateRetreating(delta, elapsedMS);
+          break;
         case STATES.AIMING:
           this.updateAiming(delta, elapsedMS);
           break;
@@ -198,6 +206,8 @@ class AbstractEnemy extends AbstractActor {
         default:
           break;
       }
+    } else {
+      this.setIdle();
     }
   }
 
@@ -207,9 +217,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} elapsedMS  The elapsed time.
    */
   updateIdle(delta, elapsedMS) {
-    this.target = this.findPlayer();
-
-    if (this.target) {
+    if (this.findPlayer()) {
       this.setAlerted();
     } else {
       this.nearbyTimer += elapsedMS;
@@ -230,12 +238,10 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAlerted(delta, elapsedMS) {
-    this.target = this.parent.player;
-
     this.alertTimer += elapsedMS;
 
     if (this.alertTimer >= this.alertTime) {
-      if (this.distanceToPlayer <= this.primaryAttack.range) {
+      if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
         this.setAiming();
       } else {
         this.setChasing();
@@ -249,36 +255,58 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} elapsedMS  The elapsed time.
    */
   updateChasing(delta, elapsedMS) {
-    this.target = this.findPlayer();
+    const nextCell = this.path[this.pathIndex];
 
-    if (this.target && this.distanceToPlayer <= this.primaryAttack.range) {
+    if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
       this.setAiming();
-    } else {
-      const next = this.path[0];
+    } else if (nextCell) {
+      this.face(nextCell);
 
-      this.searchTimer += elapsedMS;
-
-      if (this.searchTimer >= SEARCH_INTERVAL) {
-        this.searchTimer = 0;
-
-        if (this.target) {
-          this.path = this.findPath(this.target);
-        }
+      if (nextCell.isDoor) {
+        nextCell.use(this);
       }
 
-      if (next) {
-        this.face(next);
+      if (this.isArrivedAt(nextCell)) {
+        this.pathIndex += 1;
+      }
 
-        if (next.isDoor) {
-          next.use(this);
-        }
+      if (this.pathIndex === MAX_PATH_INDEX) {
+        this.path = this.findPath(this.parent.player);
+        this.pathIndex = 0;
+      }
+    } else {
+      this.path = this.findPath(this.parent.player);
 
-        if (this.isArrivedAt(next)) {
-          this.path.shift();
-        }
-      } else if (this.target) {
-        this.path = this.findPath(this.target);
-      } else {
+      if (this.path.length === 0) {
+        this.setIdle();
+      }
+    }
+  }
+
+  updateRetreating(delta, elapsedMS) {
+    const nextCell = this.path[this.pathIndex];
+
+    if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
+      this.setAiming();
+    } else if (nextCell) {
+      this.face(nextCell);
+
+      if (nextCell.isDoor) {
+        nextCell.use(this);
+      }
+
+      if (this.isArrivedAt(nextCell)) {
+        this.pathIndex += 1;
+      }
+
+      if (this.pathIndex === MAX_PATH_INDEX) {
+        this.path = this.findPath(this.startCell);
+        this.pathIndex = 0;
+      }
+    } else {
+      this.path = this.findPath(this.startCell);
+
+      if (this.path.length === 0) {
         this.setIdle();
       }
     }
@@ -296,7 +324,6 @@ class AbstractEnemy extends AbstractActor {
     }
 
     if (this.isArrivedAt(this.evadeDestination)) {
-      this.target = this.parent.player;
       this.setChasing();
     } else {
       this.face(this.evadeDestination);
@@ -309,9 +336,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAiming(delta, elapsedMS) {
-    this.target = this.findPlayer();
-
-    if (this.target) {
+    if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.aimTimer += elapsedMS;
 
@@ -322,7 +347,6 @@ class AbstractEnemy extends AbstractActor {
         this.setChasing();
       }
     } else {
-      this.target = this.parent.player;
       this.setChasing();
     }
   }
@@ -333,9 +357,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number} elapsedMS  The elapsed time.
    */
   updateAttacking(delta, elapsedMS) {
-    this.target = this.findPlayer();
-
-    if (this.target) {
+    if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
         this.attackTimer += elapsedMS;
 
@@ -351,7 +373,6 @@ class AbstractEnemy extends AbstractActor {
         this.setChasing();
       }
     } else {
-      this.target = this.parent.player;
       this.setChasing();
     }
   }
@@ -545,7 +566,7 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the idle moving change.
+   * Add a callback to the chasing state change.
    * @param  {Function} callback The callback function.
    */
   onChasing(callback) {
@@ -553,7 +574,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the idle aiming change.
+   * Add a callback to the retreating change.
+   * @param  {Function} callback The callback function.
+   */
+  onRetreating(callback) {
+    this.on(STATES.RETREATING, callback);
+  }
+  /**
+   * Add a callback to the aiming state change.
    * @param  {Function} callback The callback function.
    */
   onAiming(callback) {
@@ -561,7 +589,7 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the idle attacking change.
+   * Add a callback to the attacking state change.
    * @param  {Function} callback The callback function.
    */
   onAttacking(callback) {
@@ -569,7 +597,7 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the idle hurting change.
+   * Add a callback to the hurting state change.
    * @param  {Function} callback The callback function.
    */
   onHurting(callback) {
@@ -577,7 +605,7 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Add a callback to the idle dead change.
+   * Add a callback to the dead state change.
    * @param  {Function} callback The callback function.
    */
   onDead(callback) {
@@ -585,7 +613,7 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
-   * Set the enemy to the idle state.
+   * Set the enemy state.
    * @return {Boolean}  State change successful.
    */
   setIdle() {
@@ -621,7 +649,7 @@ class AbstractEnemy extends AbstractActor {
       this.evadeDestination = this.findEvadeDestination();
 
       if (!this.evadeDestination) {
-        this.setIdle();
+        this.setChasing();
       }
 
       this.velocity = this.speed;
@@ -639,10 +667,16 @@ class AbstractEnemy extends AbstractActor {
 
     if (isStateChanged) {
       this.velocity = this.speed;
+    }
 
-      if (this.target) {
-        this.path = this.findPath(this.target);
-      }
+    return isStateChanged;
+  }
+
+  setRetreating() {
+    const isStateChanged = this.setState(STATES.RETREATING);
+
+    if (isStateChanged) {
+      this.velocity = this.speed;
     }
 
     return isStateChanged;
@@ -772,6 +806,14 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Is the enemy in the retreating state.
+   * @return {Boolean}
+   */
+  isRetreating() {
+    return this.state === STATES.RETREATING;
+  }
+
+  /**
    * Is the enemy in the aiming state.
    * @return {Boolean}
    */
@@ -830,11 +872,12 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.isAlive() && super.setState(state);
 
     if (isStateChanged) {
+      this.path = [];
+      this.pathIndex = 0;
       this.attackTimer = 0;
       this.hurtTimer = 0;
       this.alertTimer = 0;
       this.aimTimer = 0;
-      this.searchTimer = 0;
       this.emit(state);
     }
 

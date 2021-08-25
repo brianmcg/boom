@@ -1,4 +1,4 @@
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, GOD_MODE } from 'game/constants/config';
 import { EventEmitter } from 'game/core/graphics';
 
 const STATES = {
@@ -164,7 +164,9 @@ class AbstractWeapon extends EventEmitter {
         sound: this.sounds.use,
       });
     } else if (this.ammo > 0) {
-      this.ammo -= 1;
+      if (!GOD_MODE) {
+        this.ammo -= 1;
+      }
 
       this.emit(EVENTS.USE, {
         recoil: this.recoil,

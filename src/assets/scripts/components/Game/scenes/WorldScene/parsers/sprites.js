@@ -797,7 +797,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
 const createWorldGraphics = ({ world }) => {
   const orange = 0xFD971F;
-  // const blue = 0x66D9EF;
+  const blue = 0x66D9EF;
   const purple = 0xAE81FF;
   // const black = 0x272822;
   const green = 0xA6E22E;
@@ -815,11 +815,15 @@ const createWorldGraphics = ({ world }) => {
     }
 
     if (body.isItem) {
-      return purple;
+      return blue;
     }
 
     if (body.isEnemy) {
       return pink;
+    }
+
+    if (body.isDestroyable) {
+      return purple;
     }
 
     return grey;

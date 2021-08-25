@@ -80,6 +80,15 @@ class AbstractActor extends AbstractDestroyableEntity {
   }
 
   /**
+   * Called when body is added to world.
+   * @param  {World} parent  The world that the body was added to.
+   */
+  onAdded(parent) {
+    super.onAdded(parent);
+    this.startCell = this.cell;
+  }
+
+  /**
    * Update the actor.
    * @param  {Number} delta     The time delta.
    * @param  {Number} elapsedMS The elsapsed time in milliseconds.

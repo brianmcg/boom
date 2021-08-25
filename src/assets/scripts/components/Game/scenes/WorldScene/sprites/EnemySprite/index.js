@@ -35,6 +35,7 @@ class EnemySprite extends AnimatedEntitySprite {
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));
     enemy.onEvading(() => this.setAnimation(STATES.MOVING));
     enemy.onChasing(() => this.setAnimation(STATES.MOVING));
+    enemy.onRetreating(() => this.setAnimation(STATES.MOVING));
     enemy.onAiming(() => this.setAnimation(STATES.AIMING));
     enemy.onAttacking(() => this.setAnimation(STATES.ATTACKING));
     enemy.onHurting(() => this.setAnimation(STATES.HURTING));

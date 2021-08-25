@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { WEAPONS } from 'game/constants/types';
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE, GOD_MODE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import HitScanWeapon from './components/HitScanWeapon';
@@ -554,24 +554,26 @@ class Player extends AbstractActor {
    * @param  {Number} angle  The angle the damage came from.
    */
   hurt(damage, angle) {
-    this.vision = HURT_VISION_AMOUNT;
-    this.health -= damage;
+    if (!GOD_MODE) {
+      this.vision = HURT_VISION_AMOUNT;
+      this.health -= damage;
 
-    this.emit(EVENTS.HURT);
+      this.emit(EVENTS.HURT);
 
-    if (this.health <= 0) {
-      this.health = 0;
-      this.setDying();
-      this.emitSound(this.sounds.death);
-    } else {
-      this.recoil(damage, { direction: -1 });
+      if (this.health <= 0) {
+        this.health = 0;
+        this.setDying();
+        this.emitSound(this.sounds.death);
+      } else {
+        this.recoil(damage, { direction: -1 });
 
-      if (!this.isPlaying(this.sounds.pain)) {
-        this.emitSound(this.sounds.pain);
+        if (!this.isPlaying(this.sounds.pain)) {
+          this.emitSound(this.sounds.pain);
+        }
       }
-    }
 
-    super.hurt(damage, angle);
+      super.hurt(damage, angle);
+    }
   }
 
   /**

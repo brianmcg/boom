@@ -20,7 +20,13 @@ export const LEVEL = parseInt(urlParams.get('level'), 10);
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = parseInt(urlParams.get('fps'), 10) || !!DEBUG || false;
+export const DISPLAY_FPS = !!parseInt(urlParams.get('fps'), 10) || !!DEBUG || false;
+
+/**
+ * Make player invincible.
+ * @type {Booelan}
+ */
+export const GOD_MODE = !!parseInt(urlParams.get('god'), 10) || false;
 
 /**
  * The maximum frames per second.
