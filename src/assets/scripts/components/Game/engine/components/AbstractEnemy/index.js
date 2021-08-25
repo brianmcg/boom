@@ -30,8 +30,6 @@ const GROWL_INTERVAL = 8000;
 
 const DEAD_VELOCITY_MULTIPLIER = 0.25;
 
-const SEARCH_INTERVAL = 500;
-
 const DEG_90 = degrees(90);
 
 const DEG_360 = degrees(360);
@@ -251,10 +249,8 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Update enemy in chasing state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
    */
-  updateChasing(delta, elapsedMS) {
+  updateChasing() {
     const nextCell = this.path[this.pathIndex];
 
     if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
@@ -283,7 +279,10 @@ class AbstractEnemy extends AbstractActor {
     }
   }
 
-  updateRetreating(delta, elapsedMS) {
+  /**
+   * Update enemy in chasing state
+   */
+  updateRetreating() {
     const nextCell = this.path[this.pathIndex];
 
     if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
@@ -580,6 +579,7 @@ class AbstractEnemy extends AbstractActor {
   onRetreating(callback) {
     this.on(STATES.RETREATING, callback);
   }
+
   /**
    * Add a callback to the aiming state change.
    * @param  {Function} callback The callback function.
