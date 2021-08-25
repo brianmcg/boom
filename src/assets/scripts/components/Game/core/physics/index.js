@@ -4,7 +4,7 @@ import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
 import { degrees, castRay } from './helpers';
-import { AXES } from './constants';
+import { AXES, TRANSPARENCY } from './constants';
 
 /**
  * @module  game/core/physics
@@ -43,4 +43,8 @@ export {
    * The axes constant.
    */
   AXES,
+  /**
+   * The transparency constant.
+   */
+  TRANSPARENCY,
 };

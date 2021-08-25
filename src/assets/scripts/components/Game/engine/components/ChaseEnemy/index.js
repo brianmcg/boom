@@ -45,7 +45,7 @@ class ChaseEnemy extends AbstractEnemy {
    */
   setAttacking() {
     super.setAttacking();
-    this.velocity = this.speed;
+    this.velocity = this.speed * 0.5;
   }
 }
 

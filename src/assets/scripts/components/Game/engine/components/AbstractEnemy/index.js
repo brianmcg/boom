@@ -204,8 +204,6 @@ class AbstractEnemy extends AbstractActor {
         default:
           break;
       }
-    } else {
-      this.setIdle();
     }
   }
 
