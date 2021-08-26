@@ -52,7 +52,7 @@ class HitScanWeapon extends AbstractWeapon {
 
       let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
 
-      for (let i = 0; i < pellets.length; i += 1) {
+      for (let i = 0; i < pellets.length; i++) {
         const projectile = projectiles.shift();
 
         if (projectile) {

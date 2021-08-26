@@ -137,8 +137,8 @@ class World extends EventEmitter {
     const cells = [];
     const { gridX, gridY } = body;
 
-    for (let i = gridX - radius; i <= gridX + radius; i += 1) {
-      for (let j = gridY - radius; j <= gridY + radius; j += 1) {
+    for (let i = gridX - radius; i <= gridX + radius; i++) {
+      for (let j = gridY - radius; j <= gridY + radius; j++) {
         const cell = this.getCell(i, j);
 
         if (cell) {

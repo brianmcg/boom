@@ -129,7 +129,7 @@ class HUDContainer extends Container {
     this.messages.forEach((message, i) => {
       let y = HUD_PADDING + (this.messages[0].height / 2);
 
-      for (let j = 0; j < i; j += 1) {
+      for (let j = 0; j < i; j++) {
         y += this.messages[j].height + MESSAGE_PADDING;
       }
 

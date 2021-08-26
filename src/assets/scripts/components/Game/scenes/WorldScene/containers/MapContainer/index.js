@@ -113,7 +113,7 @@ class MapContainer extends Container {
     let angle = (player.viewAngle - HALF_FOV + DEG_360) % DEG_360;
 
     // Update FOV
-    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
+    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex++) {
       // Cast ray
       const rays = castRay({
         x: player.x,

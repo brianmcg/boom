@@ -157,7 +157,7 @@ const createWallSprites = ({
     const { frame } = frames[name];
     const wallTexture = textures[name];
 
-    for (let i = 0; i < frame.w; i += 1) {
+    for (let i = 0; i < frame.w; i++) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
       wallTextures[name].push([new Texture(wallTexture, clearSlice)]);
     }
@@ -201,7 +201,7 @@ const createWallSprites = ({
       return [...memo, ...spatterColorTextures];
     }, []);
 
-    for (let i = 0; i < frame.w; i += 1) {
+    for (let i = 0; i < frame.w; i++) {
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
 
       spatterTextures.forEach((texture) => {
@@ -210,8 +210,8 @@ const createWallSprites = ({
     }
   });
 
-  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
-    for (let j = 0; j < WALL_LAYERS; j += 1) {
+  for (let i = 0; i < SCREEN.WIDTH; i++) {
+    for (let j = 0; j < WALL_LAYERS; j++) {
       wallSprites[j].push(new WallSprite(wallTextures, i));
     }
   }
@@ -278,9 +278,9 @@ const createBackgroundSprites = ({
       backgroundTextures[image] = [];
 
 
-      for (let i = 0; i < CELL_SIZE; i += 1) {
+      for (let i = 0; i < CELL_SIZE; i++) {
         const col = [];
-        for (let j = 0; j < CELL_SIZE; j += 1) {
+        for (let j = 0; j < CELL_SIZE; j++) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
           col.push(new Texture(texture, pixel));
         }
@@ -289,9 +289,9 @@ const createBackgroundSprites = ({
     }
   });
 
-  for (let i = 0; i < SCREEN.WIDTH; i += 1) {
+  for (let i = 0; i < SCREEN.WIDTH; i++) {
     const col = [];
-    for (let j = 0; j < SCREEN.HEIGHT; j += 1) {
+    for (let j = 0; j < SCREEN.HEIGHT; j++) {
       col.push(new BackgroundSprite(backgroundTextures, i, j));
     }
 

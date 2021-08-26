@@ -392,7 +392,7 @@ class Player extends AbstractActor {
       const currentIndex = this.weaponIndex;
 
       if (cycleWeapon < 0) {
-        for (let i = 1; i < this.weapons.length; i += 1) {
+        for (let i = 1; i < this.weapons.length; i++) {
           const nextIndex = (currentIndex + i) % this.weapons.length;
           const weapon = this.weapons[nextIndex];
 
@@ -402,7 +402,7 @@ class Player extends AbstractActor {
           }
         }
       } else {
-        for (let i = this.weapons.length - 1; i > 0; i -= 1) {
+        for (let i = this.weapons.length - 1; i > 0; i--) {
           const nextIndex = (currentIndex + i) % this.weapons.length;
           const weapon = this.weapons[nextIndex];
 

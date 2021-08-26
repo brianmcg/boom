@@ -117,7 +117,7 @@ class POVContainer extends Container {
     centerY = CAMERA_CENTER_Y + viewPitch;
 
     // Iterate over screen width
-    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex += 1) {
+    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex++) {
       angle = (viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
 
       const rays = [];
@@ -132,7 +132,7 @@ class POVContainer extends Container {
         ignoreOverlay: false,
       });
 
-      for (let i = 0; i < raySections.length; i += 1) {
+      for (let i = 0; i < raySections.length; i++) {
         const { side, cell } = raySections[i];
         const { overlay, closed, transparency } = cell;
 
@@ -168,7 +168,7 @@ class POVContainer extends Container {
       }
 
       // Update wall sprites.
-      for (let i = 0; i < WALL_LAYERS; i += 1) {
+      for (let i = 0; i < WALL_LAYERS; i++) {
         const ray = rays[i];
 
         if (ray) {
@@ -273,7 +273,7 @@ class POVContainer extends Container {
 
       sideHeight = Math.max(CELL_SIZE, sideHeight);
 
-      for (let yIndex = 0; yIndex <= topIntersection; yIndex += 1) {
+      for (let yIndex = 0; yIndex <= topIntersection; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
@@ -325,7 +325,7 @@ class POVContainer extends Container {
         }
       }
 
-      for (let yIndex = topIntersection + 1; yIndex < bottomIntersection - 1; yIndex += 1) {
+      for (let yIndex = topIntersection + 1; yIndex < bottomIntersection - 1; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
@@ -333,7 +333,7 @@ class POVContainer extends Container {
         }
       }
 
-      for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex += 1) {
+      for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {

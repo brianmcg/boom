@@ -643,7 +643,7 @@ const castRaySection = ({
           break;
         }
       } else {
-        for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
+        for (let i = 0, len = horizontalCell.bodies.length; i < len; i++) {
           horizontalBody = horizontalCell.bodies[i];
           encounteredBodies[horizontalBody.id] = horizontalBody;
         }
@@ -801,7 +801,7 @@ const castRaySection = ({
           break;
         }
       } else {
-        for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
+        for (let i = 0, len = verticalCell.bodies.length; i < len; i++) {
           verticalBody = verticalCell.bodies[i];
           encounteredBodies[verticalBody.id] = verticalBody;
         }
@@ -815,7 +815,7 @@ const castRaySection = ({
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     rayEndPoint = { x: xIntersection, y: horizontalGrid };
 
-    for (let i = 0, len = horizontalCell.bodies.length; i < len; i += 1) {
+    for (let i = 0, len = horizontalCell.bodies.length; i < len; i++) {
       horizontalBody = horizontalCell.bodies[i];
       encounteredBodies[horizontalBody.id] = horizontalBody;
     }
@@ -855,7 +855,7 @@ const castRaySection = ({
 
   rayEndPoint = { x: verticalGrid, y: yIntersection };
 
-  for (let i = 0, len = verticalCell.bodies.length; i < len; i += 1) {
+  for (let i = 0, len = verticalCell.bodies.length; i < len; i++) {
     verticalBody = verticalCell.bodies[i];
     encounteredBodies[verticalBody.id] = verticalBody;
   }
@@ -916,7 +916,7 @@ export const castRay = ({
   const gridY = Math.floor(y / CELL_SIZE);
   const cell = world.getCell(gridX, gridY);
 
-  for (let i = 0; i < WALL_LAYERS; i += 1) {
+  for (let i = 0; i < WALL_LAYERS; i++) {
     previousRay = result[i - 1];
 
     if (previousRay) {

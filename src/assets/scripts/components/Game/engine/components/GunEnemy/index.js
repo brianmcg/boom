@@ -86,7 +86,7 @@ class GunEnemy extends AbstractEnemy {
 
     let rayAngle = (this.angle - spreadAngle + DEG_360) % DEG_360;
 
-    for (let i = 0; i < pellets.length; i += 1) {
+    for (let i = 0; i < pellets.length; i++) {
       const projectile = this.projectiles.shift();
 
       if (projectile) {
