@@ -1,5 +1,5 @@
 import { search, Graph } from 'game/core/ai';
-import { World as PhysicsWorld } from 'game/core/physics';
+import { World as PhysicsWorld, TRANSPARENCY } from 'game/core/physics';
 import { CELL_SIZE } from 'game/constants/config';
 import Effect from './components/Effect';
 
@@ -100,7 +100,10 @@ class World extends PhysicsWorld {
     // Create graph for pathfinding.
     this.graphs = [
       new Graph(grid.map(col => col.map((cell) => {
-        if (cell.blocking && !cell.isDoor) {
+        if (
+          cell.blocking && !cell.isDoor && !cell.isPushWall
+            && cell.transparency !== TRANSPARENCY.FULL
+        ) {
           return NODE_WEIGHTS.WALL;
         }
 
@@ -117,7 +120,7 @@ class World extends PhysicsWorld {
           return NODE_WEIGHTS.TRANSPARENT_CELL;
         }
 
-        if (cell.blocking && !cell.isDoor) {
+        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
           return NODE_WEIGHTS.WALL;
         }
 
