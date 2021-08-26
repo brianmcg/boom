@@ -91,6 +91,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
       if (this.health <= 0) {
         this.health = 0;
         this.isExploding = true;
+        this.blocking = false;
       }
     }
   }

@@ -134,6 +134,7 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: (enemy) => {
+        // TODO: handle chasing and evading.
         if (enemy.isIdle() && this.isChasing()) {
           this.setRetreating();
         }
