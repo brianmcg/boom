@@ -68,7 +68,7 @@ export const CELL_SIZE = 32;
  * The sensitivity of the mouse movement.
  * @type {Number}
  */
-export const MOUSE_SENSITIVITY = 0.5;
+export const MOUSE_SENSITIVITY = 0.00125;
 
 /**
  * The number of layers of wall slices to render.

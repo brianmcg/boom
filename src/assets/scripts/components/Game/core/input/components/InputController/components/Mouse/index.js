@@ -14,8 +14,6 @@ const BUTTON_CODES = {
   2: BUTTONS.RIGHT,
 };
 
-const MOVE_MULTIPLIER = 0.0025;
-
 /**
  * Class representing a mouse.
  */
@@ -26,10 +24,8 @@ class Mouse {
    * @param  {Number} options.moveSensitivity   The mouse moveSensitivity.
    */
   constructor(el, moveSensitivity = MOUSE_SENSITIVITY) {
-    const moveMultiplier = MOVE_MULTIPLIER * moveSensitivity;
-
     const onMouseMove = (e) => {
-      const x = moveMultiplier * e.movementX
+      const x = moveSensitivity * e.movementX
         || e.mozMovementX
         || e.webkitMovementX
         || 0;

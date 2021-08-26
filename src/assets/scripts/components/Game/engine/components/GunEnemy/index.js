@@ -60,7 +60,6 @@ class GunEnemy extends AbstractEnemy {
     this.projectiles = [...Array(pellets).keys()].map(() => new HitScan({
       source: this,
       power: this.primaryAttack.power,
-      range: this.primaryAttack.range,
       accuracy: this.primaryAttack.accuracy,
     }));
   }
@@ -99,18 +98,6 @@ class GunEnemy extends AbstractEnemy {
     }
 
     this.emitSound(this.sounds.attack);
-  }
-
-  /**
-   * Set the attack range.
-   * @param {Number} range The range to set.
-   */
-  setRange(range) {
-    super.setRange(range);
-
-    this.projectiles.forEach((projectile) => {
-      projectile.range = range;
-    });
   }
 }
 

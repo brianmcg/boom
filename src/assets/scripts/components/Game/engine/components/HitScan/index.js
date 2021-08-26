@@ -40,7 +40,7 @@ class HitScan extends Body {
     effect,
     source,
     power,
-    range,
+    range = Number.MAX_VALUE,
     accuracy = 0,
     fade,
     highCalibre = false,

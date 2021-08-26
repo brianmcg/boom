@@ -40,6 +40,11 @@ const STAIN_INTERVAL = 50;
 
 const MAX_PATH_INDEX = 2;
 
+const randomizeRange = (range) => {
+  const deviation =  Math.floor(Math.random() * 3);
+  return Math.max((range - deviation) * CELL_SIZE, CELL_SIZE);
+};
+
 /**
  * Abstract class representing an enemy.
  * @extends {AbstractActor}
@@ -122,7 +127,7 @@ class AbstractEnemy extends AbstractActor {
 
     this.primaryAttack = {
       ...primaryAttack,
-      range: primaryAttack.range * CELL_SIZE,
+      range: randomizeRange(primaryAttack.range),
     };
 
     if (explosion) {
@@ -153,10 +158,9 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: TransparentCell,
       onStart: () => {
-        if (this.projectiles) {
+        if (this.isAlive() && this.projectiles) {
           if (this.findPlayer()) {
-            // TODO: Refactor hitscan range.
-            this.setRange(this.primaryAttack.range * 2);
+            this.setRange(Number.MAX_VALUE);
           } else {
             this.setIdle();
           }
@@ -371,7 +375,11 @@ class AbstractEnemy extends AbstractActor {
 
         if (this.attackTimer >= this.attackTime) {
           if (this.numberOfAttacks < 1) {
-            this.numberOfAttacks = this.maxAttacks;
+            this.numberOfAttacks = Math.max(
+              this.maxAttacks - Math.round(Math.random()),
+              1,
+            );
+
             this.setEvading();
           } else {
             this.onAttackComplete();
@@ -710,7 +718,7 @@ class AbstractEnemy extends AbstractActor {
    * @param {Number} range The range to set.
    */
   setRange(range) {
-    this.primaryAttack.range = range;
+    this.primaryAttack = { ...this.primaryAttack, range };
   }
 
   /**
