@@ -135,9 +135,9 @@ class World extends PhysicsWorld {
     ];
 
     // Create grid for floor stains.
-    this.stains = [...Array(this.maxMapX + 1).keys()].map(() => [
-      ...Array(this.maxMapY + 1).keys(),
-    ].map(() => 0));
+    this.stains = [...Array(this.maxMapX + 1).keys()]
+      .map(() => [...Array(this.maxMapY + 1).keys()]
+      .map(() => 0));
   }
 
   /**
@@ -165,7 +165,10 @@ class World extends PhysicsWorld {
 
       if (this.entranceTimer <= 0) {
         this.entranceTimer = null;
-        this.entrance.use();
+
+        if (this.entrance.use) {
+          this.entrance.use();
+        }
       }
     }
 
@@ -174,10 +177,11 @@ class World extends PhysicsWorld {
 
   /**
    * Find a path between two cells.
-   * @param  {Cell}   from  The starting cell.
-   * @param  {Cell}   to    The destination cell.
-   * @param  {Number} index The graph index.
-   * @return {Array}        A list of cells.
+   * @param  {Cell}    from      The starting cell.
+   * @param  {Cell}    to        The destination cell.
+   * @param  {Number}  index     The graph index.
+   * @param  {Boolean} diagonal  Allow diagonal movement.
+   * @return {Array}             A 2D array of cells.
    */
   findPath(
     from,

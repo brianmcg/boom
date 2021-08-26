@@ -134,18 +134,18 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: (enemy) => {
-        if (this.isChasing()) {
-          if (enemy.isIdle()) {
+        if (enemy.isIdle()) {
+          if (this.isEvading()) {
+            return this.setChasing();
+          }
+
+          if (this.isChasing()) {
             return this.setRetreating();
           }
 
-          if (enemy.isEvading()) {
-            return enemy.setChasing();
+          if (this.isRetreating()) {
+            return this.setIdle();
           }
-        }
-
-        if (this.isEvading()) {
-          return this.setChasing();
         }
       },
     });
@@ -155,6 +155,7 @@ class AbstractEnemy extends AbstractActor {
       onStart: () => {
         if (this.projectiles) {
           if (this.findPlayer()) {
+            // TODO: Refactor hitscan range.
             this.setRange(this.primaryAttack.range * 2);
           } else {
             this.setIdle();

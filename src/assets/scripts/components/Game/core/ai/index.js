@@ -1,4 +1,5 @@
-import { astarSearch, heuristics } from './helpers';
+import { astarSearch } from './helpers';
+import { manhattan, diagonal } from './heuristics';
 import Graph from './components/Graph';
 
 const search = (graph, start, end) => astarSearch(
@@ -6,7 +7,7 @@ const search = (graph, start, end) => astarSearch(
   start,
   end,
   {
-    heuristic: graph.diagonal ? heuristics.diagonal : heuristics.manhattan,
+    heuristic: graph.diagonal ? diagonal : manhattan,
   },
 );
 
