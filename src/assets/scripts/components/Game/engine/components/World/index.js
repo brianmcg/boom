@@ -136,8 +136,7 @@ class World extends PhysicsWorld {
 
     // Create grid for floor stains.
     this.stains = [...Array(this.maxMapX + 1).keys()]
-      .map(() => [...Array(this.maxMapY + 1).keys()]
-      .map(() => 0));
+      .map(() => [...Array(this.maxMapY + 1).keys()].map(() => 0));
   }
 
   /**
@@ -187,7 +186,7 @@ class World extends PhysicsWorld {
     from,
     to,
     index = 0,
-    diagonal
+    diagonal,
   ) {
     const graph = this.graphs[index];
     const start = graph.grid[from.gridX][from.gridY];

@@ -41,7 +41,7 @@ const STAIN_INTERVAL = 50;
 const MAX_PATH_INDEX = 2;
 
 const randomizeRange = (range) => {
-  const deviation =  Math.floor(Math.random() * 3);
+  const deviation = Math.floor(Math.random() * 3);
   return Math.max((range - deviation) * CELL_SIZE, CELL_SIZE);
 };
 
@@ -141,15 +141,11 @@ class AbstractEnemy extends AbstractActor {
       onStart: (enemy) => {
         if (enemy.isIdle()) {
           if (this.isEvading()) {
-            return this.setChasing();
-          }
-
-          if (this.isChasing()) {
-            return this.setRetreating();
-          }
-
-          if (this.isRetreating()) {
-            return this.setIdle();
+            this.setChasing();
+          } else if (this.isChasing()) {
+            this.setRetreating();
+          } else if (this.isRetreating()) {
+            this.setIdle();
           }
         }
       },
