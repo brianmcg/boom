@@ -5,7 +5,9 @@ const search = (graph, start, end) => astarSearch(
   graph,
   start,
   end,
-  { heuristic: heuristics.diagonal },
+  {
+    heuristic: graph.diagonal ? heuristics.diagonal : heuristics.manhattan,
+  },
 );
 
 export {

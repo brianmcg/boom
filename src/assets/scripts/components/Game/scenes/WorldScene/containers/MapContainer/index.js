@@ -164,9 +164,9 @@ class MapContainer extends Container {
     });
 
     objects.forEach((object) => {
-      if (object.blocking) {
-        const sprite = objectSprites[object.id];
+      const sprite = objectSprites[object.id];
 
+      if (sprite) {
         sprite.x = (CENTER.X) - (player.x - object.x);
         sprite.y = (CENTER.Y) - (player.y - object.y);
 

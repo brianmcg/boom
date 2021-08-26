@@ -134,9 +134,18 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: (enemy) => {
-        // TODO: handle chasing and evading.
-        if (enemy.isIdle() && this.isChasing()) {
-          this.setRetreating();
+        if (this.isChasing()) {
+          if (enemy.isIdle()) {
+            return this.setRetreating();
+          }
+
+          if (enemy.isEvading()) {
+            return enemy.setChasing();
+          }
+        }
+
+        if (this.isEvading()) {
+          return this.setChasing();
         }
       },
     });
@@ -687,7 +696,12 @@ class AbstractEnemy extends AbstractActor {
    * @return {Array}         The path to the target.
    */
   findPath(target) {
-    return this.parent.findPath(this, target, this.graphIndex);
+    return this.parent.findPath(
+      this,
+      target,
+      this.graphIndex,
+      this.parent.getNeighbourCells(this).every(cell => !cell.blocking),
+    );
   }
 
   /**

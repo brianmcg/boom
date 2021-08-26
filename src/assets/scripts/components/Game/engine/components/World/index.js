@@ -113,7 +113,7 @@ class World extends PhysicsWorld {
 
         return NODE_WEIGHTS.FREE;
       })), {
-        diagonal: true,
+        diagonal: false,
       }),
       new Graph(grid.map(col => col.map((cell) => {
         if (cell.blocking && cell.transparency) {
@@ -130,7 +130,7 @@ class World extends PhysicsWorld {
 
         return NODE_WEIGHTS.FREE;
       })), {
-        diagonal: true,
+        diagonal: false,
       }),
     ];
 
@@ -179,11 +179,18 @@ class World extends PhysicsWorld {
    * @param  {Number} index The graph index.
    * @return {Array}        A list of cells.
    */
-  findPath(from, to, index = 0) {
+  findPath(
+    from,
+    to,
+    index = 0,
+    diagonal
+  ) {
     const graph = this.graphs[index];
     const start = graph.grid[from.gridX][from.gridY];
     const end = graph.grid[to.gridX][to.gridY];
     const initialWeights = [];
+
+    graph.diagonal = diagonal;
 
     this.dynamicBodies.forEach(({ gridX, gridY }) => {
       const node = graph.grid[gridX][gridY];
