@@ -134,9 +134,9 @@ class HUDContainer extends Container {
       }
 
       message.y = y;
-
-      message.update(delta, elapsedMS);
     });
+
+    this.messages.forEach(message => message.update(delta, elapsedMS));
 
     // Update foreground.
     foreground.alpha = 1 - this.player.vision;
