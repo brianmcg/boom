@@ -140,26 +140,41 @@ class POVContainer extends Container {
 
         rays.push(raySections[i]);
 
+        // Cast another ray if the side height is lower than the world height.
         if (!closed && !transparency && sideHeight < world.height) {
-          castRay({
+          const elavatedRays = castRay({
             x,
             y,
             angle,
             world,
             radius,
             elavation: sideHeight,
-          }).forEach(ray => rays.push(ray));
+          });
+
+          for (let i = 0, l = elavatedRays.length; i < l; i++) {
+            rays.push(elavatedRays[i]);
+          }
         }
 
+        // Cast another ray if the side hit is an overlay.
         if (overlay) {
-          rays.push(castRay({
+          const ignoreOverlayRays = castRay({
             x,
             y,
             angle,
             world,
             radius,
             ignoreOverlay: true,
-          }).find(ray => ray.cell.overlay));
+          });
+
+          for (let i = 0, l = ignoreOverlayRays.length; i < l; i++) {
+            const ignoreOverlayRay = ignoreOverlayRays[i];
+
+            if (ignoreOverlayRay.cell.overlay) {
+              rays.push(ignoreOverlayRay);
+              break;
+            }
+          }
         }
       }
 
