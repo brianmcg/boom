@@ -117,7 +117,7 @@ class POVContainer extends Container {
     centerY = CAMERA_CENTER_Y + viewPitch;
 
     // Iterate over screen width
-    for (let xIndex = 0; xIndex < SCREEN.WIDTH; xIndex++) {
+    for (let xIndex = 0, l = SCREEN.WIDTH; xIndex < l; xIndex++) {
       angle = (viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
 
       const rays = [];
@@ -132,7 +132,7 @@ class POVContainer extends Container {
         ignoreOverlay: false,
       });
 
-      for (let i = 0; i < raySections.length; i++) {
+      for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
         const { overlay, closed, transparency } = cell;
 
@@ -148,22 +148,18 @@ class POVContainer extends Container {
             world,
             radius,
             elavation: sideHeight,
-          }).forEach(r => rays.push(r));
+          }).forEach(ray => rays.push(ray));
         }
 
         if (overlay) {
-          const overlayRay = castRay({
+          rays.push(castRay({
             x,
             y,
             angle,
             world,
             radius,
             ignoreOverlay: true,
-          }).find(r => r.cell.overlay);
-
-          if (overlayRay) {
-            rays.push(overlayRay);
-          }
+          }).find(ray => ray.cell.overlay));
         }
       }
 
@@ -312,8 +308,8 @@ class POVContainer extends Container {
 
           backgroundName = backgroundCell.top?.name;
 
-          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
-          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+          pixelX = mapX % CELL_SIZE;
+          pixelY = mapY % CELL_SIZE;
 
           if (backgroundName) {
             sprite.changeTexture(backgroundName, pixelX, pixelY);
@@ -325,7 +321,7 @@ class POVContainer extends Container {
         }
       }
 
-      for (let yIndex = topIntersection + 1; yIndex < bottomIntersection - 1; yIndex++) {
+      for (let yIndex = topIntersection + 1, m = bottomIntersection - 1; yIndex < m; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
@@ -333,7 +329,7 @@ class POVContainer extends Container {
         }
       }
 
-      for (let yIndex = bottomIntersection; yIndex < SCREEN.HEIGHT; yIndex++) {
+      for (let yIndex = bottomIntersection, m = SCREEN.HEIGHT; yIndex < m; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
@@ -350,8 +346,8 @@ class POVContainer extends Container {
           mapY = (mapY > maxMapY) ? maxMapY : mapY;
           mapY = (mapY < 0) ? 0 : mapY;
 
-          pixelX = (mapX + CELL_SIZE) % CELL_SIZE;
-          pixelY = (mapY + CELL_SIZE) % CELL_SIZE;
+          pixelX = mapX % CELL_SIZE;
+          pixelY = mapY % CELL_SIZE;
 
           gridX = Math.floor(mapX / CELL_SIZE);
           gridY = Math.floor(mapY / CELL_SIZE);
@@ -377,7 +373,7 @@ class POVContainer extends Container {
     }
 
     // Update sky sprites;
-    for (let i = 0; i < outerSprites.length; i++) {
+    for (let i = 0, l = outerSprites.length; i < l; i++) {
       sprite = outerSprites[i];
       spriteHeight = sprite.width * (SCREEN.HEIGHT / sprite.height);
       sprite.x = ((viewAngle / DEG_360) * -spriteHeight) + (i * spriteHeight);

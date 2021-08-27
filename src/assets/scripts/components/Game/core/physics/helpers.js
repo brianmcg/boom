@@ -27,6 +27,9 @@ let horizontalOverlay;
 let verticalOverlay;
 let side;
 let rayEndPoint;
+let initialCellBody;
+let encounteredBodyValues;
+let encounterdBody;
 
 const DEGREES = [...Array(361).keys()].map(degrees => degrees * Math.PI / 180);
 
@@ -386,16 +389,18 @@ const castCellRay = ({
 
     rayEndPoint = { x: xIntersection, y: horizontalGrid };
 
-    initialCell.bodies.forEach((body) => {
+    for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
+      initialCellBody = initialCell.bodies[i];
+
       if (
-        x !== body.x && y !== body.y && isRayCollision(body, {
+        x !== initialCellBody.x && y !== initialCellBody.y && isRayCollision(initialCellBody, {
           startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
           endPoint: rayEndPoint,
         })
       ) {
-        encounteredBodies[body.id] = body;
+        encounteredBodies[initialCellBody.id] = initialCellBody;
       }
-    });
+    }
 
     side = y < initialCell.y ? initialCell.left : initialCell.right;
 
@@ -450,16 +455,18 @@ const castCellRay = ({
 
   rayEndPoint = { x: verticalGrid, y: yIntersection };
 
-  initialCell.bodies.forEach((body) => {
+  for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
+    initialCellBody = initialCell.bodies[i];
+
     if (
-      x !== body.x && y !== body.y && isRayCollision(body, {
+      x !== initialCellBody.x && y !== initialCellBody.y && isRayCollision(initialCellBody, {
         startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
         endPoint: rayEndPoint,
       })
     ) {
-      encounteredBodies[body.id] = body;
+      encounteredBodies[initialCellBody.id] = initialCellBody;
     }
-  });
+  }
 
   return {
     startPoint: { x, y },
@@ -643,7 +650,7 @@ const castRaySection = ({
           break;
         }
       } else {
-        for (let i = 0, len = horizontalCell.bodies.length; i < len; i++) {
+        for (let i = 0, n = horizontalCell.bodies.length; i < n; i++) {
           horizontalBody = horizontalCell.bodies[i];
           encounteredBodies[horizontalBody.id] = horizontalBody;
         }
@@ -801,7 +808,7 @@ const castRaySection = ({
           break;
         }
       } else {
-        for (let i = 0, len = verticalCell.bodies.length; i < len; i++) {
+        for (let i = 0, n = verticalCell.bodies.length; i < n; i++) {
           verticalBody = verticalCell.bodies[i];
           encounteredBodies[verticalBody.id] = verticalBody;
         }
@@ -815,28 +822,33 @@ const castRaySection = ({
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
     rayEndPoint = { x: xIntersection, y: horizontalGrid };
 
-    for (let i = 0, len = horizontalCell.bodies.length; i < len; i++) {
+    for (let i = 0, n = horizontalCell.bodies.length; i < n; i++) {
       horizontalBody = horizontalCell.bodies[i];
       encounteredBodies[horizontalBody.id] = horizontalBody;
     }
 
-    initialCell.bodies.forEach((body) => {
+    for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
+      initialCellBody = initialCell.bodies[i];
+
       if (
-        x !== body.x && y !== body.y && isRayCollision(body, {
+        x !== initialCellBody.x && y !== initialCellBody.y && isRayCollision(initialCellBody, {
           startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
           endPoint: rayEndPoint,
         })
       ) {
-        encounteredBodies[body.id] = body;
+        encounteredBodies[initialCellBody.id] = initialCellBody;
       }
-    });
+    }
 
-    // isFacing({ x, y, angle }, body)
-    Object.values(encounteredBodies).forEach((body) => {
-      if (!isRayCollision(body, { startPoint: { x, y }, endPoint: rayEndPoint })) {
-        delete encounteredBodies[body.id];
+    encounteredBodyValues = Object.values(encounteredBodies);
+
+    for (let i = 0, n = encounteredBodyValues.length; i < n; i++) {
+      encounterdBody = encounteredBodyValues[i];
+
+      if (!isRayCollision(encounterdBody, { startPoint: { x, y }, endPoint: rayEndPoint })) {
+        delete encounteredBodies[encounterdBody.id];
       }
-    });
+    }
 
     side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
@@ -855,27 +867,33 @@ const castRaySection = ({
 
   rayEndPoint = { x: verticalGrid, y: yIntersection };
 
-  for (let i = 0, len = verticalCell.bodies.length; i < len; i++) {
+  for (let i = 0, n = verticalCell.bodies.length; i < n; i++) {
     verticalBody = verticalCell.bodies[i];
     encounteredBodies[verticalBody.id] = verticalBody;
   }
 
-  initialCell.bodies.forEach((body) => {
+  for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
+    initialCellBody = initialCell.bodies[i];
+
     if (
-      x !== body.x && y !== body.y && isRayCollision(body, {
+      x !== initialCellBody.x && y !== initialCellBody.y && isRayCollision(initialCellBody, {
         startPoint: { x: x + Math.cos(angle) * radius, y: y + Math.sin(angle) * radius },
         endPoint: rayEndPoint,
       })
     ) {
-      encounteredBodies[body.id] = body;
+      encounteredBodies[initialCellBody.id] = initialCellBody;
     }
-  });
+  }
 
-  Object.values(encounteredBodies).forEach((body) => {
-    if (!isRayCollision(body, { startPoint: { x, y }, endPoint: rayEndPoint })) {
-      delete encounteredBodies[body.id];
+  encounteredBodyValues = Object.values(encounteredBodies);
+
+  for (let i = 0, n = encounteredBodyValues.length; i < n; i++) {
+    encounterdBody = encounteredBodyValues[i];
+
+    if (!isRayCollision(encounterdBody, { startPoint: { x, y }, endPoint: rayEndPoint })) {
+      delete encounteredBodies[encounterdBody.id];
     }
-  });
+  }
 
   side = x < verticalCell.x ? verticalCell.front : verticalCell.back;
 

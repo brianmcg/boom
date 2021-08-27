@@ -176,7 +176,7 @@ class AbstractActor extends AbstractDestroyableEntity {
 
       if (
         this.spatter
-          && nearest.id === this.id
+          && nearest?.id === this.id
           && !side.spatter
           && sectionDistance - point.distance < SPATTER_DISTANCE
 

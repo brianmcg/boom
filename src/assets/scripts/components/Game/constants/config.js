@@ -81,10 +81,9 @@ export const WALL_LAYERS = 3;
  * @type {Object}
  */
 export const SCREEN = {
-  // WIDTH: 256,
-  // HEIGHT: 144,
   WIDTH: 224,
-  HEIGHT: 126,
+  // HEIGHT: 126,
+  HEIGHT: 120,
 };
 
 /**

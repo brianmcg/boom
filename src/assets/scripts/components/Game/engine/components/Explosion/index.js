@@ -45,6 +45,17 @@ class Explosion extends Body {
     this.power = power;
     this.effects = effects;
     this.parent = source.parent;
+
+    this.hitScans = ANGLES.map(angle => ({
+      hitScan: new HitScan({
+        source: this,
+        power: this.power,
+        range: this.range,
+        fade: true,
+        highCalibre: true,
+      }),
+      angle,
+    }));
   }
 
   /**
@@ -72,13 +83,7 @@ class Explosion extends Body {
       });
 
       // Fire rays in all directions.
-      ANGLES.forEach(angle => new HitScan({
-        source: this,
-        power: this.power,
-        range: this.range,
-        fade: true,
-        highCalibre: true,
-      }).run(angle));
+      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
 
       // Stop dead bodies from colliding.
       deadBodies.forEach((body) => {

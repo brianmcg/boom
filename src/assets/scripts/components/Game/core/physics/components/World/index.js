@@ -157,21 +157,30 @@ class World extends EventEmitter {
    * @return {Array}          The neighbouring bodies.
    */
   getNeighbourBodies(body, radius = 1) {
-    const cells = this.getNeighbourCells(body, radius);
+    const bodies = [];
+    const { gridX, gridY } = body;
 
-    return cells.reduce((bodies, cell) => {
-      cell.bodies.forEach((cellBody) => {
-        if (cellBody.id !== body.id) {
-          bodies.push(cellBody);
+    for (let i = gridX - radius; i <= gridX + radius; i++) {
+      for (let j = gridY - radius; j <= gridY + radius; j++) {
+        const cell = this.getCell(i, j);
+
+        if (cell) {
+          for (let k = 0; k < cell.bodies.length; k++) {
+            const cellBody = cell.bodies[k];
+
+            if (cellBody.id !== body.id) {
+              bodies.push(cellBody);
+            }
+          }
+
+          if (cell.id !== body.id && cell.blocking) {
+            bodies.push(cell);
+          }
         }
-      });
-
-      if (cell.id !== body.id && cell.blocking) {
-        bodies.push(cell);
       }
+    }
 
-      return bodies;
-    }, []);
+    return bodies;
   }
 
   /**
