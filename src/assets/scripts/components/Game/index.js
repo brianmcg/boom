@@ -269,7 +269,7 @@ class Game extends Application {
 
     const widthRatio = windowWidth / SCREEN.WIDTH;
     const heightRatio = windowHeight / SCREEN.HEIGHT;
-    const scale = Math.floor(Math.min(widthRatio, heightRatio)) || 1;
+    const scale = Math.min(widthRatio, heightRatio);
     const scaledWidth = SCREEN.WIDTH * scale;
     const scaledHeight = SCREEN.HEIGHT * scale;
 
