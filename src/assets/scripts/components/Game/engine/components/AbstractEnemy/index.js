@@ -262,7 +262,10 @@ class AbstractEnemy extends AbstractActor {
   updateChasing() {
     const nextCell = this.path[this.pathIndex];
 
-    if (nextCell) {
+    // TODO: Fix attack condition for projectile enemies with isArrivedAt.
+    if (this.distanceToPlayer <= this.primaryAttack.range) {
+      this.setAiming();
+    } else if (nextCell) {
       this.face(nextCell);
 
       if (nextCell.isDoor) {
@@ -271,10 +274,6 @@ class AbstractEnemy extends AbstractActor {
 
       if (this.isArrivedAt(nextCell)) {
         this.pathIndex += 1;
-
-        if (this.distanceToPlayer <= this.primaryAttack.range  && this.findPlayer()) {
-          this.setAiming();
-        }
       }
 
       if (this.pathIndex === MAX_PATH_INDEX) {
