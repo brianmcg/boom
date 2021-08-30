@@ -268,6 +268,7 @@ class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
+      // TODO: Move this to tracked collision.
       if (nextCell.isDoor) {
         nextCell.use(this);
       }
