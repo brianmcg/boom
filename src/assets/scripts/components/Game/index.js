@@ -153,7 +153,7 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show(SCENE_TYPES.TITLE, { showLoader: true });
+    this.show(SCENE_TYPES.TITLE);
   }
 
   /**
@@ -269,7 +269,7 @@ class Game extends Application {
 
     const widthRatio = windowWidth / SCREEN.WIDTH;
     const heightRatio = windowHeight / SCREEN.HEIGHT;
-    const scale = Math.min(widthRatio, heightRatio);
+    const scale = Math.floor(Math.min(widthRatio, heightRatio)) || 1;
     const scaledWidth = SCREEN.WIDTH * scale;
     const scaledHeight = SCREEN.HEIGHT * scale;
 

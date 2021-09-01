@@ -44,7 +44,7 @@ export const DISABLE_MUSIC = !!DEBUG || false;
  * The volume of the music.
  * @type {Number}
  */
-export const MUSIC_VOLUME = 1;
+export const MUSIC_VOLUME = 0.4;
 
 /**
  * Enabled the sounds.

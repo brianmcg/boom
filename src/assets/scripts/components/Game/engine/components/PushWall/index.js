@@ -52,7 +52,8 @@ class PushWall extends DynamicCell {
       };
     }
 
-    if (this.canMove()) {
+    if (!this.isPushed && this.canMove()) {
+      this.isPushed = true;
       this.distanceToPlayer = this.getDistanceTo(user);
       this.emitSound(this.sounds.start);
       this.emitSound(this.sounds.move, true);

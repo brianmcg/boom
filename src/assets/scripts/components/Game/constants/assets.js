@@ -45,7 +45,7 @@ export const GAME_DATA = 'data.json';
  */
 export const SCENE_MUSIC = {
   NAME: 'music',
-  FILE: 'music.weba',
+  FILE: 'music.mp3',
 };
 
 /**

@@ -139,7 +139,7 @@ class AbstractEnemy extends AbstractActor {
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: (enemy) => {
-        if (enemy.isIdle()) {
+        if (enemy.isIdle() || enemy.isAiming()) {
           if (this.isEvading()) {
             this.setChasing();
           } else if (this.isChasing()) {
@@ -163,6 +163,15 @@ class AbstractEnemy extends AbstractActor {
         }
       },
     });
+
+    // this.addTrackedCollision({
+    //   type: Door,
+    //   onStart: (body) => {
+    //     if (!this.isDead() && !this.isHurting() && body.use) {
+    //       body.use();
+    //     }
+    //   },
+    // });
 
     this.setIdle();
   }
@@ -262,25 +271,24 @@ class AbstractEnemy extends AbstractActor {
   updateChasing() {
     const nextCell = this.path[this.pathIndex];
 
-    // TODO: Fix attack condition for projectile enemies with isArrivedAt.
-    if (this.distanceToPlayer <= this.primaryAttack.range) {
+    if (this.canAttack()) {
       this.setAiming();
     } else if (nextCell) {
       this.face(nextCell);
 
-      // TODO: Move this to tracked collision.
       if (nextCell.isDoor) {
         nextCell.use(this);
       }
 
       if (this.isArrivedAt(nextCell)) {
         this.pathIndex += 1;
+
+        if (this.pathIndex === MAX_PATH_INDEX) {
+          this.path = this.findPath(this.parent.player);
+          this.pathIndex = 0;
+        }
       }
 
-      if (this.pathIndex === MAX_PATH_INDEX) {
-        this.path = this.findPath(this.parent.player);
-        this.pathIndex = 0;
-      }
     } else {
       this.path = this.findPath(this.parent.player);
 
@@ -441,6 +449,26 @@ class AbstractEnemy extends AbstractActor {
         this.stainRadius = 2;
       }
     }
+  }
+
+  /**
+   * Can the enemy attack.
+   * @return {Boolean}
+   */
+  canAttack() {
+    const inRange = this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer();
+
+    if (this.projectiles) {
+      const nextCell = this.path[this.pathIndex];
+
+      if (nextCell) {
+        return inRange && this.isArrivedAt(nextCell);
+      }
+
+      return inRange;
+    }
+
+    return inRange;
   }
 
   /**
