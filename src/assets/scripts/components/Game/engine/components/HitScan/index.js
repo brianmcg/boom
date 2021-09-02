@@ -81,6 +81,8 @@ class HitScan extends Body {
       cell,
     } = rays[rays.length - 1];
 
+    this.source.parent.addFlash(this.power);
+
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
       if (body.blocking) {
@@ -135,7 +137,6 @@ class HitScan extends Body {
                 x: point.x + Math.cos(originAngle) * OFFSET,
                 y: point.y + Math.sin(originAngle) * OFFSET,
                 sourceId,
-                flash: this.power,
               });
             }
 
@@ -157,7 +158,6 @@ class HitScan extends Body {
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,
-          flash: this.power,
         });
       }
     }

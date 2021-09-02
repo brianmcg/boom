@@ -269,6 +269,14 @@ class World extends PhysicsWorld {
 
     this.emit(EFFECT_ADDED_EVENT, effect);
 
+
+  }
+
+  /**
+   * Add a flash of brightness to the world.
+   * @param {Number} flash The flash amount.
+   */
+  addFlash(flash = 0) {
     if (flash) {
       this.explosionFlash = true;
 
@@ -277,7 +285,13 @@ class World extends PhysicsWorld {
         MAX_EXPLOSION_FLASH_AMOUNT,
       );
     }
+  }
 
+  /**
+   * Add screen shake.
+   * @param {Number} shake The amount to shake.
+   */
+  addShake(shake) {
     if (shake) {
       this.player.shake(shake);
     }

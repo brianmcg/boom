@@ -96,9 +96,9 @@ class Explosion extends Body {
       y: this.source.y,
       z: this.source.z,
       sourceId: `${this.id}_${this.effects.explode}`,
-      flash: this.power,
-      shake,
     });
+
+    this.parent.addShake(shake);
 
     this.source.emitSound(this.sounds.explode);
   }
