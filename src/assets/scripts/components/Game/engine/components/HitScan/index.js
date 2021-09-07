@@ -31,10 +31,11 @@ class HitScan extends Body {
    * @param  {String}  options.effect       The impact effect.
    * @param  {Body}    options.source       The source of the hitscan.
    * @param  {Number}  options.power        The power of the hitscan.
-   * @param  {[type]}  options.range        The range of the hitscan.
+   * @param  {Number}  options.range        The range of the hitscan.
    * @param  {Number}  options.accuracy     The accuracy of the hitscan.
    * @param  {Number}  options.fade         The fade of the hitscan.
    * @param  {Boolean} options.highCalibre  The calibre of the hitscan.
+   * @param  {Boolean} options.flash        The flash property of the hitscan.
    */
   constructor({
     effect,
@@ -44,6 +45,7 @@ class HitScan extends Body {
     accuracy = 0,
     fade,
     highCalibre = false,
+    flash = true,
     ...other
   } = {}) {
     super(other);
@@ -55,6 +57,7 @@ class HitScan extends Body {
     this.accuracy = accuracy;
     this.fade = fade;
     this.highCalibre = highCalibre;
+    this.flash = flash;
   }
 
   /**
@@ -81,7 +84,9 @@ class HitScan extends Body {
       cell,
     } = rays[rays.length - 1];
 
-    this.source.parent.addFlash(this.power);
+    if (this.flash) {
+      this.source.parent.addFlash(this.power);
+    }
 
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
