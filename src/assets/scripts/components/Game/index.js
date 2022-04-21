@@ -29,11 +29,23 @@ const SCENES = {
   [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
-const STAT_PANELS = {
-  FPS: 0,
-  MS: 1,
-  MB: 2,
+const ASSETS = {
+  sound: {
+    name: GAME_SOUNDS.NAME,
+    src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
+    spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
+  },
+  graphics: {
+    name: GAME_FONT.NAME,
+    src: `${GAME_PATH}/${GAME_FONT.FILE}`,
+  },
+  data: {
+    name: GAME_DATA,
+    src: `${GAME_PATH}/${GAME_DATA}`,
+  },
 };
+
+const STAT_PANELS = { FPS: 0, MS: 1, MB: 2 };
 
 /**
  * A class representing a game.
@@ -65,7 +77,6 @@ class Game extends Application {
       this.ticker.add(this.loop, this);
     }
 
-    this.frameCount = 0;
     this.timer = 0;
 
     this.loader = new Loader();
@@ -82,28 +93,14 @@ class Game extends Application {
    * Start game and load assets.
    */
   async start() {
-    const { sound, data } = await this.loader.load({
-      sound: {
-        name: GAME_SOUNDS.NAME,
-        src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
-        spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
-      },
-      graphics: {
-        name: GAME_FONT.NAME,
-        src: `${GAME_PATH}/${GAME_FONT.FILE}`,
-      },
-      data: {
-        name: GAME_DATA,
-        src: `${GAME_PATH}/${GAME_DATA}`,
-      },
-    });
+    const { sound, data } = await this.loader.load(ASSETS);
 
     this.removeManual();
     this.addCanvas();
 
     this.soundSprite = sound;
-    this.scene = null;
     this.data = data;
+    this.scene = null;
 
     this.ticker.start();
 

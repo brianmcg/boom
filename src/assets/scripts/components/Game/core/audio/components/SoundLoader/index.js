@@ -1,4 +1,4 @@
-import { DISABLE_SOUNDS, DISABLE_MUSIC } from 'game/constants/config';
+import { DISABLE_SOUND, DISABLE_MUSIC } from 'game/constants/config';
 import Sound from '../Sound';
 
 /**
@@ -43,7 +43,7 @@ class SoundLoader {
   async loadSprite({ name, src, spriteSrc }) {
     const response = await fetch(spriteSrc);
     const sprite = await response.json();
-    const sound = new Sound({ src, sprite, mute: DISABLE_SOUNDS });
+    const sound = new Sound({ src, sprite, mute: DISABLE_SOUND });
 
     this.cache[name] = sound;
 
