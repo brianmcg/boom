@@ -14,7 +14,7 @@ export const DEBUG = parseInt(urlParams.get('debug'), 10) || 0;
  * The level to load in debug mode.
  * @type {Number}
  */
-export const LEVEL = parseInt(urlParams.get('level'), 10) || 0;
+export const LEVEL = parseInt(urlParams.get('level'), 10) || 1;
 
 /**
  * Make player invincible.

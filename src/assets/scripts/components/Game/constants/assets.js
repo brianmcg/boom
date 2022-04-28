@@ -35,9 +35,12 @@ export const GAME_FONT = {
 
 /**
  * The game data.
- * @type {String}
+ * @type {Object}
  */
-export const GAME_DATA = 'data.json';
+export const GAME_DATA = {
+  NAME: 'data',
+  FILE: 'data.json',
+};
 
 /**
  * The scene music file name.
@@ -50,15 +53,21 @@ export const SCENE_MUSIC = {
 
 /**
  * The scene graphics.
- * @type {String}
+ * @type {Object}
  */
-export const SCENE_GRAPHICS = 'graphics.json';
+export const SCENE_GRAPHICS = {
+  NAME: 'graphics',
+  FILE: 'graphics.json',
+};
 
 /**
  * The scene map file name.
- * @type {String}
+ * @type {Object}
  */
-export const SCENE_MAP = 'map.json';
+export const SCENE_MAP = {
+  NAME: 'map',
+  FILE: 'map.json',
+};
 
 /**
  * The scene types.

@@ -1,4 +1,3 @@
-import * as Stats from 'stats.js';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
@@ -20,6 +19,7 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './utilities/Loader';
+import Stats, { PANELS } from './components/Stats';
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
 
@@ -40,12 +40,10 @@ const ASSETS = {
     src: `${GAME_PATH}/${GAME_FONT.FILE}`,
   },
   data: {
-    name: GAME_DATA,
-    src: `${GAME_PATH}/${GAME_DATA}`,
+    name: GAME_DATA.NAME,
+    src: `${GAME_PATH}/${GAME_DATA.FILE}`,
   },
 };
-
-const STAT_PANELS = { FPS: 0, MS: 1, MB: 2 };
 
 /**
  * A class representing a game.
@@ -67,7 +65,8 @@ class Game extends Application {
 
     if (DISPLAY_FPS) {
       this.stats = new Stats();
-      this.stats.showPanel(STAT_PANELS.FPS);
+
+      this.stats.showPanel(PANELS.FPS);
 
       document.body.appendChild(this.stats.dom);
 
@@ -157,7 +156,7 @@ class Game extends Application {
    * Show the world scene.
    * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene({ index = LEVEL || 1, ...other } = {}) {
+  showWorldScene({ index = LEVEL, ...other } = {}) {
     this.show(SCENE_TYPES.WORLD, {
       index,
       showLoader: true,
@@ -193,16 +192,13 @@ class Game extends Application {
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
-      const graphicsKeys = Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME));
-      const soundKeys = Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME));
-      const dataKeys = [];
 
       this.scene.destroy();
 
       this.loader.unload({
-        graphics: graphicsKeys,
-        sound: soundKeys,
-        data: dataKeys,
+        graphics: Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME)),
+        sound: Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME)),
+        data: [],
       });
     }
 
