@@ -1,6 +1,7 @@
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
+
 import {
   SCREEN,
   MUSIC_VOLUME,
@@ -8,6 +9,7 @@ import {
   DEBUG,
   LEVEL,
 } from './constants/config';
+
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -15,6 +17,7 @@ import {
   GAME_FONT,
   SCENE_TYPES,
 } from './constants/assets';
+
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -84,8 +87,6 @@ class Game extends Application {
     this.manual = new Manual();
     this.manual.onClickStart(this.start.bind(this));
     this.addManual();
-    // this.addCanvas();
-    // this.start();
   }
 
   /**
@@ -238,10 +239,7 @@ class Game extends Application {
       this.scene.create({
         sounds,
         graphics,
-        data: {
-          ...data,
-          props,
-        },
+        data: { ...data, props },
       });
 
       this.removeSpinner();
