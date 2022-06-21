@@ -60,6 +60,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number}  options.height         The height of the enemy.
    * @param  {Boolean} options.blocking       The blocking value of the enemy.
    * @param  {Number}  options.anchor         The anchor of the enemy.
+   * @param  {Number}  options.painChance     The probability of going into the pain state.
    * @param  {Number}  options.angle          The angle of the enemy.
    * @param  {Number}  options.weight         The weight of the enemy.
    * @param  {Number}  options.autoPlay       The autopPlay value of the enemy.
@@ -91,9 +92,11 @@ class AbstractEnemy extends AbstractActor {
     proneHeight,
     explosion,
     type,
+    painChance,
     ...other
   }) {
     super(other);
+
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
@@ -107,6 +110,7 @@ class AbstractEnemy extends AbstractActor {
     } = stateDurations;
 
     this.type = type;
+    this.painChance = painChance;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
     this.alertTime = alertTime;
@@ -532,7 +536,13 @@ class AbstractEnemy extends AbstractActor {
       this.health -= damage;
 
       if (this.health > 0) {
-        this.setHurting();
+        if (!this.isPlaying(this.sounds.pain)) {
+          this.emitSound(this.sounds.pain);
+        }
+
+        if (Math.random() < this.painChance) {
+          this.setHurting();
+        }
       } else {
         this.angle = angle;
         this.velocity = Math.sqrt(damage);
@@ -786,10 +796,6 @@ class AbstractEnemy extends AbstractActor {
 
     if (isStateChanged) {
       this.velocity = 0;
-
-      if (!this.isPlaying(this.sounds.pain)) {
-        this.emitSound(this.sounds.pain);
-      }
     }
 
     return isStateChanged;
