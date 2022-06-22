@@ -59,17 +59,17 @@ class Scene extends Container {
 
     this.mainContainer = new MainContainer();
 
-    this.path = `${SCENE_PATH}/${type}${Number.isNaN(Number(index)) ? '' : `/${index}`}`;
+    this.path = `${type}${Number.isNaN(Number(index)) ? '' : `/${index}`}`;
 
     this.assets = {
       sound: {
         name: SCENE_MUSIC.NAME,
-        src: `${this.path}/${SCENE_MUSIC.FILE}`,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MUSIC.FILE}`,
         loop: loopMusic,
       },
       graphics: {
-        name: SCENE_GRAPHICS.NAME,
-        src: `${this.path}/${SCENE_GRAPHICS.FILE}`,
+        name: SCENE_GRAPHICS,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_GRAPHICS}`,
       },
     };
 

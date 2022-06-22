@@ -8,37 +8,25 @@ const urlParams = new URLSearchParams(window.location.search);
  * Debug mode.
  * @type {Number}
  */
-export const DEBUG = parseInt(urlParams.get('debug'), 10) || 0;
+export const DEBUG = parseInt(urlParams.get('debug'), 10);
 
 /**
  * The level to load in debug mode.
  * @type {Number}
  */
-export const LEVEL = parseInt(urlParams.get('level'), 10) || 1;
-
-/**
- * Make player invincible.
- * @type {Booelan}
- */
-export const GOD_MODE = urlParams.has('god');
-
-/**
- * Enabled the sounds.
- * @type {Boolean}
- */
-export const DISABLE_SOUND = urlParams.has('disableSound');
+export const LEVEL = parseInt(urlParams.get('level'), 10);
 
 /**
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = urlParams.has('displayFps') || Boolean(DEBUG);
+export const DISPLAY_FPS = !!parseInt(urlParams.get('fps'), 10) || !!DEBUG || false;
 
 /**
- * Enabled the music.
- * @type {Boolean}
+ * Make player invincible.
+ * @type {Booelan}
  */
-export const DISABLE_MUSIC = DISABLE_SOUND || urlParams.has('disableMusic') || Boolean(DEBUG);
+export const GOD_MODE = !!parseInt(urlParams.get('god'), 10) || false;
 
 /**
  * The maximum frames per second.
@@ -47,10 +35,22 @@ export const DISABLE_MUSIC = DISABLE_SOUND || urlParams.has('disableMusic') || B
 export const MAX_FPS = 60;
 
 /**
+ * Enabled the music.
+ * @type {Boolean}
+ */
+export const DISABLE_MUSIC = !!DEBUG || false;
+
+/**
  * The volume of the music.
  * @type {Number}
  */
 export const MUSIC_VOLUME = 0.4;
+
+/**
+ * Enabled the sounds.
+ * @type {Boolean}
+ */
+export const DISABLE_SOUNDS = false;
 
 /**
  * The difficulty level.
@@ -82,9 +82,8 @@ export const WALL_LAYERS = 3;
  */
 export const SCREEN = {
   WIDTH: 224,
-  HEIGHT: 126,
-  // WIDTH: 256,
-  // HEIGHT: 144,
+  // HEIGHT: 126,
+  HEIGHT: 96,
 };
 
 /**

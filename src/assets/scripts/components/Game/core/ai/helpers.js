@@ -11,7 +11,6 @@ const pathTo = (node) => {
     path.unshift(curr);
     curr = curr.parent;
   }
-
   return path;
 };
 

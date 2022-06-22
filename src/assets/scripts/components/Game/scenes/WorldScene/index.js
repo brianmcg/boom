@@ -35,8 +35,8 @@ class WorldScene extends Scene {
     this.assets = {
       ...this.assets,
       data: {
-        name: SCENE_MAP.NAME,
-        src: `${this.path}/${SCENE_MAP.FILE}`,
+        name: SCENE_MAP,
+        src: `${SCENE_PATH}/${this.path}/${SCENE_MAP}`,
       },
     };
 

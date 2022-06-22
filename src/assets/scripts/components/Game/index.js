@@ -1,7 +1,7 @@
+import * as Stats from 'stats.js';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
-
 import {
   SCREEN,
   MUSIC_VOLUME,
@@ -9,7 +9,6 @@ import {
   DEBUG,
   LEVEL,
 } from './constants/config';
-
 import {
   GAME_PATH,
   GAME_SOUNDS,
@@ -17,12 +16,10 @@ import {
   GAME_FONT,
   SCENE_TYPES,
 } from './constants/assets';
-
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './utilities/Loader';
-import Stats, { PANELS } from './components/Stats';
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
 
@@ -32,20 +29,10 @@ const SCENES = {
   [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
-const ASSETS = {
-  sound: {
-    name: GAME_SOUNDS.NAME,
-    src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
-    spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
-  },
-  graphics: {
-    name: GAME_FONT.NAME,
-    src: `${GAME_PATH}/${GAME_FONT.FILE}`,
-  },
-  data: {
-    name: GAME_DATA.NAME,
-    src: `${GAME_PATH}/${GAME_DATA.FILE}`,
-  },
+const STAT_PANELS = {
+  FPS: 0,
+  MS: 1,
+  MB: 2,
 };
 
 /**
@@ -68,8 +55,7 @@ class Game extends Application {
 
     if (DISPLAY_FPS) {
       this.stats = new Stats();
-
-      this.stats.showPanel(PANELS.FPS);
+      this.stats.showPanel(STAT_PANELS.FPS);
 
       document.body.appendChild(this.stats.dom);
 
@@ -79,6 +65,7 @@ class Game extends Application {
       this.ticker.add(this.loop, this);
     }
 
+    this.frameCount = 0;
     this.timer = 0;
 
     this.loader = new Loader();
@@ -87,20 +74,36 @@ class Game extends Application {
     this.manual = new Manual();
     this.manual.onClickStart(this.start.bind(this));
     this.addManual();
+    // this.addCanvas();
+    // this.start();
   }
 
   /**
    * Start game and load assets.
    */
   async start() {
-    const { sound, data } = await this.loader.load(ASSETS);
+    const { sound, data } = await this.loader.load({
+      sound: {
+        name: GAME_SOUNDS.NAME,
+        src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
+        spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
+      },
+      graphics: {
+        name: GAME_FONT.NAME,
+        src: `${GAME_PATH}/${GAME_FONT.FILE}`,
+      },
+      data: {
+        name: GAME_DATA,
+        src: `${GAME_PATH}/${GAME_DATA}`,
+      },
+    });
 
     this.removeManual();
     this.addCanvas();
 
     this.soundSprite = sound;
-    this.data = data;
     this.scene = null;
+    this.data = data;
 
     this.ticker.start();
 
@@ -157,7 +160,7 @@ class Game extends Application {
    * Show the world scene.
    * @param  {Number} options.index The index of the scene.
    */
-  showWorldScene({ index = LEVEL, ...other } = {}) {
+  showWorldScene({ index = LEVEL || 1, ...other } = {}) {
     this.show(SCENE_TYPES.WORLD, {
       index,
       showLoader: true,
@@ -193,13 +196,16 @@ class Game extends Application {
 
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
+      const graphicsKeys = Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME));
+      const soundKeys = Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME));
+      const dataKeys = [];
 
       this.scene.destroy();
 
       this.loader.unload({
-        graphics: Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME)),
-        sound: Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME)),
-        data: [],
+        graphics: graphicsKeys,
+        sound: soundKeys,
+        data: dataKeys,
       });
     }
 
@@ -239,7 +245,10 @@ class Game extends Application {
       this.scene.create({
         sounds,
         graphics,
-        data: { ...data, props },
+        data: {
+          ...data,
+          props,
+        },
       });
 
       this.removeSpinner();
