@@ -18,7 +18,7 @@ export const LEVEL = parseInt(urlParams.get('level'), 10) || 1;
 
 /**
  * Make player invincible.
- * @type {Booelan}
+ * @type {Boolean}
  */
 export const GOD_MODE = urlParams.has('god');
 
@@ -97,7 +97,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 75;
+export const FOV = 90;
 
 /**
  * The distance from the player inside which entities should update;
