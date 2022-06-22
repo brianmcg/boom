@@ -151,8 +151,8 @@ class POVContainer extends Container {
             elavation: sideHeight,
           });
 
-          for (let i = 0, l = elavatedRays.length; i < l; i++) {
-            rays.push(elavatedRays[i]);
+          for (let j = 0, n = elavatedRays.length; j < n; j++) {
+            rays.push(elavatedRays[j]);
           }
         }
 
@@ -167,8 +167,8 @@ class POVContainer extends Container {
             ignoreOverlay: true,
           });
 
-          for (let i = 0, l = ignoreOverlayRays.length; i < l; i++) {
-            const ignoreOverlayRay = ignoreOverlayRays[i];
+          for (let j = 0, n = ignoreOverlayRays.length; j < n; j++) {
+            const ignoreOverlayRay = ignoreOverlayRays[j];
 
             if (ignoreOverlayRay.cell.overlay) {
               rays.push(ignoreOverlayRay);

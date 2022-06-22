@@ -560,7 +560,7 @@ class AbstractEnemy extends AbstractActor {
    */
   findEvadeDestination() {
     const { player } = this.parent;
-    // Randomly pick an right angle to the left or right and
+    // Randomly pick a right angle to the left or right and
     // get x and y grid coordinates, to priorities lateral evasion.
     // Otherwise go to the nearest cell to the player.
     return (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])

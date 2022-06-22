@@ -12,6 +12,7 @@ import {
   SCALE_MODES,
   BLEND_MODES,
 } from 'pixi.js';
+
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { SCREEN } from 'game/constants/config';
 import TextSprite from './components/TextSprite';
