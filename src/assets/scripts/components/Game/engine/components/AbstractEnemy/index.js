@@ -611,16 +611,18 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Stop moving.
-   * @return {[type]} [description]
+   * @param  {Boolean} velocity Reset the velocity.
    */
-  onStopMoving() {
+  onStopMoving(resetVelocity = true) {
     const { moving } = this.sounds;
 
     if (moving && this.isPlaying(moving)) {
       this.stopSound(moving);
     }
 
-    this.velocity = 0;
+    if (resetVelocity) {
+      this.velocity = 0;
+    }
   }
 
   /**
@@ -852,7 +854,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
-      this.onStopMoving();
+      this.onStopMoving(false);
 
       this.blocking = false;
       this.stainTimer = 0;
