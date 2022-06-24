@@ -36,7 +36,9 @@ class SoundSpriteController {
     this.lastPlayed[name] = id;
 
     this.soundSprite.once('end', () => {
-      this.playing = this.playing.filter(playingId => playingId !== id);
+      if (!loop) {
+        this.playing = this.playing.filter(playingId => playingId !== id);
+      }
     }, id);
   }
 
@@ -47,7 +49,19 @@ class SoundSpriteController {
   stopSound(name) {
     const id = this.lastPlayed[name];
 
+    this.playing = this.playing.filter(playingId => playingId !== id);
+
     this.soundSprite.stop(id);
+  }
+
+  /**
+   * Pause a sound.
+   * @param  {String} name The name of the sound.
+   */
+  pauseSound(name) {
+    const id = this.lastPlayed[name];
+
+    this.soundSprite.pause(id);
   }
 
   /**
