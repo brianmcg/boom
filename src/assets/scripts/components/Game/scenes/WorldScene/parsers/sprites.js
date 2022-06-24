@@ -114,7 +114,7 @@ const createWallSprites = ({
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
   const spatterContainer = new Container();
 
-  const spatterTypes = world.enemies.reduce((memo, { effects }) => {
+  const spatterTypes = [...world.enemies, world.player].reduce((memo, { effects }) => {
     if (effects.spatter && !memo.includes(effects.spatter)) {
       memo.push(effects.spatter);
     }

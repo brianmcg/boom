@@ -80,7 +80,7 @@ class World extends PhysicsWorld {
     this.itemFlash = false;
     this.effects = [];
     this.startTime = performance.now();
-    this.exit = this.getCell(...Object.values(exit));
+    this.exit = exit && this.getCell(...Object.values(exit));
     this.entrance = this.getCell(...Object.values(entrance));
     this.startingProps = Object.assign({}, this.props);
     this.sky = sky;

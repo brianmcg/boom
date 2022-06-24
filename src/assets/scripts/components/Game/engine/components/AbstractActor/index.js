@@ -220,6 +220,10 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @return {Boolean}
    */
   isArrivedAt(cell) {
+    if (!cell) {
+      return false;
+    }
+
     return Math.abs(this.x - cell.x) <= CELL_CENTER
       && Math.abs(this.y - cell.y) <= CELL_CENTER;
   }
