@@ -97,7 +97,7 @@ class AbstractEnemy extends AbstractActor {
   }) {
     super(other);
 
-
+    // TODO: Stop all looping sounds on scen stop
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }
@@ -594,6 +594,65 @@ class AbstractEnemy extends AbstractActor {
   }
 
   /**
+   * Start moving.
+   */
+  onStartMoving() {
+    const { moving } = this.sounds;
+
+    if (moving && !this.isPlaying(moving)) {
+      this.emitSound(moving, true);
+    }
+
+    this.velocity = this.speed;
+  }
+
+  /**
+   * Stop moving.
+   * @return {[type]} [description]
+   */
+  onStopMoving() {
+    const { moving } = this.sounds;
+
+    if (moving && this.isPlaying(moving)) {
+      this.stopSound(moving);
+    }
+
+    this.velocity = 0;
+  }
+
+  /**
+   * Get the generated damage of an attack.
+   * @return {Number} The amount of damage.
+   */
+  attackDamage() {
+    const { power, accuracy } = this.primaryAttack;
+
+    return power * (Math.floor(Math.random() * accuracy) + 1);
+  }
+
+  /**
+   * Find the path to a target.
+   * @param  {Body}   target The target to find a path to.
+   * @return {Array}         The path to the target.
+   */
+  findPath(target) {
+    return this.parent.findPath(
+      this,
+      target,
+      this.graphIndex,
+      this.parent.getNeighbourCells(this).every(cell => !cell.blocking),
+    );
+  }
+
+  /**
+   * Set the attack range.
+   * @param {Number} range The range to set.
+   */
+  setRange(range) {
+    this.primaryAttack = { ...this.primaryAttack, range };
+  }
+
+  /**
    * Add a callback to the idle state change.
    * @param  {Function} callback The callback function.
    */
@@ -673,7 +732,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.IDLE);
 
     if (isStateChanged) {
-      this.velocity = 0;
+      this.onStopMoving();
     }
 
     return isStateChanged;
@@ -687,6 +746,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.ALERTED);
 
     if (isStateChanged) {
+      this.onStopMoving();
       this.emitSound(this.sounds.alert);
     }
   }
@@ -699,13 +759,13 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.EVADING);
 
     if (isStateChanged) {
+      this.onStartMoving();
+
       this.evadeDestination = this.findEvadeDestination();
 
       if (!this.evadeDestination) {
         this.setChasing();
       }
-
-      this.velocity = this.speed;
     }
 
     return isStateChanged;
@@ -719,7 +779,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.CHASING);
 
     if (isStateChanged) {
-      this.velocity = this.speed;
+      this.onStartMoving();
     }
 
     return isStateChanged;
@@ -729,33 +789,12 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.RETREATING);
 
     if (isStateChanged) {
-      this.velocity = this.speed;
+      this.onStartMoving();
     }
 
     return isStateChanged;
   }
 
-  /**
-   * Find the path to a target.
-   * @param  {Body}   target The target to find a path to.
-   * @return {Array}         The path to the target.
-   */
-  findPath(target) {
-    return this.parent.findPath(
-      this,
-      target,
-      this.graphIndex,
-      this.parent.getNeighbourCells(this).every(cell => !cell.blocking),
-    );
-  }
-
-  /**
-   * Set the attack range.
-   * @param {Number} range The range to set.
-   */
-  setRange(range) {
-    this.primaryAttack = { ...this.primaryAttack, range };
-  }
 
   /**
    * Set the enemy to the aiming state.
@@ -765,7 +804,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.AIMING);
 
     if (isStateChanged) {
-      this.velocity = 0;
+      this.onStopMoving();
     }
 
     return isStateChanged;
@@ -779,9 +818,10 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.ATTACKING);
 
     if (isStateChanged) {
+      this.onStopMoving();
       this.attack();
+
       this.numberOfAttacks -= 1;
-      this.velocity = 0;
     }
 
     return isStateChanged;
@@ -795,7 +835,7 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.HURTING);
 
     if (isStateChanged) {
-      this.velocity = 0;
+      this.onStopMoving();
     }
 
     return isStateChanged;
@@ -809,6 +849,8 @@ class AbstractEnemy extends AbstractActor {
     const isStateChanged = this.setState(STATES.DEAD);
 
     if (isStateChanged) {
+      this.onStopMoving();
+
       this.blocking = false;
       this.stainTimer = 0;
       this.stainRadius = 1;
@@ -905,16 +947,6 @@ class AbstractEnemy extends AbstractActor {
    */
   isAlive() {
     return this.state !== STATES.DEAD;
-  }
-
-  /**
-   * Get the generated damage of an attack.
-   * @return {Number} The amount of damage.
-   */
-  attackDamage() {
-    const { power, accuracy } = this.primaryAttack;
-
-    return power * (Math.floor(Math.random() * accuracy) + 1);
   }
 
   /**
