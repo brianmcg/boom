@@ -453,6 +453,7 @@ class Player extends AbstractActor {
     this.actions.stopAttack = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
+      this.health = this.maxHealth;
       this.emit(EVENTS.EXIT);
     }
 

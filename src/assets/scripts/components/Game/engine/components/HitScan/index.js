@@ -145,7 +145,7 @@ class HitScan extends Body {
               });
             }
 
-            if (body.isDestroyable) {
+            if (body.isDestroyable && !(this.source.isExplosion && body.isBoss)) {
               body.hit({
                 damage,
                 angle,

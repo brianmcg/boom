@@ -45,6 +45,7 @@ class Explosion extends Body {
     this.power = power;
     this.effects = effects;
     this.parent = source.parent;
+    this.isExplosion = true;
 
     this.hitScans = ANGLES.map(angle => ({
       hitScan: new HitScan({

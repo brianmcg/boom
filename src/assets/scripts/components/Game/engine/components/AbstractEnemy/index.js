@@ -61,6 +61,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Boolean} options.blocking       The blocking value of the enemy.
    * @param  {Number}  options.anchor         The anchor of the enemy.
    * @param  {Number}  options.painChance     The probability of going into the pain state.
+   * @param  {Number}  options.isBoss         The enemy is a boss.
    * @param  {Number}  options.angle          The angle of the enemy.
    * @param  {Number}  options.weight         The weight of the enemy.
    * @param  {Number}  options.autoPlay       The autopPlay value of the enemy.
@@ -93,6 +94,7 @@ class AbstractEnemy extends AbstractActor {
     explosion,
     type,
     painChance,
+    isBoss,
     ...other
   }) {
     super(other);
@@ -110,6 +112,7 @@ class AbstractEnemy extends AbstractActor {
     } = stateDurations;
 
     this.type = type;
+    this.isBoss = isBoss;
     this.painChance = painChance;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
