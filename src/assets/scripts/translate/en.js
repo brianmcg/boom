@@ -102,13 +102,13 @@ export default {
     text: 'Debug Level',
   },
   'world.title.dungeon_1': {
-    text: 'Dungeon',
+    text: 'Prison Block',
   },
   'world.title.sewers_1': {
-    text: 'Sewers',
+    text: 'Sewer Network',
   },
   'world.title.sewers_2': {
-    text: 'Treatment Plant',
+    text: 'Water Treatment Plant',
   },
   'world.title.cellar_1': {
     text: 'Cellar',
