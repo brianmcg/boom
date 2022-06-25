@@ -80,6 +80,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number}  options.stateDurations The times to stay in each state.
    * @param  {Number}  options.maxAttacks     The max number of attacks before evading.
    * @param  {Boolean} options.float          The float enemy property.
+   * @param  {Boolean} options.submerged      The submerged enemy property.
    * @param  {Object}  options.primaryAttack  The primary attack properties.
    * @param  {Number}  options.proneHeight    The height of the enemy while prone.
    * @param  {Object}  options.explosion      The enemy explosion properties.
@@ -89,6 +90,7 @@ class AbstractEnemy extends AbstractActor {
     stateDurations,
     maxAttacks,
     float,
+    submerged = false,
     primaryAttack,
     proneHeight,
     explosion,
@@ -112,6 +114,7 @@ class AbstractEnemy extends AbstractActor {
     } = stateDurations;
 
     this.type = type;
+    this.submerged = submerged;
     this.isBoss = isBoss;
     this.painChance = painChance;
     this.attackTime = attackTime;
@@ -348,7 +351,7 @@ class AbstractEnemy extends AbstractActor {
       this.evadeDestination = this.findEvadeDestination();
     }
 
-    if (this.isArrivedAt(this.evadeDestination)) {
+    if (this.speed === 0 || this.isArrivedAt(this.evadeDestination)) {
       this.setChasing();
     } else {
       this.face(this.evadeDestination);
@@ -463,6 +466,10 @@ class AbstractEnemy extends AbstractActor {
    * @return {Boolean}
    */
   canAttack() {
+    if (this.speed === 0) {
+      return true;
+    }
+
     const inRange = this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer();
 
     if (this.projectiles) {
@@ -620,7 +627,7 @@ class AbstractEnemy extends AbstractActor {
       this.stopSound(moving);
     }
 
-    if (resetVelocity) {
+    if (resetVelocity || this.speed === 0) {
       this.velocity = 0;
     }
   }
@@ -859,6 +866,10 @@ class AbstractEnemy extends AbstractActor {
       this.blocking = false;
       this.stainTimer = 0;
       this.stainRadius = 1;
+
+      if (this.isBoss) {
+        this.parent.activateDoors();
+      }
 
       if (this.explosion) {
         this.explosion.run();

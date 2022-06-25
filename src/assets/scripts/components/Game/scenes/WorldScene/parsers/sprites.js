@@ -541,7 +541,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
       animations: animations[enemy.name],
       textures,
       enemy,
-      floorOffset: world.floorOffset,
+      floorOffset: enemy.submerged ? 0 : world.floorOffset,
     });
   });
 

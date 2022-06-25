@@ -342,6 +342,19 @@ class World extends PhysicsWorld {
   }
 
   /**
+   * Activate all doors.
+   */
+  activateDoors() {
+    this.grid.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.isDoor) {
+          cell.active = true;
+        }
+      });
+    });
+  }
+
+  /**
    * The world properties.
    * @return {Object}
    */
