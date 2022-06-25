@@ -108,7 +108,7 @@ export default {
     text: 'Sewer Network',
   },
   'world.title.sewers_2': {
-    text: 'Water Treatment Plant',
+    text: 'Treatment Plant',
   },
   'world.title.cellar_1': {
     text: 'Cellar',
