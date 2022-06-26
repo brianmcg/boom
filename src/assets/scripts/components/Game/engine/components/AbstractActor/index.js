@@ -52,6 +52,8 @@ class AbstractActor extends AbstractDestroyableEntity {
   }) {
     super(other);
 
+    console.log(this.id, other.width);
+
     if (this.constructor === AbstractActor) {
       throw new TypeError('Can not construct abstract class.');
     }
