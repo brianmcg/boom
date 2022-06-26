@@ -51,9 +51,6 @@ class DynamicBody extends Body {
     this.collisions = [];
     this.trackedCollisions = [];
     this.autoPlay = autoPlay;
-
-
-    console.log(this.id, this.width, this.length);
   }
 
   /**

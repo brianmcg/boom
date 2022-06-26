@@ -111,7 +111,7 @@ export default {
     text: 'Treatment Plant',
   },
   'world.title.cellar_1': {
-    text: 'Cellar',
+    text: 'Secret Lab',
   },
   'world.title.mansion_1': {
     text: 'Mansion',
