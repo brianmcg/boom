@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { DEBUG } from 'game/constants/config';
 import { KEYS, BUTTONS } from 'game/core/input';
-import { SCENE_PATH, SCENE_MAP } from 'game/constants/assets';
+import { SCENE_MAP } from 'game/constants/assets';
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
 import MapContainer from './containers/MapContainer';

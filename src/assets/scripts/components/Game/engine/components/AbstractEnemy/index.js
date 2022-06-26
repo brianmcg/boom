@@ -298,7 +298,6 @@ class AbstractEnemy extends AbstractActor {
           this.pathIndex = 0;
         }
       }
-
     } else {
       this.path = this.findPath(this.parent.player);
 

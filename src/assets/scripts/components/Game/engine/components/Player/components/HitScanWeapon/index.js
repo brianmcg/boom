@@ -18,7 +18,12 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Number}  options.range    The range of the weapon.
    * @param  {String}  options.texture  The weapon texture.
    */
-  constructor({ projectile, highCalibre, maxAmmo, ...other }) {
+  constructor({
+    projectile,
+    highCalibre,
+    maxAmmo,
+    ...other
+  }) {
     super({ projectile, maxAmmo, ...other });
 
     const { amount, effects } = projectile;
