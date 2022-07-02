@@ -113,6 +113,9 @@ const createWallSprites = ({
   const wallTextures = {};
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
   const spatterContainer = new Container();
+  // const floorOffset = world.floorOffset * CELL_SIZE;
+
+  // const floorHeight = (wallTexture.height * world.floorOffset) + 1;
 
   const spatterTypes = [...world.enemies, world.player].reduce((memo, { effects }) => {
     if (effects.spatter && !memo.includes(effects.spatter)) {
@@ -164,9 +167,12 @@ const createWallSprites = ({
 
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
       const spatterColorTextures = spatters.map((spatter) => {
+        const wallHeight = wallTexture.height;
+        const floorHeight = world.floorOffset ? (wallHeight * world.floorOffset) - 1 : 0;
+
         const renderTexture = RenderTexture.create({
           width: CELL_SIZE,
-          height: wallTexture.height,
+          height: wallHeight,
         });
 
         const spatterTexture = textures[spatter];
@@ -175,16 +181,17 @@ const createWallSprites = ({
           tint: parseInt(bloodColor, 16),
         });
 
+        wallSprite.y = wallTexture.frame.height - wallHeight + floorHeight;
         spatterSprite.x = CELL_SIZE / 2;
-        spatterSprite.y = wallTexture.height - (spatterSprite.height / 2);
+        spatterSprite.y = wallHeight - (spatterSprite.height / 2);
         spatterSprite.anchor.set(0.5);
         spatterSprite.rotation = rotate ? Math.floor((Math.random() * 4)) * Math.PI / 2 : 0;
 
         if (world.floorOffset) {
           spatterSprite.mask = createWallSpriteMask({
             wallTexture,
-            floorHeight: (wallTexture.height * world.floorOffset) + 1,
-            wallHeight: wallTexture.height,
+            floorHeight: (wallHeight * world.floorOffset) + 1,
+            wallHeight,
             renderer,
           });
         }
