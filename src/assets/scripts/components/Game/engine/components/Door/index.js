@@ -40,6 +40,7 @@ class Door extends DynamicCell {
    * @param  {Number}  options.interval     The time the door remains open.
    * @param  {Boolean} options.double       Double door options.
    * @param  {Boolean} options.entrance     Entrance door option.
+   * @param  {Boolean} options.exit         Exit door option.
    * @param  {Boolean} options.active       Active door option.
    */
   constructor({
@@ -47,6 +48,7 @@ class Door extends DynamicCell {
     interval,
     double,
     entrance = false,
+    exit = false,
     active = true,
     ...other
   }) {
@@ -59,6 +61,8 @@ class Door extends DynamicCell {
     this.active = active;
     this.double = double;
     this.entrance = entrance;
+    this.exit = exit;
+    this.isElevator = entrance || exit;
 
     this.setClosed();
   }

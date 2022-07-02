@@ -44,6 +44,10 @@ let correctedDistance;
 let backgroundCell;
 let sideHeight;
 let stainColor;
+let correctedDistanceTmp;
+let mapXTmp;
+let mapYTmp;
+let backgroundCellTmp;
 
 /**
  * Class representing a POVContainer.
@@ -149,6 +153,8 @@ class POVContainer extends Container {
             world,
             radius,
             elavation: sideHeight,
+            ignoreOverlay: !(cell.isDoor && !cell.overlay),
+
           });
 
           for (let j = 0, n = elavatedRays.length; j < n; j++) {
@@ -288,7 +294,7 @@ class POVContainer extends Container {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (sideHeight - player.viewHeight)
+          actualDistance = (world.height - player.viewHeight)
             / (centerY - yIndex) * CAMERA_DISTANCE;
 
           correctedDistance = actualDistance / Math.cos(spriteAngle);
@@ -306,19 +312,32 @@ class POVContainer extends Container {
 
           backgroundCell = world.getCell(gridX, gridY);
 
-          if (backgroundCell.height !== sideHeight) {
-            actualDistance = (world.height - player.viewHeight)
+          // TODO: Fix lift behind door bug.
+          if (world.height !== sideHeight) {
+            actualDistance = (sideHeight - player.viewHeight)
               / (centerY - yIndex) * CAMERA_DISTANCE;
 
-            correctedDistance = actualDistance / Math.cos(spriteAngle);
+            correctedDistanceTmp = actualDistance / Math.cos(spriteAngle);
 
-            mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
-            mapX = (mapX > maxMapX) ? maxMapX : mapX;
-            mapX = (mapX < 0) ? 0 : mapX;
+            mapXTmp = Math.floor(player.x + (Math.cos(angle) * correctedDistanceTmp));
+            mapXTmp = (mapXTmp > maxMapX) ? maxMapX : mapXTmp;
+            mapXTmp = (mapXTmp < 0) ? 0 : mapXTmp;
 
-            mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
-            mapY = (mapY > maxMapY) ? maxMapY : mapY;
-            mapY = (mapY < 0) ? 0 : mapY;
+            mapYTmp = Math.floor(player.y + (Math.sin(angle) * correctedDistanceTmp));
+            mapYTmp = (mapYTmp > maxMapY) ? maxMapY : mapYTmp;
+            mapYTmp = (mapYTmp < 0) ? 0 : mapYTmp;
+
+            gridX = Math.floor(mapXTmp / CELL_SIZE);
+            gridY = Math.floor(mapYTmp / CELL_SIZE);
+
+            backgroundCellTmp = world.getCell(gridX, gridY);
+
+            if (backgroundCellTmp.isElevator) {
+              mapX = mapXTmp;
+              mapY = mapYTmp;
+              backgroundCell = backgroundCellTmp;
+              correctedDistance = correctedDistanceTmp;
+            }
           }
 
           backgroundName = backgroundCell.top?.name;
