@@ -180,7 +180,7 @@ const createWallSprites = ({
         spatterSprite.anchor.set(0.5);
         spatterSprite.rotation = rotate ? Math.floor((Math.random() * 4)) * Math.PI / 2 : 0;
 
-        if (transparent || world.floorOffset) {
+        if (world.floorOffset) {
           spatterSprite.mask = createWallSpriteMask({
             wallTexture,
             floorHeight: (wallTexture.height * world.floorOffset) + 1,
@@ -191,7 +191,11 @@ const createWallSprites = ({
 
         spatterContainer.removeChildren();
         spatterContainer.addChild(wallSprite);
-        spatterContainer.addChild(spatterSprite);
+
+        // TODO: Add spatter to single transparent walls.
+        if (!transparent) {
+          spatterContainer.addChild(spatterSprite);
+        }
 
         renderer.render(spatterContainer, { renderTexture });
 

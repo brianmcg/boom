@@ -101,7 +101,6 @@ class AbstractEnemy extends AbstractActor {
   }) {
     super(other);
 
-    // TODO: Stop all looping sounds on scen stop
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
     }

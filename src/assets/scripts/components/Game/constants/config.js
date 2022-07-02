@@ -85,6 +85,8 @@ export const SCREEN = {
   HEIGHT: 96,
   // WIDTH: 300,
   // HEIGHT: 128,
+  // WIDTH: 512,
+  // HEIGHT: 220,
 };
 
 /**
@@ -97,7 +99,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 90;
+export const FOV = 80;
 
 /**
  * The distance from the player inside which entities should update;
