@@ -138,7 +138,7 @@ class POVContainer extends Container {
 
       for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
-        const { overlay, closed, transparency } = cell;
+        const { overlay, closed, isDoor, transparency } = cell;
 
         sideHeight = side?.height || world.height;
 
@@ -153,7 +153,7 @@ class POVContainer extends Container {
             world,
             radius,
             elavation: sideHeight,
-            ignoreOverlay: !(cell.isDoor && !cell.overlay),
+            ignoreOverlay: player.cell.isElevator || !(isDoor && !overlay),
 
           });
 
