@@ -183,6 +183,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         height: Math.ceil(CELL_SIZE * object.height),
         animated: !!object.animated,
         anchor: object.anchor,
+        scale: object.scale,
       }),
   ]), []);
 
