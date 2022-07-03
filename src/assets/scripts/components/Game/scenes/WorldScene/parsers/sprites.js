@@ -429,6 +429,19 @@ const createEffectsSprites = ({
     return memo;
   }, {});
 
+  const enemySplashSprites = world.enemies.reduce((memo, enemy) => {
+    if (enemy.splash) {
+      const splashTextures = animations[enemy.splash].map(animation => textures[animation]);
+
+      memo[`${enemy.id}_${enemy.splash}`] = new EffectSprite(splashTextures, {
+        rotate: false,
+        animationSpeed: 0.4,
+      });
+    }
+
+    return memo;
+  }, {});
+
   const enemyExplosionSprites = world.enemies.reduce((memo, enemy) => {
     if (enemy.explosion) {
       const explode = enemy.explosion?.effects.explode;
@@ -521,6 +534,7 @@ const createEffectsSprites = ({
     ...enemyExplosionSprites,
     ...objectExplosionSprites,
     ...playerSpurtSprites,
+    ...enemySplashSprites,
   };
 };
 

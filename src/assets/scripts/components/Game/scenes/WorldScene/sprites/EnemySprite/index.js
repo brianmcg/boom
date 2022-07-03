@@ -51,6 +51,15 @@ class EnemySprite extends AnimatedEntitySprite {
         if (enemy.explosion) {
           enemy.remove();
         }
+
+        if (enemy.splash) {
+          enemy.parent.addEffect({
+            x: enemy.x,
+            y: enemy.y,
+            z: enemy.z,
+            sourceId: `${enemy.id}_${enemy.splash}`,
+          });
+        }
       }
     };
   }

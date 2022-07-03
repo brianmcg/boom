@@ -9,15 +9,17 @@ class EffectSprite extends AnimatedEntitySprite {
    * @param  {Array}  textures The explosion textures.
    * @param  {Object} options  The animated sprite options.
    */
-  constructor(textures, options) {
+  constructor(textures, { rotate = true, ...other }) {
     super(textures, {
-      ...options,
+      ...other,
       loop: false,
       autoPlay: false,
       anchor: 0.5,
     });
 
-    this.rotation = Math.random() * Math.PI * 2;
+    if (rotate) {
+      this.rotation = Math.random() * Math.PI * 2;
+    }
 
     this.on('added', () => this.play());
     this.on('removed', () => this.gotoAndStop(0));

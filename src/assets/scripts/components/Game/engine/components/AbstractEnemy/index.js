@@ -85,6 +85,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number}  options.proneHeight    The height of the enemy while prone.
    * @param  {Object}  options.explosion      The enemy explosion properties.
    * @param  {String}  options.type           The type of enemy.
+   * @param  {String}  options.splash         The type of splash.
    */
   constructor({
     stateDurations,
@@ -97,6 +98,7 @@ class AbstractEnemy extends AbstractActor {
     type,
     painChance,
     isBoss,
+    splash,
     ...other
   }) {
     super(other);
@@ -141,6 +143,10 @@ class AbstractEnemy extends AbstractActor {
 
     if (explosion) {
       this.explosion = new Explosion({ source: this, ...explosion });
+    }
+
+    if (!float && !explosion && splash) {
+      this.splash = splash;
     }
 
     this.path = [];
@@ -873,6 +879,15 @@ class AbstractEnemy extends AbstractActor {
         this.explosion.run();
       } else {
         this.isProne = true;
+      }
+
+      if (this.splash) {
+        this.parent.addEffect({
+          x: this.x,
+          y: this.y,
+          z: this.z,
+          sourceId: `${this.id}_${this.splash}`,
+        });
       }
 
       if (this.sounds.death) {

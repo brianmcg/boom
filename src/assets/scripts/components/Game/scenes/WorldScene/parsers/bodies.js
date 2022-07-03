@@ -144,6 +144,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     brightness = 0.8,
     visibility = 16,
     floorOffset = 0,
+    splash,
   } = data;
 
   const { animations } = graphics.data;
@@ -231,6 +232,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         ...props.enemies[enemy.name],
         spatters,
         soundSprite,
+        splash,
       }),
     ];
   }, []);
