@@ -52,12 +52,12 @@ class EnemySprite extends AnimatedEntitySprite {
           enemy.remove();
         }
 
-        if (enemy.splash) {
+        if (enemy.ripple) {
           enemy.parent.addEffect({
             x: enemy.x,
             y: enemy.y,
             z: enemy.z,
-            sourceId: `${enemy.id}_${enemy.splash}`,
+            sourceId: `${enemy.id}_${enemy.ripple}`,
           });
         }
       }

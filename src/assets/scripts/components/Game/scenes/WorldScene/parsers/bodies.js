@@ -145,6 +145,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     visibility = 16,
     floorOffset = 0,
     splash,
+    ripple,
   } = data;
 
   const { animations } = graphics.data;
@@ -234,6 +235,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         spatters,
         soundSprite,
         splash,
+        ripple,
       }),
     ];
   }, []);

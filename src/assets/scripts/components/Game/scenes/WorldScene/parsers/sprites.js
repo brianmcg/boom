@@ -439,6 +439,15 @@ const createEffectsSprites = ({
       });
     }
 
+    if (enemy.ripple) {
+      const rippleTextures = animations[enemy.ripple].map(animation => textures[animation]);
+
+      memo[`${enemy.id}_${enemy.ripple}`] = new EffectSprite(rippleTextures, {
+        rotate: false,
+        animationSpeed: 0.4,
+      });
+    }
+
     return memo;
   }, {});
 

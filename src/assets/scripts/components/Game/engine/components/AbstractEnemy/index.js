@@ -86,6 +86,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Object}  options.explosion      The enemy explosion properties.
    * @param  {String}  options.type           The type of enemy.
    * @param  {String}  options.splash         The type of splash.
+   * @param  {String}  options.ripple         The type of ripple.
    */
   constructor({
     stateDurations,
@@ -99,6 +100,7 @@ class AbstractEnemy extends AbstractActor {
     painChance,
     isBoss,
     splash,
+    ripple,
     ...other
   }) {
     super(other);
@@ -145,8 +147,9 @@ class AbstractEnemy extends AbstractActor {
       this.explosion = new Explosion({ source: this, ...explosion });
     }
 
-    if (!float && !explosion && splash) {
+    if (!float && !explosion) {
       this.splash = splash;
+      this.ripple = ripple
     }
 
     this.path = [];
