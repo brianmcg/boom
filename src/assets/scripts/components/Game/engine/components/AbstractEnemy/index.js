@@ -294,8 +294,12 @@ class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.transparency === TRANSPARENCY.PARTIAL) {
-        this.setRetreating();
+      if (
+        nextCell.transparency === TRANSPARENCY.PARTIAL
+          && this.projectiles && this.findPlayer()
+      ) {
+        this.setRange(Number.MAX_VALUE);
+        this.setAttacking();
       }
 
       if (nextCell.isDoor) {
