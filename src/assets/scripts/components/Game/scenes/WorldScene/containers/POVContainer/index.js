@@ -138,7 +138,13 @@ class POVContainer extends Container {
 
       for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
-        const { overlay, closed, isDoor, transparency } = cell;
+
+        const {
+          overlay,
+          closed,
+          isDoor,
+          transparency,
+        } = cell;
 
         sideHeight = side?.height || world.height;
 
