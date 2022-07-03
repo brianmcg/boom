@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees, TRANSPARENCY } from 'game/core/physics';
 import { CELL_SIZE, UPDATE_DISTANCE } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import TransparentCell from '../TransparentCell';
@@ -176,7 +176,7 @@ class AbstractEnemy extends AbstractActor {
           if (this.findPlayer()) {
             this.setRange(Number.MAX_VALUE);
           } else {
-            this.setIdle();
+            this.setRetreating();
           }
         }
       },
@@ -293,6 +293,10 @@ class AbstractEnemy extends AbstractActor {
       this.setAiming();
     } else if (nextCell) {
       this.face(nextCell);
+
+      if (nextCell.transparency === TRANSPARENCY.PARTIAL) {
+        this.setRetreating();
+      }
 
       if (nextCell.isDoor) {
         nextCell.use(this);
