@@ -168,7 +168,7 @@ const createWallSprites = ({
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
       const spatterColorTextures = spatters.map((spatter) => {
         const wallHeight = wallTexture.height;
-        const floorHeight = world.floorOffset ? (wallHeight * world.floorOffset) - 1 : 0;
+        const floorHeight = world.floorOffset ? (CELL_SIZE * world.floorOffset) - 1 : 0;
 
         const renderTexture = RenderTexture.create({
           width: CELL_SIZE,
@@ -190,7 +190,7 @@ const createWallSprites = ({
         if (world.floorOffset) {
           spatterSprite.mask = createWallSpriteMask({
             wallTexture,
-            floorHeight: (wallHeight * world.floorOffset) + 1,
+            floorHeight: (CELL_SIZE * world.floorOffset) + 1,
             wallHeight,
             renderer,
           });

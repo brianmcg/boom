@@ -343,7 +343,7 @@ class World extends PhysicsWorld {
   activateDoors() {
     this.grid.forEach((row) => {
       row.forEach((cell) => {
-        if (cell.isDoor) {
+        if (cell.isDoor && !cell.entrance) {
           cell.active = true;
         }
       });
