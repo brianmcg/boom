@@ -551,9 +551,8 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach((item) => {
-    entitySprites[item.id] = new EntitySprite(textures[item.name], {
-      floorOffset: world.floorOffset,
-    });
+    const animationTextures = animations[item.name].map(t => textures[t]);
+    entitySprites[item.id] = new AnimatedEntitySprite(animationTextures);
   });
 
   world.objects.forEach((object) => {
@@ -705,7 +704,7 @@ const createReviewSprites = (text) => {
   };
 };
 
-const createHudSprites = ({ world, textures }) => {
+const createHudSprites = ({ world, textures, animations }) => {
   const healthAmount = new TextSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
@@ -732,7 +731,8 @@ const createHudSprites = ({ world, textures }) => {
 
   const keys = world.items.reduce((memo, item) => {
     if (item.color) {
-      const { baseTexture, frame } = textures[item.name];
+      const [name] = animations[item.name];
+      const { baseTexture, frame } = textures[name];
       const keyTexture = new Texture(baseTexture, frame);
 
       return {
@@ -804,7 +804,7 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 
   const sky = createSkySprites({ world, textures });
 
-  const hud = createHudSprites({ world, textures });
+  const hud = createHudSprites({ world, textures, animations });
 
   const effects = createEffectsSprites({
     animations,

@@ -35,6 +35,7 @@ class WeaponItem extends AbstractItem {
     this.weapon = weapon;
     this.isWeapon = true;
     this.title = translate(`world.item.${weapon}`);
+    this.scale = 0.75;
   }
 }
 
