@@ -1,7 +1,7 @@
 import translate from 'root/translate';
 import { degrees } from 'game/core/physics';
 import { WEAPONS } from 'game/constants/types';
-import { CELL_SIZE, GOD_MODE } from 'game/constants/config';
+import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from 'game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import HitScanWeapon from './components/HitScanWeapon';
@@ -68,9 +68,14 @@ class Player extends AbstractActor {
       weaponIndex = 0,
       items,
       soundSprite,
+      maxHealth,
       ...other
     } = options;
-    super({ soundSprite, ...other });
+    super({
+      soundSprite,
+      maxHealth: maxHealth * HEALTH_MODIFIER,
+      ...other,
+    });
 
     this.rotateSpeed = rotateSpeed;
     this.rotateAcceleration = rotateAcceleration;

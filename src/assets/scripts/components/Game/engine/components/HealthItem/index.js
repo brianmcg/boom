@@ -1,4 +1,5 @@
 import translate from 'root/translate';
+import { HEALTH_MODIFIER } from 'game/constants/config';
 import AbstractItem from '../AbstractItem';
 /**
  * Class representing a health item.
@@ -31,7 +32,7 @@ class HealthItem extends AbstractItem {
   constructor({ amount = 0, ...other }) {
     super(other);
 
-    this.amount = amount;
+    this.amount = amount * HEALTH_MODIFIER;
     this.isHealth = true;
     this.title = translate('world.item.health');
   }

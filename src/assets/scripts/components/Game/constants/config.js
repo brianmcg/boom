@@ -112,3 +112,9 @@ export const UPDATE_DISTANCE = CELL_SIZE * 20;
  * @type {Number}
  */
 export const MAX_SOUND_DISTANCE = CELL_SIZE * 16;
+
+/**
+ * The health modifier.
+ * @type {Number}
+ */
+export const HEALTH_MODIFIER = 2;
