@@ -89,9 +89,11 @@ class WorldScene extends Scene {
       },
       onMouseDown: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),
+        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ boot: true }),
       },
       onMouseUp: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
+        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ boot: false }),
       },
       onMouseMove: {
         callback: x => this.incrementPlayerAction({ rotate: x }),

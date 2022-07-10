@@ -69,6 +69,7 @@ class Player extends AbstractActor {
       items,
       soundSprite,
       maxHealth,
+      boot,
       ...other
     } = options;
     super({
@@ -294,6 +295,7 @@ class Player extends AbstractActor {
       stopAttack,
       use,
       cycleWeapon,
+      boot,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
