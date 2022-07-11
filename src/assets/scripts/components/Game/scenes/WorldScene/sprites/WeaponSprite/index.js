@@ -34,7 +34,15 @@ class WeaponSprite extends AnimatedSprite {
       }
     });
 
-    this.onComplete = () => this.setIdle();
+    this.onComplete = () => {
+
+      if (player.weapon.name === 'boot') {
+        console.log('on:boot:complete');
+        this.player.selectWeapon(this.player.weaponIndex);
+      }
+
+      this.setIdle()
+    };
   }
 
   /**

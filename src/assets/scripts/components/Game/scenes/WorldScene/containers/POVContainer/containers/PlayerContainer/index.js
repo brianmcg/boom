@@ -154,8 +154,13 @@ class PlayerContainer extends Container {
     this.weaponY -= CHANGE_INCREMENT * delta;
 
     if (this.weaponY <= 0) {
+      // debugger;
       this.weaponY = 0;
       this.setIdle();
+
+      if (this.player.weapon.name === 'boot') {
+        this.player.weapon.use();
+      }
     }
   }
 

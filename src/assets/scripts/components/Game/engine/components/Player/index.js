@@ -69,7 +69,6 @@ class Player extends AbstractActor {
       items,
       soundSprite,
       maxHealth,
-      boot,
       ...other
     } = options;
     super({
@@ -85,12 +84,12 @@ class Player extends AbstractActor {
 
     if (weaponIndex) {
       this.weaponIndex = weaponIndex;
-    } else if (Object.values(weapons).filter(w => w.equiped).length > 1) {
+    } else if (Object.values(weapons).filter(w => w.equiped).length > 2) {
       // Use pistol if no weapon index given and pistol available.
-      this.weaponIndex = 1;
+      this.weaponIndex = 2;
     } else {
       // Use knife if no other weapons equiped.
-      this.weaponIndex = 0;
+      this.weaponIndex = 1;
     }
 
     this.crouchHeight = this.height * 0.6;
@@ -390,8 +389,12 @@ class Player extends AbstractActor {
     // Update camera.
     this.camera.update(delta);
 
+    if (boot) {
+      this.selectWeapon(0);
+    }
+
     // Update weapon.
-    if (this.isWeaponChangeEnabled && (selectWeapon || selectWeapon === 0)) {
+    if (this.isWeaponChangeEnabled && selectWeapon) {
       this.selectWeapon(selectWeapon);
     }
 
@@ -400,7 +403,13 @@ class Player extends AbstractActor {
 
       if (cycleWeapon < 0) {
         for (let i = 1; i < this.weapons.length; i++) {
-          const nextIndex = (currentIndex + i) % this.weapons.length;
+          let nextIndex = (currentIndex + i) % this.weapons.length;
+
+          // Skip boot, since it is a secondary attack.
+          if (nextIndex === 0) {
+            nextIndex = this.weapons.length - 1;
+          }
+
           const weapon = this.weapons[nextIndex];
 
           if (weapon.isEquiped()) {
@@ -410,7 +419,13 @@ class Player extends AbstractActor {
         }
       } else {
         for (let i = this.weapons.length - 1; i > 0; i--) {
-          const nextIndex = (currentIndex + i) % this.weapons.length;
+          let nextIndex = (currentIndex + i) % this.weapons.length;
+
+          // Skip boot, since it is a secondary attack.
+          if (nextIndex === 0) {
+            nextIndex = currentIndex + 1;
+          }
+
           const weapon = this.weapons[nextIndex];
 
           if (weapon.isEquiped()) {
@@ -533,11 +548,21 @@ class Player extends AbstractActor {
   selectWeapon(index) {
     const weapon = this.weapons[index];
 
-    if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
-      this.weaponIndex = index;
+    if (weapon && weapon.isEquiped() && (this.weaponIndex !== index || this.secondaryWeapon)) {
+
+      if (index) {
+        this.weaponIndex = index;
+        this.secondaryWeapon = false;
+      } else {
+        this.secondaryWeapon = true;
+      }
+
       this.weapon = weapon;
       this.disableWeaponChange();
-      this.emitSound(weapon.sounds.equip);
+
+      if (weapon.sounds.equip) {
+        this.emitSound(weapon.sounds.equip);
+      }
       this.emit(EVENTS.CHANGE_WEAPON);
     }
   }
