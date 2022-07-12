@@ -407,7 +407,7 @@ class Player extends AbstractActor {
 
           // Skip boot, since it is a secondary attack.
           if (nextIndex === 0) {
-            nextIndex = this.weapons.length - 1;
+            nextIndex = 1;
           }
 
           const weapon = this.weapons[nextIndex];
@@ -423,7 +423,7 @@ class Player extends AbstractActor {
 
           // Skip boot, since it is a secondary attack.
           if (nextIndex === 0) {
-            nextIndex = currentIndex + 1;
+            nextIndex = this.weapons.length - 1;
           }
 
           const weapon = this.weapons[nextIndex];
@@ -549,7 +549,6 @@ class Player extends AbstractActor {
     const weapon = this.weapons[index];
 
     if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
-
       this.previousWeaponIndex = this.weaponIndex;
       this.weaponIndex = index;
 

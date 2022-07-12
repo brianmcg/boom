@@ -98,7 +98,8 @@ class HUDContainer extends Container {
       if (!player.weapon.secondary) {
         const { ammo } = player.weapon;
         ammoAmount.text = ammo !== null ? ammo : '-';
-        ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+        ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2)
+          - (ammoAmount.width / 2) - (HUD_PADDING / 2);
       }
     });
 
@@ -107,7 +108,8 @@ class HUDContainer extends Container {
       if (!player.weapon.secondary) {
         const { ammo } = player.weapon;
         ammoAmount.text = ammo !== null ? ammo : '-';
-        ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2) - (ammoAmount.width / 2) - (HUD_PADDING / 2);
+        ammoAmount.x = ammoIcon.x - (ammoIcon.width / 2)
+          - (ammoAmount.width / 2) - (HUD_PADDING / 2);
       }
     });
 

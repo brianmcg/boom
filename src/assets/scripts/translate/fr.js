@@ -44,8 +44,14 @@ export default {
   'manual.action.attack': {
     text: '[FR] attack',
   },
-  'manual.input.ctrl': {
+  'manual.input.mouse.left': {
     text: '[FR] mouse left click',
+  },
+  'manual.action.boot': {
+    text: '[FR] kick',
+  },
+  'manual.input.mouse.right': {
+    text: '[FR] mouse right click',
   },
   'manual.action.weapon': {
     text: '[FR] select weapon',
@@ -102,16 +108,16 @@ export default {
     text: '[FR] Debug Level',
   },
   'world.title.dungeon_1': {
-    text: '[FR] Dungeon',
+    text: '[FR] Prison Block',
   },
   'world.title.sewers_1': {
-    text: '[FR] Sewers',
+    text: '[FR] Sewer Network',
   },
   'world.title.sewers_2': {
     text: '[FR] Treatment Plant',
   },
   'world.title.cellar_1': {
-    text: '[FR] Cellar',
+    text: '[FR] Secret Lab',
   },
   'world.title.mansion_1': {
     text: '[FR] Mansion',

@@ -44,8 +44,14 @@ export default {
   'manual.action.attack': {
     text: 'attack',
   },
-  'manual.input.ctrl': {
+  'manual.input.mouse.left': {
     text: 'mouse left click',
+  },
+  'manual.action.boot': {
+    text: 'kick',
+  },
+  'manual.input.mouse.right': {
+    text: 'mouse right click',
   },
   'manual.action.weapon': {
     text: 'select weapon',

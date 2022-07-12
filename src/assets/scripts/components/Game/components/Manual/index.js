@@ -46,7 +46,10 @@ class GameManual {
         key: translate('manual.input.space'),
       }, {
         action: translate('manual.action.attack'),
-        key: translate('manual.input.ctrl'),
+        key: translate('manual.input.mouse.left'),
+      }, {
+        action: translate('manual.action.boot'),
+        key: translate('manual.input.mouse.right'),
       }, {
         action: translate('manual.action.weapon'),
         key: translate('manual.input.weapon'),
