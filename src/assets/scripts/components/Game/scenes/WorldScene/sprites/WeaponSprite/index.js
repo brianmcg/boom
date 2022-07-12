@@ -35,10 +35,8 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
-
-      if (player.weapon.name === 'boot') {
-        console.log('on:boot:complete');
-        this.player.selectWeapon(this.player.weaponIndex);
+      if (player.weapon.secondary) {
+        player.selectWeapon(player.weaponIndex, { silent: true });
       }
 
       this.setIdle()

@@ -436,7 +436,7 @@ class Player extends AbstractActor {
       }
     }
 
-    if (attack) {
+    if (attack && !this.weapon.secondary) {
       this.weapon.use();
     }
 
@@ -473,6 +473,7 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
+    this.actions.boot = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
       this.health = this.maxHealth;
@@ -545,7 +546,7 @@ class Player extends AbstractActor {
    * Select the next weapon to use.
    * @param  {String} type The type of weapon to use.
    */
-  selectWeapon(index) {
+  selectWeapon(index, { silent = false } = {}) {
     const weapon = this.weapons[index];
 
     if (weapon && weapon.isEquiped() && (this.weaponIndex !== index || this.secondaryWeapon)) {
@@ -560,7 +561,7 @@ class Player extends AbstractActor {
       this.weapon = weapon;
       this.disableWeaponChange();
 
-      if (weapon.sounds.equip) {
+      if (weapon.sounds.equip && !silent) {
         this.emitSound(weapon.sounds.equip);
       }
       this.emit(EVENTS.CHANGE_WEAPON);

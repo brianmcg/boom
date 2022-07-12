@@ -46,6 +46,7 @@ class AbstractWeapon extends EventEmitter {
    * @param  {Number}  options.automatic  Automatic weapon option.
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
+   * @param  {Boolean} options.secondary  The weapon is secondary.
    */
   constructor({
     player,
@@ -64,6 +65,7 @@ class AbstractWeapon extends EventEmitter {
     automatic,
     type,
     projectile,
+    secondary,
   }) {
     super();
 
@@ -86,6 +88,7 @@ class AbstractWeapon extends EventEmitter {
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.projectile = projectile;
+    this.secondary = secondary;
 
     this.setIdle();
 
