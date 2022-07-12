@@ -36,10 +36,12 @@ class WeaponSprite extends AnimatedSprite {
 
     this.onComplete = () => {
       if (player.weapon.secondary) {
-        player.selectWeapon(player.weaponIndex, { silent: true });
+        player.selectWeapon(player.previousWeaponIndex, {
+          silent: true,
+        });
       }
 
-      this.setIdle()
+      this.setIdle();
     };
   }
 

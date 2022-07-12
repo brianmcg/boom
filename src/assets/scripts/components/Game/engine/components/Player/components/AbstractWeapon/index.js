@@ -144,7 +144,6 @@ class AbstractWeapon extends EventEmitter {
 
         if (this.timer >= this.rate) {
           this.setIdle();
-          this.timer = 0;
         }
 
         break;
@@ -329,6 +328,7 @@ class AbstractWeapon extends EventEmitter {
    */
   setState(state) {
     if (this.state !== state) {
+      this.timer = 0;
       this.state = state;
 
       return true;

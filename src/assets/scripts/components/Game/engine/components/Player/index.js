@@ -473,7 +473,6 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
-    this.actions.boot = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
       this.health = this.maxHealth;
@@ -549,14 +548,10 @@ class Player extends AbstractActor {
   selectWeapon(index, { silent = false } = {}) {
     const weapon = this.weapons[index];
 
-    if (weapon && weapon.isEquiped() && (this.weaponIndex !== index || this.secondaryWeapon)) {
+    if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
 
-      if (index) {
-        this.weaponIndex = index;
-        this.secondaryWeapon = false;
-      } else {
-        this.secondaryWeapon = true;
-      }
+      this.previousWeaponIndex = this.weaponIndex;
+      this.weaponIndex = index;
 
       this.weapon = weapon;
       this.disableWeaponChange();

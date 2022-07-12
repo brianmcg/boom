@@ -233,6 +233,7 @@ class PlayerContainer extends Container {
     const isStateChanged = this.setState(STATES.ARMING);
 
     if (isStateChanged) {
+      this.player.weapon.setState(null);
       this.sprites.weapon.setIdle();
     }
 
@@ -244,7 +245,13 @@ class PlayerContainer extends Container {
    * @returns {Boolean} The state changed.
    */
   setUnarming() {
-    return this.setState(STATES.UNARMING);
+    const isStateChanged = this.setState(STATES.UNARMING);
+
+    if (isStateChanged) {
+      this.player.weapon.setState(null);
+    }
+
+    return isStateChanged;
   }
 
   /**

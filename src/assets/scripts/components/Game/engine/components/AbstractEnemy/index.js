@@ -149,7 +149,7 @@ class AbstractEnemy extends AbstractActor {
 
     if (!float && !explosion) {
       this.splash = splash;
-      this.ripple = ripple
+      this.ripple = ripple;
     }
 
     this.path = [];
