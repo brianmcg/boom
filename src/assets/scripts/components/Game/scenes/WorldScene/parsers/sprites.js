@@ -553,7 +553,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
   world.items.forEach((item) => {
     const animationTextures = animations[item.name].map(t => textures[t]);
     entitySprites[item.id] = new AnimatedEntitySprite(animationTextures, {
-       floorOffset: world.floorOffset,
+      floorOffset: world.floorOffset,
     });
   });
 
