@@ -87,6 +87,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {String}  options.type           The type of enemy.
    * @param  {String}  options.splash         The type of splash.
    * @param  {String}  options.ripple         The type of ripple.
+   * @param  {Item}    options.spawn          The item to spawn when enemy dies.
    */
   constructor({
     stateDurations,
@@ -101,6 +102,7 @@ class AbstractEnemy extends AbstractActor {
     isBoss,
     splash,
     ripple,
+    spawn,
     ...other
   }) {
     super(other);
@@ -137,6 +139,7 @@ class AbstractEnemy extends AbstractActor {
     this.proneHeight = proneHeight;
     this.nearbyTimer = 0;
     this.graphIndex = 0;
+    this.spawn = spawn;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -882,10 +885,6 @@ class AbstractEnemy extends AbstractActor {
       this.stainTimer = 0;
       this.stainRadius = 1;
 
-      if (this.isBoss) {
-        this.parent.activateDoors();
-      }
-
       if (this.explosion) {
         this.explosion.run();
       } else {
@@ -903,6 +902,13 @@ class AbstractEnemy extends AbstractActor {
 
       if (this.sounds.death) {
         this.emitSound(this.sounds.death);
+      }
+
+      if (this.spawn) {
+        this.spawn.x = this.x;
+        this.spawn.y = this.y;
+
+        this.parent.add(this.spawn);
       }
     }
 

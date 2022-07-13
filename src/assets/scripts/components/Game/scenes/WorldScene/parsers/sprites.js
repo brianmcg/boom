@@ -572,6 +572,16 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.enemies.forEach((enemy) => {
+    const item = enemy.spawn;
+
+    if (item) {
+      const animationTextures = animations[item.name].map(t => textures[t]);
+
+      entitySprites[item.id] = new AnimatedEntitySprite(animationTextures, {
+         floorOffset: world.floorOffset,
+      });
+    }
+
     entitySprites[enemy.id] = createEnemySprite({
       animations: animations[enemy.name],
       textures,
@@ -731,7 +741,10 @@ const createHudSprites = ({ world, textures, animations }) => {
     maxScale: healthAmount.height / textures.health.frame.height,
   });
 
-  const keys = world.items.reduce((memo, item) => {
+  const items = world.enemies
+    .reduce((memo, { spawn }) => spawn ? [...memo, spawn] : memo, world.items);
+
+  const keys = items.reduce((memo, item) => {
     if (item.color) {
       const [name] = animations[item.name];
       const { baseTexture, frame } = textures[name];

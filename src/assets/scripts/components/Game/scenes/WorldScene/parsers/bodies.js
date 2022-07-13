@@ -190,10 +190,9 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const items = data.items.reduce((memo, item) => ([
     ...memo,
-    new ITEMS[item.type]({
+    new ITEMS[props.items[item.name].type]({
       ...item,
-      type: item.type,
-      name: item.name,
+      ...props.items[item.name],
       x: (CELL_SIZE * item.x) + (CELL_SIZE / 2),
       y: (CELL_SIZE * item.y) + (CELL_SIZE / 2),
       width: CELL_SIZE / 4,
@@ -204,7 +203,12 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const { bloodColor, effects } = data.props.enemies[enemy.name];
+    const spawn = enemy.spawn ? {
+      name: enemy.spawn,
+      ...props.items[enemy.spawn]
+    } : null;
+
+    const { bloodColor, effects } = props.enemies[enemy.name];
     const { spatter } = effects;
     const numberOfSpatters = spatter ? animations[spatter].length : 0;
     const spatterTypeOffset = spatterTypes.indexOf(spatter) * numberOfSpatters;
@@ -236,6 +240,15 @@ export const createWorld = ({ scene, data, graphics }) => {
         soundSprite,
         splash,
         ripple,
+        spawn: spawn
+          ? new ITEMS[spawn.type]({
+            width: CELL_SIZE / 4,
+            length: CELL_SIZE / 4,
+            height: CELL_SIZE / 4,
+            floorOffset,
+            ...spawn,
+          })
+          : null,
       }),
     ];
   }, []);
@@ -261,7 +274,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
     angle: degrees(entrance.angle) + 0.0001,
     soundSprite,
-    items,
+    items: enemies.reduce((memo, { spawn }) => spawn ? [...memo, spawn] : memo, items),
     spatters,
     weapons,
   });
