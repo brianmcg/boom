@@ -549,7 +549,6 @@ class Player extends AbstractActor {
     const weapon = this.weapons[index];
 
     if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
-      this.invincible = weapon.secondary;
       this.previousWeaponIndex = this.weaponIndex;
       this.weaponIndex = index;
 
@@ -583,7 +582,7 @@ class Player extends AbstractActor {
    * @param  {Number} angle  The angle the damage came from.
    */
   hurt(damage, angle) {
-    if (!this.invincible || !GOD_MODE) {
+    if (!GOD_MODE) {
       this.vision = HURT_VISION_AMOUNT;
       this.health -= damage;
 
