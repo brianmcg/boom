@@ -151,16 +151,14 @@ class PlayerContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   updateArming(delta) {
-    const { weapon } = this.player;
-
     this.weaponY -= CHANGE_INCREMENT * delta;
 
     if (this.weaponY <= 0) {
       this.weaponY = 0;
       this.setIdle();
 
-      if (weapon.secondary) {
-        weapon.use();
+      if (this.player.weapon.secondary) {
+        this.player.weapon.use();
       }
     }
   }
