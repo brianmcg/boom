@@ -580,7 +580,7 @@ class AbstractEnemy extends AbstractActor {
         if ((instantKill || this.isBoss) && this.item) {
           this.item.x = this.x;
           this.item.y = this.y;
-          this.item.velocity = this.velocity * 0.5;
+          this.item.velocity = this.isBoss ? 0 : this.velocity * 0.5;
           this.item.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
           this.parent.add(this.item);
           this.item.setSpawning();

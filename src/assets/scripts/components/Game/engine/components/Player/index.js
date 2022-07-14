@@ -147,11 +147,10 @@ class Player extends AbstractActor {
         if (this.pickUp(body)) {
           this.emit(EVENTS.PICK_UP, body);
 
-          if (body.title) {
-            this.addMessage(translate('world.player.pickup', {
-              item: body.title,
-            }));
-          }
+          this.addMessage(translate('world.player.pickup', {
+            item: body.title,
+          }));
+
         } else {
           this.addMessage(translate('world.player.cannot.pickup', {
             item: body.title,
@@ -540,7 +539,9 @@ class Player extends AbstractActor {
    * @param {Number} options.priority The priority of the message.
    */
   addMessage(text, options) {
-    this.emit(EVENTS.MESSAGE_ADDED, text, options);
+    if (text) {
+      this.emit(EVENTS.MESSAGE_ADDED, text, options);
+    }
   }
 
   /**
@@ -628,23 +629,10 @@ class Player extends AbstractActor {
     }
 
     if (item.isPortal) {
-      return this.enterPortal(item);
+      this.emit(EVENTS.EXIT);
     }
 
     return false;
-  }
-
-  /**
-   * Enter a portal.
-   * @param  {PortalItem} portal  The portal to enter.
-   * @return {Boolean}            The portal has been entered.
-   */
-  enterPortal(portal) {
-    portal.stopSound(portal.sounds.swirl);
-
-    this.emit(EVENTS.EXIT);
-
-    return true;
   }
 
   /**
