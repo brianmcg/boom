@@ -148,7 +148,7 @@ class AbstractItem extends DynamicEntity {
       this.velocity = 0;
     }
 
-    if (!this.sounds && this.velocity === 0 && this.scale === 1) {
+    if (Object.entries(this.sounds).length === 0 && this.velocity === 0 && this.scale === 1) {
       this.stopUpdates();
     }
 

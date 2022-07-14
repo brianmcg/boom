@@ -150,7 +150,6 @@ class Player extends AbstractActor {
           this.addMessage(translate('world.player.pickup', {
             item: body.title,
           }));
-
         } else if (body.title) {
           this.addMessage(translate('world.player.cannot.pickup', {
             item: body.title,

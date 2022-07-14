@@ -578,7 +578,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
       const animationTextures = animations[item.name].map(t => textures[t]);
 
       entitySprites[item.id] = new AnimatedEntitySprite(animationTextures, {
-         floorOffset: world.floorOffset,
+        floorOffset: world.floorOffset,
       });
     }
 
@@ -741,8 +741,13 @@ const createHudSprites = ({ world, textures, animations }) => {
     maxScale: healthAmount.height / textures.health.frame.height,
   });
 
-  const items = world.enemies
-    .reduce((memo, { item }) => item ? [...memo, item] : memo, world.items);
+  const items = world.enemies.reduce((memo, { item }) => {
+    if (item) {
+      memo.push(item);
+    }
+
+    return memo;
+  }, world.items);
 
   const keys = items.reduce((memo, item) => {
     if (item.color) {

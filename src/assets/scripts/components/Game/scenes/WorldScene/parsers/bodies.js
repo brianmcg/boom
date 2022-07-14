@@ -208,7 +208,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     const item = enemy.item ? {
       name: enemy.item,
       scale: 0,
-      ...props.items[enemy.item]
+      ...props.items[enemy.item],
     } : null;
 
     const { bloodColor, effects } = props.enemies[enemy.name];
@@ -278,7 +278,12 @@ export const createWorld = ({ scene, data, graphics }) => {
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
     angle: degrees(entrance.angle) + 0.0001,
     soundSprite,
-    items: enemies.reduce((memo, { item }) => item ? [...memo, item] : memo, items),
+    items: enemies.reduce((memo, { item }) => {
+      if (item) {
+        memo.push(item);
+      }
+      return memo;
+    }, items),
     spatters,
     weapons,
   });
