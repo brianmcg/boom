@@ -11,6 +11,7 @@ import KeyItem from './components/KeyItem';
 import AmmoItem from './components/AmmoItem';
 import HealthItem from './components/HealthItem';
 import WeaponItem from './components/WeaponItem';
+import PortalItem from './components/PortalItem';
 import PushWall from './components/PushWall';
 import TransparentCell from './components/TransparentCell';
 
@@ -28,6 +29,7 @@ export {
   AmmoItem,
   HealthItem,
   WeaponItem,
+  PortalItem,
   PushWall,
   TransparentCell,
 };

@@ -147,9 +147,11 @@ class Player extends AbstractActor {
         if (this.pickUp(body)) {
           this.emit(EVENTS.PICK_UP, body);
 
-          this.addMessage(translate('world.player.pickup', {
-            item: body.title,
-          }));
+          if (body.title) {
+            this.addMessage(translate('world.player.pickup', {
+              item: body.title,
+            }));
+          }
         } else {
           this.addMessage(translate('world.player.cannot.pickup', {
             item: body.title,
@@ -625,7 +627,24 @@ class Player extends AbstractActor {
       return this.pickUpWeapon(item);
     }
 
+    if (item.isPortal) {
+      return this.enterPortal(item);
+    }
+
     return false;
+  }
+
+  /**
+   * Enter a portal.
+   * @param  {PortalItem} portal  The portal to enter.
+   * @return {Boolean}            The portal has been entered.
+   */
+  enterPortal(portal) {
+    portal.stopSound(portal.sounds.swirl);
+
+    this.emit(EVENTS.EXIT);
+
+    return true;
   }
 
   /**

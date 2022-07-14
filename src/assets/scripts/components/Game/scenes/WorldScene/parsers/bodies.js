@@ -16,6 +16,7 @@ import {
   AmmoItem,
   HealthItem,
   WeaponItem,
+  PortalItem,
   TransparentCell,
 } from 'game/engine';
 
@@ -24,6 +25,7 @@ const ITEMS = {
   [ITEM_TYPES.AMMO]: AmmoItem,
   [ITEM_TYPES.HEALTH]: HealthItem,
   [ITEM_TYPES.WEAPON]: WeaponItem,
+  [ITEM_TYPES.PORTAL]: PortalItem,
 };
 
 const ENEMIES = {
@@ -248,6 +250,7 @@ export const createWorld = ({ scene, data, graphics }) => {
             height: CELL_SIZE / 4,
             floorOffset,
             ...item,
+            soundSprite,
           })
           : null,
       }),

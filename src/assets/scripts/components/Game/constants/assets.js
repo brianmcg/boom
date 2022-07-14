@@ -98,4 +98,5 @@ export const ITEM_TYPES = {
   AMMO: 'ammoitem',
   HEALTH: 'healthitem',
   WEAPON: 'weaponitem',
+  PORTAL: 'portalitem',
 };

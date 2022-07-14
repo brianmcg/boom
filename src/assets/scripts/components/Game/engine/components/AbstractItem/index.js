@@ -8,7 +8,6 @@ const FORCE_FADE = 0.85;
 const MIN_FORCE = 0.1;
 
 const STATES = {
-  IDLE: 'item:idle',
   RESPAWNING: 'item:respawning',
   SPAWNING: 'item:spawning',
 };
@@ -55,8 +54,6 @@ class AbstractItem extends DynamicEntity {
 
     if (respawn) {
       this.setRespawning();
-    } else {
-      this.setIdle();
     }
 
     if (floorOffset) {
@@ -106,6 +103,11 @@ class AbstractItem extends DynamicEntity {
     }
   }
 
+  /**
+   * Update in the respawning state.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
+   */
   updateRespawning(delta, elapsedMS) {
     this.timer += elapsedMS;
 
@@ -129,6 +131,11 @@ class AbstractItem extends DynamicEntity {
     }
   }
 
+  /**
+   * Update in the spawning state.
+   * @param  {Number} delta     The delta time.
+   * @param  {Number} elapsedMS The elapsed time in milliseconds.
+   */
   updateSpawning(delta, elapsedMS) {
     this.scale += SCALE_INCREMENT * delta;
     this.velocity *= FORCE_FADE;
@@ -148,10 +155,10 @@ class AbstractItem extends DynamicEntity {
     super.update(delta, elapsedMS);
   }
 
-  setIdle() {
-    return this.setState(STATES.IDLE);
-  }
-
+  /**
+   * Set to the spawning state.
+   * @return {Boolean} state change successful.
+   */
   setSpawning() {
     const isStateChanged = this.setState(STATES.SPAWNING);
 
@@ -162,12 +169,16 @@ class AbstractItem extends DynamicEntity {
     return isStateChanged;
   }
 
+  /**
+   * Set to the respawning state.
+   * @return {Boolean} state change successful.
+   */
   setRespawning() {
     return this.setState(STATES.RESPAWNING);
   }
 
   /**
-   * Set to the removed state.
+   * Set to removed.
    * @return {Boolean} state change successful.
    */
   setRemoved() {
