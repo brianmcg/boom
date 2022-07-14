@@ -151,7 +151,7 @@ class Player extends AbstractActor {
             item: body.title,
           }));
 
-        } else {
+        } else if (body.title) {
           this.addMessage(translate('world.player.cannot.pickup', {
             item: body.title,
           }));
@@ -539,9 +539,7 @@ class Player extends AbstractActor {
    * @param {Number} options.priority The priority of the message.
    */
   addMessage(text, options) {
-    if (text) {
-      this.emit(EVENTS.MESSAGE_ADDED, text, options);
-    }
+    this.emit(EVENTS.MESSAGE_ADDED, text, options);
   }
 
   /**

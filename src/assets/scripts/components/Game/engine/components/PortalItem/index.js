@@ -40,6 +40,7 @@ class PortalItem extends AbstractItem {
   onAdded(parent) {
     super.onAdded(parent);
 
+    this.emitSound(this.sounds.open);
     this.emitSound(this.sounds.swirl, true);
   }
 }
