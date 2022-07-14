@@ -87,7 +87,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {String}  options.type           The type of enemy.
    * @param  {String}  options.splash         The type of splash.
    * @param  {String}  options.ripple         The type of ripple.
-   * @param  {Item}    options.spawn          The item to spawn when enemy dies.
+   * @param  {Item}    options.item           The item to spawn when enemy dies.
    */
   constructor({
     stateDurations,
@@ -102,7 +102,7 @@ class AbstractEnemy extends AbstractActor {
     isBoss,
     splash,
     ripple,
-    spawn,
+    item,
     ...other
   }) {
     super(other);
@@ -139,7 +139,7 @@ class AbstractEnemy extends AbstractActor {
     this.proneHeight = proneHeight;
     this.nearbyTimer = 0;
     this.graphIndex = 0;
-    this.spawn = spawn;
+    this.item = item;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -554,16 +554,17 @@ class AbstractEnemy extends AbstractActor {
 
   /**
    * Hurt the enemy
-   * @param  {Number} damage The damage to health.
-   * @param  {Number} angle  The angle the damage came from.
+   * @param  {Number}  damage       The damage to health.
+   * @param  {Number}  angle        The angle the damage came from.
+   * @param  {Boolean} instantKill  Instantly kill the enemy.
    */
-  hurt(damage, angle = 0) {
+  hurt(damage, angle = 0, instantKill) {
     super.hurt(damage, angle);
 
     if (this.isAlive()) {
       this.health -= damage;
 
-      if (this.health > 0) {
+      if (!(!this.isBoss && instantKill) && this.health > 0) {
         if (!this.isPlaying(this.sounds.pain)) {
           this.emitSound(this.sounds.pain);
         }
@@ -575,6 +576,15 @@ class AbstractEnemy extends AbstractActor {
         this.angle = angle;
         this.velocity = Math.sqrt(damage);
         this.setDead();
+
+        if ((instantKill || this.isBoss) && this.item) {
+          this.item.x = this.x;
+          this.item.y = this.y;
+          this.item.velocity = this.velocity * 0.5;
+          this.item.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
+          this.parent.add(this.item);
+          this.item.setSpawning();
+        }
       }
     } else {
       this.angle = angle;
@@ -902,13 +912,6 @@ class AbstractEnemy extends AbstractActor {
 
       if (this.sounds.death) {
         this.emitSound(this.sounds.death);
-      }
-
-      if (this.spawn) {
-        this.spawn.x = this.x;
-        this.spawn.y = this.y;
-
-        this.parent.add(this.spawn);
       }
     }
 

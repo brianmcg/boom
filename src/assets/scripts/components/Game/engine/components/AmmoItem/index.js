@@ -26,7 +26,7 @@ class AmmoItem extends AbstractItem {
    * @param  {Object}  options.tail           The item tail.
    * @param  {String}  options.type           The type of item.
    * @param  {Number}  options.floorOffset    The floor offset.
-   * @param  {Number}  options.spawnTime      The time to respawn.
+   * @param  {Number}  options.respawn        The time to respawn.
    * @param  {Number}  options.amount         The amount of ammo.
    * @param  {String}  options.weapon         The weapon the ammo is for.
    */

@@ -48,6 +48,7 @@ class HitScanWeapon extends AbstractWeapon {
       accuracy: this.accuracy,
       flash: !!this.maxAmmo,
       highCalibre,
+      instantKill: this.secondary,
     }));
   }
 

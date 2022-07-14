@@ -26,7 +26,7 @@ class WeaponItem extends AbstractItem {
    * @param  {Object}  options.tail           The item tail.
    * @param  {String}  options.type           The type of item.
    * @param  {Number}  options.floorOffset    The floor offset.
-   * @param  {Number}  options.spawnTime      The time to respawn.
+   * @param  {Number}  options.respawn        The time to respawn.
    * @param  {String}  options.weapon         The weapon this item contains.
    */
   constructor({ weapon, ...other }) {

@@ -52,6 +52,7 @@ class AbstractDestroyableEntity extends DynamicEntity {
 
     if (this.hits.length) {
       const totalDamage = this.hits.reduce((memo, { damage }) => memo + damage, 0);
+      const instantKill = this.hits.some(h => h.instantKill);
 
       if (totalDamage) {
         const { length } = this.hits;
@@ -63,7 +64,7 @@ class AbstractDestroyableEntity extends DynamicEntity {
 
         const meanAngle = Math.atan2(y / length, x / length);
 
-        this.hurt(totalDamage, meanAngle);
+        this.hurt(totalDamage, meanAngle, instantKill);
 
         this.hits = [];
       }
@@ -72,10 +73,11 @@ class AbstractDestroyableEntity extends DynamicEntity {
 
   /**
    * Add a hit to the entity.
-   * @param {Number} options.damage The damage of the hit.
-   * @param {Number} options.angle  The angle of the hit.
-   * @param {Array}  options.rays   The ray sections.
-   * @param {Object} options.point  The point of the collision.
+   * @param {Number}  options.damage       The damage of the hit.
+   * @param {Number}  options.angle        The angle of the hit.
+   * @param {Array}   options.rays         The ray sections.
+   * @param {Object}  options.point        The point of the collision.
+   * @param {Boolean} options.instantKill  The hit instantly kills.
    */
   hit(options) {
     this.hits.push(options);

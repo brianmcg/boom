@@ -36,6 +36,7 @@ class HitScan extends Body {
    * @param  {Number}  options.fade         The fade of the hitscan.
    * @param  {Boolean} options.highCalibre  The calibre of the hitscan.
    * @param  {Boolean} options.flash        The flash property of the hitscan.
+   * @param  {Boolean} options.instantKill  The hitscan instantly kills.
    */
   constructor({
     effect,
@@ -46,6 +47,7 @@ class HitScan extends Body {
     fade,
     highCalibre = false,
     flash = true,
+    instantKill,
     ...other
   } = {}) {
     super(other);
@@ -58,6 +60,7 @@ class HitScan extends Body {
     this.fade = fade;
     this.highCalibre = highCalibre;
     this.flash = flash;
+    this.instantKill = instantKill;
   }
 
   /**
@@ -151,6 +154,7 @@ class HitScan extends Body {
                 angle,
                 point,
                 rays,
+                instantKill: this.instantKill,
               });
             }
           }

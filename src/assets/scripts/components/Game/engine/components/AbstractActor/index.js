@@ -129,10 +129,11 @@ class AbstractActor extends AbstractDestroyableEntity {
 
   /**
    * Add a hit to the actor.
-   * @param {Number} options.damage The damage of the hit.
-   * @param {Number} options.angle  The angle of the hit.
-   * @param {Array}  options.rays   The ray sections.
-   * @param {Object} options.point  The point of the collision.
+   * @param {Number}  options.damage       The damage of the hit.
+   * @param {Number}  options.angle        The angle of the hit.
+   * @param {Array}   options.rays         The ray sections.
+   * @param {Object}  options.point        The point of the collision.
+   * @param {Boolean} options.instantKill  The hit instantly kills.
    */
   hit({ rays, point, ...options }) {
     super.hit(options);
@@ -194,8 +195,8 @@ class AbstractActor extends AbstractDestroyableEntity {
 
   /**
    * Hurt the actor.
-   * @param  {Number} damage The amount to hurt the actor.
-   * @param  {Number} angle  The angle the damage came from.
+   * @param  {Number}  damage       The amount to hurt the actor.
+   * @param  {Number}  angle        The angle the damage came from.
    */
   hurt(damage, angle) {
     if (this.health > 0) {

@@ -572,7 +572,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.enemies.forEach((enemy) => {
-    const item = enemy.spawn;
+    const { item } = enemy;
 
     if (item) {
       const animationTextures = animations[item.name].map(t => textures[t]);
@@ -742,7 +742,7 @@ const createHudSprites = ({ world, textures, animations }) => {
   });
 
   const items = world.enemies
-    .reduce((memo, { spawn }) => spawn ? [...memo, spawn] : memo, world.items);
+    .reduce((memo, { item }) => item ? [...memo, item] : memo, world.items);
 
   const keys = items.reduce((memo, item) => {
     if (item.color) {

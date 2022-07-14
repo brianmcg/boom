@@ -203,9 +203,10 @@ export const createWorld = ({ scene, data, graphics }) => {
   ]), []);
 
   const enemies = data.enemies.reduce((memo, enemy) => {
-    const spawn = enemy.spawn ? {
-      name: enemy.spawn,
-      ...props.items[enemy.spawn]
+    const item = enemy.item ? {
+      name: enemy.item,
+      scale: 0,
+      ...props.items[enemy.item]
     } : null;
 
     const { bloodColor, effects } = props.enemies[enemy.name];
@@ -240,13 +241,13 @@ export const createWorld = ({ scene, data, graphics }) => {
         soundSprite,
         splash,
         ripple,
-        spawn: spawn
-          ? new ITEMS[spawn.type]({
+        item: item
+          ? new ITEMS[item.type]({
             width: CELL_SIZE / 4,
             length: CELL_SIZE / 4,
             height: CELL_SIZE / 4,
             floorOffset,
-            ...spawn,
+            ...item,
           })
           : null,
       }),
@@ -274,7 +275,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     y: (CELL_SIZE * entrance.y) + (CELL_SIZE / 2),
     angle: degrees(entrance.angle) + 0.0001,
     soundSprite,
-    items: enemies.reduce((memo, { spawn }) => spawn ? [...memo, spawn] : memo, items),
+    items: enemies.reduce((memo, { item }) => item ? [...memo, item] : memo, items),
     spatters,
     weapons,
   });
