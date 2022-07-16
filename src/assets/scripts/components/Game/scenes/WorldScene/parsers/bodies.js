@@ -226,14 +226,8 @@ export const createWorld = ({ scene, data, graphics }) => {
         name: enemy.name,
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
-        width: Math.min(
-          Math.max(Math.round(CELL_SIZE * enemy.width), CELL_SIZE / 2),
-          CELL_SIZE - 1,
-        ),
-        length: Math.min(
-          Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
-          CELL_SIZE - 1,
-        ),
+        width: Math.max(Math.round(CELL_SIZE * enemy.width), CELL_SIZE / 2),
+        length:  Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
         height: Math.round(CELL_SIZE * enemy.height),
         float: enemy.float,
         scale: enemy.scale,

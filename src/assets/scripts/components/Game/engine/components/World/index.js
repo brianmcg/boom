@@ -91,52 +91,26 @@ class World extends PhysicsWorld {
       ...col.filter(cell => cell.isPushWall),
     ]), []);
 
+    // Create graphs for pathfinding.
+    this.graphs = this.dynamicBodies.reduce((memo, b) => {
+      if (b.isEnemy && b.collisionRadius && !memo.includes(b.collisionRadius)) {
+        memo.push(b.collisionRadius);
+      }
+      return memo;
+    }, []).reduce((memo, radius) => ({
+      ...memo,
+      [radius]: this.createGraphs(grid, radius - 1),
+    }), {});
+
+    // Create grid for floor stains.
+    this.stains = [...Array(this.maxMapX + 1).keys()]
+      .map(() => [...Array(this.maxMapY + 1).keys()].map(() => 0));
+
     player.onDeath(() => this.onPlayerDeath());
 
     player.onPickUp(item => this.onPlayerPickUp(item));
 
     player.onExit(() => this.scene.setAddingReviewing());
-
-    // Create graph for pathfinding.
-    this.graphs = [
-      new Graph(grid.map(col => col.map((cell) => {
-        if (
-          cell.blocking && !cell.isDoor && !cell.isPushWall
-            && cell.transparency !== TRANSPARENCY.FULL
-        ) {
-          return NODE_WEIGHTS.WALL;
-        }
-
-        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-          return NODE_WEIGHTS.STATIC_BODY;
-        }
-
-        return NODE_WEIGHTS.FREE;
-      })), {
-        diagonal: false,
-      }),
-      new Graph(grid.map(col => col.map((cell) => {
-        if (cell.blocking && cell.transparency) {
-          return NODE_WEIGHTS.TRANSPARENT_CELL;
-        }
-
-        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
-          return NODE_WEIGHTS.WALL;
-        }
-
-        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-          return NODE_WEIGHTS.STATIC_BODY;
-        }
-
-        return NODE_WEIGHTS.FREE;
-      })), {
-        diagonal: false,
-      }),
-    ];
-
-    // Create grid for floor stains.
-    this.stains = [...Array(this.maxMapX + 1).keys()]
-      .map(() => [...Array(this.maxMapY + 1).keys()].map(() => 0));
   }
 
   /**
@@ -188,7 +162,7 @@ class World extends PhysicsWorld {
     index = 0,
     diagonal,
   ) {
-    const graph = this.graphs[index];
+    const graph = this.graphs[from.collisionRadius][index];
     const start = graph.grid[from.gridX][from.gridY];
     const end = graph.grid[to.gridX][to.gridY];
     const initialWeights = [];
@@ -218,7 +192,6 @@ class World extends PhysicsWorld {
     this.entranceTimer = ENTRANCE_INTERVAL;
     this.player.start(message);
   }
-
 
   /**
    * Play the world.
@@ -335,6 +308,86 @@ class World extends PhysicsWorld {
       secretsFound: this.secrets.filter(secret => secret.isOpened).length,
       secretsTotal: this.secrets.length,
     };
+  }
+
+  /**
+   * Create graphs for enemy pathfinding.
+   * @param  {Array}  grid   The map grid.
+   * @param  {Number} radius The collision radius.
+   * @return {Array}         The array of Graphs.
+   */
+  createGraphs(grid = [], radius = 1) {
+    let grids = [
+      grid.map(col => col.map((cell) => {
+        if (
+          cell.blocking && !cell.isDoor && !cell.isPushWall
+            && cell.transparency !== TRANSPARENCY.FULL
+        ) {
+          return NODE_WEIGHTS.WALL;
+        }
+
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
+
+        return NODE_WEIGHTS.FREE;
+      })),
+      grid.map(col => col.map((cell) => {
+        if (cell.blocking && cell.transparency) {
+          return NODE_WEIGHTS.TRANSPARENT_CELL;
+        }
+
+        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
+          return NODE_WEIGHTS.WALL;
+        }
+
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
+
+        return NODE_WEIGHTS.FREE;
+      })),
+    ];
+
+    if (radius > 0) {
+      return grids.map(g => new Graph(this.extrudeGrid(g, radius), { diagonal: false }));
+    }
+
+    return grids.map(g => new Graph(g, { diagonal: false }));
+  }
+
+  /**
+   * Extrude all walls by a given radius.
+   * @param  {Array}  grid   The grid to extrude
+   * @param  {Number} radius The radius to extrude by.
+   * @return {Array}         The extruded grid.
+   */
+  extrudeGrid(grid, radius) {
+    const extrudedGrid = [...Array(grid.length)].map(() => Array(grid[0].length));
+
+    for (let x = 0; x < grid.length; x++) {
+      for (let y = 0; y < grid[0].length; y++) {
+        const cell = grid[x][y];
+
+        if (cell === NODE_WEIGHTS.WALL) {
+          extrudedGrid[x][y] = NODE_WEIGHTS.WALL;
+
+          for (let i = x - radius; i <= x + radius; i++) {
+            for (let j = y - radius; j <= y + radius; j++) {
+              const nextCell = grid[i] && grid[i][j];
+
+              if (nextCell || nextCell === 0) {
+                extrudedGrid[i][j] = NODE_WEIGHTS.WALL;
+              }
+            }
+          }
+        } else if (extrudedGrid[x][y] === undefined) {
+          extrudedGrid[x][y] = cell;
+        }
+      }
+    }
+
+    return extrudedGrid;
   }
 
   /**

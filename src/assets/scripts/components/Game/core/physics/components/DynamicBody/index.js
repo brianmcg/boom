@@ -51,6 +51,7 @@ class DynamicBody extends Body {
     this.collisions = [];
     this.trackedCollisions = [];
     this.autoPlay = autoPlay;
+    this.collisionRadius = Math.ceil(this.width / CELL_SIZE);
   }
 
   /**
@@ -110,7 +111,7 @@ class DynamicBody extends Body {
    */
   update(delta) {
     // Get bodies from surrounding cells
-    const bodies = this.parent.getNeighbourBodies(this);
+    const bodies = this.parent.getNeighbourBodies(this, this.collisionRadius);
 
     const collisions = [];
 
