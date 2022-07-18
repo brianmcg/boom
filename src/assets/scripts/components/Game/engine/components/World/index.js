@@ -334,7 +334,7 @@ class World extends PhysicsWorld {
       })),
       grid.map(col => col.map((cell) => {
         if (cell.blocking && cell.transparency) {
-          return NODE_WEIGHTS.TRANSPARENT_CELL;
+          return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
         }
 
         if (cell.blocking && !cell.isDoor && !cell.isPushWall) {

@@ -152,7 +152,9 @@ class AbstractItem extends DynamicEntity {
       this.stopUpdates();
     }
 
-    super.update(delta, elapsedMS);
+    if (this.parent) {
+      super.update(delta, elapsedMS);
+    }
   }
 
   /**

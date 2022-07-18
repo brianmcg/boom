@@ -54,10 +54,12 @@ class DynamicEntity extends DynamicBody {
       this.tailId = 0;
     }
 
-    this.soundController = new SoundSpriteController({
-      sounds: Object.values(this.sounds),
-      soundSprite,
-    });
+    if (Object.entries(sounds).length) {
+      this.soundController = new SoundSpriteController({
+        sounds: Object.values(this.sounds),
+        soundSprite,
+      });
+    }
   }
 
   /**
@@ -72,7 +74,9 @@ class DynamicEntity extends DynamicBody {
       ? 0
       : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
-    this.soundController.update(volume);
+    if (this.soundController) {
+      this.soundController.update(volume);
+    }
 
     if (this.tail) {
       this.tailTimer += elapsedMS;
@@ -103,11 +107,13 @@ class DynamicEntity extends DynamicBody {
    * @param {Boolean} loop Loop the sound.
    */
   emitSound(name, loop) {
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+    if (this.soundController) {
+      const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
+        ? 0
+        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
-    this.soundController.emitSound(name, volume, loop);
+      this.soundController.emitSound(name, volume, loop);
+    }
   }
 
   /**
@@ -115,7 +121,9 @@ class DynamicEntity extends DynamicBody {
    * @param  {String} name The name of the sound.
    */
   stopSound(name) {
-    this.soundController.stopSound(name);
+    if (this.soundController) {
+      this.soundController.stopSound(name);
+    }
   }
 
 
@@ -123,21 +131,27 @@ class DynamicEntity extends DynamicBody {
    * Play the entity.
    */
   play() {
-    this.soundController.play();
+    if (this.soundController) {
+      this.soundController.play();
+    }
   }
 
   /**
    * Pause the entity.
    */
   pause() {
-    this.soundController.pause();
+    if (this.soundController) {
+      this.soundController.pause();
+    }
   }
 
   /**
    * Stop the entity.
    */
   stop() {
-    this.soundController.stop();
+    if (this.soundController) {
+      this.soundController.stop();
+    }
   }
 
   /**
@@ -146,7 +160,11 @@ class DynamicEntity extends DynamicBody {
    * @return {Boolean}      The result of the check.
    */
   isPlaying(name) {
-    return this.soundController.isPlaying(name);
+    if (this.soundController) {
+      return this.soundController.isPlaying(name);
+    }
+
+    return false;
   }
 }
 
