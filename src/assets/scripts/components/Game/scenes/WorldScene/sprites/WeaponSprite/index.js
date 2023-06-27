@@ -1,7 +1,7 @@
 import { AnimatedSprite } from 'game/core/graphics';
 import { SCREEN } from 'game/constants/config';
 
-const HEIGHT_RATIO = SCREEN.HEIGHT / 190;
+const HEIGHT_RATIO = SCREEN.HEIGHT / 160;
 
 /**
  * Class representing a weapon sprite.

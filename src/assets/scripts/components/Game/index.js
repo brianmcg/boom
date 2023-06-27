@@ -79,7 +79,7 @@ class Game extends Application {
       this.ticker.add(this.loop, this);
     }
 
-    this.timer = 0;
+    // this.timer = 0;
 
     this.loader = new Loader();
     this.input = new InputController(this.view);
