@@ -2,43 +2,43 @@
  * @module  game/constants/config
  */
 
-const urlParams = new URLSearchParams(window.location.search);
+const URL_PARAMS = new URLSearchParams(window.location.search);
 
 /**
  * Debug mode.
  * @type {Number}
  */
-export const DEBUG = parseInt(urlParams.get('debug'), 10) || 0;
+export const DEBUG = parseInt(URL_PARAMS.get('debug'), 10) || 0;
 
 /**
  * The level to load in debug mode.
  * @type {Number}
  */
-export const LEVEL = parseInt(urlParams.get('level'), 10) || 1;
+export const LEVEL = parseInt(URL_PARAMS.get('level'), 10) || 1;
 
 /**
  * Make player invincible.
  * @type {Boolean}
  */
-export const GOD_MODE = urlParams.has('god');
+export const GOD_MODE = URL_PARAMS.has('god');
 
 /**
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUND = urlParams.has('disableSound');
+export const DISABLE_SOUND = URL_PARAMS.has('disableSound');
 
 /**
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = urlParams.has('displayFps') || Boolean(DEBUG);
+export const DISPLAY_FPS = URL_PARAMS.has('displayFps') || Boolean(DEBUG);
 
 /**
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = DISABLE_SOUND || urlParams.has('disableMusic') || Boolean(DEBUG);
+export const DISABLE_MUSIC = DISABLE_SOUND || URL_PARAMS.has('disableMusic') || Boolean(DEBUG);
 
 /**
  * The maximum frames per second.
@@ -80,12 +80,7 @@ export const WALL_LAYERS = 3;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = {
-  WIDTH: 224,
-  HEIGHT: 96,
-  // WIDTH: 300,
-  // HEIGHT: 128,
-};
+export const SCREEN = { WIDTH: 320, HEIGHT: 160 };
 
 /**
  * The default language to use.
@@ -97,7 +92,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 80;
+export const FOV = 90;
 
 /**
  * The distance from the player inside which entities should update;

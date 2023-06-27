@@ -584,7 +584,6 @@ class Player extends AbstractActor {
   hurt(damage, angle) {
     if (!GOD_MODE) {
       this.vision = HURT_VISION_AMOUNT;
-      this.health -= damage;
 
       this.emit(EVENTS.HURT);
 

@@ -36,6 +36,10 @@ const DEG_360 = degrees(360);
 
 const MAX_STAIN_RADIUS = CELL_SIZE / 4;
 
+const MIN_STAIN_RADIUS = 1.5;
+
+const STAIN_INCREMENT = 1.5;
+
 const STAIN_INTERVAL = 50;
 
 const MAX_PATH_INDEX = 2;
@@ -466,7 +470,7 @@ class AbstractEnemy extends AbstractActor {
 
         if (this.stainRadius <= MAX_STAIN_RADIUS) {
           this.stain(this.stainRadius);
-          this.stainRadius += 1.5;
+          this.stainRadius += STAIN_INCREMENT;
         }
       }
 
@@ -474,7 +478,7 @@ class AbstractEnemy extends AbstractActor {
         this.stain(MAX_STAIN_RADIUS);
         this.stopUpdates();
         this.stainTimer = STAIN_INTERVAL;
-        this.stainRadius = 2;
+        this.stainRadius = MIN_STAIN_RADIUS;
       }
     }
   }
@@ -893,7 +897,7 @@ class AbstractEnemy extends AbstractActor {
 
       this.blocking = false;
       this.stainTimer = 0;
-      this.stainRadius = 1;
+      this.stainRadius = MIN_STAIN_RADIUS;
 
       if (this.explosion) {
         this.explosion.run();

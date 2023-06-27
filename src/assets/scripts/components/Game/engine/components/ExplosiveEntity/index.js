@@ -43,7 +43,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
     explosion,
     ...other
   }) {
-    super(other);
+    super({ sounds: explosion.sounds, ...other });
     this.animated = animated;
 
     this.isExploding = false;

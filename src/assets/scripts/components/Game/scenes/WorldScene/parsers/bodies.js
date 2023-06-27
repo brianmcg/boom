@@ -204,6 +204,8 @@ export const createWorld = ({ scene, data, graphics }) => {
     }),
   ]), []);
 
+  // data.enemies = [];
+
   const enemies = data.enemies.reduce((memo, enemy) => {
     const item = enemy.item ? {
       name: enemy.item,
