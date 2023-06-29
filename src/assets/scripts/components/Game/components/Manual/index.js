@@ -1,5 +1,5 @@
 import translate from 'root/translate';
-import './styles/index.scss';
+
 import Table from './components/Table';
 import Button from './components/Button';
 

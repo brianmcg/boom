@@ -1,16 +1,12 @@
-@import './colors';
-
 @font-face {
-  font-family: 'doom';
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'DoomRegular';
   src: url('/assets/fonts/font.woff') format('woff');
+/*  src: url('../fonts/DoomRegular.ttf');*/
 }
 
-body {
-  background-color: $black;
-  color: $white;
-  font-family: 'doom', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
+@import 'variables';
+@import 'scaffolding';
+@import 'button';
+@import 'manual';
+@import 'spinner';
+@import 'table';

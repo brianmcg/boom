@@ -1,4 +1,4 @@
-import './styles/index.scss';
+
 
 /**
  * Class representing a button.

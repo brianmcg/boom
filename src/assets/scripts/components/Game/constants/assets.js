@@ -29,8 +29,8 @@ export const GAME_SOUNDS = {
  * @type {Object}
  */
 export const GAME_FONT = {
-  NAME: 'font',
-  FILE: 'font.xml',
+  NAME: 'doom_regular',
+  FILE: 'doom_regular.xml',
 };
 
 /**
