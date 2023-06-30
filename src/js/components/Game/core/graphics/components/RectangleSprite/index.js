@@ -1,4 +1,4 @@
-import { Texture, Sprite } from 'pixi.js';
+import { Texture, Sprite } from '../../pixi';
 
 /**
  * Class representing a rectangle sprite.

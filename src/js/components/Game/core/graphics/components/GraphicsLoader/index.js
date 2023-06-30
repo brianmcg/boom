@@ -1,4 +1,4 @@
-import { utils, Loader } from 'pixi.js';
+import { TextureCache, Loader } from '../../pixi';
 
 /**
  * Class representing a graphics loader.
@@ -9,7 +9,7 @@ class GraphicsLoader {
    */
   constructor() {
     this.loader = new Loader();
-    this.cache = utils.TextureCache;
+    this.cache = TextureCache;
   }
 
   /**

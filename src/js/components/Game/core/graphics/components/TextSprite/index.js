@@ -1,4 +1,4 @@
-import { BitmapText } from 'pixi.js';
+import { BitmapText } from '../../pixi';
 
 /**
  * Class representing a bitmap text.

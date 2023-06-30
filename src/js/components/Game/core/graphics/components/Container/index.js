@@ -1,4 +1,4 @@
-import { Container as PixiContainer } from 'pixi.js';
+import { Container as PixiContainer } from '../../pixi';
 
 /**
  * Class representing a Container.

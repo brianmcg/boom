@@ -1,4 +1,4 @@
-import { Graphics } from 'pixi.js';
+import { Graphics } from '../../pixi';
 
 class Line extends Graphics {
   constructor({

@@ -1,4 +1,4 @@
-import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
+import { AnimatedSprite as PixiAnimatedSprite } from '../../pixi';
 
 /**
  * Class representing an AnimatedSprite.

@@ -1,4 +1,4 @@
-import { Application as PixiApplication } from 'pixi.js';
+import { Application as PixiApplication } from '../../pixi';
 
 /**
  * Class representing an application.

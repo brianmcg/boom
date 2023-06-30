@@ -1,4 +1,4 @@
-import { Application } from './core/graphics';
+import { Application, settings, SCALE_MODES } from './core/graphics';
 import { InputController } from './core/input';
 import { BLACK } from './constants/colors';
 
@@ -47,6 +47,10 @@ const ASSETS = {
     src: `${GAME_PATH}/${GAME_DATA.FILE}`,
   },
 };
+
+settings.SCALE_MODE = SCALE_MODES.NEAREST;
+
+settings.SPRITE_BATCH_SIZE = SCREEN.WIDTH * SCREEN.HEIGHT;
 
 /**
  * A class representing a game.

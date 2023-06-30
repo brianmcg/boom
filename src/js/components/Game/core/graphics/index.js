@@ -3,18 +3,17 @@
  */
 
 import {
-  filters,
-  utils,
+  ColorMatrixFilter,
+  EventEmitter,
+  SCALE_MODES,
+  BLEND_MODES,
   settings,
   Rectangle,
   Texture,
   RenderTexture,
-  SCALE_MODES,
-  BLEND_MODES,
-} from 'pixi.js';
+  PixelateFilter
+} from './pixi.js';
 
-import { PixelateFilter } from '@pixi/filter-pixelate';
-import { SCREEN } from '@game/constants/config';
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
@@ -24,14 +23,6 @@ import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
-
-settings.SCALE_MODE = SCALE_MODES.NEAREST;
-
-settings.SPRITE_BATCH_SIZE = SCREEN.WIDTH * SCREEN.HEIGHT;
-
-const { ColorMatrixFilter } = filters;
-
-const { EventEmitter } = utils;
 
 export {
   /**
@@ -95,7 +86,15 @@ export {
    */
   BLEND_MODES,
   /**
+   * Scale modes constant.
+   */
+  SCALE_MODES,
+  /**
    * The line component.
    */
   Line,
+  /**
+   * PIXI settings.
+   */
+  settings,
 };
