@@ -1,24 +1,24 @@
-const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
 const autoprefixer = require('autoprefixer');
+const paths = require('./paths');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, 'src/main.js'),
+    main: `${paths.src}/main.js`,
   },
   resolve: {
     alias: {
-      '@images': path.resolve(__dirname, 'src/images'),
-      '@translate': path.resolve(__dirname, 'src/js/translate'),
-      '@game': path.resolve(__dirname, 'src/js/components/Game'),
+      '@images': `${paths.src}/images`,
+      '@translate': `${paths.src}/js/translate`,
+      '@game': `${paths.src}/js/components/Game`,
     },
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: paths.build,
     publicPath: '/',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
@@ -110,21 +110,21 @@ module.exports = {
       dry: false,
     }),
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'src/fonts'),
-      to: path.resolve(__dirname, 'dist/fonts'),
+      from: `${paths.src}/fonts`,
+      to: `${paths.build}/fonts`,
     }, {
-      from: path.resolve(__dirname, 'src/images'),
-      to: path.resolve(__dirname, 'dist/images'),
+      from: `${paths.src}/images`,
+      to: `${paths.build}/images`,
     }, {
-      from: path.resolve(__dirname, 'public'),
-      to: 'assets',
+      from: paths.public,
+      to: `${paths.build}/assets`,
     }]),
     new MiniCssExtractPlugin({
       filename: 'styles/[name].[chunkhash].min.css',
       chunkFilename: 'styles/[name].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src/template.html'),
+      template: `${paths.src}/template.html`,
       inject: 'body',
       hash: false,
       minify: {

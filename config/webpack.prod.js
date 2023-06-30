@@ -1,9 +1,10 @@
-const path = require('path');
+
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
 const cssnano = require('cssnano');
 const common = require('./webpack.common.js');
+const paths = require('./paths');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -12,7 +13,7 @@ module.exports = merge(common, {
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: paths.build,
     compress: true,
     port: 9000,
     disableHostCheck: true,
