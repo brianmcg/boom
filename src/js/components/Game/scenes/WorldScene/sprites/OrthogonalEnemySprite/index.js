@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees } from '@game/core/physics';
 import AnimatedEntitySprite from '../AnimatedEntitySprite';
 
 const ACTIONS = {

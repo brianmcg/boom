@@ -1,5 +1,5 @@
-import { CELL_SIZE } from 'game/constants/config';
-import { Body, degrees } from 'game/core/physics';
+import { CELL_SIZE } from '@game/constants/config';
+import { Body, degrees } from '@game/core/physics';
 import HitScan from '../HitScan';
 
 const SPREAD = 24;

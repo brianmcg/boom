@@ -1,5 +1,5 @@
-import { Body, degrees } from 'game/core/physics';
-import { CELL_SIZE } from 'game/constants/config';
+import { Body, degrees } from '@game/core/physics';
+import { CELL_SIZE } from '@game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 import Explosion from '../Explosion';
 

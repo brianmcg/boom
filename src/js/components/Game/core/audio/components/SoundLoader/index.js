@@ -1,4 +1,4 @@
-import { DISABLE_SOUND, DISABLE_MUSIC } from 'game/constants/config';
+import { DISABLE_SOUND, DISABLE_MUSIC } from '@game/constants/config';
 import Sound from '../Sound';
 
 /**

@@ -1,5 +1,5 @@
-import { EventEmitter } from 'game/core/graphics';
-import { CELL_SIZE } from 'game/constants/config';
+import { EventEmitter } from '@game/core/graphics';
+import { CELL_SIZE } from '@game/constants/config';
 import { isRayCollision, getRayCollision, getDistanceBetween } from '../../helpers';
 
 let idCount = 0;

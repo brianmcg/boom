@@ -1,6 +1,6 @@
-import { MAX_SOUND_DISTANCE } from 'game/constants/config';
-import { DynamicCell as PhysicsDynamicCell } from 'game/core/physics';
-import { SoundSpriteController } from 'game/core/audio';
+import { MAX_SOUND_DISTANCE } from '@game/constants/config';
+import { DynamicCell as PhysicsDynamicCell } from '@game/core/physics';
+import { SoundSpriteController } from '@game/core/audio';
 
 /**
  * Class representing a game cell.

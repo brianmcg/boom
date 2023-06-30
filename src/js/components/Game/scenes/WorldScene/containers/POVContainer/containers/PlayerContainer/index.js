@@ -1,6 +1,6 @@
-import { Container } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
-import { GREY } from 'game/constants/colors';
+import { Container } from '@game/core/graphics';
+import { SCREEN } from '@game/constants/config';
+import { GREY } from '@game/constants/colors';
 import HUDContainer from './containers/HUDContainer';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 40;

@@ -1,12 +1,12 @@
-import { Container } from 'game/core/graphics';
-import { degrees, castRay } from 'game/core/physics';
+import { Container } from '@game/core/graphics';
+import { degrees, castRay } from '@game/core/physics';
 import {
   SCREEN,
   CELL_SIZE,
   FOV,
   WALL_LAYERS,
-} from 'game/constants/config';
-import { GREY, WHITE } from 'game/constants/colors';
+} from '@game/constants/config';
+import { GREY, WHITE } from '@game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import InnerContainer from './containers/InnerContainer';
 import OuterContainer from './containers/OuterContainer';

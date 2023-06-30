@@ -1,4 +1,4 @@
-import { Container, PixelateFilter } from 'game/core/graphics';
+import { Container, PixelateFilter } from '@game/core/graphics';
 
 /**
  * A class representing a MainContainer.

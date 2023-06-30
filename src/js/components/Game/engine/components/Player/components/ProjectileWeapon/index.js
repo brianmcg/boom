@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees } from '@game/core/physics';
 import AbstractWeapon from '../AbstractWeapon';
 import Projectile from '../../../Projectile';
 

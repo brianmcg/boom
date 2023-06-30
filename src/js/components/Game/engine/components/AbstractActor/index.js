@@ -1,5 +1,5 @@
-import { degrees } from 'game/core/physics';
-import { CELL_SIZE } from 'game/constants/config';
+import { degrees } from '@game/core/physics';
+import { CELL_SIZE } from '@game/constants/config';
 import AbstractDestroyableEntity from '../AbstractDestroyableEntity';
 
 const DEG_180 = degrees(180);

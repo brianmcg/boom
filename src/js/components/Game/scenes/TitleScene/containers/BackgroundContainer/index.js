@@ -1,4 +1,4 @@
-import { Container, PixelateFilter } from 'game/core/graphics';
+import { Container, PixelateFilter } from '@game/core/graphics';
 
 const PIXEL_SIZE = 1.75;
 

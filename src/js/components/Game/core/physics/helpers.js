@@ -1,4 +1,4 @@
-import { CELL_SIZE, WALL_LAYERS } from 'game/constants/config';
+import { CELL_SIZE, WALL_LAYERS } from '@game/constants/config';
 import { AXES, TRANSPARENCY } from './constants';
 
 let horizontalGrid;

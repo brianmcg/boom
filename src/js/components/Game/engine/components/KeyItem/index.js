@@ -1,4 +1,4 @@
-import translate from 'root/translate';
+import translate from '@translate';
 import AbstractItem from '../AbstractItem';
 
 /**

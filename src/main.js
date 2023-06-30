@@ -1,4 +1,4 @@
 import './styles/index.scss';
-import Game from '@/js/components/Game';
+import Game from '@game';
 
 const game = new Game();

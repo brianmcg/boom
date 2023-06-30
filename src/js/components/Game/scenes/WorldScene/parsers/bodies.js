@@ -1,6 +1,6 @@
-import { degrees, AXES } from 'game/core/physics';
-import { ITEM_TYPES, ENEMY_TYPES } from 'game/constants/assets';
-import { CELL_SIZE, DEBUG } from 'game/constants/config';
+import { degrees, AXES } from '@game/core/physics';
+import { ITEM_TYPES, ENEMY_TYPES } from '@game/constants/assets';
+import { CELL_SIZE, DEBUG } from '@game/constants/config';
 import {
   Cell,
   PushWall,
@@ -18,7 +18,7 @@ import {
   WeaponItem,
   PortalItem,
   TransparentCell,
-} from 'game/engine';
+} from '@game/engine';
 
 const ITEMS = {
   [ITEM_TYPES.KEY]: KeyItem,
@@ -229,7 +229,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         x: (CELL_SIZE * enemy.x) + (CELL_SIZE / 2),
         y: (CELL_SIZE * enemy.y) + (CELL_SIZE / 2),
         width: Math.max(Math.round(CELL_SIZE * enemy.width), CELL_SIZE / 2),
-        length:  Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
+        length: Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
         height: Math.round(CELL_SIZE * enemy.height),
         float: enemy.float,
         scale: enemy.scale,

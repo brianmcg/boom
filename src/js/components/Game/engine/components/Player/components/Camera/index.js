@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees } from '@game/core/physics';
 
 const DEG_360 = degrees(360);
 const HEIGHT_INCREMENT = 0.04;

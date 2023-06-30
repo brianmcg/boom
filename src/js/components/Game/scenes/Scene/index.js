@@ -1,8 +1,8 @@
-import { KEYS } from 'game/core/input';
-import { Container } from 'game/core/graphics';
-import { SoundSpriteController } from 'game/core/audio';
-import { MUSIC_VOLUME } from 'game/constants/config';
-import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from 'game/constants/assets';
+import { KEYS } from '@game/core/input';
+import { Container } from '@game/core/graphics';
+import { SoundSpriteController } from '@game/core/audio';
+import { MUSIC_VOLUME } from '@game/constants/config';
+import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from '@game/constants/assets';
 import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';

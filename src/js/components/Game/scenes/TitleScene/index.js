@@ -1,5 +1,5 @@
-import translate from 'root/translate';
-import { KEYS } from 'game/core/input';
+import translate from '@translate';
+import { KEYS } from '@game/core/input';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';

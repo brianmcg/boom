@@ -1,5 +1,5 @@
-import translate from 'root/translate';
-import { CELL_SIZE } from 'game/constants/config';
+import translate from '@translate';
+import { CELL_SIZE } from '@game/constants/config';
 import DynamicCell from '../DynamicCell';
 
 const STATES = {

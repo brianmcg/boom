@@ -1,5 +1,5 @@
-import { CELL_SIZE } from 'game/constants/config';
-import { Body, degrees, castRay } from 'game/core/physics';
+import { CELL_SIZE } from '@game/constants/config';
+import { Body, degrees, castRay } from '@game/core/physics';
 
 const DEG_180 = degrees(180);
 

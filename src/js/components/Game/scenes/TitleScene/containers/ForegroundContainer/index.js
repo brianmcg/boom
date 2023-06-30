@@ -1,5 +1,5 @@
-import { Container } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
+import { Container } from '@game/core/graphics';
+import { SCREEN } from '@game/constants/config';
 
 /**
  * Class representing a foreground container.

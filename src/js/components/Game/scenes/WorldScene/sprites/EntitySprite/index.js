@@ -1,4 +1,4 @@
-import { Sprite, RectangleSprite } from 'game/core/graphics';
+import { Sprite, RectangleSprite } from '@game/core/graphics';
 
 /**
  * Class representing an EntitySprite.

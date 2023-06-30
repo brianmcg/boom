@@ -47,6 +47,6 @@
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "doc": "jsdoc -r src/assets/scripts/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
-    "lint": "eslint src/assets/scripts/"
+    "lint": "eslint src/js/"
   }
 }

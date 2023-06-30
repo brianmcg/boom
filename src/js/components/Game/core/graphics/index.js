@@ -14,7 +14,7 @@ import {
 } from 'pixi.js';
 
 import { PixelateFilter } from '@pixi/filter-pixelate';
-import { SCREEN } from 'game/constants/config';
+import { SCREEN } from '@game/constants/config';
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';

@@ -1,4 +1,4 @@
-import { Sprite } from 'game/core/graphics';
+import { Sprite } from '@game/core/graphics';
 
 /**
  * Class representing an WallSprite.

@@ -1,4 +1,4 @@
-import { Cell as PhysicsCell } from 'game/core/physics';
+import { Cell as PhysicsCell } from '@game/core/physics';
 
 /**
  * Class representing a game cell.

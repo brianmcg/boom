@@ -1,8 +1,8 @@
-import { SCREEN } from 'game/constants/config';
-import { TextSprite } from 'game/core/graphics';
-import { GAME_FONT } from 'game/constants/assets';
-import { FONT_SIZES } from 'game/constants/fonts';
-import { RED } from 'game/constants/colors';
+import { SCREEN } from '@game/constants/config';
+import { TextSprite } from '@game/core/graphics';
+import { GAME_FONT } from '@game/constants/assets';
+import { FONT_SIZES } from '@game/constants/fonts';
+import { RED } from '@game/constants/colors';
 
 const TIME_TO_LIVE = 1500;
 

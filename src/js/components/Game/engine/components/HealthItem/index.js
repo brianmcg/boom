@@ -1,5 +1,5 @@
-import translate from 'root/translate';
-import { HEALTH_MODIFIER } from 'game/constants/config';
+import translate from '@translate';
+import { HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractItem from '../AbstractItem';
 /**
  * Class representing a health item.

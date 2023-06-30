@@ -1,5 +1,5 @@
-import { CELL_SIZE, GOD_MODE } from 'game/constants/config';
-import { EventEmitter } from 'game/core/graphics';
+import { CELL_SIZE, GOD_MODE } from '@game/constants/config';
+import { EventEmitter } from '@game/core/graphics';
 
 const STATES = {
   USING: 'weapon:using',

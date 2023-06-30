@@ -1,5 +1,5 @@
-import { AnimatedSprite } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
+import { AnimatedSprite } from '@game/core/graphics';
+import { SCREEN } from '@game/constants/config';
 
 const HEIGHT_RATIO = SCREEN.HEIGHT / 160;
 

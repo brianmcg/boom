@@ -1,7 +1,7 @@
-import translate from 'root/translate';
-import { degrees } from 'game/core/physics';
-import { WEAPONS } from 'game/constants/types';
-import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from 'game/constants/config';
+import translate from '@translate';
+import { degrees } from '@game/core/physics';
+import { WEAPONS } from '@game/constants/types';
+import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
 import HitScanWeapon from './components/HitScanWeapon';

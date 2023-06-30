@@ -1,6 +1,6 @@
-import { SCREEN, FOV, CELL_SIZE } from 'game/constants/config';
-import { Container } from 'game/core/graphics';
-import { degrees, castRay } from 'game/core/physics';
+import { SCREEN, FOV, CELL_SIZE } from '@game/constants/config';
+import { Container } from '@game/core/graphics';
+import { degrees, castRay } from '@game/core/physics';
 
 const ANGLE_INCREMENT = degrees(FOV) / SCREEN.WIDTH;
 

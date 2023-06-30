@@ -1,4 +1,4 @@
-import { Body } from 'game/core/physics';
+import { Body } from '@game/core/physics';
 
 /**
  * Class representing an entity.

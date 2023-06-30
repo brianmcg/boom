@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from 'game/constants/config';
+import { DEFAULT_LANGUAGE } from '@game/constants/config';
 import en from './en';
 import fr from './fr';
 

@@ -6,7 +6,7 @@
  * The path to the game asset directory.
  * @type {String}
  */
-export const GAME_PATH = 'assets/data';
+export const GAME_PATH = 'assets';
 
 /**
  * The path to the scene asset directory.

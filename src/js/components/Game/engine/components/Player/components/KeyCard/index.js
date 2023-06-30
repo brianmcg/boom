@@ -1,4 +1,4 @@
-import { EventEmitter } from 'game/core/graphics';
+import { EventEmitter } from '@game/core/graphics';
 
 const EVENTS = {
   EQUIP: 'key:card:equip',

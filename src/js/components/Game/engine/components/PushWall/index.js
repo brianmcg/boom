@@ -1,6 +1,6 @@
-import translate from 'root/translate';
-import { CELL_SIZE } from 'game/constants/config';
-import { AXES } from 'game/core/physics';
+import translate from '@translate';
+import { CELL_SIZE } from '@game/constants/config';
+import { AXES } from '@game/core/physics';
 import DynamicCell from '../DynamicCell';
 
 const SHAKE_MULTIPLIER = 0.2;

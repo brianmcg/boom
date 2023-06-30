@@ -1,4 +1,4 @@
-import { AnimatedSprite } from 'game/core/graphics';
+import { AnimatedSprite } from '@game/core/graphics';
 
 /**
  * Creates a menu icon sprite.

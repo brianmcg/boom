@@ -1,5 +1,5 @@
-import { Container } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
+import { Container } from '@game/core/graphics';
+import { SCREEN } from '@game/constants/config';
 import StatContainer from './containers/StatContainer';
 
 const TEXT_PADDING = SCREEN.HEIGHT / 40;

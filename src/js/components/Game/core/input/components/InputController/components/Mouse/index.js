@@ -1,5 +1,5 @@
 
-import { MOUSE_SENSITIVITY } from 'game/constants/config';
+import { MOUSE_SENSITIVITY } from '@game/constants/config';
 import Button from './components/Button';
 
 export const BUTTONS = {

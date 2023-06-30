@@ -1,6 +1,6 @@
-import { DynamicBody } from 'game/core/physics';
-import { SoundSpriteController } from 'game/core/audio';
-import { MAX_SOUND_DISTANCE } from 'game/constants/config';
+import { DynamicBody } from '@game/core/physics';
+import { SoundSpriteController } from '@game/core/audio';
+import { MAX_SOUND_DISTANCE } from '@game/constants/config';
 
 const TAIL_INTERVAL = 25;
 

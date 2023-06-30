@@ -1,4 +1,4 @@
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from '@game/constants/config';
 import DynamicEntity from '../DynamicEntity';
 
 const SCALE_INCREMENT = 0.05;

@@ -9,11 +9,11 @@ import {
   ColorMatrixFilter,
   BLEND_MODES,
   Line,
-} from 'game/core/graphics';
-import { BLACK, WHITE, RED } from 'game/constants/colors';
-import { CELL_SIZE, SCREEN, WALL_LAYERS } from 'game/constants/config';
-import { GAME_FONT } from 'game/constants/assets';
-import { FONT_SIZES } from 'game/constants/fonts';
+} from '@game/core/graphics';
+import { BLACK, WHITE, RED } from '@game/constants/colors';
+import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@game/constants/config';
+import { GAME_FONT } from '@game/constants/assets';
+import { FONT_SIZES } from '@game/constants/fonts';
 import WallSprite from '../sprites/WallSprite';
 import EntitySprite from '../sprites/EntitySprite';
 import AnimatedEntitySprite from '../sprites/AnimatedEntitySprite';

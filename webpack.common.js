@@ -12,10 +12,9 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      game: path.resolve(__dirname, 'src/js/components/Game'),
-      root: path.resolve(__dirname, 'src/js'),
-      manual: path.resolve(__dirname, 'src/js/components/GameManual'),
+      '@images': path.resolve(__dirname, 'src/images'),
+      '@translate': path.resolve(__dirname, 'src/js/translate'),
+      '@game': path.resolve(__dirname, 'src/js/components/Game'),
     },
   },
   output: {

@@ -1,8 +1,8 @@
-import { TextSprite, RectangleSprite } from 'game/core/graphics';
-import { GAME_FONT } from 'game/constants/assets';
-import { FONT_SIZES } from 'game/constants/fonts';
-import { WHITE, RED, BLACK } from 'game/constants/colors';
-import { SCREEN } from 'game/constants/config';
+import { TextSprite, RectangleSprite } from '@game/core/graphics';
+import { GAME_FONT } from '@game/constants/assets';
+import { FONT_SIZES } from '@game/constants/fonts';
+import { WHITE, RED, BLACK } from '@game/constants/colors';
+import { SCREEN } from '@game/constants/config';
 import MenuIconSprite from '../sprites/MenuIconSprite';
 
 const createPromptSprite = text => (

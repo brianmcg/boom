@@ -1,4 +1,4 @@
-import { CELL_SIZE } from 'game/constants/config';
+import { CELL_SIZE } from '@game/constants/config';
 import Cell from '../Cell';
 
 /**

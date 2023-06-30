@@ -1,4 +1,4 @@
-import { degrees } from 'game/core/physics';
+import { degrees } from '@game/core/physics';
 import AbstractEnemy from '../AbstractEnemy';
 
 const DEG_180 = degrees(180);

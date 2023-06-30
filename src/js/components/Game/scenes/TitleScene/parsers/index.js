@@ -1,6 +1,6 @@
-import { SCREEN } from 'game/constants/config';
-import { RED } from 'game/constants/colors';
-import { RectangleSprite } from 'game/core/graphics';
+import { SCREEN } from '@game/constants/config';
+import { RED } from '@game/constants/colors';
+import { RectangleSprite } from '@game/core/graphics';
 import LogoSprite from '../sprites/LogoSprite';
 import SparksSprite from '../sprites/SparksSprite';
 

@@ -1,4 +1,4 @@
-import translate from 'root/translate';
+import translate from '@translate';
 
 import Table from './components/Table';
 import Button from './components/Button';

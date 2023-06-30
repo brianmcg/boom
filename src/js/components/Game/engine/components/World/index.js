@@ -1,6 +1,6 @@
-import { search, Graph } from 'game/core/ai';
-import { World as PhysicsWorld, TRANSPARENCY } from 'game/core/physics';
-import { CELL_SIZE } from 'game/constants/config';
+import { search, Graph } from '@game/core/ai';
+import { World as PhysicsWorld, TRANSPARENCY } from '@game/core/physics';
+import { CELL_SIZE } from '@game/constants/config';
 import Effect from './components/Effect';
 
 const ITEM_FLASH_AMOUNT = 0.35;
@@ -24,6 +24,34 @@ const NODE_WEIGHTS = {
   STATIC_BODY: 100,
   TRANSPARENT_CELL: 30,
 };
+
+const extrudeGrid = (grid, radius) => {
+  const extrudedGrid = [...Array(grid.length)].map(() => Array(grid[0].length));
+
+  for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[0].length; y++) {
+      const cell = grid[x][y];
+
+      if (cell === NODE_WEIGHTS.WALL) {
+        extrudedGrid[x][y] = NODE_WEIGHTS.WALL;
+
+        for (let i = x - radius; i <= x + radius; i++) {
+          for (let j = y - radius; j <= y + radius; j++) {
+            const nextCell = grid[i] && grid[i][j];
+
+            if (nextCell || nextCell === 0) {
+              extrudedGrid[i][j] = NODE_WEIGHTS.WALL;
+            }
+          }
+        }
+      } else if (extrudedGrid[x][y] === undefined) {
+        extrudedGrid[x][y] = cell;
+      }
+    }
+  }
+
+  return extrudedGrid;
+}
 
 /**
  * Class representing a world.
@@ -317,7 +345,7 @@ class World extends PhysicsWorld {
    * @return {Array}         The array of Graphs.
    */
   createGraphs(grid = [], radius = 1) {
-    let grids = [
+    const grids = [
       grid.map(col => col.map((cell) => {
         if (
           cell.blocking && !cell.isDoor && !cell.isPushWall
@@ -350,44 +378,10 @@ class World extends PhysicsWorld {
     ];
 
     if (radius > 0) {
-      return grids.map(g => new Graph(this.extrudeGrid(g, radius), { diagonal: false }));
+      return grids.map(g => new Graph(extrudeGrid(g, radius), { diagonal: false }));
     }
 
     return grids.map(g => new Graph(g, { diagonal: false }));
-  }
-
-  /**
-   * Extrude all walls by a given radius.
-   * @param  {Array}  grid   The grid to extrude
-   * @param  {Number} radius The radius to extrude by.
-   * @return {Array}         The extruded grid.
-   */
-  extrudeGrid(grid, radius) {
-    const extrudedGrid = [...Array(grid.length)].map(() => Array(grid[0].length));
-
-    for (let x = 0; x < grid.length; x++) {
-      for (let y = 0; y < grid[0].length; y++) {
-        const cell = grid[x][y];
-
-        if (cell === NODE_WEIGHTS.WALL) {
-          extrudedGrid[x][y] = NODE_WEIGHTS.WALL;
-
-          for (let i = x - radius; i <= x + radius; i++) {
-            for (let j = y - radius; j <= y + radius; j++) {
-              const nextCell = grid[i] && grid[i][j];
-
-              if (nextCell || nextCell === 0) {
-                extrudedGrid[i][j] = NODE_WEIGHTS.WALL;
-              }
-            }
-          }
-        } else if (extrudedGrid[x][y] === undefined) {
-          extrudedGrid[x][y] = cell;
-        }
-      }
-    }
-
-    return extrudedGrid;
   }
 
   /**

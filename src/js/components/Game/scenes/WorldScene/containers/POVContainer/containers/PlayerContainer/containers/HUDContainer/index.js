@@ -1,5 +1,5 @@
-import { Container } from 'game/core/graphics';
-import { SCREEN } from 'game/constants/config';
+import { Container } from '@game/core/graphics';
+import { SCREEN } from '@game/constants/config';
 import MessageSprite from './sprites/MessageSprite';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
