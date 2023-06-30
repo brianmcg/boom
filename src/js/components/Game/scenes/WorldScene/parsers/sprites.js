@@ -747,7 +747,7 @@ const createHudSprites = ({ world, textures, animations }) => {
     }
 
     return memo;
-  }, world.items);
+  }, [...world.items]);
 
   const keys = items.reduce((memo, item) => {
     if (item.color) {

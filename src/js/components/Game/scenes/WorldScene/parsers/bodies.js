@@ -279,7 +279,7 @@ export const createWorld = ({ scene, data, graphics }) => {
         memo.push(item);
       }
       return memo;
-    }, items),
+    }, [...items]),
     spatters,
     weapons,
   });
