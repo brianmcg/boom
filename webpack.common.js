@@ -8,20 +8,21 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, 'src/assets/scripts/main.js'),
+    main: path.resolve(__dirname, 'src/main.js'),
   },
   resolve: {
     alias: {
-      root: path.resolve(__dirname, 'src/assets/scripts'),
-      game: path.resolve(__dirname, 'src/assets/scripts/components/Game'),
-      manual: path.resolve(__dirname, 'src/assets/scripts/components/GameManual'),
+      '@': path.resolve(__dirname, 'src'),
+      game: path.resolve(__dirname, 'src/js/components/Game'),
+      root: path.resolve(__dirname, 'src/js'),
+      manual: path.resolve(__dirname, 'src/js/components/GameManual'),
     },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'assets/scripts/[name].[chunkhash].js',
-    chunkFilename: 'assets/scripts/[name].[chunkhash].js',
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js',
   },
   optimization: {
     runtimeChunk: {
@@ -50,12 +51,6 @@ module.exports = {
               },
             },
           ]],
-          // plugins: [[
-          //   '@babel/plugin-transform-react-jsx', {
-          //     pragma: 'h',
-          //     pragmaFrag: 'Fragment',
-          //   },
-          // ]],
         },
       },
       exclude: path.resolve(__dirname, 'node_modules/'),
@@ -77,13 +72,23 @@ module.exports = {
         },
       }],
     }, {
-      test: /\.(woff)\??.*$/,
+      test: /\.(woff|ttf)\??.*$/,
       use: {
         loader: 'file-loader',
         options: {
           limit: 1024,
           name: '[name].[ext]',
-          outputPath: 'assets/fonts/',
+          outputPath: 'fonts',
+        },
+      },
+    }, {
+      test: /\.(gif)\??.*$/,
+      use: {
+        loader: 'file-loader',
+        options: {
+          limit: 1024,
+          name: '[name].[ext]',
+          outputPath: 'images',
         },
       },
     }, {
@@ -106,24 +111,21 @@ module.exports = {
       dry: false,
     }),
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'src/assets/data'),
-      to: path.resolve(__dirname, 'dist/assets/data'),
+      from: path.resolve(__dirname, 'src/fonts'),
+      to: path.resolve(__dirname, 'dist/fonts'),
     }, {
-      from: path.resolve(__dirname, 'src/assets/images'),
-      to: path.resolve(__dirname, 'dist/assets/images'),
+      from: path.resolve(__dirname, 'src/images'),
+      to: path.resolve(__dirname, 'dist/images'),
     }, {
-      from: path.resolve(__dirname, 'src/assets/fonts'),
-      to: path.resolve(__dirname, 'dist/assets/fonts'),
-    }, {
-      from: path.resolve(__dirname, 'src/assets/manifest'),
-      to: path.resolve(__dirname, 'dist/assets/manifest'),
+      from: path.resolve(__dirname, 'public'),
+      to: 'assets',
     }]),
     new MiniCssExtractPlugin({
-      filename: 'assets/styles/[name].[chunkhash].min.css',
-      chunkFilename: 'assets/styles/[name].[chunkhash].css',
+      filename: 'styles/[name].[chunkhash].min.css',
+      chunkFilename: 'styles/[name].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.resolve(__dirname, 'src/template.html'),
       inject: 'body',
       hash: false,
       minify: {

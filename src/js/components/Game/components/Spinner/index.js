@@ -1,14 +1,14 @@
 import { SCREEN } from 'game/constants/config';
 // import loadingGif from 'assets/images/loading.gif';
-// import loadingGif from '@/images/loading.gif';
+import loadingGif from '@/images/loading.gif';
 
 
 
 class Spinner {
   constructor() {
     this.spinner = document.createElement('img');
-    // this.spinner.src = loadingGif;
-    this.spinner.src = 'assets/images/loading.gif';
+    this.spinner.src = loadingGif;
+    // this.spinner.src = 'images/loading.gif';
 
     this.view = document.createElement('div');
     this.view.setAttribute('class', 'spinner');
