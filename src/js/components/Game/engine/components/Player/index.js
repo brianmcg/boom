@@ -582,25 +582,29 @@ class Player extends AbstractActor {
    * @param  {Number} angle  The angle the damage came from.
    */
   hurt(damage, angle) {
-    if (!GOD_MODE) {
-      this.vision = HURT_VISION_AMOUNT;
-
-      this.emit(EVENTS.HURT);
-
-      if (this.health <= 0) {
-        this.health = 0;
-        this.setDying();
-        this.emitSound(this.sounds.death);
-      } else {
-        this.recoil(damage, { direction: -1 });
-
-        if (!this.isPlaying(this.sounds.pain)) {
-          this.emitSound(this.sounds.pain);
-        }
-      }
-
-      super.hurt(damage, angle);
+    if (GOD_MODE) {
+      return;
     }
+
+    this.vision = HURT_VISION_AMOUNT;
+    // TODO: Move damage to parent class.
+    this.health -= damage;
+
+    if (this.health <= 0) {
+      this.health = 0;
+      this.setDying();
+      this.emitSound(this.sounds.death);
+    } else {
+      this.recoil(damage, { direction: -1 });
+
+      if (!this.isPlaying(this.sounds.pain)) {
+        this.emitSound(this.sounds.pain);
+      }
+    }
+
+    this.emit(EVENTS.HURT);
+
+    super.hurt(damage, angle);
   }
 
   /**

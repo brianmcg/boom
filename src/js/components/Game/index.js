@@ -18,13 +18,16 @@ import {
   SCENE_TYPES,
 } from './constants/assets';
 
+import Spinner from './components/Spinner';
+import Manual from './components/Manual';
+import Stats, { PANELS } from './components/Stats';
+
+import Loader from './utilities/Loader';
+import FontLoader from './utilities/FontLoader';
+
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import Loader from './utilities/Loader';
-import Stats, { PANELS } from './components/Stats';
-import Spinner from './components/Spinner';
-import Manual from './components/Manual';
 
 const SCENES = {
   [SCENE_TYPES.TITLE]: TitleScene,
@@ -90,8 +93,11 @@ class Game extends Application {
     this.spinner = new Spinner();
     this.manual = new Manual();
     this.manual.onClickStart(this.start.bind(this));
-    this.addManual();
+
+    FontLoader.load(GAME_FONT.NAME).then(this.addManual.bind(this));
   }
+
+
 
   /**
    * Start game and load assets.
