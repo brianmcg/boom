@@ -39,20 +39,11 @@ class TextSprite extends BitmapText {
   }
 
   /**
-   * Set the sprite scale.
-   * @param {Number} amount the scale amount.
-   */
-  setScale(amount) {
-    this.scale.x = amount;
-    this.scale.y = amount;
-  }
-
-  /**
    * Update the pause effect.
    * @param  {Number} value The value of the effect.
    */
   fade(value) {
-    this.setScale(1 - value);
+    this.scale.set(1 - value);
   }
 
   /**

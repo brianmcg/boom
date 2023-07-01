@@ -39,7 +39,7 @@ class PromptContainer extends Container {
 
     sprite.x = (SCREEN.WIDTH / 2);
     sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
-    sprite.setScale(0);
+    sprite.scale.set(0);
 
     this.minHeight = sprite.height;
     this.minWidth = sprite.width;
@@ -78,7 +78,7 @@ class PromptContainer extends Container {
         break;
     }
 
-    this.sprite.setScale(this.scaleFactor);
+    this.sprite.scale.set(this.scaleFactor);
 
     // Update screen shake.
     if (this.shakeValue) {

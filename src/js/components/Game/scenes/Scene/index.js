@@ -488,7 +488,7 @@ class Scene extends Container {
    */
   resize(scale) {
     if (this.state !== STATES.STOPPED) {
-      this.setScale(scale);
+      this.scale.set(scale);
     }
   }
 

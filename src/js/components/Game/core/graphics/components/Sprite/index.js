@@ -46,15 +46,6 @@ class Sprite extends PixiSprite {
   }
 
   /**
-   * Set the sprite scale.
-   * @param {Number} amount the scale amount.
-   */
-  setScale(amount) {
-    this.scale.x = amount;
-    this.scale.y = amount;
-  }
-
-  /**
    * Show the sprite.
    */
   show() {

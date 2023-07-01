@@ -21,7 +21,7 @@ class LogoSprite extends AnimatedSprite {
     this.timer = 0;
     this.anchor.set(0.5);
 
-    this.setScale(this.maxScale);
+    this.scale.set(this.maxScale);
 
     this.onLoop = () => {
       this.animationEnabled = true;
@@ -50,7 +50,7 @@ class LogoSprite extends AnimatedSprite {
    * @param  {Number} value The value of the effect.
    */
   fade(value) {
-    this.setScale((1 - value) * this.maxScale);
+    this.scale.set((1 - value) * this.maxScale);
   }
 }
 

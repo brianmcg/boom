@@ -113,15 +113,6 @@ class Container extends PixiContainer {
   }
 
   /**
-   * Set the container scale.
-   * @param {Number} amount the scale amount.
-   */
-  setScale(amount) {
-    this.scale.x = amount;
-    this.scale.y = amount;
-  }
-
-  /**
    * Get the scale of the container.
    * @return {Number} The scale value.
    */

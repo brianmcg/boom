@@ -79,12 +79,12 @@ class MenuContainer extends Container {
 
     const { icon, labels, background } = this.sprites;
 
-    icon.setScale(this.scaleFactor);
+    icon.scale.set(this.scaleFactor);
 
     background.alpha = this.alphaFactor;
 
     labels.forEach((child, i) => {
-      child.setScale(this.scaleFactor);
+      child.scale.set(this.scaleFactor);
 
       if (i === this.index) {
         icon.y = child.y;

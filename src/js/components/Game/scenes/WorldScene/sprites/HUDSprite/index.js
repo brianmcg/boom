@@ -14,7 +14,7 @@ class HUDSprite extends Sprite {
 
     this.anchor.set(0.5);
     this.maxScale = maxScale;
-    this.setScale(maxScale);
+    this.scale.set(maxScale);
   }
 
   /**
@@ -22,7 +22,7 @@ class HUDSprite extends Sprite {
    * @param  {Number} value The value of the effect.
    */
   fade(value) {
-    this.setScale((1 - value) * this.maxScale);
+    this.scale.set((1 - value) * this.maxScale);
   }
 }
 

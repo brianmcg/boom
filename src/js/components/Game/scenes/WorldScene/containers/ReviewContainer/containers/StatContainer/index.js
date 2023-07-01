@@ -56,7 +56,7 @@ class StatContainer extends Container {
       }
     }
 
-    this.children.forEach(child => child.setScale(this.scaleAmount));
+    this.children.forEach(child => child.scale.set(this.scaleAmount));
   }
 }
 

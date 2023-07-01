@@ -39,7 +39,7 @@ class MessageSprite extends TextSprite {
     this.timer = 0;
     this.scaleAmount = 0;
 
-    this.setScale(this.scaleAmount);
+    this.scale.set(this.scaleAmount);
     this.setGrowing();
   }
 
@@ -77,7 +77,7 @@ class MessageSprite extends TextSprite {
    * @param  {Number} delta     The time delta.
    */
   updateGrowing(delta) {
-    this.setScale(this.scaleAmount);
+    this.scale.set(this.scaleAmount);
 
     this.scaleAmount += SCALE_INCREMENT * delta;
 
@@ -105,7 +105,7 @@ class MessageSprite extends TextSprite {
    * @param  {Number} delta     The time delta.
    */
   updateShrinking(delta) {
-    this.setScale(this.scaleAmount);
+    this.scale.set(this.scaleAmount);
 
     this.scaleAmount -= SCALE_INCREMENT * delta;
 
@@ -129,7 +129,7 @@ class MessageSprite extends TextSprite {
     const isStateChanged = this.setState(STATES.DISPLAYING);
 
     if (isStateChanged) {
-      this.setScale(1);
+      this.scale.set(1);
     }
 
     return isStateChanged;
