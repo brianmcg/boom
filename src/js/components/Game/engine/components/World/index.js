@@ -110,7 +110,7 @@ class World extends PhysicsWorld {
     this.startTime = performance.now();
     this.exit = exit && this.getCell(...Object.values(exit));
     this.entrance = this.getCell(...Object.values(entrance));
-    this.startingProps = Object.assign({}, this.props);
+    this.startProps = Object.assign({}, this.props);
     this.sky = sky;
     this.floorOffset = floorOffset;
 

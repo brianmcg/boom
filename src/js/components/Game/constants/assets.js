@@ -15,6 +15,16 @@ export const GAME_PATH = 'assets';
 export const SCENE_PATH = `${GAME_PATH}/scenes`;
 
 /**
+ * The scene types.
+ * @type {Object}
+ */
+export const SCENE_PATHS = {
+  TITLE: 'title',
+  WORLD: 'world',
+  CREDITS: 'credits',
+};
+
+/**
  * The game sound properties.
  * @type {Object}
  */
@@ -67,16 +77,6 @@ export const SCENE_GRAPHICS = {
 export const SCENE_MAP = {
   NAME: 'map',
   FILE: 'map.json',
-};
-
-/**
- * The scene types.
- * @type {Object}
- */
-export const SCENE_TYPES = {
-  TITLE: 'title',
-  WORLD: 'world',
-  CREDITS: 'credits',
 };
 
 /**

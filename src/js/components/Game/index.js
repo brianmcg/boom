@@ -13,7 +13,7 @@ import {
 import {
   GAME_SOUNDS,
   GAME_FONT,
-  SCENE_TYPES,
+  SCENE_PATHS,
   GAME_ASSETS,
 } from './constants/assets';
 
@@ -29,9 +29,9 @@ import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 
 const SCENES = {
-  [SCENE_TYPES.TITLE]: TitleScene,
-  [SCENE_TYPES.WORLD]: WorldScene,
-  [SCENE_TYPES.CREDITS]: CreditsScene,
+  [SCENE_PATHS.TITLE]: TitleScene,
+  [SCENE_PATHS.WORLD]: WorldScene,
+  [SCENE_PATHS.CREDITS]: CreditsScene,
 };
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -50,11 +50,7 @@ class Game extends Application {
       backgroundColor: BLACK,
     });
 
-    this.style = {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-    };
+    this.style = { position: 'absolute', left: '50%', top: '50%' };
 
     this.stage.interactive = true;
 
@@ -138,7 +134,7 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show(SCENE_TYPES.TITLE);
+    this.show(SCENE_PATHS.TITLE);
   }
 
   /**
@@ -146,7 +142,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = LEVEL, ...other } = {}) {
-    this.show(SCENE_TYPES.WORLD, {
+    this.show(SCENE_PATHS.WORLD, {
       index,
       showLoader: true,
       id: this.data.world.levels[index - 1],
@@ -158,7 +154,7 @@ class Game extends Application {
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show(SCENE_TYPES.CREDITS);
+    this.show(SCENE_PATHS.CREDITS);
   }
 
   /**
@@ -170,7 +166,7 @@ class Game extends Application {
   async show(type, {
     index,
     id,
-    startingProps = {},
+    startProps = {},
     showLoader,
   } = {}) {
     const Scene = SCENES[type];
@@ -206,22 +202,12 @@ class Game extends Application {
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
       const sceneProps = this.data[type].props || {};
       const sounds = this.data[type].sounds || {};
-      const props = {
-        ...sceneProps,
-        player: {
-          ...sceneProps.player,
-          ...startingProps.player,
-        },
-      };
+      const props = { ...sceneProps, player: { ...sceneProps.player, ...startProps.player } };
 
       this.music = sound;
       this.music.volume(MUSIC_VOLUME);
 
-      this.scene.create({
-        sounds,
-        graphics,
-        data: { ...data, props },
-      });
+      this.scene.create({ sounds, graphics, data: { ...data, props } });
 
       this.removeSpinner();
     }
@@ -231,23 +217,15 @@ class Game extends Application {
    * Resize the game
    */
   resize() {
-    const windowWidth = window.innerWidth
-      || document.documentElement.clientWidth
-      || document.body.clientWidth;
-
-    const windowHeight = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
-
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
     const widthRatio = windowWidth / SCREEN.WIDTH;
     const heightRatio = windowHeight / SCREEN.HEIGHT;
     const scale = Math.floor((Math.min(widthRatio, heightRatio))) || 1;
-    const scaledWidth = SCREEN.WIDTH * scale;
-    const scaledHeight = SCREEN.HEIGHT * scale;
+    const width = SCREEN.WIDTH * scale;
+    const height = SCREEN.HEIGHT * scale;
 
-    this.style = {
-      margin: `-${scaledHeight / 2}px 0 0 -${scaledWidth / 2}px`,
-    };
+    this.style = { margin: `-${height / 2}px 0 0 -${width / 2}px` };
 
     this.spinner.resize(scale);
 
@@ -255,7 +233,7 @@ class Game extends Application {
       this.scene.resize(scale);
     }
 
-    super.resize(scaledWidth, scaledHeight);
+    super.resize(width, height);
   }
 
   /**

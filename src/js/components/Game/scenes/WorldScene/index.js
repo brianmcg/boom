@@ -318,7 +318,7 @@ class WorldScene extends Scene {
     if (this.index < this.game.data.world.levels.length) {
       this.game.showWorldScene({
         index: this.index + 1,
-        startingProps: this.world.props,
+        startProps: this.world.props,
       });
     } else {
       this.game.showCreditsScene();
@@ -339,7 +339,7 @@ class WorldScene extends Scene {
   restart() {
     this.game.showWorldScene({
       index: this.index,
-      startingProps: this.world.startingProps,
+      startProps: this.world.startProps,
     });
   }
 
