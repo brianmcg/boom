@@ -100,3 +100,19 @@ export const ITEM_TYPES = {
   WEAPON: 'weaponitem',
   PORTAL: 'portalitem',
 };
+
+export const GAME_ASSETS = {
+  sound: {
+    name: GAME_SOUNDS.NAME,
+    src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
+    spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
+  },
+  graphics: {
+    name: GAME_FONT.NAME,
+    src: `${GAME_PATH}/${GAME_FONT.FILE}`,
+  },
+  data: {
+    name: GAME_DATA.NAME,
+    src: `${GAME_PATH}/${GAME_DATA.FILE}`,
+  },
+};

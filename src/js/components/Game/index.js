@@ -11,11 +11,10 @@ import {
 } from './constants/config';
 
 import {
-  GAME_PATH,
   GAME_SOUNDS,
-  GAME_DATA,
   GAME_FONT,
   SCENE_TYPES,
+  GAME_ASSETS,
 } from './constants/assets';
 
 import Spinner from './components/Spinner';
@@ -33,22 +32,6 @@ const SCENES = {
   [SCENE_TYPES.TITLE]: TitleScene,
   [SCENE_TYPES.WORLD]: WorldScene,
   [SCENE_TYPES.CREDITS]: CreditsScene,
-};
-
-const ASSETS = {
-  sound: {
-    name: GAME_SOUNDS.NAME,
-    src: `${GAME_PATH}/${GAME_SOUNDS.FILE}`,
-    spriteSrc: `${GAME_PATH}/${GAME_SOUNDS.SPRITE}`,
-  },
-  graphics: {
-    name: GAME_FONT.NAME,
-    src: `${GAME_PATH}/${GAME_FONT.FILE}`,
-  },
-  data: {
-    name: GAME_DATA.NAME,
-    src: `${GAME_PATH}/${GAME_DATA.FILE}`,
-  },
 };
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -73,37 +56,32 @@ class Game extends Application {
       top: '50%',
     };
 
+    this.stage.interactive = true;
+
     if (DISPLAY_FPS) {
       this.stats = new Stats();
-
       this.stats.showPanel(PANELS.FPS);
-
       document.body.appendChild(this.stats.dom);
-
       this.ticker.add(this.fpsLoop, this);
     } else {
-      // this.ticker.maxFPS = MAX_FPS;
       this.ticker.add(this.loop, this);
     }
-
-    // this.timer = 0;
 
     this.loader = new Loader();
     this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
+    
     this.manual.onClickStart(this.start.bind(this));
 
     FontLoader.load(GAME_FONT.NAME).then(this.addManual.bind(this));
   }
 
-
-
   /**
    * Start game and load assets.
    */
   async start() {
-    const { sound, data } = await this.loader.load(ASSETS);
+    const { sound, data } = await this.loader.load(GAME_ASSETS);
 
     this.removeManual();
     this.addCanvas();
@@ -222,19 +200,12 @@ class Game extends Application {
       });
 
       this.resize();
-
       this.stage.addChild(this.scene);
-
-      this.stage.interactive = true;
-
       this.stage.on('click', () => this.lockPointer());
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
-
       const sceneProps = this.data[type].props || {};
-
       const sounds = this.data[type].sounds || {};
-
       const props = {
         ...sceneProps,
         player: {

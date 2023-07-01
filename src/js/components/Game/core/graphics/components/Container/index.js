@@ -90,6 +90,9 @@ class Container extends PixiContainer {
     this.playableChildren.forEach(child => child.stop());
   }
 
+  /**
+   * Pause the container.
+   */
   pause() {
     this.playing = false;
     this.playableChildren.forEach(child => child.pause());

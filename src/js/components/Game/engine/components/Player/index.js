@@ -71,6 +71,7 @@ class Player extends AbstractActor {
       maxHealth,
       ...other
     } = options;
+    
     super({
       soundSprite,
       maxHealth: maxHealth * HEALTH_MODIFIER,
