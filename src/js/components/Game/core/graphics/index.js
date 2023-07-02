@@ -11,8 +11,8 @@ import {
   Rectangle,
   Texture,
   RenderTexture,
-  PixelateFilter
-} from './pixi.js';
+  PixelateFilter,
+} from './pixi';
 
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';

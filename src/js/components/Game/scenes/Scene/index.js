@@ -41,9 +41,8 @@ class Scene extends Container {
   /**
    * Create a Scene.
    * @param  {String}   options.game        The game running the scene.
-   * @param  {Boolean}  options.loopMusic   The loop music option.
    */
-  constructor({ game, loopMusic = true }) {
+  constructor({ game }) {
     super();
 
     this.game = game;

@@ -16,6 +16,7 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
+    'linebreak-style': ["error", "windows"],
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'no-continue': 0,
     'no-bitwise': [2, { allow: ['<<', '>>'] }],
@@ -38,7 +39,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: path.resolve(__dirname, 'webpack.common.js')
+        config: path.resolve(__dirname, 'config/webpack.common.js')
       }
     }
   },

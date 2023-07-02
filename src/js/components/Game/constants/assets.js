@@ -113,11 +113,11 @@ export const TITLE_SCENE_ASSETS = {
   },
 };
 
-export const WORLD_SCENE_ASSETS = (index)=> ({
+export const WORLD_SCENE_ASSETS = index => ({
   sound: {
     name: SCENE_MUSIC.NAME,
     src: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_MUSIC.FILE}`,
-    loop: false,
+    loop: true,
   },
   graphics: {
     name: SCENE_GRAPHICS.NAME,
@@ -133,7 +133,7 @@ export const CREDITS_SCENE_ASSETS = {
   sound: {
     name: SCENE_MUSIC.NAME,
     src: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_MUSIC.FILE}`,
-    loop: false,
+    loop: true,
   },
   graphics: {
     name: SCENE_GRAPHICS.NAME,

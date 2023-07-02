@@ -55,5 +55,5 @@ export {
   Graphics,
   ParticleContainer,
   Sprite,
-  BitmapText
+  BitmapText,
 };

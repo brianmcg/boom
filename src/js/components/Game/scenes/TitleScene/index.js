@@ -16,7 +16,7 @@ class TitleScene extends Scene {
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
-    super({ ...options, loopMusic: false });
+    super(options);
 
     this.assets = TITLE_SCENE_ASSETS;
 

@@ -2,7 +2,7 @@ import translate from '@translate';
 import { WORLD_SCENE_ASSETS } from '@game/constants/assets';
 import { DEBUG } from '@game/constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
-import { SCENE_MAP } from '@game/constants/assets';
+
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
 import MapContainer from './containers/MapContainer';

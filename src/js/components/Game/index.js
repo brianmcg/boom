@@ -50,9 +50,8 @@ class Game extends Application {
       backgroundColor: BLACK,
     });
 
-    this.style = { position: 'absolute', left: '50%', top: '50%' };
-
     this.stage.interactive = true;
+    this.style = { position: 'absolute', left: '50%', top: '50%' };
 
     if (DISPLAY_FPS) {
       this.stats = new Stats();
@@ -67,10 +66,12 @@ class Game extends Application {
     this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
-    
-    this.manual.onClickStart(this.start.bind(this));
 
-    FontLoader.load(GAME_FONT.NAME).then(this.addManual.bind(this));
+    this.manual.onClickStart(() => this.start());
+
+    this.stage.on('click', () => this.lockPointer());
+
+    FontLoader.load(GAME_FONT.NAME).then(() => this.addManual());
   }
 
   /**
@@ -187,7 +188,6 @@ class Game extends Application {
 
       this.resize();
       this.stage.addChild(this.scene);
-      this.stage.on('click', () => this.lockPointer());
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
       const sceneProps = this.data[type].props || {};
@@ -231,14 +231,6 @@ class Game extends Application {
    */
   lockPointer() {
     this.input.mouse.lockPointer();
-  }
-
-  /**
-   * Is the mouse pointer locked.
-   * @return {Boolean}
-   */
-  isPointerLocked() {
-    return this.input.mouse.isPointerLocked();
   }
 
   /**

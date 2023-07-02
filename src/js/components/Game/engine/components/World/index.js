@@ -51,7 +51,53 @@ const extrudeGrid = (grid, radius) => {
   }
 
   return extrudedGrid;
-}
+};
+
+/**
+ * Create graphs for enemy pathfinding.
+ * @param  {Array}  grid   The map grid.
+ * @param  {Number} radius The collision radius.
+ * @return {Array}         The array of Graphs.
+ */
+const createGraphs = (grid = [], radius = 1) => {
+  const grids = [
+    grid.map(col => col.map((cell) => {
+      if (
+        cell.blocking && !cell.isDoor && !cell.isPushWall
+          && cell.transparency !== TRANSPARENCY.FULL
+      ) {
+        return NODE_WEIGHTS.WALL;
+      }
+
+      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+        return NODE_WEIGHTS.STATIC_BODY;
+      }
+
+      return NODE_WEIGHTS.FREE;
+    })),
+    grid.map(col => col.map((cell) => {
+      if (cell.blocking && cell.transparency) {
+        return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
+      }
+
+      if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
+        return NODE_WEIGHTS.WALL;
+      }
+
+      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+        return NODE_WEIGHTS.STATIC_BODY;
+      }
+
+      return NODE_WEIGHTS.FREE;
+    })),
+  ];
+
+  if (radius > 0) {
+    return grids.map(g => new Graph(extrudeGrid(g, radius), { diagonal: false }));
+  }
+
+  return grids.map(g => new Graph(g, { diagonal: false }));
+};
 
 /**
  * Class representing a world.
@@ -127,7 +173,7 @@ class World extends PhysicsWorld {
       return memo;
     }, []).reduce((memo, radius) => ({
       ...memo,
-      [radius]: this.createGraphs(grid, radius - 1),
+      [radius]: createGraphs(grid, radius - 1),
     }), {});
 
     // Create grid for floor stains.
@@ -336,52 +382,6 @@ class World extends PhysicsWorld {
       secretsFound: this.secrets.filter(secret => secret.isOpened).length,
       secretsTotal: this.secrets.length,
     };
-  }
-
-  /**
-   * Create graphs for enemy pathfinding.
-   * @param  {Array}  grid   The map grid.
-   * @param  {Number} radius The collision radius.
-   * @return {Array}         The array of Graphs.
-   */
-  createGraphs(grid = [], radius = 1) {
-    const grids = [
-      grid.map(col => col.map((cell) => {
-        if (
-          cell.blocking && !cell.isDoor && !cell.isPushWall
-            && cell.transparency !== TRANSPARENCY.FULL
-        ) {
-          return NODE_WEIGHTS.WALL;
-        }
-
-        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-          return NODE_WEIGHTS.STATIC_BODY;
-        }
-
-        return NODE_WEIGHTS.FREE;
-      })),
-      grid.map(col => col.map((cell) => {
-        if (cell.blocking && cell.transparency) {
-          return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
-        }
-
-        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
-          return NODE_WEIGHTS.WALL;
-        }
-
-        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-          return NODE_WEIGHTS.STATIC_BODY;
-        }
-
-        return NODE_WEIGHTS.FREE;
-      })),
-    ];
-
-    if (radius > 0) {
-      return grids.map(g => new Graph(extrudeGrid(g, radius), { diagonal: false }));
-    }
-
-    return grids.map(g => new Graph(g, { diagonal: false }));
   }
 
   /**

@@ -9,11 +9,7 @@ class ParticleContainer extends PixiParticleContainer {
    * @param  {Number} maxSize The max batch size.
    */
   constructor(maxSize) {
-    super(maxSize, {
-      uvs: true,
-      tint: true,
-      position: false,
-    });
+    super(maxSize, { uvs: true, tint: true, position: false });
   }
 }
 
