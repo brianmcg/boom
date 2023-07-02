@@ -2,43 +2,58 @@
  * @module  game/constants/config
  */
 
+const parseBoolParam = (key) => {
+    const isPresent = URL_PARAMS.has(key);
+    const param = URL_PARAMS.get(key);
+
+    return isPresent && param !== 'false';
+}
+
+const parseNumParam = key => parseInt(URL_PARAMS.get(key), 10) || 0;
+
 const URL_PARAMS = new URLSearchParams(window.location.search);
 
 /**
  * Debug mode.
  * @type {Number}
  */
-export const DEBUG = parseInt(URL_PARAMS.get('debug'), 10) || 0;
+export const DEBUG = parseNumParam('debug');
 
 /**
  * The level to load in debug mode.
  * @type {Number}
  */
-export const LEVEL = parseInt(URL_PARAMS.get('level'), 10) || 1;
+export const LEVEL = parseNumParam('level') || 1;
+
+/**
+ * No enemies in the game.
+ * @type {Number}
+ */
+export const ALONE = parseBoolParam('alone');
 
 /**
  * Make player invincible.
  * @type {Boolean}
  */
-export const GOD_MODE = URL_PARAMS.has('god');
+export const GOD_MODE = parseBoolParam('god');
 
 /**
  * Enabled the sounds.
  * @type {Boolean}
  */
-export const DISABLE_SOUND = URL_PARAMS.has('disableSound');
+export const DISABLE_SOUND = parseBoolParam('disableSound');
 
 /**
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = URL_PARAMS.has('displayFps') || Boolean(DEBUG);
+export const DISPLAY_FPS = parseBoolParam('displayFps') || Boolean(DEBUG);
 
 /**
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = DISABLE_SOUND || URL_PARAMS.has('disableMusic') || Boolean(DEBUG);
+export const DISABLE_MUSIC = DISABLE_SOUND || parseBoolParam('disableMusic') || Boolean(DEBUG);
 
 /**
  * The maximum frames per second.

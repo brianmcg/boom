@@ -1,4 +1,5 @@
 import translate from '@translate';
+import { WORLD_SCENE_ASSETS } from '@game/constants/assets';
 import { DEBUG } from '@game/constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
 import { SCENE_MAP } from '@game/constants/assets';
@@ -26,19 +27,16 @@ const MAP_VIEW = DEBUG === 2;
 class WorldScene extends Scene {
   /**
    * Create a world scene.
+   * @param  {Number} options.id      The id of the scene.
    * @param  {Number} options.index   The index of the scene.
    * @param  {String} options.game    The game running the scene.
    */
-  constructor({ id, ...options }) {
+  constructor({ id, index, ...options }) {
     super(options);
 
-    this.assets = {
-      ...this.assets,
-      data: {
-        name: SCENE_MAP.NAME,
-        src: `${this.path}/${SCENE_MAP.FILE}`,
-      },
-    };
+    this.index = index;
+
+    this.assets = WORLD_SCENE_ASSETS(index);
 
     this.menu = [{
       label: translate('scene.menu.continue'),

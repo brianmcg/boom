@@ -1,4 +1,5 @@
 import translate from '@translate';
+import { CREDITS_SCENE_ASSETS } from '@game/constants/assets';
 import { parse } from './parsers';
 import ScrollContainer from './containers/ScrollContainer';
 import BackgroundContainer from './containers/BackgroundContainer';
@@ -10,12 +11,12 @@ import Scene from '../Scene';
 class CreditsScene extends Scene {
   /**
    * Creates a CreditsScene.
-   * @param  {Number} options.index   The index of the scene.
-   * @param  {String} options.type    The type of scene.
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
     super(options);
+
+    this.assets = CREDITS_SCENE_ASSETS;
 
     this.menu = [{
       label: translate('scene.menu.continue'),

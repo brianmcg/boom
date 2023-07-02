@@ -163,12 +163,7 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show(type, {
-    index,
-    id,
-    startProps = {},
-    showLoader,
-  } = {}) {
+  async show(type, { startProps = {}, showLoader, ...other } = {}) {
     const Scene = SCENES[type];
 
     if (showLoader) {
@@ -188,12 +183,7 @@ class Game extends Application {
     }
 
     if (Scene) {
-      this.scene = new Scene({
-        id,
-        type,
-        index,
-        game: this,
-      });
+      this.scene = new Scene({ game: this, ...other });
 
       this.resize();
       this.stage.addChild(this.scene);

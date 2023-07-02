@@ -79,7 +79,7 @@ class MenuContainer extends Container {
 
     const { icon, labels, background } = this.sprites;
 
-    icon.scale.set(this.scaleFactor);
+    icon.setScale(this.scaleFactor);
 
     background.alpha = this.alphaFactor;
 

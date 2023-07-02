@@ -17,6 +17,11 @@ class MenuIconSprite extends AnimatedSprite {
 
     this.scaleRatio = size / this.height;
   }
+
+  setScale(amount) {
+    this.scale.x = this.scaleRatio * amount;
+    this.scale.y = this.scaleRatio * amount;
+  }
 }
 
 export default MenuIconSprite;

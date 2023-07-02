@@ -101,6 +101,46 @@ export const ITEM_TYPES = {
   PORTAL: 'portalitem',
 };
 
+export const TITLE_SCENE_ASSETS = {
+  sound: {
+    name: SCENE_MUSIC.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.TITLE}/${SCENE_MUSIC.FILE}`,
+    loop: false,
+  },
+  graphics: {
+    name: SCENE_GRAPHICS.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.TITLE}/${SCENE_GRAPHICS.FILE}`,
+  },
+};
+
+export const WORLD_SCENE_ASSETS = (index)=> ({
+  sound: {
+    name: SCENE_MUSIC.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_MUSIC.FILE}`,
+    loop: false,
+  },
+  graphics: {
+    name: SCENE_GRAPHICS.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_GRAPHICS.FILE}`,
+  },
+  data: {
+    name: SCENE_MAP.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_MAP.FILE}`,
+  },
+});
+
+export const CREDITS_SCENE_ASSETS = {
+  sound: {
+    name: SCENE_MUSIC.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_MUSIC.FILE}`,
+    loop: false,
+  },
+  graphics: {
+    name: SCENE_GRAPHICS.NAME,
+    src: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_GRAPHICS.FILE}`,
+  },
+};
+
 export const GAME_ASSETS = {
   sound: {
     name: GAME_SOUNDS.NAME,

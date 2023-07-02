@@ -1,4 +1,5 @@
 import translate from '@translate';
+import { TITLE_SCENE_ASSETS } from '@game/constants/assets';
 import { KEYS } from '@game/core/input';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
@@ -12,11 +13,12 @@ import Scene, { STATES } from '../Scene';
 class TitleScene extends Scene {
   /**
    * Creates a TitleScene.
-   * @param  {Number} options.index   The index of the scene.
    * @param  {String} options.game    The game running the scene.
    */
   constructor(options) {
     super({ ...options, loopMusic: false });
+
+    this.assets = TITLE_SCENE_ASSETS;
 
     this.menu = [{
       label: translate('scene.menu.continue'),

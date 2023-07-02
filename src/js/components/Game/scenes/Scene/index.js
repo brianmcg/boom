@@ -2,7 +2,6 @@ import { KEYS } from '@game/core/input';
 import { Container } from '@game/core/graphics';
 import { SoundSpriteController } from '@game/core/audio';
 import { MUSIC_VOLUME } from '@game/constants/config';
-import { SCENE_MUSIC, SCENE_GRAPHICS, SCENE_PATH } from '@game/constants/assets';
 import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
@@ -41,37 +40,15 @@ const PAUSE_PIXEL_SIZE = 4;
 class Scene extends Container {
   /**
    * Create a Scene.
-   * @param  {Number} options.index   The index of the scene.
-   * @param  {String} options.type    The type of scene.
-   * @param  {String} options.game    The game running the scene.
+   * @param  {String}   options.game        The game running the scene.
+   * @param  {Boolean}  options.loopMusic   The loop music option.
    */
-  constructor({
-    index,
-    type,
-    game,
-    loopMusic = true,
-  }) {
+  constructor({ game, loopMusic = true }) {
     super();
 
-    this.index = index;
-    this.type = type;
     this.game = game;
 
     this.mainContainer = new MainContainer();
-
-    this.path = `${SCENE_PATH}/${type}${Number.isNaN(Number(index)) ? '' : `/${index}`}`;
-
-    this.assets = {
-      sound: {
-        name: SCENE_MUSIC.NAME,
-        src: `${this.path}/${SCENE_MUSIC.FILE}`,
-        loop: loopMusic,
-      },
-      graphics: {
-        name: SCENE_GRAPHICS.NAME,
-        src: `${this.path}/${SCENE_GRAPHICS.FILE}`,
-      },
-    };
 
     this.game.input.add(STATES.PAUSED, {
       onKeyDown: {

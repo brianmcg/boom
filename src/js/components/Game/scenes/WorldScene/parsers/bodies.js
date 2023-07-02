@@ -1,6 +1,6 @@
 import { degrees, AXES } from '@game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from '@game/constants/assets';
-import { CELL_SIZE, DEBUG } from '@game/constants/config';
+import { CELL_SIZE, DEBUG, ALONE } from '@game/constants/config';
 import {
   Cell,
   PushWall,
@@ -204,9 +204,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     }),
   ]), []);
 
-  // data.enemies = [];
-
-  const enemies = data.enemies.reduce((memo, enemy) => {
+  const enemies = ALONE ? [] : data.enemies.reduce((memo, enemy) => {
     const item = enemy.item ? {
       name: enemy.item,
       scale: 0,
