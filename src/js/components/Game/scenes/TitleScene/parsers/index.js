@@ -16,9 +16,8 @@ import SparksSprite from '../sprites/SparksSprite';
 export const parse = ({ graphics }) => {
   const { data, textures } = graphics;
   const { animations } = data;
-
+  const { light, logo, mask } = textures;
   const sparksTextures = animations.sparks.map(image => textures[image]);
-  const logoTextures = animations.logo.map(image => textures[image]);
 
   return {
     sprites: {
@@ -32,7 +31,9 @@ export const parse = ({ graphics }) => {
         sparks: new SparksSprite(sparksTextures),
       },
       foreground: {
-        logo: new LogoSprite(logoTextures),
+        logo: new LogoSprite(logo),
+        light: new LogoSprite(light),
+        mask: new LogoSprite(mask)
       },
     },
   };
