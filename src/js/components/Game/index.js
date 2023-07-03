@@ -92,7 +92,7 @@ class Game extends Application {
     if (DEBUG) {
       this.showWorldScene();
     } else {
-      this.showCreditsScene();
+      this.showTitleScene();
     }
   }
 
