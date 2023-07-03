@@ -11,7 +11,7 @@ class SparksSprite extends AnimatedSprite {
    */
   constructor(textures = []) {
     super(textures, {
-      animationSpeed: 0.35,
+      animationSpeed: 0.4,
       loop: true,
     });
 

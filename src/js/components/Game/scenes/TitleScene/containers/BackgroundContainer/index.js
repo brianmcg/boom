@@ -1,6 +1,6 @@
 import { Container, PixelateFilter } from '@game/core/graphics';
 
-const PIXEL_SIZE = 1.75;
+const PIXEL_SIZE = 1.5;
 
 /**
  * Class representing a background container.
@@ -21,7 +21,7 @@ class BackgroundContainer extends Container {
 
     this.filters = [this.pixelateFilter];
 
-    this.pixelateFilter.enabled = true;
+    this.pixelateFilter.enabled = false;
   }
 
   update(delta) {
