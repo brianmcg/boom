@@ -5,7 +5,7 @@ const PADDING = SCREEN.HEIGHT / 8;
 
 const SPACE = SCREEN.WIDTH / 80;
 
-const SCROLL_SPEED = SCREEN.HEIGHT / 280;
+const SCROLL_SPEED = SCREEN.HEIGHT / 320;
 
 const SCROLL_COMPLETE_EVENT = 'scroll:complete';
 
@@ -35,7 +35,7 @@ class ScrollContainer extends Container {
 
       key.anchor.x = 1;
       key.x = (SCREEN.WIDTH / 2) - SPACE;
-      key.y = logo.y + logo.height + (PADDING * 2) + (textHeight + PADDING) * i;
+      key.y = logo.y + logo.height + PADDING + ((textHeight + PADDING) * i);
 
       value.anchor.x = 0;
       value.x = (SCREEN.WIDTH / 2) + SPACE;

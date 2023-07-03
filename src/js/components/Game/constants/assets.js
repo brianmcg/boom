@@ -133,7 +133,7 @@ export const CREDITS_SCENE_ASSETS = {
   sound: {
     name: SCENE_MUSIC.NAME,
     src: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_MUSIC.FILE}`,
-    loop: true,
+    loop: false,
   },
   graphics: {
     name: SCENE_GRAPHICS.NAME,

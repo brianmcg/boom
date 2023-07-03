@@ -21,6 +21,8 @@ class Sound extends Howl {
       mute,
       preload: false,
     });
+
+    this.isLoop = loop;
   }
 
   load() {

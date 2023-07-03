@@ -197,6 +197,12 @@ class Game extends Application {
       this.music = sound;
       this.music.volume(MUSIC_VOLUME);
 
+      if (!this.music.isLoop) {
+        this.music.on('end', () => {
+          this.music.ended = true;
+        });
+      }
+
       this.scene.create({ sounds, graphics, data: { ...data, props } });
 
       this.removeSpinner();

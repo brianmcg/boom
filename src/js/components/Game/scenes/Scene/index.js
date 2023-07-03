@@ -298,7 +298,10 @@ class Scene extends Container {
 
     if (isStateChanged) {
       this.play();
-      this.game.music.play();
+
+      if (!this.game.music.ended) {
+        this.game.music.play();
+      }
     }
 
     return isStateChanged;
