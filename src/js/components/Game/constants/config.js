@@ -66,7 +66,7 @@ export const MAX_FPS = 60;
  * The volume of the music.
  * @type {Number}
  */
-export const MUSIC_VOLUME = 0.4;
+export const MUSIC_VOLUME = 1;
 
 /**
  * The difficulty level.

@@ -5,7 +5,7 @@ const PADDING = SCREEN.HEIGHT / 8;
 
 const SPACE = SCREEN.WIDTH / 80;
 
-const SCROLL_SPEED = SCREEN.HEIGHT / 320;
+const SCROLL_SPEED = SCREEN.HEIGHT / 480;
 
 const SCROLL_COMPLETE_EVENT = 'scroll:complete';
 
