@@ -1,208 +1,238 @@
 export default {
   'manual.action.forward': {
-    text: '[FR] forward',
+    text: 'forward',
   },
   'manual.input.up': {
-    text: '[FR] w',
+    text: 'w',
   },
   'manual.action.backward': {
-    text: '[FR] backward',
+    text: 'backward',
   },
   'manual.input.down': {
-    text: '[FR] s',
+    text: 's',
   },
   'manual.action.strafe.left': {
-    text: '[FR] strafe left',
+    text: 'strafe left',
   },
   'manual.input.strafe.left': {
-    text: '[FR] a',
+    text: 'a',
   },
   'manual.action.strafe.right': {
-    text: '[FR] strafe right',
+    text: 'strafe right',
   },
   'manual.input.strafe.right': {
-    text: '[FR] d',
+    text: 'd',
   },
   'manual.action.turn.left': {
-    text: '[FR] turn left',
+    text: 'turn left',
   },
   'manual.input.turn.left': {
-    text: '[FR] mouse move',
+    text: 'mouse move',
   },
   'manual.action.turn.right': {
-    text: '[FR] turn right',
+    text: 'turn right',
   },
   'manual.input.turn.right': {
-    text: '[FR] mouse move',
+    text: 'mouse move',
   },
   'manual.action.use': {
-    text: '[FR] open / push',
+    text: 'open / push',
   },
   'manual.input.space': {
-    text: '[FR] e',
+    text: 'e',
   },
   'manual.action.attack': {
-    text: '[FR] attack',
+    text: 'attack',
   },
   'manual.input.mouse.left': {
-    text: '[FR] mouse left click',
+    text: 'mouse left click',
   },
   'manual.action.boot': {
-    text: '[FR] kick',
+    text: 'kick',
   },
   'manual.input.mouse.right': {
-    text: '[FR] mouse right click',
+    text: 'mouse right click',
   },
   'manual.action.weapon': {
-    text: '[FR] select weapon',
+    text: 'select weapon',
   },
   'manual.input.weapon': {
-    text: '[FR] mouse wheel / num keys',
+    text: 'mouse wheel / num keys',
   },
   'manual.action.crouch': {
-    text: '[FR] crouch',
+    text: 'crouch',
   },
   'manual.input.shift': {
-    text: '[FR] shift',
+    text: 'shift',
   },
   'manual.action.pause': {
-    text: '[FR] menu',
+    text: 'menu',
   },
   'manual.input.pause': {
-    text: '[FR] q',
+    text: 'q',
   },
   'manual.action.menu.nav': {
-    text: '[FR] menu highlight',
+    text: 'menu highlight',
   },
   'manual.input.menu.nav': {
-    text: '[FR] up arrow / down arrow',
+    text: 'up arrow / down arrow',
   },
   'manual.action.menu.select': {
-    text: '[FR] menu select',
+    text: 'menu select',
   },
   'manual.input.menu.select': {
-    text: '[FR] enter',
+    text: 'enter',
   },
   'manual.title': {
-    text: '[FR] Boom Controls',
+    text: 'Boom Controls',
   },
   'manual.play': {
-    text: '[FR] click to play',
+    text: 'click to play',
   },
   'scene.menu.continue': {
-    text: '[FR] Continue',
+    text: 'Continue',
   },
   'scene.menu.restart': {
-    text: '[FR] Restart',
+    text: 'Restart',
   },
   'scene.menu.quit': {
-    text: '[FR] Quit',
+    text: 'Quit',
   },
   'scene.prompt.continue': {
-    text: '[FR] Press space to continue',
+    text: 'Press space to continue',
   },
   'title.prompt.start': {
-    text: '[FR] Press space to start',
+    text: 'Press space to start',
   },
   'world.title.debug': {
-    text: '[FR] Debug Level',
+    text: 'Debug Level',
   },
   'world.title.dungeon_1': {
-    text: '[FR] Prison Block',
+    text: 'Prison Block',
   },
   'world.title.sewers_1': {
-    text: '[FR] Sewer Network',
+    text: 'Sewer Network',
   },
   'world.title.sewers_2': {
-    text: '[FR] Treatment Plant',
+    text: 'Treatment Plant',
   },
   'world.title.cellar_1': {
-    text: '[FR] Secret Lab',
+    text: 'Secret Lab',
   },
   'world.title.mansion_1': {
-    text: '[FR] Mansion',
+    text: 'Mansion',
   },
   'world.title.roof_1': {
-    text: '[FR] Rooftop',
+    text: 'Rooftop',
   },
   'world.review.enemies': {
-    text: '[FR] Kills',
+    text: 'Kills',
   },
   'world.review.items': {
-    text: '[FR] Items',
+    text: 'Items',
   },
   'world.review.secrets': {
-    text: '[FR] Secrets',
+    text: 'Secrets',
   },
   'world.review.time': {
-    text: '[FR] Time',
+    text: 'Time',
   },
   'world.door.locked': {
-    text: '[FR] COLOR key required',
+    text: 'COLOR key required',
     keys: ['color'],
   },
   'world.player.cannot.pickup': {
-    text: '[FR] Cannot pick up ITEM',
+    text: 'Cannot pick up ITEM',
     keys: ['item'],
   },
   'world.player.pickup': {
-    text: '[FR] Picked up ITEM',
+    text: 'Picked up ITEM',
     keys: ['item'],
   },
   'world.wall.secret': {
-    text: '[FR] Found secret area',
+    text: 'Found secret area',
   },
   'world.item.key': {
-    text: '[FR] COLOR Key',
+    text: 'COLOR Key',
     keys: ['color'],
   },
   'world.item.ammo': {
-    text: '[FR] WEAPON Ammo',
+    text: 'WEAPON Ammo',
     keys: ['weapon'],
   },
   'world.item.health': {
-    text: '[FR] Health',
+    text: 'Health',
   },
   'world.item.pistol': {
-    text: '[FR] Pistol',
+    text: 'Pistol',
   },
   'world.item.shotgun': {
-    text: '[FR] Shotgun',
+    text: 'Shotgun',
   },
   'world.item.chaingun': {
-    text: '[FR] Chaingun',
+    text: 'Chaingun',
   },
   'world.item.launcher': {
-    text: '[FR] Rocket Launcher',
+    text: 'Rocket Launcher',
   },
   'world.color.yellow': {
-    text: '[FR] Yellow',
+    text: 'Yellow',
   },
   'world.color.blue': {
-    text: '[FR] Blue',
+    text: 'Blue',
   },
   'world.color.green': {
-    text: '[FR] Green',
+    text: 'Green',
   },
   'world.color.red': {
-    text: '[FR] Red',
+    text: 'Red',
   },
-  'credits.scroll.end': {
-    text: '[FR] The End',
+  'credits.scroll.animator': {
+    text: 'Animator',
   },
-  'credits.scroll.coding': {
-    text: '[FR] Coding',
+  'credits.scroll.art': {
+    text: 'Art Director',
   },
-  'credits.scroll.graphics': {
-    text: '[FR] Graphics',
+  'credits.scroll.artist': {
+    text: 'Lead Artist',
+  },
+  'credits.scroll.creative': {
+    text: 'Creative Director',
+  },
+  'credits.scroll.game': {
+    text: 'Game Designer',
+  },
+  'credits.scroll.level': {
+    text: 'Level Designer',
+  },
+  'credits.scroll.narrative': {
+    text: 'Narrative Designer',
+  },
+  'credits.scroll.programmer': {
+    text: 'Programmer',
+  },
+  'credits.scroll.tester': {
+    text: 'QA Tester',
   },
   'credits.scroll.sound': {
-    text: '[FR] Sound',
+    text: 'Sound Designer',
   },
-  'credits.scroll.screenplay': {
-    text: '[FR] Script',
+  'credits.scroll.ui': {
+    text: 'UX/UI Designer',
+  },
+  'credits.scroll.french': {
+    text: 'French Localisation',
+  },
+  'credits.scroll.producer': {
+    text: 'Executive Producer',
+  },
+  'credits.scroll.director': {
+    text: 'Managing Director',
+  },
+  'credits.scroll.end': {
+    text: 'THE END',
   },
   'credits.scroll.author': {
-    text: '[FR] Brian McGrath',
+    text: 'Brian McGrath',
   },
 };

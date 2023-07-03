@@ -33,7 +33,7 @@ export const parse = ({ graphics }) => {
       foreground: {
         logo: new LogoSprite(logo),
         light: new LogoSprite(light),
-        mask: new LogoSprite(mask)
+        mask: new LogoSprite(mask),
       },
     },
   };

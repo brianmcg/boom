@@ -54,7 +54,6 @@ class ForegroundContainer extends Container {
       if (light.x > SCREEN.WIDTH + (light.width / 2)) {
         light.x = -light.width / 2;
         this.animate = false;
-
       }
     } else {
       this.timer += elsapsedMS;

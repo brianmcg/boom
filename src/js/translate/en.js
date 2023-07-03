@@ -187,20 +187,50 @@ export default {
   'world.color.red': {
     text: 'Red',
   },
-  'credits.scroll.end': {
-    text: 'The End',
+  'credits.scroll.animator': {
+    text: 'Animator',
   },
-  'credits.scroll.coding': {
-    text: 'Coding',
+  'credits.scroll.art': {
+    text: 'Art Director',
   },
-  'credits.scroll.graphics': {
-    text: 'Graphics',
+  'credits.scroll.artist': {
+    text: 'Lead Artist',
+  },
+  'credits.scroll.creative': {
+    text: 'Creative Director',
+  },
+  'credits.scroll.game': {
+    text: 'Game Designer',
+  },
+  'credits.scroll.level': {
+    text: 'Level Designer',
+  },
+  'credits.scroll.narrative': {
+    text: 'Narrative Designer',
+  },
+  'credits.scroll.programmer': {
+    text: 'Programmer',
+  },
+  'credits.scroll.tester': {
+    text: 'QA Tester',
   },
   'credits.scroll.sound': {
-    text: 'Sound',
+    text: 'Sound Designer',
   },
-  'credits.scroll.screenplay': {
-    text: 'Script',
+  'credits.scroll.ui': {
+    text: 'UX/UI Designer',
+  },
+  'credits.scroll.french': {
+    text: 'French Localisation',
+  },
+  'credits.scroll.producer': {
+    text: 'Executive Producer',
+  },
+  'credits.scroll.director': {
+    text: 'Managing Director',
+  },
+  'credits.scroll.end': {
+    text: 'FIN',
   },
   'credits.scroll.author': {
     text: 'Brian McGrath',

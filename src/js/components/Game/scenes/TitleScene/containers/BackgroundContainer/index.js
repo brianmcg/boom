@@ -20,6 +20,8 @@ class BackgroundContainer extends Container {
     this.pixelateFilter = new PixelateFilter();
 
     this.filters = [this.pixelateFilter];
+
+    this.pixelateFilter.enabled = true;
   }
 
   update(delta) {

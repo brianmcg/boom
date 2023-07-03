@@ -1,4 +1,4 @@
-import { AnimatedSprite, TextSprite } from '@game/core/graphics';
+import { Sprite, TextSprite } from '@game/core/graphics';
 import { GAME_FONT } from '@game/constants/assets';
 import { FONT_SIZES } from '@game/constants/fonts';
 import { RED, WHITE } from '@game/constants/colors';
@@ -14,20 +14,14 @@ import { RED, WHITE } from '@game/constants/colors';
  * @return {Object}                   The parsed scene data.
  */
 export const parse = ({ graphics, text }) => {
-  const { data, textures } = graphics;
-  const { animations } = data;
-  const smokeTextures = animations.smoke.map(image => textures[image]);
+  const { textures } = graphics;
 
-  const smoke = new AnimatedSprite(smokeTextures, {
-    animationSpeed: 0.2,
-    loop: true,
-    alpha: 0.5,
-  });
+  const logo = new Sprite(textures.logo);
 
   const credits = text.credits.reduce((memo, credit) => {
     const key = new TextSprite({
       fontName: GAME_FONT.NAME,
-      fontSize: FONT_SIZES.MEDIUM,
+      fontSize: FONT_SIZES.SMALL,
       text: credit.key,
       color: RED,
       anchor: 0.5,
@@ -56,10 +50,8 @@ export const parse = ({ graphics, text }) => {
 
   return {
     sprites: {
-      background: {
-        smoke,
-      },
       scroll: {
+        logo,
         credits,
         end,
       },

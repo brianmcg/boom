@@ -1,7 +1,9 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@game/constants/config';
 
-const TEXT_PADDING = SCREEN.HEIGHT / 40;
+const PADDING = SCREEN.HEIGHT / 8;
+
+const SPACE = SCREEN.WIDTH / 80;
 
 const SCROLL_SPEED = SCREEN.HEIGHT / 280;
 
@@ -16,28 +18,36 @@ class ScrollContainer extends Container {
    * @param  {Object}     options.credits The credits data.
    * @param  {TextSprite} options.end     The end text.
    */
-  constructor({ credits, end }) {
+  constructor({ logo, credits, end }) {
     super();
+    const textHeight = credits[0][0].height;
 
-    let y = 0;
+    logo.anchor.set(0.5);
+    logo.scale.set(logo.height / SCREEN.HEIGHT / 2);
 
-    credits.forEach((credit) => {
-      credit.forEach((text, i) => {
-        text.x = SCREEN.WIDTH / 2;
-        text.y = y;
-        y += text.height + TEXT_PADDING;
-        if (!i) {
-          y += TEXT_PADDING;
-        }
-        this.addChild(text);
-      });
-      y += TEXT_PADDING * 5;
+    logo.x = SCREEN.WIDTH / 2;
+    logo.y = SCREEN.HEIGHT + logo.height / 2;
+
+    this.addChild(logo);
+
+    credits.forEach((credit, i) => {
+      const [key, value] = credit;
+
+      key.anchor.x = 1;
+      key.x = (SCREEN.WIDTH / 2) - SPACE;
+      key.y = logo.y + logo.height + (PADDING * 2) + (textHeight + PADDING) * i;
+
+      value.anchor.x = 0;
+      value.x = (SCREEN.WIDTH / 2) + SPACE;
+      value.y = key.y;
+
+      this.addChild(key);
+      this.addChild(value);
     });
 
+    end.anchor.y = 1;
     end.x = SCREEN.WIDTH / 2;
-    end.y = y + SCREEN.HEIGHT;
-
-    this.y = SCREEN.HEIGHT;
+    end.y = this.getChildAt(this.children.length - 1).y + SCREEN.HEIGHT + end.height;
 
     this.addChild(end);
   }
@@ -54,14 +64,13 @@ class ScrollContainer extends Container {
    * Updates the scroll container.
    * @param  {Number} delta The delta time.
    */
-  update(delta) {
-    const lastSprite = this.children[this.children.length - 1];
-    const yEnd = SCREEN.HEIGHT - (lastSprite.height * 4) - this.height;
+  scroll(delta) {
+    this.children.forEach((child) => {
+      child.y -= SCROLL_SPEED * delta;
+    });
 
-    this.y -= delta * SCROLL_SPEED;
-
-    if (this.y <= yEnd) {
-      this.y = yEnd;
+    if (this.getChildAt(this.children.length - 1).y < SCREEN.HEIGHT / 2) {
+      this.scrolling = false;
       this.emit(SCROLL_COMPLETE_EVENT);
     }
   }
