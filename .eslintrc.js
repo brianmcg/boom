@@ -4,22 +4,20 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
   },
   globals: {},
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  "parser": "babel-eslint",
-  "rules": {
-    "strict": 0
-  },
+  parser: 'babel-eslint',
   extends: ['airbnb-base', 'prettier'],
   rules: {
+    strict: 0,
     'prettier/prettier': 'error',
-    'linebreak-style': ["error", "unix"],
-    'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
+    'linebreak-style': ['error', 'unix'],
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-continue': 0,
     'no-bitwise': [2, { allow: ['<<', '>>'] }],
     'import/prefer-default-export': 'off',
@@ -28,22 +26,26 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: true
-      }
+        devDependencies: true,
+      },
     ],
-    'prefer-destructuring': ['error', {
-      'array': false,
-      'object': true
-    }, {
-      'enforceForRenamedProperties': false
-    }]
+    'prefer-destructuring': [
+      'error',
+      {
+        array: false,
+        object: true,
+      },
+      {
+        enforceForRenamedProperties: false,
+      },
+    ],
   },
   plugins: ['prettier'],
   settings: {
     'import/resolver': {
       webpack: {
-        config: path.resolve(__dirname, 'config/webpack.common.js')
-      }
-    }
+        config: path.resolve(__dirname, 'config/webpack.common.js'),
+      },
+    },
   },
 };
