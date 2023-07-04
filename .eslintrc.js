@@ -15,6 +15,7 @@ module.exports = {
   extends: ['airbnb-base', 'prettier'],
   rules: {
     strict: 0,
+    'no-unused-vars': 'error',
     'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
