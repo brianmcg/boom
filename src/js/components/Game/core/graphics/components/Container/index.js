@@ -113,11 +113,12 @@ class Container extends PixiContainer {
   }
 
   destroy(options) {
-    const children = this.children.map(child => child);
+    // const children = this.children.map(child => child);
 
-    this.removeChildren();
+    // this.removeChildren();
 
-    children.forEach(child => child.destroy(options));
+    // TODO: Possible bug, test this.
+    // children.forEach(child => child.destroy(options));
 
     super.destroy(options);
   }
