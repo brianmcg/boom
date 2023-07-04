@@ -30,7 +30,7 @@ class Sound extends Howl {
   }
 
   isLooping() {
-    return this._loop;
+    return this._loop; // eslint-disable-line no-underscore-dangle
   }
 
   isLoaded() {

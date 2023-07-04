@@ -79,6 +79,8 @@ class HitScan extends Body {
 
     const sourceId = this.effect && this.id;
 
+    const collisionsInRange = [];
+
     const {
       startPoint,
       endPoint,
@@ -123,6 +125,8 @@ class HitScan extends Body {
         if (point.distance <= this.range) {
           let damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
 
+          collisionsInRange.push(body);
+
           if (this.fade) {
             damage *= ((this.range - point.distance) / this.range);
           }
@@ -161,6 +165,8 @@ class HitScan extends Body {
         }
       }
     } else if (!cell.edge && distance <= this.range) {
+      collisionsInRange.push(cell);
+
       // Handle collision with wall
       if (sourceId) {
         this.source.parent.addEffect({
@@ -170,6 +176,8 @@ class HitScan extends Body {
         });
       }
     }
+
+    return collisionsInRange;
   }
 }
 

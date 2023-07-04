@@ -35,13 +35,13 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
+      this.setIdle();
+
       if (player.weapon.secondary) {
         player.selectWeapon(player.previousWeaponIndex, {
           silent: true,
         });
       }
-
-      this.setIdle();
     };
   }
 
@@ -50,6 +50,13 @@ class WeaponSprite extends AnimatedSprite {
    */
   setIdle() {
     this.textures = this.textureCollection[this.player.weapon.name].idle;
+
+    // TODO: Set different weapon scales.
+    // if (this.player.weapon.secondary) {
+    //   this.scale.set(1);
+    // } else {
+    //   this.scale.set(1);
+    // }
   }
 
   /**

@@ -107,7 +107,7 @@ class DynamicEntity extends DynamicBody {
    * @param {Boolean} loop Loop the sound.
    */
   emitSound(name, loop) {
-    if (this.soundController) {
+    if (name && this.soundController) {
       const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
         ? 0
         : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;

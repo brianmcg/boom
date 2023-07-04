@@ -160,23 +160,10 @@ class AbstractWeapon extends EventEmitter {
       throw new TypeError('You have to implement this method.');
     }
 
-    if (this.ammo === null) {
-      this.emit(EVENTS.USE, {
-        recoil: this.recoil,
-        sound: this.sounds.use,
-      });
-    } else if (this.ammo > 0) {
-      if (!GOD_MODE) {
-        this.ammo -= 1;
-      }
-
-      this.emit(EVENTS.USE, {
-        recoil: this.recoil,
-        sound: this.sounds.use,
-      });
-    }
-
-    if (this.ammo === 0) {
+    if (this.ammo > 0) {
+      this.ammo -= GOD_MODE ? 0 : 1;
+      this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
+    } else {
       this.stop();
     }
   }
@@ -339,5 +326,7 @@ class AbstractWeapon extends EventEmitter {
     return false;
   }
 }
+
+export { EVENTS };
 
 export default AbstractWeapon;

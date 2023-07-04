@@ -1,5 +1,5 @@
 import { degrees } from '@game/core/physics';
-import AbstractWeapon from '../AbstractWeapon';
+import AbstractWeapon, { EVENTS } from '../AbstractWeapon';
 import HitScan from '../../../HitScan';
 
 const DEG_360 = degrees(360);
@@ -65,6 +65,8 @@ class HitScanWeapon extends AbstractWeapon {
         player,
       } = this;
 
+      const collisions = [];
+
       const projectileAngle = (player.angle - player.moveAngle + DEG_360) % DEG_360;
 
       let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
@@ -73,13 +75,21 @@ class HitScanWeapon extends AbstractWeapon {
         const projectile = projectiles.shift();
 
         if (projectile) {
-          projectile.run(rayAngle);
+          projectile.run(rayAngle).forEach((collision) => {
+            collisions.push(collision);
+          });
           projectiles.push(projectile);
           rayAngle = (rayAngle + pelletAngle) % DEG_360;
         }
       }
 
-      super.use();
+      if (this.ammo === null) {
+        const recoil = !collisions.length ? 0 : this.recoil;
+        const sound = this.secondary && !collisions.length ? null : this.sounds.use;
+        this.emit(EVENTS.USE, { recoil, sound });
+      } else {
+        super.use();
+      }
     }
   }
 }
