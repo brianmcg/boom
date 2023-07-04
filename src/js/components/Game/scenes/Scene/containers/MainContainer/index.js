@@ -25,7 +25,7 @@ class MainContainer extends Container {
     let size = value * pixelSize;
 
     if (this.parent) {
-      size *= this.parent.getScale();
+      size *= this.parent.getStageScale();
     }
 
     if (size < 1) {

@@ -112,12 +112,14 @@ class Container extends PixiContainer {
     this.visible = false;
   }
 
-  /**
-   * Get the scale of the container.
-   * @return {Number} The scale value.
-   */
-  getScale() {
-    return this.scale.x;
+  destroy(options) {
+    const children = this.children.map(child => child);
+
+    this.removeChildren();
+
+    children.forEach(child => child.destroy(options));
+
+    super.destroy(options);
   }
 
   /**

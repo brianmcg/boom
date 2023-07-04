@@ -14,13 +14,8 @@ class Application extends PixiApplication {
    */
   constructor(...options) {
     super({ ...options, autoStart: false, clearBeforeRender: false });
-
-    delete this.loader;
-    delete this.resize;
-    delete this.start;
-    delete this.stop;
-
-    window.addEventListener('resize', () => this.resize());
+    
+    window.addEventListener('resize', () => this.onResize());
   }
 
   /**
@@ -28,7 +23,7 @@ class Application extends PixiApplication {
    * @param  {Number} width  The new width.
    * @param  {Number} height The new height.
    */
-  resize(width, height) {
+  onResize(width, height) {
     this.renderer.resize(width, height);
   }
 

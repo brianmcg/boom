@@ -1,37 +1,25 @@
 import { Application, settings, SCALE_MODES } from './core/graphics';
 import { InputController } from './core/input';
+
 import { BLACK } from './constants/colors';
-
-import {
-  SCREEN,
-  MUSIC_VOLUME,
-  DISPLAY_FPS,
-  DEBUG,
-  LEVEL,
-} from './constants/config';
-
-import {
-  GAME_SOUNDS,
-  GAME_FONT,
-  SCENE_PATHS,
-  GAME_ASSETS,
-} from './constants/assets';
+import { SCREEN, SHOW_STATS, LEVEL } from './constants/config';
+import { GAME_SOUNDS, GAME_FONT, GAME_ASSETS } from './constants/assets';
 
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
-import Stats, { PANELS } from './components/Stats';
+import Stats from './components/Stats';
 
 import Loader from './utilities/Loader';
 import FontLoader from './utilities/FontLoader';
 
-import TitleScene from './scenes/TitleScene';
-import WorldScene from './scenes/WorldScene';
-import CreditsScene from './scenes/CreditsScene';
+import TitleScene, { TITLE_PATH } from './scenes/TitleScene';
+import WorldScene, { WORLD_PATH } from './scenes/WorldScene';
+import CreditsScene, { CREDITS_PATH } from './scenes/CreditsScene';
 
 const SCENES = {
-  [SCENE_PATHS.TITLE]: TitleScene,
-  [SCENE_PATHS.WORLD]: WorldScene,
-  [SCENE_PATHS.CREDITS]: CreditsScene,
+  [TITLE_PATH]: TitleScene,
+  [WORLD_PATH]: WorldScene,
+  [CREDITS_PATH]: CreditsScene,
 };
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
@@ -46,18 +34,15 @@ class Game extends Application {
    * Creates a game.
    */
   constructor() {
-    super(SCREEN.WIDTH, SCREEN.HEIGHT, {
-      backgroundColor: BLACK,
-    });
+    super(SCREEN.WIDTH, SCREEN.HEIGHT, { backgroundColor: BLACK });
 
     this.stage.interactive = true;
     this.style = { position: 'absolute', left: '50%', top: '50%' };
 
-    if (DISPLAY_FPS) {
+    if (SHOW_STATS) {
       this.stats = new Stats();
-      this.stats.showPanel(PANELS.FPS);
       document.body.appendChild(this.stats.dom);
-      this.ticker.add(this.fpsLoop, this);
+      this.ticker.add(this.statsLoop, this);
     } else {
       this.ticker.add(this.loop, this);
     }
@@ -67,7 +52,7 @@ class Game extends Application {
     this.spinner = new Spinner();
     this.manual = new Manual();
 
-    this.manual.onClickStart(() => this.start());
+    this.manual.onClickStart(() => this.onStart());
 
     this.stage.on('click', () => this.lockPointer());
 
@@ -77,7 +62,7 @@ class Game extends Application {
   /**
    * Start game and load assets.
    */
-  async start() {
+  async onStart() {
     const { sound, data } = await this.loader.load(GAME_ASSETS);
 
     this.removeManual();
@@ -85,26 +70,10 @@ class Game extends Application {
 
     this.soundSprite = sound;
     this.data = data;
-    this.scene = null;
 
-    this.ticker.start();
-
-    if (DEBUG) {
-      this.showWorldScene();
-    } else {
-      this.showTitleScene();
-    }
-  }
-
-  /**
-   * Stop game and unload assets.
-   */
-  stop() {
-    this.removeCanvas();
-    this.addManual();
-    this.ticker.stop();
-    this.scene.destroy();
-    this.loader.unload();
+    this.start();
+    this.onResize();
+    this.showTitleScene();
   }
 
   /**
@@ -121,7 +90,7 @@ class Game extends Application {
    * Execute a game loop and display fps.
    * @param  {Number} delta The delta value.
    */
-  fpsLoop(delta) {
+  statsLoop(delta) {
     this.stats.begin();
 
     if (this.scene) {
@@ -135,7 +104,7 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.show(SCENE_PATHS.TITLE);
+    this.showScene(TITLE_PATH);
   }
 
   /**
@@ -143,7 +112,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = LEVEL, ...other } = {}) {
-    this.show(SCENE_PATHS.WORLD, {
+    this.showScene(WORLD_PATH, {
       index,
       showLoader: true,
       id: this.data.world.levels[index - 1],
@@ -155,7 +124,7 @@ class Game extends Application {
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.show(SCENE_PATHS.CREDITS);
+    this.showScene(CREDITS_PATH);
   }
 
   /**
@@ -164,7 +133,7 @@ class Game extends Application {
     * @param  {Number} options.index The scene index.
     * @param  {Object} options.props Optional extra props.
     */
-  async show(type, { startProps = {}, showLoader, ...other } = {}) {
+  async showScene(type, { startProps = {}, showLoader, ...other } = {}) {
     const Scene = SCENES[type];
 
     if (showLoader) {
@@ -174,19 +143,18 @@ class Game extends Application {
     if (this.scene) {
       const { sound, graphics } = this.loader.cache;
 
-      this.scene.destroy();
+      this.removeScene();
 
       this.loader.unload({
+        // Remove all graphics except the game font.
         graphics: Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME)),
+        // Remove all sounds except the game sound effects.
         sound: Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME)),
-        data: [],
       });
     }
 
     if (Scene) {
       this.scene = new Scene({ game: this, ...other });
-
-      this.resize();
       this.stage.addChild(this.scene);
 
       const { graphics, sound, data } = await this.loader.load(this.scene.assets);
@@ -194,14 +162,13 @@ class Game extends Application {
       const sounds = this.data[type].sounds || {};
       const props = { ...sceneProps, player: { ...sceneProps.player, ...startProps.player } };
 
-      this.music = sound;
-      this.music.volume(MUSIC_VOLUME);
-
-      if (!this.music.isLoop) {
-        this.music.on('end', () => {
-          this.music.ended = true;
-        });
+      if (!sound.isLooping()) {
+        sound.once('end', () => sound.unload());
       }
+
+      sound.once('fade', () => sound.stop());
+
+      this.music = sound;
 
       this.scene.create({ sounds, graphics, data: { ...data, props } });
 
@@ -210,9 +177,29 @@ class Game extends Application {
   }
 
   /**
+   * Remove the current scene.
+   */
+  removeScene() {
+    this.scene.destroy();
+    delete this.scene;
+  }
+
+  /**
+   * Stop game and unload assets.
+   */
+  quit() {
+    this.removeCanvas();
+    this.addManual();
+    this.stop();
+    this.removeScene();
+    this.loader.unload();
+  }
+
+
+  /**
    * Resize the game
    */
-  resize() {
+  onResize() {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const widthRatio = windowWidth / SCREEN.WIDTH;
@@ -225,11 +212,9 @@ class Game extends Application {
 
     this.spinner.resize(scale);
 
-    if (this.scene) {
-      this.scene.resize(scale);
-    }
+    this.stage.scale.set(scale);
 
-    super.resize(width, height);
+    super.onResize(width, height);
   }
 
   /**

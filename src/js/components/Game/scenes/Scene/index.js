@@ -253,6 +253,13 @@ class Scene extends Container {
   }
 
   /**
+   * Get the scale of the stage.
+   */
+  getStageScale() {
+    return this.parent.scale.x;
+  }
+
+  /**
    * Update the scene when in a fade out state.
    * @param  {Number} delta The delta value.
    */
@@ -299,7 +306,7 @@ class Scene extends Container {
     if (isStateChanged) {
       this.play();
 
-      if (!this.game.music.ended) {
+      if (this.game.music.isLoaded()) {
         this.game.music.play();
       }
     }
@@ -497,11 +504,12 @@ class Scene extends Container {
    * Destroy the scene.
    */
   destroy() {
+    const options = { texture: true, baseTexture: true };
     this.game.input.reset();
-    this.mainContainer.destroy();
-    this.menuContainer.destroy();
-    this.promptContainer.destroy();
-    super.destroy();
+    this.mainContainer.destroy(options);
+    this.menuContainer.destroy(options);
+    this.promptContainer.destroy(options);
+    super.destroy(options);
   }
 }
 

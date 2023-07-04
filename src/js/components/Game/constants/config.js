@@ -48,7 +48,7 @@ export const DISABLE_SOUND = parseBoolParam('disableSound');
  * Display the frames per second on screen.
  * @type {Boolean}
  */
-export const DISPLAY_FPS = parseBoolParam('displayFps') || Boolean(DEBUG);
+export const SHOW_STATS = parseBoolParam('stats') || Boolean(DEBUG);
 
 /**
  * Enabled the music.
@@ -96,7 +96,7 @@ export const WALL_LAYERS = 3;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 320, HEIGHT: 160 };
+export const SCREEN = { WIDTH: 320, HEIGHT: 150 };
 
 /**
  * The default language to use.

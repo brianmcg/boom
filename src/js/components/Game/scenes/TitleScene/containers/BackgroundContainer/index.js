@@ -29,7 +29,7 @@ class BackgroundContainer extends Container {
 
     const { parent } = this.parent;
 
-    this.pixelateFilter.size = PIXEL_SIZE * parent.getScale();
+    this.pixelateFilter.size = PIXEL_SIZE * parent.getStageScale();
   }
 }
 

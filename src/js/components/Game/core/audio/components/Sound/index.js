@@ -21,14 +21,20 @@ class Sound extends Howl {
       mute,
       preload: false,
     });
-
-    this.isLoop = loop;
   }
 
   load() {
     super.load();
 
     return new Promise(resolve => this.on('load', () => resolve(this)));
+  }
+
+  isLooping() {
+    return this._loop;
+  }
+
+  isLoaded() {
+    return this.state() === 'loaded';
   }
 }
 
