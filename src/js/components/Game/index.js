@@ -2,9 +2,7 @@ import { Application, settings, SCALE_MODES } from './core/graphics';
 import { InputController } from './core/input';
 
 import { BLACK } from './constants/colors';
-
 import { SCREEN, SHOW_STATS, LEVEL, DEBUG } from './constants/config';
-
 import { GAME_SOUNDS, GAME_FONT, GAME_ASSETS } from './constants/assets';
 
 import Spinner from './components/Spinner';
