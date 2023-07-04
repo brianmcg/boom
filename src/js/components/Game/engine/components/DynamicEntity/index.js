@@ -28,14 +28,7 @@ class DynamicEntity extends DynamicBody {
    * @param  {Number}  options.scale        The entity scale.
    * @param  {Object}  options.tail         The entity tail.
    */
-  constructor({
-    name,
-    sounds = {},
-    soundSprite,
-    scale = 1,
-    tail,
-    ...other
-  }) {
+  constructor({ name, sounds = {}, soundSprite, scale = 1, tail, ...other }) {
     super(other);
 
     this.scale = scale;
@@ -70,9 +63,10 @@ class DynamicEntity extends DynamicBody {
   update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+    const volume =
+      this.distanceToPlayer > MAX_SOUND_DISTANCE
+        ? 0
+        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
     if (this.soundController) {
       this.soundController.update(volume);
@@ -108,9 +102,10 @@ class DynamicEntity extends DynamicBody {
    */
   emitSound(name, loop) {
     if (name && this.soundController) {
-      const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-        ? 0
-        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+      const volume =
+        this.distanceToPlayer > MAX_SOUND_DISTANCE
+          ? 0
+          : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
       this.soundController.emitSound(name, volume, loop);
     }
@@ -125,7 +120,6 @@ class DynamicEntity extends DynamicBody {
       this.soundController.stopSound(name);
     }
   }
-
 
   /**
    * Play the entity.

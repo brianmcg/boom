@@ -3,7 +3,7 @@ import { manhattan } from './heuristics';
 
 const getHeap = () => new BinaryHeap(node => node.f);
 
-const pathTo = (node) => {
+const pathTo = node => {
   const path = [];
   let curr = node;
 
@@ -80,8 +80,8 @@ export const astarSearch = (graph, start, end, options = {}) => {
           // a cheaper path than the current closest node
           // then it becomes the closest node
           if (
-            neighbor.h < closestNode.h
-              || (neighbor.h === closestNode.h && neighbor.g < closestNode.g)
+            neighbor.h < closestNode.h ||
+            (neighbor.h === closestNode.h && neighbor.g < closestNode.g)
           ) {
             closestNode = neighbor;
           }

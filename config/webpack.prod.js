@@ -52,7 +52,7 @@ module.exports = merge(common, {
         },
         {
           copyUnmodified: true,
-        }
+        },
       ),
     ],
   },

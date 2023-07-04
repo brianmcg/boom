@@ -9,9 +9,7 @@ const OFFSET = CELL_SIZE * 0.0625;
 
 const SECONDARY_DAMAGE_FADE = 0.6;
 
-const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(
-  (CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE),
-);
+const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE);
 
 /**
  * Class representing a hit scan.
@@ -81,41 +79,37 @@ class HitScan extends Body {
 
     const collisionsInRange = [];
 
-    const {
-      startPoint,
-      endPoint,
-      distance,
-      encounteredBodies,
-      cell,
-    } = rays[rays.length - 1];
+    const { startPoint, endPoint, distance, encounteredBodies, cell } = rays[rays.length - 1];
 
     if (this.flash) {
       this.source.parent.addFlash(this.power);
     }
 
     // Get sorted collisions
-    const collisions = Object.values(encounteredBodies).reduce((memo, body) => {
-      if (body.blocking) {
-        const point = body.getRayCollision({ startPoint, endPoint });
+    const collisions = Object.values(encounteredBodies)
+      .reduce((memo, body) => {
+        if (body.blocking) {
+          const point = body.getRayCollision({ startPoint, endPoint });
 
-        if (point) {
-          memo.push({ body, point });
+          if (point) {
+            memo.push({ body, point });
+          }
+
+          return memo;
+        }
+        return memo;
+      }, [])
+      .sort((a, b) => {
+        if (a.point.distance > b.point.distance) {
+          return 1;
         }
 
-        return memo;
-      }
-      return memo;
-    }, []).sort((a, b) => {
-      if (a.point.distance > b.point.distance) {
-        return 1;
-      }
+        if (a.point.distance < b.point.distance) {
+          return -1;
+        }
 
-      if (a.point.distance < b.point.distance) {
-        return -1;
-      }
-
-      return 0;
-    });
+        return 0;
+      });
 
     if (collisions.length) {
       // Handle collision with object.
@@ -128,13 +122,13 @@ class HitScan extends Body {
           collisionsInRange.push(body);
 
           if (this.fade) {
-            damage *= ((this.range - point.distance) / this.range);
+            damage *= (this.range - point.distance) / this.range;
           }
 
           if (i > 0) {
             if (this.highCalibre) {
               if (body.getDistanceTo(collisions[0].body) < SECONDARY_DAMAGE_DISTANCE) {
-                damage *= (SECONDARY_DAMAGE_FADE / i);
+                damage *= SECONDARY_DAMAGE_FADE / i;
               } else {
                 damage = 0;
               }

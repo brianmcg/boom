@@ -1,12 +1,7 @@
 import { CELL_SIZE } from '@game/constants/config';
 import Body from '../Body';
 import { TRANSPARENCY } from '../../constants';
-import {
-  isBodyCollision,
-  getAngleBetween,
-  castRay,
-  isFacing,
-} from '../../helpers';
+import { isBodyCollision, getAngleBetween, castRay, isFacing } from '../../helpers';
 
 const EVENTS = {
   COLLISION_START: 'body:collision:start',
@@ -36,12 +31,7 @@ class DynamicBody extends Body {
    * @param  {Number}  options.weight   The weight of the body.
    * @param  {Number}  options.autoPlay The autopPlay value of the body.
    */
-  constructor({
-    angle = 0,
-    weight = 1,
-    autoPlay = true,
-    ...other
-  } = {}) {
+  constructor({ angle = 0, weight = 1, autoPlay = true, ...other } = {}) {
     super(other);
 
     this.velocity = 0;
@@ -101,8 +91,7 @@ class DynamicBody extends Body {
    * @return {Boolean}      Collision has occurred.
    */
   isBodyCollision(body) {
-    return !(!this.weight && body.transparency)
-      && isBodyCollision(this, body);
+    return !(!this.weight && body.transparency) && isBodyCollision(this, body);
   }
 
   /**
@@ -129,7 +118,7 @@ class DynamicBody extends Body {
     this.x += Math.cos(this.angle) * velocity;
 
     // Check for x axis collisions
-    bodies.forEach((body) => {
+    bodies.forEach(body => {
       if (this.isBodyCollision(body)) {
         if (this.isCollisionTracked(body)) {
           collisions.push(body);
@@ -153,7 +142,7 @@ class DynamicBody extends Body {
     this.y += Math.sin(this.angle) * velocity;
 
     // Check for y axis collisions
-    bodies.forEach((body) => {
+    bodies.forEach(body => {
       if (this.isBodyCollision(body)) {
         if (this.isCollisionTracked(body) && !collisions.includes(body)) {
           collisions.push(body);
@@ -175,7 +164,7 @@ class DynamicBody extends Body {
 
     this.trackedCollisions.forEach(({ type, onStart, onComplete }) => {
       if (onStart) {
-        collisions.forEach((c) => {
+        collisions.forEach(c => {
           if (c instanceof type && !this.collisions.includes(c)) {
             onStart(c);
           }
@@ -183,7 +172,7 @@ class DynamicBody extends Body {
       }
 
       if (onComplete) {
-        this.collisions.forEach((c) => {
+        this.collisions.forEach(c => {
           if (c instanceof type && !collisions.includes(c)) {
             onComplete(c);
           }

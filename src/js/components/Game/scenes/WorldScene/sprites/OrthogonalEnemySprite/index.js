@@ -99,12 +99,7 @@ class OrthogonalEnemySprite extends AnimatedEntitySprite {
    * @param  {Number}   options.frame    The frame number.
    * @param  {Boolean}  options.loop     The loop options.
    */
-  updateTextures({
-    actionId,
-    angleId,
-    frame,
-    loop,
-  }) {
+  updateTextures({ actionId, angleId, frame, loop }) {
     if (this.actionId !== actionId || this.angleId !== angleId) {
       this.loop = loop;
       this.angleId = angleId > MAX_ANGLE_ID ? MAX_ANGLE_ID : angleId;

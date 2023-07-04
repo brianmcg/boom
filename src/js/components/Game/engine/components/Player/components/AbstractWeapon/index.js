@@ -12,16 +12,11 @@ const EVENTS = {
   STOP: 'weapon:stop',
 };
 
-const transformRangeForWorld = (
-  range,
-  offset,
-) => (range ? (range * CELL_SIZE) + offset : Number.MAX_VALUE);
+const transformRangeForWorld = (range, offset) =>
+  range ? range * CELL_SIZE + offset : Number.MAX_VALUE;
 
-const transformRangeForData = (
-  range,
-  offset,
-) => (range === Number.MAX_VALUE ? null : (range - offset) / CELL_SIZE);
-
+const transformRangeForData = (range, offset) =>
+  range === Number.MAX_VALUE ? null : (range - offset) / CELL_SIZE;
 
 /**
  * Class representing a weapon.
@@ -78,7 +73,7 @@ class AbstractWeapon extends EventEmitter {
     this.player = player;
     this.automatic = automatic;
     this.recoil = recoil;
-    this.ammo = ammo !== undefined ? ammo : (maxAmmo / 2 || null);
+    this.ammo = ammo !== undefined ? ammo : maxAmmo / 2 || null;
     this.maxAmmo = maxAmmo;
     this.timer = 0;
     this.range = transformRangeForWorld(range, player.width / 2);

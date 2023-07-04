@@ -1,11 +1,7 @@
 import { Graphics } from '../../pixi';
 
 class Line extends Graphics {
-  constructor({
-    thickness = 1,
-    color = 0x000000,
-    alpha = 1,
-  }) {
+  constructor({ thickness = 1, color = 0x000000, alpha = 1 }) {
     super();
 
     this.thickness = thickness;

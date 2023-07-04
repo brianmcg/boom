@@ -15,7 +15,7 @@ class SmokeSprite extends AnimatedSprite {
       loop: true,
     });
 
-    this.x = (SCREEN.WIDTH / 2) - this.width / 2;
+    this.x = SCREEN.WIDTH / 2 - this.width / 2;
     this.y = SCREEN.HEIGHT - this.height;
     this.alpha = 0.5;
   }

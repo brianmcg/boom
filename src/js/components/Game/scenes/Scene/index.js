@@ -212,7 +212,6 @@ class Scene extends Container {
     });
   }
 
-
   /**
    * Highlight the next menu item.
    */

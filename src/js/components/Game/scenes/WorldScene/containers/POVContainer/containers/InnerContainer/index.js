@@ -12,8 +12,8 @@ class InnerContainer extends ParticleContainer {
   constructor(sprites) {
     super(SCREEN.WIDTH * SCREEN.HEIGHT);
 
-    sprites.forEach((slice) => {
-      slice.forEach((pixel) => {
+    sprites.forEach(slice => {
+      slice.forEach(pixel => {
         this.addChild(pixel);
       });
     });

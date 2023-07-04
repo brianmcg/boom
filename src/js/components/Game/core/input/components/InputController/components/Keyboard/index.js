@@ -68,30 +68,38 @@ class Keyboard {
     this.keys = {};
 
     // On key down, update the pressed and help hashmaps.
-    document.addEventListener('keydown', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    document.addEventListener(
+      'keydown',
+      e => {
+        e.preventDefault();
+        e.stopPropagation();
 
-      if (!e.repeat) {
-        const key = this.keys[KEY_CODES[e.keyCode]];
+        if (!e.repeat) {
+          const key = this.keys[KEY_CODES[e.keyCode]];
 
-        if (key && key.downCallback) {
-          key.downCallback();
+          if (key && key.downCallback) {
+            key.downCallback();
+          }
         }
-      }
-    }, false);
+      },
+      false,
+    );
 
     // On key up, update the held hashmap.
-    document.addEventListener('keyup', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    document.addEventListener(
+      'keyup',
+      e => {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const key = this.keys[KEY_CODES[e.keyCode]];
+        const key = this.keys[KEY_CODES[e.keyCode]];
 
-      if (key && key.upCallback) {
-        key.upCallback();
-      }
-    }, false);
+        if (key && key.upCallback) {
+          key.upCallback();
+        }
+      },
+      false,
+    );
   }
 
   /**

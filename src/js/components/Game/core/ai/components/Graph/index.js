@@ -1,6 +1,6 @@
 import GridNode from '../GridNode';
 
-const cleanNode = (node) => {
+const cleanNode = node => {
   node.f = 0;
   node.g = 0;
   node.h = 0;
@@ -55,7 +55,6 @@ class Graph {
     }
     this.dirtyNodes = [];
   }
-
 
   /**
    * Mark a node as dirty.

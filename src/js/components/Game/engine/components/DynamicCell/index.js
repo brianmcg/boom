@@ -25,13 +25,7 @@ class DynamicCell extends PhysicsDynamicCell {
    * @param  {Object}  options.sounds       The sounds.
    * @param  {Boolean} options.reverse      Reverse the offset.
    */
-  constructor({
-    sides = {},
-    soundSprite,
-    sounds,
-    reverse,
-    ...other
-  }) {
+  constructor({ sides = {}, soundSprite, sounds, reverse, ...other }) {
     super(other);
 
     this.front = sides.front;
@@ -71,9 +65,10 @@ class DynamicCell extends PhysicsDynamicCell {
    * @param {Boolean} loop Loop the sound.
    */
   emitSound(name, loop) {
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+    const volume =
+      this.distanceToPlayer > MAX_SOUND_DISTANCE
+        ? 0
+        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
     this.soundController.emitSound(name, volume, loop);
   }
@@ -92,9 +87,10 @@ class DynamicCell extends PhysicsDynamicCell {
   update() {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
-    const volume = this.distanceToPlayer > MAX_SOUND_DISTANCE
-      ? 0
-      : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+    const volume =
+      this.distanceToPlayer > MAX_SOUND_DISTANCE
+        ? 0
+        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
     this.soundController.update(volume);
   }

@@ -27,12 +27,7 @@ class AbstractDestroyableEntity extends DynamicEntity {
    * @param  {Number}  options.maxHealth    The maximum health of the entity.
    * @param  {Object}  options.effects      The effects of the entity.
    */
-  constructor({
-    maxHealth = 100,
-    health,
-    effects,
-    ...other
-  }) {
+  constructor({ maxHealth = 100, health, effects, ...other }) {
     super(other);
 
     this.health = health !== undefined ? health : maxHealth;
@@ -57,10 +52,13 @@ class AbstractDestroyableEntity extends DynamicEntity {
       if (totalDamage) {
         const { length } = this.hits;
 
-        const { x, y } = this.hits.reduce((memo, { angle }) => ({
-          x: memo.x + Math.cos(angle),
-          y: memo.y + Math.sin(angle),
-        }), { x: 0, y: 0 });
+        const { x, y } = this.hits.reduce(
+          (memo, { angle }) => ({
+            x: memo.x + Math.cos(angle),
+            y: memo.y + Math.sin(angle),
+          }),
+          { x: 0, y: 0 },
+        );
 
         const meanAngle = Math.atan2(y / length, x / length);
 

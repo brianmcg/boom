@@ -1,4 +1,3 @@
-
 import { MOUSE_SENSITIVITY } from '@game/constants/config';
 import Button from './components/Button';
 
@@ -24,18 +23,15 @@ class Mouse {
    * @param  {Number} options.moveSensitivity   The mouse moveSensitivity.
    */
   constructor(el, moveSensitivity = MOUSE_SENSITIVITY) {
-    const onMouseMove = (e) => {
-      const x = moveSensitivity * e.movementX
-        || e.mozMovementX
-        || e.webkitMovementX
-        || 0;
+    const onMouseMove = e => {
+      const x = moveSensitivity * e.movementX || e.mozMovementX || e.webkitMovementX || 0;
 
       if (this.moveCallback) {
         this.moveCallback(x);
       }
     };
 
-    const onMouseDown = (e) => {
+    const onMouseDown = e => {
       const button = this.buttons[BUTTON_CODES[e.button]];
 
       if (button && button.downCallback) {
@@ -43,7 +39,7 @@ class Mouse {
       }
     };
 
-    const onMouseUp = (e) => {
+    const onMouseUp = e => {
       const button = this.buttons[BUTTON_CODES[e.button]];
 
       if (button && button.upCallback) {
@@ -51,7 +47,7 @@ class Mouse {
       }
     };
 
-    const onWheel = (e) => {
+    const onWheel = e => {
       if (this.wheelCallback) {
         this.wheelCallback(Math.sign(e.deltaY));
       }
@@ -71,13 +67,11 @@ class Mouse {
       }
     };
 
-    el.requestPointerLock = el.requestPointerLock
-      || el.mozRequestPointerLock
-      || el.webkitRequestPointerLock;
+    el.requestPointerLock =
+      el.requestPointerLock || el.mozRequestPointerLock || el.webkitRequestPointerLock;
 
-    document.exitPointerLock = document.exitPointerLock
-      || document.mozExitPointerLock
-      || document.webkitExitPointerLock;
+    document.exitPointerLock =
+      document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
 
     document.addEventListener('pointerlockchange', onChange, false);
     document.addEventListener('mozpointerlockchange', onChange, false);
@@ -141,9 +135,11 @@ class Mouse {
    * @return {Boolean}
    */
   isPointerLocked() {
-    return document.pointerLockElement === this.el
-      || document.mozPointerLockElement === this.el
-      || document.webkitPointerLockElement === this.el;
+    return (
+      document.pointerLockElement === this.el ||
+      document.mozPointerLockElement === this.el ||
+      document.webkitPointerLockElement === this.el
+    );
   }
 
   /**

@@ -44,7 +44,7 @@ const STAIN_INTERVAL = 50;
 
 const MAX_PATH_INDEX = 2;
 
-const randomizeRange = (range) => {
+const randomizeRange = range => {
   const deviation = Math.floor(Math.random() * 3);
   return Math.max((range - deviation) * CELL_SIZE, CELL_SIZE);
 };
@@ -163,7 +163,7 @@ class AbstractEnemy extends AbstractActor {
 
     this.addTrackedCollision({
       type: AbstractEnemy,
-      onStart: (enemy) => {
+      onStart: enemy => {
         if (enemy.isIdle() || enemy.isAiming()) {
           if (this.isEvading()) {
             this.setChasing();
@@ -301,10 +301,7 @@ class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (
-        nextCell.transparency === TRANSPARENCY.PARTIAL
-          && this.projectiles && this.findPlayer()
-      ) {
+      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles && this.findPlayer()) {
         this.setRange(Number.MAX_VALUE);
         this.setAttacking();
       }
@@ -367,8 +364,8 @@ class AbstractEnemy extends AbstractActor {
    */
   updateEvading() {
     if (
-      this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking)
-        || this.cell.bodies.some(b => b.id !== this.id && b.blocking)
+      this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking) ||
+      this.cell.bodies.some(b => b.id !== this.id && b.blocking)
     ) {
       this.evadeDestination = this.findEvadeDestination();
     }
@@ -413,10 +410,7 @@ class AbstractEnemy extends AbstractActor {
 
         if (this.attackTimer >= this.attackTime) {
           if (this.numberOfAttacks < 1) {
-            this.numberOfAttacks = Math.max(
-              this.maxAttacks - Math.round(Math.random()),
-              1,
-            );
+            this.numberOfAttacks = Math.max(this.maxAttacks - Math.round(Math.random()), 1);
 
             this.setEvading();
           } else {
@@ -545,11 +539,7 @@ class AbstractEnemy extends AbstractActor {
 
     const { distance, encounteredBodies } = this.castRay();
 
-    if (
-      encounteredBodies[player.id]
-        && player.isAlive()
-        && distance > this.distanceToPlayer
-    ) {
+    if (encounteredBodies[player.id] && player.isAlive() && distance > this.distanceToPlayer) {
       return player;
     }
 
@@ -605,20 +595,22 @@ class AbstractEnemy extends AbstractActor {
     // Randomly pick a right angle to the left or right and
     // get x and y grid coordinates, to priorities lateral evasion.
     // Otherwise go to the nearest cell to the player.
-    return (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
-      .reduce((memo, angleOffset) => {
-        const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
-        const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
-        const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
-        const cell = this.parent.getCell(x, y);
+    return (
+      (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
+        .reduce((memo, angleOffset) => {
+          const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
+          const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
+          const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+          const cell = this.parent.getCell(x, y);
 
-        if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
-          return memo;
-        }
+          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+            return memo;
+          }
 
-        return [...memo, cell];
-      }, []).pop() || this.parent.getNeighbourCells(this)
-      .reduce((memo, cell) => {
+          return [...memo, cell];
+        }, [])
+        .pop() ||
+      this.parent.getNeighbourCells(this).reduce((memo, cell) => {
         if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
           return memo;
         }
@@ -632,7 +624,8 @@ class AbstractEnemy extends AbstractActor {
         }
 
         return memo;
-      }, null);
+      }, null)
+    );
   }
 
   /**
@@ -838,7 +831,6 @@ class AbstractEnemy extends AbstractActor {
 
     return isStateChanged;
   }
-
 
   /**
    * Set the enemy to the aiming state.

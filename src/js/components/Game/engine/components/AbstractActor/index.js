@@ -8,7 +8,7 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.001;
 
-const SPATTER_DISTANCE = Math.sqrt((CELL_SIZE * CELL_SIZE) + (CELL_SIZE * CELL_SIZE));
+const SPATTER_DISTANCE = Math.sqrt(CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE);
 
 const CELL_CENTER = CELL_SIZE / 4;
 
@@ -43,13 +43,7 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Array}   options.spatters     The spatter values of the actor.
    * @param  {String}  options.bloodColor   The blood color of the actor.
    */
-  constructor({
-    speed,
-    acceleration,
-    spatters,
-    bloodColor,
-    ...other
-  }) {
+  constructor({ speed, acceleration, spatters, bloodColor, ...other }) {
     super(other);
 
     if (this.constructor === AbstractActor) {
@@ -66,12 +60,12 @@ class AbstractActor extends AbstractDestroyableEntity {
 
     this.addTrackedCollision({
       type: AbstractActor,
-      onStart: (body) => {
+      onStart: body => {
         if (body.isProne) {
           this.standingOn.push(body);
         }
       },
-      onComplete: (body) => {
+      onComplete: body => {
         if (body.isProne) {
           this.standingOn = this.standingOn.filter(b => b.id !== body.id);
         }
@@ -101,7 +95,7 @@ class AbstractActor extends AbstractDestroyableEntity {
       this.z = this.standingOn.reduce((maxElavation, body) => {
         const distance = this.getDistanceTo(body);
         const { proneHeight, width } = body;
-        const elavation = proneHeight * Math.abs(width - distance) / width;
+        const elavation = (proneHeight * Math.abs(width - distance)) / width;
         return elavation > maxElavation ? elavation : maxElavation;
       }, 0);
     } else {
@@ -141,46 +135,51 @@ class AbstractActor extends AbstractDestroyableEntity {
     if (point && rays) {
       const {
         side,
-        cell, distance: sectionDistance,
+        cell,
+        distance: sectionDistance,
         encounteredBodies,
-      } = rays.reduce((memo, ray) => {
-        if (ray.distance > point.distance) {
-          if (ray.distance < memo.distance) {
-            return ray;
+      } = rays.reduce(
+        (memo, ray) => {
+          if (ray.distance > point.distance) {
+            if (ray.distance < memo.distance) {
+              return ray;
+            }
+            return memo;
           }
           return memo;
-        }
-        return memo;
-      }, {
-        side: {},
-        distance: Number.MAX_VALUE,
-      });
+        },
+        {
+          side: {},
+          distance: Number.MAX_VALUE,
+        },
+      );
 
-      const nearest = Object.values(encounteredBodies).sort((a, b) => {
-        if (!b.blocking) {
-          return 1;
-        }
+      const nearest = Object.values(encounteredBodies)
+        .sort((a, b) => {
+          if (!b.blocking) {
+            return 1;
+          }
 
-        const distanceA = a.getDistanceTo(cell);
-        const distanceB = b.getDistanceTo(cell);
+          const distanceA = a.getDistanceTo(cell);
+          const distanceB = b.getDistanceTo(cell);
 
-        if (distanceA < distanceB) {
-          return 1;
-        }
+          if (distanceA < distanceB) {
+            return 1;
+          }
 
-        if (distanceA > distanceB) {
-          return -1;
-        }
+          if (distanceA > distanceB) {
+            return -1;
+          }
 
-        return 0;
-      }).pop();
+          return 0;
+        })
+        .pop();
 
       if (
-        this.spatter
-          && nearest?.id === this.id
-          && !side.spatter
-          && sectionDistance - point.distance < SPATTER_DISTANCE
-
+        this.spatter &&
+        nearest?.id === this.id &&
+        !side.spatter &&
+        sectionDistance - point.distance < SPATTER_DISTANCE
       ) {
         const spatter = this.spatter();
 
@@ -225,8 +224,7 @@ class AbstractActor extends AbstractDestroyableEntity {
       return false;
     }
 
-    return Math.abs(this.x - cell.x) <= CELL_CENTER
-      && Math.abs(this.y - cell.y) <= CELL_CENTER;
+    return Math.abs(this.x - cell.x) <= CELL_CENTER && Math.abs(this.y - cell.y) <= CELL_CENTER;
   }
 
   /**
@@ -248,12 +246,7 @@ class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Number} radius The radius of the stain.
    */
   stain(radius) {
-    const {
-      x,
-      y,
-      parent,
-      bloodColor,
-    } = this;
+    const { x, y, parent, bloodColor } = this;
 
     if (bloodColor) {
       for (let i = Math.round(x - radius); i < x + radius; i++) {

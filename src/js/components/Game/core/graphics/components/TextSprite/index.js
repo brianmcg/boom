@@ -13,16 +13,7 @@ class TextSprite extends BitmapText {
    * @param  {Number} options.y     The y coordinate.
    * @param  {Number} options.alpha The alpha value.
    */
-  constructor({
-    text,
-    fontName,
-    fontSize,
-    color,
-    x = 0,
-    y = 0,
-    alpha = 1,
-    anchor,
-  }) {
+  constructor({ text, fontName, fontSize, color, x = 0, y = 0, alpha = 1, anchor }) {
     super(text, { fontName, fontSize });
 
     this.x = x;

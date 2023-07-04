@@ -61,35 +61,41 @@ const extrudeGrid = (grid, radius) => {
  */
 const createGraphs = (grid = [], radius = 1) => {
   const grids = [
-    grid.map(col => col.map((cell) => {
-      if (
-        cell.blocking && !cell.isDoor && !cell.isPushWall
-          && cell.transparency !== TRANSPARENCY.FULL
-      ) {
-        return NODE_WEIGHTS.WALL;
-      }
+    grid.map(col =>
+      col.map(cell => {
+        if (
+          cell.blocking &&
+          !cell.isDoor &&
+          !cell.isPushWall &&
+          cell.transparency !== TRANSPARENCY.FULL
+        ) {
+          return NODE_WEIGHTS.WALL;
+        }
 
-      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-        return NODE_WEIGHTS.STATIC_BODY;
-      }
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
 
-      return NODE_WEIGHTS.FREE;
-    })),
-    grid.map(col => col.map((cell) => {
-      if (cell.blocking && cell.transparency) {
-        return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
-      }
+        return NODE_WEIGHTS.FREE;
+      }),
+    ),
+    grid.map(col =>
+      col.map(cell => {
+        if (cell.blocking && cell.transparency) {
+          return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
+        }
 
-      if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
-        return NODE_WEIGHTS.WALL;
-      }
+        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
+          return NODE_WEIGHTS.WALL;
+        }
 
-      if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
-        return NODE_WEIGHTS.STATIC_BODY;
-      }
+        if (cell.bodies.some(body => body.blocking && !body.isDynamic)) {
+          return NODE_WEIGHTS.STATIC_BODY;
+        }
 
-      return NODE_WEIGHTS.FREE;
-    })),
+        return NODE_WEIGHTS.FREE;
+      }),
+    ),
   ];
 
   if (radius > 0) {
@@ -135,12 +141,7 @@ class World extends PhysicsWorld {
     sky,
     floorOffset = 0,
   }) {
-    super(grid, [
-      ...enemies,
-      ...items,
-      ...objects,
-      player,
-    ]);
+    super(grid, [...enemies, ...items, ...objects, player]);
 
     this.scene = scene;
     this.player = player;
@@ -160,25 +161,31 @@ class World extends PhysicsWorld {
     this.sky = sky;
     this.floorOffset = floorOffset;
 
-    this.secrets = this.grid.reduce((memo, col) => ([
-      ...memo,
-      ...col.filter(cell => cell.isPushWall),
-    ]), []);
+    this.secrets = this.grid.reduce(
+      (memo, col) => [...memo, ...col.filter(cell => cell.isPushWall)],
+      [],
+    );
 
     // Create graphs for pathfinding.
-    this.graphs = this.dynamicBodies.reduce((memo, b) => {
-      if (b.isEnemy && b.collisionRadius && !memo.includes(b.collisionRadius)) {
-        memo.push(b.collisionRadius);
-      }
-      return memo;
-    }, []).reduce((memo, radius) => ({
-      ...memo,
-      [radius]: createGraphs(grid, radius - 1),
-    }), {});
+    this.graphs = this.dynamicBodies
+      .reduce((memo, b) => {
+        if (b.isEnemy && b.collisionRadius && !memo.includes(b.collisionRadius)) {
+          memo.push(b.collisionRadius);
+        }
+        return memo;
+      }, [])
+      .reduce(
+        (memo, radius) => ({
+          ...memo,
+          [radius]: createGraphs(grid, radius - 1),
+        }),
+        {},
+      );
 
     // Create grid for floor stains.
-    this.stains = [...Array(this.maxMapX + 1).keys()]
-      .map(() => [...Array(this.maxMapY + 1).keys()].map(() => 0));
+    this.stains = [...Array(this.maxMapX + 1).keys()].map(() =>
+      [...Array(this.maxMapY + 1).keys()].map(() => 0),
+    );
 
     player.onDeath(() => this.onPlayerDeath());
 
@@ -230,12 +237,7 @@ class World extends PhysicsWorld {
    * @param  {Boolean} diagonal  Allow diagonal movement.
    * @return {Array}             A 2D array of cells.
    */
-  findPath(
-    from,
-    to,
-    index = 0,
-    diagonal,
-  ) {
+  findPath(from, to, index = 0, diagonal) {
     const graph = this.graphs[from.collisionRadius][index];
     const start = graph.grid[from.gridX][from.gridY];
     const end = graph.grid[to.gridX][to.gridY];
@@ -323,10 +325,7 @@ class World extends PhysicsWorld {
     if (flash) {
       this.explosionFlash = true;
 
-      this.flash = Math.min(
-        this.flash + (flash * FLASH_MULTIPLIER),
-        MAX_EXPLOSION_FLASH_AMOUNT,
-      );
+      this.flash = Math.min(this.flash + flash * FLASH_MULTIPLIER, MAX_EXPLOSION_FLASH_AMOUNT);
     }
   }
 
@@ -347,7 +346,6 @@ class World extends PhysicsWorld {
   removeEffect(effect) {
     this.effects = this.effects.filter(e => e.sourceId !== effect.sourceId);
   }
-
 
   /**
    * Set the brightness and enabled item flash.

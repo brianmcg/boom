@@ -13,15 +13,7 @@ class RectangleSprite extends Sprite {
    * @param  {Number} options.heigth  The sprite height.
    * @param  {Number} options.alpha   The sprite alpha value.
    */
-  constructor({
-    color,
-    x = 0,
-    y = 0,
-    width = 10,
-    height = 10,
-    alpha = 1,
-    anchor = 0,
-  } = {}) {
+  constructor({ color, x = 0, y = 0, width = 10, height = 10, alpha = 1, anchor = 0 } = {}) {
     super(Texture.WHITE);
 
     this.x = x;

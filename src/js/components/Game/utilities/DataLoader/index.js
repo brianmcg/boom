@@ -35,7 +35,7 @@ class DataLoader {
    */
   unload(keys = []) {
     if (keys.length) {
-      keys.forEach((key) => {
+      keys.forEach(key => {
         delete this.cache[key];
       });
     } else {

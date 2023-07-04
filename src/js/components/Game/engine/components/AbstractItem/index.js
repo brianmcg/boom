@@ -39,12 +39,7 @@ class AbstractItem extends DynamicEntity {
    * @param  {Number}  options.floorOffset    The floor offset.
    * @param  {Number}  options.respawn        The time to respawn.
    */
-  constructor({
-    type,
-    floorOffset,
-    respawn,
-    ...other
-  }) {
+  constructor({ type, floorOffset, respawn, ...other }) {
     super({ blocking: false, autoPlay: false, ...other });
 
     this.isItem = true;
@@ -111,10 +106,7 @@ class AbstractItem extends DynamicEntity {
   updateRespawning(delta, elapsedMS) {
     this.timer += elapsedMS;
 
-    if (
-      !this.cell.bodies.some(b => b.blocking)
-        && this.timer >= this.respawn
-    ) {
+    if (!this.cell.bodies.some(b => b.blocking) && this.timer >= this.respawn) {
       this.timer = 0;
       this.scale = 0;
       this.parent.add(this);

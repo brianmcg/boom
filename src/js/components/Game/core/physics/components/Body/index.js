@@ -4,7 +4,7 @@ import { isRayCollision, getRayCollision, getDistanceBetween } from '../../helpe
 
 let idCount = 0;
 
-const generateId = (body) => {
+const generateId = body => {
   idCount += 1;
   return `${body.constructor.name}_${idCount}`;
 };

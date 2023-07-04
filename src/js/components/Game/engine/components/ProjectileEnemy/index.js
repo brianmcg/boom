@@ -49,22 +49,26 @@ class ProjectileEnemy extends AbstractEnemy {
     this.projectiles = [];
 
     [...Array(amount).keys()].forEach(() => {
-      this.projectiles.push(new Projectile({
-        ...projectileProps,
-        source: this,
-        soundSprite,
-        queue: this.projectiles,
-      }));
+      this.projectiles.push(
+        new Projectile({
+          ...projectileProps,
+          source: this,
+          soundSprite,
+          queue: this.projectiles,
+        }),
+      );
     });
 
     this.graphIndex = 1;
 
-    this.offsets = (pellets % 2 === 0)
-      ? [...new Array(pellets + 1).keys()]
-        .map(i => (i - Math.round(pellets / 2)) * degrees(30) / pellets)
-        .filter(i => i)
-      : [...new Array(pellets).keys()]
-        .map(i => (i - Math.floor(pellets / 2)) * degrees(30) / pellets);
+    this.offsets =
+      pellets % 2 === 0
+        ? [...new Array(pellets + 1).keys()]
+            .map(i => ((i - Math.round(pellets / 2)) * degrees(30)) / pellets)
+            .filter(i => i)
+        : [...new Array(pellets).keys()].map(
+            i => ((i - Math.floor(pellets / 2)) * degrees(30)) / pellets,
+          );
   }
 
   /**
@@ -88,7 +92,7 @@ class ProjectileEnemy extends AbstractEnemy {
     this.emitSound(this.sounds.attack);
 
     if (this.projectiles.length) {
-      this.offsets.forEach((offset) => {
+      this.offsets.forEach(offset => {
         const projectile = this.projectiles.shift();
 
         projectile.set({

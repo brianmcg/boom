@@ -31,7 +31,7 @@ class GraphicsLoader {
   unload(keys = []) {
     this.loader.reset();
 
-    Object.keys(this.cache).forEach((key) => {
+    Object.keys(this.cache).forEach(key => {
       if (this.cache[key] && (!keys.length || keys.includes(key))) {
         this.cache[key].destroy(true);
         delete this.cache[key];

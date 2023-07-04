@@ -37,7 +37,7 @@ class PromptContainer extends Container {
   constructor(sprite, sound) {
     super();
 
-    sprite.x = (SCREEN.WIDTH / 2);
+    sprite.x = SCREEN.WIDTH / 2;
     sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
     sprite.scale.set(0);
 
@@ -182,14 +182,12 @@ class PromptContainer extends Container {
     }
   }
 
-
   /**
    * Set the container to the fading in state.
    */
   setFadingIn() {
     return this.setState(STATES.FADING_IN);
   }
-
 
   /**
    * Set the container to the growing state.

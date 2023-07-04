@@ -22,13 +22,16 @@ class TitleScene extends Scene {
 
     this.assets = TITLE_SCENE_ASSETS;
 
-    this.menu = [{
-      label: translate('scene.menu.continue'),
-      action: () => this.setRunning(),
-    }, {
-      label: translate('scene.menu.quit'),
-      action: () => this.triggerQuit(),
-    }];
+    this.menu = [
+      {
+        label: translate('scene.menu.continue'),
+        action: () => this.setRunning(),
+      },
+      {
+        label: translate('scene.menu.quit'),
+        action: () => this.triggerQuit(),
+      },
+    ];
 
     this.promptOption = translate('title.prompt.start');
 

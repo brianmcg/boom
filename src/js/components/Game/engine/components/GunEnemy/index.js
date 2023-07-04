@@ -57,11 +57,14 @@ class GunEnemy extends AbstractEnemy {
 
     this.graphIndex = 1;
 
-    this.projectiles = [...Array(pellets).keys()].map(() => new HitScan({
-      source: this,
-      power: this.primaryAttack.power,
-      accuracy: this.primaryAttack.accuracy,
-    }));
+    this.projectiles = [...Array(pellets).keys()].map(
+      () =>
+        new HitScan({
+          source: this,
+          power: this.primaryAttack.power,
+          accuracy: this.primaryAttack.accuracy,
+        }),
+    );
   }
 
   /**

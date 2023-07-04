@@ -1,11 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
-import {
-  SCREEN,
-  CELL_SIZE,
-  FOV,
-  WALL_LAYERS,
-} from '@game/constants/config';
+import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@game/constants/config';
 import { GREY, WHITE } from '@game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import InnerContainer from './containers/InnerContainer';
@@ -18,8 +13,9 @@ const HALF_CELL = CELL_SIZE / 2;
 const CAMERA_CENTER_Y = SCREEN.HEIGHT / 2;
 const CAMERA_CENTER_X = SCREEN.WIDTH / 2;
 const CAMERA_DISTANCE = CAMERA_CENTER_X / Math.tan(HALF_FOV);
-const RAY_ANGLES = [...Array(SCREEN.WIDTH).keys()]
-  .map(i => Math.atan((i - CAMERA_CENTER_X) / CAMERA_DISTANCE));
+const RAY_ANGLES = [...Array(SCREEN.WIDTH).keys()].map(i =>
+  Math.atan((i - CAMERA_CENTER_X) / CAMERA_DISTANCE),
+);
 
 let spriteAngle;
 let centerY;
@@ -88,13 +84,7 @@ class POVContainer extends Container {
   update(delta, elapsedMS) {
     const { world } = this;
 
-    const {
-      player,
-      maxMapX,
-      maxMapY,
-      effects,
-      floorOffset,
-    } = world;
+    const { player, maxMapX, maxMapY, effects, floorOffset } = world;
 
     // Remove sprites from previous run.
     this.displayedEntities.forEach(entity => this.mapContainer.removeChild(entity));
@@ -109,13 +99,7 @@ class POVContainer extends Container {
     const floorHeight = CELL_SIZE * floorOffset;
     const doubleFloorHeight = floorHeight * 2;
 
-    const {
-      x,
-      y,
-      viewAngle,
-      viewPitch,
-      radius,
-    } = player;
+    const { x, y, viewAngle, viewPitch, radius } = player;
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + viewPitch;
@@ -139,12 +123,7 @@ class POVContainer extends Container {
       for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
 
-        const {
-          overlay,
-          closed,
-          isDoor,
-          transparency,
-        } = cell;
+        const { overlay, closed, isDoor, transparency } = cell;
 
         sideHeight = side?.height || world.height;
 
@@ -160,7 +139,6 @@ class POVContainer extends Container {
             radius,
             elavation: sideHeight,
             ignoreOverlay: player.cell.isElevator || !(isDoor && !overlay),
-
           });
 
           for (let j = 0, n = elavatedRays.length; j < n; j++) {
@@ -195,15 +173,8 @@ class POVContainer extends Container {
         const ray = rays[i];
 
         if (ray) {
-          const {
-            distance,
-            encounteredBodies,
-            isHorizontal,
-            cell,
-            endPoint,
-            side,
-            isOverlay,
-          } = ray;
+          const { distance, encounteredBodies, isHorizontal, cell, endPoint, side, isOverlay } =
+            ray;
 
           // Update total encountered bodies.
           Object.assign(totalEncounteredBodies, encounteredBodies);
@@ -221,14 +192,14 @@ class POVContainer extends Container {
               if (cell.double) {
                 if (isHorizontal) {
                   if (endPoint.x % CELL_SIZE < HALF_CELL) {
-                    sliceY = endPoint.x - (CELL_SIZE - (cell.offset.x / 2));
+                    sliceY = endPoint.x - (CELL_SIZE - cell.offset.x / 2);
                   } else {
-                    sliceY = endPoint.x + (CELL_SIZE - (cell.offset.x / 2));
+                    sliceY = endPoint.x + (CELL_SIZE - cell.offset.x / 2);
                   }
                 } else if (endPoint.y % CELL_SIZE < HALF_CELL) {
-                  sliceY = endPoint.y - (CELL_SIZE - (cell.offset.y / 2));
+                  sliceY = endPoint.y - (CELL_SIZE - cell.offset.y / 2);
                 } else {
-                  sliceY = endPoint.y + (CELL_SIZE - (cell.offset.y / 2));
+                  sliceY = endPoint.y + (CELL_SIZE - cell.offset.y / 2);
                 }
               } else if (isHorizontal) {
                 sliceY = endPoint.x - cell.offset.x;
@@ -251,19 +222,18 @@ class POVContainer extends Container {
             correctedDistance = distance * Math.cos(spriteAngle);
 
             if (isOverlay) {
-              spriteHeight = Math.abs((cell.overlay.height) * CAMERA_DISTANCE / correctedDistance);
-              spriteY = centerY
-                - (spriteHeight / (cell.overlay.height
-                / (cell.overlay.height - player.viewHeight)));
+              spriteHeight = Math.abs((cell.overlay.height * CAMERA_DISTANCE) / correctedDistance);
+              spriteY =
+                centerY -
+                spriteHeight / (cell.overlay.height / (cell.overlay.height - player.viewHeight));
             } else {
-              spriteHeight = Math.abs((sideHeight) * CAMERA_DISTANCE / correctedDistance);
-              spriteY = centerY
-                - (spriteHeight / (sideHeight / (sideHeight - player.viewHeight)));
+              spriteHeight = Math.abs((sideHeight * CAMERA_DISTANCE) / correctedDistance);
+              spriteY = centerY - spriteHeight / (sideHeight / (sideHeight - player.viewHeight));
             }
 
             if (floorHeight) {
               spriteHeight = Math.abs(
-                (sideHeight - floorHeight) * CAMERA_DISTANCE / correctedDistance,
+                ((sideHeight - floorHeight) * CAMERA_DISTANCE) / correctedDistance,
               );
             }
 
@@ -271,7 +241,7 @@ class POVContainer extends Container {
 
             if (floorHeight) {
               spriteHeight = Math.abs(
-                (sideHeight - doubleFloorHeight) * CAMERA_DISTANCE / correctedDistance,
+                ((sideHeight - doubleFloorHeight) * CAMERA_DISTANCE) / correctedDistance,
               );
             }
 
@@ -300,18 +270,18 @@ class POVContainer extends Container {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (world.height - player.viewHeight)
-            / (centerY - yIndex) * CAMERA_DISTANCE;
+          actualDistance =
+            ((world.height - player.viewHeight) / (centerY - yIndex)) * CAMERA_DISTANCE;
 
           correctedDistance = actualDistance / Math.cos(spriteAngle);
 
-          mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
-          mapX = (mapX > maxMapX) ? maxMapX : mapX;
-          mapX = (mapX < 0) ? 0 : mapX;
+          mapX = Math.floor(player.x + Math.cos(angle) * correctedDistance);
+          mapX = mapX > maxMapX ? maxMapX : mapX;
+          mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
-          mapY = (mapY > maxMapY) ? maxMapY : mapY;
-          mapY = (mapY < 0) ? 0 : mapY;
+          mapY = Math.floor(player.y + Math.sin(angle) * correctedDistance);
+          mapY = mapY > maxMapY ? maxMapY : mapY;
+          mapY = mapY < 0 ? 0 : mapY;
 
           gridX = Math.floor(mapX / CELL_SIZE);
           gridY = Math.floor(mapY / CELL_SIZE);
@@ -320,18 +290,18 @@ class POVContainer extends Container {
 
           // TODO: Fix lift behind door bug.
           if (world.height !== sideHeight) {
-            actualDistance = (sideHeight - player.viewHeight)
-              / (centerY - yIndex) * CAMERA_DISTANCE;
+            actualDistance =
+              ((sideHeight - player.viewHeight) / (centerY - yIndex)) * CAMERA_DISTANCE;
 
             correctedDistanceTmp = actualDistance / Math.cos(spriteAngle);
 
-            mapXTmp = Math.floor(player.x + (Math.cos(angle) * correctedDistanceTmp));
-            mapXTmp = (mapXTmp > maxMapX) ? maxMapX : mapXTmp;
-            mapXTmp = (mapXTmp < 0) ? 0 : mapXTmp;
+            mapXTmp = Math.floor(player.x + Math.cos(angle) * correctedDistanceTmp);
+            mapXTmp = mapXTmp > maxMapX ? maxMapX : mapXTmp;
+            mapXTmp = mapXTmp < 0 ? 0 : mapXTmp;
 
-            mapYTmp = Math.floor(player.y + (Math.sin(angle) * correctedDistanceTmp));
-            mapYTmp = (mapYTmp > maxMapY) ? maxMapY : mapYTmp;
-            mapYTmp = (mapYTmp < 0) ? 0 : mapYTmp;
+            mapYTmp = Math.floor(player.y + Math.sin(angle) * correctedDistanceTmp);
+            mapYTmp = mapYTmp > maxMapY ? maxMapY : mapYTmp;
+            mapYTmp = mapYTmp < 0 ? 0 : mapYTmp;
 
             gridX = Math.floor(mapXTmp / CELL_SIZE);
             gridY = Math.floor(mapYTmp / CELL_SIZE);
@@ -373,18 +343,18 @@ class POVContainer extends Container {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance = (player.viewHeight - floorHeight)
-            / (yIndex - centerY + 1) * CAMERA_DISTANCE;
+          actualDistance =
+            ((player.viewHeight - floorHeight) / (yIndex - centerY + 1)) * CAMERA_DISTANCE;
 
           correctedDistance = actualDistance / Math.cos(spriteAngle);
 
-          mapX = Math.floor(player.x + (Math.cos(angle) * correctedDistance));
-          mapX = (mapX > maxMapX) ? maxMapX : mapX;
-          mapX = (mapX < 0) ? 0 : mapX;
+          mapX = Math.floor(player.x + Math.cos(angle) * correctedDistance);
+          mapX = mapX > maxMapX ? maxMapX : mapX;
+          mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + (Math.sin(angle) * correctedDistance));
-          mapY = (mapY > maxMapY) ? maxMapY : mapY;
-          mapY = (mapY < 0) ? 0 : mapY;
+          mapY = Math.floor(player.y + Math.sin(angle) * correctedDistance);
+          mapY = mapY > maxMapY ? maxMapY : mapY;
+          mapY = mapY < 0 ? 0 : mapY;
 
           pixelX = mapX % CELL_SIZE;
           pixelY = mapY % CELL_SIZE;
@@ -416,12 +386,12 @@ class POVContainer extends Container {
     for (let i = 0, l = outerSprites.length; i < l; i++) {
       sprite = outerSprites[i];
       spriteHeight = sprite.width * (SCREEN.HEIGHT / sprite.height);
-      sprite.x = ((viewAngle / DEG_360) * -spriteHeight) + (i * spriteHeight);
+      sprite.x = (viewAngle / DEG_360) * -spriteHeight + i * spriteHeight;
       sprite.y = centerY - CAMERA_CENTER_Y;
     }
 
     // Update entity sprites
-    Object.values(totalEncounteredBodies).forEach((body) => {
+    Object.values(totalEncounteredBodies).forEach(body => {
       sprite = entititySprites[body.id];
 
       if (sprite) {
@@ -433,11 +403,11 @@ class POVContainer extends Container {
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
 
-        sprite.y = centerY - (
-          spriteHeight / (
-            CELL_SIZE / ((CELL_SIZE * body.anchor) + body.elavation - player.viewHeight)
-          )
-        ) + spriteHeight;
+        sprite.y =
+          centerY -
+          spriteHeight /
+            (CELL_SIZE / (CELL_SIZE * body.anchor + body.elavation - player.viewHeight)) +
+          spriteHeight;
 
         sprite.width = spriteHeight * body.scale;
         sprite.height = spriteHeight * body.scale;
@@ -451,9 +421,10 @@ class POVContainer extends Container {
         if (sprite.mask) {
           sprite.mask.x = sprite.x;
 
-          sprite.mask.y = centerY
-            - (spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)))
-            + (spriteHeight - (spriteHeight * floorOffset));
+          sprite.mask.y =
+            centerY -
+            spriteHeight / (CELL_SIZE / (CELL_SIZE - player.viewHeight)) +
+            (spriteHeight - spriteHeight * floorOffset);
 
           sprite.mask.width = sprite.width;
           sprite.mask.height = sprite.height;
@@ -467,7 +438,7 @@ class POVContainer extends Container {
     });
 
     // Update effect sprites.
-    effects.forEach((effect) => {
+    effects.forEach(effect => {
       sprite = effectSprites[effect.sourceId];
 
       if (player.isFacing(effect)) {
@@ -478,9 +449,10 @@ class POVContainer extends Container {
         spriteHeight = CELL_SIZE * spriteScale;
         spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.x = CAMERA_CENTER_X + spriteX;
-        sprite.y = centerY
-          - (spriteHeight / (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)))
-          + (spriteHeight / 2);
+        sprite.y =
+          centerY -
+          spriteHeight / (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)) +
+          spriteHeight / 2;
 
         sprite.width = spriteHeight;
         sprite.height = spriteHeight;
@@ -501,7 +473,7 @@ class POVContainer extends Container {
   expandEdge() {
     const margin = 20;
 
-    this.sprites.map.walls.forEach((layer) => {
+    this.sprites.map.walls.forEach(layer => {
       layer[0].x = -margin;
       layer[0].width = margin + 1;
 
@@ -525,7 +497,7 @@ class POVContainer extends Container {
   calculateTint(distance, darken) {
     const { flash, brightness, visibility } = this.world;
 
-    let intensity = brightness - (distance / visibility);
+    let intensity = brightness - distance / visibility;
 
     if (intensity < 0) {
       intensity = 0;

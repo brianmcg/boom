@@ -10,10 +10,13 @@ class SoundSpriteController {
   constructor({ soundSprite, sounds }) {
     this.soundSprite = soundSprite;
 
-    this.lastPlayed = sounds.reduce((memo, sound) => ({
-      ...memo,
-      [sound]: null,
-    }), {});
+    this.lastPlayed = sounds.reduce(
+      (memo, sound) => ({
+        ...memo,
+        [sound]: null,
+      }),
+      {},
+    );
 
     this.playing = [];
   }
@@ -35,11 +38,15 @@ class SoundSpriteController {
     this.playing.push(id);
     this.lastPlayed[name] = id;
 
-    this.soundSprite.once('end', () => {
-      if (!loop) {
-        this.playing = this.playing.filter(playingId => playingId !== id);
-      }
-    }, id);
+    this.soundSprite.once(
+      'end',
+      () => {
+        if (!loop) {
+          this.playing = this.playing.filter(playingId => playingId !== id);
+        }
+      },
+      id,
+    );
   }
 
   /**

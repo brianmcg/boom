@@ -40,16 +40,20 @@ class WorldScene extends Scene {
 
     this.assets = WORLD_SCENE_ASSETS(index);
 
-    this.menu = [{
-      label: translate('scene.menu.continue'),
-      action: () => this.setRunning(),
-    }, {
-      label: translate('scene.menu.restart'),
-      action: () => this.triggerRestart(),
-    }, {
-      label: translate('scene.menu.quit'),
-      action: () => this.triggerQuit(),
-    }];
+    this.menu = [
+      {
+        label: translate('scene.menu.continue'),
+        action: () => this.setRunning(),
+      },
+      {
+        label: translate('scene.menu.restart'),
+        action: () => this.triggerRestart(),
+      },
+      {
+        label: translate('scene.menu.quit'),
+        action: () => this.triggerQuit(),
+      },
+    ];
 
     this.promptOption = translate('scene.prompt.continue');
 
@@ -252,7 +256,7 @@ class WorldScene extends Scene {
    * @param  {Object} actions The actions to increment.
    */
   incrementPlayerAction(actions) {
-    Object.keys(actions).forEach((key) => {
+    Object.keys(actions).forEach(key => {
       this.world.player.actions[key] += actions[key];
     });
   }

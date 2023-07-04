@@ -36,12 +36,14 @@ class ProjectileWeapon extends AbstractWeapon {
     this.projectiles = [];
 
     [...Array(amount).keys()].forEach(() => {
-      this.projectiles.push(new Projectile({
-        ...otherOptions,
-        source: this.player,
-        soundSprite,
-        queue: this.projectiles,
-      }));
+      this.projectiles.push(
+        new Projectile({
+          ...otherOptions,
+          source: this.player,
+          soundSprite,
+          queue: this.projectiles,
+        }),
+      );
     });
   }
 

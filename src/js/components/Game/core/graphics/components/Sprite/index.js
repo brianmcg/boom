@@ -13,13 +13,7 @@ class Sprite extends PixiSprite {
    * @param  {Number} options.width  The sprite width.
    * @param  {Number} options.height The sprite height.
    */
-  constructor(texture, {
-    alpha = 1,
-    anchor = 0,
-    width,
-    height,
-    tint,
-  } = {}) {
+  constructor(texture, { alpha = 1, anchor = 0, width, height, tint } = {}) {
     super(texture);
 
     this.alpha = alpha;

@@ -43,15 +43,7 @@ class Door extends DynamicCell {
    * @param  {Boolean} options.exit         Exit door option.
    * @param  {Boolean} options.active       Active door option.
    */
-  constructor({
-    key,
-    interval,
-    double,
-    entrance = false,
-    exit = false,
-    active = true,
-    ...other
-  }) {
+  constructor({ key, interval, double, entrance = false, exit = false, active = true, ...other }) {
     super(other);
 
     this.timer = 0;
@@ -81,9 +73,11 @@ class Door extends DynamicCell {
             keyCard.use();
           }
         } else {
-          user.addMessage(translate('world.door.locked', {
-            color: translate(`world.color.${this.keyCard}`),
-          }));
+          user.addMessage(
+            translate('world.door.locked', {
+              color: translate(`world.color.${this.keyCard}`),
+            }),
+          );
         }
       } else {
         this.setOpening();
@@ -161,9 +155,9 @@ class Door extends DynamicCell {
       this.timer -= elapsedMS;
 
       if (this.timer <= 0) {
-        const blocked = this.parent.getNeighbourBodies(this).some(body => (
-          body.isActor && body.isAlive()
-        )) || this.bodies.some(b => b.isDynamic);
+        const blocked =
+          this.parent.getNeighbourBodies(this).some(body => body.isActor && body.isAlive()) ||
+          this.bodies.some(b => b.isDynamic);
 
         if (!blocked) {
           this.timer = 0;
@@ -199,7 +193,7 @@ class Door extends DynamicCell {
 
     if (isStateChanged) {
       const distance = this.distanceToPlayer || CELL_SIZE;
-      const shake = CELL_SIZE / distance * this.speed * SHAKE_MULTIPLIER;
+      const shake = (CELL_SIZE / distance) * this.speed * SHAKE_MULTIPLIER;
 
       this.blocking = false;
       this.timer = this.interval;

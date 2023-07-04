@@ -22,20 +22,13 @@ class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
 
-    const {
-      player,
-      enemies,
-      lines,
-      grid,
-      items,
-      objects,
-    } = sprites;
+    const { player, enemies, lines, grid, items, objects } = sprites;
 
-    Object.values(items).forEach((sprite) => {
+    Object.values(items).forEach(sprite => {
       this.addChild(sprite);
     });
 
-    Object.values(objects).forEach((sprite) => {
+    Object.values(objects).forEach(sprite => {
       this.addChild(sprite);
     });
 
@@ -60,16 +53,16 @@ class MapContainer extends Container {
 
     this.projectiles = [];
 
-    world.enemies.forEach((enemy) => {
-      (enemy.projectiles || []).forEach((projectile) => {
+    world.enemies.forEach(enemy => {
+      (enemy.projectiles || []).forEach(projectile => {
         if (projectile.name) {
           this.projectiles.push(projectile);
         }
       });
     });
 
-    world.player.weapons.forEach((weapon) => {
-      (weapon.projectiles || []).forEach((projectile) => {
+    world.player.weapons.forEach(weapon => {
+      (weapon.projectiles || []).forEach(projectile => {
         if (projectile.name) {
           this.projectiles.push(projectile);
         }
@@ -78,14 +71,7 @@ class MapContainer extends Container {
   }
 
   update(delta) {
-    const {
-      player,
-      enemies,
-      grid,
-      items,
-      objects,
-      bodies,
-    } = this.world;
+    const { player, enemies, grid, items, objects, bodies } = this.world;
 
     const {
       player: playerSprite,
@@ -97,14 +83,14 @@ class MapContainer extends Container {
       lines,
     } = this.sprites;
 
-    this.projectiles.forEach((projectile) => {
+    this.projectiles.forEach(projectile => {
       const sprite = projectileSprites[projectile.id];
 
       if (projectile.parent) {
         this.addChild(sprite);
 
-        sprite.x = (CENTER.X) - (player.x - projectile.x);
-        sprite.y = (CENTER.Y) - (player.y - projectile.y);
+        sprite.x = CENTER.X - (player.x - projectile.x);
+        sprite.y = CENTER.Y - (player.y - projectile.y);
       } else {
         this.removeChild(sprite);
       }
@@ -124,25 +110,28 @@ class MapContainer extends Container {
 
       const { endPoint } = rays[rays.length - 1];
 
-      lines[xIndex].update({
-        x: CENTER.X,
-        y: CENTER.Y,
-      }, {
-        x: (CENTER.X) - (player.x - endPoint.x),
-        y: (CENTER.Y) - (player.y - endPoint.y),
-      });
+      lines[xIndex].update(
+        {
+          x: CENTER.X,
+          y: CENTER.Y,
+        },
+        {
+          x: CENTER.X - (player.x - endPoint.x),
+          y: CENTER.Y - (player.y - endPoint.y),
+        },
+      );
 
       angle = (angle + ANGLE_INCREMENT) % DEG_360;
     }
 
     // Update cells
-    grid.forEach((col) => {
-      col.forEach((sector) => {
+    grid.forEach(col => {
+      col.forEach(sector => {
         if (sector.isDoor || (sector.blocking && !sector.edge)) {
           const sprite = gridSprites[sector.id];
           const { shape } = sector;
-          sprite.x = (CENTER.X) - (player.x - (shape.x + shape.width / 2));
-          sprite.y = (CENTER.Y) - (player.y - (shape.y + shape.length / 2));
+          sprite.x = CENTER.X - (player.x - (shape.x + shape.width / 2));
+          sprite.y = CENTER.Y - (player.y - (shape.y + shape.length / 2));
           sprite.width = shape.width;
           sprite.height = shape.length;
         }
@@ -155,20 +144,23 @@ class MapContainer extends Container {
       y: player.y + Math.sin(player.viewAngle) * ANGLE_SPRITE_LENGTH * delta,
     };
 
-    playerSprite.line.update({
-      x: CENTER.X,
-      y: CENTER.Y,
-    }, {
-      x: (CENTER.X) - (player.x - endPoint.x),
-      y: (CENTER.Y) - (player.y - endPoint.y),
-    });
+    playerSprite.line.update(
+      {
+        x: CENTER.X,
+        y: CENTER.Y,
+      },
+      {
+        x: CENTER.X - (player.x - endPoint.x),
+        y: CENTER.Y - (player.y - endPoint.y),
+      },
+    );
 
-    objects.forEach((object) => {
+    objects.forEach(object => {
       const sprite = objectSprites[object.id];
 
       if (sprite) {
-        sprite.x = (CENTER.X) - (player.x - object.x);
-        sprite.y = (CENTER.Y) - (player.y - object.y);
+        sprite.x = CENTER.X - (player.x - object.x);
+        sprite.y = CENTER.Y - (player.y - object.y);
 
         if (object.isExploding) {
           this.removeChild(sprite);
@@ -176,11 +168,11 @@ class MapContainer extends Container {
       }
     });
 
-    items.forEach((item) => {
+    items.forEach(item => {
       const sprite = itemSprites[item.id];
 
-      sprite.x = (CENTER.X) - (player.x - item.x);
-      sprite.y = (CENTER.Y) - (player.y - item.y);
+      sprite.x = CENTER.X - (player.x - item.x);
+      sprite.y = CENTER.Y - (player.y - item.y);
 
       if (this.world.bodies[item.id]) {
         this.addChild(sprite);
@@ -189,7 +181,7 @@ class MapContainer extends Container {
       }
     });
 
-    enemies.forEach((enemy) => {
+    enemies.forEach(enemy => {
       const { rectangle, line } = enemySprites[enemy.id];
 
       const ep = {
@@ -197,16 +189,19 @@ class MapContainer extends Container {
         y: enemy.y + Math.sin(enemy.angle) * ANGLE_SPRITE_LENGTH * delta,
       };
 
-      line.update({
-        x: (CENTER.X) - (player.x - enemy.x),
-        y: (CENTER.Y) - (player.y - enemy.y),
-      }, {
-        x: (CENTER.X) - (player.x - ep.x),
-        y: (CENTER.Y) - (player.y - ep.y),
-      });
+      line.update(
+        {
+          x: CENTER.X - (player.x - enemy.x),
+          y: CENTER.Y - (player.y - enemy.y),
+        },
+        {
+          x: CENTER.X - (player.x - ep.x),
+          y: CENTER.Y - (player.y - ep.y),
+        },
+      );
 
-      rectangle.x = (CENTER.X) - (player.x - enemy.x);
-      rectangle.y = (CENTER.Y) - (player.y - enemy.y);
+      rectangle.x = CENTER.X - (player.x - enemy.x);
+      rectangle.y = CENTER.Y - (player.y - enemy.y);
 
       if (enemy.isDead()) {
         rectangle.scale.x -= 0.1 * delta;
@@ -220,7 +215,7 @@ class MapContainer extends Container {
       }
     });
 
-    items.forEach((item) => {
+    items.forEach(item => {
       const sprite = itemSprites[item.id];
 
       if (bodies[item.id]) {

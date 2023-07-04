@@ -29,14 +29,7 @@ class Explosion extends Body {
    * @param  {Number}  options.power        The power of the explosion.
    * @param  {Object}  options.effects      The explosion effects.
    */
-  constructor({
-    source,
-    range,
-    sounds,
-    power,
-    effects,
-    ...other
-  }) {
+  constructor({ source, range, sounds, power, effects, ...other }) {
     super(other);
 
     this.source = source;
@@ -68,14 +61,14 @@ class Explosion extends Body {
     this.y = this.source.y;
 
     const distanceToPlayer = this.source.getDistanceTo(this.parent.player);
-    const shake = (CELL_SIZE / distanceToPlayer) * (this.power / (CELL_SIZE));
+    const shake = (CELL_SIZE / distanceToPlayer) * (this.power / CELL_SIZE);
     const range = Math.ceil(this.range / CELL_SIZE);
     const deadBodies = [];
 
     if (this.range > 0) {
       // Make dead bodies collideable and updateable for this frame,
       // so that an explosion will apply a force to them.
-      this.parent.getNeighbourBodies(this.source, range).forEach((body) => {
+      this.parent.getNeighbourBodies(this.source, range).forEach(body => {
         if (body.isActor && body.isDead()) {
           body.startUpdates();
           body.blocking = true;
@@ -87,7 +80,7 @@ class Explosion extends Body {
       this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
 
       // Stop dead bodies from colliding.
-      deadBodies.forEach((body) => {
+      deadBodies.forEach(body => {
         body.blocking = false;
       });
     }

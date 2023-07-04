@@ -3,12 +3,7 @@ import { InputController } from './core/input';
 
 import { BLACK } from './constants/colors';
 
-import {
-  SCREEN,
-  SHOW_STATS,
-  LEVEL,
-  DEBUG,
-} from './constants/config';
+import { SCREEN, SHOW_STATS, LEVEL, DEBUG } from './constants/config';
 
 import { GAME_SOUNDS, GAME_FONT, GAME_ASSETS } from './constants/assets';
 
@@ -140,11 +135,11 @@ class Game extends Application {
   }
 
   /**
-    * Show the scene.
-    * @param  {String} options.type  The scene type.
-    * @param  {Number} options.index The scene index.
-    * @param  {Object} options.props Optional extra props.
-    */
+   * Show the scene.
+   * @param  {String} options.type  The scene type.
+   * @param  {Number} options.index The scene index.
+   * @param  {Object} options.props Optional extra props.
+   */
   async showScene(type, { startProps = {}, showLoader, ...other } = {}) {
     const Scene = SCENES[type];
 
@@ -207,7 +202,6 @@ class Game extends Application {
     this.loader.unload();
   }
 
-
   /**
    * Resize the game
    */
@@ -216,7 +210,7 @@ class Game extends Application {
     const windowHeight = window.innerHeight;
     const widthRatio = windowWidth / SCREEN.WIDTH;
     const heightRatio = windowHeight / SCREEN.HEIGHT;
-    const scale = Math.floor((Math.min(widthRatio, heightRatio))) || 1;
+    const scale = Math.floor(Math.min(widthRatio, heightRatio)) || 1;
     const width = SCREEN.WIDTH * scale;
     const height = SCREEN.HEIGHT * scale;
 

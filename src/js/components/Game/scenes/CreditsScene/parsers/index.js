@@ -27,13 +27,16 @@ export const parse = ({ graphics, text }) => {
       anchor: 0.5,
     });
 
-    const values = credit.values.map(value => new TextSprite({
-      fontName: GAME_FONT.NAME,
-      fontSize: FONT_SIZES.SMALL,
-      text: value,
-      color: WHITE,
-      anchor: 0.5,
-    }));
+    const values = credit.values.map(
+      value =>
+        new TextSprite({
+          fontName: GAME_FONT.NAME,
+          fontSize: FONT_SIZES.SMALL,
+          text: value,
+          color: WHITE,
+          anchor: 0.5,
+        }),
+    );
 
     memo.push([key, ...values]);
 

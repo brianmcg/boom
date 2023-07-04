@@ -34,11 +34,11 @@ class ScrollContainer extends Container {
       const [key, value] = credit;
 
       key.anchor.x = 1;
-      key.x = (SCREEN.WIDTH / 2) - SPACE;
-      key.y = logo.y + logo.height + PADDING + ((textHeight + PADDING) * i);
+      key.x = SCREEN.WIDTH / 2 - SPACE;
+      key.y = logo.y + logo.height + PADDING + (textHeight + PADDING) * i;
 
       value.anchor.x = 0;
-      value.x = (SCREEN.WIDTH / 2) + SPACE;
+      value.x = SCREEN.WIDTH / 2 + SPACE;
       value.y = key.y;
 
       this.addChild(key);
@@ -65,7 +65,7 @@ class ScrollContainer extends Container {
    * @param  {Number} delta The delta time.
    */
   scroll(delta) {
-    this.children.forEach((child) => {
+    this.children.forEach(child => {
       child.y -= SCROLL_SPEED * delta;
     });
 

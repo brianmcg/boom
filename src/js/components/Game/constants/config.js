@@ -2,10 +2,9 @@
  * @module  game/constants/config
  */
 
-
 const URL_PARAMS = new URLSearchParams(window.location.search);
 
-const parseBoolParam = (key) => {
+const parseBoolParam = key => {
   const isPresent = URL_PARAMS.has(key);
   const param = URL_PARAMS.get(key);
 

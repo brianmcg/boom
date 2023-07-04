@@ -11,14 +11,17 @@ class AnimatedEntitySprite extends AnimatedSprite {
    * @param  {Number}  options.tint           The sprite tint.
    * @param  {Number}  options.alpha          The sprite alpha.
    */
-  constructor(textures, {
-    animationSpeed = 0.2,
-    loop = true,
-    autoPlay = true,
-    floorOffset = 0,
-    anchor = [0.5, 1],
-    ...other
-  } = {}) {
+  constructor(
+    textures,
+    {
+      animationSpeed = 0.2,
+      loop = true,
+      autoPlay = true,
+      floorOffset = 0,
+      anchor = [0.5, 1],
+      ...other
+    } = {},
+  ) {
     super(textures, {
       ...other,
       animationSpeed,

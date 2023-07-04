@@ -164,15 +164,9 @@ class Projectile extends DynamicEntity {
    * @param {Number} options.offset The offset of the projectile.
    */
   set({ angle = 0, damage = 0, offset = 0 }) {
-    const {
-      x,
-      y,
-      elavation,
-      elavationOffset = 0,
-      width,
-    } = this.source;
+    const { x, y, elavation, elavationOffset = 0, width } = this.source;
 
-    const distance = Math.sqrt((width * width) + (width * width)) + 1;
+    const distance = Math.sqrt(width * width + width * width) + 1;
 
     this.x = x + Math.cos(angle + offset) * distance;
     this.y = y + Math.sin(angle + offset) * distance;

@@ -108,19 +108,20 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
-    this.weapons = Object.keys(weapons).map((name) => {
-      const weapon = weapons[name].type === WEAPONS.HIT_SCAN
-        ? new HitScanWeapon({
-          ...weapons[name],
-          player: this,
-          name,
-        })
-        : new ProjectileWeapon({
-          ...weapons[name],
-          player: this,
-          name,
-          soundSprite,
-        });
+    this.weapons = Object.keys(weapons).map(name => {
+      const weapon =
+        weapons[name].type === WEAPONS.HIT_SCAN
+          ? new HitScanWeapon({
+              ...weapons[name],
+              player: this,
+              name,
+            })
+          : new ProjectileWeapon({
+              ...weapons[name],
+              player: this,
+              name,
+              soundSprite,
+            });
 
       weapon.onUse(({ recoil, sound }) => {
         this.camera.setRecoil(recoil);
@@ -133,10 +134,13 @@ class Player extends AbstractActor {
 
     this.weapon = this.weapons[this.weaponIndex];
 
-    this.sounds = this.weapons.reduce((memo, weapon) => ({
-      ...memo,
-      [weapon.name]: weapon.sounds.use,
-    }), this.sounds);
+    this.sounds = this.weapons.reduce(
+      (memo, weapon) => ({
+        ...memo,
+        [weapon.name]: weapon.sounds.use,
+      }),
+      this.sounds,
+    );
 
     this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
@@ -144,17 +148,21 @@ class Player extends AbstractActor {
 
     this.addTrackedCollision({
       type: AbstractItem,
-      onStart: (body) => {
+      onStart: body => {
         if (this.pickUp(body)) {
           this.emit(EVENTS.PICK_UP, body);
 
-          this.addMessage(translate('world.player.pickup', {
-            item: body.title,
-          }));
+          this.addMessage(
+            translate('world.player.pickup', {
+              item: body.title,
+            }),
+          );
         } else if (body.title) {
-          this.addMessage(translate('world.player.cannot.pickup', {
-            item: body.title,
-          }));
+          this.addMessage(
+            translate('world.player.cannot.pickup', {
+              item: body.title,
+            }),
+          );
         }
       },
     });
@@ -170,15 +178,21 @@ class Player extends AbstractActor {
     }, {});
 
     // Add weapon names to player sound object.
-    this.playing = this.weapons.reduce((weaponMemo, weapon) => ({
-      ...weaponMemo,
-      ...Object.values(weapon.sounds).reduce((soundMemo, sound) => ({
-        ...soundMemo,
-        [sound]: [],
-      }), {}),
-    }), this.playing);
+    this.playing = this.weapons.reduce(
+      (weaponMemo, weapon) => ({
+        ...weaponMemo,
+        ...Object.values(weapon.sounds).reduce(
+          (soundMemo, sound) => ({
+            ...soundMemo,
+            [sound]: [],
+          }),
+          {},
+        ),
+      }),
+      this.playing,
+    );
 
-    this.radius = Math.sqrt((this.width * this.width) + (this.width * this.width)) / 2;
+    this.radius = Math.sqrt(this.width * this.width + this.width * this.width) / 2;
 
     this.setAlive();
   }
@@ -304,7 +318,7 @@ class Player extends AbstractActor {
     let moveY = 0;
 
     // Update speed.
-    this.speed = this.maxSpeed * this.height / this.maxHeight;
+    this.speed = (this.maxSpeed * this.height) / this.maxHeight;
 
     // Update rotation.
     if (rotate) {
@@ -316,19 +330,16 @@ class Player extends AbstractActor {
     } else if (turnLeft) {
       this.rotateAngle = Math.max(
         this.rotateAngle - this.rotateAcceleration,
-        this.rotateSpeed / 3 * -1,
+        (this.rotateSpeed / 3) * -1,
       );
     } else if (turnRight) {
-      this.rotateAngle = Math.min(
-        this.rotateAngle + this.rotateAcceleration,
-        this.rotateSpeed / 3,
-      );
+      this.rotateAngle = Math.min(this.rotateAngle + this.rotateAcceleration, this.rotateSpeed / 3);
     } else {
       this.rotateAngle = 0;
     }
 
     // Update movement.
-    this.angle = (this.angle + (this.rotateAngle * delta) + DEG_360) % DEG_360;
+    this.angle = (this.angle + this.rotateAngle * delta + DEG_360) % DEG_360;
 
     if (moveForward || moveBackward || strafeLeft || strafeRight) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
@@ -367,15 +378,9 @@ class Player extends AbstractActor {
 
     // Update height.
     if (crouch) {
-      this.height = Math.max(
-        this.height - (HEIGHT_INCREMENT * delta),
-        this.crouchHeight,
-      );
+      this.height = Math.max(this.height - HEIGHT_INCREMENT * delta, this.crouchHeight);
     } else {
-      this.height = Math.min(
-        this.height + (HEIGHT_INCREMENT * delta),
-        this.maxHeight,
-      );
+      this.height = Math.min(this.height + HEIGHT_INCREMENT * delta, this.maxHeight);
     }
 
     // Update vision.
@@ -455,7 +460,7 @@ class Player extends AbstractActor {
         const ray = this.castRay();
         const { distance, cell } = ray;
 
-        if (cell.use && distance <= (CELL_SIZE + this.width / 2)) {
+        if (cell.use && distance <= CELL_SIZE + this.width / 2) {
           cell.use(this);
         }
       }
@@ -492,7 +497,7 @@ class Player extends AbstractActor {
     // Update camera
     const { pitch, maxPitch } = this.camera;
 
-    this.camera.pitch = Math.min(pitch + (DYING_PITCH_INCREMENT * delta), maxPitch);
+    this.camera.pitch = Math.min(pitch + DYING_PITCH_INCREMENT * delta, maxPitch);
 
     // Update height
     this.height -= HEIGHT_INCREMENT * DYING_HEIGHT_FADE * delta;
@@ -791,7 +796,7 @@ class Player extends AbstractActor {
    * @return {Number} The elavation offset.
    */
   get elavationOffset() {
-    return this.height - (CELL_SIZE / 2);
+    return this.height - CELL_SIZE / 2;
   }
 
   /**
@@ -802,10 +807,13 @@ class Player extends AbstractActor {
     const { weapons, weaponIndex, health } = this;
 
     return {
-      weapons: weapons.reduce((memo, { name, props }) => ({
-        ...memo,
-        [name]: props,
-      }), {}),
+      weapons: weapons.reduce(
+        (memo, { name, props }) => ({
+          ...memo,
+          [name]: props,
+        }),
+        {},
+      ),
       weaponIndex,
       health,
     };

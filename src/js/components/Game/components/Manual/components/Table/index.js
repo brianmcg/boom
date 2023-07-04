@@ -1,5 +1,3 @@
-
-
 /**
  * Class representing a table.
  */
@@ -17,7 +15,7 @@ class Table {
     thead.setAttribute('class', 'thead');
     thead.appendChild(theadr);
 
-    cols.forEach((id) => {
+    cols.forEach(id => {
       const th = document.createElement('th');
       const span = document.createElement('span');
       const text = document.createTextNode(id);
@@ -29,12 +27,12 @@ class Table {
       span.appendChild(text);
     });
 
-    rows.forEach((row) => {
+    rows.forEach(row => {
       const tr = document.createElement('tr');
 
       tbody.appendChild(tr);
 
-      cols.forEach((id) => {
+      cols.forEach(id => {
         const td = document.createElement('td', ['half']);
         const span = document.createElement('span');
         const text = document.createTextNode(row[id]);

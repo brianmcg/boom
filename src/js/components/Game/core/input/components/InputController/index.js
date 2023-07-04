@@ -22,7 +22,7 @@ class InputController {
    */
   add(state, controls = {}) {
     if (this.states[state]) {
-      Object.keys(controls).forEach((key) => {
+      Object.keys(controls).forEach(key => {
         if (this.states[state][key]) {
           Object.assign(this.states[state][key], controls[key]);
         } else {
@@ -41,35 +41,29 @@ class InputController {
     this.removeCallbacks();
 
     if (this.states[state]) {
-      const {
-        onKeyDown,
-        onKeyUp,
-        onMouseDown,
-        onMouseUp,
-        onMouseMove,
-        onMouseWheel,
-      } = this.states[state];
+      const { onKeyDown, onKeyUp, onMouseDown, onMouseUp, onMouseMove, onMouseWheel } =
+        this.states[state];
 
       if (onKeyDown) {
-        Object.keys(onKeyDown).forEach((name) => {
+        Object.keys(onKeyDown).forEach(name => {
           this.keyboard.get(name).onDown(onKeyDown[name]);
         });
       }
 
       if (onKeyUp) {
-        Object.keys(onKeyUp).forEach((name) => {
+        Object.keys(onKeyUp).forEach(name => {
           this.keyboard.get(name).onUp(onKeyUp[name]);
         });
       }
 
       if (onMouseDown) {
-        Object.keys(onMouseDown).forEach((name) => {
+        Object.keys(onMouseDown).forEach(name => {
           this.mouse.get(name).onDown(onMouseDown[name]);
         });
       }
 
       if (onMouseUp) {
-        Object.keys(onMouseUp).forEach((name) => {
+        Object.keys(onMouseUp).forEach(name => {
           this.mouse.get(name).onUp(onMouseUp[name]);
         });
       }

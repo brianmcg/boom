@@ -20,12 +20,7 @@ class SoundLoader {
    * @param  {Object}   options.loop       Should the sound loop.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
    */
-  load({
-    name,
-    src,
-    spriteSrc,
-    loop,
-  }) {
+  load({ name, src, spriteSrc, loop }) {
     if (spriteSrc) {
       return this.loadSprite({ name, src, spriteSrc });
     }
@@ -69,7 +64,7 @@ class SoundLoader {
    * @param  {Array}  keys The cache keys of the sound to unload.
    */
   unload(keys = []) {
-    Object.keys(this.cache).forEach((key) => {
+    Object.keys(this.cache).forEach(key => {
       if (this.cache[key] && (!keys.length || keys.includes(key))) {
         this.cache[key].unload();
         delete this.cache[key];

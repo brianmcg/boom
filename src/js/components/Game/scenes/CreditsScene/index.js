@@ -19,13 +19,16 @@ class CreditsScene extends Scene {
 
     this.assets = CREDITS_SCENE_ASSETS;
 
-    this.menu = [{
-      label: translate('scene.menu.continue'),
-      action: () => this.setRunning(),
-    }, {
-      label: translate('scene.menu.quit'),
-      action: () => this.triggerQuit(),
-    }];
+    this.menu = [
+      {
+        label: translate('scene.menu.continue'),
+        action: () => this.setRunning(),
+      },
+      {
+        label: translate('scene.menu.quit'),
+        action: () => this.triggerQuit(),
+      },
+    ];
 
     this.promptOption = translate('scene.prompt.continue');
   }
@@ -38,49 +41,64 @@ class CreditsScene extends Scene {
     super.create(options);
 
     const text = {
-      credits: [{
-        key: translate('credits.scroll.animator'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.art'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.artist'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.creative'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.game'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.level'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.narrative'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.programmer'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.tester'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.sound'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.ui'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.french'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.producer'),
-        values: [translate('credits.scroll.author')],
-      }, {
-        key: translate('credits.scroll.director'),
-        values: [translate('credits.scroll.author')],
-      }],
+      credits: [
+        {
+          key: translate('credits.scroll.animator'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.art'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.artist'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.creative'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.game'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.level'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.narrative'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.programmer'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.tester'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.sound'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.ui'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.french'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.producer'),
+          values: [translate('credits.scroll.author')],
+        },
+        {
+          key: translate('credits.scroll.director'),
+          values: [translate('credits.scroll.author')],
+        },
+      ],
       end: translate('credits.scroll.end'),
     };
 

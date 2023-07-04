@@ -22,11 +22,11 @@ class WeaponSprite extends AnimatedSprite {
     this.width *= HEIGHT_RATIO;
     this.height *= HEIGHT_RATIO;
     this.x = SCREEN.WIDTH / 2;
-    this.y = SCREEN.HEIGHT - (this.height / 2);
+    this.y = SCREEN.HEIGHT - this.height / 2;
     this.player = player;
     this.anchor.set(0.5);
 
-    Object.values(player.weapons).forEach((weapon) => {
+    Object.values(player.weapons).forEach(weapon => {
       weapon.onUse(() => this.setUsing());
 
       if (weapon.automatic) {

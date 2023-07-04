@@ -28,28 +28,26 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Object}  options.projectile The weapon projectile data.
    * @param  {Boolean} options.secondary  The weapon is secondary.
    */
-  constructor({
-    projectile,
-    highCalibre,
-    maxAmmo,
-    ...other
-  }) {
+  constructor({ projectile, highCalibre, maxAmmo, ...other }) {
     super({ projectile, maxAmmo, ...other });
 
     const { amount, effects } = projectile;
 
     this.highCalibre = highCalibre;
 
-    this.projectiles = [...Array(amount).keys()].map(() => new HitScan({
-      effect: effects?.impact,
-      source: this.player,
-      power: this.power,
-      range: this.range,
-      accuracy: this.accuracy,
-      flash: !!this.maxAmmo,
-      highCalibre,
-      instantKill: this.secondary,
-    }));
+    this.projectiles = [...Array(amount).keys()].map(
+      () =>
+        new HitScan({
+          effect: effects?.impact,
+          source: this.player,
+          power: this.power,
+          range: this.range,
+          accuracy: this.accuracy,
+          flash: !!this.maxAmmo,
+          highCalibre,
+          instantKill: this.secondary,
+        }),
+    );
   }
 
   /**
@@ -57,13 +55,7 @@ class HitScanWeapon extends AbstractWeapon {
    */
   use() {
     if (this.isUseable() && this.setUsing()) {
-      const {
-        pellets,
-        spreadAngle,
-        pelletAngle,
-        projectiles,
-        player,
-      } = this;
+      const { pellets, spreadAngle, pelletAngle, projectiles, player } = this;
 
       const collisions = [];
 
@@ -75,7 +67,7 @@ class HitScanWeapon extends AbstractWeapon {
         const projectile = projectiles.shift();
 
         if (projectile) {
-          projectile.run(rayAngle).forEach((collision) => {
+          projectile.run(rayAngle).forEach(collision => {
             collisions.push(collision);
           });
           projectiles.push(projectile);

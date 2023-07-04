@@ -12,14 +12,14 @@ const EVENTS = {
   SHOW_STAT: 'review:show:stat',
 };
 
-const formatMS = (ms) => {
+const formatMS = ms => {
   let seconds = parseInt((ms / 1000) % 60, 10);
   let minutes = parseInt((ms / (1000 * 60)) % 60, 10);
   let hours = parseInt((ms / (1000 * 60 * 60)) % 24, 10);
 
-  hours = (hours < 10) ? `0${hours}` : hours;
-  minutes = (minutes < 10) ? `0${minutes}` : minutes;
-  seconds = (seconds < 10) ? `0${seconds}` : seconds;
+  hours = hours < 10 ? `0${hours}` : hours;
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
 
   return `${hours}:${minutes}:${seconds}`;
 };
@@ -27,7 +27,7 @@ const formatMS = (ms) => {
 const isNumber = value => !Number.isNaN(Number(value));
 
 const formatPercent = (achieved, total) => {
-  const percent = Math.round(achieved / total * 100);
+  const percent = Math.round((achieved / total) * 100);
 
   return isNumber(percent) ? `${percent}%` : '-';
 };
@@ -45,22 +45,25 @@ class ReviewContainer extends Container {
 
     const { title, stats, background } = sprites;
     const statsHeight = stats.enemies.name.height;
-    const statsStartY = title.height + (TEXT_PADDING * 10);
+    const statsStartY = title.height + TEXT_PADDING * 10;
 
-    this.statContainers = Object.values(stats).reduce((memo, { name, value }, i) => [
-      ...memo,
-      new StatContainer({
-        sprites: [name, value],
-        y: statsStartY + (i * ((TEXT_PADDING * 2) + statsHeight)),
-        sound: sounds.pause,
-      }),
-    ], [
-      new StatContainer({
-        sprites: [title],
-        y: (title.height / 2) + TEXT_PADDING * 4,
-        sound: sounds.complete,
-      }),
-    ]);
+    this.statContainers = Object.values(stats).reduce(
+      (memo, { name, value }, i) => [
+        ...memo,
+        new StatContainer({
+          sprites: [name, value],
+          y: statsStartY + i * (TEXT_PADDING * 2 + statsHeight),
+          sound: sounds.pause,
+        }),
+      ],
+      [
+        new StatContainer({
+          sprites: [title],
+          y: title.height / 2 + TEXT_PADDING * 4,
+          sound: sounds.complete,
+        }),
+      ],
+    );
 
     this.timer = 0;
     this.currentIndex = 0;
@@ -147,12 +150,7 @@ class ReviewContainer extends Container {
   }) {
     const { title, stats } = this.sprites;
 
-    const {
-      enemies,
-      items,
-      secrets,
-      time,
-    } = stats;
+    const { enemies, items, secrets, time } = stats;
 
     title.x = SCREEN.WIDTH / 2;
 
@@ -162,8 +160,8 @@ class ReviewContainer extends Container {
     secrets.value.text = formatPercent(secretsFound, secretsTotal);
 
     [enemies, items, secrets, time].forEach(({ name, value }) => {
-      name.x = (SCREEN.WIDTH / 2) - (name.width / 2) - TEXT_PADDING;
-      value.x = (SCREEN.WIDTH / 2) + (value.width / 2) + TEXT_PADDING;
+      name.x = SCREEN.WIDTH / 2 - name.width / 2 - TEXT_PADDING;
+      value.x = SCREEN.WIDTH / 2 + value.width / 2 + TEXT_PADDING;
     });
   }
 }

@@ -6,7 +6,7 @@
  * Hex value for brown.
  * @type {Number}
  */
-export const BROWN = 0xE5DBD1;
+export const BROWN = 0xe5dbd1;
 
 /**
  * Hex value for grey.
@@ -18,19 +18,19 @@ export const GREY = 0x010101;
  * Hex value for red.
  * @type {Number}
  */
-export const RED = 0xBC0000;
+export const RED = 0xbc0000;
 
 /**
  * Hex value for white.
  * @type {Number}
  */
-export const WHITE = 0xFFFFFF;
+export const WHITE = 0xffffff;
 
 /**
  * Hex value for yellow.
  * @type {Number}
  */
-export const YELLOW = 0xFEF200;
+export const YELLOW = 0xfef200;
 
 /**
  * Hex value for blue.

@@ -22,7 +22,7 @@ class StatContainer extends Container {
     this.scaleAmount = 0;
     this.timer = 0;
 
-    sprites.forEach((sprite) => {
+    sprites.forEach(sprite => {
       sprite.y = y;
       this.addChild(sprite);
     });

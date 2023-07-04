@@ -20,14 +20,14 @@ class ForegroundContainer extends Container {
 
     const { logo, light, mask } = sprites;
 
-    logo.x = (SCREEN.WIDTH / 2);
-    logo.y = (SCREEN.HEIGHT / 2);
+    logo.x = SCREEN.WIDTH / 2;
+    logo.y = SCREEN.HEIGHT / 2;
 
-    mask.x = (SCREEN.WIDTH / 2);
-    mask.y = (SCREEN.HEIGHT / 2);
+    mask.x = SCREEN.WIDTH / 2;
+    mask.y = SCREEN.HEIGHT / 2;
 
     light.x = -light.width / 2;
-    light.y = (SCREEN.HEIGHT / 2);
+    light.y = SCREEN.HEIGHT / 2;
 
     light.mask = mask;
 
@@ -51,7 +51,7 @@ class ForegroundContainer extends Container {
     if (this.animate) {
       light.x += SPEED * delta;
 
-      if (light.x > SCREEN.WIDTH + (light.width / 2)) {
+      if (light.x > SCREEN.WIDTH + light.width / 2) {
         light.x = -light.width / 2;
         this.animate = false;
       }

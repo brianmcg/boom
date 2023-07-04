@@ -22,13 +22,7 @@ class Cell extends PhysicsCell {
    * @param  {Boolean} options.closed   Close the top of the cell.
    * @param  {Boolean} options.edge     The edge cell option.
    */
-  constructor({
-    sides = {},
-    reverse,
-    closed,
-    edge,
-    ...other
-  }) {
+  constructor({ sides = {}, reverse, closed, edge, ...other }) {
     super(other);
 
     this.edge = edge;

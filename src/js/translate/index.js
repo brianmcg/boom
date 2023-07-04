@@ -11,9 +11,7 @@ const camelToConstantCase = str => str.replace(/[A-Z]/g, letter => `_${letter}`)
 const translate = (key, options = {}) => {
   const { text, keys = [] } = language[key];
 
-  return keys.reduce((memo, item) => (
-    text.replace(camelToConstantCase(item), options[item])
-  ), text);
+  return keys.reduce((memo, item) => text.replace(camelToConstantCase(item), options[item]), text);
 };
 
 export default translate;

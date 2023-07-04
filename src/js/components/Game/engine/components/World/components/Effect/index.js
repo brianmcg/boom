@@ -11,14 +11,7 @@ class Effect {
    * @param  {Number} options.z         The z coordinate.
    * @param  {World}  options.parent    The world.
    */
-  constructor({
-    sourceId,
-    type,
-    x,
-    y,
-    z = 0,
-    parent,
-  }) {
+  constructor({ sourceId, type, x, y, z = 0, parent }) {
     this.x = x;
     this.y = y;
     this.z = z;

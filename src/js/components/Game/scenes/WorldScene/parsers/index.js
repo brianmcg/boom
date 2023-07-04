@@ -9,14 +9,7 @@ import { createSprites } from './sprites';
  * @param  {Object} options.text      The scene text.
  * @return {Object}                   The parsed scene data.
  */
-export const parse = ({
-  scene,
-  graphics,
-  data,
-  text,
-  renderer,
-  mapView,
-}) => {
+export const parse = ({ scene, graphics, data, text, renderer, mapView }) => {
   const world = createWorld({
     data,
     graphics,

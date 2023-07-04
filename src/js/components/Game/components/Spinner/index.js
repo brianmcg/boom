@@ -11,7 +11,7 @@ class Spinner {
   }
 
   resize(scale) {
-    const width = SCREEN.HEIGHT / 4 * scale;
+    const width = (SCREEN.HEIGHT / 4) * scale;
 
     this.view.style.width = `${width}px`;
     this.view.style.height = `${width}px`;
