@@ -8,14 +8,16 @@ module.exports = {
   },
   globals: {},
   parserOptions: {
+    ecmaVersion: 12,
     sourceType: 'module'
   },
   "parser": "babel-eslint",
   "rules": {
     "strict": 0
   },
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'prettier'],
   rules: {
+    'prettier/prettier': 'error',
     'linebreak-style': ["error", "unix"],
     'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
     'no-continue': 0,
@@ -36,6 +38,7 @@ module.exports = {
       'enforceForRenamedProperties': false
     }]
   },
+  plugins: ['prettier'],
   settings: {
     'import/resolver': {
       webpack: {
