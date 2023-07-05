@@ -1,9 +1,8 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { HashedModuleIdsPlugin } = require('webpack');
-const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const paths = require('./paths');
 
 module.exports = {
@@ -20,18 +19,15 @@ module.exports = {
   output: {
     path: paths.build,
     publicPath: '/',
-    filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].js',
+    filename: '[name].[contenthash].js',
   },
   optimization: {
-    runtimeChunk: {
-      name: 'manifest',
-    },
+    runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /node_modules\/(.*)\.js/,
-          name: 'vendor',
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
           chunks: 'all',
         },
       },
@@ -71,16 +67,6 @@ module.exports = {
           {
             loader: 'sass-loader',
           },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => [
-                autoprefixer({
-                  browsers: ['> 1%', 'last 2 versions'],
-                }),
-              ],
-            },
-          },
         ],
       },
       {
@@ -119,7 +105,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HashedModuleIdsPlugin(),
     new CleanWebpackPlugin(['dist'], {
       root: '',
       verbose: true,
