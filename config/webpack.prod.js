@@ -1,59 +1,55 @@
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const merge = require('webpack-merge');
-const cssnano = require('cssnano');
-const common = require('./webpack.common');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { merge } = require('webpack-merge');
+
 const paths = require('./paths');
+const common = require('./webpack.common');
 
 module.exports = merge(common, {
   mode: 'production',
+  devtool: false,
   output: {
-    publicPath: './',
+    path: paths.build,
+    publicPath: 'auto',
+    filename: 'js/[name].[contenthash].bundle.js',
   },
-  devtool: 'source-map',
-  devServer: {
-    contentBase: paths.build,
-    compress: true,
-    port: 9000,
-    disableHostCheck: true,
-    host: 'localhost',
-  },
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            warnings: false,
-            drop_console: true,
-            booleans: false,
-            collapse_vars: true,
-            reduce_vars: true,
-            loops: true,
-          },
-          output: {
-            comments: false,
-            beautify: false,
-          },
-        },
-      }),
-      new OptimizeCssAssetsPlugin(
-        {
-          assetNameRegExp: /\.css$/,
-          cssProcessor: cssnano({
-            zindex: false,
-          }),
-          cssProcessorOptions: {
-            discardComments: {
-              removeAll: true,
+  module: {
+    rules: [
+      {
+        test: /\.(sass|scss|css)$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: false,
+              modules: false,
             },
           },
-          canPrint: false,
-        },
-        {
-          copyUnmodified: true,
-        },
-      ),
+          'postcss-loader',
+          'sass-loader',
+        ],
+      },
     ],
+  },
+  plugins: [
+    // Extracts CSS into separate files
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].[contenthash].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [new CssMinimizerPlugin(), '...'],
+    runtimeChunk: {
+      name: 'runtime',
+    },
+  },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 });

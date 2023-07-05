@@ -2,7 +2,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const paths = require('./paths');
 
 module.exports = {
@@ -10,6 +9,8 @@ module.exports = {
     main: `${paths.src}/main.js`,
   },
   resolve: {
+    // modules: [paths.src, 'node_modules'],
+    // extensions: ['.js', '.json'],
     alias: {
       '@images': `${paths.src}/images`,
       '@translate': `${paths.src}/js/translate`,
@@ -38,20 +39,7 @@ module.exports = {
     rules: [
       // JavaScript: Use Babel to transpile JavaScript files
       { test: /\.js$/, use: ['babel-loader'] },
-      {
-        test: /(\.css|\.scss|\.sass)$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'sass-loader',
-          },
-        ],
-      },
+
       // Images: Copy image files to build folder
       { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
 
@@ -60,7 +48,10 @@ module.exports = {
     ],
   },
   plugins: [
+    // Removes/cleans build folders and unused assets when rebuilding
     new CleanWebpackPlugin(),
+
+    // Copies files from target to destination folder
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -73,10 +64,9 @@ module.exports = {
         },
       ],
     }),
-    new MiniCssExtractPlugin({
-      filename: 'styles/[name].[chunkhash].min.css',
-      chunkFilename: 'styles/[name].[chunkhash].css',
-    }),
+
+    // Generates an HTML file from a template
+    // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
     new HtmlWebpackPlugin({
       title: 'Boom',
       favicon: `${paths.src}/images/favicon.ico`,
