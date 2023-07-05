@@ -95,7 +95,7 @@ export const WALL_LAYERS = 3;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 320, HEIGHT: 150 };
+export const SCREEN = { WIDTH: 300, HEIGHT: 150 };
 
 /**
  * The default language to use.

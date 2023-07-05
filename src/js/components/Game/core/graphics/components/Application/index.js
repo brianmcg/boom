@@ -13,7 +13,7 @@ class Application extends PixiApplication {
    * @param  {Boolean}  options.autoStart       Should the application auto start.
    */
   constructor(...options) {
-    super({ ...options, autoStart: false, clearBeforeRender: false });
+    super({ ...options, autoStart: false, clearBeforeRender: false, hello: true });
 
     window.addEventListener('resize', () => this.onResize());
   }

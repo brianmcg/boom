@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <font>
-  <info face="doom_regular" size="72" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="0" aa="1" padding="0,0,0,0" spacing="1,1" outline="0"/>
+  <info face="DoomRegular" size="72" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="0" aa="1" padding="0,0,0,0" spacing="1,1" outline="0"/>
   <common lineHeight="72" base="60" scaleW="512" scaleH="512" pages="1" packed="0" alphaChnl="1" redChnl="0" greenChnl="0" blueChnl="0"/>
   <pages>
     <page id="0" file="doom_regular.png" />

@@ -3,7 +3,7 @@ import { InputController } from './core/input';
 
 import { BLACK } from './constants/colors';
 import { SCREEN, SHOW_STATS, LEVEL, DEBUG } from './constants/config';
-import { GAME_SOUNDS, GAME_FONT, GAME_ASSETS } from './constants/assets';
+import { GAME_ASSETS } from './constants/assets';
 
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
@@ -46,7 +46,6 @@ class Game extends Application {
       this.ticker.add(this.loop, this);
     }
 
-    this.loader = new Loader();
     this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
@@ -62,7 +61,7 @@ class Game extends Application {
    * Start game and load assets.
    */
   async onStart() {
-    const { sound, data } = await this.loader.load(GAME_ASSETS);
+    const { sound, data } = await Loader.load(GAME_ASSETS);
 
     this.removeManual();
     this.addCanvas();
@@ -145,23 +144,18 @@ class Game extends Application {
     }
 
     if (this.scene) {
-      const { sound, graphics } = this.loader.cache;
+      const { graphics, sound } = this.scene.assets;
 
       this.removeScene();
 
-      this.loader.unload({
-        // Remove all graphics except the game font.
-        graphics: Object.keys(graphics).filter(key => !key.includes(GAME_FONT.NAME)),
-        // Remove all sounds except the game sound effects.
-        sound: Object.keys(sound).filter(key => !key.includes(GAME_SOUNDS.NAME)),
-      });
+      await Loader.unload({ graphics, sound: sound.src });
     }
 
     if (Scene) {
       this.scene = new Scene({ game: this, ...other });
       this.stage.addChild(this.scene);
 
-      const { graphics, sound, data } = await this.loader.load(this.scene.assets);
+      const { graphics, sound, data } = await Loader.load(this.scene.assets);
       const sceneProps = this.data[type].props || {};
       const sounds = this.data[type].sounds || {};
       const props = { ...sceneProps, player: { ...sceneProps.player, ...startProps.player } };
@@ -196,7 +190,7 @@ class Game extends Application {
     this.addManual();
     this.stop();
     this.removeScene();
-    this.loader.unload();
+    Loader.unload();
   }
 
   /**

@@ -7,30 +7,16 @@ import DataLoader from '@game/utilities/DataLoader';
  */
 class Loader {
   /**
-   * Creates a loader.
-   */
-  constructor() {
-    this.graphicsLoader = new GraphicsLoader();
-    this.soundLoader = new SoundLoader();
-    this.dataLoader = new DataLoader();
-
-    this.cache = {
-      graphics: this.graphicsLoader.cache,
-      sound: this.soundLoader.cache,
-    };
-  }
-
-  /**
    * Load game data.
    * @param  {Object}   options.sound     The sound options.
    * @param  {Object}   options.graphics  The graphics options.
    * @param  {Object}   options.data      The data options.
    * @return {Promise}                    Resolves when the assets are loaded.
    */
-  async load({ sound, graphics, data }) {
-    const soundResources = this.soundLoader.load(sound);
-    const graphicsResources = this.graphicsLoader.load(graphics);
-    const dataResources = this.dataLoader.load(data);
+  static async load({ sound, graphics, data }) {
+    const soundResources = SoundLoader.load(sound);
+    const graphicsResources = GraphicsLoader.load(graphics);
+    const dataResources = DataLoader.load(data);
 
     return {
       graphics: await graphicsResources,
@@ -44,9 +30,11 @@ class Loader {
    * @param  {Array} options.graphics   The graphics to unload.
    * @param  {Array} options.sound      The sounds to unload.
    */
-  unload({ graphics, sound } = {}) {
-    this.graphicsLoader.unload(graphics);
-    this.soundLoader.unload(sound);
+  static async unload({ graphics, sound } = {}) {
+    return {
+      sound: SoundLoader.unload(sound),
+      graphics: await GraphicsLoader.unload(graphics),
+    };
   }
 }
 
