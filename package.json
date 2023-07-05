@@ -47,7 +47,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open --progress --config config/webpack.dev.js",
     "build": "rm -rf dist && webpack --config config/webpack.prod.js",
-    "doc": "jsdoc -r src/assets/scripts/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
+    "doc": "jsdoc -r src/js/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
     "lint": "eslint src/js/ --fix"
   }
 }
