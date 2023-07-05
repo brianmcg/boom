@@ -1,4 +1,4 @@
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -14,6 +14,7 @@ module.exports = {
       '@images': `${paths.src}/images`,
       '@translate': `${paths.src}/js/translate`,
       '@game': `${paths.src}/js/components/Game`,
+      assets: paths.public,
     },
   },
   output: {
@@ -69,28 +70,11 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.(woff|ttf)\??.*$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            limit: 1024,
-            name: '[name].[ext]',
-            outputPath: 'fonts',
-          },
-        },
-      },
-      {
-        test: /\.(gif)\??.*$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            limit: 1024,
-            name: '[name].[ext]',
-            outputPath: 'images',
-          },
-        },
-      },
+      // Images: Copy image files to build folder
+      { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
+
+      // Fonts and SVGs: Inline files
+      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
       {
         test: /\.html$/,
         use: {
@@ -105,37 +89,28 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
-      root: '',
-      verbose: true,
-      dry: false,
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: paths.public,
+          to: 'assets',
+          globOptions: {
+            ignore: ['*.DS_Store'],
+          },
+          noErrorOnMissing: true,
+        },
+      ],
     }),
-    new CopyWebpackPlugin([
-      {
-        from: `${paths.src}/fonts`,
-        to: `${paths.build}/fonts`,
-      },
-      {
-        from: `${paths.src}/images`,
-        to: `${paths.build}/images`,
-      },
-      {
-        from: paths.public,
-        to: `${paths.build}/assets`,
-      },
-    ]),
     new MiniCssExtractPlugin({
       filename: 'styles/[name].[chunkhash].min.css',
       chunkFilename: 'styles/[name].[chunkhash].css',
     }),
     new HtmlWebpackPlugin({
-      template: `${paths.src}/template.html`,
-      inject: 'body',
-      hash: false,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-      },
+      title: 'Boom',
+      favicon: `${paths.src}/images/favicon.ico`,
+      template: `${paths.src}/template.html`, // template file
+      filename: 'index.html', // output file
     }),
   ],
 };

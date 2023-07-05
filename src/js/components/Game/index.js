@@ -10,7 +10,6 @@ import Manual from './components/Manual';
 import Stats from './components/Stats';
 
 import Loader from './utilities/Loader';
-import FontLoader from './utilities/FontLoader';
 
 import TitleScene, { TITLE_PATH } from './scenes/TitleScene';
 import WorldScene, { WORLD_PATH } from './scenes/WorldScene';
@@ -56,7 +55,7 @@ class Game extends Application {
 
     this.stage.on('click', () => this.lockPointer());
 
-    FontLoader.load(GAME_FONT.NAME).then(() => this.addManual());
+    this.addManual();
   }
 
   /**
