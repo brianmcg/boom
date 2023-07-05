@@ -21,7 +21,9 @@ class Sound extends Howl {
   load() {
     super.load();
 
-    return new Promise(resolve => this.on('load', () => resolve(this)));
+    return new Promise(resolve => {
+      this.on('load', () => resolve(this));
+    });
   }
 
   isLooping() {

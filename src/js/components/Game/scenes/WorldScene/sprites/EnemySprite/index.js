@@ -26,7 +26,7 @@ class EnemySprite extends AnimatedEntitySprite {
    * @param  {AbstractEnemy}  options.enemy       The enemy the sprite represents.
    * @param  {Number}         options.floorOffset The offset of the floor.
    */
-  constructor(textureCollection = [], { enemy, floorOffset }) {
+  constructor(textureCollection = [], { enemy, floorOffset } = {}) {
     const { textures } = textureCollection[STATES.IDLE];
 
     super(textures, { animationSpeed: 0.15, floorOffset });

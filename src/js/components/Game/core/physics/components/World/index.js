@@ -11,7 +11,7 @@ class World extends EventEmitter {
    * @param  {Array}  grid    The map grid of the world.
    * @param  {Array}  bodies  The bodies to add to the map.
    */
-  constructor(grid = [[]], bodies) {
+  constructor(grid, bodies) {
     super();
 
     this.grid = grid;

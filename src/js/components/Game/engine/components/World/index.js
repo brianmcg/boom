@@ -237,7 +237,7 @@ class World extends PhysicsWorld {
    * @param  {Boolean} diagonal  Allow diagonal movement.
    * @return {Array}             A 2D array of cells.
    */
-  findPath(from, to, index = 0, diagonal) {
+  findPath(from, to, index = 0, diagonal = false) {
     const graph = this.graphs[from.collisionRadius][index];
     const start = graph.grid[from.gridX][from.gridY];
     const end = graph.grid[to.gridX][to.gridY];

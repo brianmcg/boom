@@ -8,7 +8,7 @@ class MenuIconSprite extends AnimatedSprite {
    * Creates a menu icon sprite.
    * @param  {Array}  textures The sprite textures.
    */
-  constructor(textures = [], { size = 1, ...other }) {
+  constructor(textures = [], { size = 1, ...other } = {}) {
     super(textures, {
       ...other,
       animationSpeed: 0.2,

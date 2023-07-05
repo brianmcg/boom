@@ -552,7 +552,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {Number}  angle        The angle the damage came from.
    * @param  {Boolean} instantKill  Instantly kill the enemy.
    */
-  hurt(damage, angle = 0, instantKill) {
+  hurt(damage, angle = 0, instantKill = false) {
     super.hurt(damage, angle);
 
     if (this.isAlive()) {
