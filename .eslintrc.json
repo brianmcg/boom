@@ -2,7 +2,7 @@
   "rules": {
     "arrow-body-style": 1,
     "camelcase": 1,
-    "import/no-extraneous-dependencies": ["off", { "devDependencies": false }],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/prefer-default-export": 0,
     "linebreak-style": ["error", "unix"],
     "no-bitwise": [2, { "allow": ["<<", ">>"] }],
@@ -34,7 +34,7 @@
     "ecmaVersion": 2021,
     "sourceType": "module"
   },
-  "plugins": ["prettier"],
+  "plugins": ["import", "prettier"],
   "settings": {
     "import/resolver": {
       "webpack": {
