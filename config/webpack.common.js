@@ -36,26 +36,8 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.m?js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: {
-                    esmodules: true,
-                  },
-                },
-              ],
-            ],
-          },
-        },
-        // exclude: path.resolve(__dirname, 'node_modules/'),
-        // include: path.resolve(__dirname, 'src/'),
-      },
+      // JavaScript: Use Babel to transpile JavaScript files
+      { test: /\.js$/, use: ['babel-loader'] },
       {
         test: /(\.css|\.scss|\.sass)$/,
         use: [
@@ -75,17 +57,6 @@ module.exports = {
 
       // Fonts and SVGs: Inline files
       { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
-      {
-        test: /\.html$/,
-        use: {
-          loader: 'html-loader',
-          options: {
-            minimize: true,
-            removeComments: false,
-            collapseWhitespace: false,
-          },
-        },
-      },
     ],
   },
   plugins: [

@@ -4,7 +4,7 @@ This is a first person shooter built using [PixiJS](http://www.pixijs.com/) + [H
 
 ## Getting started
 
-You must have npm 12.6.0
+You must have npm 14.21.3
 
 - Install:
   - `npm install` - installs dependencies
