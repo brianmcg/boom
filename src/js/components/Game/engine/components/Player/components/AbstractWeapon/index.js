@@ -320,6 +320,10 @@ class AbstractWeapon extends EventEmitter {
 
     return false;
   }
+
+  destroy() {
+    this.removeAllListeners();
+  }
 }
 
 export { EVENTS };

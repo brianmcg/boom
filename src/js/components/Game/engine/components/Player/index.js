@@ -791,6 +791,12 @@ class Player extends AbstractActor {
     return this.state === STATES.DEAD;
   }
 
+  destroy() {
+    super.destroy();
+    Object.values(this.keyCards).forEach(key => key.destroy());
+    this.weapons.forEach(weapon => weapon.destroy());
+  }
+
   /**
    * Get the elavation offset for projectiles.
    * @return {Number} The elavation offset.

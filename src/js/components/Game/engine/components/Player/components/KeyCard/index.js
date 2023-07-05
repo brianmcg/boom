@@ -33,6 +33,10 @@ class KeyCard extends EventEmitter {
   isEquiped() {
     return this.equiped;
   }
+
+  destroy() {
+    this.removeAllListeners();
+  }
 }
 
 export default KeyCard;
