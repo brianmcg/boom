@@ -5,48 +5,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const paths = require('./paths');
 
 module.exports = {
-  entry: {
-    main: `${paths.src}/main.js`,
-  },
-  resolve: {
-    // modules: [paths.src, 'node_modules'],
-    // extensions: ['.js', '.json'],
-    alias: {
-      '@images': `${paths.src}/images`,
-      '@translate': `${paths.src}/js/translate`,
-      '@game': `${paths.src}/js/components/Game`,
-      assets: paths.public,
-    },
-  },
+  // Where webpack looks to start building the bundle
+  entry: [`${paths.src}/main.js`],
+
+  // Where webpack outputs the assets and bundles
   output: {
     path: paths.build,
+    filename: '[name].bundle.js',
     publicPath: '/',
-    filename: '[name].[contenthash].js',
   },
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
-  },
-  module: {
-    rules: [
-      // JavaScript: Use Babel to transpile JavaScript files
-      { test: /\.js$/, use: ['babel-loader'] },
 
-      // Images: Copy image files to build folder
-      { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
-
-      // Fonts and SVGs: Inline files
-      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
-    ],
-  },
+  // Customize the webpack build process
   plugins: [
     // Removes/cleans build folders and unused assets when rebuilding
     new CleanWebpackPlugin(),
@@ -74,4 +43,29 @@ module.exports = {
       filename: 'index.html', // output file
     }),
   ],
+
+  // Determine how modules within the project are treated
+  module: {
+    rules: [
+      // JavaScript: Use Babel to transpile JavaScript files
+      { test: /\.js$/, use: ['babel-loader'] },
+
+      // Images: Copy image files to build folder
+      { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
+
+      // Fonts and SVGs: Inline files
+      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
+    ],
+  },
+
+  resolve: {
+    modules: [paths.src, 'node_modules'],
+    extensions: ['.js', '.json'],
+    alias: {
+      '@images': `${paths.src}/images`,
+      '@translate': `${paths.src}/js/translate`,
+      '@game': `${paths.src}/js/components/Game`,
+      assets: paths.public,
+    },
+  },
 };

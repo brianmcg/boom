@@ -43,6 +43,18 @@ module.exports = merge(common, {
   optimization: {
     minimize: true,
     minimizer: [new CssMinimizerPlugin(), '...'],
+    // runtimeChunk: {
+    //   name: 'single',
+    // },
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendor: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       name: 'vendors',
+    //       chunks: 'all',
+    //     },
+    //   },
+    // },
     runtimeChunk: {
       name: 'runtime',
     },
