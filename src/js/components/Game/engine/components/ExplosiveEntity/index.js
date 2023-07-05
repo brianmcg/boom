@@ -36,7 +36,7 @@ class ExplosiveEntity extends AbstractDestroyableEntity {
    * @param  {Number}  options.range        The range of the entity.
    * @param  {Object}  options.explosion    The explosion properties.
    */
-  constructor({ animated, power, range, explosion, ...other }) {
+  constructor({ animated, explosion, ...other }) {
     super({ sounds: explosion.sounds, ...other });
     this.animated = animated;
 

@@ -27,8 +27,8 @@ class PortalItem extends AbstractItem {
    * @param  {Number}  options.floorOffset    The floor offset.
    * @param  {Number}  options.respawn        The time to respawn.
    */
-  constructor({ weapon, ...other }) {
-    super(other);
+  constructor(options) {
+    super(options);
 
     this.isPortal = true;
   }

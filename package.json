@@ -51,6 +51,6 @@
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "doc": "jsdoc -r src/js/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
     "lint": "eslint src/js/ --fix",
-    "prettify": "prettier --write 'src/**/*.js'"
+    "prettify": "prettier --write src/js'"
   }
 }
