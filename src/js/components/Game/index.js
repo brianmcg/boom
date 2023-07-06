@@ -1,4 +1,4 @@
-import { Application, settings, SCALE_MODES } from './core/graphics';
+import { Application } from './core/graphics';
 import { InputController } from './core/input';
 
 import { BLACK } from './constants/colors';
@@ -20,8 +20,6 @@ const SCENES = {
   [WORLD_PATH]: WorldScene,
   [CREDITS_PATH]: CreditsScene,
 };
-
-settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 /**
  * A class representing a game.

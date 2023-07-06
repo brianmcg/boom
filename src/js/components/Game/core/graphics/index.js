@@ -25,6 +25,8 @@ import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
+settings.SCALE_MODE = SCALE_MODES.NEAREST;
+
 export {
   /**
    * The application component.
@@ -87,17 +89,9 @@ export {
    */
   BLEND_MODES,
   /**
-   * Scale modes constant.
-   */
-  SCALE_MODES,
-  /**
    * The line component.
    */
   Line,
-  /**
-   * PIXI settings.
-   */
-  settings,
   /**
    * The Assets component.
    */
