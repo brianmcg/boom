@@ -46,7 +46,8 @@ class Explosion extends Body {
         power: this.power,
         range: this.range,
         fade: true,
-        highCalibre: true,
+        // TODO: Move this to data.
+        penetration: { distance: 2, fade: 0.75 },
       }),
       angle,
     }));

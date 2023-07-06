@@ -10,30 +10,31 @@ const DEG_360 = degrees(360);
 class HitScanWeapon extends AbstractWeapon {
   /**
    * Creates a hitscan weapon.
-   * @param  {Player}  options.player     The player.
-   * @param  {Number}  options.power      The power of the weapon.
-   * @param  {Boolean} options.equiped    Is the weapon equiped.
-   * @param  {Number}  options.recoil     The recoil of the weapon.
-   * @param  {Number}  options.maxAmmo    The max amount of ammo the weapon can hold.
-   * @param  {Number}  options.range      The range of the weapon.
-   * @param  {Number}  options.accuracy   The accuracy of the weapon.
-   * @param  {Number}  options.pellets    The number of pellets per use.
-   * @param  {Number}  options.spread     The spread of the pellets.
-   * @param  {Object}  options.sounds     The weapon sounds.
-   * @param  {String}  options.name       The weapon name.
-   * @param  {Number}  options.ammo       The ammo of the weapon.
-   * @param  {Number}  options.rate       The rate of fire.
-   * @param  {Number}  options.automatic  Automatic weapon option.
-   * @param  {Number}  options.type       The type of weapon.
-   * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Boolean} options.secondary  The weapon is secondary.
+   * @param  {Player}  options.player       The player.
+   * @param  {Number}  options.power        The power of the weapon.
+   * @param  {Boolean} options.equiped      Is the weapon equiped.
+   * @param  {Number}  options.recoil       The recoil of the weapon.
+   * @param  {Number}  options.maxAmmo      The max amount of ammo the weapon can hold.
+   * @param  {Number}  options.range        The range of the weapon.
+   * @param  {Number}  options.accuracy     The accuracy of the weapon.
+   * @param  {Number}  options.pellets      The number of pellets per use.
+   * @param  {Number}  options.spread       The spread of the pellets.
+   * @param  {Object}  options.sounds       The weapon sounds.
+   * @param  {String}  options.name         The weapon name.
+   * @param  {Number}  options.ammo         The ammo of the weapon.
+   * @param  {Number}  options.rate         The rate of fire.
+   * @param  {Number}  options.automatic    Automatic weapon option.
+   * @param  {Number}  options.type         The type of weapon.
+   * @param  {Object}  options.projectile   The weapon projectile data.
+   * @param  {Boolean} options.secondary    The weapon is secondary.
+   * @param  {Boolean} options.penetration  The weapon penetration.
    */
-  constructor({ projectile, highCalibre, maxAmmo, ...other }) {
-    super({ projectile, maxAmmo, ...other });
+  constructor({ penetration, ...other }) {
+    super(other);
 
-    const { amount, effects } = projectile;
+    const { amount, effects } = this.projectile;
 
-    this.highCalibre = highCalibre;
+    this.penetration = penetration;
 
     this.projectiles = [...Array(amount).keys()].map(
       () =>
@@ -44,7 +45,7 @@ class HitScanWeapon extends AbstractWeapon {
           range: this.range,
           accuracy: this.accuracy,
           flash: !!this.maxAmmo,
-          highCalibre,
+          penetration,
           instantKill: this.secondary,
         }),
     );
@@ -83,6 +84,14 @@ class HitScanWeapon extends AbstractWeapon {
         super.use();
       }
     }
+  }
+
+  /**
+   * Get the weapon props.
+   * @return {Object} The weapon props.
+   */
+  get props() {
+    return { ...super.props, penetration: this.penetration };
   }
 }
 

@@ -301,7 +301,6 @@ class AbstractWeapon extends EventEmitter {
       player,
       ammo,
       projectile,
-      highCalibre,
       secondary,
     } = this;
 
@@ -320,7 +319,6 @@ class AbstractWeapon extends EventEmitter {
       range: transformRangeForData(range, player.width / 2),
       spread,
       pellets: pellets.length,
-      highCalibre,
       secondary,
     };
   }

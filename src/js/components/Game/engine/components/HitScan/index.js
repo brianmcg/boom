@@ -7,10 +7,6 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
-const SECONDARY_DAMAGE_FADE = 0.6;
-
-const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE);
-
 /**
  * Class representing a hit scan.
  * @extends {Body}
@@ -32,7 +28,7 @@ class HitScan extends Body {
    * @param  {Number}  options.range        The range of the hitscan.
    * @param  {Number}  options.accuracy     The accuracy of the hitscan.
    * @param  {Number}  options.fade         The fade of the hitscan.
-   * @param  {Boolean} options.highCalibre  The calibre of the hitscan.
+   * @param  {Boolean} options.penetration  The penetration of the hitscan.
    * @param  {Boolean} options.flash        The flash property of the hitscan.
    * @param  {Boolean} options.instantKill  The hitscan instantly kills.
    */
@@ -43,7 +39,7 @@ class HitScan extends Body {
     range = Number.MAX_VALUE,
     accuracy = 0,
     fade,
-    highCalibre = false,
+    penetration,
     flash = true,
     instantKill,
     ...other
@@ -56,7 +52,7 @@ class HitScan extends Body {
     this.range = range;
     this.accuracy = accuracy;
     this.fade = fade;
-    this.highCalibre = highCalibre;
+    this.penetration = penetration;
     this.flash = flash;
     this.instantKill = instantKill;
   }
@@ -126,9 +122,9 @@ class HitScan extends Body {
           }
 
           if (i > 0) {
-            if (this.highCalibre) {
-              if (body.getDistanceTo(collisions[0].body) < SECONDARY_DAMAGE_DISTANCE) {
-                damage *= SECONDARY_DAMAGE_FADE / i;
+            if (this.penetration) {
+              if (body.getDistanceTo(collisions[0].body) < this.penetration.distance * CELL_SIZE) {
+                damage *= this.penetration.fade / i;
               } else {
                 damage = 0;
               }
