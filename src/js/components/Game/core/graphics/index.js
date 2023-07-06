@@ -3,14 +3,14 @@
  */
 
 import {
+  Assets,
+  BLEND_MODES,
   ColorMatrixFilter,
   EventEmitter,
-  BLEND_MODES,
-  Rectangle,
-  Texture,
-  RenderTexture,
   PixelateFilter,
-  Assets,
+  Rectangle,
+  RenderTexture,
+  Texture,
 } from './pixi';
 
 import TextSprite from './components/TextSprite';
@@ -24,72 +24,21 @@ import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
 export {
-  /**
-   * The application component.
-   */
-  Application,
-  /**
-   * The animated sprite component.
-   */
   AnimatedSprite,
-  /**
-   * The color matrix filter component.
-   */
-  ColorMatrixFilter,
-  /**
-   * The container component.
-   */
-  Container,
-  /**
-   * The event emitter component.
-   */
-  EventEmitter,
-  /**
-   * The graphics loader component.
-   */
-  GraphicsLoader,
-  /**
-   * The pixelate filter component.
-   */
-  PixelateFilter,
-  /**
-   * The rectangle component.
-   */
-  Rectangle,
-  /**
-   * The particle container component.
-   */
-  ParticleContainer,
-  /**
-   * The render texture component.
-   */
-  RenderTexture,
-  /**
-   * The rectangle sprite component.
-   */
-  RectangleSprite,
-  /**
-   * The sprite component.
-   */
-  Sprite,
-  /**
-   * The text sprite component.
-   */
-  TextSprite,
-  /**
-   * The texture component.
-   */
-  Texture,
-  /**
-   * Blend modes constant.
-   */
-  BLEND_MODES,
-  /**
-   * The line component.
-   */
-  Line,
-  /**
-   * The Assets component.
-   */
+  Application,
   Assets,
+  BLEND_MODES,
+  ColorMatrixFilter,
+  Container,
+  EventEmitter,
+  GraphicsLoader,
+  Line,
+  ParticleContainer,
+  PixelateFilter,
+  Rectangle,
+  RectangleSprite,
+  RenderTexture,
+  Sprite,
+  TextSprite,
+  Texture,
 };
