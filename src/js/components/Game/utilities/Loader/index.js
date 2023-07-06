@@ -30,10 +30,10 @@ class Loader {
    * @param  {Array} options.graphics   The graphics to unload.
    * @param  {Array} options.sound      The sounds to unload.
    */
-  static async unload({ graphics, sound } = {}) {
+  static unload({ graphics, sound } = {}) {
     return {
       sound: SoundLoader.unload(sound),
-      graphics: await GraphicsLoader.unload(graphics),
+      graphics: GraphicsLoader.unload(graphics),
     };
   }
 }
