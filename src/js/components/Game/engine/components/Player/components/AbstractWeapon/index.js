@@ -42,6 +42,10 @@ class AbstractWeapon extends EventEmitter {
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
    * @param  {Boolean} options.secondary  The weapon is secondary.
+   * @param  {Number}  options.anchorX    The x anchor of the weapon.
+   * @param  {Number}  options.anchorY    The y anchor of the weapon.
+   * @param  {Number}  options.scale      The scale of the weapon.
+   * @param  {Boolean} options.melee      The melee option.
    */
   constructor({
     player,
@@ -61,8 +65,15 @@ class AbstractWeapon extends EventEmitter {
     type,
     projectile,
     secondary,
+    anchorX = 0.5,
+    anchorY = 0.5,
+    scale = 1,
   }) {
     super();
+
+    this.anchorX = anchorX;
+    this.anchorY = anchorY;
+    this.scale = scale;
 
     this.name = name;
     this.sounds = sounds;
@@ -187,7 +198,15 @@ class AbstractWeapon extends EventEmitter {
    * @return {Boolean}
    */
   isUseable() {
-    return this.isIdle() && (this.ammo > 0 || this.ammo === null);
+    return this.isIdle() && (this.ammo > 0 || this.isMelee());
+  }
+
+  /**
+   * Is it a melee weapon.
+   * @return {Boolean}
+   */
+  isMelee() {
+    return this.ammo == null;
   }
 
   /**

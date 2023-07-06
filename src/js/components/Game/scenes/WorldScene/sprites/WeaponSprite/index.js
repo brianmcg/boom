@@ -24,7 +24,8 @@ class WeaponSprite extends AnimatedSprite {
     this.x = SCREEN.WIDTH / 2;
     this.y = SCREEN.HEIGHT - this.height / 2;
     this.player = player;
-    this.anchor.set(0.5);
+    this.anchor.x = 0.5;
+    this.anchor.y = 0.5;
 
     Object.values(player.weapons).forEach(weapon => {
       weapon.onUse(() => this.setUsing());
@@ -49,14 +50,11 @@ class WeaponSprite extends AnimatedSprite {
    * Set the idle animation.
    */
   setIdle() {
-    this.textures = this.textureCollection[this.player.weapon.name].idle;
+    const { anchorX, anchorY, scale, name } = this.player.weapon;
 
-    // TODO: Set different weapon scales.
-    // if (this.player.weapon.secondary) {
-    //   this.scale.set(1);
-    // } else {
-    //   this.scale.set(1);
-    // }
+    this.textures = this.textureCollection[name].idle;
+    this.anchor.set(anchorX, anchorY);
+    this.scale.set(scale);
   }
 
   /**
