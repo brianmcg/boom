@@ -75,7 +75,7 @@ class HitScanWeapon extends AbstractWeapon {
         }
       }
 
-      if (this.ammo === null) {
+      if (this.isMelee()) {
         const recoil = !collisions.length ? 0 : this.recoil;
         const sound = this.secondary && !collisions.length ? null : this.sounds.use;
         this.emit(EVENTS.USE, { recoil, sound });
