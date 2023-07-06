@@ -25,12 +25,13 @@ import {
   AnimatedSprite,
   Application,
   Container,
-  Loader,
   Graphics,
   ParticleContainer,
   Sprite,
   BitmapText,
 } from 'pixi.js';
+
+import { Assets } from '@pixi/assets';
 
 import { PixelateFilter } from '@pixi/filter-pixelate';
 
@@ -50,10 +51,10 @@ export {
   AnimatedSprite,
   Application,
   Container,
-  Loader,
   TextureCache,
   Graphics,
   ParticleContainer,
   Sprite,
   BitmapText,
+  Assets,
 };

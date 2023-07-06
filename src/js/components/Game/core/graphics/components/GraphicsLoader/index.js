@@ -1,6 +1,4 @@
-import { TextureCache, Loader } from '../../pixi';
-
-const Assets = new Loader();
+import { Assets } from '@game/core/graphics';
 
 /**
  * Class representing a graphics loader.
@@ -13,41 +11,26 @@ class GraphicsLoader {
    * @return {Promise}              Resolves when assets load.
    */
   static load(src) {
-    Assets.add(src, src);
-
-    return new Promise(resolve => {
-      Assets.load((_, resources) => resolve(resources[src]));
-    });
+    return Assets.load(src);
   }
 
   /**
    * Unload the graphics.
    * @param  {Array}  keys The keys of the cache items to clear.
    */
-  static unload(src) {
-    Assets.reset();
+  static unload(src = GraphicsLoader.cacheKeys) {
+    const keys = Array.isArray(src) ? src : [src];
 
-    // This is a temporary way of unloading until upgrading using PIXI.Assets.
-    const keys = src
-      ? GraphicsLoader.cacheKeys.filter(key => key !== 'assets/doom_regular.png')
-      : GraphicsLoader.cacheKeys;
-
-    keys.forEach(key => {
-      const imageKey = GraphicsLoader.cacheKeys.includes(key) ? key : `${key}_image`;
-
-      if (TextureCache[imageKey]) {
-        TextureCache[imageKey].destroy(true);
-        delete TextureCache[imageKey];
-      }
-    });
-
-    return new Promise(resolve => {
-      resolve();
-    });
+    return Promise.all(
+      keys.reduce(
+        (memo, key) => (Assets.cache.has(key) ? [...memo, Assets.unload(key)] : memo),
+        [],
+      ),
+    );
   }
 
   static get cacheKeys() {
-    return Object.keys(TextureCache);
+    return [...Assets.cache._cache.keys()]; // eslint-disable-line no-underscore-dangle
   }
 }
 

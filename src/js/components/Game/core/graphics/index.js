@@ -12,6 +12,7 @@ import {
   Texture,
   RenderTexture,
   PixelateFilter,
+  Assets,
 } from './pixi';
 
 import TextSprite from './components/TextSprite';
@@ -97,4 +98,8 @@ export {
    * PIXI settings.
    */
   settings,
+  /**
+   * The Assets component.
+   */
+  Assets,
 };
