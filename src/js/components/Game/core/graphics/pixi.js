@@ -18,21 +18,21 @@
 // import { BitmapText } from '@pixi/text-bitmap';
 
 import {
-  filters,
-  utils,
-  SCALE_MODES,
-  BLEND_MODES,
-  settings,
-  Rectangle,
-  Texture,
-  RenderTexture,
   AnimatedSprite,
   Application,
+  BitmapText,
+  BLEND_MODES,
   Container,
+  filters,
   Graphics,
   ParticleContainer,
+  Rectangle,
+  RenderTexture,
+  SCALE_MODES,
+  settings,
   Sprite,
-  BitmapText,
+  Texture,
+  utils,
 } from 'pixi.js';
 
 import { Assets } from '@pixi/assets';
@@ -40,25 +40,24 @@ import { Assets } from '@pixi/assets';
 import { PixelateFilter } from '@pixi/filter-pixelate';
 
 const { ColorMatrixFilter } = filters;
-const { EventEmitter, TextureCache } = utils;
+const { EventEmitter } = utils;
+
+settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 export {
-  ColorMatrixFilter,
-  EventEmitter,
-  SCALE_MODES,
-  BLEND_MODES,
-  settings,
-  Rectangle,
-  Texture,
-  RenderTexture,
-  PixelateFilter,
   AnimatedSprite,
   Application,
+  Assets,
+  BitmapText,
+  BLEND_MODES,
+  ColorMatrixFilter,
   Container,
-  TextureCache,
+  EventEmitter,
   Graphics,
   ParticleContainer,
+  PixelateFilter,
+  Rectangle,
+  RenderTexture,
   Sprite,
-  BitmapText,
-  Assets,
+  Texture,
 };

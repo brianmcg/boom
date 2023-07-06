@@ -5,9 +5,7 @@
 import {
   ColorMatrixFilter,
   EventEmitter,
-  SCALE_MODES,
   BLEND_MODES,
-  settings,
   Rectangle,
   Texture,
   RenderTexture,
@@ -24,8 +22,6 @@ import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
-
-settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 export {
   /**
