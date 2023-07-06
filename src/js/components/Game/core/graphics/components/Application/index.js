@@ -15,7 +15,7 @@ class Application extends PixiApplication {
   constructor(...options) {
     super({ ...options, autoStart: false, clearBeforeRender: false, hello: true });
 
-    this.stage.interactive = true;
+    this.stage.eventMode = 'static';
 
     window.addEventListener('resize', () => this.onResize());
   }

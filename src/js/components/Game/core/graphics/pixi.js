@@ -20,29 +20,27 @@
 import {
   AnimatedSprite,
   Application,
+  Assets,
+  BaseTexture,
   BitmapText,
   BLEND_MODES,
+  ColorMatrixFilter,
   Container,
-  filters,
   Graphics,
   ParticleContainer,
   Rectangle,
   RenderTexture,
   SCALE_MODES,
-  settings,
   Sprite,
   Texture,
   utils,
 } from 'pixi.js';
 
-import { Assets } from '@pixi/assets';
-
 import { PixelateFilter } from '@pixi/filter-pixelate';
 
-const { ColorMatrixFilter } = filters;
 const { EventEmitter } = utils;
 
-settings.SCALE_MODE = SCALE_MODES.NEAREST;
+BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
 
 export {
   AnimatedSprite,
