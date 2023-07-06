@@ -23,8 +23,6 @@ const SCENES = {
 
 settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
-settings.SPRITE_BATCH_SIZE = SCREEN.WIDTH * SCREEN.HEIGHT;
-
 /**
  * A class representing a game.
  */

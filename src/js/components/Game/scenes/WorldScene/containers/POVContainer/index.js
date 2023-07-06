@@ -324,20 +324,20 @@ class POVContainer extends Container {
           if (backgroundName) {
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            sprite.alpha = 1;
-          } else {
-            sprite.alpha = 0;
+            // sprite.alpha = 1;
+            // } else {
+            // sprite.alpha = 0;
           }
         }
       }
 
-      for (let yIndex = topIntersection + 1, m = bottomIntersection - 1; yIndex < m; yIndex++) {
-        sprite = backgroundSprites[xIndex][yIndex];
+      // for (let yIndex = topIntersection + 1, m = bottomIntersection - 1; yIndex < m; yIndex++) {
+      // sprite = backgroundSprites[xIndex][yIndex];
 
-        if (sprite) {
-          sprite.alpha = 0;
-        }
-      }
+      // if (sprite) {
+      // sprite.alpha = 0;
+      // }
+      // }
 
       for (let yIndex = bottomIntersection, m = SCREEN.HEIGHT; yIndex < m; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
@@ -374,9 +374,9 @@ class POVContainer extends Container {
 
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            sprite.alpha = 1;
-          } else {
-            sprite.alpha = 0;
+            // sprite.alpha = 1;
+            // } else {
+            // sprite.alpha = 0;
           }
         }
       }
