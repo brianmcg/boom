@@ -2,6 +2,10 @@ import { createWorld } from './bodies';
 import { createSprites } from './sprites';
 
 /**
+ * @module game/scenes/world-scene/parsers
+ */
+
+/**
  * Parses the loaded scene assets.
  * @param  {Scene}  options.scene     The world scene.
  * @param  {Object} options.graphics  The scene graphics.

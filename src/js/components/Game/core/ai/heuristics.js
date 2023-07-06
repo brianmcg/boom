@@ -1,4 +1,8 @@
 /**
+ * @module game/core/ai/heuristics
+ */
+
+/**
  * The manhattan heuristic.
  * @param  {Object} pos0 The first coordinates.
  * @param  {Object} pos1 The second coordinates.

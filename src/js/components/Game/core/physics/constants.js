@@ -1,4 +1,8 @@
 /**
+ * @module  game/core/physics/constants
+ */
+
+/**
  * Axes constant.
  * @type {Object}
  */

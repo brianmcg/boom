@@ -159,7 +159,7 @@ class WorldScene extends Scene {
 
   /**
    * Update the scene
-   * @param  {[delta} delta The delta time.
+   * @param  {delta} delta The delta time.
    */
   update(delta, elapsedMS) {
     switch (this.state) {

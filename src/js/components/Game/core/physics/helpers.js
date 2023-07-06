@@ -1,3 +1,7 @@
+/**
+ * @module  game/core/physics/helpers
+ */
+
 import { CELL_SIZE, WALL_LAYERS } from '@game/constants/config';
 import { AXES, TRANSPARENCY } from './constants';
 

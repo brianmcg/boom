@@ -120,7 +120,6 @@ class ReviewContainer extends Container {
 
   /**
    * Show the next stat.
-   * @return {[type]} [description]
    */
   showNext() {
     const next = this.statContainers[this.currentIndex];

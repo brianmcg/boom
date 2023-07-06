@@ -1,3 +1,7 @@
+/**
+ * @module game/scenes/world-scene/parsers/bodies
+ */
+
 import { degrees, AXES } from '@game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from '@game/constants/assets';
 import { CELL_SIZE, DEBUG, ALONE } from '@game/constants/config';

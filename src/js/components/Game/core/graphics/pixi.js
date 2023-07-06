@@ -1,3 +1,7 @@
+/**
+ * @module  game/core/graphics/pixi
+ */
+
 // import { ColorMatrixFilter } from '@pixi/filter-color-matrix';
 // import { EventEmitter, TextureCache } from '@pixi/utils';
 // import { SCALE_MODES, BLEND_MODES } from '@pixi/constants';

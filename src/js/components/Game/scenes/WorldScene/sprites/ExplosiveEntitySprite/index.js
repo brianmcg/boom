@@ -11,7 +11,7 @@ const EVENTS = {
 class ExplosiveEntitySprite extends AnimatedEntitySprite {
   /**
    * Creates and explosive sprite.
-   * @param  {[type]}  entity                 The entity the sprite represents.
+   * @param  {Entity}  entity                 The entity the sprite represents.
    * @param  {Array}   textures               The sprite textures.
    * @param  {Number}  options.animationSpeed The sprite animationSpeed.
    * @param  {Number}  options.tint           The sprite tint.

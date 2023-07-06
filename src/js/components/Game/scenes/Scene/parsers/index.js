@@ -1,3 +1,7 @@
+/**
+ * @module game/scenes/scene/parsers
+ */
+
 import { TextSprite, RectangleSprite } from '@game/core/graphics';
 import { GAME_FONT } from '@game/constants/assets';
 import { FONT_SIZES } from '@game/constants/fonts';

@@ -1,3 +1,7 @@
+/**
+ * @module game/scenes/world-scene/parsers/sprites
+ */
+
 import {
   Rectangle,
   Texture,

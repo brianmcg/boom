@@ -43,7 +43,7 @@ class BinaryHeap {
 
   /**
    * Remove a node.
-   * @param  {[type]} node The node to remove.
+   * @param  {GridNode} node The node to remove.
    */
   remove(node) {
     const i = this.content.indexOf(node);

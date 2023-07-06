@@ -1,3 +1,7 @@
+/**
+ * @module  game/core/ai/helpers
+ */
+
 import BinaryHeap from './components/BinaryHeap';
 import { manhattan } from './heuristics';
 
