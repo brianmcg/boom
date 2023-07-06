@@ -31,7 +31,6 @@ class Game extends Application {
   constructor() {
     super(SCREEN.WIDTH, SCREEN.HEIGHT, { backgroundColor: BLACK });
 
-    this.stage.interactive = true;
     this.style = { position: 'absolute', left: '50%', top: '50%' };
 
     if (SHOW_STATS) {
