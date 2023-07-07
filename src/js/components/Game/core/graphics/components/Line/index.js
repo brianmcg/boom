@@ -1,6 +1,14 @@
 import { Graphics } from '../../pixi';
 
+/**
+ * Class representing a line.
+ */
 class Line extends Graphics {
+  /**
+   * @param  {Number} options.thickness The thickness of the line.
+   * @param  {Number} options.color     The color of the line.
+   * @param  {Number} options.alpha     The alpha of the line.
+   */
   constructor({ thickness = 1, color = 0x000000, alpha = 1 }) {
     super();
 
@@ -15,7 +23,11 @@ class Line extends Graphics {
     this.lineTo(1, 1);
   }
 
-  update(startPoint, endPoint) {
+  /**
+   * @param  {Object} options.startPoint  The start point.
+   * @param  {Object} options.endPoint    The end point.
+   */
+  update(startPoint = {}, endPoint = {}) {
     this.clear();
 
     this.lineStyle(this.thickness, this.color);
