@@ -66,7 +66,7 @@ class AbstractWeapon extends EventEmitter {
     projectile,
     secondary,
     anchorX = 0.5,
-    anchorY = 0.5,
+    anchorY = 1,
     scale = 1,
   }) {
     super();
