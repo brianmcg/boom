@@ -1,4 +1,4 @@
-import { Assets } from '@game/core/graphics';
+import { Assets } from '../../pixi';
 
 /**
  * Class representing a graphics loader.
