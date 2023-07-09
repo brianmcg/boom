@@ -11,7 +11,10 @@ const parseBoolParam = key => {
   return isPresent && param !== 'false';
 };
 
-const parseNumParam = key => parseInt(URL_PARAMS.get(key), 10) || 0;
+const parseNumParam = (key, fallback = 0) => {
+  const num = parseInt(URL_PARAMS.get(key), 10);
+  return !Number.isNaN(num) ? num : fallback;
+};
 
 /**
  * Debug mode.
@@ -23,7 +26,7 @@ export const DEBUG = parseNumParam('debug');
  * The level to load in debug mode.
  * @type {Number}
  */
-export const LEVEL = parseNumParam('level') || 1;
+export const LEVEL = parseNumParam('level', 1);
 
 /**
  * No enemies in the game.

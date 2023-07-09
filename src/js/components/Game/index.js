@@ -113,7 +113,7 @@ class Game extends Application {
     this.showScene(WORLD_PATH, {
       index,
       showLoader: true,
-      id: this.data.world.levels[index - 1],
+      id: this.data.world.levels[index],
       ...other,
     });
   }
