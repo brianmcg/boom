@@ -62,23 +62,20 @@ class HitScan extends Body {
    * @param  {Number} angle The angle of the hitscan.
    */
   run(angle, emitLight) {
-    const rays = castRay({
-      x: this.source.x,
-      y: this.source.y,
-      angle,
-      world: this.source.parent,
-    });
+    const collisionsInRange = [];
 
-    const originAngle = (angle + DEG_180) % DEG_360;
+    const { isExplosion, parent, x, y } = this.source;
 
     const sourceId = this.effect && this.id;
 
-    const collisionsInRange = [];
+    const originAngle = (angle + DEG_180) % DEG_360;
+
+    const rays = castRay({ x, y, angle, world: parent });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } = rays[rays.length - 1];
 
     if (emitLight) {
-      this.source.parent.addHitscanLight(this.lightIntensity);
+      parent.addFlashLight(this.lightIntensity);
     }
 
     // Get sorted collisions
@@ -135,14 +132,14 @@ class HitScan extends Body {
 
           if (damage) {
             if (sourceId) {
-              this.source.parent.addEffect({
+              parent.addEffect({
                 x: point.x + Math.cos(originAngle) * OFFSET,
                 y: point.y + Math.sin(originAngle) * OFFSET,
                 sourceId,
               });
             }
 
-            if (body.isDestroyable && !(this.source.isExplosion && body.isBoss)) {
+            if (body.isDestroyable && !(isExplosion && body.isBoss)) {
               body.hit({
                 damage,
                 angle,
@@ -159,7 +156,7 @@ class HitScan extends Body {
 
       // Handle collision with wall
       if (sourceId) {
-        this.source.parent.addEffect({
+        parent.addEffect({
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,

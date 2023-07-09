@@ -11,8 +11,8 @@ const EVENTS = { EFFECT_ADDED: 'world:effect:added' };
 const LIGHT = {
   PICKUP_AMOUNT: 0.35,
   PICKUP_DECREMENT: 0.01,
-  MAX_HITSCAN_AMOUNT: 3,
-  HITSCAN_DECREMENT: 0.2,
+  MAX_FLASH_AMOUNT: 3,
+  FLASH_DECREMENT: 0.2,
 };
 
 /**
@@ -60,7 +60,7 @@ class World extends PhysicsWorld {
     this.objects = objects;
     this.brightness = brightness;
     this.light = 0;
-    this.hitscanLight = 0;
+    this.flashLight = 0;
     this.pickupLight = 0;
     this.visibility = visibility * CELL_SIZE;
     this.effects = [];
@@ -115,15 +115,15 @@ class World extends PhysicsWorld {
       if (this.entranceTimer === 0) this.entrance.use?.();
     }
 
-    if (this.hitscanLight) {
-      this.hitscanLight = Math.max(0, this.hitscanLight - LIGHT.HITSCAN_DECREMENT * delta);
+    if (this.flashLight) {
+      this.flashLight = Math.max(0, this.flashLight - LIGHT.FLASH_DECREMENT * delta);
     }
 
     if (this.pickupLight) {
       this.pickupLight = Math.max(0, this.pickupLight - LIGHT.PICKUP_DECREMENT * delta);
     }
 
-    this.light = this.hitscanLight + this.pickupLight;
+    this.light = this.flashLight + this.pickupLight;
 
     super.update(delta, elapsedMS);
   }
@@ -215,9 +215,9 @@ class World extends PhysicsWorld {
    * Add hitscan light effect.
    * @param {Number} light The light amount.
    */
-  addHitscanLight(intensity = 0) {
+  addFlashLight(intensity = 0) {
     if (intensity) {
-      this.hitscanLight = Math.min(this.hitscanLight + intensity, LIGHT.MAX_HITSCAN_AMOUNT);
+      this.flashLight = Math.min(this.flashLight + intensity, LIGHT.MAX_FLASH_AMOUNT);
     }
   }
 

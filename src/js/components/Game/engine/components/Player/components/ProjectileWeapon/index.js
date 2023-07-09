@@ -65,7 +65,7 @@ class ProjectileWeapon extends AbstractWeapon {
 
       parent.add(projectile);
 
-      parent.addHitscanLight(this.power * LIGHT_MULTIPLIER);
+      parent.addFlashLight(this.power * LIGHT_MULTIPLIER);
 
       super.use();
     }
