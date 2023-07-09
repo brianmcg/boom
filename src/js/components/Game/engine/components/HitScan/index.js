@@ -7,7 +7,7 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
-const LIGHT_MULTIPLIER = 0.1;
+const LIGHT_MULTIPLIER = 0.125;
 
 /**
  * Class representing a hit scan.

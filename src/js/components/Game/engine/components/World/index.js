@@ -60,9 +60,9 @@ class World extends PhysicsWorld {
     this.objects = objects;
     this.brightness = brightness;
     this.light = 0;
+    this.hitscanLight = 0;
+    this.pickupLight = 0;
     this.visibility = visibility * CELL_SIZE;
-    this.updateHitscanLight = false;
-    this.updatePickupLight = false;
     this.effects = [];
     this.startTime = performance.now();
     this.exit = exit && this.getCell(...Object.values(exit));
@@ -110,31 +110,20 @@ class World extends PhysicsWorld {
    * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
-    if (this.updateHitscanLight) {
-      this.light -= LIGHT.HITSCAN_DECREMENT * delta;
-    }
-
-    if (this.updatePickupLight) {
-      this.light -= LIGHT.PICKUP_DECREMENT * delta;
-    }
-
-    if (this.light <= 0) {
-      this.updatePickupLight = false;
-      this.updateHitscanLight = false;
-      this.light = 0;
-    }
-
     if (this.entranceTimer) {
-      this.entranceTimer -= elapsedMS;
-
-      if (this.entranceTimer <= 0) {
-        this.entranceTimer = null;
-
-        if (this.entrance.use) {
-          this.entrance.use();
-        }
-      }
+      this.entranceTimer = Math.max(0, this.entranceTimer - elapsedMS);
+      if (this.entranceTimer === 0) this.entrance.use?.();
     }
+
+    if (this.hitscanLight) {
+      this.hitscanLight = Math.max(0, this.hitscanLight - LIGHT.HITSCAN_DECREMENT * delta);
+    }
+
+    if (this.pickupLight) {
+      this.pickupLight = Math.max(0, this.pickupLight - LIGHT.PICKUP_DECREMENT * delta);
+    }
+
+    this.light = this.hitscanLight + this.pickupLight;
 
     super.update(delta, elapsedMS);
   }
@@ -228,8 +217,7 @@ class World extends PhysicsWorld {
    */
   addHitscanLight(intensity = 0) {
     if (intensity) {
-      this.updateHitscanLight = true;
-      this.light = Math.min(this.light + intensity, LIGHT.MAX_HITSCAN_AMOUNT);
+      this.hitscanLight = Math.min(this.hitscanLight + intensity, LIGHT.MAX_HITSCAN_AMOUNT);
     }
   }
 
@@ -238,8 +226,7 @@ class World extends PhysicsWorld {
    * @param {Number} light The light amount.
    */
   addPickupLight() {
-    this.light += LIGHT.PICKUP_AMOUNT;
-    this.updatePickupLight = true;
+    this.pickupLight = LIGHT.PICKUP_AMOUNT;
   }
 
   /**

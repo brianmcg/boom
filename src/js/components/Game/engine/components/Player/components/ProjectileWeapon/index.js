@@ -4,6 +4,8 @@ import Projectile from '../../../Projectile';
 
 const DEG_360 = degrees(360);
 
+const LIGHT_MULTIPLIER = 0.125;
+
 /**
  * Class representing a projectile weapon.
  */
@@ -62,6 +64,8 @@ class ProjectileWeapon extends AbstractWeapon {
       });
 
       parent.add(projectile);
+
+      parent.addHitscanLight(this.power * LIGHT_MULTIPLIER);
 
       super.use();
     }

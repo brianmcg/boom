@@ -302,6 +302,8 @@ class AbstractWeapon extends EventEmitter {
       ammo,
       projectile,
       secondary,
+      scale,
+      anchorX,
     } = this;
 
     return {
@@ -320,6 +322,8 @@ class AbstractWeapon extends EventEmitter {
       spread,
       pellets: pellets.length,
       secondary,
+      scale,
+      anchorX,
     };
   }
 
