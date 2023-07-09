@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@game/constants/config';
-import { GREY, WHITE } from '@game/constants/colors';
+import { GREY, WHITE, BLACK } from '@game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import InnerContainer from './containers/InnerContainer';
 import OuterContainer from './containers/OuterContainer';
@@ -324,20 +324,20 @@ class POVContainer extends Container {
           if (backgroundName) {
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            // sprite.alpha = 1;
-            // } else {
-            // sprite.alpha = 0;
+            sprite.alpha = 1;
+          } else {
+            sprite.alpha = 0;
           }
         }
       }
 
-      // for (let yIndex = topIntersection + 1, m = bottomIntersection - 1; yIndex < m; yIndex++) {
-      // sprite = backgroundSprites[xIndex][yIndex];
+      for (let yIndex = topIntersection + 1, m = bottomIntersection - 1; yIndex < m; yIndex++) {
+        sprite = backgroundSprites[xIndex][yIndex];
 
-      // if (sprite) {
-      // sprite.alpha = 0;
-      // }
-      // }
+        if (sprite) {
+          sprite.alpha = 0;
+        }
+      }
 
       for (let yIndex = bottomIntersection, m = SCREEN.HEIGHT; yIndex < m; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
@@ -374,9 +374,9 @@ class POVContainer extends Container {
 
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            // sprite.alpha = 1;
-            // } else {
-            // sprite.alpha = 0;
+            sprite.alpha = 1;
+          } else {
+            sprite.alpha = 0;
           }
         }
       }
@@ -495,7 +495,7 @@ class POVContainer extends Container {
    * @param  {Boolean} darken   Darken the sprite.
    */
   calculateTint(distance, darken) {
-    const { flash, brightness, visibility } = this.world;
+    const { light, brightness, visibility } = this.world;
 
     let intensity = brightness - distance / visibility;
 
@@ -503,7 +503,7 @@ class POVContainer extends Container {
       intensity = 0;
     }
 
-    intensity += flash;
+    intensity += light;
 
     if (darken) {
       intensity -= 0.1;
@@ -514,7 +514,7 @@ class POVContainer extends Container {
     }
 
     if (intensity < 0) {
-      intensity = 0;
+      return BLACK;
     }
 
     return Math.round(intensity * 255) * GREY;

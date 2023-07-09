@@ -7,9 +7,7 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
-const SECONDARY_DAMAGE_FADE = 0.6;
-
-const SECONDARY_DAMAGE_DISTANCE = Math.sqrt(CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE);
+const LIGHT_MULTIPLIER = 0.125;
 
 /**
  * Class representing a hit scan.
@@ -32,8 +30,7 @@ class HitScan extends Body {
    * @param  {Number}  options.range        The range of the hitscan.
    * @param  {Number}  options.accuracy     The accuracy of the hitscan.
    * @param  {Number}  options.fade         The fade of the hitscan.
-   * @param  {Boolean} options.highCalibre  The calibre of the hitscan.
-   * @param  {Boolean} options.flash        The flash property of the hitscan.
+   * @param  {Boolean} options.penetration  The penetration of the hitscan.
    * @param  {Boolean} options.instantKill  The hitscan instantly kills.
    */
   constructor({
@@ -43,8 +40,7 @@ class HitScan extends Body {
     range = Number.MAX_VALUE,
     accuracy = 0,
     fade,
-    highCalibre = false,
-    flash = true,
+    penetration,
     instantKill,
     ...other
   } = {}) {
@@ -56,33 +52,30 @@ class HitScan extends Body {
     this.range = range;
     this.accuracy = accuracy;
     this.fade = fade;
-    this.highCalibre = highCalibre;
-    this.flash = flash;
+    this.penetration = penetration;
     this.instantKill = instantKill;
+    this.lightIntensity = this.power * LIGHT_MULTIPLIER;
   }
 
   /**
    * Execute the hit scan.
    * @param  {Number} angle The angle of the hitscan.
    */
-  run(angle) {
-    const rays = castRay({
-      x: this.source.x,
-      y: this.source.y,
-      angle,
-      world: this.source.parent,
-    });
+  run(angle, emitLight) {
+    const collisionsInRange = [];
 
-    const originAngle = (angle + DEG_180) % DEG_360;
+    const { isExplosion, parent, x, y } = this.source;
 
     const sourceId = this.effect && this.id;
 
-    const collisionsInRange = [];
+    const originAngle = (angle + DEG_180) % DEG_360;
+
+    const rays = castRay({ x, y, angle, world: parent });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } = rays[rays.length - 1];
 
-    if (this.flash) {
-      this.source.parent.addFlash(this.power);
+    if (emitLight) {
+      parent.addFlashLight(this.lightIntensity);
     }
 
     // Get sorted collisions
@@ -126,9 +119,9 @@ class HitScan extends Body {
           }
 
           if (i > 0) {
-            if (this.highCalibre) {
-              if (body.getDistanceTo(collisions[0].body) < SECONDARY_DAMAGE_DISTANCE) {
-                damage *= SECONDARY_DAMAGE_FADE / i;
+            if (this.penetration) {
+              if (body.getDistanceTo(collisions[0].body) < this.penetration.distance * CELL_SIZE) {
+                damage *= this.penetration.fade / i;
               } else {
                 damage = 0;
               }
@@ -139,14 +132,14 @@ class HitScan extends Body {
 
           if (damage) {
             if (sourceId) {
-              this.source.parent.addEffect({
+              parent.addEffect({
                 x: point.x + Math.cos(originAngle) * OFFSET,
                 y: point.y + Math.sin(originAngle) * OFFSET,
                 sourceId,
               });
             }
 
-            if (body.isDestroyable && !(this.source.isExplosion && body.isBoss)) {
+            if (body.isDestroyable && !(isExplosion && body.isBoss)) {
               body.hit({
                 damage,
                 angle,
@@ -163,7 +156,7 @@ class HitScan extends Body {
 
       // Handle collision with wall
       if (sourceId) {
-        this.source.parent.addEffect({
+        parent.addEffect({
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,

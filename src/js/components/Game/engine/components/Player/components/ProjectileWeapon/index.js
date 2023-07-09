@@ -4,6 +4,8 @@ import Projectile from '../../../Projectile';
 
 const DEG_360 = degrees(360);
 
+const LIGHT_MULTIPLIER = 0.125;
+
 /**
  * Class representing a projectile weapon.
  */
@@ -28,10 +30,10 @@ class ProjectileWeapon extends AbstractWeapon {
    * @param  {Object}  options.projectile The weapon projectile data.
    * @param  {Boolean} options.secondary  The weapon is secondary.
    */
-  constructor({ projectile, soundSprite, ...other }) {
-    super({ projectile, ...other });
+  constructor({ soundSprite, ...other }) {
+    super(other);
 
-    const { amount, ...otherOptions } = projectile;
+    const { amount, ...otherOptions } = this.projectile;
 
     this.projectiles = [];
 
@@ -62,6 +64,8 @@ class ProjectileWeapon extends AbstractWeapon {
       });
 
       parent.add(projectile);
+
+      parent.addFlashLight(this.power * LIGHT_MULTIPLIER);
 
       super.use();
     }

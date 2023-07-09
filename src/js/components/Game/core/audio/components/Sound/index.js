@@ -18,6 +18,9 @@ class Sound extends Howl {
     });
   }
 
+  /**
+   * @return {Promise}  Resolves when sound loads.
+   */
   load() {
     super.load();
 
@@ -26,10 +29,16 @@ class Sound extends Howl {
     });
   }
 
+  /**
+   * @return {Boolean}  Is the sound looping.
+   */
   isLooping() {
     return this._loop; // eslint-disable-line no-underscore-dangle
   }
 
+  /**
+   * @return {Boolean}  Is the sound loaing.
+   */
   isLoaded() {
     return this.state() === 'loaded';
   }

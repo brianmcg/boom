@@ -7,13 +7,15 @@ const MAX_MOVE_X = SCREEN.WIDTH / 40;
 
 const MAX_MOVE_Y = SCREEN.HEIGHT / 22;
 
-const MOVE_INCREMENT_X = 0.4;
+const MOVE_INCREMENT_X = SCREEN.WIDTH / 750;
 
-const MOVE_INCREMENT_Y = 0.1;
+const MOVE_INCREMENT_Y = SCREEN.HEIGHT / 900;
 
-const CHANGE_INCREMENT = 6;
+const CHANGE_INCREMENT = SCREEN.HEIGHT / 20;
 
-const BREATH_MULTIPLIER = 3;
+const BREATH_MULTIPLIER = SCREEN.HEIGHT / 30;
+
+const ROT_MULTIPLIER = SCREEN.WIDTH / 33;
 
 const STATES = {
   IDLE: 'player:idle',
@@ -73,9 +75,9 @@ class PlayerContainer extends Container {
    */
   update(delta, elapsedMS) {
     const { weapon } = this.sprites;
-    const { flash, brightness } = this.player.parent;
-    const breath = this.player.breath * BREATH_MULTIPLIER;
-    let intensity = brightness + flash;
+    const { light, brightness } = this.player.parent;
+
+    let intensity = brightness + light;
 
     switch (this.state) {
       case STATES.IDLE:
@@ -106,7 +108,7 @@ class PlayerContainer extends Container {
     }
 
     weapon.x = this.weaponCenterX + this.weaponX;
-    weapon.y = this.weaponCenterY + this.weaponY + breath;
+    weapon.y = this.weaponCenterY + this.weaponY + this.player.breath * BREATH_MULTIPLIER;
     weapon.tint = Math.round(intensity * 255) * GREY;
 
     super.update(delta, elapsedMS);
@@ -121,9 +123,9 @@ class PlayerContainer extends Container {
 
     // Update x offset
     if (rotateAngle < 0) {
-      this.weaponX = Math.max(this.weaponX + rotateAngle * 10 * delta, -MAX_MOVE_X);
+      this.weaponX = Math.max(this.weaponX + rotateAngle * ROT_MULTIPLIER * delta, -MAX_MOVE_X);
     } else if (rotateAngle > 0) {
-      this.weaponX = Math.min(this.weaponX + rotateAngle * 10 * delta, MAX_MOVE_X);
+      this.weaponX = Math.min(this.weaponX + rotateAngle * ROT_MULTIPLIER * delta, MAX_MOVE_X);
     } else if (this.weaponX > 0) {
       this.weaponX = Math.max(this.weaponX - MOVE_INCREMENT_X * delta, 0);
     } else if (this.weaponX < 0) {

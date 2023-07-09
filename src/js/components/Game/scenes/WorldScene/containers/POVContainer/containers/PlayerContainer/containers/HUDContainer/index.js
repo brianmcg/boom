@@ -22,7 +22,7 @@ class HUDContainer extends Container {
   constructor(player, sprites) {
     super();
 
-    const { healthIcon, healthAmount, ammoIcon, ammoAmount, foreground, keys } = sprites;
+    const { healthIcon, healthAmount, ammoIcon, ammoAmount, keys } = sprites;
 
     healthIcon.x = HUD_PADDING + healthIcon.width / 2;
     healthIcon.y = SCREEN.HEIGHT - healthIcon.height / 2 - HUD_PADDING;
@@ -39,7 +39,6 @@ class HUDContainer extends Container {
     this.addChild(ammoAmount);
     this.addChild(healthIcon);
     this.addChild(healthAmount);
-    this.addChild(foreground);
 
     // Set key card sprite positions
     Object.values(player.keyCards).forEach(keyCard => {
@@ -135,7 +134,12 @@ class HUDContainer extends Container {
     this.messages.forEach(message => message.update(delta, elapsedMS));
 
     // Update foreground.
-    foreground.alpha = 1 - this.player.vision;
+    if (this.player.vision) {
+      foreground.alpha = 1 - this.player.vision;
+      this.addChild(foreground);
+    } else {
+      this.removeChild(foreground);
+    }
   }
 }
 

@@ -46,7 +46,8 @@ class Explosion extends Body {
         power: this.power,
         range: this.range,
         fade: true,
-        highCalibre: true,
+        // TODO: Move this to data.
+        penetration: { distance: 2, fade: 0.75 },
       }),
       angle,
     }));
@@ -77,7 +78,7 @@ class Explosion extends Body {
       });
 
       // Fire rays in all directions.
-      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
+      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle, true));
 
       // Stop dead bodies from colliding.
       deadBodies.forEach(body => {

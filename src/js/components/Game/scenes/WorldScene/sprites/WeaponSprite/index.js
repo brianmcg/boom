@@ -1,7 +1,7 @@
 import { AnimatedSprite } from '@game/core/graphics';
 import { SCREEN } from '@game/constants/config';
 
-const HEIGHT_RATIO = SCREEN.HEIGHT / 160;
+const SCALE_RATIO = SCREEN.HEIGHT / 160;
 
 /**
  * Class representing a weapon sprite.
@@ -19,13 +19,11 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.textureCollection = textureCollection;
-    this.width *= HEIGHT_RATIO;
-    this.height *= HEIGHT_RATIO;
-    this.x = SCREEN.WIDTH / 2;
-    this.y = SCREEN.HEIGHT - this.height / 2;
+
     this.player = player;
-    this.anchor.x = 0.5;
-    this.anchor.y = 0.5;
+
+    this.x = SCREEN.WIDTH / 2;
+    this.y = SCREEN.HEIGHT;
 
     Object.values(player.weapons).forEach(weapon => {
       weapon.onUse(() => this.setUsing());
@@ -54,7 +52,7 @@ class WeaponSprite extends AnimatedSprite {
 
     this.textures = this.textureCollection[name].idle;
     this.anchor.set(anchorX, anchorY);
-    this.scale.set(scale);
+    this.scale.set(scale * SCALE_RATIO);
   }
 
   /**

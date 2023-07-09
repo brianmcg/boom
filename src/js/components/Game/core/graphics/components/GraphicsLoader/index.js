@@ -1,4 +1,4 @@
-import { Assets } from '@game/core/graphics';
+import { Assets } from '../../pixi';
 
 /**
  * Class representing a graphics loader.
@@ -6,7 +6,6 @@ import { Assets } from '@game/core/graphics';
 class GraphicsLoader {
   /**
    * Load graphics resources.
-   * @param  {String} options.name  The name of the asset.
    * @param  {String} options.src   The source of the asset.
    * @return {Promise}              Resolves when assets load.
    */
@@ -16,7 +15,7 @@ class GraphicsLoader {
 
   /**
    * Unload the graphics.
-   * @param  {Array}  keys The keys of the cache items to clear.
+   * @param  {Array}  src The keys of the cache items to clear.
    */
   static unload(src = GraphicsLoader.cacheKeys) {
     const keys = Array.isArray(src) ? src : [src];

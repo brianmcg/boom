@@ -53,7 +53,7 @@ const createCell = ({ cell, props, soundSprite }) => {
 
   if (cell.door) {
     return new Door({
-      ...props.door,
+      ...props.cells.door,
       x: CELL_SIZE * cell.x + CELL_SIZE / 2,
       y: CELL_SIZE * cell.y + CELL_SIZE / 2,
       width: cell.width * CELL_SIZE,
@@ -75,7 +75,7 @@ const createCell = ({ cell, props, soundSprite }) => {
 
   if (cell.pushable) {
     return new PushWall({
-      ...props.pushWall,
+      ...props.cells.push,
       x: CELL_SIZE * cell.x + CELL_SIZE / 2,
       y: CELL_SIZE * cell.y + CELL_SIZE / 2,
       width: CELL_SIZE,

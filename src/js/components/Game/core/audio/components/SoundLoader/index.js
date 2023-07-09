@@ -9,7 +9,6 @@ const cache = new Map();
 class SoundLoader {
   /**
    * Load a sound
-   * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
    * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @param  {Object}   options.loop       Should the sound loop.
@@ -25,7 +24,6 @@ class SoundLoader {
 
   /**
    * Load the sound sprite.
-   * @param  {String}   options.name       The name of the sound file.
    * @param  {String}   options.src        The path to the sound file.
    * @param  {Object}   options.spriteSrc  The path to the sprite data.
    * @return {Promise}                     Promise that is resolved when the sound is loaded.
@@ -42,8 +40,8 @@ class SoundLoader {
 
   /**
    * Load the sound
-   * @param  {String}   options.name  The name of the sound file.
    * @param  {String}   options.src   The path to the sound file.
+   * @param  {Object}   options.loop  Should the sound loop.
    * @return {Promise}                Promise that is resolved when the sound is loaded.
    */
   static loadSrc({ src, loop }) {
