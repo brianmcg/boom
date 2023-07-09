@@ -4,24 +4,16 @@ import { CELL_SIZE } from '@game/constants/config';
 import Effect from './components/Effect';
 import { NODE_WEIGHTS, createGraphs } from './helpers';
 
-const PICKUP_LIGHT_AMOUNT = 0.35;
-
-const PICKUP_LIGHT_DECREMENT = 0.01;
-
-const MAX_HITSCAN_LIGHT_AMOUNT = 3;
-
-const HITSCAN_LIGHT_DECREMENT = 0.2;
-
-const ENTRANCE_INTERVAL = 500;
+const ENTRANCE_INTERVAL = 700;
 
 const EVENTS = { EFFECT_ADDED: 'world:effect:added' };
 
-// const LIGHT = {
-//   PICKUP_AMOUNT: 0.35,
-//   PICKUP_DECREMENT: 0.01,
-//   MAX_HITSCAN_AMOUNT: 3,
-//   HITSCAN_DECREMENT: 0.2,
-// };
+const LIGHT = {
+  PICKUP_AMOUNT: 0.35,
+  PICKUP_DECREMENT: 0.01,
+  MAX_HITSCAN_AMOUNT: 3,
+  HITSCAN_DECREMENT: 0.2,
+};
 
 /**
  * Class representing a world.
@@ -119,11 +111,11 @@ class World extends PhysicsWorld {
    */
   update(delta, elapsedMS) {
     if (this.updateHitscanLight) {
-      this.light -= HITSCAN_LIGHT_DECREMENT * delta;
+      this.light -= LIGHT.HITSCAN_DECREMENT * delta;
     }
 
     if (this.updatePickupLight) {
-      this.light -= PICKUP_LIGHT_DECREMENT * delta;
+      this.light -= LIGHT.PICKUP_DECREMENT * delta;
     }
 
     if (this.light <= 0) {
@@ -237,7 +229,7 @@ class World extends PhysicsWorld {
   addHitscanLight(intensity = 0) {
     if (intensity) {
       this.updateHitscanLight = true;
-      this.light = Math.min(this.light + intensity, MAX_HITSCAN_LIGHT_AMOUNT);
+      this.light = Math.min(this.light + intensity, LIGHT.MAX_HITSCAN_AMOUNT);
     }
   }
 
@@ -246,7 +238,7 @@ class World extends PhysicsWorld {
    * @param {Number} light The light amount.
    */
   addPickupLight() {
-    this.light += PICKUP_LIGHT_AMOUNT;
+    this.light += LIGHT.PICKUP_AMOUNT;
     this.updatePickupLight = true;
   }
 
