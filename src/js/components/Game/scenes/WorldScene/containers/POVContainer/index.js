@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@game/constants/config';
-import { GREY, WHITE } from '@game/constants/colors';
+import { GREY, WHITE, BLACK } from '@game/constants/colors';
 import MapContainer from './containers/MapContainer';
 import InnerContainer from './containers/InnerContainer';
 import OuterContainer from './containers/OuterContainer';
@@ -495,7 +495,7 @@ class POVContainer extends Container {
    * @param  {Boolean} darken   Darken the sprite.
    */
   calculateTint(distance, darken) {
-    const { flash, brightness, visibility } = this.world;
+    const { light, brightness, visibility } = this.world;
 
     let intensity = brightness - distance / visibility;
 
@@ -503,7 +503,7 @@ class POVContainer extends Container {
       intensity = 0;
     }
 
-    intensity += flash;
+    intensity += light;
 
     if (darken) {
       intensity -= 0.1;
@@ -514,7 +514,7 @@ class POVContainer extends Container {
     }
 
     if (intensity < 0) {
-      intensity = 0;
+      return BLACK;
     }
 
     return Math.round(intensity * 255) * GREY;

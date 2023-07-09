@@ -75,9 +75,9 @@ class PlayerContainer extends Container {
    */
   update(delta, elapsedMS) {
     const { weapon } = this.sprites;
-    const { flash, brightness } = this.player.parent;
+    const { light, brightness } = this.player.parent;
 
-    let intensity = brightness + flash;
+    let intensity = brightness + light;
 
     switch (this.state) {
       case STATES.IDLE:

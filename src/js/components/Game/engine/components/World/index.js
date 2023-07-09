@@ -4,19 +4,24 @@ import { CELL_SIZE } from '@game/constants/config';
 import Effect from './components/Effect';
 import { NODE_WEIGHTS, createGraphs } from './helpers';
 
-const ITEM_FLASH_AMOUNT = 0.35;
+const PICKUP_LIGHT_AMOUNT = 0.35;
 
-const ITEM_FLASH_DECREMENT = 0.01;
+const PICKUP_LIGHT_DECREMENT = 0.01;
 
-const MAX_EXPLOSION_FLASH_AMOUNT = 3;
+const MAX_HITSCAN_LIGHT_AMOUNT = 3;
 
-const EXPLOSION_FLASH_DECREMENT = 0.2;
-
-const FLASH_MULTIPLIER = 0.2;
+const HITSCAN_LIGHT_DECREMENT = 0.2;
 
 const ENTRANCE_INTERVAL = 500;
 
-const EFFECT_ADDED_EVENT = 'world:effect:added';
+const EVENTS = { EFFECT_ADDED: 'world:effect:added' };
+
+// const LIGHT = {
+//   PICKUP_AMOUNT: 0.35,
+//   PICKUP_DECREMENT: 0.01,
+//   MAX_HITSCAN_AMOUNT: 3,
+//   HITSCAN_DECREMENT: 0.2,
+// };
 
 /**
  * Class representing a world.
@@ -62,10 +67,10 @@ class World extends PhysicsWorld {
     this.enemies = enemies;
     this.objects = objects;
     this.brightness = brightness;
-    this.flash = 0;
+    this.light = 0;
     this.visibility = visibility * CELL_SIZE;
-    this.explosionFlash = false;
-    this.itemFlash = false;
+    this.updateHitscanLight = false;
+    this.updatePickupLight = false;
     this.effects = [];
     this.startTime = performance.now();
     this.exit = exit && this.getCell(...Object.values(exit));
@@ -113,18 +118,18 @@ class World extends PhysicsWorld {
    * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
-    if (this.explosionFlash) {
-      this.flash -= EXPLOSION_FLASH_DECREMENT * delta;
+    if (this.updateHitscanLight) {
+      this.light -= HITSCAN_LIGHT_DECREMENT * delta;
     }
 
-    if (this.itemFlash) {
-      this.flash -= ITEM_FLASH_DECREMENT * delta;
+    if (this.updatePickupLight) {
+      this.light -= PICKUP_LIGHT_DECREMENT * delta;
     }
 
-    if (this.flash <= 0) {
-      this.itemFlash = false;
-      this.explosionFlash = false;
-      this.flash = 0;
+    if (this.light <= 0) {
+      this.updatePickupLight = false;
+      this.updateHitscanLight = false;
+      this.light = 0;
     }
 
     if (this.entranceTimer) {
@@ -219,35 +224,39 @@ class World extends PhysicsWorld {
    * @param {Number}  options.z         The z coordinate.
    */
   addEffect(options) {
-    const effect = new Effect({
-      ...options,
-      parent: this,
-    });
+    const effect = new Effect({ ...options, parent: this });
 
     this.effects.push(effect);
-
-    this.emit(EFFECT_ADDED_EVENT, effect);
+    this.emit(EVENTS.EFFECT_ADDED, effect);
   }
 
   /**
-   * Add a flash of brightness to the world.
-   * @param {Number} flash The flash amount.
+   * Add hitscan light effect.
+   * @param {Number} light The light amount.
    */
-  addFlash(flash = 0) {
-    if (flash) {
-      this.explosionFlash = true;
-
-      this.flash = Math.min(this.flash + flash * FLASH_MULTIPLIER, MAX_EXPLOSION_FLASH_AMOUNT);
+  addHitscanLight(intensity = 0) {
+    if (intensity) {
+      this.updateHitscanLight = true;
+      this.light = Math.min(this.light + intensity, MAX_HITSCAN_LIGHT_AMOUNT);
     }
   }
 
   /**
-   * Add screen shake.
-   * @param {Number} shake The amount to shake.
+   * Add a pickup light effect.
+   * @param {Number} light The light amount.
    */
-  addShake(shake) {
-    if (shake) {
-      this.player.shake(shake);
+  addPickupLight() {
+    this.light += PICKUP_LIGHT_AMOUNT;
+    this.updatePickupLight = true;
+  }
+
+  /**
+   * Add screen shake.
+   * @param {Number} amount The amount to shake.
+   */
+  addShake(amount) {
+    if (amount) {
+      this.player.shake(amount);
     }
   }
 
@@ -260,14 +269,13 @@ class World extends PhysicsWorld {
   }
 
   /**
-   * Set the brightness and enabled item flash.
+   * Set the brightness and enabled item light.
    * @param  {AbstractItem} item The item to pick up.
    */
   onPlayerPickUp(item) {
     item.setRemoved();
     this.remove(item);
-    this.flash += ITEM_FLASH_AMOUNT;
-    this.itemFlash = true;
+    this.addPickupLight();
   }
 
   /**
@@ -275,7 +283,7 @@ class World extends PhysicsWorld {
    * @param  {Function} callback The callback to add.
    */
   onEffectAdded(callback) {
-    this.on(EFFECT_ADDED_EVENT, callback);
+    this.on(EVENTS.EFFECT_ADDED, callback);
   }
 
   /**

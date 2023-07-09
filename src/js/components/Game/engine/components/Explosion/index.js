@@ -78,7 +78,7 @@ class Explosion extends Body {
       });
 
       // Fire rays in all directions.
-      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
+      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle, true));
 
       // Stop dead bodies from colliding.
       deadBodies.forEach(body => {

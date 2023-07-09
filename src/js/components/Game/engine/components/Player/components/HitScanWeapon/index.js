@@ -44,7 +44,6 @@ class HitScanWeapon extends AbstractWeapon {
           power: this.power,
           range: this.range,
           accuracy: this.accuracy,
-          flash: !!this.maxAmmo,
           penetration,
           instantKill: this.secondary,
         }),
@@ -66,9 +65,10 @@ class HitScanWeapon extends AbstractWeapon {
 
       for (let i = 0; i < pellets.length; i++) {
         const projectile = projectiles.shift();
+        const emitLight = !this.isMelee() && (i === 0 || i === pellets.length - 1);
 
         if (projectile) {
-          projectile.run(rayAngle).forEach(collision => {
+          projectile.run(rayAngle, emitLight).forEach(collision => {
             collisions.push(collision);
           });
           projectiles.push(projectile);
