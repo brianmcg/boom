@@ -319,7 +319,7 @@ class WorldScene extends Scene {
    * Complete the scene.
    */
   complete() {
-    if (this.index < this.game.data.world.levels.length) {
+    if (this.index < this.game.data.world.levels.length - 1) {
       this.game.showWorldScene({
         index: this.index + 1,
         startProps: this.world.props,
