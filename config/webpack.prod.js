@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const JsonMinimizerPlugin = require('json-minimizer-webpack-plugin');
 const { merge } = require('webpack-merge');
 
 const paths = require('./paths');
@@ -31,6 +32,10 @@ module.exports = merge(common, {
           'sass-loader',
         ],
       },
+      {
+        test: /\.json$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -42,7 +47,7 @@ module.exports = merge(common, {
   ],
   optimization: {
     minimize: true,
-    minimizer: [new CssMinimizerPlugin(), '...'],
+    minimizer: [new JsonMinimizerPlugin(), new CssMinimizerPlugin()],
     // runtimeChunk: {
     //   name: 'single',
     // },
