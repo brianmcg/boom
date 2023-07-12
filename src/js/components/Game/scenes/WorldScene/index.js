@@ -2,6 +2,7 @@ import translate from '@translate';
 import { WORLD_SCENE_ASSETS, SCENE_PATHS } from '@game/constants/assets';
 import { DEBUG } from '@game/constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
+import { CreatedTextureCache } from '@game/core/graphics';
 
 import { parse } from './parsers';
 import POVContainer from './containers/POVContainer';
@@ -359,7 +360,10 @@ class WorldScene extends Scene {
    */
   destroy(...options) {
     this.world.destroy();
+
     super.destroy(options);
+
+    CreatedTextureCache.clear();
   }
 }
 

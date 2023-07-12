@@ -13,6 +13,7 @@ import {
   ColorMatrixFilter,
   BLEND_MODES,
   Line,
+  CreatedTextureCache,
 } from '@game/core/graphics';
 import { BLACK, WHITE, RED } from '@game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@game/constants/config';
@@ -71,6 +72,9 @@ const createProjectileSprite = ({ animations, textures, rotate }) => {
 
 const createWallSpriteMask = ({ wallTexture, floorHeight, wallHeight, renderer }) => {
   const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: wallHeight });
+
+  CreatedTextureCache.add(renderTexture);
+
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
@@ -80,10 +84,14 @@ const createWallSpriteMask = ({ wallTexture, floorHeight, wallHeight, renderer }
     height: wallHeight,
   });
 
+  CreatedTextureCache.add(maskBackground.texture);
+
   const floorOffset = new RectangleSprite({
     width: CELL_SIZE,
     height: floorHeight,
   });
+
+  CreatedTextureCache.add(floorOffset.texture);
 
   floorOffset.y = wallHeight - floorHeight;
 
@@ -151,7 +159,9 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
 
     for (let i = 0; i < frame.w; i++) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[name].push([new Texture(wallTexture, clearSlice)]);
+      const sliceTexture = new Texture(wallTexture, clearSlice);
+      CreatedTextureCache.add(sliceTexture);
+      wallTextures[name].push([sliceTexture]);
     }
 
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
@@ -163,6 +173,8 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
           width: CELL_SIZE,
           height: wallHeight,
         });
+
+        CreatedTextureCache.add(renderTexture);
 
         const spatterTexture = textures[spatter];
         const wallSprite = new Sprite(wallTexture);
@@ -205,7 +217,9 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
 
       spatterTextures.forEach(texture => {
-        wallTextures[name][i].push(new Texture(texture, spatteredSlice));
+        const spatterTexture = new Texture(texture, spatteredSlice);
+        CreatedTextureCache.add(spatterTexture);
+        wallTextures[name][i].push(spatterTexture);
       });
     }
   });
@@ -278,7 +292,9 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
         const col = [];
         for (let j = 0; j < CELL_SIZE; j++) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-          col.push(new Texture(texture, pixel));
+          const backgroundTexture = new Texture(texture, pixel);
+          CreatedTextureCache.add(backgroundTexture);
+          col.push(backgroundTexture);
         }
         backgroundTextures[image].push(col);
       }
@@ -394,6 +410,8 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           height: spurtSprite.height,
         });
 
+        CreatedTextureCache.add(renderTexture);
+
         spurtContainer.removeChildren();
         spurtContainer.addChild(spurtSprite);
         renderer.render(spurtContainer, { renderTexture });
@@ -506,6 +524,8 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         height: spurtSprite.height,
       });
 
+      CreatedTextureCache.add(renderTexture);
+
       spurtContainer.removeChildren();
       spurtContainer.addChild(spurtSprite);
       renderer.render(spurtContainer, { renderTexture });
@@ -608,6 +628,8 @@ const createReviewSprites = text => {
     color: BLACK,
     alpha: 0,
   });
+
+  CreatedTextureCache.add(background.texture);
 
   const title = new TextSprite({
     fontName: GAME_FONT.NAME,
@@ -739,6 +761,8 @@ const createHudSprites = ({ world, textures, animations }) => {
       const { baseTexture, frame } = textures[name];
       const keyTexture = new Texture(baseTexture, frame);
 
+      CreatedTextureCache.add(keyTexture);
+
       return {
         ...memo,
         [item.color]: new HUDKeySprite(keyTexture),
@@ -754,6 +778,8 @@ const createHudSprites = ({ world, textures, animations }) => {
     color: RED,
     alpha: 0,
   });
+
+  CreatedTextureCache.add(foreground.texture);
 
   return {
     foreground,

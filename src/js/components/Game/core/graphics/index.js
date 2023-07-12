@@ -23,6 +23,8 @@ import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
+import CreatedTextureCache from './utilities/CreatedTextureCache';
+
 export {
   AnimatedSprite,
   Application,
@@ -30,6 +32,7 @@ export {
   BLEND_MODES,
   ColorMatrixFilter,
   Container,
+  CreatedTextureCache,
   EventEmitter,
   GraphicsLoader,
   Line,
