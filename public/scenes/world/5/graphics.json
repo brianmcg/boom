@@ -7880,6 +7880,47 @@
             "ammo_shotgun_15",
             "ammo_shotgun_16"
         ],
+        "arachnatron": {
+            "idle": {
+                "frames": [
+                    "arachnatron_01"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "arachnatron_02",
+                    "arachnatron_03",
+                    "arachnatron_04",
+                    "arachnatron_05"
+                ],
+                "loop": true
+            },
+            "aiming": {
+                "frames": [
+                    "arachnatron_06"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "arachnatron_07",
+                    "arachnatron_06"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "arachnatron_08"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "arachnatron_08",
+                    "arachnatron_09",
+                    "arachnatron_10",
+                    "arachnatron_11",
+                    "arachnatron_12"
+                ]
+            }
+        },
         "bc0000_floors": [
             "bc0000_floors_01",
             "bc0000_floors_02",
@@ -7912,6 +7953,48 @@
                     "boot_02",
                     "boot_02",
                     "boot_01"
+                ]
+            }
+        },
+        "cacodemon": {
+            "idle": {
+                "frames": [
+                    "cacodemon_01"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "cacodemon_01"
+                ]
+            },
+            "aiming": {
+                "frames": [
+                    "cacodemon_01",
+                    "cacodemon_02",
+                    "cacodemon_03",
+                    "cacodemon_04"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "cacodemon_04",
+                    "cacodemon_01"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "cacodemon_06"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "cacodemon_06",
+                    "cacodemon_07",
+                    "cacodemon_08",
+                    "cacodemon_09",
+                    "cacodemon_10",
+                    "cacodemon_11",
+                    "cacodemon_12"
                 ]
             }
         },
@@ -7985,6 +8068,50 @@
             "doors_04",
             "doors_05"
         ],
+        "elemental": {
+            "idle": {
+                "frames": [
+                    "elemental_01"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "elemental_01"
+                ]
+            },
+            "aiming": {
+                "frames": [
+                    "elemental_01",
+                    "elemental_02",
+                    "elemental_03",
+                    "elemental_04"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "elemental_04",
+                    "elemental_01"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "elemental_06",
+                    "elemental_06",
+                    "elemental_01"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "elemental_06",
+                    "elemental_07",
+                    "elemental_08",
+                    "elemental_09",
+                    "elemental_10",
+                    "elemental_11",
+                    "elemental_12"
+                ]
+            }
+        },
         "explosion_1": [
             "explosion_1_01",
             "explosion_1_02",
@@ -8172,6 +8299,21 @@
             "laucher_04",
             "laucher_05"
         ],
+        "launcher": {
+            "idle": {
+                "frames": [
+                    "laucher_01"
+                ]
+            },
+            "firing": {
+                "frames": [
+                    "laucher_02",
+                    "laucher_03",
+                    "laucher_05",
+                    "laucher_05"
+                ]
+            }
+        },
         "lift_doors": [
             "lift_doors_01",
             "lift_doors_02",
@@ -8509,149 +8651,7 @@
             "weapon_launcher_14",
             "weapon_launcher_15",
             "weapon_launcher_16"
-        ],
-        "arachnatron": {
-            "idle": {
-                "frames": [
-                    "arachnatron_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "arachnatron_02",
-                    "arachnatron_03",
-                    "arachnatron_04",
-                    "arachnatron_05"
-                ],
-                "loop": true
-            },
-            "aiming": {
-                "frames": [
-                    "arachnatron_06"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "arachnatron_07",
-                    "arachnatron_06"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "arachnatron_08"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "arachnatron_08",
-                    "arachnatron_09",
-                    "arachnatron_10",
-                    "arachnatron_11",
-                    "arachnatron_12"
-                ]
-            }
-        },
-        "cacodemon": {
-            "idle": {
-                "frames": [
-                    "cacodemon_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "cacodemon_01"
-                ]
-            },
-            "aiming": {
-                "frames": [
-                    "cacodemon_01",
-                    "cacodemon_02",
-                    "cacodemon_03",
-                    "cacodemon_04"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "cacodemon_04",
-                    "cacodemon_01"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "cacodemon_06"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "cacodemon_06",
-                    "cacodemon_07",
-                    "cacodemon_08",
-                    "cacodemon_09",
-                    "cacodemon_10",
-                    "cacodemon_11",
-                    "cacodemon_12"
-                ]
-            }
-        },
-        "elemental": {
-            "idle": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "aiming": {
-                "frames": [
-                    "elemental_01",
-                    "elemental_02",
-                    "elemental_03",
-                    "elemental_04"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "elemental_04",
-                    "elemental_01"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "elemental_06",
-                    "elemental_06",
-                    "elemental_01"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "elemental_06",
-                    "elemental_07",
-                    "elemental_08",
-                    "elemental_09",
-                    "elemental_10",
-                    "elemental_11",
-                    "elemental_12"
-                ]
-            }
-        },
-        "launcher": {
-            "idle": {
-                "frames": [
-                    "laucher_01"
-                ]
-            },
-            "firing": {
-                "frames": [
-                    "laucher_02",
-                    "laucher_03",
-                    "laucher_05",
-                    "laucher_05"
-                ]
-            }
-        }
+        ]
     },
     "meta": {
         "app": "https://www.codeandweb.com/texturepacker",
