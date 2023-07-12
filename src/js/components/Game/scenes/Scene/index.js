@@ -1,5 +1,5 @@
 import { KEYS } from '@game/core/input';
-import { Container } from '@game/core/graphics';
+import { Container, GraphicsCreator } from '@game/core/graphics';
 import { SoundSpriteController } from '@game/core/audio';
 import { MUSIC_VOLUME } from '@game/constants/config';
 import { parse } from './parsers';
@@ -504,12 +504,17 @@ class Scene extends Container {
    */
   destroy(options) {
     this.game.input.reset();
+
     this.removeChild(this.mainContainer);
     this.removeChild(this.menuContainer);
     this.removeChild(this.promptContainer);
+
     this.mainContainer.destroy(options);
     this.menuContainer.destroy(options);
     this.promptContainer.destroy(options);
+
+    GraphicsCreator.clear();
+
     super.destroy(options);
   }
 }

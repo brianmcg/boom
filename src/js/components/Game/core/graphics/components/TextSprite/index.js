@@ -27,11 +27,10 @@ class TextSprite extends BitmapText {
   }) {
     super(text, { fontName, fontSize });
 
-    this.maxWidth = maxWidth;
-
     this.x = x;
     this.y = y;
     this.alpha = alpha;
+    this.maxWidth = maxWidth;
 
     if (color || color === 0) {
       this.tint = color;

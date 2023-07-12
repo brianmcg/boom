@@ -66,11 +66,13 @@ class MapContainer extends Container {
 
     Object.values(entities).forEach(sprite => {
       sprite.removeAllListeners?.();
+      this.removeChild(sprite);
       sprite.destroy(options);
     });
 
     Object.values(effects).forEach(sprite => {
       sprite.removeAllListeners?.();
+      this.removeChild(sprite);
       sprite.destroy(options);
     });
 
