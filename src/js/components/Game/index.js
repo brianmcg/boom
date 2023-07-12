@@ -174,7 +174,7 @@ class Game extends Application {
    */
   removeScene() {
     this.stage.removeChild(this.scene);
-    this.scene.destroy({ texture: true, baseTexture: true });
+    this.scene.destroy();
     delete this.scene;
   }
 

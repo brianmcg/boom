@@ -123,8 +123,9 @@ class Container extends PixiContainer {
 
     this.removeChildren();
 
-    // TODO: Possible bug, test this.
-    children.forEach(child => child.destroy(options));
+    children.forEach(child => {
+      if (child instanceof Container) child.destroy(options);
+    });
 
     super.destroy(options);
   }

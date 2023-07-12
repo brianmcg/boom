@@ -64,20 +64,13 @@ class MapContainer extends Container {
   destroy(options) {
     const { effects, entities } = this.sprites;
 
-    // walls.flat().forEach(sprite => {
-    //   this.removeChild(sprite);
-    //   sprite.destroy(options);
-    // });
-
     Object.values(entities).forEach(sprite => {
       sprite.removeAllListeners?.();
-      this.removeChild(sprite);
       sprite.destroy(options);
     });
 
     Object.values(effects).forEach(sprite => {
       sprite.removeAllListeners?.();
-      this.removeChild(sprite);
       sprite.destroy(options);
     });
 

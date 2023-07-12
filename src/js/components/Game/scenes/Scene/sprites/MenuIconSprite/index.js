@@ -9,16 +9,16 @@ class MenuIconSprite extends AnimatedSprite {
    * @param  {Array}  textures The sprite textures.
    */
   constructor(textures = [], { size = 1, ...other } = {}) {
-    super(textures, {
-      ...other,
-      animationSpeed: 0.2,
-      loop: true,
-    });
+    super(textures, { ...other, animationSpeed: 0.2, loop: true });
 
     this.scaleRatio = size / this.height;
   }
 
-  setScale(amount) {
+  /**
+   * Set the scale of the sprite.
+   * @param {Number} amount [description]
+   */
+  setScale(amount = 1) {
     this.scale.set(this.scaleRatio * amount);
   }
 }
