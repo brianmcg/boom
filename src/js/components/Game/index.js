@@ -50,6 +50,14 @@ class Game extends Application {
     this.stage.on('click', () => this.lockPointer());
 
     this.addManual();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.unpause();
+      } else {
+        this.pause();
+      }
+    });
   }
 
   /**
@@ -167,6 +175,16 @@ class Game extends Application {
 
       this.removeSpinner();
     }
+  }
+
+  pause() {
+    this.music.pause();
+    this.stop();
+  }
+
+  unpause() {
+    this.music.play();
+    this.start();
   }
 
   /**
