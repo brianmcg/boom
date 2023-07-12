@@ -2,7 +2,7 @@
  * @module game/scenes/scene/parsers
  */
 
-import { TextSprite, RectangleSprite } from '@game/core/graphics';
+import { TextSprite, GraphicsCreator } from '@game/core/graphics';
 import { GAME_FONT } from '@game/constants/assets';
 import { FONT_SIZES } from '@game/constants/fonts';
 import { WHITE, RED, BLACK } from '@game/constants/colors';
@@ -19,7 +19,7 @@ const createPromptSprite = text =>
   });
 
 const createMenuSprites = (menu, textures, animations) => {
-  const background = new RectangleSprite({
+  const background = GraphicsCreator.createRectangleSprite({
     width: SCREEN.WIDTH * 1.5,
     height: SCREEN.HEIGHT * 1.5,
     color: BLACK,

@@ -25,7 +25,7 @@ class Sound extends Howl {
     super.load();
 
     return new Promise(resolve => {
-      this.on('load', () => resolve(this));
+      this.once('load', () => resolve(this));
     });
   }
 

@@ -135,6 +135,16 @@ class CreditsScene extends Scene {
   quit() {
     this.game.showTitleScene();
   }
+
+  /**
+   * Destroy the scene.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    this.removeChild(this.scrollContainer);
+    this.scrollContainer.destroy(options);
+    super.destroy(options);
+  }
 }
 
 export { CREDITS_PATH };

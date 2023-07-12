@@ -260,6 +260,23 @@ class PlayerContainer extends Container {
   setDying() {
     return this.setState(STATES.DYING);
   }
+
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    const { weapon } = this.sprites;
+
+    weapon.removeAllListeners();
+    this.removeChild(weapon);
+    weapon.destroy();
+
+    this.removeChild(this.hudContainer);
+    this.hudContainer.destroy(options);
+
+    super.destroy(options);
+  }
 }
 
 export default PlayerContainer;

@@ -168,9 +168,12 @@ class AbstractWeapon extends EventEmitter {
 
     if (this.ammo > 0) {
       this.ammo -= GOD_MODE ? 0 : 1;
+
       this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
-    } else {
-      this.stop();
+
+      if (this.ammo === 0) {
+        this.stop();
+      }
     }
   }
 

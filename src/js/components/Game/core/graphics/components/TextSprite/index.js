@@ -1,3 +1,4 @@
+import { SCREEN } from '@game/constants/config';
 import { BitmapText } from '../../pixi';
 
 /**
@@ -13,12 +14,23 @@ class TextSprite extends BitmapText {
    * @param  {Number} options.y     The y coordinate.
    * @param  {Number} options.alpha The alpha value.
    */
-  constructor({ text, fontName, fontSize, color, x = 0, y = 0, alpha = 1, anchor }) {
+  constructor({
+    text,
+    fontName,
+    fontSize,
+    color,
+    x = 0,
+    y = 0,
+    alpha = 1,
+    anchor,
+    maxWidth = SCREEN.WIDTH,
+  }) {
     super(text, { fontName, fontSize });
 
     this.x = x;
     this.y = y;
     this.alpha = alpha;
+    this.maxWidth = maxWidth;
 
     if (color || color === 0) {
       this.tint = color;
@@ -35,6 +47,14 @@ class TextSprite extends BitmapText {
    */
   fade(value) {
     this.scale.set(1 - value);
+  }
+
+  /**
+   * Destroy the text sprite.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options = {}) {
+    super.destroy({ ...options, texture: true });
   }
 
   /**

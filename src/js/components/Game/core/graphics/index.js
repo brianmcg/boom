@@ -9,23 +9,23 @@ import {
   EventEmitter,
   PixelateFilter,
   Rectangle,
-  RenderTexture,
-  Texture,
 } from './pixi';
 
 import TextSprite from './components/TextSprite';
 import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
-import RectangleSprite from './components/RectangleSprite';
 import Sprite from './components/Sprite';
-import GraphicsLoader from './components/GraphicsLoader';
 import Application from './components/Application';
 import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
+import GraphicsLoader from './utilities/GraphicsLoader';
+import GraphicsCreator from './utilities/GraphicsCreator';
+
 export {
   AnimatedSprite,
   Application,
+  GraphicsCreator,
   Assets,
   BLEND_MODES,
   ColorMatrixFilter,
@@ -36,9 +36,6 @@ export {
   ParticleContainer,
   PixelateFilter,
   Rectangle,
-  RectangleSprite,
-  RenderTexture,
   Sprite,
   TextSprite,
-  Texture,
 };

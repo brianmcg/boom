@@ -1,11 +1,11 @@
 {
     "entrance": {
-        "x": 6,
-        "y": 16,
+        "x": 7,
+        "y": 13,
         "angle": 270
     },
     "exit": {
-        "x": 6,
+        "x": 13,
         "y": 1
     },
     "grid": [
@@ -13,68 +13,120 @@
             {
                 "x": 0,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 0,
                 "y": 1,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 0,
                 "y": 2,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 0,
                 "y": 3,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 0,
                 "y": 4,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -102,7 +154,7 @@
                 "x": 0,
                 "y": 5,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -130,7 +182,7 @@
                 "x": 0,
                 "y": 6,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -145,7 +197,7 @@
                         "name": "walls_01"
                     },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -158,7 +210,7 @@
                 "x": 0,
                 "y": 7,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -186,19 +238,19 @@
                 "x": 0,
                 "y": 8,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -214,7 +266,7 @@
                 "x": 0,
                 "y": 9,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -242,19 +294,19 @@
                 "x": 0,
                 "y": 10,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -270,7 +322,7 @@
                 "x": 0,
                 "y": 11,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -298,22 +350,22 @@
                 "x": 0,
                 "y": 12,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -326,7 +378,7 @@
                 "x": 0,
                 "y": 13,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -354,117 +406,59 @@
                 "x": 0,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 0,
-                "y": 15,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 0,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 0,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 1,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 1,
@@ -514,30 +508,17 @@
             {
                 "x": 1,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 1,
@@ -662,53 +643,8 @@
             {
                 "x": 1,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 1,
-                "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 1,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 1,
-                "y": 16,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -734,35 +670,61 @@
             },
             {
                 "x": 1,
-                "y": 17,
-                "edge": true,
+                "y": 14,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 2,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 2,
@@ -812,30 +774,17 @@
             {
                 "x": 2,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_04"
-                    },
-                    "left": {
-                        "name": "walls_04"
-                    },
-                    "back": {
-                        "name": "walls_04"
-                    },
-                    "right": {
-                        "name": "walls_04"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 2,
@@ -855,58 +804,32 @@
             {
                 "x": 2,
                 "y": 6,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 2,
                 "y": 7,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
-                },
-                "axis": "y",
-                "pushable": false
+                }
             },
             {
                 "x": 2,
@@ -987,19 +910,19 @@
                 "x": 2,
                 "y": 13,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -1008,111 +931,66 @@
                         "name": "ceilings_01"
                     }
                 },
-                "axis": "y",
+                "axis": "x",
                 "pushable": false
             },
             {
                 "x": 2,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 2,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 2,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_04"
-                    },
-                    "left": {
-                        "name": "walls_04"
-                    },
-                    "back": {
-                        "name": "walls_04"
-                    },
-                    "right": {
-                        "name": "walls_04"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 2,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 3,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 3,
@@ -1162,30 +1040,17 @@
             {
                 "x": 3,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 3,
@@ -1205,30 +1070,17 @@
             {
                 "x": 3,
                 "y": 6,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 3,
@@ -1253,7 +1105,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_02"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -1323,120 +1175,88 @@
             {
                 "x": 3,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 3,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 3,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 3,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 3,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 4,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 4,
@@ -1486,30 +1306,17 @@
             {
                 "x": 4,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_03"
-                    },
-                    "left": {
-                        "name": "walls_03"
-                    },
-                    "back": {
-                        "name": "walls_03"
-                    },
-                    "right": {
-                        "name": "walls_03"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 4,
@@ -1567,7 +1374,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -1609,7 +1416,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -1627,72 +1434,27 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
                 }
             },
             {
                 "x": 4,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 4,
-                "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_02"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 4,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 4,
-                "y": 16,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -1706,18 +1468,31 @@
             },
             {
                 "x": 4,
-                "y": 17,
-                "edge": true,
+                "y": 14,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
@@ -1725,7 +1500,7 @@
                 "x": 5,
                 "y": 0,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -1752,24 +1527,10 @@
             {
                 "x": 5,
                 "y": 1,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "back": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "right": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
@@ -1781,80 +1542,40 @@
             {
                 "x": 5,
                 "y": 2,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "y",
-                "pushable": false
+                }
             },
             {
                 "x": 5,
                 "y": 3,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_02"
-                    },
-                    "left": {
-                        "name": "walls_02"
-                    },
-                    "back": {
-                        "name": "walls_02"
-                    },
-                    "right": {
-                        "name": "walls_02"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "y",
-                "pushable": false
+                }
             },
             {
                 "x": 5,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "left": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "back": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
@@ -1886,7 +1607,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_02"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -1986,68 +1707,20 @@
             {
                 "x": 5,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 5,
-                "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 5,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 5,
-                "y": 16,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "walls_01"
                     },
                     "back": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2055,13 +1728,15 @@
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 5,
-                "y": 17,
+                "y": 14,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -2091,22 +1766,19 @@
                 "x": 6,
                 "y": 0,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "walls_01"
                     },
                     "back": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2114,49 +1786,24 @@
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 6,
                 "y": 1,
-                "exit": true,
-                "door": true,
-                "axis": "x",
-                "blocking": true,
-                "height": 1,
-                "width": 1,
-                "length": 0.03125,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "lift_doors_submerged_1_03",
-                        "height": 1
-                    },
-                    "left": {
-                        "name": "lift_doors_submerged_1_03",
-                        "height": 1
-                    },
-                    "back": {
-                        "name": "lift_doors_submerged_1_03",
-                        "height": 1
-                    },
-                    "right": {
-                        "name": "lift_doors_submerged_1_03",
-                        "height": 1
-                    },
                     "bottom": {
-                        "name": "floors_01",
-                        "height": 1
+                        "name": "floors_01"
                     },
                     "top": {
-                        "name": "lift_ceilings"
-                    },
-                    "overlay": {
-                        "name": "walls_05",
-                        "height": 2
+                        "name": "ceilings_01"
                     }
-                },
-                "double": true,
-                "offset": 1
+                }
             },
             {
                 "x": 6,
@@ -2191,38 +1838,17 @@
             {
                 "x": 6,
                 "y": 4,
-                "door": true,
-                "axis": "x",
-                "blocking": true,
-                "height": 1,
-                "width": 1,
-                "length": 0.5,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "doors_02",
-                        "height": 1
-                    },
-                    "left": {
-                        "name": "doors_02",
-                        "height": 1
-                    },
-                    "back": {
-                        "name": "doors_02",
-                        "height": 1
-                    },
-                    "right": {
-                        "name": "doors_02",
-                        "height": 1
-                    },
                     "bottom": {
-                        "name": "floors_01",
-                        "height": 1
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "key": "red"
+                }
             },
             {
                 "x": 6,
@@ -2292,7 +1918,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -2347,10 +1973,24 @@
             {
                 "x": 6,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
+                    "right": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
@@ -2362,6 +2002,64 @@
             {
                 "x": 6,
                 "y": 14,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            }
+        ],
+        [
+            {
+                "x": 7,
+                "y": 0,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 7,
+                "y": 1,
                 "edge": false,
                 "blocking": false,
                 "height": 0,
@@ -2375,8 +2073,8 @@
                 }
             },
             {
-                "x": 6,
-                "y": 15,
+                "x": 7,
+                "y": 2,
                 "edge": false,
                 "blocking": false,
                 "height": 0,
@@ -2390,8 +2088,158 @@
                 }
             },
             {
-                "x": 6,
-                "y": 16,
+                "x": 7,
+                "y": 3,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 4,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 5,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 6,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 7,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 8,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 9,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 10,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 11,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 12,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 7,
+                "y": 13,
                 "entrance": true,
                 "door": true,
                 "axis": "x",
@@ -2401,19 +2249,19 @@
                 "length": 0.03125,
                 "sides": {
                     "front": {
-                        "name": "lift_doors_submerged_1_03",
+                        "name": "lift_doors_03",
                         "height": 1
                     },
                     "left": {
-                        "name": "lift_doors_submerged_1_03",
+                        "name": "lift_doors_03",
                         "height": 1
                     },
                     "back": {
-                        "name": "lift_doors_submerged_1_03",
+                        "name": "lift_doors_03",
                         "height": 1
                     },
                     "right": {
-                        "name": "lift_doors_submerged_1_03",
+                        "name": "lift_doors_03",
                         "height": 1
                     },
                     "bottom": {
@@ -2421,11 +2269,10 @@
                         "height": 1
                     },
                     "top": {
-                        "name": "lift_ceilings"
+                        "name": "ceilings_01"
                     },
                     "overlay": {
-                        "name": "walls_05",
-                        "height": 2
+                        "name": "walls_03"
                     }
                 },
                 "double": true,
@@ -2433,409 +2280,26 @@
                 "reverse": true
             },
             {
-                "x": 6,
-                "y": 17,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
-                    },
-                    "left": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
-                    },
-                    "back": {
-                        "name": "lift_doors_submerged_1_02",
-                        "height": 1
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            }
-        ],
-        [
-            {
-                "x": 7,
-                "y": 0,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 7,
-                "y": 1,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "left": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 2,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "y",
-                "pushable": false
-            },
-            {
-                "x": 7,
-                "y": 3,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_02"
-                    },
-                    "left": {
-                        "name": "walls_02"
-                    },
-                    "back": {
-                        "name": "walls_02"
-                    },
-                    "right": {
-                        "name": "walls_02"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "y",
-                "pushable": false
-            },
-            {
-                "x": 7,
-                "y": 4,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "left": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "back": {
-                        "name": "doors_01",
-                        "height": 2
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 5,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 6,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 7,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 8,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 9,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 10,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 11,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 12,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
                 "x": 7,
                 "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "right": {
-                        "name": "lift_doors_submerged_1_01",
-                        "height": 1
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 7,
-                "y": 17,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            }
-        ],
-        [
-            {
-                "x": 8,
-                "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "lift_doors_02",
+                        "height": 1
+                    },
+                    "left": {
+                        "name": "lift_doors_02",
+                        "height": 1
+                    },
+                    "back": {
+                        "name": "lift_doors_02",
+                        "height": 1
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
@@ -2843,6 +2307,36 @@
                         "name": "ceilings_01"
                     }
                 }
+            }
+        ],
+        [
+            {
+                "x": 8,
+                "y": 0,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 8,
@@ -2892,30 +2386,17 @@
             {
                 "x": 8,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_03"
-                    },
-                    "left": {
-                        "name": "walls_03"
-                    },
-                    "back": {
-                        "name": "walls_03"
-                    },
-                    "right": {
-                        "name": "walls_03"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 8,
@@ -2955,7 +2436,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -2973,7 +2454,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -3033,19 +2514,33 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
                 }
             },
             {
                 "x": 8,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
+                    "right": {
+                        "name": "lift_doors_01",
+                        "height": 1
+                    },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -3055,50 +2550,20 @@
             {
                 "x": 8,
                 "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 8,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 8,
-                "y": 16,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3109,38 +2574,36 @@
                 },
                 "axis": "x",
                 "pushable": false
-            },
-            {
-                "x": 8,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
-                "height": 1,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
             }
         ],
         [
             {
                 "x": 9,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 9,
@@ -3190,30 +2653,17 @@
             {
                 "x": 9,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 9,
@@ -3233,30 +2683,17 @@
             {
                 "x": 9,
                 "y": 6,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 9,
@@ -3266,7 +2703,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -3326,7 +2763,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_02"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -3351,120 +2788,88 @@
             {
                 "x": 9,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 9,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 9,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_03"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 9,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 9,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 10,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 10,
@@ -3514,30 +2919,17 @@
             {
                 "x": 10,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_04"
-                    },
-                    "left": {
-                        "name": "walls_04"
-                    },
-                    "back": {
-                        "name": "walls_04"
-                    },
-                    "right": {
-                        "name": "walls_04"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 10,
@@ -3557,58 +2949,32 @@
             {
                 "x": 10,
                 "y": 6,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 10,
                 "y": 7,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "y",
-                "pushable": false
+                }
             },
             {
                 "x": 10,
@@ -3689,19 +3055,19 @@
                 "x": 10,
                 "y": 13,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3710,111 +3076,66 @@
                         "name": "ceilings_01"
                     }
                 },
-                "axis": "y",
+                "axis": "x",
                 "pushable": false
             },
             {
                 "x": 10,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_06"
-                    },
-                    "left": {
-                        "name": "walls_06"
-                    },
-                    "back": {
-                        "name": "walls_06"
-                    },
-                    "right": {
-                        "name": "walls_06"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 10,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 10,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_04"
-                    },
-                    "left": {
-                        "name": "walls_04"
-                    },
-                    "back": {
-                        "name": "walls_04"
-                    },
-                    "right": {
-                        "name": "walls_04"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 10,
-                "y": 17,
-                "edge": true,
-                "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 11,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 11,
@@ -3864,30 +3185,17 @@
             {
                 "x": 11,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 11,
@@ -3942,7 +3250,7 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_02"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
@@ -4012,53 +3320,8 @@
             {
                 "x": 11,
                 "y": 13,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 11,
-                "y": 14,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 11,
-                "y": 15,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
-                "sides": {
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                }
-            },
-            {
-                "x": 11,
-                "y": 16,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -4084,42 +3347,68 @@
             },
             {
                 "x": 11,
-                "y": 17,
-                "edge": true,
+                "y": 14,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ],
         [
             {
                 "x": 12,
                 "y": 0,
-                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 12,
                 "y": 1,
-                "edge": true,
-                "blocking": true,
-                "height": 1,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
                     "bottom": {
                         "name": "floors_01"
@@ -4132,9 +3421,9 @@
             {
                 "x": 12,
                 "y": 2,
-                "edge": true,
-                "blocking": true,
-                "height": 1,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
                     "bottom": {
                         "name": "floors_01"
@@ -4147,9 +3436,9 @@
             {
                 "x": 12,
                 "y": 3,
-                "edge": true,
-                "blocking": true,
-                "height": 1,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
                     "bottom": {
                         "name": "floors_01"
@@ -4162,260 +3451,143 @@
             {
                 "x": 12,
                 "y": 4,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 5,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 6,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 7,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 8,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_02"
-                    },
-                    "left": {
-                        "name": "walls_02"
-                    },
-                    "back": {
-                        "name": "walls_02"
-                    },
-                    "right": {
-                        "name": "walls_02"
-                    },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 9,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 10,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_04"
-                    },
-                    "left": {
-                        "name": "walls_04"
-                    },
-                    "back": {
-                        "name": "walls_04"
-                    },
-                    "right": {
-                        "name": "walls_04"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 11,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 12,
-                "blocking": true,
-                "height": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_02"
-                    },
-                    "left": {
-                        "name": "walls_02"
-                    },
-                    "back": {
-                        "name": "walls_02"
-                    },
-                    "right": {
-                        "name": "walls_02"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 12,
                 "y": 13,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -4433,7 +3605,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_02"
+                        "name": "ceilings_01"
                     }
                 },
                 "axis": "x",
@@ -4443,7 +3615,7 @@
                 "x": 12,
                 "y": 14,
                 "blocking": true,
-                "height": 2,
+                "height": 1,
                 "sides": {
                     "front": {
                         "name": "walls_01"
@@ -4466,69 +3638,43 @@
                 },
                 "axis": "x",
                 "pushable": false
-            },
+            }
+        ],
+        [
             {
-                "x": 12,
-                "y": 15,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 12,
-                "y": 16,
-                "blocking": true,
-                "height": 2,
-                "sides": {
-                    "front": {
-                        "name": "walls_01"
-                    },
-                    "left": {
-                        "name": "walls_01"
-                    },
-                    "back": {
-                        "name": "walls_01"
-                    },
-                    "right": {
-                        "name": "walls_01"
-                    },
-                    "bottom": {
-                        "name": "floors_01"
-                    },
-                    "top": {
-                        "name": "ceilings_01"
-                    }
-                },
-                "axis": "x",
-                "pushable": false
-            },
-            {
-                "x": 12,
-                "y": 17,
-                "edge": true,
+                "x": 13,
+                "y": 0,
                 "blocking": true,
                 "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 13,
+                "y": 1,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
                     "bottom": {
                         "name": "floors_01"
@@ -4537,194 +3683,738 @@
                         "name": "ceilings_01"
                     }
                 }
+            },
+            {
+                "x": 13,
+                "y": 2,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 3,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 4,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 5,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 6,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 7,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 8,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 9,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 10,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 11,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 12,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
+                "sides": {
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                }
+            },
+            {
+                "x": 13,
+                "y": 13,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 13,
+                "y": 14,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            }
+        ],
+        [
+            {
+                "x": 14,
+                "y": 0,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 1,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 2,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 3,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 4,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 5,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 6,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 7,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 8,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 9,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 10,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 11,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 12,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 13,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
+            },
+            {
+                "x": 14,
+                "y": 14,
+                "blocking": true,
+                "height": 1,
+                "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
+                    "bottom": {
+                        "name": "floors_01"
+                    },
+                    "top": {
+                        "name": "ceilings_01"
+                    }
+                },
+                "axis": "x",
+                "pushable": false
             }
         ]
     ],
     "objects": [
         {
             "x": 1,
-            "y": 9,
+            "y": 1,
             "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
+            "name": "objects_01",
+            "blocking": true,
+            "width": 0.328125,
+            "length": 0.328125,
+            "height": 1
         },
         {
-            "x": 2,
-            "y": 11,
+            "x": 1,
+            "y": 12,
             "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 3,
-            "y": 8,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 4,
-            "y": 5,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 4,
-            "y": 13,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 6,
-            "y": 10,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
+            "name": "objects_02",
+            "blocking": true,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.453125
         },
         {
             "x": 7,
-            "y": 7,
+            "y": 4,
             "z": 0,
-            "name": "objects_02",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
+            "name": "explosive_barrel",
+            "blocking": true,
+            "animated": true,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
-            "x": 7,
-            "y": 14,
+            "x": 13,
+            "y": 12,
             "z": 0,
-            "name": "objects_02",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 8,
-            "y": 6,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 9,
-            "y": 13,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 10,
-            "y": 9,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 11,
-            "y": 6,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 11,
-            "y": 11,
-            "z": 0,
-            "name": "objects_03",
-            "anchor": 2,
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
+            "name": "blue_torch",
+            "blocking": true,
+            "animated": true,
+            "width": 0.1875,
+            "length": 0.1875,
+            "height": 0.546875
         }
     ],
     "items": [
         {
-            "respawn": 10000,
-            "x": 3,
-            "y": 7,
-            "name": "ammo_chaingun"
+            "type": "weaponitem",
+            "weapon": "launcher",
+            "x": 1,
+            "y": 8,
+            "name": "weapon_launcher"
         },
         {
-            "respawn": 10000,
-            "x": 3,
-            "y": 13,
-            "name": "ammo_launcher"
+            "type": "weaponitem",
+            "weapon": "pistol",
+            "x": 7,
+            "y": 11,
+            "name": "weapon_pistol"
         },
         {
-            "respawn": 10000,
-            "x": 9,
-            "y": 7,
-            "name": "health_medium"
+            "type": "weaponitem",
+            "weapon": "chaingun",
+            "x": 13,
+            "y": 4,
+            "name": "weapon_chaingun"
         },
         {
-            "respawn": 10000,
-            "x": 9,
-            "y": 13,
-            "name": "ammo_shotgun"
+            "type": "weaponitem",
+            "weapon": "shotgun",
+            "x": 13,
+            "y": 8,
+            "name": "weapon_shotgun"
         }
     ],
     "enemies": [
         {
-            "x": 6,
-            "y": 10,
-            "name": "elemental",
-            "proneHeight": 7,
-            "scale": 3,
-            "item": "key_red",
-            "width": 2.15625,
-            "length": 2.15625,
-            "height": 0.65625
+            "x": 5,
+            "y": 4,
+            "name": "sergeant",
+            "proneHeight": 5,
+            "scale": 1,
+            "width": 0.328125,
+            "length": 0.328125,
+            "height": 0.625
         }
     ],
     "brightness": 0.7,
-    "visibility": 12,
-    "floorOffset": 0.1875
+    "visibility": 10
 }

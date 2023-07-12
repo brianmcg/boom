@@ -113,7 +113,7 @@ class Game extends Application {
     this.showScene(WORLD_PATH, {
       index,
       showLoader: true,
-      id: this.data.world.levels[index - 1],
+      id: this.data.world.levels[index],
       ...other,
     });
   }
@@ -173,6 +173,7 @@ class Game extends Application {
    * Remove the current scene.
    */
   removeScene() {
+    this.stage.removeChild(this.scene);
     this.scene.destroy();
     delete this.scene;
   }
