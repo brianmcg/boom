@@ -4916,6 +4916,47 @@
             "ammo_shotgun_15",
             "ammo_shotgun_16"
         ],
+        "arachnatron": {
+            "idle": {
+                "frames": [
+                    "arachnatron_01"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "arachnatron_02",
+                    "arachnatron_03",
+                    "arachnatron_04",
+                    "arachnatron_05"
+                ],
+                "loop": true
+            },
+            "aiming": {
+                "frames": [
+                    "arachnatron_06"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "arachnatron_07",
+                    "arachnatron_06"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "arachnatron_08"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "arachnatron_08",
+                    "arachnatron_09",
+                    "arachnatron_10",
+                    "arachnatron_11",
+                    "arachnatron_12"
+                ]
+            }
+        },
         "blast_1": [
             "blast_1_01",
             "blast_1_02",
@@ -4945,6 +4986,48 @@
                 ]
             }
         },
+        "cacodemon": {
+            "idle": {
+                "frames": [
+                    "cacodemon_01"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "cacodemon_01"
+                ]
+            },
+            "aiming": {
+                "frames": [
+                    "cacodemon_01",
+                    "cacodemon_02",
+                    "cacodemon_03",
+                    "cacodemon_04"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "cacodemon_04",
+                    "cacodemon_01"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "cacodemon_06"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "cacodemon_06",
+                    "cacodemon_07",
+                    "cacodemon_08",
+                    "cacodemon_09",
+                    "cacodemon_10",
+                    "cacodemon_11",
+                    "cacodemon_12"
+                ]
+            }
+        },
         "ceilings": [
             "ceilings_01",
             "ceilings_02",
@@ -4964,6 +5047,50 @@
                     "chaingun_03"
                 ],
                 "loop": true
+            }
+        },
+        "demon": {
+            "idle": {
+                "frames": [
+                    "demon_05"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "demon_01",
+                    "demon_02",
+                    "demon_03",
+                    "demon_04"
+                ],
+                "loop": true
+            },
+            "aiming": {
+                "frames": [
+                    "demon_05",
+                    "demon_06"
+                ]
+            },
+            "attacking": {
+                "frames": [
+                    "demon_07",
+                    "demon_07",
+                    "demon_08"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "demon_08"
+                ]
+            },
+            "dead": {
+                "frames": [
+                    "demon_09",
+                    "demon_10",
+                    "demon_11",
+                    "demon_12",
+                    "demon_13",
+                    "demon_14"
+                ]
             }
         },
         "doors": [
@@ -5084,301 +5211,6 @@
             "health_medium_15",
             "health_medium_16"
         ],
-        "key_red": [
-            "key_red_01",
-            "key_red_02",
-            "key_red_03",
-            "key_red_04",
-            "key_red_05",
-            "key_red_06",
-            "key_red_07",
-            "key_red_08",
-            "key_red_09",
-            "key_red_10",
-            "key_red_11",
-            "key_red_12"
-        ],
-        "knife": {
-            "idle": {
-                "frames": [
-                    "knife_01"
-                ]
-            },
-            "firing": {
-                "frames": [
-                    "knife_02",
-                    "knife_03",
-                    "knife_04",
-                    "knife_03",
-                    "knife_02"
-                ]
-            }
-        },
-        "laucher": [
-            "laucher_01",
-            "laucher_02",
-            "laucher_03",
-            "laucher_04",
-            "laucher_05"
-        ],
-        "lift_doors_submerged_1": [
-            "lift_doors_submerged_1_01",
-            "lift_doors_submerged_1_02",
-            "lift_doors_submerged_1_03"
-        ],
-        "objects": [
-            "objects_01",
-            "objects_02",
-            "objects_03"
-        ],
-        "pistol": {
-            "idle": {
-                "frames": [
-                    "pistol_01"
-                ]
-            },
-            "firing": {
-                "frames": [
-                    "pistol_01",
-                    "pistol_02",
-                    "pistol_03",
-                    "pistol_04"
-                ]
-            }
-        },
-        "projectile_1": [
-            "projectile_1_01",
-            "projectile_1_02"
-        ],
-        "projectile_2": [
-            "projectile_2_01",
-            "projectile_2_02"
-        ],
-        "projectile_3": [
-            "projectile_3_01",
-            "projectile_3_02"
-        ],
-        "projectile_4": [
-            "projectile_4_01",
-            "projectile_4_02"
-        ],
-        "shotgun": {
-            "idle": {
-                "frames": [
-                    "shotgun_01"
-                ]
-            },
-            "firing": {
-                "frames": [
-                    "shotgun_01",
-                    "shotgun_02",
-                    "shotgun_03",
-                    "shotgun_04",
-                    "shotgun_03"
-                ]
-            }
-        },
-        "skull": [
-            "skull_01",
-            "skull_02",
-            "skull_03",
-            "skull_04",
-            "skull_05",
-            "skull_06",
-            "skull_07",
-            "skull_08"
-        ],
-        "smoke_1": [
-            "smoke_1_01",
-            "smoke_1_02",
-            "smoke_1_03",
-            "smoke_1_04",
-            "smoke_1_05"
-        ],
-        "spatter_1": [
-            "spatter_1_01",
-            "spatter_1_02",
-            "spatter_1_03",
-            "spatter_1_04",
-            "spatter_1_05",
-            "spatter_1_06",
-            "spatter_1_07",
-            "spatter_1_08",
-            "spatter_1_09",
-            "spatter_1_10",
-            "spatter_1_11",
-            "spatter_1_12"
-        ],
-        "splash_1": [
-            "splash_1_01",
-            "splash_1_02",
-            "splash_1_03",
-            "splash_1_04",
-            "splash_1_05",
-            "splash_1_06",
-            "splash_1_07",
-            "splash_1_08",
-            "splash_1_09",
-            "splash_1_10"
-        ],
-        "splash_2": [
-            "splash_2_01",
-            "splash_2_02",
-            "splash_2_03",
-            "splash_2_04",
-            "splash_2_05",
-            "splash_2_06"
-        ],
-        "spurt_1": [
-            "spurt_1_01",
-            "spurt_1_02",
-            "spurt_1_03",
-            "spurt_1_04",
-            "spurt_1_05",
-            "spurt_1_06"
-        ],
-        "spurt_2": [
-            "spurt_2_01",
-            "spurt_2_02",
-            "spurt_2_03",
-            "spurt_2_04",
-            "spurt_2_05"
-        ],
-        "walls": [
-            "walls_01",
-            "walls_02",
-            "walls_03",
-            "walls_04",
-            "walls_05",
-            "walls_06"
-        ],
-        "arachnatron": {
-            "idle": {
-                "frames": [
-                    "arachnatron_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "arachnatron_02",
-                    "arachnatron_03",
-                    "arachnatron_04",
-                    "arachnatron_05"
-                ],
-                "loop": true
-            },
-            "aiming": {
-                "frames": [
-                    "arachnatron_06"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "arachnatron_07",
-                    "arachnatron_06"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "arachnatron_08"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "arachnatron_08",
-                    "arachnatron_09",
-                    "arachnatron_10",
-                    "arachnatron_11",
-                    "arachnatron_12"
-                ]
-            }
-        },
-        "cacodemon": {
-            "idle": {
-                "frames": [
-                    "cacodemon_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "cacodemon_01"
-                ]
-            },
-            "aiming": {
-                "frames": [
-                    "cacodemon_01",
-                    "cacodemon_02",
-                    "cacodemon_03",
-                    "cacodemon_04"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "cacodemon_04",
-                    "cacodemon_01"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "cacodemon_06"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "cacodemon_06",
-                    "cacodemon_07",
-                    "cacodemon_08",
-                    "cacodemon_09",
-                    "cacodemon_10",
-                    "cacodemon_11",
-                    "cacodemon_12"
-                ]
-            }
-        },
-        "demon": {
-            "idle": {
-                "frames": [
-                    "demon_05"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "demon_01",
-                    "demon_02",
-                    "demon_03",
-                    "demon_04"
-                ],
-                "loop": true
-            },
-            "aiming": {
-                "frames": [
-                    "demon_05",
-                    "demon_06"
-                ]
-            },
-            "attacking": {
-                "frames": [
-                    "demon_07",
-                    "demon_07",
-                    "demon_08"
-                ]
-            },
-            "hurting": {
-                "frames": [
-                    "demon_08"
-                ]
-            },
-            "dead": {
-                "frames": [
-                    "demon_09",
-                    "demon_10",
-                    "demon_11",
-                    "demon_12",
-                    "demon_13",
-                    "demon_14"
-                ]
-            }
-        },
         "imp": {
             "idle": {
                 "frames": [
@@ -5424,6 +5256,43 @@
                 ]
             }
         },
+        "key_red": [
+            "key_red_01",
+            "key_red_02",
+            "key_red_03",
+            "key_red_04",
+            "key_red_05",
+            "key_red_06",
+            "key_red_07",
+            "key_red_08",
+            "key_red_09",
+            "key_red_10",
+            "key_red_11",
+            "key_red_12"
+        ],
+        "knife": {
+            "idle": {
+                "frames": [
+                    "knife_01"
+                ]
+            },
+            "firing": {
+                "frames": [
+                    "knife_02",
+                    "knife_03",
+                    "knife_04",
+                    "knife_03",
+                    "knife_02"
+                ]
+            }
+        },
+        "laucher": [
+            "laucher_01",
+            "laucher_02",
+            "laucher_03",
+            "laucher_04",
+            "laucher_05"
+        ],
         "launcher": {
             "idle": {
                 "frames": [
@@ -5439,6 +5308,47 @@
                 ]
             }
         },
+        "lift_doors_submerged_1": [
+            "lift_doors_submerged_1_01",
+            "lift_doors_submerged_1_02",
+            "lift_doors_submerged_1_03"
+        ],
+        "objects": [
+            "objects_01",
+            "objects_02",
+            "objects_03"
+        ],
+        "pistol": {
+            "idle": {
+                "frames": [
+                    "pistol_01"
+                ]
+            },
+            "firing": {
+                "frames": [
+                    "pistol_01",
+                    "pistol_02",
+                    "pistol_03",
+                    "pistol_04"
+                ]
+            }
+        },
+        "projectile_1": [
+            "projectile_1_01",
+            "projectile_1_02"
+        ],
+        "projectile_2": [
+            "projectile_2_01",
+            "projectile_2_02"
+        ],
+        "projectile_3": [
+            "projectile_3_01",
+            "projectile_3_02"
+        ],
+        "projectile_4": [
+            "projectile_4_01",
+            "projectile_4_02"
+        ],
         "revenant": {
             "idle": {
                 "frames": [
@@ -5527,6 +5437,39 @@
                 ]
             }
         },
+        "shotgun": {
+            "idle": {
+                "frames": [
+                    "shotgun_01"
+                ]
+            },
+            "firing": {
+                "frames": [
+                    "shotgun_01",
+                    "shotgun_02",
+                    "shotgun_03",
+                    "shotgun_04",
+                    "shotgun_03"
+                ]
+            }
+        },
+        "skull": [
+            "skull_01",
+            "skull_02",
+            "skull_03",
+            "skull_04",
+            "skull_05",
+            "skull_06",
+            "skull_07",
+            "skull_08"
+        ],
+        "smoke_1": [
+            "smoke_1_01",
+            "smoke_1_02",
+            "smoke_1_03",
+            "smoke_1_04",
+            "smoke_1_05"
+        ],
         "soul": {
             "idle": {
                 "frames": [
@@ -5567,6 +5510,55 @@
                 ]
             }
         },
+        "spatter_1": [
+            "spatter_1_01",
+            "spatter_1_02",
+            "spatter_1_03",
+            "spatter_1_04",
+            "spatter_1_05",
+            "spatter_1_06",
+            "spatter_1_07",
+            "spatter_1_08",
+            "spatter_1_09",
+            "spatter_1_10",
+            "spatter_1_11",
+            "spatter_1_12"
+        ],
+        "splash_1": [
+            "splash_1_01",
+            "splash_1_02",
+            "splash_1_03",
+            "splash_1_04",
+            "splash_1_05",
+            "splash_1_06",
+            "splash_1_07",
+            "splash_1_08",
+            "splash_1_09",
+            "splash_1_10"
+        ],
+        "splash_2": [
+            "splash_2_01",
+            "splash_2_02",
+            "splash_2_03",
+            "splash_2_04",
+            "splash_2_05",
+            "splash_2_06"
+        ],
+        "spurt_1": [
+            "spurt_1_01",
+            "spurt_1_02",
+            "spurt_1_03",
+            "spurt_1_04",
+            "spurt_1_05",
+            "spurt_1_06"
+        ],
+        "spurt_2": [
+            "spurt_2_01",
+            "spurt_2_02",
+            "spurt_2_03",
+            "spurt_2_04",
+            "spurt_2_05"
+        ],
         "trooper": {
             "idle": {
                 "frames": [
@@ -5610,7 +5602,15 @@
                     "trooper_12"
                 ]
             }
-        }
+        },
+        "walls": [
+            "walls_01",
+            "walls_02",
+            "walls_03",
+            "walls_04",
+            "walls_05",
+            "walls_06"
+        ]
     },
     "meta": {
         "app": "https://www.codeandweb.com/texturepacker",
