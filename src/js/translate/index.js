@@ -9,7 +9,7 @@ const language = translations[browserLanguage] || translations[DEFAULT_LANGUAGE]
 const camelToConstantCase = str => str.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
 
 const translate = (key, options = {}) => {
-  const { text, keys = [] } = language[key];
+  const { text = '', keys = [] } = language[key] || {};
 
   return keys.reduce((memo, item) => text.replace(camelToConstantCase(item), options[item]), text);
 };
