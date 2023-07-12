@@ -141,6 +141,22 @@ class HUDContainer extends Container {
       this.removeChild(foreground);
     }
   }
+
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    const { keys } = this.sprites;
+
+    Object.values(keys).forEach(sprite => {
+      sprite.removeAllListeners?.();
+      this.removeChild(sprite);
+      sprite.destroy(options);
+    });
+
+    super.destroy(options);
+  }
 }
 
 export default HUDContainer;

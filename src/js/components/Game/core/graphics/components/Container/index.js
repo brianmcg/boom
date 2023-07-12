@@ -112,13 +112,19 @@ class Container extends PixiContainer {
     this.visible = false;
   }
 
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
   destroy(options) {
-    // const children = this.children.map(child => child);
+    this.removeAllListeners();
 
-    // this.removeChildren();
+    const children = this.children.map(child => child);
+
+    this.removeChildren();
 
     // TODO: Possible bug, test this.
-    // children.forEach(child => child.destroy(options));
+    children.forEach(child => child.destroy(options));
 
     super.destroy(options);
   }

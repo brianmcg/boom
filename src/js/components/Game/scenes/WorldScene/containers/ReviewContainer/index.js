@@ -163,6 +163,19 @@ class ReviewContainer extends Container {
       value.x = SCREEN.WIDTH / 2 + value.width / 2 + TEXT_PADDING;
     });
   }
+
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    this.statContainers.forEach(container => {
+      this.removeChild(container);
+      container.destroy(options);
+    });
+
+    super.destroy(options);
+  }
 }
 
 export default ReviewContainer;

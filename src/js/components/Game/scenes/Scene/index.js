@@ -502,9 +502,11 @@ class Scene extends Container {
   /**
    * Destroy the scene.
    */
-  destroy() {
-    const options = { texture: true, baseTexture: true };
+  destroy(options) {
     this.game.input.reset();
+    this.removeChild(this.mainContainer);
+    this.removeChild(this.menuContainer);
+    this.removeChild(this.promptContainer);
     this.mainContainer.destroy(options);
     this.menuContainer.destroy(options);
     this.promptContainer.destroy(options);

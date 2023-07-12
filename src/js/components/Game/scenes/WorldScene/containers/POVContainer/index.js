@@ -519,6 +519,22 @@ class POVContainer extends Container {
 
     return Math.round(intensity * 255) * GREY;
   }
+
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    this.removeChild(this.backgroundContainer);
+    this.removeChild(this.mapContainer);
+    this.removeChild(this.playerContainer);
+
+    this.backgroundContainer.destroy(options);
+    this.mapContainer.destroy(options);
+    this.playerContainer.destroy(options);
+
+    super.destroy(options);
+  }
 }
 
 export default POVContainer;

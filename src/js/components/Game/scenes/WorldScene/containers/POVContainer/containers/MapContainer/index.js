@@ -45,6 +45,8 @@ class MapContainer extends Container {
 
       this.addChild(sprite);
     });
+
+    this.sprites = sprites;
   }
 
   /**
@@ -53,6 +55,33 @@ class MapContainer extends Container {
   update(delta) {
     this.children.sort((a, b) => b.zOrder - a.zOrder);
     super.update(delta);
+  }
+
+  /**
+   * Destroy the container.
+   * @param  {Object} options The destroy options.
+   */
+  destroy(options) {
+    const { effects, entities } = this.sprites;
+
+    // walls.flat().forEach(sprite => {
+    //   this.removeChild(sprite);
+    //   sprite.destroy(options);
+    // });
+
+    Object.values(entities).forEach(sprite => {
+      sprite.removeAllListeners?.();
+      this.removeChild(sprite);
+      sprite.destroy(options);
+    });
+
+    Object.values(effects).forEach(sprite => {
+      sprite.removeAllListeners?.();
+      this.removeChild(sprite);
+      sprite.destroy(options);
+    });
+
+    super.destroy(options);
   }
 }
 
