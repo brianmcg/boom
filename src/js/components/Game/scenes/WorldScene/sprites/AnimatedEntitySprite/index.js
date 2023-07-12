@@ -1,4 +1,4 @@
-import { AnimatedSprite, RectangleSprite } from '@game/core/graphics';
+import { AnimatedSprite, AssetCreator } from '@game/core/graphics';
 
 /**
  * Class representing an AnimatedSprite.
@@ -32,7 +32,7 @@ class AnimatedEntitySprite extends AnimatedSprite {
     this.zOrder = Number.MAX_VALUE;
 
     if (floorOffset) {
-      this.mask = new RectangleSprite({ anchor });
+      this.mask = AssetCreator.createRectangleSprite({ anchor });
       this.mask.zOrder = Number.MAX_VALUE;
     }
 

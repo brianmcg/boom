@@ -4,16 +4,13 @@
 
 import {
   Rectangle,
-  Texture,
-  RenderTexture,
   TextSprite,
-  RectangleSprite,
   Sprite,
   Container,
   ColorMatrixFilter,
   BLEND_MODES,
   Line,
-  CreatedTextureCache,
+  AssetCreator,
 } from '@game/core/graphics';
 import { BLACK, WHITE, RED } from '@game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@game/constants/config';
@@ -71,27 +68,21 @@ const createProjectileSprite = ({ animations, textures, rotate }) => {
 };
 
 const createWallSpriteMask = ({ wallTexture, floorHeight, wallHeight, renderer }) => {
-  const renderTexture = RenderTexture.create({ width: CELL_SIZE, height: wallHeight });
-
-  CreatedTextureCache.add(renderTexture);
+  const renderTexture = AssetCreator.createRenderTexture({ width: CELL_SIZE, height: wallHeight });
 
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
 
-  const maskBackground = new RectangleSprite({
+  const maskBackground = AssetCreator.createRectangleSprite({
     width: CELL_SIZE,
     height: wallHeight,
   });
 
-  CreatedTextureCache.add(maskBackground.texture);
-
-  const floorOffset = new RectangleSprite({
+  const floorOffset = AssetCreator.createRectangleSprite({
     width: CELL_SIZE,
     height: floorHeight,
   });
-
-  CreatedTextureCache.add(floorOffset.texture);
 
   floorOffset.y = wallHeight - floorHeight;
 
@@ -159,9 +150,7 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
 
     for (let i = 0; i < frame.w; i++) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
-      const sliceTexture = new Texture(wallTexture, clearSlice);
-      CreatedTextureCache.add(sliceTexture);
-      wallTextures[name].push([sliceTexture]);
+      wallTextures[name].push([AssetCreator.createTexture(wallTexture, clearSlice)]);
     }
 
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
@@ -169,12 +158,10 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
         const wallHeight = wallTexture.height;
         const floorHeight = world.floorOffset ? CELL_SIZE * world.floorOffset - 1 : 0;
 
-        const renderTexture = RenderTexture.create({
+        const renderTexture = AssetCreator.createRenderTexture({
           width: CELL_SIZE,
           height: wallHeight,
         });
-
-        CreatedTextureCache.add(renderTexture);
 
         const spatterTexture = textures[spatter];
         const wallSprite = new Sprite(wallTexture);
@@ -217,9 +204,7 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
 
       spatterTextures.forEach(texture => {
-        const spatterTexture = new Texture(texture, spatteredSlice);
-        CreatedTextureCache.add(spatterTexture);
-        wallTextures[name][i].push(spatterTexture);
+        wallTextures[name][i].push(AssetCreator.createTexture(texture, spatteredSlice));
       });
     }
   });
@@ -292,9 +277,7 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
         const col = [];
         for (let j = 0; j < CELL_SIZE; j++) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-          const backgroundTexture = new Texture(texture, pixel);
-          CreatedTextureCache.add(backgroundTexture);
-          col.push(backgroundTexture);
+          col.push(AssetCreator.createTexture(texture, pixel));
         }
         backgroundTextures[image].push(col);
       }
@@ -405,12 +388,10 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           tint: parseInt(bloodColor, 16),
         });
 
-        const renderTexture = RenderTexture.create({
+        const renderTexture = AssetCreator.createRenderTexture({
           width: spurtSprite.width,
           height: spurtSprite.height,
         });
-
-        CreatedTextureCache.add(renderTexture);
 
         spurtContainer.removeChildren();
         spurtContainer.addChild(spurtSprite);
@@ -519,12 +500,10 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         tint: parseInt(bloodColor, 16),
       });
 
-      const renderTexture = RenderTexture.create({
+      const renderTexture = AssetCreator.createRenderTexture({
         width: spurtSprite.width,
         height: spurtSprite.height,
       });
-
-      CreatedTextureCache.add(renderTexture);
 
       spurtContainer.removeChildren();
       spurtContainer.addChild(spurtSprite);
@@ -620,7 +599,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
 };
 
 const createReviewSprites = text => {
-  const background = new RectangleSprite({
+  const background = AssetCreator.createRectangleSprite({
     x: -SCREEN.WIDTH / 2,
     y: -SCREEN.HEIGHT / 2,
     width: SCREEN.WIDTH * 2,
@@ -628,8 +607,6 @@ const createReviewSprites = text => {
     color: BLACK,
     alpha: 0,
   });
-
-  CreatedTextureCache.add(background.texture);
 
   const title = new TextSprite({
     fontName: GAME_FONT.NAME,
@@ -759,9 +736,7 @@ const createHudSprites = ({ world, textures, animations }) => {
     if (item.color) {
       const [name] = animations[item.name];
       const { baseTexture, frame } = textures[name];
-      const keyTexture = new Texture(baseTexture, frame);
-
-      CreatedTextureCache.add(keyTexture);
+      const keyTexture = AssetCreator.createTexture(baseTexture, frame);
 
       return {
         ...memo,
@@ -772,14 +747,12 @@ const createHudSprites = ({ world, textures, animations }) => {
     return memo;
   }, {});
 
-  const foreground = new RectangleSprite({
+  const foreground = AssetCreator.createRectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: RED,
     alpha: 0,
   });
-
-  CreatedTextureCache.add(foreground.texture);
 
   return {
     foreground,
@@ -915,7 +888,7 @@ const createWorldGraphics = ({ world }) => {
         if (sector.blocking && !sector.edge) {
           return {
             ...sectorMemo,
-            [sector.id]: new RectangleSprite({
+            [sector.id]: AssetCreator.createRectangleSprite({
               color: color(sector),
               alpha: alpha(sector),
               width: sector.shape.width,
@@ -935,7 +908,7 @@ const createWorldGraphics = ({ world }) => {
     (memo, body) => ({
       ...memo,
       [body.id]: {
-        rectangle: new RectangleSprite({
+        rectangle: AssetCreator.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -951,7 +924,7 @@ const createWorldGraphics = ({ world }) => {
     if (body.blocking) {
       return {
         ...memo,
-        [body.id]: new RectangleSprite({
+        [body.id]: AssetCreator.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -966,7 +939,7 @@ const createWorldGraphics = ({ world }) => {
   const items = world.items.reduce(
     (memo, body) => ({
       ...memo,
-      [body.id]: new RectangleSprite({
+      [body.id]: AssetCreator.createRectangleSprite({
         color: color(body),
         width: body.width,
         height: body.length,
@@ -977,7 +950,7 @@ const createWorldGraphics = ({ world }) => {
   );
 
   const player = {
-    rectangle: new RectangleSprite({
+    rectangle: AssetCreator.createRectangleSprite({
       color: color(world.player),
       width: world.player.shape.width,
       height: world.player.shape.length,
@@ -991,7 +964,7 @@ const createWorldGraphics = ({ world }) => {
   world.enemies.forEach(enemy => {
     (enemy.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = new RectangleSprite({
+        projectiles[projectile.id] = AssetCreator.createRectangleSprite({
           color: orange,
           width: projectile.shape.width,
           height: projectile.shape.length,
@@ -1004,7 +977,7 @@ const createWorldGraphics = ({ world }) => {
   world.player.weapons.forEach(weapon => {
     (weapon.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = new RectangleSprite({
+        projectiles[projectile.id] = AssetCreator.createRectangleSprite({
           color: orange,
           width: projectile.shape.width,
           height: projectile.shape.length,
