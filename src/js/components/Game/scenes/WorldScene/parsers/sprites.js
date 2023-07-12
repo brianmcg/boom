@@ -10,7 +10,7 @@ import {
   ColorMatrixFilter,
   BLEND_MODES,
   Line,
-  AssetCreator,
+  GraphicsCreator,
 } from '@game/core/graphics';
 import { BLACK, WHITE, RED } from '@game/constants/colors';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@game/constants/config';
@@ -68,18 +68,21 @@ const createProjectileSprite = ({ animations, textures, rotate }) => {
 };
 
 const createWallSpriteMask = ({ wallTexture, floorHeight, wallHeight, renderer }) => {
-  const renderTexture = AssetCreator.createRenderTexture({ width: CELL_SIZE, height: wallHeight });
+  const renderTexture = GraphicsCreator.createRenderTexture({
+    width: CELL_SIZE,
+    height: wallHeight,
+  });
 
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
 
-  const maskBackground = AssetCreator.createRectangleSprite({
+  const maskBackground = GraphicsCreator.createRectangleSprite({
     width: CELL_SIZE,
     height: wallHeight,
   });
 
-  const floorOffset = AssetCreator.createRectangleSprite({
+  const floorOffset = GraphicsCreator.createRectangleSprite({
     width: CELL_SIZE,
     height: floorHeight,
   });
@@ -150,7 +153,7 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
 
     for (let i = 0; i < frame.w; i++) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
-      wallTextures[name].push([AssetCreator.createTexture(wallTexture, clearSlice)]);
+      wallTextures[name].push([GraphicsCreator.createTexture(wallTexture, clearSlice)]);
     }
 
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
@@ -158,7 +161,7 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
         const wallHeight = wallTexture.height;
         const floorHeight = world.floorOffset ? CELL_SIZE * world.floorOffset - 1 : 0;
 
-        const renderTexture = AssetCreator.createRenderTexture({
+        const renderTexture = GraphicsCreator.createRenderTexture({
           width: CELL_SIZE,
           height: wallHeight,
         });
@@ -204,7 +207,7 @@ const createWallSprites = ({ world, frames, animations, textures, renderer, bloo
       const spatteredSlice = new Rectangle(i, 0, 1, frame.h);
 
       spatterTextures.forEach(texture => {
-        wallTextures[name][i].push(AssetCreator.createTexture(texture, spatteredSlice));
+        wallTextures[name][i].push(GraphicsCreator.createTexture(texture, spatteredSlice));
       });
     }
   });
@@ -277,7 +280,7 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
         const col = [];
         for (let j = 0; j < CELL_SIZE; j++) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-          col.push(AssetCreator.createTexture(texture, pixel));
+          col.push(GraphicsCreator.createTexture(texture, pixel));
         }
         backgroundTextures[image].push(col);
       }
@@ -388,7 +391,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           tint: parseInt(bloodColor, 16),
         });
 
-        const renderTexture = AssetCreator.createRenderTexture({
+        const renderTexture = GraphicsCreator.createRenderTexture({
           width: spurtSprite.width,
           height: spurtSprite.height,
         });
@@ -500,7 +503,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         tint: parseInt(bloodColor, 16),
       });
 
-      const renderTexture = AssetCreator.createRenderTexture({
+      const renderTexture = GraphicsCreator.createRenderTexture({
         width: spurtSprite.width,
         height: spurtSprite.height,
       });
@@ -599,7 +602,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
 };
 
 const createReviewSprites = text => {
-  const background = AssetCreator.createRectangleSprite({
+  const background = GraphicsCreator.createRectangleSprite({
     x: -SCREEN.WIDTH / 2,
     y: -SCREEN.HEIGHT / 2,
     width: SCREEN.WIDTH * 2,
@@ -736,7 +739,7 @@ const createHudSprites = ({ world, textures, animations }) => {
     if (item.color) {
       const [name] = animations[item.name];
       const { baseTexture, frame } = textures[name];
-      const keyTexture = AssetCreator.createTexture(baseTexture, frame);
+      const keyTexture = GraphicsCreator.createTexture(baseTexture, frame);
 
       return {
         ...memo,
@@ -747,7 +750,7 @@ const createHudSprites = ({ world, textures, animations }) => {
     return memo;
   }, {});
 
-  const foreground = AssetCreator.createRectangleSprite({
+  const foreground = GraphicsCreator.createRectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: RED,
@@ -888,7 +891,7 @@ const createWorldGraphics = ({ world }) => {
         if (sector.blocking && !sector.edge) {
           return {
             ...sectorMemo,
-            [sector.id]: AssetCreator.createRectangleSprite({
+            [sector.id]: GraphicsCreator.createRectangleSprite({
               color: color(sector),
               alpha: alpha(sector),
               width: sector.shape.width,
@@ -908,7 +911,7 @@ const createWorldGraphics = ({ world }) => {
     (memo, body) => ({
       ...memo,
       [body.id]: {
-        rectangle: AssetCreator.createRectangleSprite({
+        rectangle: GraphicsCreator.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -924,7 +927,7 @@ const createWorldGraphics = ({ world }) => {
     if (body.blocking) {
       return {
         ...memo,
-        [body.id]: AssetCreator.createRectangleSprite({
+        [body.id]: GraphicsCreator.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -939,7 +942,7 @@ const createWorldGraphics = ({ world }) => {
   const items = world.items.reduce(
     (memo, body) => ({
       ...memo,
-      [body.id]: AssetCreator.createRectangleSprite({
+      [body.id]: GraphicsCreator.createRectangleSprite({
         color: color(body),
         width: body.width,
         height: body.length,
@@ -950,7 +953,7 @@ const createWorldGraphics = ({ world }) => {
   );
 
   const player = {
-    rectangle: AssetCreator.createRectangleSprite({
+    rectangle: GraphicsCreator.createRectangleSprite({
       color: color(world.player),
       width: world.player.shape.width,
       height: world.player.shape.length,
@@ -964,7 +967,7 @@ const createWorldGraphics = ({ world }) => {
   world.enemies.forEach(enemy => {
     (enemy.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = AssetCreator.createRectangleSprite({
+        projectiles[projectile.id] = GraphicsCreator.createRectangleSprite({
           color: orange,
           width: projectile.shape.width,
           height: projectile.shape.length,
@@ -977,7 +980,7 @@ const createWorldGraphics = ({ world }) => {
   world.player.weapons.forEach(weapon => {
     (weapon.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = AssetCreator.createRectangleSprite({
+        projectiles[projectile.id] = GraphicsCreator.createRectangleSprite({
           color: orange,
           width: projectile.shape.width,
           height: projectile.shape.length,

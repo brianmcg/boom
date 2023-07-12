@@ -1,4 +1,4 @@
-import { Sprite, AssetCreator } from '@game/core/graphics';
+import { Sprite, GraphicsCreator } from '@game/core/graphics';
 
 /**
  * Class representing an EntitySprite.
@@ -14,7 +14,7 @@ class EntitySprite extends Sprite {
     this.zOrder = Number.MAX_VALUE;
 
     if (floorOffset) {
-      this.mask = AssetCreator.createRectangleSprite({ anchor });
+      this.mask = GraphicsCreator.createRectangleSprite({ anchor });
       this.mask.zOrder = Number.MAX_VALUE;
     }
   }

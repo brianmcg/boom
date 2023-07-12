@@ -20,12 +20,12 @@ import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
 import GraphicsLoader from './utilities/GraphicsLoader';
-import AssetCreator from './components/AssetCreator';
+import GraphicsCreator from './utilities/GraphicsCreator';
 
 export {
   AnimatedSprite,
   Application,
-  AssetCreator,
+  GraphicsCreator,
   Assets,
   BLEND_MODES,
   ColorMatrixFilter,
