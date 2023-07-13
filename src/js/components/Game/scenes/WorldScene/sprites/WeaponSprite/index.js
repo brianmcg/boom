@@ -34,6 +34,7 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
+      // this.gotoAndStop(0);
       if (player.weapon) {
         this.setIdle();
 
@@ -44,17 +45,23 @@ class WeaponSprite extends AnimatedSprite {
         }
       }
     };
+
+    this.setIdle();
   }
 
   /**
    * Set the idle animation.
    */
   setIdle() {
-    const { anchorX, anchorY, scale, name } = this.player.weapon;
+    this.gotoAndStop(0);
 
-    this.textures = this.textureCollection[name].idle;
-    this.anchor.set(anchorX, anchorY);
-    this.scale.set(scale * SCALE_RATIO);
+    const { weapon } = this.player;
+
+    if (weapon) {
+      this.textures = this.textureCollection[weapon.name].idle;
+      this.anchor.set(weapon.anchorX, weapon.anchorY);
+      this.scale.set(weapon.scale * SCALE_RATIO);
+    }
   }
 
   /**
@@ -66,7 +73,7 @@ class WeaponSprite extends AnimatedSprite {
     if ((automatic && !this.playing) || !automatic) {
       this.textures = this.textureCollection[name].firing;
       this.loop = automatic;
-      this.play();
+      this.gotoAndPlay(0);
     }
   }
 }

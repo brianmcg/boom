@@ -105,6 +105,8 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
+    this.last = performance.now();
+
     this.weapons = Object.keys(weapons).map(name => {
       const weapon =
         weapons[name].type === WEAPONS.HIT_SCAN
@@ -269,6 +271,8 @@ class Player extends AbstractActor {
       this.weaponIndex,
     );
 
+    this.enableWeaponChange();
+
     // Start level with no weapon equiped;
     this.weaponIndex = WEAPON_INDICES.UNARMED;
 
@@ -404,22 +408,13 @@ class Player extends AbstractActor {
 
     if (this.weaponIndex && boot) {
       this.selectWeapon(WEAPON_INDICES.SECONDARY);
-    }
-
-    // Update weapon.
-    if (this.isWeaponChangeEnabled) {
-      if (selectWeapon) {
-        this.selectWeapon(selectWeapon);
-      } else if (cycleWeapon) {
-        this.cycleWeapon(cycleWeapon);
-      }
-    }
-
-    if (attack) {
+    } else if (selectWeapon) {
+      this.selectWeapon(selectWeapon);
+    } else if (cycleWeapon) {
+      this.cycleWeapon(cycleWeapon);
+    } else if (attack) {
       this.weapon?.use();
-    }
-
-    if (stopAttack) {
+    } else if (stopAttack) {
       this.weapon?.stop();
     }
 
@@ -454,6 +449,7 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
+    this.actions.boot = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
       this.health = this.maxHealth;
@@ -569,20 +565,27 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectWeapon(index, { silent = false } = {}) {
-    const weapon = this.weapons[index];
+    this.last = this.current;
+    this.current = performance.now();
 
-    if ((index === WEAPON_INDICES.UNARMED || weapon.isEquiped()) && this.weaponIndex !== index) {
-      this.previousWeaponIndex = this.weaponIndex;
-      this.weaponIndex = index;
+    console.log(this.current - this.last);
 
-      this.weapon = weapon;
+    if (this.isWeaponChangeEnabled && this.weaponIndex !== index) {
+      const weapon = this.weapons[index];
       this.disableWeaponChange();
 
-      if (weapon?.sounds?.equip && !silent) {
-        this.emitSound(weapon.sounds.equip);
-      }
-
       this.emit(EVENTS.CHANGE_WEAPON);
+
+      if (weapon && weapon.isEquiped()) {
+        this.previousWeaponIndex = this.weaponIndex;
+        this.weaponIndex = index;
+
+        this.weapon = weapon;
+
+        if (weapon?.sounds?.equip && !silent) {
+          this.emitSound(weapon.sounds.equip);
+        }
+      }
     }
   }
 
