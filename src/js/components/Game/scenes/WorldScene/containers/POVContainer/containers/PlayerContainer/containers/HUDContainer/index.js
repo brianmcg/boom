@@ -73,34 +73,19 @@ class HUDContainer extends Container {
     });
 
     // Update hud on pick up event.
-    player.onPickUp(() => {
-      ammoAmount.text = player.weapon.ammo;
-      ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
-      healthAmount.text = displayHealth(player);
+    player.onPickUp(({ isAmmo, isHealth }) => {
+      if (isAmmo) this.updateAmmo();
+      if (isHealth) this.updateHealth();
     });
 
     // Update health sprite on player hurt event.
-    player.onHurt(() => {
-      healthAmount.text = displayHealth(player);
-    });
+    player.onHurt(() => this.updateHealth());
 
     // Update ammo sprites on fore weapon event.
-    player.onUseWeapon(() => {
-      if (!player.weapon.secondary) {
-        const { ammo } = player.weapon;
-        ammoAmount.text = ammo !== null ? ammo : '-';
-        ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
-      }
-    });
+    player.onUseWeapon(() => this.updateAmmo());
 
     // Update ammo sprites on change weapon event.
-    player.onChangeWeapon(() => {
-      if (!player.weapon.secondary) {
-        const { ammo } = player.weapon;
-        ammoAmount.text = ammo !== null ? ammo : '-';
-        ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
-      }
-    });
+    player.onChangeWeapon(() => this.updateAmmo());
 
     this.player = player;
     this.sprites = sprites;
@@ -139,6 +124,27 @@ class HUDContainer extends Container {
       this.addChild(foreground);
     } else {
       this.removeChild(foreground);
+    }
+  }
+
+  /**
+   * Update the ammo amount text.
+   */
+  updateHealth() {
+    this.sprites.healthAmount.text = displayHealth(this.player);
+  }
+
+  /**
+   * Update the health amount text.
+   */
+  updateAmmo() {
+    const { weapon } = this.player;
+
+    if (weapon && !weapon.secondary) {
+      const { ammoIcon, ammoAmount } = this.sprites;
+
+      ammoAmount.text = Number.isNaN(Number(weapon?.ammo)) ? '-' : weapon.ammo;
+      ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
     }
   }
 

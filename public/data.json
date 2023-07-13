@@ -607,25 +607,6 @@
                             "equip": "weapon_knife"
                         }
                     },
-                    "knife": {
-                        "type": 0,
-                        "equiped": true,
-                        "power": 5,
-                        "accuracy": 3,
-                        "pellets": 1,
-                        "rate": 300,
-                        "range": 0.5,
-                        "maxAmmo": null,
-                        "recoil": 6,
-                        "maxAttacks": null,
-                        "projectile": {
-                            "amount": null
-                        },
-                        "sounds": {
-                            "use": "weapon_knife",
-                            "equip": "weapon_knife_equip"
-                        }
-                    },
                     "pistol": {
                         "type": 0,
                         "equiped": false,

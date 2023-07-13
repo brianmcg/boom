@@ -13,7 +13,7 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.weapon.name].idle, {
+    super(textureCollection[player.weapons[0].name].idle, {
       animationSpeed: 0.3,
       loop: false,
     });
@@ -27,19 +27,21 @@ class WeaponSprite extends AnimatedSprite {
 
     Object.values(player.weapons).forEach(weapon => {
       weapon.onUse(() => this.setUsing());
-
+      // Immediately stop animation for automatic weapon.
       if (weapon.automatic) {
         weapon.onStop(() => this.setIdle());
       }
     });
 
     this.onComplete = () => {
-      this.setIdle();
+      if (player.weapon) {
+        this.setIdle();
 
-      if (player.weapon.secondary) {
-        player.selectWeapon(player.previousWeaponIndex, {
-          silent: true,
-        });
+        if (player.weapon.secondary) {
+          player.selectWeapon(player.previousWeaponIndex, {
+            silent: true,
+          });
+        }
       }
     };
   }

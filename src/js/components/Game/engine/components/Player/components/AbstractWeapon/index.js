@@ -119,21 +119,22 @@ class AbstractWeapon extends EventEmitter {
     this.on(EVENTS.STOP, callback);
   }
 
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onDisabled(callback) {
-    this.on(STATES.DISABLED, callback);
-  }
+  // /**
+  //  * Add a callback to the diabled event.
+  //  * @param  {Function} callback The callback.
+  //  */
+  // onDisabled(callback) {
+  //   this.on(STATES.DISABLED, callback);
+  // }
 
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onIdle(callback) {
-    this.on(STATES.IDLE, callback);
-  }
+  // /**
+  //  * Add a callback to the diabled event.
+  //  * @param  {Function} callback The callback.
+  //  */
+  // onIdle(callback) {
+  //   console.log('ON_IDLE', callback);
+  //   this.on(STATES.IDLE, callback);
+  // }
 
   /**
    * Update the weapon.

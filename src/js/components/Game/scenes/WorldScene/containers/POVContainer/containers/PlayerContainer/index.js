@@ -230,9 +230,11 @@ class PlayerContainer extends Container {
    * @returns {Boolean} The state changed.
    */
   setArming() {
-    const isStateChanged = this.setState(STATES.ARMING);
+    const isStateChanged = !!this.player.weapon && this.setState(STATES.ARMING);
 
     if (isStateChanged) {
+      // Stops fast firing after secondary attack
+      // TODO: figure out why and fix.
       this.player.weapon.setState(null);
       this.sprites.weapon.setIdle();
     }
@@ -248,7 +250,7 @@ class PlayerContainer extends Container {
     const isStateChanged = this.setState(STATES.UNARMING);
 
     if (isStateChanged) {
-      this.player.weapon.setState(null);
+      this.player.weapon?.setState(null);
     }
 
     return isStateChanged;

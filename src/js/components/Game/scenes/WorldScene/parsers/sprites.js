@@ -711,7 +711,7 @@ const createHudSprites = ({ world, textures, animations }) => {
   const ammoAmount = new TextSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
-    text: `${world.player.weapon.ammo !== null ? world.player.weapon.ammo : '-'}`,
+    text: '-',
     color: WHITE,
     anchor: 0.5,
   });
