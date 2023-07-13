@@ -4,6 +4,7 @@ import { EventEmitter } from '@game/core/graphics';
 const STATES = {
   USING: 'weapon:using',
   IDLE: 'weapon:idle',
+  LOADING: 'weapon:loading',
   DISABLED: 'weapon:disabled',
 };
 
@@ -124,7 +125,7 @@ class AbstractWeapon extends EventEmitter {
   //  * @param  {Function} callback The callback.
   //  */
   // onDisabled(callback) {
-  //   this.on(STATES.DISABLED, callback);
+  //   this.on(STATES.LOADING, callback);
   // }
 
   // /**
@@ -144,9 +145,9 @@ class AbstractWeapon extends EventEmitter {
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.USING:
-        this.setDisabled();
+        this.setLoading();
         break;
-      case STATES.DISABLED:
+      case STATES.LOADING:
         this.timer += elapsedMS;
 
         if (this.timer >= this.rate) {
@@ -253,6 +254,14 @@ class AbstractWeapon extends EventEmitter {
   }
 
   /**
+   * Set the state to loading.
+   * @return {Boolean} Has the state changed to loading.
+   */
+  setLoading() {
+    return this.setState(STATES.LOADING);
+  }
+
+  /**
    * Set the state to disabled.
    * @return {Boolean} Has the state changed to disabled.
    */
@@ -274,6 +283,14 @@ class AbstractWeapon extends EventEmitter {
    */
   isUsing() {
     return this.state === STATES.USING;
+  }
+
+  /**
+   * Is the weapon in the loading state.
+   * @return {Boolean}
+   */
+  isLoading() {
+    return this.state === STATES.LOADING;
   }
 
   /**
