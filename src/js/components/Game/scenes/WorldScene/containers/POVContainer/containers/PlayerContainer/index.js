@@ -233,8 +233,6 @@ class PlayerContainer extends Container {
     const isStateChanged = !!this.player.weapon && this.setState(STATES.ARMING);
 
     if (isStateChanged) {
-      // Stops fast firing after secondary attack
-      // TODO: figure out why and fix.
       this.player.weapon.setDisabled();
       this.sprites.weapon.setIdle();
     }

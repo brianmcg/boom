@@ -100,7 +100,7 @@ class Player extends AbstractActor {
     this.distanceToPlayer = 0;
     this.breathDirection = 1;
     this.breath = 0;
-    this.isWeaponChangeEnabled = false;
+    this.isWeaponChangeEnabled = true;
     this.weaponIndex = weaponIndex;
 
     this.camera = new Camera(this);
@@ -268,8 +268,6 @@ class Player extends AbstractActor {
         prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
       this.weaponIndex,
     );
-
-    this.enableWeaponChange();
 
     // Start level with no weapon equiped;
     this.weaponIndex = WEAPON_INDICES.UNARMED;
@@ -566,8 +564,6 @@ class Player extends AbstractActor {
     if (this.isWeaponChangeEnabled && this.weaponIndex !== index) {
       const weapon = this.weapons[index];
 
-      this.emit(EVENTS.CHANGE_WEAPON);
-
       if (weapon && weapon.isEquiped()) {
         this.disableWeaponChange();
         this.previousWeaponIndex = this.weaponIndex;
@@ -588,6 +584,8 @@ class Player extends AbstractActor {
           this.emitSound(weapon.sounds.equip);
         }
       }
+
+      this.emit(EVENTS.CHANGE_WEAPON);
     }
   }
 
