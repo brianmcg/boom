@@ -105,8 +105,6 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
-    this.last = performance.now();
-
     this.weapons = Object.keys(weapons).map(name => {
       const weapon =
         weapons[name].type === WEAPONS.HIT_SCAN
@@ -565,18 +563,22 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectWeapon(index, { silent = false } = {}) {
-    this.last = this.current;
-    this.current = performance.now();
-
-    console.log(this.current - this.last);
-
     if (this.isWeaponChangeEnabled && this.weaponIndex !== index) {
       const weapon = this.weapons[index];
-      this.disableWeaponChange();
 
       this.emit(EVENTS.CHANGE_WEAPON);
 
       if (weapon && weapon.isEquiped()) {
+        this.disableWeaponChange();
+        this.previousWeaponIndex = this.weaponIndex;
+        this.weaponIndex = index;
+
+        this.weapon = weapon;
+
+        if (weapon?.sounds?.equip && !silent) {
+          this.emitSound(weapon.sounds.equip);
+        }
+      } else if (!weapon) {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
 

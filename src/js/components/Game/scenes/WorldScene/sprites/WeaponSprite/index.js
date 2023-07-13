@@ -34,14 +34,11 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
-      // this.gotoAndStop(0);
       if (player.weapon) {
         this.setIdle();
 
         if (player.weapon.secondary) {
-          player.selectWeapon(player.previousWeaponIndex, {
-            silent: true,
-          });
+          player.selectWeapon(player.previousWeaponIndex, { silent: true });
         }
       }
     };
@@ -53,8 +50,6 @@ class WeaponSprite extends AnimatedSprite {
    * Set the idle animation.
    */
   setIdle() {
-    this.gotoAndStop(0);
-
     const { weapon } = this.player;
 
     if (weapon) {
@@ -62,6 +57,8 @@ class WeaponSprite extends AnimatedSprite {
       this.anchor.set(weapon.anchorX, weapon.anchorY);
       this.scale.set(weapon.scale * SCALE_RATIO);
     }
+
+    this.gotoAndStop(0);
   }
 
   /**
