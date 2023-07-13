@@ -21,7 +21,6 @@ const STATES = {
   IDLE: 'player:idle',
   UNARMING: 'player:unarming',
   ARMING: 'player:arming',
-  FIRING: 'player:firing',
   DYING: 'player:dying',
 };
 
@@ -88,9 +87,6 @@ class PlayerContainer extends Container {
         break;
       case STATES.UNARMING:
         this.updateUnarming(delta);
-        break;
-      case STATES.FIRING:
-        this.updateFiring(delta);
         break;
       case STATES.DYING:
         this.updateDying(delta);
@@ -211,16 +207,6 @@ class PlayerContainer extends Container {
       this.player.enableWeaponChange();
       this.player.weapon.setIdle();
     }
-
-    return isStateChanged;
-  }
-
-  /**
-   * Set the firing state.
-   * @returns {Boolean} The state changed.
-   */
-  setFiring() {
-    const isStateChanged = this.setState(STATES.FIRING);
 
     return isStateChanged;
   }
