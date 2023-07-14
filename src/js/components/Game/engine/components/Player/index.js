@@ -316,7 +316,7 @@ class Player extends AbstractActor {
       stopAttack,
       use,
       cycleWeapon,
-      boot,
+      secondaryAttack,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -402,7 +402,7 @@ class Player extends AbstractActor {
     // Update camera.
     this.camera.update(delta);
 
-    if (this.weaponIndex && boot) {
+    if (this.weaponIndex && secondaryAttack) {
       this.selectWeapon(WEAPON_INDICES.SECONDARY);
     } else if (selectWeapon) {
       this.selectWeapon(selectWeapon);
@@ -411,7 +411,7 @@ class Player extends AbstractActor {
     } else if (attack) {
       this.weapon?.use();
     } else if (stopAttack) {
-      this.weapon?.stop();
+      this.weapon?.release();
     }
 
     // Update interactions.
@@ -445,7 +445,7 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
-    this.actions.boot = false;
+    this.actions.secondaryAttack = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
       this.health = this.maxHealth;

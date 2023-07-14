@@ -1,6 +1,16 @@
 import { CELL_SIZE, GOD_MODE } from '@game/constants/config';
 import { EventEmitter } from '@game/core/graphics';
 
+// const FOO = {
+//   UNARMED: 'weapon:unarmed',
+//   ARMING: 'weapon:arming',
+//   AIMING: 'weapon:aiming',
+//   LOADING: 'weapon:loading',
+//   FIRING: 'weapon:firing',
+//   UNARMING: 'weapon:unarming',
+//   DISABLED: 'weapon:disabled',
+// };
+
 const STATES = {
   USING: 'weapon:using',
   AIMING: 'weapon:aiming',
@@ -10,7 +20,7 @@ const STATES = {
 
 const EVENTS = {
   USE: 'weapon:use',
-  STOP: 'weapon:stop',
+  RELEASE: 'weapon:release',
 };
 
 const transformRangeForWorld = (range, offset) =>
@@ -116,8 +126,15 @@ class AbstractWeapon extends EventEmitter {
    * Add a callback to the stop event.
    * @param  {Function} callback The callback.
    */
-  onStop(callback) {
-    this.on(EVENTS.STOP, callback);
+  onRelease(callback) {
+    this.on(EVENTS.RELEASE, callback);
+  }
+
+  /**
+   * Stop using the weapon.
+   */
+  release() {
+    this.emit(EVENTS.RELEASE);
   }
 
   /**
@@ -229,7 +246,11 @@ class AbstractWeapon extends EventEmitter {
    * @return {Boolean} Has the state changed to loading.
    */
   setLoading() {
-    return this.setState(STATES.LOADING);
+    if (this.setState(STATES.LOADING)) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -325,7 +346,6 @@ class AbstractWeapon extends EventEmitter {
    */
   setState(state) {
     if (this.state !== state) {
-      console.log(this.name, this.state);
       this.timer = 0;
       this.state = state;
 
