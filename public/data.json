@@ -62,6 +62,11 @@
                         "spurt": null
                     },
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -115,6 +120,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -208,6 +218,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 1,
                                 "power": 16,
                                 "effects": {
@@ -220,6 +235,11 @@
                         }
                     },
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -275,6 +295,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -332,6 +357,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -424,6 +454,11 @@
                         "spurt": null
                     },
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -554,6 +589,11 @@
                     "explosive": true,
                     "health": 20,
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 4,
                         "power": 128,
                         "effects": {
@@ -707,6 +747,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 2,
                                 "power": 128,
                                 "effects": {

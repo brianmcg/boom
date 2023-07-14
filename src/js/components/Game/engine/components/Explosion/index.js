@@ -28,8 +28,9 @@ class Explosion extends Body {
    * @param  {Object}  options.sounds       The explosion sounds.
    * @param  {Number}  options.power        The power of the explosion.
    * @param  {Object}  options.effects      The explosion effects.
+   * @param  {Number}  options.flash        The explosion flash.
    */
-  constructor({ source, range, sounds, power, effects, ...other }) {
+  constructor({ source, range, sounds, power, effects, flash, penetration, ...other }) {
     super(other);
 
     this.source = source;
@@ -46,8 +47,7 @@ class Explosion extends Body {
         power: this.power,
         range: this.range,
         fade: true,
-        // TODO: Move this to data.
-        penetration: { distance: 2, fade: 0.75 },
+        penetration,
       }),
       angle,
     }));
@@ -95,6 +95,8 @@ class Explosion extends Body {
       z: this.source.z,
       sourceId: `${this.id}_${this.effects.explode}`,
     });
+
+    this.parent.addFlashLight(3);
 
     this.parent.addShake(shake);
 
