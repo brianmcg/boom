@@ -4,7 +4,9 @@ import { WEAPONS } from '@game/constants/types';
 import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
-import HitScanWeapon from './components/HitScanWeapon';
+import MeleeWeapon from './components/MeleeWeapon';
+import BulletWeapon from './components/BulletWeapon';
+
 import ProjectileWeapon from './components/ProjectileWeapon';
 import Camera from './components/Camera';
 import KeyCard from './components/KeyCard';
@@ -115,25 +117,20 @@ class Player extends AbstractActor {
 
     // const WEAPON_TYPES = {
 
-    //   [WEAPONS.MELEE]
-    //   [WEAPONS.BULLET]: BulletWeapon,
-    // }
+    const weaponTypes = {
+      [WEAPONS.MELEE]: MeleeWeapon,
+      [WEAPONS.BULLET]: BulletWeapon,
+      [WEAPONS.PROJECTILE]: ProjectileWeapon,
+    };
 
     this.weapons = Object.keys(weapons).map(name => {
-      const weapon =
-        weapons[name].type === WEAPONS.HIT_SCAN
-          ? new HitScanWeapon({
-              ...weapons[name],
-              player: this,
-              name,
-              soundSprite,
-            })
-          : new ProjectileWeapon({
-              ...weapons[name],
-              player: this,
-              name,
-              soundSprite,
-            });
+      // debugger;
+      const weapon = new weaponTypes[weapons[name].type]({
+        ...weapons[name],
+        player: this,
+        name,
+        soundSprite,
+      });
 
       weapon.onUse(({ recoil, sound }) => {
         this.camera.setRecoil(recoil);
@@ -190,6 +187,21 @@ class Player extends AbstractActor {
     this.radius = Math.sqrt(this.width * this.width + this.width * this.width) / 2;
 
     this.setAlive();
+  }
+
+  play() {
+    super.play();
+    this.weapons.forEach(weapon => weapon.play());
+  }
+
+  pause() {
+    super.pause();
+    this.weapons.forEach(weapon => weapon.pause());
+  }
+
+  stop() {
+    super.stop();
+    this.weapons.forEach(weapon => weapon.stop());
   }
 
   /**

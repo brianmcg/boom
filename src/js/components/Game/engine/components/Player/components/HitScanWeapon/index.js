@@ -51,42 +51,6 @@ class HitScanWeapon extends AbstractWeapon {
   }
 
   /**
-   * Use the weapon.
-   */
-  use() {
-    if (this.isUseable() && this.setUsing()) {
-      const { pellets, spreadAngle, pelletAngle, projectiles, player } = this;
-
-      const collisions = [];
-
-      const projectileAngle = (player.angle - player.moveAngle + DEG_360) % DEG_360;
-
-      let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
-
-      for (let i = 0; i < pellets.length; i++) {
-        const projectile = projectiles.shift();
-        const emitLight = !this.isMelee() && (i === 0 || i === pellets.length - 1);
-
-        if (projectile) {
-          projectile.run(rayAngle, emitLight).forEach(collision => {
-            collisions.push(collision);
-          });
-          projectiles.push(projectile);
-          rayAngle = (rayAngle + pelletAngle) % DEG_360;
-        }
-      }
-
-      if (this.isMelee()) {
-        const recoil = !collisions.length ? 0 : this.recoil;
-        const sound = this.secondary && !collisions.length ? null : this.sounds.use;
-        this.emit(EVENTS.USE, { recoil, sound });
-      } else {
-        super.use();
-      }
-    }
-  }
-
-  /**
    * Get the weapon props.
    * @return {Object} The weapon props.
    */

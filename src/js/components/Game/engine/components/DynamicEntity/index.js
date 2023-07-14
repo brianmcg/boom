@@ -34,7 +34,7 @@ class DynamicEntity extends DynamicBody {
     this.scale = scale;
     this.sounds = sounds;
     this.name = name;
-    this.distanceToPlayer = Number.MAX_VALUE;
+    this.distanceToPlayer = 0;
 
     if (tail) {
       this.tail = {

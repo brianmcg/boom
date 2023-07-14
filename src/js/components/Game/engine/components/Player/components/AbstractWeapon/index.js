@@ -1,5 +1,5 @@
 import { CELL_SIZE, GOD_MODE } from '@game/constants/config';
-import { EventEmitter } from '@game/core/graphics';
+import DynamicEntity from '../../../DynamicEntity';
 
 // const FOO = {
 //   UNARMED: 'weapon:unarmed',
@@ -33,7 +33,7 @@ const transformRangeForData = (range, offset) =>
  * Class representing a weapon.
  * @extends {EventEmitter}
  */
-class AbstractWeapon extends EventEmitter {
+class AbstractWeapon extends DynamicEntity {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player     The player.
@@ -64,12 +64,10 @@ class AbstractWeapon extends EventEmitter {
     accuracy,
     pellets,
     equiped,
-    recoil,
+    recoil = 0,
     maxAmmo,
     range,
     spread,
-    sounds,
-    name,
     ammo,
     rate,
     automatic,
@@ -78,19 +76,12 @@ class AbstractWeapon extends EventEmitter {
     secondary,
     anchorX = 0.5,
     anchorY = 1,
-    scale = 1,
-    soundSprite,
+    ...other
   }) {
-    super();
-
-    this.soundSprite = soundSprite;
+    super(other);
 
     this.anchorX = anchorX;
     this.anchorY = anchorY;
-    this.scale = scale;
-
-    this.name = name;
-    this.sounds = sounds;
     this.power = power;
     this.accuracy = accuracy;
     this.rate = rate;
@@ -114,6 +105,12 @@ class AbstractWeapon extends EventEmitter {
 
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('Can not construct abstract class.');
+    }
+  }
+
+  emitSound(name, loop) {
+    if (name && this.soundController) {
+      this.soundController.emitSound(name, 1, loop);
     }
   }
 
@@ -170,6 +167,8 @@ class AbstractWeapon extends EventEmitter {
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('You have to implement this method.');
     }
+
+    this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
 
     if (this.ammo > 0) {
       this.ammo -= GOD_MODE ? 0 : 1;

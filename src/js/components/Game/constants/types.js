@@ -7,6 +7,7 @@
  * @type {Object}
  */
 export const WEAPONS = {
-  HIT_SCAN: 0,
-  PROJECTILE: 1,
+  MELEE: 0,
+  BULLET: 1,
+  PROJECTILE: 2,
 };

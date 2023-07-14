@@ -608,7 +608,7 @@
                         }
                     },
                     "pistol": {
-                        "type": 0,
+                        "type": 1,
                         "equiped": false,
                         "power": 5,
                         "accuracy": 3,
@@ -629,7 +629,7 @@
                         }
                     },
                     "shotgun": {
-                        "type": 0,
+                        "type": 1,
                         "equiped": false,
                         "power": 5,
                         "penetration": {
@@ -655,7 +655,7 @@
                         }
                     },
                     "chaingun": {
-                        "type": 0,
+                        "type": 1,
                         "equiped": false,
                         "power": 5,
                         "accuracy": 3,
@@ -677,7 +677,7 @@
                         }
                     },
                     "launcher": {
-                        "type": 1,
+                        "type": 2,
                         "equiped": false,
                         "power": 8,
                         "accuracy": 20,
