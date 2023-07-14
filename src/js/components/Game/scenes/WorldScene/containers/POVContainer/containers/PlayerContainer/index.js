@@ -205,7 +205,7 @@ class PlayerContainer extends Container {
 
     if (isStateChanged) {
       this.player.enableWeaponChange();
-      this.player.weapon.setIdle();
+      this.player.weapon.setAiming();
     }
 
     return isStateChanged;

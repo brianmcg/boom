@@ -27,10 +27,6 @@ class WeaponSprite extends AnimatedSprite {
 
     Object.values(player.weapons).forEach(weapon => {
       weapon.onUse(() => this.setUsing());
-      // Immediately stop animation for automatic weapon.
-      if (weapon.automatic) {
-        weapon.onStop(() => this.setIdle());
-      }
     });
 
     this.onComplete = () => {
@@ -40,6 +36,12 @@ class WeaponSprite extends AnimatedSprite {
         if (player.weapon.secondary) {
           player.selectWeapon(player.previousWeaponIndex, { silent: true });
         }
+      }
+    };
+
+    this.onLoop = () => {
+      if (player.weapon.ammo === 0) {
+        this.setIdle();
       }
     };
 

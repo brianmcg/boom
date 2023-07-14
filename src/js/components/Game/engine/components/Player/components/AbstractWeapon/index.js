@@ -3,7 +3,7 @@ import { EventEmitter } from '@game/core/graphics';
 
 const STATES = {
   USING: 'weapon:using',
-  IDLE: 'weapon:idle',
+  AIMING: 'weapon:aiming',
   LOADING: 'weapon:loading',
   DISABLED: 'weapon:disabled',
 };
@@ -97,7 +97,7 @@ class AbstractWeapon extends EventEmitter {
     this.projectile = projectile;
     this.secondary = secondary;
 
-    this.setIdle();
+    this.setAiming();
 
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('Can not construct abstract class.');
@@ -134,7 +134,7 @@ class AbstractWeapon extends EventEmitter {
         this.timer += elapsedMS;
 
         if (this.timer >= this.rate) {
-          this.setIdle();
+          this.setAiming();
         }
 
         break;
@@ -153,12 +153,7 @@ class AbstractWeapon extends EventEmitter {
 
     if (this.ammo > 0) {
       this.ammo -= GOD_MODE ? 0 : 1;
-
       this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
-
-      if (this.ammo === 0) {
-        this.stop();
-      }
     }
   }
 
@@ -186,7 +181,7 @@ class AbstractWeapon extends EventEmitter {
    * @return {Boolean}
    */
   isUseable() {
-    return this.isIdle() && (this.ammo > 0 || this.isMelee());
+    return this.isAiming() && (this.ammo > 0 || this.isMelee());
   }
 
   /**
@@ -195,13 +190,6 @@ class AbstractWeapon extends EventEmitter {
    */
   isMelee() {
     return this.ammo == null;
-  }
-
-  /**
-   * Stop using the weapon.
-   */
-  stop() {
-    this.emit(EVENTS.STOP);
   }
 
   /**
@@ -221,11 +209,11 @@ class AbstractWeapon extends EventEmitter {
   }
 
   /**
-   * Set the state to idle.
-   * @return {Boolean} Has the state changed to idle.
+   * Set the state to aiming.
+   * @return {Boolean} Has the state changed to aiming.
    */
-  setIdle() {
-    return this.setState(STATES.IDLE);
+  setAiming() {
+    return this.setState(STATES.AIMING);
   }
 
   /**
@@ -253,11 +241,11 @@ class AbstractWeapon extends EventEmitter {
   }
 
   /**
-   * Is the weapon in the idle state.
+   * Is the weapon in the aiming state.
    * @return {Boolean}
    */
-  isIdle() {
-    return this.state === STATES.IDLE;
+  isAiming() {
+    return this.state === STATES.AIMING;
   }
 
   /**
@@ -337,6 +325,7 @@ class AbstractWeapon extends EventEmitter {
    */
   setState(state) {
     if (this.state !== state) {
+      console.log(this.name, this.state);
       this.timer = 0;
       this.state = state;
 
