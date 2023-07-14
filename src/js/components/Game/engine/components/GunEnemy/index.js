@@ -93,7 +93,7 @@ class GunEnemy extends AbstractEnemy {
       const projectile = this.projectiles.shift();
 
       if (projectile) {
-        projectile.run(rayAngle, true);
+        projectile.run(rayAngle);
         this.projectiles.push(projectile);
       }
 

@@ -76,9 +76,12 @@ class AbstractWeapon extends DynamicEntity {
     secondary,
     anchorX = 0.5,
     anchorY = 1,
+    flash = 0,
     ...other
   }) {
     super(other);
+
+    this.flash = flash;
 
     this.anchorX = anchorX;
     this.anchorY = anchorY;
@@ -168,12 +171,13 @@ class AbstractWeapon extends DynamicEntity {
       throw new TypeError('You have to implement this method.');
     }
 
-    this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
-
     if (this.ammo > 0) {
       this.ammo -= GOD_MODE ? 0 : 1;
-      this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
     }
+  }
+
+  emitUse(options) {
+    this.emit(EVENTS.USE, options);
   }
 
   /**

@@ -7,8 +7,6 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
-const LIGHT_MULTIPLIER = 0.125;
-
 /**
  * Class representing a hit scan.
  * @extends {Body}
@@ -54,14 +52,13 @@ class HitScan extends Body {
     this.fade = fade;
     this.penetration = penetration;
     this.instantKill = instantKill;
-    this.lightIntensity = this.power * LIGHT_MULTIPLIER;
   }
 
   /**
    * Execute the hit scan.
    * @param  {Number} angle The angle of the hitscan.
    */
-  run(angle, emitLight) {
+  run(angle) {
     const collisionsInRange = [];
 
     const { isExplosion, parent, x, y } = this.source;
@@ -73,10 +70,6 @@ class HitScan extends Body {
     const rays = castRay({ x, y, angle, world: parent });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } = rays[rays.length - 1];
-
-    if (emitLight) {
-      parent.addFlashLight(this.lightIntensity);
-    }
 
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies)

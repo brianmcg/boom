@@ -77,8 +77,11 @@ class Explosion extends Body {
         }
       });
 
+      // TODO: addFlash
+
       // Fire rays in all directions.
-      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle, true));
+      // TODO: Why add angle when hitscan already has one?
+      this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
 
       // Stop dead bodies from colliding.
       deadBodies.forEach(body => {

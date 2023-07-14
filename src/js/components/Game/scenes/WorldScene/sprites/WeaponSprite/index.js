@@ -34,10 +34,10 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
-      this.reset();
-
       if (player.weapon?.secondary) {
         player.selectWeapon(player.previousWeaponIndex, { silent: true });
+      } else {
+        this.reset();
       }
     };
 

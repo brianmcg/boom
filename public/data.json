@@ -609,6 +609,7 @@
                     },
                     "pistol": {
                         "type": 1,
+                        "flash": 0.625,
                         "equiped": false,
                         "power": 5,
                         "accuracy": 3,
@@ -632,6 +633,7 @@
                         "type": 1,
                         "equiped": false,
                         "power": 5,
+                        "flash": 0.125,
                         "penetration": {
                             "distance": 1.4,
                             "fade": 0.6
@@ -658,6 +660,7 @@
                         "type": 1,
                         "equiped": false,
                         "power": 5,
+                        "flash": 0.625,
                         "accuracy": 3,
                         "pellets": 1,
                         "range": null,
@@ -680,6 +683,7 @@
                         "type": 2,
                         "equiped": false,
                         "power": 8,
+                        "flash": 1,
                         "accuracy": 20,
                         "pellets": 1,
                         "rate": 500,
