@@ -163,7 +163,7 @@ class Game extends Application {
       const sounds = this.data[type].sounds || {};
       const props = { ...sceneProps, player: { ...sceneProps.player, ...startProps.player } };
 
-      if (!sound.isLooping()) {
+      if (!sound.loop()) {
         sound.once('end', () => sound.unload());
       }
 
