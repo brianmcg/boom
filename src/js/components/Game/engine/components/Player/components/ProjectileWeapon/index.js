@@ -31,7 +31,7 @@ class ProjectileWeapon extends AbstractWeapon {
    * @param  {Boolean} options.secondary  The weapon is secondary.
    */
   constructor({ soundSprite, ...other }) {
-    super(other);
+    super({ soundSprite, ...other });
 
     const { amount, ...otherOptions } = this.projectile;
 

@@ -105,6 +105,20 @@ class Player extends AbstractActor {
 
     this.camera = new Camera(this);
 
+    // switch (this.state) {
+    //   case STATES.IDLE:
+    //     this.updateIdle(delta, elapsedMS);
+    //     break;
+    //   default:
+    //     break;
+    // }
+
+    // const WEAPON_TYPES = {
+
+    //   [WEAPONS.MELEE]
+    //   [WEAPONS.BULLET]: BulletWeapon,
+    // }
+
     this.weapons = Object.keys(weapons).map(name => {
       const weapon =
         weapons[name].type === WEAPONS.HIT_SCAN
@@ -112,6 +126,7 @@ class Player extends AbstractActor {
               ...weapons[name],
               player: this,
               name,
+              soundSprite,
             })
           : new ProjectileWeapon({
               ...weapons[name],
@@ -171,21 +186,6 @@ class Player extends AbstractActor {
       }
       return memo;
     }, {});
-
-    // Add weapon names to player sound object.
-    this.playing = this.weapons.reduce(
-      (weaponMemo, weapon) => ({
-        ...weaponMemo,
-        ...Object.values(weapon.sounds).reduce(
-          (soundMemo, sound) => ({
-            ...soundMemo,
-            [sound]: [],
-          }),
-          {},
-        ),
-      }),
-      this.playing,
-    );
 
     this.radius = Math.sqrt(this.width * this.width + this.width * this.width) / 2;
 

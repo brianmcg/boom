@@ -79,8 +79,11 @@ class AbstractWeapon extends EventEmitter {
     anchorX = 0.5,
     anchorY = 1,
     scale = 1,
+    soundSprite,
   }) {
     super();
+
+    this.soundSprite = soundSprite;
 
     this.anchorX = anchorX;
     this.anchorY = anchorY;

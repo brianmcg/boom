@@ -28,10 +28,9 @@ class WeaponSprite extends AnimatedSprite {
     player.weapons.forEach(weapon => {
       weapon.onUse(() => this.fire());
 
-      // Immediately stop animation for automatic weapon.
-      if (weapon.automatic) {
-        weapon.onRelease(() => this.reset());
-      }
+      weapon.onRelease(() => {
+        this.loop = false;
+      });
     });
 
     this.onComplete = () => {
