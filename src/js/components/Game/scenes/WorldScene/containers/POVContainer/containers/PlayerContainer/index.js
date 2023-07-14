@@ -220,7 +220,7 @@ class PlayerContainer extends Container {
 
     if (isStateChanged) {
       this.player.weapon.setDisabled();
-      this.sprites.weapon.setIdle();
+      this.sprites.weapon.reset();
     }
 
     return isStateChanged;

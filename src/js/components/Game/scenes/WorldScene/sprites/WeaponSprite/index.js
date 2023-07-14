@@ -26,36 +26,35 @@ class WeaponSprite extends AnimatedSprite {
     this.y = SCREEN.HEIGHT;
 
     player.weapons.forEach(weapon => {
-      weapon.onUse(() => this.setUsing());
+      weapon.onUse(() => this.fire());
+
       // Immediately stop animation for automatic weapon.
       if (weapon.automatic) {
-        weapon.onRelease(() => this.setIdle());
+        weapon.onRelease(() => this.reset());
       }
     });
 
     this.onComplete = () => {
-      if (player.weapon) {
-        this.setIdle();
+      this.reset();
 
-        if (player.weapon.secondary) {
-          player.selectWeapon(player.previousWeaponIndex, { silent: true });
-        }
+      if (player.weapon?.secondary) {
+        player.selectWeapon(player.previousWeaponIndex, { silent: true });
       }
     };
 
     this.onLoop = () => {
-      if (player.weapon.ammo === 0) {
-        this.setIdle();
+      if (player.weapon?.ammo === 0) {
+        this.reset();
       }
     };
 
-    this.setIdle();
+    this.reset();
   }
 
   /**
    * Set the idle animation.
    */
-  setIdle() {
+  reset() {
     const { weapon } = this.player;
 
     if (weapon) {
@@ -70,7 +69,7 @@ class WeaponSprite extends AnimatedSprite {
   /**
    * Set the using animation.
    */
-  setUsing() {
+  fire() {
     const { name, automatic } = this.player.weapon;
 
     if ((automatic && !this.playing) || !automatic) {
