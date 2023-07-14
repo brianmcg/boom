@@ -263,7 +263,7 @@ class Player extends AbstractActor {
   start(message) {
     // Determine the initial weapon index
     // If weapon index is UNARMED, then try and set it to first equiped weapon.
-    const initialWeaponIndex = Object.values(this.weapons).reduce(
+    const initialWeaponIndex = this.weapons.reduce(
       (prevIndex, weapon, index) =>
         prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
       this.weaponIndex,
