@@ -38,6 +38,7 @@ const STATES = {
 const EVENTS = {
   HURT: 'player:hurt',
   USE_WEAPON: 'player:use:weapon',
+  RELEASE_WEAPON: 'player:release:weapon',
   DEATH: 'player:death',
   DYING: 'player:dying',
   CHANGE_WEAPON: 'player:change:weapon',
@@ -132,11 +133,11 @@ class Player extends AbstractActor {
         soundSprite,
       });
 
-      weapon.onUse(({ recoil, sound }) => {
-        this.camera.setRecoil(recoil);
-        this.emitSound(sound);
-        this.emit(EVENTS.USE_WEAPON);
-      });
+      // weapon.onUse(({ recoil, sound }) => {
+      //   this.camera.setRecoil(recoil);
+      //   this.emitSound(sound);
+      //   this.emit(EVENTS.USE_WEAPON);
+      // });
 
       return weapon;
     });
@@ -421,9 +422,9 @@ class Player extends AbstractActor {
     } else if (cycleWeapon) {
       this.cycleWeapon(cycleWeapon);
     } else if (attack) {
-      this.weapon?.use();
+      this.useWeapon();
     } else if (stopAttack) {
-      this.weapon?.release();
+      this.releaseWeapon();
     }
 
     // Update interactions.
@@ -526,6 +527,25 @@ class Player extends AbstractActor {
     this.emit(EVENTS.MESSAGE_ADDED, text, options);
   }
 
+  useWeapon() {
+    if (this.weapon) {
+      const { success, recoil, sound, flash } = this.weapon.use();
+
+      if (recoil) this.camera.setRecoil(recoil);
+      if (sound) this.emitSound(sound);
+      if (flash) this.parent.addFlashLight(flash);
+      if (success) this.emit(EVENTS.USE_WEAPON);
+    }
+  }
+
+  releaseWeapon() {
+    this.emit(EVENTS.RELEASE_WEAPON);
+  }
+
+  onReleaseWeapon(callback) {
+    this.on(EVENTS.RELEASE_WEAPON, callback);
+  }
+
   /**
    * Cycle to next weapon.
    * @param  {Number} index The index of the weapon to cycle to.
@@ -586,6 +606,8 @@ class Player extends AbstractActor {
         if (weapon?.sounds?.equip && !silent) {
           this.emitSound(weapon.sounds.equip);
         }
+
+        this.emit(EVENTS.CHANGE_WEAPON);
       } else if (!weapon) {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
@@ -595,9 +617,9 @@ class Player extends AbstractActor {
         if (weapon?.sounds?.equip && !silent) {
           this.emitSound(weapon.sounds.equip);
         }
-      }
 
-      this.emit(EVENTS.CHANGE_WEAPON);
+        this.emit(EVENTS.CHANGE_WEAPON);
+      }
     }
   }
 

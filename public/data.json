@@ -633,7 +633,7 @@
                         "type": 1,
                         "equiped": false,
                         "power": 5,
-                        "flash": 0.125,
+                        "flash": 1.25,
                         "penetration": {
                             "distance": 1.4,
                             "fade": 0.6

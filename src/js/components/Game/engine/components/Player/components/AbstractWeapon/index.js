@@ -1,4 +1,4 @@
-import { CELL_SIZE, GOD_MODE } from '@game/constants/config';
+import { CELL_SIZE } from '@game/constants/config';
 import DynamicEntity from '../../../DynamicEntity';
 
 // const FOO = {
@@ -111,34 +111,28 @@ class AbstractWeapon extends DynamicEntity {
     }
   }
 
-  emitSound(name, loop) {
-    if (name && this.soundController) {
-      this.soundController.emitSound(name, 1, loop);
-    }
-  }
+  // /**
+  //  * Add a callback to the use event.
+  //  * @param  {Function} callback The callback.
+  //  */
+  // onUse(callback) {
+  //   this.on(EVENTS.USE, callback);
+  // }
 
-  /**
-   * Add a callback to the use event.
-   * @param  {Function} callback The callback.
-   */
-  onUse(callback) {
-    this.on(EVENTS.USE, callback);
-  }
+  // /**
+  //  * Add a callback to the stop event.
+  //  * @param  {Function} callback The callback.
+  //  */
+  // onRelease(callback) {
+  //   this.on(EVENTS.RELEASE, callback);
+  // }
 
-  /**
-   * Add a callback to the stop event.
-   * @param  {Function} callback The callback.
-   */
-  onRelease(callback) {
-    this.on(EVENTS.RELEASE, callback);
-  }
-
-  /**
-   * Stop using the weapon.
-   */
-  release() {
-    this.emit(EVENTS.RELEASE);
-  }
+  // /**
+  //  * Stop using the weapon.
+  //  */
+  // release() {
+  //   this.emit(EVENTS.RELEASE);
+  // }
 
   /**
    * Update the weapon.
@@ -171,13 +165,7 @@ class AbstractWeapon extends DynamicEntity {
       throw new TypeError('You have to implement this method.');
     }
 
-    if (this.ammo > 0) {
-      this.ammo -= GOD_MODE ? 0 : 1;
-    }
-  }
-
-  emitUse(options) {
-    this.emit(EVENTS.USE, options);
+    return { success: this.isUseable() && this.setUsing() };
   }
 
   /**
@@ -204,15 +192,7 @@ class AbstractWeapon extends DynamicEntity {
    * @return {Boolean}
    */
   isUseable() {
-    return this.isAiming() && (this.ammo > 0 || this.isMelee());
-  }
-
-  /**
-   * Is it a melee weapon.
-   * @return {Boolean}
-   */
-  isMelee() {
-    return this.ammo == null;
+    return this.isAiming();
   }
 
   /**

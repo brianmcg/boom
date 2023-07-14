@@ -1,5 +1,5 @@
 import { degrees } from '@game/core/physics';
-import AbstractWeapon, { EVENTS } from '../AbstractWeapon';
+import AbstractWeapon from '../AbstractWeapon';
 import HitScan from '../../../HitScan';
 
 const DEG_360 = degrees(360);
@@ -51,29 +51,33 @@ class HitScanWeapon extends AbstractWeapon {
   }
 
   use() {
-    super.use();
+    const result = super.use();
 
-    const { pellets, spreadAngle, pelletAngle, projectiles, player } = this;
+    if (result.success) {
+      const { pellets, spreadAngle, pelletAngle, projectiles, player } = this;
 
-    const collisions = [];
+      const collisions = [];
 
-    const projectileAngle = (player.angle - player.moveAngle + DEG_360) % DEG_360;
+      const projectileAngle = (player.angle - player.moveAngle + DEG_360) % DEG_360;
 
-    let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
+      let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
 
-    for (let i = 0; i < pellets.length; i++) {
-      const projectile = projectiles.shift();
+      for (let i = 0; i < pellets.length; i++) {
+        const projectile = projectiles.shift();
 
-      if (projectile) {
-        projectile.run(rayAngle).forEach(collision => {
-          collisions.push(collision);
-        });
-        projectiles.push(projectile);
-        rayAngle = (rayAngle + pelletAngle) % DEG_360;
+        if (projectile) {
+          projectile.run(rayAngle).forEach(collision => {
+            collisions.push(collision);
+          });
+          projectiles.push(projectile);
+          rayAngle = (rayAngle + pelletAngle) % DEG_360;
+        }
       }
+
+      return { ...result, hasCollisions: collisions.length > 0 };
     }
 
-    return collisions.length > 0;
+    return result;
   }
 
   /**

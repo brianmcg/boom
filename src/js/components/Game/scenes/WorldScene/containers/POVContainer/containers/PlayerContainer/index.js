@@ -156,7 +156,7 @@ class PlayerContainer extends Container {
       this.setIdle();
 
       if (this.player.weapon.secondary) {
-        this.player.weapon.use();
+        this.player.useWeapon();
       }
     }
   }

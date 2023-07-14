@@ -25,12 +25,12 @@ class WeaponSprite extends AnimatedSprite {
     this.x = SCREEN.WIDTH / 2;
     this.y = SCREEN.HEIGHT;
 
-    player.weapons.forEach(weapon => {
-      weapon.onUse(() => this.fire());
+    player.onUseWeapon(() => {
+      this.fire();
+    });
 
-      weapon.onRelease(() => {
-        this.loop = false;
-      });
+    player.onReleaseWeapon(() => {
+      this.loop = false;
     });
 
     this.onComplete = () => {
