@@ -200,7 +200,6 @@ class Hand extends EventEmitter {
     const isStateChanged = this.setState(STATES.ARMING);
 
     if (isStateChanged) {
-      console.log(this.next);
       this.emit(EVENTS.ARMING, this.next);
       this.next = null;
     }

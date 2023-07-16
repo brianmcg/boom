@@ -213,6 +213,14 @@ class Player extends AbstractActor {
   }
 
   /**
+   * Add a callback for the release weapon event.
+   * @param  {Function} callback The callback to add for the event.
+   */
+  onReleaseWeapon(callback) {
+    this.on(EVENTS.RELEASE_WEAPON, callback);
+  }
+
+  /**
    * Add a callback for player arriving at exit.
    * @param  {Function} callback The callback function.
    */
@@ -514,6 +522,9 @@ class Player extends AbstractActor {
     this.emit(EVENTS.MESSAGE_ADDED, text, options);
   }
 
+  /**
+   * Use current weapon.
+   */
   useWeapon() {
     if (this.weapon && this.hand.canChangeWeapon()) {
       const { success, recoil, sound, flash } = this.weapon.use();
@@ -525,12 +536,11 @@ class Player extends AbstractActor {
     }
   }
 
+  /**
+   * Release the current weapon.
+   */
   releaseWeapon() {
     this.emit(EVENTS.RELEASE_WEAPON);
-  }
-
-  onReleaseWeapon(callback) {
-    this.on(EVENTS.RELEASE_WEAPON, callback);
   }
 
   /**
@@ -586,6 +596,7 @@ class Player extends AbstractActor {
       if (!weapon || weapon.equiped) {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
+        this.releaseWeapon();
         this.hand.selectWeapon({ weapon, silent });
       }
     }
