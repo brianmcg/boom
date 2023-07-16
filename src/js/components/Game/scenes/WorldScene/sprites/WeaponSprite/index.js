@@ -29,6 +29,10 @@ class WeaponSprite extends AnimatedSprite {
       this.fire();
     });
 
+    player.onChangeWeapon(() => {
+      this.reset();
+    });
+
     player.onReleaseWeapon(() => {
       this.loop = false;
     });
