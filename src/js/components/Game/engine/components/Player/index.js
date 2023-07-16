@@ -294,9 +294,6 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   update(delta, elapsedMS) {
-    this.camera.update(delta);
-    this.hand.update(delta);
-
     switch (this.state) {
       case STATES.ALIVE:
         this.updateAlive(delta, elapsedMS);
@@ -403,6 +400,9 @@ class Player extends AbstractActor {
       }
     }
 
+    this.camera.update(delta);
+    this.hand.update(delta);
+
     if (this.weaponIndex && secondaryAttack) {
       this.selectWeapon(WEAPON_INDICES.SECONDARY);
     } else if (selectWeapon) {
@@ -483,6 +483,8 @@ class Player extends AbstractActor {
         this.vision = 1;
       }
     }
+
+    this.hand.update(delta);
 
     // Update view
     this.viewHeight = this.z + this.height + this.camera.height;
