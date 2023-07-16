@@ -106,7 +106,14 @@ class Player extends AbstractActor {
     this.camera = new Camera(this);
     this.hand = new Hand(this);
 
-    this.hand.onArming(() => this.emit(EVENTS.ARMING));
+    this.hand.onArming(({ weapon, silent }) => {
+      this.weapon = weapon;
+      if (weapon && !silent) {
+        this.emitSound(weapon.sounds.equip);
+      }
+      this.emit(EVENTS.ARMING);
+    });
+
     this.hand.onUnarming(() => this.emit(EVENTS.UNARMING, { stop: !!this.weapon?.ammo }));
 
     const weaponTypes = {
@@ -571,19 +578,13 @@ class Player extends AbstractActor {
    * @param  {String} type The type of weapon to use.
    */
   selectWeapon(index, { silent = false } = {}) {
-    if (this.hand.canChangeWeapon() && this.weaponIndex !== index) {
+    if (this.weaponIndex !== index && this.hand.canChangeWeapon()) {
       const weapon = this.weapons[index];
 
       if (!weapon || weapon.equiped) {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
-        this.weapon = weapon;
-
-        if (weapon?.sounds?.equip && !silent) {
-          this.emitSound(weapon.sounds.equip);
-        }
-
-        this.hand.setUnarming();
+        this.hand.selectWeapon({ weapon, silent });
       }
     }
   }
@@ -592,7 +593,13 @@ class Player extends AbstractActor {
    * Select the previously equiped weapon.
    */
   selectPreviousWeapon() {
-    this.selectWeapon(this.previousWeaponIndex, { silent: true });
+    const nextIndex = this.weapons.reduce(
+      (prevIndex, weapon, index) =>
+        prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
+      this.previousWeaponIndex,
+    );
+
+    this.selectWeapon(nextIndex, { silent: this.previousWeaponIndex === nextIndex });
   }
 
   /**

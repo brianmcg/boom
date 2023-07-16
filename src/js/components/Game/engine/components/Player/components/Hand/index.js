@@ -47,6 +47,12 @@ class Hand extends EventEmitter {
     this.moveX = 0;
     this.moveYDirection = 1;
     this.state = STATES.UNARMED;
+    this.weapon = null;
+  }
+
+  selectWeapon(next) {
+    this.next = next;
+    this.setUnarming();
   }
 
   /**
@@ -140,7 +146,7 @@ class Hand extends EventEmitter {
     if (this.moveY >= 1) {
       this.moveY = 1;
 
-      if (this.player.weapon) {
+      if (this.next?.weapon) {
         this.setArming();
       } else {
         this.setUnarmed();
@@ -194,7 +200,9 @@ class Hand extends EventEmitter {
     const isStateChanged = this.setState(STATES.ARMING);
 
     if (isStateChanged) {
-      this.emit(EVENTS.ARMING);
+      console.log(this.next);
+      this.emit(EVENTS.ARMING, this.next);
+      this.next = null;
     }
 
     return isStateChanged;

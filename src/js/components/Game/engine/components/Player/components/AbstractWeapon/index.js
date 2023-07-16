@@ -118,7 +118,7 @@ class AbstractWeapon extends DynamicEntity {
       this.setAiming();
 
       if (this.secondary) {
-        this.player.selectPreviousWeapon();
+        // this.player.selectPreviousWeapon();
       }
     }
   }
