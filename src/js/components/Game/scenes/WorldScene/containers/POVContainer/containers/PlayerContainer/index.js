@@ -60,7 +60,7 @@ class PlayerContainer extends Container {
   }
 
   /**
-   * Remove the HUD diplay.
+   * Remove the HUD container.
    */
   removeHud() {
     this.removeChild(this.hudContainer);

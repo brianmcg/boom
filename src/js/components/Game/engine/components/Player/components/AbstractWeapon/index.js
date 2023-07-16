@@ -1,26 +1,10 @@
 import { CELL_SIZE } from '@game/constants/config';
 import DynamicEntity from '../../../DynamicEntity';
 
-// const FOO = {
-//   UNARMED: 'weapon:unarmed',
-//   ARMING: 'weapon:arming',
-//   AIMING: 'weapon:aiming',
-//   LOADING: 'weapon:loading',
-//   FIRING: 'weapon:firing',
-//   UNARMING: 'weapon:unarming',
-//   DISABLED: 'weapon:disabled',
-// };
-
 const STATES = {
   USING: 'weapon:using',
   AIMING: 'weapon:aiming',
   LOADING: 'weapon:loading',
-  DISABLED: 'weapon:disabled',
-};
-
-const EVENTS = {
-  USE: 'weapon:use',
-  RELEASE: 'weapon:release',
 };
 
 const transformRangeForWorld = (range, offset) =>
@@ -104,35 +88,10 @@ class AbstractWeapon extends DynamicEntity {
     this.projectile = projectile;
     this.secondary = secondary;
 
-    this.setAiming();
-
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('Can not construct abstract class.');
     }
   }
-
-  // /**
-  //  * Add a callback to the use event.
-  //  * @param  {Function} callback The callback.
-  //  */
-  // onUse(callback) {
-  //   this.on(EVENTS.USE, callback);
-  // }
-
-  // /**
-  //  * Add a callback to the stop event.
-  //  * @param  {Function} callback The callback.
-  //  */
-  // onRelease(callback) {
-  //   this.on(EVENTS.RELEASE, callback);
-  // }
-
-  // /**
-  //  * Stop using the weapon.
-  //  */
-  // release() {
-  //   this.emit(EVENTS.RELEASE);
-  // }
 
   /**
    * Update the weapon.
@@ -145,15 +104,22 @@ class AbstractWeapon extends DynamicEntity {
         this.setLoading();
         break;
       case STATES.LOADING:
-        this.timer += elapsedMS;
-
-        if (this.timer >= this.rate) {
-          this.setAiming();
-        }
-
+        this.updateLoading(delta, elapsedMS);
         break;
       default:
         break;
+    }
+  }
+
+  updateLoading(delta, elapsedMS) {
+    this.timer += elapsedMS;
+
+    if (this.timer >= this.rate) {
+      this.setAiming();
+
+      if (this.secondary) {
+        this.player.selectPreviousWeapon();
+      }
     }
   }
 
@@ -165,7 +131,7 @@ class AbstractWeapon extends DynamicEntity {
       throw new TypeError('You have to implement this method.');
     }
 
-    return { success: this.isUseable() && this.setUsing() };
+    return { success: this.canUse() && this.setUsing() };
   }
 
   /**
@@ -191,24 +157,8 @@ class AbstractWeapon extends DynamicEntity {
    * Can the weapon be used.
    * @return {Boolean}
    */
-  isUseable() {
+  canUse() {
     return this.isAiming();
-  }
-
-  /**
-   * Set the weapon  equiped value.
-   * @param {Boolean} value The boolean value.
-   */
-  setEquiped() {
-    this.equiped = true;
-  }
-
-  /**
-   * Is the weapon equiped.
-   * @return {Boolean} The boolean value.
-   */
-  isEquiped() {
-    return this.equiped;
   }
 
   /**
@@ -240,14 +190,6 @@ class AbstractWeapon extends DynamicEntity {
   }
 
   /**
-   * Set the state to disabled.
-   * @return {Boolean} Has the state changed to disabled.
-   */
-  setDisabled() {
-    return this.setState(STATES.DISABLED);
-  }
-
-  /**
    * Is the weapon in the aiming state.
    * @return {Boolean}
    */
@@ -272,11 +214,25 @@ class AbstractWeapon extends DynamicEntity {
   }
 
   /**
-   * Is the weapon in the disabled state.
-   * @return {Boolean}
+   * Set the weapon state.
+   * @param {String} state The new state.
    */
-  isDisabled() {
-    return this.state === STATES.DISABLED;
+  setState(state) {
+    if (this.state !== state) {
+      this.timer = 0;
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Destroy the weapon
+   */
+  destroy() {
+    this.removeAllListeners();
   }
 
   /**
@@ -325,27 +281,6 @@ class AbstractWeapon extends DynamicEntity {
       anchorX,
     };
   }
-
-  /**
-   * Set the weapon state.
-   * @param {String} state The new state.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.timer = 0;
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
-
-  destroy() {
-    this.removeAllListeners();
-  }
 }
-
-export { EVENTS };
 
 export default AbstractWeapon;

@@ -75,8 +75,8 @@ class ProjectileWeapon extends AbstractWeapon {
     return result;
   }
 
-  isUseable() {
-    return super.isUseable() && this.ammo > 0 && !!this.projectiles.length;
+  canUse() {
+    return super.canUse() && this.ammo > 0 && !!this.projectiles.length;
   }
 }
 

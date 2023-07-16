@@ -19,8 +19,8 @@ class BulletWeapon extends HitScanWeapon {
     return result;
   }
 
-  isUseable() {
-    return super.isUseable() && this.ammo > 0;
+  canUse() {
+    return super.canUse() && this.ammo > 0;
   }
 }
 

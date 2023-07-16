@@ -21,9 +21,6 @@ const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
 const VISION_INCREMENT = 0.02;
-// const BREATH_INCREMENT = 0.002;
-// const MAX_BREATH_AMOUNT = 0.4;
-// const BREATH_MULTIPLIER = -2;
 
 const WEAPON_INDICES = {
   UNARMED: -1,
@@ -42,7 +39,8 @@ const EVENTS = {
   RELEASE_WEAPON: 'player:release:weapon',
   DEATH: 'player:death',
   DYING: 'player:dying',
-  CHANGE_WEAPON: 'player:change:weapon',
+  ARMING: 'player:hand:arming',
+  UNARMING: 'player:hand:unarming',
   MESSAGE_ADDED: 'player:messages:added',
   PICK_UP: 'player:pick:up',
   EXIT: 'player:at:exit',
@@ -102,23 +100,14 @@ class Player extends AbstractActor {
     this.moveAngle = 0;
     this.isPlayer = true;
     this.distanceToPlayer = 0;
-    // this.breathDirection = 1;
-    // this.breath = 0;
-    this.isWeaponChangeEnabled = true;
+
     this.weaponIndex = weaponIndex;
 
     this.camera = new Camera(this);
     this.hand = new Hand(this);
 
-    // switch (this.state) {
-    //   case STATES.IDLE:
-    //     this.updateIdle(delta, elapsedMS);
-    //     break;
-    //   default:
-    //     break;
-    // }
-
-    // const WEAPON_TYPES = {
+    this.hand.onArming(() => this.emit(EVENTS.ARMING));
+    this.hand.onUnarming(() => this.emit(EVENTS.UNARMING, { stop: !!this.weapon?.ammo }));
 
     const weaponTypes = {
       [WEAPONS.MELEE]: MeleeWeapon,
@@ -127,19 +116,12 @@ class Player extends AbstractActor {
     };
 
     this.weapons = Object.keys(weapons).map(name => {
-      // debugger;
       const weapon = new weaponTypes[weapons[name].type]({
         ...weapons[name],
         player: this,
         name,
         soundSprite,
       });
-
-      // weapon.onUse(({ recoil, sound }) => {
-      //   this.camera.setRecoil(recoil);
-      //   this.emitSound(sound);
-      //   this.emit(EVENTS.USE_WEAPON);
-      // });
 
       return weapon;
     });
@@ -264,11 +246,19 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback to the change weapon event.
+   * Add a callback to the arming event.
    * @param  {Function} callback The callback.
    */
-  onChangeWeapon(callback) {
-    this.on(EVENTS.CHANGE_WEAPON, callback);
+  onArmWeapon(callback) {
+    this.on(EVENTS.ARMING, callback);
+  }
+
+  /**
+   * Add a callback to the unarming event.
+   * @param  {Function} callback The callback.
+   */
+  onUnarmWeapon(callback) {
+    this.on(EVENTS.UNARMING, callback);
   }
 
   /**
@@ -297,6 +287,9 @@ class Player extends AbstractActor {
    * @param  {Number} delta The delta time value.
    */
   update(delta, elapsedMS) {
+    this.camera.update(delta);
+    this.hand.update(delta);
+
     switch (this.state) {
       case STATES.ALIVE:
         this.updateAlive(delta, elapsedMS);
@@ -387,17 +380,6 @@ class Player extends AbstractActor {
       this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
     }
 
-    // update breath
-    // this.breath += BREATH_INCREMENT * this.breathDirection * delta;
-
-    // if (this.breath >= MAX_BREATH_AMOUNT) {
-    //   this.breath = MAX_BREATH_AMOUNT;
-    //   this.breathDirection *= BREATH_MULTIPLIER;
-    // } else if (this.breath <= 0) {
-    //   this.breath = 0;
-    //   this.breathDirection /= BREATH_MULTIPLIER;
-    // }
-
     // Update height.
     if (crouch) {
       this.height = Math.max(this.height - HEIGHT_INCREMENT * delta, this.crouchHeight);
@@ -413,10 +395,6 @@ class Player extends AbstractActor {
         this.vision = 1;
       }
     }
-
-    // Update camera.
-    this.camera.update(delta);
-    this.hand.update(delta);
 
     if (this.weaponIndex && secondaryAttack) {
       this.selectWeapon(WEAPON_INDICES.SECONDARY);
@@ -503,9 +481,6 @@ class Player extends AbstractActor {
     this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
-
-    // Update weapon
-    this.weapon.update(delta);
   }
 
   /**
@@ -567,7 +542,7 @@ class Player extends AbstractActor {
 
         const weapon = this.weapons[nextIndex];
 
-        if (weapon.isEquiped()) {
+        if (weapon.equiped) {
           this.selectWeapon(nextIndex);
           break;
         }
@@ -583,7 +558,7 @@ class Player extends AbstractActor {
 
         const weapon = this.weapons[nextIndex];
 
-        if (weapon.isEquiped()) {
+        if (weapon.equiped) {
           this.selectWeapon(nextIndex);
           break;
         }
@@ -599,7 +574,7 @@ class Player extends AbstractActor {
     if (this.hand.canChangeWeapon() && this.weaponIndex !== index) {
       const weapon = this.weapons[index];
 
-      if (!weapon || weapon.isEquiped()) {
+      if (!weapon || weapon.equiped) {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
         this.weapon = weapon;
@@ -614,17 +589,10 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Enable weapon changing.
+   * Select the previously equiped weapon.
    */
-  enableWeaponChange() {
-    this.isWeaponChangeEnabled = true;
-  }
-
-  /**
-   * Disable weapon changing.
-   */
-  disableWeaponChange() {
-    this.isWeaponChangeEnabled = false;
+  selectPreviousWeapon() {
+    this.selectWeapon(this.previousWeaponIndex, { silent: true });
   }
 
   /**
@@ -694,8 +662,8 @@ class Player extends AbstractActor {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const pickedUpWeapon = this.weapons[index];
 
-    if (!pickedUpWeapon.isEquiped()) {
-      pickedUpWeapon.setEquiped();
+    if (!pickedUpWeapon.equiped) {
+      pickedUpWeapon.equiped = true;
       this.selectWeapon(index);
 
       return true;
@@ -715,7 +683,7 @@ class Player extends AbstractActor {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const weaponToRefill = this.weapons[index];
 
-    if (weaponToRefill.isEquiped() && weaponToRefill.addAmmo(amount)) {
+    if (weaponToRefill.equiped && weaponToRefill.addAmmo(amount)) {
       this.emitSound(weaponToRefill.sounds.equip);
       return true;
     }
@@ -806,6 +774,7 @@ class Player extends AbstractActor {
     const isStateChanged = this.setState(STATES.DYING);
 
     if (isStateChanged) {
+      this.selectWeapon(WEAPON_INDICES.UNARMED);
       this.emit(EVENTS.DYING);
     }
 
@@ -836,10 +805,14 @@ class Player extends AbstractActor {
     return this.state === STATES.DEAD;
   }
 
+  /**
+   * Destroy the player.
+   */
   destroy() {
     super.destroy();
     Object.values(this.keyCards).forEach(key => key.destroy());
     this.weapons.forEach(weapon => weapon.destroy());
+    this.hand.destroy();
   }
 
   /**

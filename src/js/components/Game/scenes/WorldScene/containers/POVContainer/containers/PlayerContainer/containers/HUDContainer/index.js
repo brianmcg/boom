@@ -85,7 +85,7 @@ class HUDContainer extends Container {
     player.onUseWeapon(() => this.updateAmmo());
 
     // Update ammo sprites on change weapon event.
-    player.onChangeWeapon(() => this.updateAmmo());
+    player.onArmWeapon(() => this.updateAmmo());
 
     this.player = player;
     this.sprites = sprites;

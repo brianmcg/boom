@@ -1,12 +1,4 @@
-// {
-//   MAX_MOVE_X: 8.4,
-//   MAX_MOVE_Y: 6.545454545454546,
-//   MOVE_INCREMENT_X: 0.448,
-//   MOVE_INCREMENT_Y: 0.16,
-//   CHANGE_INCREMENT_Y: 7.2,
-//   BREATH_MULTIPLIER: 4.8,
-//   ROT_MULTIPLIER: 10.181818181818182,
-// }
+import { EventEmitter } from '@game/core/graphics';
 
 const MAX_MOVE_X = 1;
 const MOVE_INCREMENT_X = 0.05;
@@ -16,7 +8,11 @@ const MOVE_INCREMENT_Y = 0.0025;
 
 const CHANGE_INCREMENT_Y = 0.1;
 
-const ROT_MULTIPLIER = 1.2;
+const ROTATE_MULTIPLIER = 1.2;
+
+const BREATH_INCREMENT = 0.0002;
+const BREATH_MULTIPLIER = -2;
+const MAX_BREATH_AMOUNT = 0.04;
 
 const STATES = {
   AIMING: 'hand:aiming',
@@ -26,33 +22,31 @@ const STATES = {
   UNARMED: 'hand:unarmed',
 };
 
-const BREATH_INCREMENT = 0.0002;
-
-const BREATH_MULTIPLIER = -2;
-
-const MAX_BREATH_AMOUNT = 0.04;
+const EVENTS = {
+  ARMING: 'hand:arming',
+  UNARMING: 'hand:unarming',
+};
 
 /**
  * Class representing an map container.
  */
-class Hand {
+class Hand extends EventEmitter {
   /**
    * Creates a Hand.
    * @param  {Player} player  The player.
    * @param  {Object} sprites The player sprites.
    */
   constructor(player) {
-    this.player = player;
+    super();
 
+    this.player = player;
     this.breathDirection = 1;
     this.breath = 0;
-
     this.rotateX = 0;
-    this.moveY = 0;
+    this.moveY = 1;
     this.moveX = 0;
     this.moveYDirection = 1;
-
-    this.state = STATES.AIMING;
+    this.state = STATES.UNARMED;
   }
 
   /**
@@ -80,9 +74,6 @@ class Hand {
       case STATES.UNARMING:
         this.updateUnarming(delta);
         break;
-      case STATES.DYING:
-        this.updateDying(delta);
-        break;
       default:
         break;
     }
@@ -97,9 +88,9 @@ class Hand {
 
     // Update x offset
     if (rotateAngle < 0) {
-      this.rotateX = Math.max(this.rotateX + rotateAngle * ROT_MULTIPLIER * delta, -MAX_MOVE_X);
+      this.rotateX = Math.max(this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta, -MAX_MOVE_X);
     } else if (rotateAngle > 0) {
-      this.rotateX = Math.min(this.rotateX + rotateAngle * ROT_MULTIPLIER * delta, MAX_MOVE_X);
+      this.rotateX = Math.min(this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta, MAX_MOVE_X);
     } else if (this.rotateX > 0) {
       this.rotateX = Math.max(this.rotateX - MOVE_INCREMENT_X * delta, 0);
     } else if (this.rotateX < 0) {
@@ -157,33 +148,20 @@ class Hand {
     }
   }
 
-  // updateDying(delta) {
-  //   this.fadeAmount += delta;
-
-  //   if (this.fadeAmount > 1) {
-  //     this.fadeAmount = 1;
-  //     this.removeChildren();
-  //   }
-
-  //   this.fade(this.fadeAmount);
-
-  //   this.weaponY += CHANGE_INCREMENT * 0.5 * delta;
-
-  //   if (this.weaponY >= this.weaponHeight) {
-  //     this.weaponY = this.weaponHeight;
-  //   }
-  // }
+  /**
+   * Add a callback to the arming event.
+   * @param  {Function} callback The callback for the event.
+   */
+  onArming(callback) {
+    this.on(EVENTS.ARMING, callback);
+  }
 
   /**
-   * Update the container in the dead state.
-   * @param  {Number} delta The delta time.
+   * Add a callback to the unarming event.
+   * @param  {Function} callback The callback for the event.
    */
-  updateDying(delta) {
-    this.moveY += CHANGE_INCREMENT_Y * 0.5 * delta;
-
-    if (this.moveY >= 1) {
-      this.moveY = 1;
-    }
+  onUnarming(callback) {
+    this.on(EVENTS.UNARMING, callback);
   }
 
   /**
@@ -216,7 +194,7 @@ class Hand {
     const isStateChanged = this.setState(STATES.ARMING);
 
     if (isStateChanged) {
-      this.player.emit('player:change:weapon');
+      this.emit(EVENTS.ARMING);
     }
 
     return isStateChanged;
@@ -227,7 +205,13 @@ class Hand {
    * @returns {Boolean} The state changed.
    */
   setUnarming() {
-    return this.setState(STATES.UNARMING);
+    if (this.setState(STATES.UNARMING)) {
+      this.emit(EVENTS.UNARMING);
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -257,10 +241,25 @@ class Hand {
     return false;
   }
 
+  /**
+   * Destroy the hand.
+   */
+  destroy() {
+    this.removeAllListeners();
+  }
+
+  /**
+   * The vertical position of the hand.
+   * @return {Number} The vertical position of the hand.
+   */
   get posY() {
     return this.moveY + this.breath;
   }
 
+  /**
+   * The horizontal position of the hand.
+   * @return {Number} The horizontal position of the hand.
+   */
   get posX() {
     return this.rotateX;
   }
