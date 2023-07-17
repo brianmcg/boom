@@ -1,6 +1,6 @@
 import translate from '@translate';
 import { degrees } from '@game/core/physics';
-import { WEAPON_TYPES } from '@game/constants/types';
+import { WEAPON_TYPES } from '@game/constants/assets';
 import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';

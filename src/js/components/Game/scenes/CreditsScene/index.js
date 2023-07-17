@@ -1,10 +1,8 @@
 import translate from '@translate';
-import { CREDITS_SCENE_ASSETS, SCENE_PATHS } from '@game/constants/assets';
+import { CREDITS_SCENE_ASSETS } from '@game/constants/assets';
 import { parse } from './parsers';
 import ScrollContainer from './containers/ScrollContainer';
 import Scene from '../Scene';
-
-const CREDITS_PATH = SCENE_PATHS.CREDITS;
 
 /**
  * Class representing a CreditsScene.
@@ -146,7 +144,5 @@ class CreditsScene extends Scene {
     super.destroy(options);
   }
 }
-
-export { CREDITS_PATH };
 
 export default CreditsScene;

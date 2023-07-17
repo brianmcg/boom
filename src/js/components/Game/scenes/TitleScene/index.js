@@ -1,12 +1,10 @@
 import translate from '@translate';
-import { TITLE_SCENE_ASSETS, SCENE_PATHS } from '@game/constants/assets';
+import { TITLE_SCENE_ASSETS } from '@game/constants/assets';
 import { KEYS } from '@game/core/input';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';
 import Scene, { STATES } from '../Scene';
-
-const TITLE_PATH = SCENE_PATHS.TITLE;
 
 /**
  * Class representing a TitleScene.
@@ -76,7 +74,5 @@ class TitleScene extends Scene {
     this.game.quit();
   }
 }
-
-export { TITLE_PATH };
 
 export default TitleScene;

@@ -1,5 +1,5 @@
 import translate from '@translate';
-import { WORLD_SCENE_ASSETS, SCENE_PATHS } from '@game/constants/assets';
+import { WORLD_SCENE_ASSETS } from '@game/constants/assets';
 import { DEBUG } from '@game/constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
 
@@ -20,8 +20,6 @@ const FADE_INCREMENT = 0.05;
 const FADE_PIXEL_SIZE = 4;
 
 const MAP_VIEW = DEBUG === 2;
-
-const WORLD_PATH = SCENE_PATHS.WORLD;
 
 /**
  * Class representing a world scene.
@@ -362,7 +360,5 @@ class WorldScene extends Scene {
     super.destroy(options);
   }
 }
-
-export { WORLD_PATH };
 
 export default WorldScene;

@@ -3,7 +3,7 @@ import { InputController } from './core/input';
 
 import { BLACK } from './constants/colors';
 import { SCREEN, SHOW_STATS, LEVEL, DEBUG } from './constants/config';
-import { GAME_ASSETS } from './constants/assets';
+import { GAME_ASSETS, SCENE_TYPES } from './constants/assets';
 
 import Spinner from './components/Spinner';
 import Manual from './components/Manual';
@@ -11,14 +11,14 @@ import Stats from './components/Stats';
 
 import Loader from './utilities/Loader';
 
-import TitleScene, { TITLE_PATH } from './scenes/TitleScene';
-import WorldScene, { WORLD_PATH } from './scenes/WorldScene';
-import CreditsScene, { CREDITS_PATH } from './scenes/CreditsScene';
+import TitleScene from './scenes/TitleScene';
+import WorldScene from './scenes/WorldScene';
+import CreditsScene from './scenes/CreditsScene';
 
 const SCENES = {
-  [TITLE_PATH]: TitleScene,
-  [WORLD_PATH]: WorldScene,
-  [CREDITS_PATH]: CreditsScene,
+  [SCENE_TYPES.TITLE]: TitleScene,
+  [SCENE_TYPES.WORLD]: WorldScene,
+  [SCENE_TYPES.CREDITS]: CreditsScene,
 };
 
 /**
@@ -110,7 +110,7 @@ class Game extends Application {
    * Show the title scene.
    */
   showTitleScene() {
-    this.showScene(TITLE_PATH);
+    this.showScene(SCENE_TYPES.TITLE);
   }
 
   /**
@@ -118,7 +118,7 @@ class Game extends Application {
    * @param  {Number} options.index The index of the scene.
    */
   showWorldScene({ index = LEVEL, ...other } = {}) {
-    this.showScene(WORLD_PATH, {
+    this.showScene(SCENE_TYPES.WORLD, {
       index,
       showLoader: true,
       id: this.data.world.levels[index],
@@ -130,7 +130,7 @@ class Game extends Application {
    * Show the credits scene.
    */
   showCreditsScene() {
-    this.showScene(CREDITS_PATH);
+    this.showScene(SCENE_TYPES.CREDITS);
   }
 
   /**
