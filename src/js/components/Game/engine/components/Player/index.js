@@ -178,21 +178,6 @@ class Player extends AbstractActor {
     this.setAlive();
   }
 
-  play() {
-    super.play();
-    this.weapons.forEach(weapon => weapon.play());
-  }
-
-  pause() {
-    super.pause();
-    this.weapons.forEach(weapon => weapon.pause());
-  }
-
-  stop() {
-    super.stop();
-    this.weapons.forEach(weapon => weapon.stop());
-  }
-
   /**
    * Add a callback for the message added event.
    * @param  {Function} callback The callback function.
@@ -835,7 +820,6 @@ class Player extends AbstractActor {
   destroy() {
     super.destroy();
     Object.values(this.keyCards).forEach(key => key.destroy());
-    this.weapons.forEach(weapon => weapon.destroy());
     this.hand.destroy();
   }
 

@@ -1,5 +1,4 @@
 import { CELL_SIZE } from '@game/constants/config';
-import DynamicEntity from '../../../DynamicEntity';
 
 const STATES = {
   USING: 'weapon:using',
@@ -17,7 +16,7 @@ const transformRangeForData = (range, offset) =>
  * Class representing a weapon.
  * @extends {EventEmitter}
  */
-class AbstractWeapon extends DynamicEntity {
+class AbstractWeapon {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player     The player.
@@ -42,28 +41,30 @@ class AbstractWeapon extends DynamicEntity {
    * @param  {Boolean} options.melee      The melee option.
    */
   constructor({
-    player,
-    power,
     accuracy,
-    pellets,
-    equiped,
-    recoil = 0,
-    maxAmmo,
-    range,
-    spread,
     ammo,
-    rate,
-    automatic,
-    type,
-    projectile,
     anchorX = 0.5,
     anchorY = 1,
+    automatic,
+    equiped,
     flash = 0,
-    ...other
+    maxAmmo,
+    name,
+    pellets,
+    player,
+    power,
+    projectile,
+    range,
+    rate,
+    recoil = 0,
+    scale = 1,
+    sounds,
+    spread,
+    type,
   }) {
-    super(other);
-
-    this.flash = flash;
+    if (this.constructor === AbstractWeapon) {
+      throw new TypeError('Can not construct abstract class.');
+    }
 
     this.anchorX = anchorX;
     this.anchorY = anchorY;
@@ -74,6 +75,7 @@ class AbstractWeapon extends DynamicEntity {
     this.player = player;
     this.automatic = automatic;
     this.recoil = recoil;
+    this.flash = flash;
     this.ammo = ammo !== undefined ? ammo : maxAmmo / 2 || null;
     this.maxAmmo = maxAmmo;
     this.timer = 0;
@@ -84,12 +86,10 @@ class AbstractWeapon extends DynamicEntity {
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.projectile = projectile;
-
     this.state = STATES.AIMING;
-
-    if (this.constructor === AbstractWeapon) {
-      throw new TypeError('Can not construct abstract class.');
-    }
+    this.name = name;
+    this.scale = scale;
+    this.sounds = sounds;
   }
 
   /**
@@ -220,54 +220,49 @@ class AbstractWeapon extends DynamicEntity {
   }
 
   /**
-   * Destroy the weapon
-   */
-  destroy() {
-    this.removeAllListeners();
-  }
-
-  /**
    * Get the weapon props.
    * @return {Object} The weapon props.
    */
   get props() {
     const {
-      name,
-      power,
-      recoil,
-      maxAmmo,
-      range,
-      spread,
-      type,
-      sounds,
-      equiped,
-      rate,
       accuracy,
+      ammo,
+      anchorX,
+      equiped,
+      flash,
+      maxAmmo,
+      name,
       pellets,
       player,
-      ammo,
+      power,
       projectile,
+      range,
+      rate,
+      recoil,
       scale,
-      anchorX,
+      sounds,
+      spread,
+      type,
     } = this;
 
     return {
-      name,
-      power,
-      recoil,
-      maxAmmo,
-      type,
-      sounds,
-      equiped,
-      rate,
       accuracy,
       ammo,
+      anchorX,
+      equiped,
+      flash,
+      maxAmmo,
+      name,
+      pellets: pellets.length,
+      power,
       projectile,
       range: transformRangeForData(range, player.width / 2),
-      spread,
-      pellets: pellets.length,
+      rate,
+      recoil,
       scale,
-      anchorX,
+      sounds,
+      spread,
+      type,
     };
   }
 }

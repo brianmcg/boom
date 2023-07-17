@@ -28,7 +28,7 @@ class ProjectileWeapon extends AbstractWeapon {
    * @param  {Object}  options.projectile The weapon projectile data.
    */
   constructor({ soundSprite, ...other }) {
-    super({ soundSprite, ...other });
+    super(other);
 
     const { amount, ...otherOptions } = this.projectile;
 

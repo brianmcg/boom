@@ -39,6 +39,7 @@ class Explosion extends Body {
     this.power = power;
     this.effects = effects;
     this.parent = source.parent;
+    this.flash = flash;
     this.isExplosion = true;
 
     this.hitScans = ANGLES.map(angle => ({
@@ -77,10 +78,7 @@ class Explosion extends Body {
         }
       });
 
-      // TODO: addFlash
-
       // Fire rays in all directions.
-      // TODO: Why add angle when hitscan already has one?
       this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
 
       // Stop dead bodies from colliding.
@@ -96,7 +94,7 @@ class Explosion extends Body {
       sourceId: `${this.id}_${this.effects.explode}`,
     });
 
-    this.parent.addFlashLight(3);
+    this.parent.addFlashLight(this.flash);
 
     this.parent.addShake(shake);
 

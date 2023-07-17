@@ -641,7 +641,6 @@
                         "range": 0.5,
                         "maxAmmo": null,
                         "recoil": 8,
-                        "maxAttacks": null,
                         "projectile": {
                             "amount": null,
                             "instantKill": true
@@ -734,7 +733,6 @@
                         "range": null,
                         "maxAmmo": 20,
                         "recoil": 25,
-                        "maxAttacks": 5,
                         "projectile": {
                             "elavation": -0.125,
                             "amount": 10,
