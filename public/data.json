@@ -52,6 +52,7 @@
                     },
                     "bloodColor": null,
                     "primaryAttack": {
+                        "flash": 0.625,
                         "range": 6,
                         "power": 3,
                         "accuracy": 5,
