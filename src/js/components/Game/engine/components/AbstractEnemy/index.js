@@ -3,6 +3,7 @@ import { CELL_SIZE, UPDATE_DISTANCE } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import TransparentCell from '../TransparentCell';
 import Explosion from '../Explosion';
+import Door from '../Door';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -189,14 +190,14 @@ class AbstractEnemy extends AbstractActor {
       },
     });
 
-    // this.addTrackedCollision({
-    //   type: Door,
-    //   onStart: (body) => {
-    //     if (!this.isDead() && !this.isHurting() && body.use) {
-    //       body.use();
-    //     }
-    //   },
-    // });
+    this.addTrackedCollision({
+      type: Door,
+      onStart: body => {
+        if (!this.isDead() && !this.isHurting() && body.use) {
+          body.use();
+        }
+      },
+    });
 
     this.setIdle();
   }
@@ -301,13 +302,15 @@ class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles && this.findPlayer()) {
-        this.setRange(Number.MAX_VALUE);
-        this.setAttacking();
-      }
-
-      if (nextCell.isDoor) {
-        nextCell.use(this);
+      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles) {
+        if (this.findPlayer()) {
+          this.setRange(Number.MAX_VALUE);
+          this.setAttacking();
+        } else {
+          // TODO: Changed 5855f30ad8885aceea29f71bc43ed03ca9a53684
+          this.path = this.findPath(this.parent.player);
+          this.setChasing();
+        }
       }
 
       if (this.isArrivedAt(nextCell)) {
