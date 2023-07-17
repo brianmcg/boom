@@ -85,6 +85,8 @@ class GunEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
+    super.attack();
+
     const { spreadAngle, pelletAngle, pellets } = this.primaryAttack;
 
     let rayAngle = (this.angle - spreadAngle + DEG_360) % DEG_360;

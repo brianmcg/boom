@@ -505,6 +505,8 @@ class AbstractEnemy extends AbstractActor {
    * Attack a target.
    */
   attack() {
+    this.parent.addFlashLight(this.primaryAttack.flash);
+
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }

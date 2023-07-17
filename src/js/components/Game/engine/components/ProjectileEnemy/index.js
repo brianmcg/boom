@@ -89,6 +89,8 @@ class ProjectileEnemy extends AbstractEnemy {
    * Attack a target.
    */
   attack() {
+    super.attack();
+
     this.emitSound(this.sounds.attack);
 
     if (this.projectiles.length) {

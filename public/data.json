@@ -338,6 +338,7 @@
                     },
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 1,
                         "range": 8,
                         "power": 6,
                         "accuracy": 8,
@@ -400,6 +401,7 @@
                     },
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 1.25,
                         "range": 5,
                         "power": 3,
                         "accuracy": 5,
@@ -484,6 +486,7 @@
                     "maxAttacks": 2,
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 0.625,
                         "range": 6,
                         "power": 3,
                         "accuracy": 5,
