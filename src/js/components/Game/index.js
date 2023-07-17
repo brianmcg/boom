@@ -178,12 +178,12 @@ class Game extends Application {
   }
 
   pause() {
-    if (this.music) this.music.pause();
+    if (this.music && !this.scene.isPaused()) this.music.pause();
     if (this.ticker.started) this.stop();
   }
 
   unpause() {
-    if (this.music) this.music.play();
+    if (this.music && !this.scene.isPaused()) this.music.play();
     if (!this.ticker.started) this.start();
   }
 
