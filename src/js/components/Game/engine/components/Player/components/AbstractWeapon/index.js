@@ -88,6 +88,8 @@ class AbstractWeapon extends DynamicEntity {
     this.projectile = projectile;
     this.secondary = secondary;
 
+    this.setAiming();
+
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('Can not construct abstract class.');
     }

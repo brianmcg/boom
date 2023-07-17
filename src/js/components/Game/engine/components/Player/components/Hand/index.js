@@ -129,10 +129,6 @@ class Hand extends EventEmitter {
     if (this.moveY <= 0) {
       this.moveY = 0;
       this.setAiming();
-
-      if (this.player.weapon.secondary) {
-        this.player.useWeapon();
-      }
     }
   }
 
@@ -179,6 +175,14 @@ class Hand extends EventEmitter {
   }
 
   /**
+   * Can the weapon be used.
+   * @return {Boolean} Can the weapon be changed.
+   */
+  canUseWeapon() {
+    return this.state === STATES.AIMING;
+  }
+
+  /**
    * Set the aiming state.
    * @returns {Boolean} The state changed.
    */
@@ -186,7 +190,9 @@ class Hand extends EventEmitter {
     const isStateChanged = this.setState(STATES.AIMING);
 
     if (isStateChanged) {
-      this.player.weapon?.setAiming();
+      if (this.player.weapon.secondary) {
+        this.player.useWeapon();
+      }
     }
 
     return isStateChanged;

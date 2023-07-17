@@ -33,13 +33,6 @@ class WeaponSprite extends AnimatedSprite {
       this.reset();
     });
 
-    // player.onUnarmWeapon(({ stop }) => {
-    // console.log('onUnarmWeapon', stop);
-    // if (stop) {
-    //   this.gotoAndStop(0);
-    // }
-    // });
-
     player.onReleaseWeapon(() => {
       this.loop = false;
     });

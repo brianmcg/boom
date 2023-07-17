@@ -108,13 +108,15 @@ class Player extends AbstractActor {
 
     this.hand.onArming(({ weapon, silent }) => {
       this.weapon = weapon;
+
       if (weapon && !silent) {
         this.emitSound(weapon.sounds.equip);
       }
+
       this.emit(EVENTS.ARMING);
     });
 
-    this.hand.onUnarming(() => this.emit(EVENTS.UNARMING, { stop: !!this.weapon?.ammo }));
+    this.hand.onUnarming(() => this.emit(EVENTS.UNARMING));
 
     const weaponTypes = {
       [WEAPONS.MELEE]: MeleeWeapon,
@@ -526,7 +528,7 @@ class Player extends AbstractActor {
    * Use current weapon.
    */
   useWeapon() {
-    if (this.weapon && this.hand.canChangeWeapon()) {
+    if (this.hand.canUseWeapon()) {
       const { success, recoil, sound, flash } = this.weapon.use();
 
       if (recoil) this.camera.setRecoil(recoil);
