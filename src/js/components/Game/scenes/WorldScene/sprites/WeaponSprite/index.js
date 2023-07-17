@@ -29,6 +29,10 @@ class WeaponSprite extends AnimatedSprite {
       this.fire();
     });
 
+    player.onUnarmWeapon(() => {
+      this.reset();
+    });
+
     player.onArmWeapon(() => {
       this.reset();
     });
@@ -38,11 +42,8 @@ class WeaponSprite extends AnimatedSprite {
     });
 
     this.onComplete = () => {
-      if (player.weapon?.secondary) {
-        this.player.selectPreviousWeapon();
-      } else {
-        this.reset();
-      }
+      this.reset();
+      player.weapon?.onComplete?.();
     };
 
     this.onLoop = () => {

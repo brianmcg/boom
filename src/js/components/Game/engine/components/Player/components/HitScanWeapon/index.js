@@ -26,13 +26,12 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Number}  options.automatic    Automatic weapon option.
    * @param  {Number}  options.type         The type of weapon.
    * @param  {Object}  options.projectile   The weapon projectile data.
-   * @param  {Boolean} options.secondary    The weapon is secondary.
    * @param  {Boolean} options.penetration  The weapon penetration.
    */
   constructor({ penetration, ...other }) {
     super(other);
 
-    const { amount, effects } = this.projectile;
+    const { amount, effects, instantKill } = this.projectile;
 
     this.penetration = penetration;
 
@@ -45,7 +44,7 @@ class HitScanWeapon extends AbstractWeapon {
           range: this.range,
           accuracy: this.accuracy,
           penetration,
-          instantKill: this.secondary,
+          instantKill,
         }),
     );
   }

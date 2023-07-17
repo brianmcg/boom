@@ -25,6 +25,7 @@ const STATES = {
 const EVENTS = {
   ARMING: 'hand:arming',
   UNARMING: 'hand:unarming',
+  AIMING: 'hand:aiming',
 };
 
 /**
@@ -48,11 +49,6 @@ class Hand extends EventEmitter {
     this.moveYDirection = 1;
     this.state = STATES.UNARMED;
     this.weapon = null;
-  }
-
-  selectWeapon(next) {
-    this.next = next;
-    this.setUnarming();
   }
 
   /**
@@ -142,7 +138,7 @@ class Hand extends EventEmitter {
     if (this.moveY >= 1) {
       this.moveY = 1;
 
-      if (this.next?.weapon) {
+      if (this.player.weapon) {
         this.setArming();
       } else {
         this.setUnarmed();
@@ -164,6 +160,14 @@ class Hand extends EventEmitter {
    */
   onUnarming(callback) {
     this.on(EVENTS.UNARMING, callback);
+  }
+
+  /**
+   * Add a callback to the aiming event.
+   * @param  {Function} callback The callback for the event.
+   */
+  onAiming(callback) {
+    this.on(EVENTS.AIMING, callback);
   }
 
   /**
@@ -190,9 +194,7 @@ class Hand extends EventEmitter {
     const isStateChanged = this.setState(STATES.AIMING);
 
     if (isStateChanged) {
-      if (this.player.weapon.secondary) {
-        this.player.useWeapon();
-      }
+      this.emit(EVENTS.AIMING);
     }
 
     return isStateChanged;
@@ -206,8 +208,7 @@ class Hand extends EventEmitter {
     const isStateChanged = this.setState(STATES.ARMING);
 
     if (isStateChanged) {
-      this.emit(EVENTS.ARMING, this.next);
-      this.next = null;
+      this.emit(EVENTS.ARMING);
     }
 
     return isStateChanged;

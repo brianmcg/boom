@@ -26,7 +26,6 @@ class ProjectileWeapon extends AbstractWeapon {
    * @param  {Number}  options.automatic  Automatic weapon option.
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Boolean} options.secondary  The weapon is secondary.
    */
   constructor({ soundSprite, ...other }) {
     super({ soundSprite, ...other });

@@ -36,7 +36,6 @@ class AbstractWeapon extends DynamicEntity {
    * @param  {Number}  options.automatic  Automatic weapon option.
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Boolean} options.secondary  The weapon is secondary.
    * @param  {Number}  options.anchorX    The x anchor of the weapon.
    * @param  {Number}  options.anchorY    The y anchor of the weapon.
    * @param  {Number}  options.scale      The scale of the weapon.
@@ -57,7 +56,6 @@ class AbstractWeapon extends DynamicEntity {
     automatic,
     type,
     projectile,
-    secondary,
     anchorX = 0.5,
     anchorY = 1,
     flash = 0,
@@ -86,9 +84,8 @@ class AbstractWeapon extends DynamicEntity {
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.projectile = projectile;
-    this.secondary = secondary;
 
-    this.setAiming();
+    this.state = STATES.AIMING;
 
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('Can not construct abstract class.');
@@ -118,10 +115,6 @@ class AbstractWeapon extends DynamicEntity {
 
     if (this.timer >= this.rate) {
       this.setAiming();
-
-      if (this.secondary) {
-        // this.player.selectPreviousWeapon();
-      }
     }
   }
 
@@ -184,11 +177,7 @@ class AbstractWeapon extends DynamicEntity {
    * @return {Boolean} Has the state changed to loading.
    */
   setLoading() {
-    if (this.setState(STATES.LOADING)) {
-      return true;
-    }
-
-    return false;
+    return this.setState(STATES.LOADING);
   }
 
   /**
@@ -258,7 +247,6 @@ class AbstractWeapon extends DynamicEntity {
       player,
       ammo,
       projectile,
-      secondary,
       scale,
       anchorX,
     } = this;
@@ -278,7 +266,6 @@ class AbstractWeapon extends DynamicEntity {
       range: transformRangeForData(range, player.width / 2),
       spread,
       pellets: pellets.length,
-      secondary,
       scale,
       anchorX,
     };

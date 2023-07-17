@@ -1,10 +1,10 @@
 import translate from '@translate';
 import { degrees } from '@game/core/physics';
-import { WEAPONS } from '@game/constants/types';
+import { WEAPON_TYPES } from '@game/constants/types';
 import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
-import MeleeWeapon from './components/MeleeWeapon';
+import SecondaryWeapon from './components/SecondaryWeapon';
 import BulletWeapon from './components/BulletWeapon';
 
 import ProjectileWeapon from './components/ProjectileWeapon';
@@ -25,6 +25,12 @@ const VISION_INCREMENT = 0.02;
 const WEAPON_INDICES = {
   UNARMED: -1,
   SECONDARY: 0,
+};
+
+const WEAPONS = {
+  [WEAPON_TYPES.SECONDARY]: SecondaryWeapon,
+  [WEAPON_TYPES.BULLET]: BulletWeapon,
+  [WEAPON_TYPES.PROJECTILE]: ProjectileWeapon,
 };
 
 const STATES = {
@@ -106,34 +112,23 @@ class Player extends AbstractActor {
     this.camera = new Camera(this);
     this.hand = new Hand(this);
 
-    this.hand.onArming(({ weapon, silent }) => {
-      this.weapon = weapon;
-
-      if (weapon && !silent) {
-        this.emitSound(weapon.sounds.equip);
-      }
-
-      this.emit(EVENTS.ARMING);
-    });
+    this.hand.onArming(() => this.emit(EVENTS.ARMING));
 
     this.hand.onUnarming(() => this.emit(EVENTS.UNARMING));
 
-    const weaponTypes = {
-      [WEAPONS.MELEE]: MeleeWeapon,
-      [WEAPONS.BULLET]: BulletWeapon,
-      [WEAPONS.PROJECTILE]: ProjectileWeapon,
-    };
-
-    this.weapons = Object.keys(weapons).map(name => {
-      const weapon = new weaponTypes[weapons[name].type]({
-        ...weapons[name],
-        player: this,
-        name,
-        soundSprite,
-      });
-
-      return weapon;
+    this.hand.onAiming(() => {
+      if (this.weapon.secondary) this.useWeapon();
     });
+
+    this.weapons = Object.keys(weapons).map(
+      name =>
+        new WEAPONS[weapons[name].type]({
+          ...weapons[name],
+          player: this,
+          name,
+          soundSprite,
+        }),
+    );
 
     this.sounds = this.weapons.reduce(
       (memo, weapon) => ({
@@ -542,6 +537,7 @@ class Player extends AbstractActor {
    * Release the current weapon.
    */
   releaseWeapon() {
+    this.weapon?.setAiming();
     this.emit(EVENTS.RELEASE_WEAPON);
   }
 
@@ -599,7 +595,13 @@ class Player extends AbstractActor {
         this.previousWeaponIndex = this.weaponIndex;
         this.weaponIndex = index;
         this.releaseWeapon();
-        this.hand.selectWeapon({ weapon, silent });
+        this.hand.setUnarming();
+
+        this.weapon = weapon;
+
+        if (weapon && !silent) {
+          this.emitSound(weapon.sounds.equip);
+        }
       }
     }
   }
