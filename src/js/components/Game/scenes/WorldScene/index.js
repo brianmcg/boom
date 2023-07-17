@@ -75,7 +75,6 @@ class WorldScene extends Scene {
         [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 2 }),
         [KEYS.NUM_3]: () => this.assignPlayerAction({ selectWeapon: 3 }),
         [KEYS.NUM_4]: () => this.assignPlayerAction({ selectWeapon: 4 }),
-        [KEYS.NUM_5]: () => this.assignPlayerAction({ selectWeapon: 5 }),
       },
       onKeyUp: {
         [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: false }),
