@@ -4407,11 +4407,11 @@
         {
             "x": 5,
             "y": 4,
-            "name": "imp",
+            "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "width": 0.5,
-            "length": 0.5,
+            "width": 0.328125,
+            "length": 0.328125,
             "height": 0.625
         }
     ],
