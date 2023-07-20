@@ -177,13 +177,19 @@ class Game extends Application {
     }
   }
 
+  /**
+   * Pause the game.
+   */
   pause() {
-    if (this.music && !this.scene.isPaused()) this.music.pause();
+    if (this.music && !this.scene?.isPaused()) this.music.pause();
     if (this.ticker.started) this.stop();
   }
 
+  /**
+   * Unpause the game.
+   */
   unpause() {
-    if (this.music && !this.scene.isPaused()) this.music.play();
+    if (this.music && !this.scene?.isPaused()) this.music.play();
     if (!this.ticker.started) this.start();
   }
 
