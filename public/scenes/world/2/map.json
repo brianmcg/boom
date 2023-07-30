@@ -638,16 +638,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -961,7 +961,7 @@
                         "name": "lift_ceilings"
                     },
                     "overlay": {
-                        "name": "walls_08"
+                        "name": "walls_12"
                     }
                 },
                 "double": true,
@@ -1286,16 +1286,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2552,7 +2552,7 @@
                         "name": "lift_ceilings"
                     },
                     "overlay": {
-                        "name": "walls_08"
+                        "name": "walls_12"
                     }
                 },
                 "double": true,
@@ -3584,16 +3584,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3863,16 +3863,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3891,16 +3891,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3915,17 +3915,30 @@
             {
                 "x": 7,
                 "y": 20,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_08"
+                    },
+                    "left": {
+                        "name": "walls_08"
+                    },
+                    "back": {
+                        "name": "walls_08"
+                    },
+                    "right": {
+                        "name": "walls_08"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_03"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 7,
@@ -3998,14 +4011,14 @@
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4198,16 +4211,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4301,16 +4314,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4344,16 +4357,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4637,16 +4650,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4740,16 +4753,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4783,16 +4796,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4875,14 +4888,14 @@
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5075,16 +5088,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5178,16 +5191,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5221,16 +5234,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5449,16 +5462,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5720,16 +5733,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5763,16 +5776,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6038,16 +6051,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6195,16 +6208,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6238,16 +6251,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6605,16 +6618,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6648,16 +6661,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6736,16 +6749,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6987,16 +7000,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7015,16 +7028,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7058,16 +7071,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7082,30 +7095,17 @@
             {
                 "x": 14,
                 "y": 21,
+                "edge": true,
                 "blocking": true,
                 "height": 1,
                 "sides": {
-                    "front": {
-                        "name": "walls_11"
-                    },
-                    "left": {
-                        "name": "walls_11"
-                    },
-                    "back": {
-                        "name": "walls_11"
-                    },
-                    "right": {
-                        "name": "walls_11"
-                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                },
-                "axis": "y",
-                "pushable": false
+                }
             }
         ],
         [
@@ -7189,16 +7189,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7249,16 +7249,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7337,16 +7337,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7395,16 +7395,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7466,16 +7466,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7509,16 +7509,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7597,16 +7597,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7876,16 +7876,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7919,16 +7919,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8037,16 +8037,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8319,16 +8319,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8362,16 +8362,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8859,18 +8859,18 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "bottom": {
@@ -8888,16 +8888,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8918,15 +8918,15 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "back": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "right": {
@@ -8964,16 +8964,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9569,16 +9569,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9719,16 +9719,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9822,16 +9822,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10984,16 +10984,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11183,16 +11183,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11460,18 +11460,18 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
                         "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "right": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "bottom": {
@@ -11489,16 +11489,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11517,16 +11517,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11545,16 +11545,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11573,16 +11573,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11601,16 +11601,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11629,15 +11629,15 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "back": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "right": {
@@ -11963,16 +11963,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12069,16 +12069,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_11"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12417,18 +12417,18 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "bottom": {
@@ -12446,16 +12446,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12474,16 +12474,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12502,16 +12502,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12530,16 +12530,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12558,16 +12558,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_10"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12586,18 +12586,18 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "left": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_10",
+                        "name": "walls_08",
                         "height": 1
                     },
                     "bottom": {
@@ -12727,16 +12727,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12895,21 +12895,11 @@
             "x": 2,
             "y": 8,
             "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 2,
-            "y": 10,
-            "z": 0,
             "name": "objects_02",
             "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 2,
@@ -12945,16 +12935,6 @@
         },
         {
             "x": 4,
-            "y": 4,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 4,
             "y": 7,
             "z": 0,
             "name": "drip",
@@ -12982,9 +12962,19 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.40625,
-            "length": 0.40625,
-            "height": 0.328125
+            "width": 0.515625,
+            "length": 0.515625,
+            "height": 0.390625
+        },
+        {
+            "x": 4,
+            "y": 17,
+            "z": 0,
+            "name": "objects_02",
+            "blocking": false,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 5,
@@ -12995,16 +12985,6 @@
             "width": 0.203125,
             "length": 0.203125,
             "height": 0.8125
-        },
-        {
-            "x": 5,
-            "y": 16,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
         },
         {
             "x": 5,
@@ -13028,16 +13008,6 @@
         },
         {
             "x": 6,
-            "y": 4,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 6,
             "y": 7,
             "z": 0,
             "name": "drip",
@@ -13046,16 +13016,6 @@
             "width": 0.109375,
             "length": 0.109375,
             "height": 0.046875
-        },
-        {
-            "x": 6,
-            "y": 12,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
         },
         {
             "x": 6,
@@ -13080,16 +13040,6 @@
         },
         {
             "x": 8,
-            "y": 7,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 8,
             "y": 9,
             "z": 0,
             "name": "objects_01",
@@ -13102,12 +13052,11 @@
             "x": 8,
             "y": 11,
             "z": 0,
-            "name": "drip",
+            "name": "objects_02",
             "blocking": false,
-            "animated": true,
-            "width": 0.109375,
-            "length": 0.109375,
-            "height": 0.046875
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 9,
@@ -13119,26 +13068,6 @@
             "width": 0.109375,
             "length": 0.109375,
             "height": 0.046875
-        },
-        {
-            "x": 9,
-            "y": 11,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 9,
-            "y": 16,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
         },
         {
             "x": 10,
@@ -13178,9 +13107,9 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.40625,
-            "length": 0.40625,
-            "height": 0.328125
+            "width": 0.515625,
+            "length": 0.515625,
+            "height": 0.390625
         },
         {
             "x": 10,
@@ -13205,16 +13134,6 @@
         },
         {
             "x": 11,
-            "y": 1,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 11,
             "y": 15,
             "z": 0,
             "name": "drip",
@@ -13223,6 +13142,16 @@
             "width": 0.109375,
             "length": 0.109375,
             "height": 0.046875
+        },
+        {
+            "x": 12,
+            "y": 1,
+            "z": 0,
+            "name": "objects_02",
+            "blocking": false,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 12,
@@ -13236,33 +13165,13 @@
         },
         {
             "x": 12,
-            "y": 15,
+            "y": 16,
             "z": 0,
-            "name": "objects_03",
+            "name": "objects_02",
             "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 12,
-            "y": 19,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 13,
-            "y": 6,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 13,
@@ -13275,14 +13184,34 @@
             "height": 0.8125
         },
         {
-            "x": 14,
-            "y": 11,
+            "x": 13,
+            "y": 10,
             "z": 0,
             "name": "objects_02",
             "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
+        },
+        {
+            "x": 14,
+            "y": 6,
+            "z": 0,
+            "name": "objects_02",
+            "blocking": false,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
+        },
+        {
+            "x": 14,
+            "y": 13,
+            "z": 0,
+            "name": "objects_02",
+            "blocking": false,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 14,
@@ -13302,9 +13231,9 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.40625,
-            "length": 0.40625,
-            "height": 0.328125
+            "width": 0.515625,
+            "length": 0.515625,
+            "height": 0.390625
         },
         {
             "x": 15,
@@ -13335,9 +13264,9 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.40625,
-            "length": 0.40625,
-            "height": 0.328125
+            "width": 0.515625,
+            "length": 0.515625,
+            "height": 0.390625
         },
         {
             "x": 15,
@@ -13349,46 +13278,6 @@
             "width": 0.109375,
             "length": 0.109375,
             "height": 0.046875
-        },
-        {
-            "x": 15,
-            "y": 19,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 16,
-            "y": 10,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
-            "x": 16,
-            "y": 13,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
-        },
-        {
-            "x": 17,
-            "y": 1,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
         },
         {
             "x": 17,
@@ -13424,16 +13313,6 @@
             "height": 0.046875
         },
         {
-            "x": 18,
-            "y": 7,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
             "x": 19,
             "y": 12,
             "z": 0,
@@ -13442,16 +13321,6 @@
             "width": 0.203125,
             "length": 0.203125,
             "height": 0.8125
-        },
-        {
-            "x": 20,
-            "y": 16,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
         },
         {
             "x": 21,
@@ -13482,9 +13351,19 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.40625,
-            "length": 0.40625,
-            "height": 0.328125
+            "width": 0.515625,
+            "length": 0.515625,
+            "height": 0.390625
+        },
+        {
+            "x": 22,
+            "y": 16,
+            "z": 0,
+            "name": "objects_02",
+            "blocking": false,
+            "width": 0.375,
+            "length": 0.375,
+            "height": 0.5
         },
         {
             "x": 23,
@@ -13509,16 +13388,6 @@
             "height": 0.046875
         },
         {
-            "x": 24,
-            "y": 16,
-            "z": 0,
-            "name": "objects_02",
-            "blocking": false,
-            "width": 0.15625,
-            "length": 0.15625,
-            "height": 0.25
-        },
-        {
             "x": 25,
             "y": 6,
             "z": 0,
@@ -13528,16 +13397,6 @@
             "width": 0.109375,
             "length": 0.109375,
             "height": 0.046875
-        },
-        {
-            "x": 25,
-            "y": 8,
-            "z": 0,
-            "name": "objects_03",
-            "blocking": false,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.484375
         }
     ],
     "items": [

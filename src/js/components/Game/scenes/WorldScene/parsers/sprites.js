@@ -345,15 +345,14 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
   const playerExplosionSprites = world.player.weapons.reduce((memo, weapon) => {
     if (weapon.projectiles) {
       weapon.projectiles.forEach(projectile => {
-        if (projectile.effects?.impact) {
-          const effectTextures = animations[projectile.effects.impact].map(
-            animation => textures[animation],
-          );
-
-          memo[projectile.id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.2,
-          });
-        }
+        // if (projectile.effects?.impact) {
+        //   const effectTextures = animations[projectile.effects.impact].map(
+        //     animation => textures[animation],
+        //   );
+        //   memo[projectile.id] = new EffectSprite(effectTextures, {
+        //     animationSpeed: 0.2,
+        //   });
+        // }
 
         const explode = projectile.explosion?.effects.explode;
 
@@ -486,7 +485,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           const effectTextures = animations[effect].map(animation => textures[animation]);
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.4,
+            animationSpeed: 0.3,
           });
         }
       });
