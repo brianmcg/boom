@@ -12932,7 +12932,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 6,
@@ -12977,7 +12977,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 8,
@@ -13000,7 +13000,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 10,
@@ -13022,7 +13022,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 12,
@@ -13033,7 +13033,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 12,
@@ -13089,7 +13089,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 17,
@@ -13112,7 +13112,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         },
         {
             "x": 25,
@@ -13123,7 +13123,7 @@
             "blocking": false,
             "width": 0.5,
             "length": 0.5,
-            "height": 0.328125
+            "height": 0.265625
         }
     ],
     "items": [
