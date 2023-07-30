@@ -11834,28 +11834,6 @@
             "height": 0.34375
         },
         {
-            "x": 5,
-            "y": 18,
-            "z": 0,
-            "name": "water_cooler",
-            "blocking": true,
-            "animated": true,
-            "width": 0.25,
-            "length": 0.25,
-            "height": 0.625
-        },
-        {
-            "x": 6,
-            "y": 3,
-            "z": 0,
-            "name": "water_cooler",
-            "blocking": true,
-            "animated": true,
-            "width": 0.25,
-            "length": 0.25,
-            "height": 0.625
-        },
-        {
             "x": 6,
             "y": 10,
             "z": 0,
@@ -11864,6 +11842,28 @@
             "width": 0.453125,
             "length": 0.453125,
             "height": 0.46875
+        },
+        {
+            "x": 6,
+            "y": 17,
+            "z": 0,
+            "name": "torch",
+            "blocking": true,
+            "animated": true,
+            "width": 0.25,
+            "length": 0.25,
+            "height": 0.8125
+        },
+        {
+            "x": 8,
+            "y": 1,
+            "z": 0,
+            "name": "torch",
+            "blocking": true,
+            "animated": true,
+            "width": 0.25,
+            "length": 0.25,
+            "height": 0.8125
         },
         {
             "x": 9,
@@ -11932,25 +11932,25 @@
         },
         {
             "x": 12,
-            "y": 16,
+            "y": 5,
             "z": 0,
-            "name": "water_cooler",
+            "name": "torch",
             "blocking": true,
             "animated": true,
             "width": 0.25,
             "length": 0.25,
-            "height": 0.625
+            "height": 0.8125
         },
         {
             "x": 13,
             "y": 10,
             "z": 0,
-            "name": "water_cooler",
+            "name": "torch",
             "blocking": true,
             "animated": true,
             "width": 0.25,
             "length": 0.25,
-            "height": 0.625
+            "height": 0.8125
         },
         {
             "x": 13,
@@ -11961,6 +11961,17 @@
             "width": 0.453125,
             "length": 0.453125,
             "height": 0.46875
+        },
+        {
+            "x": 13,
+            "y": 16,
+            "z": 0,
+            "name": "torch",
+            "blocking": true,
+            "animated": true,
+            "width": 0.25,
+            "length": 0.25,
+            "height": 0.8125
         },
         {
             "x": 14,
