@@ -102,11 +102,13 @@ class World extends PhysicsWorld {
       [...Array(this.maxMapY + 1).keys()].map(() => 0),
     );
 
+    this.alwaysRender = Object.values(this.bodies).filter(body => body.alwaysRender);
+
     player.onDeath(() => this.onPlayerDeath());
 
     player.onPickUp(item => this.onPlayerPickUp(item));
 
-    this.alwaysRender = Object.values(this.bodies).filter(body => body.alwaysRender);
+    player.onExit(() => this.scene.setAddingReviewing());
   }
 
   remove(body) {

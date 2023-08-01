@@ -99,8 +99,9 @@ export const WALL_LAYERS = 3;
  * @type {Object}
  */
 // export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
-// export const SCREEN = { WIDTH: 300, HEIGHT: 128 };
-export const SCREEN = { WIDTH: 336, HEIGHT: 144 };
+export const SCREEN = { WIDTH: 300, HEIGHT: 128 };
+// export const SCREEN = { WIDTH: 320, HEIGHT: 180 };
+// export const SCREEN = { WIDTH: 336, HEIGHT: 144 };
 // export const SCREEN = { WIDTH: 420, HEIGHT: 180 };
 // export const SCREEN = { WIDTH: 640, HEIGHT: 274 };
 
@@ -114,7 +115,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 90;
+export const FOV = 80;
 
 /**
  * The distance from the player inside which entities should update;

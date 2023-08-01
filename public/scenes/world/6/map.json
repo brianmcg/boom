@@ -4,6 +4,10 @@
         "y": 22,
         "angle": 270
     },
+    "exit": {
+        "x": 17,
+        "y": 18
+    },
     "grid": [
         [
             {
@@ -4347,7 +4351,7 @@
                         "name": "lift_ceilings"
                     },
                     "overlay": {
-                        "name": "walls_03",
+                        "name": "walls_05",
                         "height": 1.125
                     }
                 },
@@ -5443,23 +5447,23 @@
                 "height": 1.125,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "doors_02",
+                        "height": 1
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "doors_02",
+                        "height": 1
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 16,
@@ -5797,16 +5801,16 @@
                 "height": 1.125,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5822,48 +5826,64 @@
                 "height": 1.125,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "doors_01",
+                        "height": 1.125
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "doors_01",
+                        "height": 1.125
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "doors_01",
+                        "height": 1.125
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "doors_01",
+                        "height": 1.125
                     },
                     "bottom": {
                         "name": "floors_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 17,
                 "y": 18,
+                "exit": true,
+                "door": true,
+                "axis": "x",
                 "blocking": true,
-                "height": 1.125,
+                "height": 1,
+                "width": 1,
+                "length": 0.03125,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "bottom": {
-                        "name": "floors_01"
+                        "name": "lift_floors",
+                        "height": 1
+                    },
+                    "overlay": {
+                        "name": "walls_05",
+                        "height": 1.125
                     }
                 },
-                "axis": "x",
-                "pushable": false
+                "double": true,
+                "offset": 1
             },
             {
                 "x": 17,
@@ -6251,23 +6271,23 @@
                 "height": 1.125,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "doors_02",
+                        "height": 1
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "doors_02",
+                        "height": 1
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false
+                }
             },
             {
                 "x": 18,
@@ -11624,7 +11644,20 @@
             }
         ]
     ],
-    "objects": [],
+    "objects": [
+        {
+            "x": 17,
+            "y": 17,
+            "z": 1,
+            "name": "objects_01",
+            "scale": 2.5,
+            "blocking": true,
+            "alwaysRender": true,
+            "width": 0.7125,
+            "length": 0.7125,
+            "height": 0.9875
+        }
+    ],
     "items": [
         {
             "respawn": 10000,
