@@ -118,7 +118,7 @@
                         "death": "arachnatron_injured",
                         "nearby": "arachnatron_nearby",
                         "pain": "arachnatron_injured",
-                        "moving": "arachnatron_moving"
+                        "constant": "arachnacopter_engine"
                     }
                 },
                 "arachnatron": {

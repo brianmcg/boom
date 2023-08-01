@@ -9,12 +9,12 @@ class EffectSprite extends AnimatedEntitySprite {
    * @param  {Array}  textures The explosion textures.
    * @param  {Object} options  The animated sprite options.
    */
-  constructor(textures, { rotate = true, anchor, ...other }) {
+  constructor(textures, { rotate = true, ...other }) {
     super(textures, {
       ...other,
       loop: false,
       autoPlay: false,
-      anchor: [0.5, 0.5],
+      anchor: 0.5,
     });
 
     if (rotate) {

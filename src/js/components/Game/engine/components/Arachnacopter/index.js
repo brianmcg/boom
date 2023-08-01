@@ -68,12 +68,18 @@ class Arachnacopter extends ProjectileEnemy {
   }
 
   updateDead(delta) {
-    this.z += this.speed * 0.5 * delta;
+    this.z += this.speed * delta;
 
     if (this.z >= this.maxElavation) {
       this.stopUpdates();
       this.spawnSecondPhase();
       this.parent.remove(this);
+    }
+  }
+
+  hurt(...options) {
+    if (this.state !== STATES.HIDING) {
+      super.hurt(...options);
     }
   }
 
@@ -109,6 +115,7 @@ class Arachnacopter extends ProjectileEnemy {
   setDead() {
     if (super.setDead()) {
       this.onStopMoving(true);
+      this.stopSound(this.sounds.constant);
       return true;
     }
 
@@ -116,7 +123,13 @@ class Arachnacopter extends ProjectileEnemy {
   }
 
   setDescending() {
-    return this.setState(STATES.DESCENDING);
+    if (this.setState(STATES.DESCENDING)) {
+      this.emitSound(this.sounds.constant, true);
+
+      return true;
+    }
+
+    return false;
   }
 
   setHiding() {
