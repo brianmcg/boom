@@ -48,12 +48,6 @@
                     "maxAttacks": 2,
                     "evadeDistance": 2,
                     "isFloating": true,
-                    "tail": {
-                        "length": 10,
-                        "effects": {
-                            "smoke": "smoke_1"
-                        }
-                    },
                     "stateDurations": {
                         "alert": 10,
                         "aim": 750,
