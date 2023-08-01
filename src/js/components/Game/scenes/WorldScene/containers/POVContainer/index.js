@@ -94,7 +94,10 @@ class POVContainer extends Container {
     const { map: mapSprites, background: backgroundSprites, sky: outerSprites } = this.sprites;
     const { entities: entititySprites, effects: effectSprites, walls: wallSprites } = mapSprites;
 
-    const totalEncounteredBodies = {};
+    const totalEncounteredBodies = world.alwaysRender.reduce(
+      (memo, entity) => (player.isFacing(entity) ? { ...memo, [entity.id]: entity } : memo),
+      {},
+    );
 
     const floorHeight = CELL_SIZE * floorOffset;
     const doubleFloorHeight = floorHeight * 2;
@@ -416,6 +419,7 @@ class POVContainer extends Container {
         sprite.tint = this.calculateTint(actualDistance);
 
         this.mapContainer.addChild(sprite);
+
         this.displayedEntities.push(sprite);
 
         if (sprite.mask) {

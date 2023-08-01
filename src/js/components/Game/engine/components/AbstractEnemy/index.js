@@ -92,7 +92,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {String}  options.type           The type of enemy.
    * @param  {String}  options.splash         The type of splash.
    * @param  {String}  options.ripple         The type of ripple.
-   * @param  {Item}    options.item           The item to spawn when enemy dies.
+   * @param  {Item}    options.spawnItem      The item to spawn when enemy dies.
    */
   constructor({
     stateDurations,
@@ -107,10 +107,13 @@ class AbstractEnemy extends AbstractActor {
     isBoss,
     splash,
     ripple,
-    item,
+    spawnItem,
     evadeDistance = 1,
     outside,
     explode,
+    alwaysRender,
+    add = true,
+    spawnEnemy,
     ...other
   }) {
     super(other);
@@ -126,6 +129,7 @@ class AbstractEnemy extends AbstractActor {
       aim: aimTime = 200,
     } = stateDurations;
 
+    this.spawnEnemy = spawnEnemy;
     this.explode = explode;
     this.type = type;
     this.submerged = submerged;
@@ -148,8 +152,10 @@ class AbstractEnemy extends AbstractActor {
     this.proneHeight = proneHeight;
     this.nearbyTimer = 0;
     this.graphIndex = 0;
-    this.item = item;
+    this.spawnItem = spawnItem;
     this.outside = outside;
+    this.alwaysRender = alwaysRender;
+    this.add = add;
 
     this.evadeDistance = evadeDistance * CELL_SIZE;
 
@@ -583,13 +589,13 @@ class AbstractEnemy extends AbstractActor {
         this.velocity = Math.sqrt(damage);
         this.setDead();
 
-        if ((instantKill || this.isBoss) && this.item) {
-          this.item.x = this.x;
-          this.item.y = this.y;
-          this.item.velocity = this.isBoss ? 0 : this.velocity * 0.5;
-          this.item.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
-          this.parent.add(this.item);
-          this.item.setSpawning();
+        if ((instantKill || this.isBoss) && this.spawnItem) {
+          this.spawnItem.x = this.x;
+          this.spawnItem.y = this.y;
+          this.spawnItem.velocity = this.isBoss ? 0 : this.velocity * 0.5;
+          this.spawnItem.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
+          this.parent.add(this.spawnItem);
+          this.spawnItem.setSpawning();
         }
       }
     } else {
@@ -603,7 +609,8 @@ class AbstractEnemy extends AbstractActor {
    * @return {Cell} The cell to move to.
    */
   findEvadeDestination() {
-    const { player } = this.parent;
+    const { parent } = this;
+    const { player } = parent;
     // Randomly pick a right angle to the left or right and
     // get x and y grid coordinates, to priorities lateral evasion.
     // Otherwise go to the nearest cell to the player.
@@ -617,7 +624,11 @@ class AbstractEnemy extends AbstractActor {
           const y = Math.floor(
             (this.y + Math.sin(angle) * this.evadeDistance) / this.evadeDistance,
           );
-          const cell = this.parent.getCell(x, y);
+          const cell = parent.getCell(x, y);
+
+          if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+            return memo;
+          }
 
           if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
             return memo;
@@ -626,7 +637,11 @@ class AbstractEnemy extends AbstractActor {
           return [...memo, cell];
         }, [])
         .pop() ||
-      this.parent.getNeighbourCells(this).reduce((memo, cell) => {
+      parent.getNeighbourCells(this).reduce((memo, cell) => {
+        if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+          return memo;
+        }
+
         if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
           return memo;
         }

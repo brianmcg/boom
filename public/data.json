@@ -39,6 +39,7 @@
                 "arachnacopter": {
                     "behaviour": "arachnacopter",
                     "isBoss": true,
+                    "maxElavation": 7,
                     "outside": true,
                     "painChance": 0.01,
                     "acceleration": 0.00625,
@@ -127,13 +128,15 @@
                     }
                 },
                 "arachnatron": {
-                    "behaviour": "gunenemy",
+                    "behaviour": "arachnatron",
                     "isBoss": true,
+                    "maxElavation": 7,
                     "painChance": 0.1289,
                     "acceleration": 0.00625,
                     "speed": 0.046875,
                     "maxHealth": 500,
                     "maxAttacks": 12,
+                    "explode": true,
                     "stateDurations": {
                         "alert": 10,
                         "aim": 50,

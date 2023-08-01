@@ -98,7 +98,7 @@ class AbstractActor extends AbstractDestroyableEntity {
         const elavation = (proneHeight * Math.abs(width - distance)) / width;
         return elavation > maxElavation ? elavation : maxElavation;
       }, 0);
-    } else if (!this.float) {
+    } else if (!this.isBoss) {
       this.z = 0;
     }
   }

@@ -163,6 +163,8 @@ class Player extends AbstractActor {
       },
     });
 
+    // debugger;
+
     this.keyCards = items.reduce((memo, { isKey, color }) => {
       if (isKey) {
         return {

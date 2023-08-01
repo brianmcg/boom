@@ -11625,14 +11625,48 @@
         ]
     ],
     "objects": [],
-    "items": [],
+    "items": [
+        {
+            "respawn": 10000,
+            "x": 13,
+            "y": 13,
+            "name": "ammo_chaingun"
+        },
+        {
+            "respawn": 10000,
+            "x": 21,
+            "y": 13,
+            "name": "ammo_launcher"
+        },
+        {
+            "respawn": 10000,
+            "x": 21,
+            "y": 21,
+            "name": "health_medium"
+        }
+    ],
     "enemies": [
+        {
+            "x": 17,
+            "y": 7,
+            "name": "arachnatron",
+            "proneHeight": 10,
+            "scale": 2,
+            "spawnItem": "key_red",
+            "alwaysRender": true,
+            "add": false,
+            "width": 1.5625,
+            "length": 1.5625,
+            "height": 0.4453125
+        },
         {
             "x": 17,
             "y": 9,
             "name": "arachnacopter",
             "float": true,
+            "spawnEnemy": "arachnatron",
             "scale": 2,
+            "alwaysRender": true,
             "width": 1.4375,
             "length": 1.4375,
             "height": 0.5703125

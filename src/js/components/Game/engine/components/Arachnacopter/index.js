@@ -1,3 +1,4 @@
+import { CELL_SIZE } from '@game/constants/config';
 import ProjectileEnemy from '../ProjectileEnemy';
 
 const STATES = {
@@ -5,20 +6,14 @@ const STATES = {
   DESCENDING: 'enemy:descending',
 };
 
-const MAX_Z = 200;
-
-const HIDE_TIME = 5000;
-
 class Arachnacopter extends ProjectileEnemy {
-  constructor(options) {
-    super(options);
+  constructor({ maxElavation, ...other }) {
+    super(other);
 
+    this.maxElavation = maxElavation * CELL_SIZE;
+    this.z = this.maxElavation;
     this.graphIndex = 0;
     this.hideTimer = 0;
-    this.z = MAX_Z;
-  }
-
-  start() {
     this.setHiding();
   }
 
@@ -45,11 +40,8 @@ class Arachnacopter extends ProjectileEnemy {
     }
   }
 
-  updateHiding(delta, elapsedMS) {
-    this.hideTimer += elapsedMS;
-
-    if (this.hideTimer >= HIDE_TIME) {
-      this.hideTimer = 0;
+  updateHiding() {
+    if (!this.parent.player.cell.entrance) {
       this.setDescending();
     }
   }
@@ -78,10 +70,10 @@ class Arachnacopter extends ProjectileEnemy {
   updateDead(delta) {
     this.z += this.speed * 0.5 * delta;
 
-    if (this.z >= MAX_Z) {
+    if (this.z >= this.maxElavation) {
       this.stopUpdates();
-
       this.spawnSecondPhase();
+      this.parent.remove(this);
     }
   }
 
@@ -89,7 +81,13 @@ class Arachnacopter extends ProjectileEnemy {
     const distances = this.parent.spawnPoints.map(c => this.getDistanceTo(c));
     const nearest = Math.min(...distances);
     const index = distances.indexOf(nearest);
-    const spawnPoint = this.parent.spawnPoints[index];
+    const { x, y } = this.parent.spawnPoints[index];
+
+    const spawnEnemy = this.parent.enemies.find(e => e.name === this.spawnEnemy);
+
+    spawnEnemy.setPos({ x, y, z: this.z });
+
+    this.parent.add(spawnEnemy);
   }
 
   findEvadeDestination() {
@@ -122,15 +120,7 @@ class Arachnacopter extends ProjectileEnemy {
   }
 
   setHiding() {
-    if (this.setState(STATES.HIDING)) {
-      const { x, y } = this.findEvadeDestination();
-      this.x = x;
-      this.y = y;
-
-      return true;
-    }
-
-    return false;
+    return this.setState(STATES.HIDING);
   }
 }
 

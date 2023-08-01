@@ -53,7 +53,7 @@ class World extends PhysicsWorld {
     waypoints = [],
     spawnPoints = [],
   }) {
-    super(grid, [...enemies, ...items, ...objects, player]);
+    super(grid, [...enemies.filter(e => e.add), ...items, ...objects, player]);
 
     this.waypoints = waypoints.map(({ x, y }) => this.getCell(x, y));
     this.spawnPoints = spawnPoints.map(({ x, y }) => this.getCell(x, y));
@@ -106,7 +106,12 @@ class World extends PhysicsWorld {
 
     player.onPickUp(item => this.onPlayerPickUp(item));
 
-    player.onExit(() => this.scene.setAddingReviewing());
+    this.alwaysRender = Object.values(this.bodies).filter(body => body.alwaysRender);
+  }
+
+  remove(body) {
+    super.remove(body);
+    this.alwaysRender = this.alwaysRender.filter(b => b.id !== body.id);
   }
 
   /**

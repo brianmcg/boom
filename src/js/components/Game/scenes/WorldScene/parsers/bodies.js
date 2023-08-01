@@ -23,6 +23,7 @@ import {
   PortalItem,
   TransparentCell,
   Arachnacopter,
+  Arachnatron,
 } from '@game/engine';
 
 const ITEMS = {
@@ -38,6 +39,7 @@ const ENEMIES = {
   [ENEMY_TYPES.CHASE]: ChaseEnemy,
   [ENEMY_TYPES.PROJECTILE]: ProjectileEnemy,
   [ENEMY_TYPES.ARACHNACOPTER]: Arachnacopter,
+  [ENEMY_TYPES.ARACHNATRON]: Arachnatron,
 };
 
 const createCell = ({ cell, props, soundSprite }) => {
@@ -121,6 +123,66 @@ const createCell = ({ cell, props, soundSprite }) => {
   });
 };
 
+const createEnemy = ({
+  enemy,
+  data,
+  props,
+  animations,
+  soundSprite,
+  spatterTypes,
+  bloodColors,
+}) => {
+  const { splash, ripple, floorOffset } = data;
+
+  const spawnItem = enemy.spawnItem
+    ? {
+        name: enemy.spawnItem,
+        scale: 0,
+        ...props.items[enemy.spawnItem],
+      }
+    : null;
+
+  const { bloodColor, effects } = props.enemies[enemy.name];
+  const { spatter } = effects;
+  const numberOfSpatters = spatter ? animations[spatter].length : 0;
+  const spatterTypeOffset = spatterTypes.indexOf(spatter) * numberOfSpatters;
+  const spatterColorOffset = bloodColors.indexOf(bloodColor) * numberOfSpatters;
+  const spatterOffset = spatter ? spatterTypeOffset + spatterColorOffset + 1 : 0;
+  const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
+
+  return new ENEMIES[props.enemies[enemy.name].behaviour]({
+    type: enemy.type,
+    explode: enemy.explode,
+    name: enemy.name,
+    x: CELL_SIZE * enemy.x + CELL_SIZE / 2,
+    y: CELL_SIZE * enemy.y + CELL_SIZE / 2,
+    width: Math.max(Math.round(CELL_SIZE * enemy.width), CELL_SIZE / 2),
+    length: Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
+    height: Math.round(CELL_SIZE * enemy.height),
+    float: enemy.float,
+    scale: enemy.scale,
+    proneHeight: enemy.proneHeight,
+    alwaysRender: enemy.alwaysRender,
+    add: enemy.add,
+    spawnEnemy: enemy.spawnEnemy,
+    ...props.enemies[enemy.name],
+    spatters,
+    soundSprite,
+    splash,
+    ripple,
+    spawnItem: spawnItem
+      ? new ITEMS[spawnItem.type]({
+          width: CELL_SIZE / 4,
+          length: CELL_SIZE / 4,
+          height: CELL_SIZE / 4,
+          floorOffset,
+          ...spawnItem,
+          soundSprite,
+        })
+      : null,
+  });
+};
+
 /**
  * Create a world.
  * @param  {Object} data   The world data.
@@ -154,8 +216,8 @@ export const createWorld = ({ scene, data, graphics }) => {
     brightness = 0.8,
     visibility = 16,
     floorOffset = 0,
-    splash,
-    ripple,
+    // splash,
+    // ripple,
     waypoints,
     spawnPoints,
   } = data;
@@ -222,55 +284,13 @@ export const createWorld = ({ scene, data, graphics }) => {
 
   const enemies = ALONE
     ? []
-    : data.enemies.reduce((memo, enemy) => {
-        const item = enemy.item
-          ? {
-              name: enemy.item,
-              scale: 0,
-              ...props.items[enemy.item],
-            }
-          : null;
-
-        const { bloodColor, effects } = props.enemies[enemy.name];
-        const { spatter } = effects;
-        const numberOfSpatters = spatter ? animations[spatter].length : 0;
-        const spatterTypeOffset = spatterTypes.indexOf(spatter) * numberOfSpatters;
-        const spatterColorOffset = bloodColors.indexOf(bloodColor) * numberOfSpatters;
-        const spatterOffset = spatter ? spatterTypeOffset + spatterColorOffset + 1 : 0;
-        const spatters = [...Array(numberOfSpatters).keys()].map(i => i + spatterOffset);
-
-        return [
+    : data.enemies.reduce(
+        (memo, enemy) => [
           ...memo,
-          new ENEMIES[props.enemies[enemy.name].behaviour]({
-            type: enemy.type,
-            explode: enemy.explode,
-            name: enemy.name,
-            x: CELL_SIZE * enemy.x + CELL_SIZE / 2,
-            y: CELL_SIZE * enemy.y + CELL_SIZE / 2,
-            width: Math.max(Math.round(CELL_SIZE * enemy.width), CELL_SIZE / 2),
-            length: Math.max(Math.round(CELL_SIZE * enemy.length), CELL_SIZE / 2),
-            height: Math.round(CELL_SIZE * enemy.height),
-            float: enemy.float,
-            scale: enemy.scale,
-            proneHeight: enemy.proneHeight,
-            ...props.enemies[enemy.name],
-            spatters,
-            soundSprite,
-            splash,
-            ripple,
-            item: item
-              ? new ITEMS[item.type]({
-                  width: CELL_SIZE / 4,
-                  length: CELL_SIZE / 4,
-                  height: CELL_SIZE / 4,
-                  floorOffset,
-                  ...item,
-                  soundSprite,
-                })
-              : null,
-          }),
-        ];
-      }, []);
+          createEnemy({ enemy, data, props, animations, soundSprite, spatterTypes, bloodColors }),
+        ],
+        [],
+      );
 
   const { bloodColor, effects } = props.player;
   const { spatter } = effects;
@@ -297,9 +317,9 @@ export const createWorld = ({ scene, data, graphics }) => {
     angle: degrees(entrance.angle) + 0.0001,
     soundSprite,
     items: enemies.reduce(
-      (memo, { item }) => {
-        if (item) {
-          memo.push(item);
+      (memo, { spawnItem }) => {
+        if (spawnItem) {
+          memo.push(spawnItem);
         }
         return memo;
       },

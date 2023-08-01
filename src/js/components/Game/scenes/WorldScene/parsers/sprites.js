@@ -556,12 +556,12 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.enemies.forEach(enemy => {
-    const { item } = enemy;
+    const { spawnItem } = enemy;
 
-    if (item) {
-      const animationTextures = animations[item.name].map(t => textures[t]);
+    if (spawnItem) {
+      const animationTextures = animations[spawnItem.name].map(t => textures[t]);
 
-      entitySprites[item.id] = new AnimatedEntitySprite(animationTextures, {
+      entitySprites[spawnItem.id] = new AnimatedEntitySprite(animationTextures, {
         floorOffset: world.floorOffset,
       });
     }
@@ -724,9 +724,9 @@ const createHudSprites = ({ world, textures, animations }) => {
   });
 
   const items = world.enemies.reduce(
-    (memo, { item }) => {
-      if (item) {
-        memo.push(item);
+    (memo, { spawnItem }) => {
+      if (spawnItem) {
+        memo.push(spawnItem);
       }
 
       return memo;
