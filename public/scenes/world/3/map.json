@@ -4598,5 +4598,7 @@
     "enemies": [],
     "brightness": 0.7,
     "visibility": 12,
-    "floorOffset": 0.1875
+    "floorOffset": 0.1875,
+    "waypoints": [],
+    "spawnPoints": []
 }

@@ -98,7 +98,7 @@ class AbstractActor extends AbstractDestroyableEntity {
         const elavation = (proneHeight * Math.abs(width - distance)) / width;
         return elavation > maxElavation ? elavation : maxElavation;
       }, 0);
-    } else {
+    } else if (!this.float) {
       this.z = 0;
     }
   }
@@ -178,6 +178,7 @@ class AbstractActor extends AbstractDestroyableEntity {
       if (
         this.spatter &&
         nearest?.id === this.id &&
+        side &&
         !side.spatter &&
         sectionDistance - point.distance < SPATTER_DISTANCE
       ) {

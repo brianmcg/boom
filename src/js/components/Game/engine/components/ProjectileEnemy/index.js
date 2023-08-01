@@ -43,7 +43,7 @@ class ProjectileEnemy extends AbstractEnemy {
   constructor({ primaryAttack = {}, soundSprite = {}, ...other }) {
     super({ soundSprite, primaryAttack, ...other });
 
-    const { pellets, projectile } = primaryAttack;
+    const { pellets, projectile, pelletAngle = 30 } = primaryAttack;
     const { amount, ...projectileProps } = projectile;
 
     this.projectiles = [];
@@ -64,10 +64,10 @@ class ProjectileEnemy extends AbstractEnemy {
     this.offsets =
       pellets % 2 === 0
         ? [...new Array(pellets + 1).keys()]
-            .map(i => ((i - Math.round(pellets / 2)) * degrees(30)) / pellets)
+            .map(i => ((i - Math.round(pellets / 2)) * degrees(pelletAngle)) / pellets)
             .filter(i => i)
         : [...new Array(pellets).keys()].map(
-            i => ((i - Math.floor(pellets / 2)) * degrees(30)) / pellets,
+            i => ((i - Math.floor(pellets / 2)) * degrees(pelletAngle)) / pellets,
           );
   }
 

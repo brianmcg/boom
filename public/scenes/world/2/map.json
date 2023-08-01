@@ -13905,5 +13905,7 @@
     "visibility": 16,
     "floorOffset": 0.1875,
     "ripple": "splash_2",
-    "splash": "splash_1"
+    "splash": "splash_1",
+    "waypoints": [],
+    "spawnPoints": []
 }

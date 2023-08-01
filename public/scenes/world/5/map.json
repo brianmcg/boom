@@ -12215,5 +12215,7 @@
     ],
     "brightness": 0.9,
     "visibility": 18,
-    "sky": "skybox_1"
+    "sky": "skybox_1",
+    "waypoints": [],
+    "spawnPoints": []
 }

@@ -36,6 +36,96 @@
                 }
             },
             "enemies": {
+                "arachnacopter": {
+                    "behaviour": "arachnacopter",
+                    "isBoss": true,
+                    "outside": true,
+                    "painChance": 0.01,
+                    "acceleration": 0.00625,
+                    "speed": 0.086875,
+                    "maxHealth": 500,
+                    "maxAttacks": 2,
+                    "evadeDistance": 2,
+                    "isFloating": true,
+                    "tail": {
+                        "length": 10,
+                        "effects": {
+                            "smoke": "smoke_1"
+                        }
+                    },
+                    "stateDurations": {
+                        "alert": 10,
+                        "aim": 750,
+                        "attack": 250,
+                        "hurt": 75
+                    },
+                    "bloodColor": null,
+                    "primaryAttack": {
+                        "flash": 1,
+                        "range": 20,
+                        "power": 6,
+                        "accuracy": 8,
+                        "pellets": 2,
+                        "pelletAngle": 15,
+                        "projectile": {
+                            "amount": 12,
+                            "elavation": 0.055,
+                            "name": "projectile_1",
+                            "speed": 0.125,
+                            "sounds": {
+                                "travel": "imp_attack"
+                            },
+                            "tail": {
+                                "length": 10,
+                                "effects": {
+                                    "smoke": "smoke_1"
+                                }
+                            },
+                            "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
+                                "range": 0,
+                                "power": 16,
+                                "effects": {
+                                    "explode": "explosion_1"
+                                },
+                                "sounds": {
+                                    "explode": "soul_death"
+                                }
+                            }
+                        }
+                    },
+                    "effects": {
+                        "spatter": null,
+                        "spurt": null
+                    },
+                    "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
+                        "range": 0,
+                        "power": 8,
+                        "effects": {
+                            "explode": "explosion_4"
+                        },
+                        "sounds": {
+                            "explode": "barrel_exploding"
+                        }
+                    },
+                    "sounds": {
+                        "alert": "arachnatron_sighted",
+                        "attack": "sergeant_attack",
+                        "death": "arachnatron_injured",
+                        "nearby": "arachnatron_nearby",
+                        "pain": "arachnatron_injured",
+                        "moving": "arachnatron_moving"
+                    }
+                },
                 "arachnatron": {
                     "behaviour": "gunenemy",
                     "isBoss": true,
@@ -344,6 +434,7 @@
                         "power": 6,
                         "accuracy": 8,
                         "pellets": 2,
+                        "pelletAngle": 30,
                         "projectile": {
                             "amount": 12,
                             "elavation": 0.055,
@@ -456,6 +547,7 @@
                         "spatter": null,
                         "spurt": null
                     },
+                    "explode": true,
                     "explosion": {
                         "flash": 3,
                         "penetration": {

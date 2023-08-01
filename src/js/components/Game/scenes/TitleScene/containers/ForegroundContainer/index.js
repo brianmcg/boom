@@ -45,7 +45,7 @@ class ForegroundContainer extends Container {
    * @param  {Number} delta     The delta time value.
    * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
-  update(delta = 0, elsapsedMS = 0) {
+  update(delta = 0, elapsedMS = 0) {
     const { light } = this.sprites;
 
     if (this.animate) {
@@ -56,7 +56,7 @@ class ForegroundContainer extends Container {
         this.animate = false;
       }
     } else {
-      this.timer += elsapsedMS;
+      this.timer += elapsedMS;
 
       if (this.timer >= INTERVAL) {
         this.animate = true;

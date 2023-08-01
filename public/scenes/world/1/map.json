@@ -12823,5 +12823,7 @@
         }
     ],
     "brightness": 0.8,
-    "visibility": 16
+    "visibility": 16,
+    "waypoints": [],
+    "spawnPoints": []
 }

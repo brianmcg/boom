@@ -46,6 +46,7 @@ export const ENEMY_TYPES = {
   GUN: 'gunenemy',
   CHASE: 'chaseenemy',
   PROJECTILE: 'projectileenemy',
+  ARACHNACOPTER: 'arachnacopter',
 };
 
 /**

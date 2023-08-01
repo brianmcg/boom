@@ -108,6 +108,9 @@ class AbstractEnemy extends AbstractActor {
     splash,
     ripple,
     item,
+    evadeDistance = 1,
+    outside,
+    explode,
     ...other
   }) {
     super(other);
@@ -123,6 +126,7 @@ class AbstractEnemy extends AbstractActor {
       aim: aimTime = 200,
     } = stateDurations;
 
+    this.explode = explode;
     this.type = type;
     this.submerged = submerged;
     this.isBoss = isBoss;
@@ -145,6 +149,9 @@ class AbstractEnemy extends AbstractActor {
     this.nearbyTimer = 0;
     this.graphIndex = 0;
     this.item = item;
+    this.outside = outside;
+
+    this.evadeDistance = evadeDistance * CELL_SIZE;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -604,8 +611,12 @@ class AbstractEnemy extends AbstractActor {
       (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
         .reduce((memo, angleOffset) => {
           const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
-          const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
-          const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
+          const x = Math.floor(
+            (this.x + Math.cos(angle) * this.evadeDistance) / this.evadeDistance,
+          );
+          const y = Math.floor(
+            (this.y + Math.sin(angle) * this.evadeDistance) / this.evadeDistance,
+          );
           const cell = this.parent.getCell(x, y);
 
           if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {

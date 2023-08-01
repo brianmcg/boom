@@ -8562,6 +8562,49 @@
             "ammo_shotgun_15",
             "ammo_shotgun_16"
         ],
+        "arachnacopter": {
+            "idle": {
+                "frames": [
+                    "arachnacopter_01",
+                    "arachnacopter_02"
+                ],
+                "loop": true
+            },
+            "moving": {
+                "frames": [
+                    "arachnacopter_01",
+                    "arachnacopter_02"
+                ],
+                "loop": true
+            },
+            "aiming": {
+                "frames": [
+                    "arachnacopter_03",
+                    "arachnacopter_04",
+                    "arachnacopter_03",
+                    "arachnacopter_04"
+                ],
+                "loop": true
+            },
+            "attacking": {
+                "frames": [
+                    "arachnacopter_05",
+                    "arachnacopter_04"
+                ]
+            },
+            "hurting": {
+                "frames": [
+                    "arachnacopter_07",
+                    "arachnacopter_08"
+                ],
+                "loop": true
+            },
+            "dead": {
+                "frames": [
+                    "arachnacopter_09"
+                ]
+            }
+        },
         "arachnatron": {
             "idle": {
                 "frames": [

@@ -22,6 +22,7 @@ import {
   WeaponItem,
   PortalItem,
   TransparentCell,
+  Arachnacopter,
 } from '@game/engine';
 
 const ITEMS = {
@@ -36,6 +37,7 @@ const ENEMIES = {
   [ENEMY_TYPES.GUN]: GunEnemy,
   [ENEMY_TYPES.CHASE]: ChaseEnemy,
   [ENEMY_TYPES.PROJECTILE]: ProjectileEnemy,
+  [ENEMY_TYPES.ARACHNACOPTER]: Arachnacopter,
 };
 
 const createCell = ({ cell, props, soundSprite }) => {
@@ -154,6 +156,8 @@ export const createWorld = ({ scene, data, graphics }) => {
     floorOffset = 0,
     splash,
     ripple,
+    waypoints,
+    spawnPoints,
   } = data;
 
   const { animations } = graphics.data;
@@ -239,6 +243,7 @@ export const createWorld = ({ scene, data, graphics }) => {
           ...memo,
           new ENEMIES[props.enemies[enemy.name].behaviour]({
             type: enemy.type,
+            explode: enemy.explode,
             name: enemy.name,
             x: CELL_SIZE * enemy.x + CELL_SIZE / 2,
             y: CELL_SIZE * enemy.y + CELL_SIZE / 2,
@@ -317,5 +322,7 @@ export const createWorld = ({ scene, data, graphics }) => {
     brightness,
     sky,
     floorOffset,
+    waypoints,
+    spawnPoints,
   });
 };
