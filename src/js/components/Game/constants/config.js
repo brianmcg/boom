@@ -41,6 +41,12 @@ export const ALONE = parseBoolParam('alone');
 export const GOD_MODE = parseBoolParam('god');
 
 /**
+ * Give player all weapons.
+ * @type {Boolean}
+ */
+export const ALL_WEAPONS = parseBoolParam('allWeapons');
+
+/**
  * Enabled the sounds.
  * @type {Boolean}
  */

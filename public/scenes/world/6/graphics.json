@@ -4815,46 +4815,64 @@
             "doors_03"
         ],
         "elemental": {
-            "idle": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "aiming": {
+            "emerging": {
                 "frames": [
                     "elemental_01",
                     "elemental_02",
                     "elemental_03",
-                    "elemental_04"
+                    "elemental_04",
+                    "elemental_05",
+                    "elemental_07"
+                ]
+            },
+            "submerging": {
+                "frames": [
+                    "elemental_07",
+                    "elemental_05",
+                    "elemental_04",
+                    "elemental_03",
+                    "elemental_02",
+                    "elemental_01"
+                ]
+            },
+            "idle": {
+                "frames": [
+                    "elemental_06"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "elemental_06"
+                ]
+            },
+            "aiming": {
+                "frames": [
+                    "elemental_07",
+                    "elemental_08"
                 ]
             },
             "attacking": {
                 "frames": [
-                    "elemental_04",
-                    "elemental_01"
+                    "elemental_09",
+                    "elemental_08",
+                    "elemental_07"
                 ]
             },
             "hurting": {
                 "frames": [
-                    "elemental_06",
-                    "elemental_06",
-                    "elemental_01"
+                    "elemental_10",
+                    "elemental_10",
+                    "elemental_06"
                 ]
             },
             "dead": {
                 "frames": [
-                    "elemental_06",
-                    "elemental_07",
-                    "elemental_08",
-                    "elemental_09",
                     "elemental_10",
                     "elemental_11",
-                    "elemental_12"
+                    "elemental_12",
+                    "elemental_13",
+                    "elemental_14",
+                    "elemental_15"
                 ]
             }
         },
@@ -5334,6 +5352,6 @@
             "h": 479
         },
         "scale": "1",
-        "smartupdate": "$TexturePacker:SmartUpdate:5e7e43870a55abc5566555ef75a16f22:dc171ca92ad82c849e306a9702481768:a37384bf37d2ba6e9251927f9499b8b7$"
+        "smartupdate": "$TexturePacker:SmartUpdate:e7038d21c555702088983ec252f1176a:3cd9327bcadd8eefc0500dba02676374:a37384bf37d2ba6e9251927f9499b8b7$"
     }
 }

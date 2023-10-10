@@ -4578,11 +4578,6 @@
             "name": "ammo_launcher"
         },
         {
-            "x": 6,
-            "y": 10,
-            "name": "key_red"
-        },
-        {
             "respawn": 10000,
             "x": 9,
             "y": 7,
@@ -4595,7 +4590,18 @@
             "name": "ammo_shotgun"
         }
     ],
-    "enemies": [],
+    "enemies": [
+        {
+            "x": 6,
+            "y": 10,
+            "name": "elemental",
+            "scale": 2,
+            "spawnItem": "key_red",
+            "width": 1.359375,
+            "length": 1.359375,
+            "height": 0.5703125
+        }
+    ],
     "brightness": 0.7,
     "visibility": 12,
     "floorOffset": 0.1875,

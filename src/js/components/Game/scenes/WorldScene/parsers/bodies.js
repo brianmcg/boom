@@ -4,7 +4,7 @@
 
 import { degrees, AXES } from '@game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from '@game/constants/assets';
-import { CELL_SIZE, DEBUG, ALONE } from '@game/constants/config';
+import { CELL_SIZE, ALL_WEAPONS, ALONE } from '@game/constants/config';
 import {
   Cell,
   PushWall,
@@ -306,7 +306,7 @@ export const createWorld = ({ scene, data, graphics }) => {
       ...memo,
       [key]: {
         ...props.player.weapons[key],
-        equiped: !!DEBUG || props.player.weapons[key].equiped,
+        equiped: ALL_WEAPONS || props.player.weapons[key].equiped,
       },
     }),
     {},

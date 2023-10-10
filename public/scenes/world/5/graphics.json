@@ -7809,46 +7809,64 @@
             "doors_05"
         ],
         "elemental": {
-            "idle": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "moving": {
-                "frames": [
-                    "elemental_01"
-                ]
-            },
-            "aiming": {
+            "emerging": {
                 "frames": [
                     "elemental_01",
                     "elemental_02",
                     "elemental_03",
-                    "elemental_04"
+                    "elemental_04",
+                    "elemental_05",
+                    "elemental_07"
+                ]
+            },
+            "submerging": {
+                "frames": [
+                    "elemental_07",
+                    "elemental_05",
+                    "elemental_04",
+                    "elemental_03",
+                    "elemental_02",
+                    "elemental_01"
+                ]
+            },
+            "idle": {
+                "frames": [
+                    "elemental_06"
+                ]
+            },
+            "moving": {
+                "frames": [
+                    "elemental_06"
+                ]
+            },
+            "aiming": {
+                "frames": [
+                    "elemental_07",
+                    "elemental_08"
                 ]
             },
             "attacking": {
                 "frames": [
-                    "elemental_04",
-                    "elemental_01"
+                    "elemental_09",
+                    "elemental_08",
+                    "elemental_07"
                 ]
             },
             "hurting": {
                 "frames": [
-                    "elemental_06",
-                    "elemental_06",
-                    "elemental_01"
+                    "elemental_10",
+                    "elemental_10",
+                    "elemental_06"
                 ]
             },
             "dead": {
                 "frames": [
-                    "elemental_06",
-                    "elemental_07",
-                    "elemental_08",
-                    "elemental_09",
                     "elemental_10",
                     "elemental_11",
-                    "elemental_12"
+                    "elemental_12",
+                    "elemental_13",
+                    "elemental_14",
+                    "elemental_15"
                 ]
             }
         },
