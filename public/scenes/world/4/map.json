@@ -13185,6 +13185,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13195,6 +13196,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13206,6 +13208,7 @@
             "float": true,
             "proneHeight": 10,
             "scale": 1,
+            "spawnItem": "health_medium",
             "width": 0.734375,
             "length": 0.734375,
             "height": 0.734375
@@ -13216,6 +13219,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13226,6 +13230,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13236,6 +13241,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13246,6 +13252,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13256,6 +13263,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13266,6 +13274,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13276,6 +13285,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13296,6 +13306,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13306,6 +13317,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13316,6 +13328,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13326,6 +13339,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13336,6 +13350,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13356,6 +13371,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13366,6 +13382,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13376,6 +13393,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13386,6 +13404,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13396,6 +13415,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13406,6 +13426,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13426,6 +13447,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13436,6 +13458,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13447,6 +13470,7 @@
             "float": true,
             "proneHeight": 10,
             "scale": 1,
+            "spawnItem": "health_medium",
             "width": 0.734375,
             "length": 0.734375,
             "height": 0.734375
@@ -13457,6 +13481,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13467,6 +13492,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13477,6 +13503,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13487,6 +13514,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13497,6 +13525,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13507,6 +13536,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13517,6 +13547,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125

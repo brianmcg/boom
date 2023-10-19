@@ -216,8 +216,6 @@ export const createWorld = ({ scene, data, graphics }) => {
     brightness = 0.8,
     visibility = 16,
     floorOffset = 0,
-    // splash,
-    // ripple,
     waypoints,
     spawnPoints,
   } = data;
