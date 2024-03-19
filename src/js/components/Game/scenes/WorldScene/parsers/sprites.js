@@ -8,7 +8,7 @@ import {
   Sprite,
   Container,
   ColorMatrixFilter,
-  BLEND_MODES,
+  // BLEND_MODES,
   Line,
   GraphicsCreator,
 } from '@game/core/graphics';
@@ -101,7 +101,7 @@ const createWallSpriteMask = ({ wallTexture, floorHeight, wallHeight, renderer }
 
   const sprite = new Sprite(renderTexture);
 
-  sprite.blendMode = BLEND_MODES.MULTIPLY;
+  // sprite.blendMode = BLEND_MODES.MULTIPLY;
 
   return sprite;
 };

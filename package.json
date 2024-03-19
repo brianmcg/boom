@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@pixi/filter-pixelate": "^5.1.1",
-    "pixi.js": "7.3.1",
+    "pixi.js": "8.0.0",
     "howler": "^2.2.3",
     "stats.js": "^0.17.0"
   },

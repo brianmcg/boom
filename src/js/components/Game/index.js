@@ -1,3 +1,4 @@
+import { Ticker } from 'pixi.js';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 
@@ -28,10 +29,12 @@ class Game extends Application {
   /**
    * Creates a game.
    */
-  constructor() {
-    super(SCREEN.WIDTH, SCREEN.HEIGHT, { backgroundColor: BLACK });
+  init() {
+    super.init(SCREEN.WIDTH, SCREEN.HEIGHT, { backgroundColor: BLACK });
 
     this.style = { position: 'absolute', left: '50%', top: '50%' };
+
+    this.ticker = Ticker.shared;
 
     if (SHOW_STATS) {
       this.stats = new Stats();
@@ -41,7 +44,6 @@ class Game extends Application {
       this.ticker.add(this.loop, this);
     }
 
-    this.input = new InputController(this.view);
     this.spinner = new Spinner();
     this.manual = new Manual();
 
@@ -64,6 +66,7 @@ class Game extends Application {
    * Start game and load assets.
    */
   async onStart() {
+    this.input = new InputController(this.canvas);
     const { sound, data } = await Loader.load(GAME_ASSETS);
 
     this.removeManual();
@@ -86,9 +89,9 @@ class Game extends Application {
    * Execute a game loop.
    * @param  {Number} delta The delta value.
    */
-  loop(delta) {
+  loop(ticker) {
     if (this.scene) {
-      this.scene.update(delta, this.ticker.elapsedMS);
+      this.scene.update(ticker.deltaTime, ticker.elapsedMS);
     }
   }
 
@@ -255,7 +258,7 @@ class Game extends Application {
    * Add the game canvas.
    */
   addCanvas() {
-    document.body.appendChild(this.view);
+    document.body.appendChild(this.canvas);
     this.lockPointer();
   }
 
@@ -263,8 +266,8 @@ class Game extends Application {
    * Remove the game canvas.
    */
   removeCanvas() {
-    if (document.contains(this.view)) {
-      document.body.removeChild(this.view);
+    if (document.contains(this.canvas)) {
+      document.body.removeChild(this.canvas);
     }
   }
 

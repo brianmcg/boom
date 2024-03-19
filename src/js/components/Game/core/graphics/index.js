@@ -4,7 +4,7 @@
 
 import {
   Assets,
-  BLEND_MODES,
+  // BLEND_MODES,
   ColorMatrixFilter,
   EventEmitter,
   PixelateFilter,
@@ -16,7 +16,7 @@ import Container from './components/Container';
 import AnimatedSprite from './components/AnimatedSprite';
 import Sprite from './components/Sprite';
 import Application from './components/Application';
-import ParticleContainer from './components/ParticleContainer';
+// import ParticleContainer from './components/ParticleContainer';
 import Line from './components/Line';
 
 import GraphicsLoader from './utilities/GraphicsLoader';
@@ -27,13 +27,13 @@ export {
   Application,
   GraphicsCreator,
   Assets,
-  BLEND_MODES,
+  // BLEND_MODES,
   ColorMatrixFilter,
   Container,
   EventEmitter,
   GraphicsLoader,
   Line,
-  ParticleContainer,
+  // ParticleContainer,
   PixelateFilter,
   Rectangle,
   Sprite,

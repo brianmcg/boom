@@ -21,38 +21,38 @@ import {
   AnimatedSprite,
   Application,
   Assets,
-  BaseTexture,
+  // BaseTexture,
   BitmapText,
-  BLEND_MODES,
+  // BLEND_MODES,
   ColorMatrixFilter,
   Container,
   Graphics,
-  ParticleContainer,
+  // ParticleContainer,
   Rectangle,
   RenderTexture,
-  SCALE_MODES,
+  // SCALE_MODES,
   Sprite,
   Texture,
-  utils,
+  EventEmitter,
 } from 'pixi.js';
 
 import { PixelateFilter } from '@pixi/filter-pixelate';
 
-const { EventEmitter } = utils;
+// const { EventEmitter } = utils;
 
-BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
+// BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
 
 export {
   AnimatedSprite,
   Application,
   Assets,
   BitmapText,
-  BLEND_MODES,
+  // BLEND_MODES,
   ColorMatrixFilter,
   Container,
   EventEmitter,
   Graphics,
-  ParticleContainer,
+  // ParticleContainer,
   PixelateFilter,
   Rectangle,
   RenderTexture,

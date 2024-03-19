@@ -46,9 +46,13 @@ class MenuContainer extends Container {
       });
     }
 
-    this.on('added', () => this.setIndex(0));
+    this.on('added', () => {
+      debugger;
+      this.setIndex(0);
+    });
 
     this.on('removed', () => {
+      debugger;
       if (this.selectedIndex !== null) {
         this.emit(EVENTS.SELECT, this.selectedIndex);
       } else {
@@ -143,6 +147,7 @@ class MenuContainer extends Container {
    * Set the index.
    */
   setIndex(index) {
+    // debugger;
     const { labels } = this.sprites;
 
     labels.forEach((child, i) => {

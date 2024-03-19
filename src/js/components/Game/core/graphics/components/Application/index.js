@@ -12,8 +12,8 @@ class Application extends PixiApplication {
    * @param  {Number}   options.backgroundColor A hex value representing the color.
    * @param  {Boolean}  options.autoStart       Should the application auto start.
    */
-  constructor(...options) {
-    super({ ...options, autoStart: false, clearBeforeRender: false, hello: true });
+  init(...options) {
+    super.init({ ...options, autoStart: false, clearBeforeRender: false, hello: true });
 
     this.stage.eventMode = 'static';
 
@@ -29,13 +29,13 @@ class Application extends PixiApplication {
     this.renderer.resize(width, height);
   }
 
-  get style() {
-    return this.renderer.view.style;
-  }
+  // get style() {
+  //   return this.style;
+  // }
 
-  set style(style) {
-    Object.assign(this.renderer.view.style, style);
-  }
+  // set style(style) {
+  //   Object.assign(this.style, style);
+  // }
 }
 
 export default Application;
