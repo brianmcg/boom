@@ -1,6 +1,6 @@
 # Boom
 
-is a first person shooter built using [PixiJS](http://www.pixijs.com/) + [HOWLER.JS](https://howlerjs.com/).
+Boom is a first person shooter built using [PixiJS](http://www.pixijs.com/) + [HOWLER.JS](https://howlerjs.com/).
 
 ## Installation
 
