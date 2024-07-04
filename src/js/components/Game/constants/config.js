@@ -104,7 +104,7 @@ export const WALL_LAYERS = 3;
  * The screen dimensions.
  * @type {Object}
  */
-export const SCREEN = { WIDTH: 300, HEIGHT: 128 };
+export const SCREEN = { WIDTH: 315, HEIGHT: 135 };
 
 /**
  * The default language to use.
@@ -116,7 +116,7 @@ export const DEFAULT_LANGUAGE = 'en';
  * The players field of view in degrees.
  * @type {Number}
  */
-export const FOV = 80;
+export const FOV = 90;
 
 /**
  * The distance from the player inside which entities should update;
