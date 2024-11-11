@@ -28,7 +28,10 @@ class World extends EventEmitter {
     this.maxMapY = this.length * CELL_SIZE - 1;
 
     this.height = grid.reduce((gridMax, col) => {
-      const max = col.reduce((colMax, { height }) => (height > colMax ? height : colMax), 0);
+      const max = col.reduce(
+        (colMax, { height }) => (height > colMax ? height : colMax),
+        0,
+      );
 
       return max > gridMax ? max : gridMax;
     }, 0);

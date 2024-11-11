@@ -57,7 +57,8 @@ class HitScanWeapon extends AbstractWeapon {
 
       const collisions = [];
 
-      const projectileAngle = (player.angle - player.moveAngle + DEG_360) % DEG_360;
+      const projectileAngle =
+        (player.angle - player.moveAngle + DEG_360) % DEG_360;
 
       let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
 

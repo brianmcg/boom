@@ -89,7 +89,9 @@ class Arachnacopter extends ProjectileEnemy {
     const index = distances.indexOf(nearest);
     const { x, y } = this.parent.spawnPoints[index];
 
-    const spawnEnemy = this.parent.enemies.find(e => e.name === this.spawnEnemy);
+    const spawnEnemy = this.parent.enemies.find(
+      e => e.name === this.spawnEnemy,
+    );
 
     spawnEnemy.setPos({ x, y, z: this.z });
 

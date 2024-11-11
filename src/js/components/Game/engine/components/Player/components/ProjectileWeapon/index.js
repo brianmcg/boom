@@ -54,7 +54,8 @@ class ProjectileWeapon extends AbstractWeapon {
 
     if (result.success) {
       const { angle, moveAngle, parent } = this.player;
-      const damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
+      const damage =
+        this.power * (Math.floor(Math.random() * this.accuracy) + 1);
       const projectile = this.projectiles.shift();
 
       projectile.set({
@@ -68,7 +69,12 @@ class ProjectileWeapon extends AbstractWeapon {
         this.ammo -= 1;
       }
 
-      return { ...result, recoil: this.recoil, sound: this.sounds.use, flash: this.flash };
+      return {
+        ...result,
+        recoil: this.recoil,
+        sound: this.sounds.use,
+        flash: this.flash,
+      };
     }
 
     return result;

@@ -8,7 +8,8 @@ const ICON_PADDING = SCREEN.HEIGHT / 111;
 
 const MESSAGE_PADDING = 3;
 
-const displayHealth = ({ health, maxHealth }) => Math.round((health / maxHealth) * 100);
+const displayHealth = ({ health, maxHealth }) =>
+  Math.round((health / maxHealth) * 100);
 
 /**
  * Class representing a hud container.
@@ -27,12 +28,17 @@ class HUDContainer extends Container {
     healthIcon.x = HUD_PADDING + healthIcon.width / 2;
     healthIcon.y = SCREEN.HEIGHT - healthIcon.height / 2 - HUD_PADDING;
     healthAmount.text = displayHealth(player);
-    healthAmount.x = healthIcon.x + healthIcon.width / 2 + healthAmount.width / 2 + HUD_PADDING / 2;
+    healthAmount.x =
+      healthIcon.x +
+      healthIcon.width / 2 +
+      healthAmount.width / 2 +
+      HUD_PADDING / 2;
     healthAmount.y = healthIcon.y;
 
     ammoIcon.x = SCREEN.WIDTH - ammoIcon.width / 2 - HUD_PADDING;
     ammoIcon.y = SCREEN.HEIGHT - ammoIcon.height / 2 - HUD_PADDING;
-    ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
+    ammoAmount.x =
+      ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
     ammoAmount.y = ammoIcon.y;
 
     this.addChild(ammoIcon);
@@ -48,8 +54,13 @@ class HUDContainer extends Container {
 
       keyCard.onEquipEvent(() => {
         const sprite = keys[keyCard.color];
-        const index = Object.values(player.keyCards).filter(k => k.equiped).length - 1;
-        sprite.x = HUD_PADDING + sprite.width / 2 + (ICON_PADDING + sprite.width) * index - 1;
+        const index =
+          Object.values(player.keyCards).filter(k => k.equiped).length - 1;
+        sprite.x =
+          HUD_PADDING +
+          sprite.width / 2 +
+          (ICON_PADDING + sprite.width) * index -
+          1;
         sprite.y = HUD_PADDING + sprite.height / 2 - 1;
         sprite.setEquipping();
         this.addChild(sprite);
@@ -144,7 +155,11 @@ class HUDContainer extends Container {
       const { ammoIcon, ammoAmount } = this.sprites;
 
       ammoAmount.text = Number.isNaN(Number(weapon?.ammo)) ? '-' : weapon.ammo;
-      ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
+      ammoAmount.x =
+        ammoIcon.x -
+        ammoIcon.width / 2 -
+        ammoAmount.width / 2 -
+        HUD_PADDING / 2;
     }
   }
 

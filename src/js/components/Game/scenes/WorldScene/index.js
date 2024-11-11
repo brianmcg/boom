@@ -61,7 +61,8 @@ class WorldScene extends Scene {
       onKeyDown: {
         [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: true }),
         [KEYS.W]: () => this.assignPlayerAction({ moveForward: true }),
-        [KEYS.DOWN_ARROW]: () => this.assignPlayerAction({ moveBackward: true }),
+        [KEYS.DOWN_ARROW]: () =>
+          this.assignPlayerAction({ moveBackward: true }),
         [KEYS.S]: () => this.assignPlayerAction({ moveBackward: true }),
         [KEYS.LEFT_ARROW]: () => this.assignPlayerAction({ turnLeft: true }),
         [KEYS.RIGHT_ARROW]: () => this.assignPlayerAction({ turnRight: true }),
@@ -79,22 +80,27 @@ class WorldScene extends Scene {
       onKeyUp: {
         [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: false }),
         [KEYS.W]: () => this.assignPlayerAction({ moveForward: false }),
-        [KEYS.DOWN_ARROW]: () => this.assignPlayerAction({ moveBackward: false }),
+        [KEYS.DOWN_ARROW]: () =>
+          this.assignPlayerAction({ moveBackward: false }),
         [KEYS.S]: () => this.assignPlayerAction({ moveBackward: false }),
         [KEYS.LEFT_ARROW]: () => this.assignPlayerAction({ turnLeft: false }),
         [KEYS.RIGHT_ARROW]: () => this.assignPlayerAction({ turnRight: false }),
         [KEYS.A]: () => this.assignPlayerAction({ strafeLeft: false }),
         [KEYS.D]: () => this.assignPlayerAction({ strafeRight: false }),
-        [KEYS.CTRL]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
+        [KEYS.CTRL]: () =>
+          this.assignPlayerAction({ attack: false, stopAttack: true }),
         [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: false }),
       },
       onMouseDown: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),
-        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ secondaryAttack: true }),
+        [BUTTONS.RIGHT]: () =>
+          this.assignPlayerAction({ secondaryAttack: true }),
       },
       onMouseUp: {
-        [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
-        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ secondaryAttack: false }),
+        [BUTTONS.LEFT]: () =>
+          this.assignPlayerAction({ attack: false, stopAttack: true }),
+        [BUTTONS.RIGHT]: () =>
+          this.assignPlayerAction({ secondaryAttack: false }),
       },
       onMouseMove: {
         callback: x => this.incrementPlayerAction({ rotate: x }),
@@ -149,7 +155,9 @@ class WorldScene extends Scene {
 
     this.mainContainer.addChild(this.viewContainer);
     this.reviewContainer = new ReviewContainer(sprites.review, this.sounds);
-    this.reviewContainer.onShowStat(sound => this.soundController.emitSound(sound));
+    this.reviewContainer.onShowStat(sound =>
+      this.soundController.emitSound(sound),
+    );
 
     this.world = world;
   }

@@ -8,7 +8,9 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.001;
 
-const SPATTER_DISTANCE = Math.sqrt(CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE);
+const SPATTER_DISTANCE = Math.sqrt(
+  CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE,
+);
 
 const CELL_CENTER = CELL_SIZE / 4;
 
@@ -201,7 +203,9 @@ class AbstractActor extends AbstractDestroyableEntity {
   hurt(damage, angle) {
     if (this.health > 0) {
       const originAngle = (angle + DEG_180) % DEG_360;
-      const sourceId = this.effects.spurt ? `${this.id}_${this.effects.spurt}` : null;
+      const sourceId = this.effects.spurt
+        ? `${this.id}_${this.effects.spurt}`
+        : null;
 
       if (sourceId) {
         this.parent.addEffect({
@@ -225,7 +229,10 @@ class AbstractActor extends AbstractDestroyableEntity {
       return false;
     }
 
-    return Math.abs(this.x - cell.x) <= CELL_CENTER && Math.abs(this.y - cell.y) <= CELL_CENTER;
+    return (
+      Math.abs(this.x - cell.x) <= CELL_CENTER &&
+      Math.abs(this.y - cell.y) <= CELL_CENTER
+    );
   }
 
   /**

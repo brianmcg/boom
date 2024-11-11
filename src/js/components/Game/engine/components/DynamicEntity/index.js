@@ -39,7 +39,9 @@ class DynamicEntity extends DynamicBody {
     if (tail) {
       this.tail = {
         name: tail.effects.smoke,
-        ids: [...Array(tail.length).keys()].map(i => `${this.id}_${tail.effects.smoke}_${i}`),
+        ids: [...Array(tail.length).keys()].map(
+          i => `${this.id}_${tail.effects.smoke}_${i}`,
+        ),
       };
 
       this.tailTimer = 0;

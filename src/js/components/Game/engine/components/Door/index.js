@@ -43,7 +43,15 @@ class Door extends DynamicCell {
    * @param  {Boolean} options.exit         Exit door option.
    * @param  {Boolean} options.active       Active door option.
    */
-  constructor({ key, interval, double, entrance = false, exit = false, active = true, ...other }) {
+  constructor({
+    key,
+    interval,
+    double,
+    entrance = false,
+    exit = false,
+    active = true,
+    ...other
+  }) {
     super(other);
 
     this.timer = 0;
@@ -156,7 +164,9 @@ class Door extends DynamicCell {
 
       if (this.timer <= 0) {
         const blocked =
-          this.parent.getNeighbourBodies(this).some(body => body.isActor && body.isAlive()) ||
+          this.parent
+            .getNeighbourBodies(this)
+            .some(body => body.isActor && body.isAlive()) ||
           this.bodies.some(b => b.isDynamic);
 
         if (!blocked) {
@@ -271,7 +281,9 @@ class Door extends DynamicCell {
   get shape() {
     if (this.offset.x === CELL_SIZE || this.offset.y === CELL_SIZE) {
       if (this.axis === 'y') {
-        const offsetX = this.reverse ? this.offset.x : CELL_SIZE - this.offset.x + this.width;
+        const offsetX = this.reverse
+          ? this.offset.x
+          : CELL_SIZE - this.offset.x + this.width;
 
         return {
           x: this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
@@ -281,7 +293,9 @@ class Door extends DynamicCell {
         };
       }
 
-      const offsetY = this.reverse ? this.offset.y : CELL_SIZE - this.offset.y + this.length;
+      const offsetY = this.reverse
+        ? this.offset.y
+        : CELL_SIZE - this.offset.y + this.length;
 
       return {
         x: this.x - HALF_CELL_SIZE + this.offset.x,

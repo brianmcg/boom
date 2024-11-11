@@ -29,7 +29,9 @@ class MapContainer extends Container {
         });
 
         sprite.onAnimationComplete(() => {
-          this.playableChildren = this.playableChildren.filter(c => c !== sprite);
+          this.playableChildren = this.playableChildren.filter(
+            c => c !== sprite,
+          );
         });
       }
     });

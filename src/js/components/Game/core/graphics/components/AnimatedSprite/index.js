@@ -14,7 +14,10 @@ class AnimatedSprite extends PixiAnimatedSprite {
    * @param  {Boolean} options.loop           The sprite loop.
    * @param  {Number}  options.anchor         The sprite anchor.
    */
-  constructor(textures, { animationSpeed = 1, tint, alpha = 1, loop = false, anchor = 0 } = {}) {
+  constructor(
+    textures,
+    { animationSpeed = 1, tint, alpha = 1, loop = false, anchor = 0 } = {},
+  ) {
     super(textures, false);
 
     this.animationSpeed = animationSpeed;

@@ -13,7 +13,12 @@ class BulletWeapon extends HitScanWeapon {
         this.ammo -= 1;
       }
 
-      return { ...result, recoil: this.recoil, sound: this.sounds.use, flash: this.flash };
+      return {
+        ...result,
+        recoil: this.recoil,
+        sound: this.sounds.use,
+        flash: this.flash,
+      };
     }
 
     return result;

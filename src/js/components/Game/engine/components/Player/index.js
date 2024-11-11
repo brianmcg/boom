@@ -173,7 +173,8 @@ class Player extends AbstractActor {
       return memo;
     }, {});
 
-    this.radius = Math.sqrt(this.width * this.width + this.width * this.width) / 2;
+    this.radius =
+      Math.sqrt(this.width * this.width + this.width * this.width) / 2;
 
     this.setAlive();
   }
@@ -267,7 +268,9 @@ class Player extends AbstractActor {
     // If weapon index is UNARMED, then try and set it to first equiped weapon.
     const initialWeaponIndex = this.weapons.reduce(
       (prevIndex, weapon, index) =>
-        prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
+        prevIndex <= 0 && !weapon.secondary && weapon.equiped
+          ? index
+          : prevIndex,
       this.weaponIndex,
     );
 
@@ -342,7 +345,10 @@ class Player extends AbstractActor {
         (this.rotateSpeed / 3) * -1,
       );
     } else if (turnRight) {
-      this.rotateAngle = Math.min(this.rotateAngle + this.rotateAcceleration, this.rotateSpeed / 3);
+      this.rotateAngle = Math.min(
+        this.rotateAngle + this.rotateAcceleration,
+        this.rotateSpeed / 3,
+      );
     } else {
       this.rotateAngle = 0;
     }
@@ -371,14 +377,21 @@ class Player extends AbstractActor {
     this.moveAngle = -Math.atan2(-moveY, moveX);
 
     if (this.moveAngle !== previousMoveAngle) {
-      this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
+      this.angle =
+        (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
     }
 
     // Update height.
     if (crouch) {
-      this.height = Math.max(this.height - HEIGHT_INCREMENT * delta, this.crouchHeight);
+      this.height = Math.max(
+        this.height - HEIGHT_INCREMENT * delta,
+        this.crouchHeight,
+      );
     } else {
-      this.height = Math.min(this.height + HEIGHT_INCREMENT * delta, this.maxHeight);
+      this.height = Math.min(
+        this.height + HEIGHT_INCREMENT * delta,
+        this.maxHeight,
+      );
     }
 
     // Update vision.
@@ -455,7 +468,10 @@ class Player extends AbstractActor {
     // Update camera
     const { pitch, maxPitch } = this.camera;
 
-    this.camera.pitch = Math.min(pitch + DYING_PITCH_INCREMENT * delta, maxPitch);
+    this.camera.pitch = Math.min(
+      pitch + DYING_PITCH_INCREMENT * delta,
+      maxPitch,
+    );
 
     // Update height
     this.height -= HEIGHT_INCREMENT * DYING_HEIGHT_FADE * delta;
@@ -597,11 +613,15 @@ class Player extends AbstractActor {
   selectPreviousWeapon() {
     const nextIndex = this.weapons.reduce(
       (prevIndex, weapon, index) =>
-        prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
+        prevIndex <= 0 && !weapon.secondary && weapon.equiped
+          ? index
+          : prevIndex,
       this.previousWeaponIndex,
     );
 
-    this.selectWeapon(nextIndex, { silent: this.previousWeaponIndex === nextIndex });
+    this.selectWeapon(nextIndex, {
+      silent: this.previousWeaponIndex === nextIndex,
+    });
   }
 
   /**

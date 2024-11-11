@@ -28,9 +28,7 @@ class Game extends Application {
   /**
    * Creates a game.
    */
-  constructor() {
-    super(SCREEN.WIDTH, SCREEN.HEIGHT, { backgroundColor: BLACK });
-
+  init() {
     this.style = { position: 'absolute', left: '50%', top: '50%' };
 
     if (SHOW_STATS) {
@@ -57,6 +55,12 @@ class Game extends Application {
       } else {
         this.pause();
       }
+    });
+
+    return super.init({
+      width: SCREEN.WIDTH,
+      height: SCREEN.HEIGHT,
+      backgroundColor: BLACK,
     });
   }
 
@@ -87,6 +91,7 @@ class Game extends Application {
    * @param  {Number} delta The delta value.
    */
   loop(delta) {
+    // console.log(delta);
     if (this.scene) {
       this.scene.update(delta, this.ticker.elapsedMS);
     }
@@ -161,7 +166,10 @@ class Game extends Application {
       const { graphics, sound, data } = await Loader.load(this.scene.assets);
       const sceneProps = this.data[type].props || {};
       const sounds = this.data[type].sounds || {};
-      const props = { ...sceneProps, player: { ...sceneProps.player, ...startProps.player } };
+      const props = {
+        ...sceneProps,
+        player: { ...sceneProps.player, ...startProps.player },
+      };
 
       if (!sound.loop()) {
         sound.once('end', () => sound.unload());

@@ -62,7 +62,8 @@ export const SHOW_STATS = parseBoolParam('stats') || Boolean(DEBUG);
  * Enabled the music.
  * @type {Boolean}
  */
-export const DISABLE_MUSIC = DISABLE_SOUND || parseBoolParam('disableMusic') || Boolean(DEBUG);
+export const DISABLE_MUSIC =
+  DISABLE_SOUND || parseBoolParam('disableMusic') || Boolean(DEBUG);
 
 /**
  * The maximum frames per second.

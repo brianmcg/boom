@@ -69,7 +69,8 @@ class HitScan extends Body {
 
     const rays = castRay({ x, y, angle, world: parent });
 
-    const { startPoint, endPoint, distance, encounteredBodies, cell } = rays[rays.length - 1];
+    const { startPoint, endPoint, distance, encounteredBodies, cell } =
+      rays[rays.length - 1];
 
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies)
@@ -103,7 +104,8 @@ class HitScan extends Body {
         const { point, body } = collisions[i];
 
         if (point.distance <= this.range) {
-          let damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
+          let damage =
+            this.power * (Math.floor(Math.random() * this.accuracy) + 1);
 
           collisionsInRange.push(body);
 
@@ -113,7 +115,10 @@ class HitScan extends Body {
 
           if (i > 0) {
             if (this.penetration) {
-              if (body.getDistanceTo(collisions[0].body) < this.penetration.distance * CELL_SIZE) {
+              if (
+                body.getDistanceTo(collisions[0].body) <
+                this.penetration.distance * CELL_SIZE
+              ) {
                 damage *= this.penetration.fade / i;
               } else {
                 damage = 0;

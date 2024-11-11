@@ -24,7 +24,11 @@ class Mouse {
    */
   constructor(el, moveSensitivity = MOUSE_SENSITIVITY) {
     const onMouseMove = e => {
-      const x = moveSensitivity * e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+      const x =
+        moveSensitivity * e.movementX ||
+        e.mozMovementX ||
+        e.webkitMovementX ||
+        0;
 
       if (this.moveCallback) {
         this.moveCallback(x);
@@ -68,10 +72,14 @@ class Mouse {
     };
 
     el.requestPointerLock =
-      el.requestPointerLock || el.mozRequestPointerLock || el.webkitRequestPointerLock;
+      el.requestPointerLock ||
+      el.mozRequestPointerLock ||
+      el.webkitRequestPointerLock;
 
     document.exitPointerLock =
-      document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
+      document.exitPointerLock ||
+      document.mozExitPointerLock ||
+      document.webkitExitPointerLock;
 
     document.addEventListener('pointerlockchange', onChange, false);
     document.addEventListener('mozpointerlockchange', onChange, false);

@@ -22,7 +22,8 @@ class GraphicsLoader {
 
     return Promise.all(
       keys.reduce(
-        (memo, key) => (Assets.cache.has(key) ? [...memo, Assets.unload(key)] : memo),
+        (memo, key) =>
+          Assets.cache.has(key) ? [...memo, Assets.unload(key)] : memo,
         [],
       ),
     );

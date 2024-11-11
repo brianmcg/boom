@@ -84,7 +84,11 @@ class World extends PhysicsWorld {
     // Create graphs for pathfinding.
     this.graphs = this.dynamicBodies
       .reduce((memo, b) => {
-        if (b.isEnemy && b.collisionRadius && !memo.includes(b.collisionRadius)) {
+        if (
+          b.isEnemy &&
+          b.collisionRadius &&
+          !memo.includes(b.collisionRadius)
+        ) {
           memo.push(b.collisionRadius);
         }
         return memo;
@@ -102,7 +106,9 @@ class World extends PhysicsWorld {
       [...Array(this.maxMapY + 1).keys()].map(() => 0),
     );
 
-    this.alwaysRender = Object.values(this.bodies).filter(body => body.alwaysRender);
+    this.alwaysRender = Object.values(this.bodies).filter(
+      body => body.alwaysRender,
+    );
 
     player.onDeath(() => this.onPlayerDeath());
 
@@ -128,11 +134,17 @@ class World extends PhysicsWorld {
     }
 
     if (this.flashLight) {
-      this.flashLight = Math.max(0, this.flashLight - LIGHT.FLASH_DECREMENT * delta);
+      this.flashLight = Math.max(
+        0,
+        this.flashLight - LIGHT.FLASH_DECREMENT * delta,
+      );
     }
 
     if (this.pickupLight) {
-      this.pickupLight = Math.max(0, this.pickupLight - LIGHT.PICKUP_DECREMENT * delta);
+      this.pickupLight = Math.max(
+        0,
+        this.pickupLight - LIGHT.PICKUP_DECREMENT * delta,
+      );
     }
 
     this.light = this.flashLight + this.pickupLight;
@@ -230,7 +242,10 @@ class World extends PhysicsWorld {
    */
   addFlashLight(intensity = 0) {
     if (intensity) {
-      this.flashLight = Math.min(this.flashLight + intensity, LIGHT.MAX_FLASH_AMOUNT);
+      this.flashLight = Math.min(
+        this.flashLight + intensity,
+        LIGHT.MAX_FLASH_AMOUNT,
+      );
     }
   }
 

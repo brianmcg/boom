@@ -51,8 +51,10 @@ class GunEnemy extends AbstractEnemy {
     this.primaryAttack = {
       ...this.primaryAttack,
       pellets: [...Array(pellets).keys()].map(i => i),
-      spreadAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / 2 : 0,
-      pelletAngle: pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
+      spreadAngle:
+        pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / 2 : 0,
+      pelletAngle:
+        pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
     };
 
     this.graphIndex = 1;

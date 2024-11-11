@@ -40,7 +40,10 @@ class MenuContainer extends Container {
 
         sprite.x = SCREEN.WIDTH / 2;
         sprite.y =
-          SCREEN.HEIGHT / 2 - totalHeight / 2 + index * sprite.height + index * SCREEN_PADDING;
+          SCREEN.HEIGHT / 2 -
+          totalHeight / 2 +
+          index * sprite.height +
+          index * SCREEN_PADDING;
 
         this.addChild(sprite);
       });
@@ -88,7 +91,8 @@ class MenuContainer extends Container {
 
       if (i === this.index) {
         icon.y = child.y;
-        icon.x = child.x - child.width / 2 - ICON_PADDING_RIGHT - icon.width / 2;
+        icon.x =
+          child.x - child.width / 2 - ICON_PADDING_RIGHT - icon.width / 2;
       }
     });
   }

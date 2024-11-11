@@ -83,8 +83,10 @@ class AbstractWeapon {
     this.spread = spread;
     this.type = type;
     this.pellets = [...Array(pellets).keys()].map(i => i);
-    this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
-    this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
+    this.spreadAngle =
+      pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
+    this.pelletAngle =
+      pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.projectile = projectile;
     this.state = STATES.AIMING;
     this.name = name;

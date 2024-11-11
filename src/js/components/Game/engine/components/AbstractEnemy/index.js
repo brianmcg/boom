@@ -296,7 +296,10 @@ class AbstractEnemy extends AbstractActor {
     this.alertTimer += elapsedMS;
 
     if (this.alertTimer >= this.alertTime) {
-      if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
+      if (
+        this.distanceToPlayer <= this.primaryAttack.range &&
+        this.findPlayer()
+      ) {
         this.setAiming();
       } else {
         this.setChasing();
@@ -349,7 +352,10 @@ class AbstractEnemy extends AbstractActor {
   updateRetreating() {
     const nextCell = this.path[this.pathIndex];
 
-    if (this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer()) {
+    if (
+      this.distanceToPlayer <= this.primaryAttack.range &&
+      this.findPlayer()
+    ) {
       this.setAiming();
     } else if (nextCell) {
       this.face(nextCell);
@@ -426,7 +432,10 @@ class AbstractEnemy extends AbstractActor {
 
         if (this.attackTimer >= this.attackTime) {
           if (this.numberOfAttacks < 1) {
-            this.numberOfAttacks = Math.max(this.maxAttacks - Math.round(Math.random()), 1);
+            this.numberOfAttacks = Math.max(
+              this.maxAttacks - Math.round(Math.random()),
+              1,
+            );
 
             this.setEvading();
           } else {
@@ -502,7 +511,8 @@ class AbstractEnemy extends AbstractActor {
       return true;
     }
 
-    const inRange = this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer();
+    const inRange =
+      this.distanceToPlayer <= this.primaryAttack.range && this.findPlayer();
 
     if (this.projectiles) {
       const nextCell = this.path[this.pathIndex];
@@ -557,7 +567,11 @@ class AbstractEnemy extends AbstractActor {
 
     const { distance, encounteredBodies } = this.castRay();
 
-    if (encounteredBodies[player.id] && player.isAlive() && distance > this.distanceToPlayer) {
+    if (
+      encounteredBodies[player.id] &&
+      player.isAlive() &&
+      distance > this.distanceToPlayer
+    ) {
       return player;
     }
 
@@ -593,7 +607,8 @@ class AbstractEnemy extends AbstractActor {
           this.spawnItem.x = this.x;
           this.spawnItem.y = this.y;
           this.spawnItem.velocity = this.isBoss ? 0 : this.velocity * 0.5;
-          this.spawnItem.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
+          this.spawnItem.angle =
+            this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
           this.parent.add(this.spawnItem);
           this.spawnItem.setSpawning();
         }
@@ -617,20 +632,29 @@ class AbstractEnemy extends AbstractActor {
     return (
       (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
         .reduce((memo, angleOffset) => {
-          const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
+          const angle =
+            (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
           const x = Math.floor(
-            (this.x + Math.cos(angle) * this.evadeDistance) / this.evadeDistance,
+            (this.x + Math.cos(angle) * this.evadeDistance) /
+              this.evadeDistance,
           );
           const y = Math.floor(
-            (this.y + Math.sin(angle) * this.evadeDistance) / this.evadeDistance,
+            (this.y + Math.sin(angle) * this.evadeDistance) /
+              this.evadeDistance,
           );
           const cell = parent.getCell(x, y);
 
-          if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+          if (
+            this.collisionRadius > 1 &&
+            parent.getNeighbourCells(cell).some(c => c.blocking)
+          ) {
             return memo;
           }
 
-          if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+          if (
+            cell.blocking ||
+            cell.bodies.some(b => b.id !== this.id && b.blocking)
+          ) {
             return memo;
           }
 
@@ -638,11 +662,17 @@ class AbstractEnemy extends AbstractActor {
         }, [])
         .pop() ||
       parent.getNeighbourCells(this).reduce((memo, cell) => {
-        if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+        if (
+          this.collisionRadius > 1 &&
+          parent.getNeighbourCells(cell).some(c => c.blocking)
+        ) {
           return memo;
         }
 
-        if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
+        if (
+          cell.blocking ||
+          cell.bodies.some(b => b.id !== this.id && b.blocking)
+        ) {
           return memo;
         }
 

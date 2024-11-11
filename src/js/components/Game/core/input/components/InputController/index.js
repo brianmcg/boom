@@ -41,8 +41,14 @@ class InputController {
     this.removeCallbacks();
 
     if (this.states[state]) {
-      const { onKeyDown, onKeyUp, onMouseDown, onMouseUp, onMouseMove, onMouseWheel } =
-        this.states[state];
+      const {
+        onKeyDown,
+        onKeyUp,
+        onMouseDown,
+        onMouseUp,
+        onMouseMove,
+        onMouseWheel,
+      } = this.states[state];
 
       if (onKeyDown) {
         Object.keys(onKeyDown).forEach(name => {

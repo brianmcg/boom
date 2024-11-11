@@ -1,7 +1,12 @@
 import { CELL_SIZE } from '@game/constants/config';
 import Body from '../Body';
 import { TRANSPARENCY } from '../../constants';
-import { isBodyCollision, getAngleBetween, castRay, isFacing } from '../../helpers';
+import {
+  isBodyCollision,
+  getAngleBetween,
+  castRay,
+  isFacing,
+} from '../../helpers';
 
 const EVENTS = {
   COLLISION_START: 'body:collision:start',

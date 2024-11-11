@@ -25,7 +25,7 @@ class TextSprite extends BitmapText {
     anchor,
     maxWidth = SCREEN.WIDTH,
   }) {
-    super(text, { fontName, fontSize });
+    super({ text, style: { fontName, fontSize } });
 
     this.x = x;
     this.y = y;

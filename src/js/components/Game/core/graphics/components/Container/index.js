@@ -22,7 +22,11 @@ class Container extends PixiContainer {
   addChild(child) {
     super.addChild(child);
 
-    if (child.play && !child.isComplete && !this.playableChildren.includes(child)) {
+    if (
+      child.play &&
+      !child.isComplete &&
+      !this.playableChildren.includes(child)
+    ) {
       this.playableChildren.push(child);
     }
 
@@ -63,7 +67,9 @@ class Container extends PixiContainer {
    * @param  {Number} elapsedMS The elapsed time in milliseconds.
    */
   update(delta, elapsedMS) {
-    this.playableChildren.forEach(child => child.playing && child.update(delta, elapsedMS));
+    this.playableChildren.forEach(
+      child => child.playing && child.update(delta, elapsedMS),
+    );
   }
 
   /**

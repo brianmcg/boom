@@ -30,7 +30,16 @@ class Explosion extends Body {
    * @param  {Object}  options.effects      The explosion effects.
    * @param  {Number}  options.flash        The explosion flash.
    */
-  constructor({ source, range, sounds, power, effects, flash, penetration, ...other }) {
+  constructor({
+    source,
+    range,
+    sounds,
+    power,
+    effects,
+    flash,
+    penetration,
+    ...other
+  }) {
     super(other);
 
     this.source = source;

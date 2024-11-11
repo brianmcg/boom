@@ -17,30 +17,40 @@
 // import { Sprite } from '@pixi/sprite';
 // import { BitmapText } from '@pixi/text-bitmap';
 
+// import * as PIXI from 'pixi.js';
+
+// console.log(PIXI);
+
 import {
   AnimatedSprite,
   Application,
   Assets,
-  BaseTexture,
+  // BaseTexture,
   BitmapText,
-  BLEND_MODES,
+  // BLEND_MODES,
   ColorMatrixFilter,
   Container,
   Graphics,
   ParticleContainer,
   Rectangle,
   RenderTexture,
-  SCALE_MODES,
+  // SCALE_MODES,
   Sprite,
   Texture,
-  utils,
+  EventEmitter,
+  TexturePool,
 } from 'pixi.js';
 
 import { PixelateFilter } from '@pixi/filter-pixelate';
 
-const { EventEmitter } = utils;
+const BLEND_MODES = {
+  MULTIPLY: 'add',
+};
 
-BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
+TexturePool.textureOptions.scaleMode = 'nearest';
+// const { EventEmitter } = utils;
+
+// BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
 
 export {
   AnimatedSprite,

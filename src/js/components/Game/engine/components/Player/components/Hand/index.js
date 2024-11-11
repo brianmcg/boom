@@ -90,9 +90,15 @@ class Hand extends EventEmitter {
 
     // Update x offset
     if (rotateAngle < 0) {
-      this.rotateX = Math.max(this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta, -MAX_MOVE_X);
+      this.rotateX = Math.max(
+        this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta,
+        -MAX_MOVE_X,
+      );
     } else if (rotateAngle > 0) {
-      this.rotateX = Math.min(this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta, MAX_MOVE_X);
+      this.rotateX = Math.min(
+        this.rotateX + rotateAngle * ROTATE_MULTIPLIER * delta,
+        MAX_MOVE_X,
+      );
     } else if (this.rotateX > 0) {
       this.rotateX = Math.max(this.rotateX - MOVE_INCREMENT_X * delta, 0);
     } else if (this.rotateX < 0) {
@@ -102,7 +108,10 @@ class Hand extends EventEmitter {
     // Update y offset
     if (velocity) {
       if (this.moveYDirection > 0) {
-        this.moveY = Math.min(this.moveY + MOVE_INCREMENT_Y * delta, MAX_MOVE_Y);
+        this.moveY = Math.min(
+          this.moveY + MOVE_INCREMENT_Y * delta,
+          MAX_MOVE_Y,
+        );
       } else if (this.moveYDirection < 0) {
         this.moveY = Math.max(this.moveY - MOVE_INCREMENT_Y * delta, 0);
       }

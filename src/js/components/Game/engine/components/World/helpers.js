@@ -87,7 +87,9 @@ export const createGraphs = (grid = [], radius = 1) => {
   ];
 
   if (radius > 0) {
-    return grids.map(g => new Graph(extrudeGrid(g, radius), { diagonal: false }));
+    return grids.map(
+      g => new Graph(extrudeGrid(g, radius), { diagonal: false }),
+    );
   }
 
   return grids.map(g => new Graph(g, { diagonal: false }));

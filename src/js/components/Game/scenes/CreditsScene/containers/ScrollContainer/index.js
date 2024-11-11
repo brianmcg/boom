@@ -47,7 +47,8 @@ class ScrollContainer extends Container {
 
     end.anchor.y = 1;
     end.x = SCREEN.WIDTH / 2;
-    end.y = this.getChildAt(this.children.length - 1).y + SCREEN.HEIGHT + end.height;
+    end.y =
+      this.getChildAt(this.children.length - 1).y + SCREEN.HEIGHT + end.height;
 
     this.addChild(end);
   }

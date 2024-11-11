@@ -94,7 +94,10 @@ class Scene extends Container {
 
     this.menuContainer.onClose(() => this.setRunning());
 
-    this.promptContainer = new PromptContainer(sprites.prompt, this.sounds.complete);
+    this.promptContainer = new PromptContainer(
+      sprites.prompt,
+      this.sounds.complete,
+    );
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),

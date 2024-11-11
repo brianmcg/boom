@@ -46,7 +46,10 @@ class AbstractDestroyableEntity extends DynamicEntity {
     super.update(delta, elapsedMS);
 
     if (this.hits.length) {
-      const totalDamage = this.hits.reduce((memo, { damage }) => memo + damage, 0);
+      const totalDamage = this.hits.reduce(
+        (memo, { damage }) => memo + damage,
+        0,
+      );
       const instantKill = this.hits.some(h => h.instantKill);
 
       if (totalDamage) {

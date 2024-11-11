@@ -4,14 +4,19 @@ import fr from './fr';
 
 const translations = { en, fr };
 const browserLanguage = navigator.language.split('-')[0];
-const language = translations[browserLanguage] || translations[DEFAULT_LANGUAGE];
+const language =
+  translations[browserLanguage] || translations[DEFAULT_LANGUAGE];
 
-const camelToConstantCase = str => str.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
+const camelToConstantCase = str =>
+  str.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
 
 const translate = (key, options = {}) => {
   const { text = '', keys = [] } = language[key] || {};
 
-  return keys.reduce((memo, item) => text.replace(camelToConstantCase(item), options[item]), text);
+  return keys.reduce(
+    (memo, item) => text.replace(camelToConstantCase(item), options[item]),
+    text,
+  );
 };
 
 export default translate;

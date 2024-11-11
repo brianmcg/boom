@@ -64,10 +64,15 @@ class ProjectileEnemy extends AbstractEnemy {
     this.offsets =
       pellets % 2 === 0
         ? [...new Array(pellets + 1).keys()]
-            .map(i => ((i - Math.round(pellets / 2)) * degrees(pelletAngle)) / pellets)
+            .map(
+              i =>
+                ((i - Math.round(pellets / 2)) * degrees(pelletAngle)) /
+                pellets,
+            )
             .filter(i => i)
         : [...new Array(pellets).keys()].map(
-            i => ((i - Math.floor(pellets / 2)) * degrees(pelletAngle)) / pellets,
+            i =>
+              ((i - Math.floor(pellets / 2)) * degrees(pelletAngle)) / pellets,
           );
   }
 
