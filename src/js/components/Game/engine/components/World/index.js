@@ -50,8 +50,13 @@ class World extends PhysicsWorld {
     brightness,
     sky,
     floorOffset = 0,
+    waypoints = [],
+    spawnPoints = [],
   }) {
-    super(grid, [...enemies, ...items, ...objects, player]);
+    super(grid, [...enemies.filter(e => e.add), ...items, ...objects, player]);
+
+    this.waypoints = waypoints.map(({ x, y }) => this.getCell(x, y));
+    this.spawnPoints = spawnPoints.map(({ x, y }) => this.getCell(x, y));
 
     this.scene = scene;
     this.player = player;
@@ -97,11 +102,18 @@ class World extends PhysicsWorld {
       [...Array(this.maxMapY + 1).keys()].map(() => 0),
     );
 
+    this.alwaysRender = Object.values(this.bodies).filter(body => body.alwaysRender);
+
     player.onDeath(() => this.onPlayerDeath());
 
     player.onPickUp(item => this.onPlayerPickUp(item));
 
     player.onExit(() => this.scene.setAddingReviewing());
+  }
+
+  remove(body) {
+    super.remove(body);
+    this.alwaysRender = this.alwaysRender.filter(b => b.id !== body.id);
   }
 
   /**
@@ -166,6 +178,7 @@ class World extends PhysicsWorld {
   start(message) {
     this.entranceTimer = ENTRANCE_INTERVAL;
     this.player.start(message);
+    this.enemies.forEach(enemy => enemy.start?.());
   }
 
   /**

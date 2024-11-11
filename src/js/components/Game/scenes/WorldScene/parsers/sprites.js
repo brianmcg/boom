@@ -345,15 +345,14 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
   const playerExplosionSprites = world.player.weapons.reduce((memo, weapon) => {
     if (weapon.projectiles) {
       weapon.projectiles.forEach(projectile => {
-        if (projectile.effects?.impact) {
-          const effectTextures = animations[projectile.effects.impact].map(
-            animation => textures[animation],
-          );
-
-          memo[projectile.id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.2,
-          });
-        }
+        // if (projectile.effects?.impact) {
+        //   const effectTextures = animations[projectile.effects.impact].map(
+        //     animation => textures[animation],
+        //   );
+        //   memo[projectile.id] = new EffectSprite(effectTextures, {
+        //     animationSpeed: 0.2,
+        //   });
+        // }
 
         const explode = projectile.explosion?.effects.explode;
 
@@ -486,7 +485,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           const effectTextures = animations[effect].map(animation => textures[animation]);
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.4,
+            animationSpeed: 0.3,
           });
         }
       });
@@ -557,12 +556,12 @@ const createEntitySprites = ({ animations, textures, world }) => {
   });
 
   world.enemies.forEach(enemy => {
-    const { item } = enemy;
+    const { spawnItem } = enemy;
 
-    if (item) {
-      const animationTextures = animations[item.name].map(t => textures[t]);
+    if (spawnItem) {
+      const animationTextures = animations[spawnItem.name].map(t => textures[t]);
 
-      entitySprites[item.id] = new AnimatedEntitySprite(animationTextures, {
+      entitySprites[spawnItem.id] = new AnimatedEntitySprite(animationTextures, {
         floorOffset: world.floorOffset,
       });
     }
@@ -711,7 +710,7 @@ const createHudSprites = ({ world, textures, animations }) => {
   const ammoAmount = new TextSprite({
     fontName: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
-    text: `${world.player.weapon.ammo !== null ? world.player.weapon.ammo : '-'}`,
+    text: '-',
     color: WHITE,
     anchor: 0.5,
   });
@@ -725,9 +724,9 @@ const createHudSprites = ({ world, textures, animations }) => {
   });
 
   const items = world.enemies.reduce(
-    (memo, { item }) => {
-      if (item) {
-        memo.push(item);
+    (memo, { spawnItem }) => {
+      if (spawnItem) {
+        memo.push(spawnItem);
       }
 
       return memo;

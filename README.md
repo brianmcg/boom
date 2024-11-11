@@ -1,14 +1,27 @@
 # Boom
 
-This is a first person shooter built using [PixiJS](http://www.pixijs.com/) + [HOWLER.JS](https://howlerjs.com/).
+Boom is a first person shooter built using [PixiJS](http://www.pixijs.com/) + [HOWLER.JS](https://howlerjs.com/).
 
-## Getting started
+## Installation
 
-You must have npm 18.14.1
+Use Node.js v18.14.1
 
-- Install:
-  - `npm install` - installs dependencies
-- Run:
-  - `npm start` - starts app
-- Build:
-  - `npm run build` - builds the app
+```bash
+npm install
+```
+
+## Serve locally
+
+```bash
+npm start
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)

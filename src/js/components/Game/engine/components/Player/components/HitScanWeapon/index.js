@@ -1,5 +1,5 @@
 import { degrees } from '@game/core/physics';
-import AbstractWeapon, { EVENTS } from '../AbstractWeapon';
+import AbstractWeapon from '../AbstractWeapon';
 import HitScan from '../../../HitScan';
 
 const DEG_360 = degrees(360);
@@ -26,13 +26,12 @@ class HitScanWeapon extends AbstractWeapon {
    * @param  {Number}  options.automatic    Automatic weapon option.
    * @param  {Number}  options.type         The type of weapon.
    * @param  {Object}  options.projectile   The weapon projectile data.
-   * @param  {Boolean} options.secondary    The weapon is secondary.
    * @param  {Boolean} options.penetration  The weapon penetration.
    */
   constructor({ penetration, ...other }) {
     super(other);
 
-    const { amount, effects } = this.projectile;
+    const { amount, effects, instantKill } = this.projectile;
 
     this.penetration = penetration;
 
@@ -45,16 +44,15 @@ class HitScanWeapon extends AbstractWeapon {
           range: this.range,
           accuracy: this.accuracy,
           penetration,
-          instantKill: this.secondary,
+          instantKill,
         }),
     );
   }
 
-  /**
-   * Use the weapon.
-   */
   use() {
-    if (this.isUseable() && this.setUsing()) {
+    const result = super.use();
+
+    if (result.success) {
       const { pellets, spreadAngle, pelletAngle, projectiles, player } = this;
 
       const collisions = [];
@@ -65,10 +63,9 @@ class HitScanWeapon extends AbstractWeapon {
 
       for (let i = 0; i < pellets.length; i++) {
         const projectile = projectiles.shift();
-        const emitLight = !this.isMelee() && (i === 0 || i === pellets.length - 1);
 
         if (projectile) {
-          projectile.run(rayAngle, emitLight).forEach(collision => {
+          projectile.run(rayAngle).forEach(collision => {
             collisions.push(collision);
           });
           projectiles.push(projectile);
@@ -76,14 +73,10 @@ class HitScanWeapon extends AbstractWeapon {
         }
       }
 
-      if (this.isMelee()) {
-        const recoil = !collisions.length ? 0 : this.recoil;
-        const sound = this.secondary && !collisions.length ? null : this.sounds.use;
-        this.emit(EVENTS.USE, { recoil, sound });
-      } else {
-        super.use();
-      }
+      return { ...result, hasCollisions: collisions.length > 0 };
     }
+
+    return result;
   }
 
   /**

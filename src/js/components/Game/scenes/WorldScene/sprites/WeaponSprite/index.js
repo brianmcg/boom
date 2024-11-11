@@ -1,7 +1,7 @@
 import { AnimatedSprite } from '@game/core/graphics';
 import { SCREEN } from '@game/constants/config';
 
-const SCALE_RATIO = SCREEN.HEIGHT / 160;
+const SCALE_RATIO = SCREEN.HEIGHT / 180;
 
 /**
  * Class representing a weapon sprite.
@@ -13,8 +13,8 @@ class WeaponSprite extends AnimatedSprite {
    * @param  {Player} player            The player.
    */
   constructor(textureCollection, player) {
-    super(textureCollection[player.weapon.name].idle, {
-      animationSpeed: 0.3,
+    super(textureCollection[player.weapons[0].name].idle, {
+      animationSpeed: 0.25,
       loop: false,
     });
 
@@ -25,46 +25,61 @@ class WeaponSprite extends AnimatedSprite {
     this.x = SCREEN.WIDTH / 2;
     this.y = SCREEN.HEIGHT;
 
-    Object.values(player.weapons).forEach(weapon => {
-      weapon.onUse(() => this.setUsing());
+    player.onUseWeapon(() => {
+      this.fire();
+    });
 
-      if (weapon.automatic) {
-        weapon.onStop(() => this.setIdle());
-      }
+    player.onUnarmWeapon(() => {
+      this.reset();
+    });
+
+    player.onArmWeapon(() => {
+      this.reset();
+    });
+
+    player.onReleaseWeapon(() => {
+      this.loop = false;
     });
 
     this.onComplete = () => {
-      this.setIdle();
+      this.reset();
+      player.weapon?.onComplete?.();
+    };
 
-      if (player.weapon.secondary) {
-        player.selectWeapon(player.previousWeaponIndex, {
-          silent: true,
-        });
+    this.onLoop = () => {
+      if (player.weapon?.ammo === 0) {
+        this.reset();
       }
     };
+
+    this.reset();
   }
 
   /**
    * Set the idle animation.
    */
-  setIdle() {
-    const { anchorX, anchorY, scale, name } = this.player.weapon;
+  reset() {
+    const { weapon } = this.player;
 
-    this.textures = this.textureCollection[name].idle;
-    this.anchor.set(anchorX, anchorY);
-    this.scale.set(scale * SCALE_RATIO);
+    if (weapon) {
+      this.textures = this.textureCollection[weapon.name].idle;
+      this.anchor.set(weapon.anchorX, weapon.anchorY);
+      this.scale.set(weapon.scale * SCALE_RATIO);
+    }
+
+    this.gotoAndStop(0);
   }
 
   /**
    * Set the using animation.
    */
-  setUsing() {
+  fire() {
     const { name, automatic } = this.player.weapon;
 
     if ((automatic && !this.playing) || !automatic) {
       this.textures = this.textureCollection[name].firing;
       this.loop = automatic;
-      this.play();
+      this.gotoAndPlay(0);
     }
   }
 }

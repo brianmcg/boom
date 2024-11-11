@@ -2272,7 +2272,7 @@
                         "name": "ceilings_01"
                     },
                     "overlay": {
-                        "name": "walls_03"
+                        "name": "walls_05"
                     }
                 },
                 "double": true,
@@ -3275,47 +3275,90 @@
             {
                 "x": 11,
                 "y": 10,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1,
                 "sides": {
+                    "front": {
+                        "name": "walls_01"
+                    },
+                    "left": {
+                        "name": "walls_01"
+                    },
+                    "back": {
+                        "name": "walls_01"
+                    },
+                    "right": {
+                        "name": "walls_01"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 11,
                 "y": 11,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 0.5,
                 "sides": {
+                    "front": {
+                        "name": "walls_03"
+                    },
+                    "left": {
+                        "name": "walls_03"
+                    },
+                    "back": {
+                        "name": "walls_03"
+                    },
+                    "right": {
+                        "name": "walls_03"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "y",
+                "pushable": false,
+                "offset": 0.5,
+                "transparency": 1
             },
             {
                 "x": 11,
                 "y": 12,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 0.5,
                 "sides": {
+                    "front": {
+                        "name": "walls_03"
+                    },
+                    "left": {
+                        "name": "walls_03"
+                    },
+                    "back": {
+                        "name": "walls_03"
+                    },
+                    "right": {
+                        "name": "walls_03"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "y",
+                "pushable": false,
+                "offset": 0.5,
+                "transparency": 1
             },
             {
                 "x": 11,
@@ -3541,17 +3584,32 @@
             {
                 "x": 12,
                 "y": 10,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 0.5,
                 "sides": {
+                    "front": {
+                        "name": "walls_03"
+                    },
+                    "left": {
+                        "name": "walls_03"
+                    },
+                    "back": {
+                        "name": "walls_03"
+                    },
+                    "right": {
+                        "name": "walls_03"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false,
+                "offset": 0.5,
+                "transparency": 1
             },
             {
                 "x": 12,
@@ -3807,17 +3865,32 @@
             {
                 "x": 13,
                 "y": 10,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 0.5,
                 "sides": {
+                    "front": {
+                        "name": "walls_03"
+                    },
+                    "left": {
+                        "name": "walls_03"
+                    },
+                    "back": {
+                        "name": "walls_03"
+                    },
+                    "right": {
+                        "name": "walls_03"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false,
+                "offset": 0.5,
+                "transparency": 1
             },
             {
                 "x": 13,
@@ -4357,9 +4430,9 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.375,
-            "length": 0.375,
-            "height": 0.5
+            "width": 0.484375,
+            "length": 0.484375,
+            "height": 0.5625
         },
         {
             "x": 13,
@@ -4416,5 +4489,7 @@
         }
     ],
     "brightness": 0.7,
-    "visibility": 10
+    "visibility": 10,
+    "waypoints": [],
+    "spawnPoints": []
 }

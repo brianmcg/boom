@@ -14,6 +14,8 @@ import WeaponItem from './components/WeaponItem';
 import PortalItem from './components/PortalItem';
 import PushWall from './components/PushWall';
 import TransparentCell from './components/TransparentCell';
+import Arachnacopter from './components/Arachnacopter';
+import Arachnatron from './components/Arachnatron';
 
 export {
   Cell,
@@ -32,4 +34,6 @@ export {
   PortalItem,
   PushWall,
   TransparentCell,
+  Arachnacopter,
+  Arachnatron,
 };

@@ -44,10 +44,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
+    "dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "doc": "jsdoc -r src/js/ -t ./node_modules/better-docs/ -R ./README.md -P ./package.json",
     "lint": "eslint src/**/*.js --fix",
-    "pretty": "prettier --write src/**/*.js"
+    "pretty": "prettier --write src/**/*.js",
+    "deploy": "sh scripts/deploy.sh",
+    "format": "prettier --write ."
   }
 }

@@ -337,16 +337,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -365,16 +365,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -638,16 +638,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -666,16 +666,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -694,16 +694,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -722,16 +722,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -750,16 +750,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -778,16 +778,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -976,7 +976,7 @@
                         "name": "lift_ceilings"
                     },
                     "overlay": {
-                        "name": "walls_10",
+                        "name": "walls_12",
                         "height": 1.5
                     }
                 },
@@ -1140,16 +1140,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -1187,7 +1187,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -1232,7 +1232,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -1273,16 +1273,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -1322,7 +1322,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -2151,14 +2151,14 @@
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2205,16 +2205,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2233,16 +2233,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2291,16 +2291,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2553,7 +2553,7 @@
                         "name": "lift_ceilings"
                     },
                     "overlay": {
-                        "name": "walls_10",
+                        "name": "walls_12",
                         "height": 1.5
                     }
                 },
@@ -2586,7 +2586,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -2653,7 +2653,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -2679,16 +2679,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2765,16 +2765,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -2812,7 +2812,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -2842,7 +2842,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -3075,14 +3075,14 @@
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3142,16 +3142,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3189,7 +3189,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -3587,16 +3587,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3746,14 +3746,14 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "back": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "right": {
                         "name": "doors_01",
@@ -3810,14 +3810,14 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "back": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "right": {
                         "name": "doors_01",
@@ -3866,16 +3866,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3894,16 +3894,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -3918,17 +3918,30 @@
             {
                 "x": 7,
                 "y": 20,
-                "edge": false,
-                "blocking": false,
-                "height": 0,
+                "blocking": true,
+                "height": 1.5,
                 "sides": {
+                    "front": {
+                        "name": "walls_08"
+                    },
+                    "left": {
+                        "name": "walls_08"
+                    },
+                    "back": {
+                        "name": "walls_08"
+                    },
+                    "right": {
+                        "name": "walls_08"
+                    },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 7,
@@ -4001,14 +4014,14 @@
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4201,16 +4214,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4304,16 +4317,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4347,16 +4360,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4392,16 +4405,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4459,7 +4472,7 @@
                         "height": 1
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 },
                 "double": true
@@ -4490,7 +4503,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -4505,7 +4518,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -4520,7 +4533,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -4570,7 +4583,7 @@
                         "height": 1
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 },
                 "double": true
@@ -4616,7 +4629,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -4642,16 +4655,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4676,7 +4689,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -4691,7 +4704,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -4706,7 +4719,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -4717,16 +4730,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4745,22 +4758,22 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_03"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 },
                 "axis": "x",
@@ -4788,16 +4801,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4833,16 +4846,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_02"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -4865,7 +4878,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -4880,14 +4893,14 @@
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "back": {
                         "name": "doors_01",
                         "height": 1.5
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_05"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5080,16 +5093,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5155,16 +5168,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5183,16 +5196,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_03"
@@ -5226,16 +5239,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5454,16 +5467,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5568,16 +5581,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5725,16 +5738,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5768,16 +5781,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -5813,16 +5826,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6028,16 +6041,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6056,16 +6069,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6144,7 +6157,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -6159,7 +6172,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -6174,7 +6187,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -6213,16 +6226,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6256,16 +6269,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6333,7 +6346,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -6374,16 +6387,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6595,16 +6608,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6623,22 +6636,22 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 },
                 "axis": "x",
@@ -6666,16 +6679,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6711,16 +6724,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6754,16 +6767,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -6844,7 +6857,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -6859,7 +6872,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -6889,7 +6902,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -6904,7 +6917,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -6934,7 +6947,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -6949,7 +6962,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -7033,16 +7046,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7076,16 +7089,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7121,16 +7134,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7194,16 +7207,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7243,7 +7256,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -7254,16 +7267,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7342,16 +7355,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7389,7 +7402,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -7400,16 +7413,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7432,7 +7445,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -7471,16 +7484,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7514,16 +7527,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7559,16 +7572,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7602,16 +7615,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_07"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7707,7 +7720,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -7737,7 +7750,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -7752,7 +7765,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -7782,7 +7795,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -7797,7 +7810,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -7827,7 +7840,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -7881,16 +7894,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7924,16 +7937,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_08"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -7969,16 +7982,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_04"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8001,7 +8014,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -8042,16 +8055,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8085,10 +8098,10 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "back": {
                         "name": "doors_01",
@@ -8149,7 +8162,7 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "doors_01",
@@ -8160,7 +8173,7 @@
                         "height": 1.5
                     },
                     "right": {
-                        "name": "walls_06"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8325,22 +8338,22 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 },
                 "axis": "x",
@@ -8368,16 +8381,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_09"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8574,7 +8587,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -8613,16 +8626,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8669,16 +8682,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8725,16 +8738,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8753,16 +8766,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_11"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_11"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_11"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_11"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8781,16 +8794,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -8865,18 +8878,18 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "bottom": {
@@ -8894,16 +8907,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_08"
+                        "name": "walls_11"
                     },
                     "left": {
-                        "name": "walls_08"
+                        "name": "walls_11"
                     },
                     "back": {
-                        "name": "walls_08"
+                        "name": "walls_11"
                     },
                     "right": {
-                        "name": "walls_08"
+                        "name": "walls_11"
                     },
                     "bottom": {
                         "name": "floors_03"
@@ -8924,15 +8937,15 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "back": {
-                        "name": "walls_07",
+                        "name": "walls_08",
                         "height": 1.5
                     },
                     "right": {
@@ -9468,16 +9481,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9500,7 +9513,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -9577,16 +9590,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9626,7 +9639,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -9671,7 +9684,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -9716,7 +9729,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -9727,16 +9740,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9776,7 +9789,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -9830,16 +9843,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -9920,7 +9933,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 },
                 "axis": "x",
@@ -10067,7 +10080,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -10121,16 +10134,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10181,7 +10194,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -10484,7 +10497,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -10568,16 +10581,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10600,7 +10613,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -10666,7 +10679,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -10677,16 +10690,16 @@
                 "height": 1,
                 "sides": {
                     "front": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "left": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "back": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "right": {
-                        "name": "walls_09"
+                        "name": "walls_10"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10752,16 +10765,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10924,16 +10937,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -10995,16 +11008,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_01"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11241,7 +11254,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_04"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -11469,19 +11482,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "left": {
                         "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11489,7 +11499,9 @@
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "x",
+                "pushable": false
             },
             {
                 "x": 24,
@@ -11498,16 +11510,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11526,16 +11538,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11554,16 +11566,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11582,16 +11594,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11610,16 +11622,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -11638,15 +11650,15 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "back": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "right": {
@@ -11701,7 +11713,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -11948,40 +11960,24 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
             {
                 "x": 25,
                 "y": 5,
-                "blocking": true,
-                "height": 1.5,
+                "edge": false,
+                "blocking": false,
+                "height": 0,
                 "sides": {
-                    "front": {
-                        "name": "walls_08"
-                    },
-                    "left": {
-                        "name": "walls_08"
-                    },
-                    "back": {
-                        "name": "walls_08"
-                    },
-                    "right": {
-                        "name": "walls_08"
-                    },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_01"
                     }
-                },
-                "axis": "x",
-                "pushable": false,
-                "offset": 1,
-                "reverse": true,
-                "transparency": 2
+                }
             },
             {
                 "x": 25,
@@ -11991,10 +11987,10 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_02"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -12006,10 +12002,10 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -12021,10 +12017,10 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -12036,10 +12032,10 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_02"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_01"
                     }
                 }
             },
@@ -12051,42 +12047,49 @@
                 "height": 0,
                 "sides": {
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_02"
                     }
                 }
             },
             {
                 "x": 25,
                 "y": 11,
+                "door": true,
+                "axis": "x",
                 "blocking": true,
-                "height": 1.5,
+                "height": 1,
+                "width": 1,
+                "length": 0.5,
                 "sides": {
                     "front": {
-                        "name": "walls_08"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "left": {
-                        "name": "walls_08"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "back": {
-                        "name": "walls_08"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "right": {
-                        "name": "walls_08"
+                        "name": "doors_03",
+                        "height": 1
                     },
                     "bottom": {
-                        "name": "floors_03"
+                        "name": "floors_01",
+                        "height": 1
                     },
                     "top": {
-                        "name": "ceilings_03"
+                        "name": "ceilings_01"
                     }
                 },
-                "axis": "x",
-                "pushable": false,
-                "offset": 1,
-                "transparency": 2
+                "double": true,
+                "key": "yellow"
             },
             {
                 "x": 25,
@@ -12185,16 +12188,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "left": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "back": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "right": {
-                        "name": "walls_05"
+                        "name": "walls_06"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12217,7 +12220,7 @@
                         "name": "floors_01"
                     },
                     "top": {
-                        "name": "ceilings_01"
+                        "name": "ceilings_02"
                     }
                 }
             },
@@ -12413,19 +12416,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07",
-                        "height": 1.5
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12433,7 +12433,9 @@
                     "top": {
                         "name": "ceilings_01"
                     }
-                }
+                },
+                "axis": "y",
+                "pushable": false
             },
             {
                 "x": 26,
@@ -12442,16 +12444,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12470,16 +12472,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12498,16 +12500,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12526,16 +12528,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12554,16 +12556,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "left": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "back": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_12"
+                        "name": "walls_01"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12582,18 +12584,18 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "left": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "back": {
                         "name": "walls_01"
                     },
                     "right": {
-                        "name": "walls_07",
+                        "name": "doors_01",
                         "height": 1.5
                     },
                     "bottom": {
@@ -12611,16 +12613,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "left": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "back": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "right": {
-                        "name": "walls_03"
+                        "name": "walls_02"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12667,16 +12669,16 @@
                 "height": 1.5,
                 "sides": {
                     "front": {
-                        "name": "walls_04"
+                        "name": "walls_03"
                     },
                     "left": {
-                        "name": "walls_04"
+                        "name": "walls_03"
                     },
                     "back": {
-                        "name": "walls_04"
+                        "name": "walls_03"
                     },
                     "right": {
-                        "name": "walls_04"
+                        "name": "walls_03"
                     },
                     "bottom": {
                         "name": "floors_01"
@@ -12888,10 +12890,21 @@
     ],
     "objects": [
         {
+            "x": 4,
+            "y": 3,
+            "z": 0,
+            "name": "objects_02",
+            "scale": 1.5,
+            "blocking": true,
+            "width": 0.296875,
+            "length": 0.296875,
+            "height": 1
+        },
+        {
             "x": 5,
             "y": 17,
             "z": 0,
-            "name": "energy_beam_1",
+            "name": "energy_beam",
             "scale": 1.5,
             "blocking": true,
             "animated": true,
@@ -12901,25 +12914,93 @@
         },
         {
             "x": 6,
-            "y": 15,
+            "y": 3,
             "z": 0,
             "name": "objects_02",
+            "scale": 1.5,
+            "blocking": true,
+            "width": 0.296875,
+            "length": 0.296875,
+            "height": 1
+        },
+        {
+            "x": 6,
+            "y": 10,
+            "z": 0,
+            "name": "objects_01",
             "anchor": 1.5,
             "blocking": false,
-            "width": 0.09375,
-            "length": 0.09375,
-            "height": 0.375
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
+        },
+        {
+            "x": 6,
+            "y": 14,
+            "z": 0,
+            "name": "objects_02",
+            "scale": 1.5,
+            "blocking": true,
+            "width": 0.296875,
+            "length": 0.296875,
+            "height": 1
+        },
+        {
+            "x": 6,
+            "y": 16,
+            "z": 0,
+            "name": "objects_02",
+            "scale": 1.5,
+            "blocking": true,
+            "width": 0.296875,
+            "length": 0.296875,
+            "height": 1
         },
         {
             "x": 8,
             "y": 1,
             "z": 0,
-            "name": "objects_01",
+            "name": "energy_beam",
             "scale": 1.5,
             "blocking": true,
+            "animated": true,
             "width": 0.28125,
             "length": 0.28125,
             "height": 1
+        },
+        {
+            "x": 8,
+            "y": 5,
+            "z": 0,
+            "name": "objects_01",
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
+        },
+        {
+            "x": 8,
+            "y": 16,
+            "z": 0,
+            "name": "energy_beam",
+            "scale": 1.5,
+            "blocking": true,
+            "animated": true,
+            "width": 0.28125,
+            "length": 0.28125,
+            "height": 1
+        },
+        {
+            "x": 10,
+            "y": 9,
+            "z": 0,
+            "name": "objects_01",
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
         },
         {
             "x": 10,
@@ -12928,42 +13009,42 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.375,
-            "length": 0.375,
-            "height": 0.5
+            "width": 0.484375,
+            "length": 0.484375,
+            "height": 0.5625
         },
         {
             "x": 11,
-            "y": 16,
-            "z": 0,
-            "name": "container",
-            "blocking": true,
-            "animated": true,
-            "width": 0.34375,
-            "length": 0.34375,
-            "height": 0.90625
-        },
-        {
-            "x": 13,
-            "y": 10,
+            "y": 14,
             "z": 0,
             "name": "objects_01",
-            "scale": 1.5,
-            "blocking": true,
-            "width": 0.28125,
-            "length": 0.28125,
-            "height": 1
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
         },
         {
-            "x": 13,
+            "x": 12,
+            "y": 6,
+            "z": 0,
+            "name": "objects_01",
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
+        },
+        {
+            "x": 12,
             "y": 16,
             "z": 0,
             "name": "objects_02",
-            "anchor": 1.5,
-            "blocking": false,
-            "width": 0.09375,
-            "length": 0.09375,
-            "height": 0.375
+            "scale": 1.5,
+            "blocking": true,
+            "width": 0.296875,
+            "length": 0.296875,
+            "height": 1
         },
         {
             "x": 14,
@@ -12972,9 +13053,9 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.375,
-            "length": 0.375,
-            "height": 0.5
+            "width": 0.484375,
+            "length": 0.484375,
+            "height": 0.5625
         },
         {
             "x": 15,
@@ -12983,15 +13064,15 @@
             "name": "explosive_barrel",
             "blocking": true,
             "animated": true,
-            "width": 0.375,
-            "length": 0.375,
-            "height": 0.5
+            "width": 0.484375,
+            "length": 0.484375,
+            "height": 0.5625
         },
         {
             "x": 17,
             "y": 9,
             "z": 0,
-            "name": "energy_beam_1",
+            "name": "energy_beam",
             "scale": 1.5,
             "blocking": true,
             "animated": true,
@@ -13001,9 +13082,20 @@
         },
         {
             "x": 17,
+            "y": 14,
+            "z": 0,
+            "name": "objects_01",
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
+        },
+        {
+            "x": 17,
             "y": 16,
             "z": 0,
-            "name": "energy_beam_1",
+            "name": "energy_beam",
             "scale": 1.5,
             "blocking": true,
             "animated": true,
@@ -13012,15 +13104,26 @@
             "height": 1
         },
         {
-            "x": 19,
-            "y": 12,
+            "x": 18,
+            "y": 3,
             "z": 0,
             "name": "objects_01",
-            "scale": 1.5,
-            "blocking": true,
-            "width": 0.28125,
-            "length": 0.28125,
-            "height": 1
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
+        },
+        {
+            "x": 25,
+            "y": 16,
+            "z": 0,
+            "name": "objects_01",
+            "anchor": 1.5,
+            "blocking": false,
+            "width": 0.5,
+            "length": 0.5,
+            "height": 0.265625
         }
     ],
     "items": [
@@ -13066,6 +13169,11 @@
         },
         {
             "x": 22,
+            "y": 7,
+            "name": "key_yellow"
+        },
+        {
+            "x": 22,
             "y": 10,
             "name": "ammo_launcher"
         }
@@ -13077,7 +13185,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13088,7 +13196,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13100,7 +13208,7 @@
             "float": true,
             "proneHeight": 10,
             "scale": 1,
-            "item": "health_medium",
+            "spawnItem": "health_medium",
             "width": 0.734375,
             "length": 0.734375,
             "height": 0.734375
@@ -13111,7 +13219,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13122,7 +13230,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13133,7 +13241,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13144,7 +13252,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13155,7 +13263,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13166,7 +13274,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13177,7 +13285,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13198,7 +13306,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13209,7 +13317,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13220,7 +13328,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13231,7 +13339,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13242,7 +13350,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13263,7 +13371,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13274,7 +13382,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13285,7 +13393,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13296,7 +13404,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13307,7 +13415,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13318,7 +13426,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13339,7 +13447,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13350,7 +13458,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13362,7 +13470,7 @@
             "float": true,
             "proneHeight": 10,
             "scale": 1,
-            "item": "health_medium",
+            "spawnItem": "health_medium",
             "width": 0.734375,
             "length": 0.734375,
             "height": 0.734375
@@ -13373,7 +13481,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13384,7 +13492,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13395,7 +13503,7 @@
             "name": "trooper",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_pistol",
+            "spawnItem": "ammo_pistol",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13406,7 +13514,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13417,7 +13525,7 @@
             "name": "imp",
             "proneHeight": 5,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.625
@@ -13428,7 +13536,7 @@
             "name": "sergeant",
             "proneHeight": 5,
             "scale": 1,
-            "item": "ammo_shotgun",
+            "spawnItem": "ammo_shotgun",
             "width": 0.328125,
             "length": 0.328125,
             "height": 0.625
@@ -13439,7 +13547,7 @@
             "name": "demon",
             "proneHeight": 7,
             "scale": 1,
-            "item": "health_small",
+            "spawnItem": "health_small",
             "width": 0.5,
             "length": 0.5,
             "height": 0.578125
@@ -13456,5 +13564,7 @@
         }
     ],
     "brightness": 0.9,
-    "visibility": 16
+    "visibility": 16,
+    "waypoints": [],
+    "spawnPoints": []
 }

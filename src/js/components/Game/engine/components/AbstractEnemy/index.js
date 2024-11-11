@@ -3,6 +3,7 @@ import { CELL_SIZE, UPDATE_DISTANCE } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import TransparentCell from '../TransparentCell';
 import Explosion from '../Explosion';
+import Door from '../Door';
 
 const STATES = {
   IDLE: 'enemy:idle',
@@ -91,7 +92,7 @@ class AbstractEnemy extends AbstractActor {
    * @param  {String}  options.type           The type of enemy.
    * @param  {String}  options.splash         The type of splash.
    * @param  {String}  options.ripple         The type of ripple.
-   * @param  {Item}    options.item           The item to spawn when enemy dies.
+   * @param  {Item}    options.spawnItem      The item to spawn when enemy dies.
    */
   constructor({
     stateDurations,
@@ -106,7 +107,13 @@ class AbstractEnemy extends AbstractActor {
     isBoss,
     splash,
     ripple,
-    item,
+    spawnItem,
+    evadeDistance = 1,
+    outside,
+    explode,
+    alwaysRender,
+    add = true,
+    spawnEnemy,
     ...other
   }) {
     super(other);
@@ -122,6 +129,8 @@ class AbstractEnemy extends AbstractActor {
       aim: aimTime = 200,
     } = stateDurations;
 
+    this.spawnEnemy = spawnEnemy;
+    this.explode = explode;
     this.type = type;
     this.submerged = submerged;
     this.isBoss = isBoss;
@@ -143,7 +152,12 @@ class AbstractEnemy extends AbstractActor {
     this.proneHeight = proneHeight;
     this.nearbyTimer = 0;
     this.graphIndex = 0;
-    this.item = item;
+    this.spawnItem = spawnItem;
+    this.outside = outside;
+    this.alwaysRender = alwaysRender;
+    this.add = add;
+
+    this.evadeDistance = evadeDistance * CELL_SIZE;
 
     this.primaryAttack = {
       ...primaryAttack,
@@ -189,14 +203,14 @@ class AbstractEnemy extends AbstractActor {
       },
     });
 
-    // this.addTrackedCollision({
-    //   type: Door,
-    //   onStart: (body) => {
-    //     if (!this.isDead() && !this.isHurting() && body.use) {
-    //       body.use();
-    //     }
-    //   },
-    // });
+    this.addTrackedCollision({
+      type: Door,
+      onStart: body => {
+        if (!this.isDead() && !this.isHurting() && body.use) {
+          body.use();
+        }
+      },
+    });
 
     this.setIdle();
   }
@@ -301,13 +315,15 @@ class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles && this.findPlayer()) {
-        this.setRange(Number.MAX_VALUE);
-        this.setAttacking();
-      }
-
-      if (nextCell.isDoor) {
-        nextCell.use(this);
+      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles) {
+        if (this.findPlayer()) {
+          this.setRange(Number.MAX_VALUE);
+          this.setAttacking();
+        } else {
+          // TODO: Changed 5855f30ad8885aceea29f71bc43ed03ca9a53684
+          this.path = this.findPath(this.parent.player);
+          this.setChasing();
+        }
       }
 
       if (this.isArrivedAt(nextCell)) {
@@ -505,6 +521,8 @@ class AbstractEnemy extends AbstractActor {
    * Attack a target.
    */
   attack() {
+    this.parent.addFlashLight(this.primaryAttack.flash);
+
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }
@@ -571,13 +589,13 @@ class AbstractEnemy extends AbstractActor {
         this.velocity = Math.sqrt(damage);
         this.setDead();
 
-        if ((instantKill || this.isBoss) && this.item) {
-          this.item.x = this.x;
-          this.item.y = this.y;
-          this.item.velocity = this.isBoss ? 0 : this.velocity * 0.5;
-          this.item.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
-          this.parent.add(this.item);
-          this.item.setSpawning();
+        if ((instantKill || this.isBoss) && this.spawnItem) {
+          this.spawnItem.x = this.x;
+          this.spawnItem.y = this.y;
+          this.spawnItem.velocity = this.isBoss ? 0 : this.velocity * 0.5;
+          this.spawnItem.angle = this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
+          this.parent.add(this.spawnItem);
+          this.spawnItem.setSpawning();
         }
       }
     } else {
@@ -591,7 +609,8 @@ class AbstractEnemy extends AbstractActor {
    * @return {Cell} The cell to move to.
    */
   findEvadeDestination() {
-    const { player } = this.parent;
+    const { parent } = this;
+    const { player } = parent;
     // Randomly pick a right angle to the left or right and
     // get x and y grid coordinates, to priorities lateral evasion.
     // Otherwise go to the nearest cell to the player.
@@ -599,9 +618,17 @@ class AbstractEnemy extends AbstractActor {
       (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
         .reduce((memo, angleOffset) => {
           const angle = (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
-          const x = Math.floor((this.x + Math.cos(angle) * CELL_SIZE) / CELL_SIZE);
-          const y = Math.floor((this.y + Math.sin(angle) * CELL_SIZE) / CELL_SIZE);
-          const cell = this.parent.getCell(x, y);
+          const x = Math.floor(
+            (this.x + Math.cos(angle) * this.evadeDistance) / this.evadeDistance,
+          );
+          const y = Math.floor(
+            (this.y + Math.sin(angle) * this.evadeDistance) / this.evadeDistance,
+          );
+          const cell = parent.getCell(x, y);
+
+          if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+            return memo;
+          }
 
           if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
             return memo;
@@ -610,7 +637,11 @@ class AbstractEnemy extends AbstractActor {
           return [...memo, cell];
         }, [])
         .pop() ||
-      this.parent.getNeighbourCells(this).reduce((memo, cell) => {
+      parent.getNeighbourCells(this).reduce((memo, cell) => {
+        if (this.collisionRadius > 1 && parent.getNeighbourCells(cell).some(c => c.blocking)) {
+          return memo;
+        }
+
         if (cell.blocking || cell.bodies.some(b => b.id !== this.id && b.blocking)) {
           return memo;
         }

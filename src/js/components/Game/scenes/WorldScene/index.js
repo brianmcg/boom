@@ -1,5 +1,5 @@
 import translate from '@translate';
-import { WORLD_SCENE_ASSETS, SCENE_PATHS } from '@game/constants/assets';
+import { WORLD_SCENE_ASSETS } from '@game/constants/assets';
 import { DEBUG } from '@game/constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
 
@@ -20,8 +20,6 @@ const FADE_INCREMENT = 0.05;
 const FADE_PIXEL_SIZE = 4;
 
 const MAP_VIEW = DEBUG === 2;
-
-const WORLD_PATH = SCENE_PATHS.WORLD;
 
 /**
  * Class representing a world scene.
@@ -77,7 +75,6 @@ class WorldScene extends Scene {
         [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 2 }),
         [KEYS.NUM_3]: () => this.assignPlayerAction({ selectWeapon: 3 }),
         [KEYS.NUM_4]: () => this.assignPlayerAction({ selectWeapon: 4 }),
-        [KEYS.NUM_5]: () => this.assignPlayerAction({ selectWeapon: 5 }),
       },
       onKeyUp: {
         [KEYS.UP_ARROW]: () => this.assignPlayerAction({ moveForward: false }),
@@ -93,11 +90,11 @@ class WorldScene extends Scene {
       },
       onMouseDown: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),
-        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ boot: true }),
+        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ secondaryAttack: true }),
       },
       onMouseUp: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: false, stopAttack: true }),
-        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ boot: false }),
+        [BUTTONS.RIGHT]: () => this.assignPlayerAction({ secondaryAttack: false }),
       },
       onMouseMove: {
         callback: x => this.incrementPlayerAction({ rotate: x }),
@@ -362,7 +359,5 @@ class WorldScene extends Scene {
     super.destroy(options);
   }
 }
-
-export { WORLD_PATH };
 
 export default WorldScene;

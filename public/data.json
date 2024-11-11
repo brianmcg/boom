@@ -36,14 +36,101 @@
                 }
             },
             "enemies": {
-                "arachnatron": {
-                    "behaviour": "gunenemy",
+                "arachnacopter": {
+                    "behaviour": "arachnacopter",
                     "isBoss": true,
+                    "maxElavation": 7,
+                    "outside": true,
+                    "painChance": 0.01,
+                    "acceleration": 0.00625,
+                    "speed": 0.086875,
+                    "maxHealth": 500,
+                    "maxAttacks": 2,
+                    "evadeDistance": 2,
+                    "isFloating": true,
+                    "stateDurations": {
+                        "alert": 10,
+                        "aim": 750,
+                        "attack": 250,
+                        "hurt": 75
+                    },
+                    "bloodColor": null,
+                    "primaryAttack": {
+                        "flash": 1,
+                        "range": 20,
+                        "power": 6,
+                        "accuracy": 8,
+                        "pellets": 2,
+                        "pelletAngle": 15,
+                        "projectile": {
+                            "amount": 12,
+                            "elavation": 0.055,
+                            "name": "projectile_1",
+                            "speed": 0.125,
+                            "sounds": {
+                                "travel": "imp_attack"
+                            },
+                            "tail": {
+                                "length": 10,
+                                "effects": {
+                                    "smoke": "smoke_1"
+                                }
+                            },
+                            "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
+                                "range": 0,
+                                "power": 16,
+                                "effects": {
+                                    "explode": "explosion_1"
+                                },
+                                "sounds": {
+                                    "explode": "soul_death"
+                                }
+                            }
+                        }
+                    },
+                    "effects": {
+                        "spatter": null,
+                        "spurt": null
+                    },
+                    "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
+                        "range": 0,
+                        "power": 8,
+                        "effects": {
+                            "explode": "explosion_4"
+                        },
+                        "sounds": {
+                            "explode": "barrel_exploding"
+                        }
+                    },
+                    "sounds": {
+                        "alert": "arachnatron_sighted",
+                        "attack": "sergeant_attack",
+                        "death": "arachnatron_injured",
+                        "nearby": "arachnatron_nearby",
+                        "pain": "arachnatron_injured",
+                        "constant": "arachnacopter_engine"
+                    }
+                },
+                "arachnatron": {
+                    "behaviour": "arachnatron",
+                    "isBoss": true,
+                    "maxElavation": 7,
                     "painChance": 0.1289,
                     "acceleration": 0.00625,
                     "speed": 0.046875,
                     "maxHealth": 500,
                     "maxAttacks": 12,
+                    "explode": true,
                     "stateDurations": {
                         "alert": 10,
                         "aim": 50,
@@ -52,6 +139,7 @@
                     },
                     "bloodColor": null,
                     "primaryAttack": {
+                        "flash": 0.625,
                         "range": 6,
                         "power": 3,
                         "accuracy": 5,
@@ -62,6 +150,11 @@
                         "spurt": null
                     },
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -115,6 +208,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -208,6 +306,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 1,
                                 "power": 16,
                                 "effects": {
@@ -220,6 +323,11 @@
                         }
                     },
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -275,6 +383,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -313,10 +426,12 @@
                     },
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 1,
                         "range": 8,
                         "power": 6,
                         "accuracy": 8,
                         "pellets": 2,
+                        "pelletAngle": 30,
                         "projectile": {
                             "amount": 12,
                             "elavation": 0.055,
@@ -332,6 +447,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 0,
                                 "power": 16,
                                 "effects": {
@@ -370,6 +490,7 @@
                     },
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 1.25,
                         "range": 5,
                         "power": 3,
                         "accuracy": 5,
@@ -423,7 +544,13 @@
                         "spatter": null,
                         "spurt": null
                     },
+                    "explode": true,
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 0,
                         "power": 8,
                         "effects": {
@@ -449,6 +576,7 @@
                     "maxAttacks": 2,
                     "bloodColor": "bc0000",
                     "primaryAttack": {
+                        "flash": 0.625,
                         "range": 6,
                         "power": 3,
                         "accuracy": 5,
@@ -554,6 +682,11 @@
                     "explosive": true,
                     "health": 20,
                     "explosion": {
+                        "flash": 3,
+                        "penetration": {
+                            "distance": 2,
+                            "fade": 0.75
+                        },
                         "range": 4,
                         "power": 128,
                         "effects": {
@@ -588,7 +721,7 @@
                     "boot": {
                         "scale": 1.3,
                         "anchorX": 0.1,
-                        "type": 0,
+                        "type": 3,
                         "equiped": true,
                         "power": 100,
                         "accuracy": 3,
@@ -597,42 +730,23 @@
                         "range": 0.5,
                         "maxAmmo": null,
                         "recoil": 8,
-                        "secondary": true,
-                        "maxAttacks": null,
                         "projectile": {
-                            "amount": null
+                            "amount": null,
+                            "instantKill": true
                         },
                         "sounds": {
                             "use": "weapon_boot",
                             "equip": "weapon_knife"
                         }
                     },
-                    "knife": {
-                        "type": 0,
-                        "equiped": true,
-                        "power": 5,
-                        "accuracy": 3,
-                        "pellets": 1,
-                        "rate": 300,
-                        "range": 0.5,
-                        "maxAmmo": null,
-                        "recoil": 6,
-                        "maxAttacks": null,
-                        "projectile": {
-                            "amount": null
-                        },
-                        "sounds": {
-                            "use": "weapon_knife",
-                            "equip": "weapon_knife_equip"
-                        }
-                    },
                     "pistol": {
-                        "type": 0,
+                        "type": 1,
+                        "flash": 0.625,
                         "equiped": false,
                         "power": 5,
                         "accuracy": 3,
                         "pellets": 1,
-                        "rate": 200,
+                        "rate": 275,
                         "range": null,
                         "maxAmmo": 200,
                         "recoil": 12,
@@ -648,9 +762,10 @@
                         }
                     },
                     "shotgun": {
-                        "type": 0,
+                        "type": 1,
                         "equiped": false,
                         "power": 5,
+                        "flash": 1.25,
                         "penetration": {
                             "distance": 1.4,
                             "fade": 0.6
@@ -674,9 +789,10 @@
                         }
                     },
                     "chaingun": {
-                        "type": 0,
+                        "type": 1,
                         "equiped": false,
                         "power": 5,
+                        "flash": 0.625,
                         "accuracy": 3,
                         "pellets": 1,
                         "range": null,
@@ -696,16 +812,16 @@
                         }
                     },
                     "launcher": {
-                        "type": 1,
+                        "type": 2,
                         "equiped": false,
                         "power": 8,
+                        "flash": 1,
                         "accuracy": 20,
                         "pellets": 1,
                         "rate": 500,
                         "range": null,
                         "maxAmmo": 20,
                         "recoil": 25,
-                        "maxAttacks": 5,
                         "projectile": {
                             "elavation": -0.125,
                             "amount": 10,
@@ -722,6 +838,11 @@
                                 }
                             },
                             "explosion": {
+                                "flash": 3,
+                                "penetration": {
+                                    "distance": 2,
+                                    "fade": 0.75
+                                },
                                 "range": 2,
                                 "power": 128,
                                 "effects": {
@@ -750,7 +871,7 @@
             "dungeon_1",
             "sewers_1",
             "sewers_2",
-            "cellar_1",
+            "lab_1",
             "mansion_1",
             "roof_1"
         ]

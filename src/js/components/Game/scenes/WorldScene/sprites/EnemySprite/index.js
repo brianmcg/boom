@@ -48,7 +48,7 @@ class EnemySprite extends AnimatedEntitySprite {
         this.isComplete = true;
         this.emit(EVENTS.ANIMATION_COMPLETE);
 
-        if (enemy.explosion) {
+        if (enemy.explode) {
           enemy.remove();
         }
 

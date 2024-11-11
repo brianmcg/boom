@@ -1,12 +1,15 @@
 import translate from '@translate';
 import { degrees } from '@game/core/physics';
-import { WEAPONS } from '@game/constants/types';
+import { WEAPON_TYPES } from '@game/constants/assets';
 import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@game/constants/config';
 import AbstractActor from '../AbstractActor';
 import AbstractItem from '../AbstractItem';
-import HitScanWeapon from './components/HitScanWeapon';
+import SecondaryWeapon from './components/SecondaryWeapon';
+import BulletWeapon from './components/BulletWeapon';
+
 import ProjectileWeapon from './components/ProjectileWeapon';
 import Camera from './components/Camera';
+import Hand from './components/Hand';
 import KeyCard from './components/KeyCard';
 
 const DEG_360 = degrees(360);
@@ -18,9 +21,17 @@ const DYING_HEIGHT_FADE = 0.2;
 const DYING_PITCH_INCREMENT = 10;
 const HURT_VISION_AMOUNT = 0.6;
 const VISION_INCREMENT = 0.02;
-const BREATH_INCREMENT = 0.002;
-const MAX_BREATH_AMOUNT = 0.4;
-const BREATH_MULTIPLIER = -2;
+
+const WEAPON_INDICES = {
+  UNARMED: -1,
+  SECONDARY: 0,
+};
+
+const WEAPONS = {
+  [WEAPON_TYPES.SECONDARY]: SecondaryWeapon,
+  [WEAPON_TYPES.BULLET]: BulletWeapon,
+  [WEAPON_TYPES.PROJECTILE]: ProjectileWeapon,
+};
 
 const STATES = {
   ALIVE: 'player:alive',
@@ -31,9 +42,11 @@ const STATES = {
 const EVENTS = {
   HURT: 'player:hurt',
   USE_WEAPON: 'player:use:weapon',
+  RELEASE_WEAPON: 'player:release:weapon',
   DEATH: 'player:death',
   DYING: 'player:dying',
-  CHANGE_WEAPON: 'player:change:weapon',
+  ARMING: 'player:hand:arming',
+  UNARMING: 'player:hand:unarming',
   MESSAGE_ADDED: 'player:messages:added',
   PICK_UP: 'player:pick:up',
   EXIT: 'player:at:exit',
@@ -65,7 +78,7 @@ class Player extends AbstractActor {
       rotateSpeed = 1,
       rotateAcceleration = 0,
       weapons = {},
-      weaponIndex = 0,
+      weaponIndex = WEAPON_INDICES.UNARMED,
       items,
       soundSprite,
       maxHealth,
@@ -83,16 +96,6 @@ class Player extends AbstractActor {
     this.maxHeight = this.height;
     this.maxSpeed = this.speed;
 
-    if (weaponIndex) {
-      this.weaponIndex = weaponIndex;
-    } else if (Object.values(weapons).filter(w => w.equiped).length > 2) {
-      // Use pistol if no weapon index given and pistol available.
-      this.weaponIndex = 2;
-    } else {
-      // Use knife if no other weapons equiped.
-      this.weaponIndex = 1;
-    }
-
     this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
 
@@ -103,36 +106,29 @@ class Player extends AbstractActor {
     this.moveAngle = 0;
     this.isPlayer = true;
     this.distanceToPlayer = 0;
-    this.breathDirection = 1;
-    this.breath = 0;
+
+    this.weaponIndex = weaponIndex;
 
     this.camera = new Camera(this);
+    this.hand = new Hand(this);
 
-    this.weapons = Object.keys(weapons).map(name => {
-      const weapon =
-        weapons[name].type === WEAPONS.HIT_SCAN
-          ? new HitScanWeapon({
-              ...weapons[name],
-              player: this,
-              name,
-            })
-          : new ProjectileWeapon({
-              ...weapons[name],
-              player: this,
-              name,
-              soundSprite,
-            });
+    this.hand.onArming(() => this.emit(EVENTS.ARMING));
 
-      weapon.onUse(({ recoil, sound }) => {
-        this.camera.setRecoil(recoil);
-        this.emitSound(sound);
-        this.emit(EVENTS.USE_WEAPON);
-      });
+    this.hand.onUnarming(() => this.emit(EVENTS.UNARMING));
 
-      return weapon;
+    this.hand.onAiming(() => {
+      if (this.weapon.secondary) this.useWeapon();
     });
 
-    this.weapon = this.weapons[this.weaponIndex];
+    this.weapons = Object.keys(weapons).map(
+      name =>
+        new WEAPONS[weapons[name].type]({
+          ...weapons[name],
+          player: this,
+          name,
+          soundSprite,
+        }),
+    );
 
     this.sounds = this.weapons.reduce(
       (memo, weapon) => ({
@@ -177,21 +173,6 @@ class Player extends AbstractActor {
       return memo;
     }, {});
 
-    // Add weapon names to player sound object.
-    this.playing = this.weapons.reduce(
-      (weaponMemo, weapon) => ({
-        ...weaponMemo,
-        ...Object.values(weapon.sounds).reduce(
-          (soundMemo, sound) => ({
-            ...soundMemo,
-            [sound]: [],
-          }),
-          {},
-        ),
-      }),
-      this.playing,
-    );
-
     this.radius = Math.sqrt(this.width * this.width + this.width * this.width) / 2;
 
     this.setAlive();
@@ -211,6 +192,14 @@ class Player extends AbstractActor {
    */
   onUseWeapon(callback) {
     this.on(EVENTS.USE_WEAPON, callback);
+  }
+
+  /**
+   * Add a callback for the release weapon event.
+   * @param  {Function} callback The callback to add for the event.
+   */
+  onReleaseWeapon(callback) {
+    this.on(EVENTS.RELEASE_WEAPON, callback);
   }
 
   /**
@@ -254,11 +243,19 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Add a callback to the change weapon event.
+   * Add a callback to the arming event.
    * @param  {Function} callback The callback.
    */
-  onChangeWeapon(callback) {
-    this.on(EVENTS.CHANGE_WEAPON, callback);
+  onArmWeapon(callback) {
+    this.on(EVENTS.ARMING, callback);
+  }
+
+  /**
+   * Add a callback to the unarming event.
+   * @param  {Function} callback The callback.
+   */
+  onUnarmWeapon(callback) {
+    this.on(EVENTS.UNARMING, callback);
   }
 
   /**
@@ -266,8 +263,20 @@ class Player extends AbstractActor {
    * @param  {String} message The message to display.
    */
   start(message) {
+    // Determine the initial weapon index
+    // If weapon index is UNARMED, then try and set it to first equiped weapon.
+    const initialWeaponIndex = this.weapons.reduce(
+      (prevIndex, weapon, index) =>
+        prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
+      this.weaponIndex,
+    );
+
+    // Start level with no weapon equiped;
+    this.weaponIndex = WEAPON_INDICES.UNARMED;
+
+    this.selectWeapon(initialWeaponIndex);
+
     this.addMessage(message, { priority: 1 });
-    this.emitSound(this.weapon.sounds.equip);
   }
 
   /**
@@ -309,7 +318,7 @@ class Player extends AbstractActor {
       stopAttack,
       use,
       cycleWeapon,
-      boot,
+      secondaryAttack,
     } = this.actions;
 
     const previousMoveAngle = this.moveAngle;
@@ -365,17 +374,6 @@ class Player extends AbstractActor {
       this.angle = (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
     }
 
-    // update breath
-    this.breath += BREATH_INCREMENT * this.breathDirection * delta;
-
-    if (this.breath >= MAX_BREATH_AMOUNT) {
-      this.breath = MAX_BREATH_AMOUNT;
-      this.breathDirection *= BREATH_MULTIPLIER;
-    } else if (this.breath <= 0) {
-      this.breath = 0;
-      this.breathDirection /= BREATH_MULTIPLIER;
-    }
-
     // Update height.
     if (crouch) {
       this.height = Math.max(this.height - HEIGHT_INCREMENT * delta, this.crouchHeight);
@@ -392,62 +390,19 @@ class Player extends AbstractActor {
       }
     }
 
-    // Update camera.
     this.camera.update(delta);
+    this.hand.update(delta);
 
-    if (boot) {
-      this.selectWeapon(0);
-    }
-
-    // Update weapon.
-    if (this.isWeaponChangeEnabled && selectWeapon) {
+    if (this.weaponIndex && secondaryAttack) {
+      this.selectWeapon(WEAPON_INDICES.SECONDARY);
+    } else if (selectWeapon) {
       this.selectWeapon(selectWeapon);
-    }
-
-    if (this.isWeaponChangeEnabled && cycleWeapon) {
-      const currentIndex = this.weaponIndex;
-
-      if (cycleWeapon < 0) {
-        for (let i = 1; i < this.weapons.length; i++) {
-          let nextIndex = (currentIndex + i) % this.weapons.length;
-
-          // Skip boot, since it is a secondary attack.
-          if (nextIndex === 0) {
-            nextIndex = 1;
-          }
-
-          const weapon = this.weapons[nextIndex];
-
-          if (weapon.isEquiped()) {
-            this.selectWeapon(nextIndex);
-            break;
-          }
-        }
-      } else {
-        for (let i = this.weapons.length - 1; i > 0; i--) {
-          let nextIndex = (currentIndex + i) % this.weapons.length;
-
-          // Skip boot, since it is a secondary attack.
-          if (nextIndex === 0) {
-            nextIndex = this.weapons.length - 1;
-          }
-
-          const weapon = this.weapons[nextIndex];
-
-          if (weapon.isEquiped()) {
-            this.selectWeapon(nextIndex);
-            break;
-          }
-        }
-      }
-    }
-
-    if (attack && !this.weapon.secondary) {
-      this.weapon.use();
-    }
-
-    if (stopAttack) {
-      this.weapon.stop();
+    } else if (cycleWeapon) {
+      this.cycleWeapon(cycleWeapon);
+    } else if (attack) {
+      this.useWeapon();
+    } else if (stopAttack) {
+      this.releaseWeapon();
     }
 
     // Update interactions.
@@ -466,7 +421,9 @@ class Player extends AbstractActor {
       }
     }
 
-    this.weapon.update(delta, elapsedMS);
+    if (this.weapon) {
+      this.weapon.update(delta, elapsedMS);
+    }
 
     // Update view
     this.viewHeight = this.z + this.height + this.camera.height;
@@ -479,6 +436,7 @@ class Player extends AbstractActor {
     this.actions.rotate = 0;
     this.actions.cycleWeapon = 0;
     this.actions.stopAttack = false;
+    this.actions.secondaryAttack = false;
 
     if (this.isArrivedAt(this.parent.exit)) {
       this.health = this.maxHealth;
@@ -516,13 +474,12 @@ class Player extends AbstractActor {
       }
     }
 
+    this.hand.update(delta);
+
     // Update view
     this.viewHeight = this.z + this.height + this.camera.height;
     this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
-
-    // Update weapon
-    this.weapon.update(delta);
   }
 
   /**
@@ -548,38 +505,103 @@ class Player extends AbstractActor {
   }
 
   /**
-   * Select the next weapon to use.
-   * @param  {String} type The type of weapon to use.
+   * Use current weapon.
    */
-  selectWeapon(index, { silent = false } = {}) {
-    const weapon = this.weapons[index];
+  useWeapon() {
+    if (this.hand.canUseWeapon()) {
+      const { success, recoil, sound, flash } = this.weapon.use();
 
-    if (weapon && weapon.isEquiped() && this.weaponIndex !== index) {
-      this.previousWeaponIndex = this.weaponIndex;
-      this.weaponIndex = index;
-
-      this.weapon = weapon;
-      this.disableWeaponChange();
-
-      if (weapon.sounds.equip && !silent) {
-        this.emitSound(weapon.sounds.equip);
-      }
-      this.emit(EVENTS.CHANGE_WEAPON);
+      if (recoil) this.camera.setRecoil(recoil);
+      if (sound) this.emitSound(sound);
+      if (flash) this.parent.addFlashLight(flash);
+      if (success) this.emit(EVENTS.USE_WEAPON);
     }
   }
 
   /**
-   * Enable weapon changing.
+   * Release the current weapon.
    */
-  enableWeaponChange() {
-    this.isWeaponChangeEnabled = true;
+  releaseWeapon() {
+    this.weapon?.setAiming();
+    this.emit(EVENTS.RELEASE_WEAPON);
   }
 
   /**
-   * Disable weapon changing.
+   * Cycle to next weapon.
+   * @param  {Number} index The index of the weapon to cycle to.
    */
-  disableWeaponChange() {
-    this.isWeaponChangeEnabled = false;
+  cycleWeapon(index) {
+    const currentIndex = this.weaponIndex;
+
+    if (index < 0) {
+      for (let i = 1; i < this.weapons.length; i++) {
+        let nextIndex = (currentIndex + i) % this.weapons.length;
+
+        // Skip boot, since it is a secondary attack.
+        if (nextIndex === WEAPON_INDICES.SECONDARY) {
+          nextIndex = 1;
+        }
+
+        const weapon = this.weapons[nextIndex];
+
+        if (weapon.equiped) {
+          this.selectWeapon(nextIndex);
+          break;
+        }
+      }
+    } else {
+      for (let i = this.weapons.length - 1; i > 0; i--) {
+        let nextIndex = (currentIndex + i) % this.weapons.length;
+
+        // Skip boot, since it is a secondary attack.
+        if (nextIndex === 0) {
+          nextIndex = this.weapons.length - 1;
+        }
+
+        const weapon = this.weapons[nextIndex];
+
+        if (weapon.equiped) {
+          this.selectWeapon(nextIndex);
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Select the next weapon to use.
+   * @param  {String} type The type of weapon to use.
+   */
+  selectWeapon(index, { silent = false } = {}) {
+    if (this.weaponIndex !== index && this.hand.canChangeWeapon()) {
+      const weapon = this.weapons[index];
+
+      if (!weapon || weapon.equiped) {
+        this.previousWeaponIndex = this.weaponIndex;
+        this.weaponIndex = index;
+        this.releaseWeapon();
+        this.hand.setUnarming();
+
+        this.weapon = weapon;
+
+        if (weapon && !silent) {
+          this.emitSound(weapon.sounds.equip);
+        }
+      }
+    }
+  }
+
+  /**
+   * Select the previously equiped weapon.
+   */
+  selectPreviousWeapon() {
+    const nextIndex = this.weapons.reduce(
+      (prevIndex, weapon, index) =>
+        prevIndex <= 0 && !weapon.secondary && weapon.equiped ? index : prevIndex,
+      this.previousWeaponIndex,
+    );
+
+    this.selectWeapon(nextIndex, { silent: this.previousWeaponIndex === nextIndex });
   }
 
   /**
@@ -649,8 +671,8 @@ class Player extends AbstractActor {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const pickedUpWeapon = this.weapons[index];
 
-    if (!pickedUpWeapon.isEquiped()) {
-      pickedUpWeapon.setEquiped();
+    if (!pickedUpWeapon.equiped) {
+      pickedUpWeapon.equiped = true;
       this.selectWeapon(index);
 
       return true;
@@ -670,7 +692,7 @@ class Player extends AbstractActor {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const weaponToRefill = this.weapons[index];
 
-    if (weaponToRefill.isEquiped() && weaponToRefill.addAmmo(amount)) {
+    if (weaponToRefill.equiped && weaponToRefill.addAmmo(amount)) {
       this.emitSound(weaponToRefill.sounds.equip);
       return true;
     }
@@ -761,6 +783,7 @@ class Player extends AbstractActor {
     const isStateChanged = this.setState(STATES.DYING);
 
     if (isStateChanged) {
+      this.selectWeapon(WEAPON_INDICES.UNARMED);
       this.emit(EVENTS.DYING);
     }
 
@@ -791,10 +814,13 @@ class Player extends AbstractActor {
     return this.state === STATES.DEAD;
   }
 
+  /**
+   * Destroy the player.
+   */
   destroy() {
     super.destroy();
     Object.values(this.keyCards).forEach(key => key.destroy());
-    this.weapons.forEach(weapon => weapon.destroy());
+    this.hand.destroy();
   }
 
   /**

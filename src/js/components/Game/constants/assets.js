@@ -23,7 +23,7 @@ const SCENE_PATH = `${GAME_PATH}/scenes`;
  * The scene types.
  * @type {Object}
  */
-export const SCENE_PATHS = {
+export const SCENE_TYPES = {
   TITLE: 'title',
   WORLD: 'world',
   CREDITS: 'credits',
@@ -46,6 +46,8 @@ export const ENEMY_TYPES = {
   GUN: 'gunenemy',
   CHASE: 'chaseenemy',
   PROJECTILE: 'projectileenemy',
+  ARACHNACOPTER: 'arachnacopter',
+  ARACHNATRON: 'arachnatron',
 };
 
 /**
@@ -62,27 +64,27 @@ export const ITEM_TYPES = {
 
 export const TITLE_SCENE_ASSETS = {
   sound: {
-    src: `${SCENE_PATH}/${SCENE_PATHS.TITLE}/${SCENE_MUSIC}`,
+    src: `${SCENE_PATH}/${SCENE_TYPES.TITLE}/${SCENE_MUSIC}`,
     loop: false,
   },
-  graphics: `${SCENE_PATH}/${SCENE_PATHS.TITLE}/${SCENE_GRAPHICS}`,
+  graphics: `${SCENE_PATH}/${SCENE_TYPES.TITLE}/${SCENE_GRAPHICS}`,
 };
 
 export const WORLD_SCENE_ASSETS = index => ({
   sound: {
-    src: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_MUSIC}`,
+    src: `${SCENE_PATH}/${SCENE_TYPES.WORLD}/${index}/${SCENE_MUSIC}`,
     loop: true,
   },
-  graphics: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_GRAPHICS}`,
-  data: `${SCENE_PATH}/${SCENE_PATHS.WORLD}/${index}/${SCENE_MAP}`,
+  graphics: `${SCENE_PATH}/${SCENE_TYPES.WORLD}/${index}/${SCENE_GRAPHICS}`,
+  data: `${SCENE_PATH}/${SCENE_TYPES.WORLD}/${index}/${SCENE_MAP}`,
 });
 
 export const CREDITS_SCENE_ASSETS = {
   sound: {
-    src: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_MUSIC}`,
+    src: `${SCENE_PATH}/${SCENE_TYPES.CREDITS}/${SCENE_MUSIC}`,
     loop: false,
   },
-  graphics: `${SCENE_PATH}/${SCENE_PATHS.CREDITS}/${SCENE_GRAPHICS}`,
+  graphics: `${SCENE_PATH}/${SCENE_TYPES.CREDITS}/${SCENE_GRAPHICS}`,
 };
 
 export const GAME_ASSETS = {
@@ -92,4 +94,11 @@ export const GAME_ASSETS = {
   },
   graphics: `${GAME_PATH}/${GAME_FONT.FILE}`,
   data: `${GAME_PATH}/${GAME_DATA}`,
+};
+
+export const WEAPON_TYPES = {
+  MELEE: 0,
+  BULLET: 1,
+  PROJECTILE: 2,
+  SECONDARY: 3,
 };

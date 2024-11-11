@@ -4,8 +4,6 @@ import Projectile from '../../../Projectile';
 
 const DEG_360 = degrees(360);
 
-const LIGHT_MULTIPLIER = 0.125;
-
 /**
  * Class representing a projectile weapon.
  */
@@ -28,7 +26,6 @@ class ProjectileWeapon extends AbstractWeapon {
    * @param  {Number}  options.automatic  Automatic weapon option.
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Boolean} options.secondary  The weapon is secondary.
    */
   constructor({ soundSprite, ...other }) {
     super(other);
@@ -53,7 +50,9 @@ class ProjectileWeapon extends AbstractWeapon {
    * Use the weapon.
    */
   use() {
-    if (this.projectiles.length && this.isUseable() && this.setUsing()) {
+    const result = super.use();
+
+    if (result.success) {
       const { angle, moveAngle, parent } = this.player;
       const damage = this.power * (Math.floor(Math.random() * this.accuracy) + 1);
       const projectile = this.projectiles.shift();
@@ -65,10 +64,18 @@ class ProjectileWeapon extends AbstractWeapon {
 
       parent.add(projectile);
 
-      parent.addFlashLight(this.power * LIGHT_MULTIPLIER);
+      if (this.ammo > 0) {
+        this.ammo -= 1;
+      }
 
-      super.use();
+      return { ...result, recoil: this.recoil, sound: this.sounds.use, flash: this.flash };
     }
+
+    return result;
+  }
+
+  canUse() {
+    return super.canUse() && this.ammo > 0 && !!this.projectiles.length;
   }
 }
 

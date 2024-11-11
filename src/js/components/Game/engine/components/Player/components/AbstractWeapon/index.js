@@ -1,15 +1,9 @@
-import { CELL_SIZE, GOD_MODE } from '@game/constants/config';
-import { EventEmitter } from '@game/core/graphics';
+import { CELL_SIZE } from '@game/constants/config';
 
 const STATES = {
   USING: 'weapon:using',
-  IDLE: 'weapon:idle',
-  DISABLED: 'weapon:disabled',
-};
-
-const EVENTS = {
-  USE: 'weapon:use',
-  STOP: 'weapon:stop',
+  AIMING: 'weapon:aiming',
+  LOADING: 'weapon:loading',
 };
 
 const transformRangeForWorld = (range, offset) =>
@@ -22,7 +16,7 @@ const transformRangeForData = (range, offset) =>
  * Class representing a weapon.
  * @extends {EventEmitter}
  */
-class AbstractWeapon extends EventEmitter {
+class AbstractWeapon {
   /**
    * Creates a weapon.
    * @param  {Player}  options.player     The player.
@@ -41,42 +35,39 @@ class AbstractWeapon extends EventEmitter {
    * @param  {Number}  options.automatic  Automatic weapon option.
    * @param  {Number}  options.type       The type of weapon.
    * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Boolean} options.secondary  The weapon is secondary.
    * @param  {Number}  options.anchorX    The x anchor of the weapon.
    * @param  {Number}  options.anchorY    The y anchor of the weapon.
    * @param  {Number}  options.scale      The scale of the weapon.
    * @param  {Boolean} options.melee      The melee option.
    */
   constructor({
-    player,
-    power,
     accuracy,
-    pellets,
-    equiped,
-    recoil,
-    maxAmmo,
-    range,
-    spread,
-    sounds,
-    name,
     ammo,
-    rate,
-    automatic,
-    type,
-    projectile,
-    secondary,
     anchorX = 0.5,
     anchorY = 1,
+    automatic,
+    equiped,
+    flash = 0,
+    maxAmmo,
+    name,
+    pellets,
+    player,
+    power,
+    projectile,
+    range,
+    rate,
+    recoil = 0,
     scale = 1,
+    sounds,
+    spread,
+    type,
   }) {
-    super();
+    if (this.constructor === AbstractWeapon) {
+      throw new TypeError('Can not construct abstract class.');
+    }
 
     this.anchorX = anchorX;
     this.anchorY = anchorY;
-    this.scale = scale;
-
-    this.name = name;
-    this.sounds = sounds;
     this.power = power;
     this.accuracy = accuracy;
     this.rate = rate;
@@ -84,6 +75,7 @@ class AbstractWeapon extends EventEmitter {
     this.player = player;
     this.automatic = automatic;
     this.recoil = recoil;
+    this.flash = flash;
     this.ammo = ammo !== undefined ? ammo : maxAmmo / 2 || null;
     this.maxAmmo = maxAmmo;
     this.timer = 0;
@@ -94,45 +86,10 @@ class AbstractWeapon extends EventEmitter {
     this.spreadAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
     this.pelletAngle = pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
     this.projectile = projectile;
-    this.secondary = secondary;
-
-    this.setIdle();
-
-    if (this.constructor === AbstractWeapon) {
-      throw new TypeError('Can not construct abstract class.');
-    }
-  }
-
-  /**
-   * Add a callback to the use event.
-   * @param  {Function} callback The callback.
-   */
-  onUse(callback) {
-    this.on(EVENTS.USE, callback);
-  }
-
-  /**
-   * Add a callback to the stop event.
-   * @param  {Function} callback The callback.
-   */
-  onStop(callback) {
-    this.on(EVENTS.STOP, callback);
-  }
-
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onDisabled(callback) {
-    this.on(STATES.DISABLED, callback);
-  }
-
-  /**
-   * Add a callback to the diabled event.
-   * @param  {Function} callback The callback.
-   */
-  onIdle(callback) {
-    this.on(STATES.IDLE, callback);
+    this.state = STATES.AIMING;
+    this.name = name;
+    this.scale = scale;
+    this.sounds = sounds;
   }
 
   /**
@@ -143,18 +100,21 @@ class AbstractWeapon extends EventEmitter {
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.USING:
-        this.setDisabled();
+        this.setLoading();
         break;
-      case STATES.DISABLED:
-        this.timer += elapsedMS;
-
-        if (this.timer >= this.rate) {
-          this.setIdle();
-        }
-
+      case STATES.LOADING:
+        this.updateLoading(delta, elapsedMS);
         break;
       default:
         break;
+    }
+  }
+
+  updateLoading(delta, elapsedMS) {
+    this.timer += elapsedMS;
+
+    if (this.timer >= this.rate) {
+      this.setAiming();
     }
   }
 
@@ -166,15 +126,7 @@ class AbstractWeapon extends EventEmitter {
       throw new TypeError('You have to implement this method.');
     }
 
-    if (this.ammo > 0) {
-      this.ammo -= GOD_MODE ? 0 : 1;
-
-      this.emit(EVENTS.USE, { recoil: this.recoil, sound: this.sounds.use });
-
-      if (this.ammo === 0) {
-        this.stop();
-      }
-    }
+    return { success: this.canUse() && this.setUsing() };
   }
 
   /**
@@ -200,47 +152,16 @@ class AbstractWeapon extends EventEmitter {
    * Can the weapon be used.
    * @return {Boolean}
    */
-  isUseable() {
-    return this.isIdle() && (this.ammo > 0 || this.isMelee());
+  canUse() {
+    return this.isAiming();
   }
 
   /**
-   * Is it a melee weapon.
-   * @return {Boolean}
+   * Set the state to aiming.
+   * @return {Boolean} Has the state changed to aiming.
    */
-  isMelee() {
-    return this.ammo == null;
-  }
-
-  /**
-   * Stop using the weapon.
-   */
-  stop() {
-    this.emit(EVENTS.STOP);
-  }
-
-  /**
-   * Set the weapon  equiped value.
-   * @param {Boolean} value The boolean value.
-   */
-  setEquiped() {
-    this.equiped = true;
-  }
-
-  /**
-   * Is the weapon equiped.
-   * @return {Boolean} The boolean value.
-   */
-  isEquiped() {
-    return this.equiped;
-  }
-
-  /**
-   * Set the state to idle.
-   * @return {Boolean} Has the state changed to idle.
-   */
-  setIdle() {
-    return this.setState(STATES.IDLE);
+  setAiming() {
+    return this.setState(STATES.AIMING);
   }
 
   /**
@@ -252,19 +173,19 @@ class AbstractWeapon extends EventEmitter {
   }
 
   /**
-   * Set the state to disabled.
-   * @return {Boolean} Has the state changed to disabled.
+   * Set the state to loading.
+   * @return {Boolean} Has the state changed to loading.
    */
-  setDisabled() {
-    return this.setState(STATES.DISABLED);
+  setLoading() {
+    return this.setState(STATES.LOADING);
   }
 
   /**
-   * Is the weapon in the idle state.
+   * Is the weapon in the aiming state.
    * @return {Boolean}
    */
-  isIdle() {
-    return this.state === STATES.IDLE;
+  isAiming() {
+    return this.state === STATES.AIMING;
   }
 
   /**
@@ -276,58 +197,11 @@ class AbstractWeapon extends EventEmitter {
   }
 
   /**
-   * Is the weapon in the disabled state.
+   * Is the weapon in the loading state.
    * @return {Boolean}
    */
-  isDisabled() {
-    return this.state === STATES.DISABLED;
-  }
-
-  /**
-   * Get the weapon props.
-   * @return {Object} The weapon props.
-   */
-  get props() {
-    const {
-      name,
-      power,
-      recoil,
-      maxAmmo,
-      range,
-      spread,
-      type,
-      sounds,
-      equiped,
-      rate,
-      accuracy,
-      pellets,
-      player,
-      ammo,
-      projectile,
-      secondary,
-      scale,
-      anchorX,
-    } = this;
-
-    return {
-      name,
-      power,
-      recoil,
-      maxAmmo,
-      type,
-      sounds,
-      equiped,
-      rate,
-      accuracy,
-      ammo,
-      projectile,
-      range: transformRangeForData(range, player.width / 2),
-      spread,
-      pellets: pellets.length,
-      secondary,
-      scale,
-      anchorX,
-    };
+  isLoading() {
+    return this.state === STATES.LOADING;
   }
 
   /**
@@ -345,11 +219,52 @@ class AbstractWeapon extends EventEmitter {
     return false;
   }
 
-  destroy() {
-    this.removeAllListeners();
+  /**
+   * Get the weapon props.
+   * @return {Object} The weapon props.
+   */
+  get props() {
+    const {
+      accuracy,
+      ammo,
+      anchorX,
+      equiped,
+      flash,
+      maxAmmo,
+      name,
+      pellets,
+      player,
+      power,
+      projectile,
+      range,
+      rate,
+      recoil,
+      scale,
+      sounds,
+      spread,
+      type,
+    } = this;
+
+    return {
+      accuracy,
+      ammo,
+      anchorX,
+      equiped,
+      flash,
+      maxAmmo,
+      name,
+      pellets: pellets.length,
+      power,
+      projectile,
+      range: transformRangeForData(range, player.width / 2),
+      rate,
+      recoil,
+      scale,
+      sounds,
+      spread,
+      type,
+    };
   }
 }
-
-export { EVENTS };
 
 export default AbstractWeapon;

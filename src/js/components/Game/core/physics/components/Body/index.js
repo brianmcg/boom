@@ -48,6 +48,12 @@ class Body extends EventEmitter {
     this.anchor = anchor;
   }
 
+  setPos({ x = 0, y = 0, z = 0 }) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+
   /**
    * Remove the body from the parent.
    */
