@@ -1,6 +1,6 @@
-import './styles/index.scss';
-import Game from '@game';
+import App from './App';
+import './style.css';
 
-(async () => {
-  window.game = await new Game();
-})();
+const app = new App();
+document.body.appendChild(app.view);
+app.init();

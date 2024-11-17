@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'DoomRegular';
+  src: url('/src/assets/fonts/DoomRegular.ttf');
+}
+
+body {
+  margin: 0;
+  background-color: black;
+}

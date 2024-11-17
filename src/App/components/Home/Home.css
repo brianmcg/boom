@@ -1,0 +1,62 @@
+.home {
+  background-color: black;
+  color: white;
+  padding: 16px;
+}
+
+.title {
+  display: block;
+  font-size: 40px;
+  line-height: 40px;
+  margin: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  margin: auto;
+
+  thead {
+    text-transform: uppercase;
+    border-bottom: 2px solid #bc0000;
+    border-top: 2px solid #bc0000;
+  }
+
+  td,
+  th {
+    width: 50%;
+    padding: 8px;
+  }
+}
+
+.key {
+  float: left;
+  color: #bc0000;
+}
+
+.action {
+  float: right;
+}
+
+.button {
+  text-transform: uppercase;
+  border: 2px solid #bc0000;
+  color: #bc0000;
+  cursor: pointer;
+  margin: 20px auto;
+  padding: 16px;
+  text-align: center;
+  width: 256px;
+  font-size: 14px;
+  transition:
+    border 500ms,
+    color 500ms;
+
+  &:hover {
+    border: 2px solid white;
+    color: white;
+  }
+}
