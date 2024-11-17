@@ -108,7 +108,7 @@ class World extends PhysicsWorld {
 
     player.onPickUp(item => this.onPlayerPickUp(item));
 
-    player.onExit(() => this.scene.setAddingReviewing());
+    player.onExit(() => this.scene.setAddingReview());
   }
 
   remove(body) {
