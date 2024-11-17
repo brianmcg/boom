@@ -85,10 +85,6 @@ export default class Game {
     this.showScene(SCENE_TYPES.TITLE);
   }
 
-  showCreditsScene() {
-    this.showScene(SCENE_TYPES.CREDITS);
-  }
-
   showWorldScene({ index = LEVEL, ...other } = {}) {
     this.showScene(SCENE_TYPES.WORLD, {
       index,
@@ -96,6 +92,10 @@ export default class Game {
       id: this.data.world.levels[index],
       ...other,
     });
+  }
+
+  showCreditsScene() {
+    this.showScene(SCENE_TYPES.CREDITS);
   }
 
   async showScene(type, { startProps = {}, showLoader, ...other } = {}) {
