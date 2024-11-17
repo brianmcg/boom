@@ -30,9 +30,8 @@ export default class Line extends Graphics {
   update(startPoint = {}, endPoint = {}) {
     this.clear();
 
-    this.lineStyle(this.thickness, this.color);
-
     this.moveTo(startPoint.x, startPoint.y);
     this.lineTo(endPoint.x, endPoint.y);
+    this.stroke({ width: this.thickness, color: this.color });
   }
 }

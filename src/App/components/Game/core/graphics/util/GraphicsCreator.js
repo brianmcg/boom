@@ -7,6 +7,7 @@ import {
 } from 'pixi.js';
 import CreatedTextureCache from './CreatedTextureCache';
 import RectangleSprite from '../components/RectangleSprite';
+import { BLACK } from '@constants/colors';
 
 /**
  * A helper class for creating graphics.
@@ -57,7 +58,7 @@ export default class GraphicsCreator {
     });
 
     const maskForeground = new Sprite(sprite.texture);
-    maskForeground.tint = 0x000000;
+    maskForeground.tint = BLACK;
 
     const renderTexture = RenderTexture.create({
       width: sprite.width,
