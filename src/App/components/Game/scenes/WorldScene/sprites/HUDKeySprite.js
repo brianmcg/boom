@@ -27,6 +27,7 @@ export default class HUDKeySprite extends HUDSprite {
 
     this.hide();
     this.setInactive();
+    this.anchor.set(0.5);
   }
 
   /**

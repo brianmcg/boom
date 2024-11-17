@@ -2,9 +2,7 @@ import { Container } from '@game/core/graphics';
 import { RED, WHITE } from '@constants/colors';
 import { SCREEN } from '@constants/config';
 
-const LABEL_PADDING = 6;
-
-const ICON_PADDING = 4;
+const PADDING = 8;
 
 const MAX_ALPHA = 0.7;
 
@@ -36,14 +34,15 @@ export default class MenuContainer extends Container {
 
     if (labels.length) {
       labels.forEach((label, i) => {
-        label.x = icon.width * this.scaleFactor + ICON_PADDING;
-        label.y = LABEL_PADDING * i + label.height * i;
+        label.y = PADDING * i + label.height * i - label.height;
+        label.anchor.x = 0.5;
         labelContainer.addChild(label);
       });
 
-      labelContainer.x = SCREEN.WIDTH / 2 - labelContainer.width / 2;
-      labelContainer.y = SCREEN.HEIGHT / 2 - labelContainer.height / 2;
+      labelContainer.x = SCREEN.WIDTH / 2;
+      labelContainer.y = SCREEN.HEIGHT / 2;
 
+      icon.anchor.x = 0.5;
       labelContainer.addChild(icon);
     }
 
@@ -88,10 +87,10 @@ export default class MenuContainer extends Container {
 
     labels.forEach((label, i) => {
       label.scale.set(this.scaleFactor);
-      label.x = icon.width * this.scaleFactor + ICON_PADDING;
 
       if (i === this.index) {
         icon.y = label.y;
+        icon.x = label.x - label.width / 2 - PADDING;
       }
     });
   }
