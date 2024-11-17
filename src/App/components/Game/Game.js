@@ -26,7 +26,7 @@ export default class Game {
     this.onExit = onExit;
     this.stats = SHOW_STATS ? new Stats() : null;
 
-    window.app = this.app;
+    if (DEBUG) window.stage = this.app.stage;
   }
 
   async init() {
