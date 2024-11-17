@@ -45,14 +45,50 @@ export default class Game {
     );
   }
 
+  async start() {
+    if (SHOW_STATS) add(document.body, this.stats.view);
+
+    this.onLoading();
+    this.lockPointer();
+
+    const { sound, data } = await Loader.load(GAME_ASSETS);
+
+    this.soundSprite = sound;
+    this.data = data;
+
+    if (DEBUG) {
+      this.showWorldScene();
+    } else {
+      this.showTitleScene();
+    }
+
+    this.app.start();
+  }
+
+  stop() {
+    if (SHOW_STATS) this.stats.view.remove();
+    this.removeScene();
+    this.app.stop();
+  }
+
+  update(ticker) {
+    this.app.stage.children.forEach(child => child.update(ticker));
+  }
+
+  updateWithStats(ticker) {
+    this.stats.begin();
+    this.app.stage.children.forEach(child => child.update(ticker));
+    this.stats.end();
+  }
+
   showTitleScene() {
     this.showScene(SCENE_TYPES.TITLE);
   }
 
-  /**
-   * Show the world scene.
-   * @param  {Number} options.index The index of the scene.
-   */
+  showCreditsScene() {
+    this.showScene(SCENE_TYPES.CREDITS);
+  }
+
   showWorldScene({ index = LEVEL, ...other } = {}) {
     this.showScene(SCENE_TYPES.WORLD, {
       index,
@@ -60,16 +96,6 @@ export default class Game {
       id: this.data.world.levels[index],
       ...other,
     });
-  }
-
-  showCreditsScene() {
-    this.showScene(SCENE_TYPES.CREDITS);
-  }
-
-  removeScene() {
-    this.app.stage.removeChild(this.scene);
-    this.scene.destroy();
-    this.scene = null;
   }
 
   async showScene(type, { startProps = {}, showLoader, ...other } = {}) {
@@ -114,40 +140,10 @@ export default class Game {
     }
   }
 
-  update(ticker) {
-    this.app.stage.children.forEach(child => child.update(ticker));
-  }
-
-  updateWithStats(ticker) {
-    this.stats.begin();
-    this.app.stage.children.forEach(child => child.update(ticker));
-    this.stats.end();
-  }
-
-  async start() {
-    if (SHOW_STATS) add(document.body, this.stats.view);
-
-    this.onLoading();
-    this.lockPointer();
-
-    const { sound, data } = await Loader.load(GAME_ASSETS);
-
-    this.soundSprite = sound;
-    this.data = data;
-
-    if (DEBUG) {
-      this.showWorldScene();
-    } else {
-      this.showTitleScene();
-    }
-
-    this.app.start();
-  }
-
-  stop() {
-    if (SHOW_STATS) this.stats.view.remove();
-    this.removeScene();
-    this.app.stop();
+  removeScene() {
+    this.app.stage.removeChild(this.scene);
+    this.scene.destroy();
+    this.scene = null;
   }
 
   resize(scale) {
@@ -155,13 +151,13 @@ export default class Game {
     this.app.renderer.resize(SCREEN.WIDTH * scale, SCREEN.HEIGHT * scale);
   }
 
+  lockPointer() {
+    this.input.mouse.lockPointer();
+  }
+
   async exit() {
     this.stop();
     await Loader.unload();
     this.onExit();
-  }
-
-  lockPointer() {
-    this.input.mouse.lockPointer();
   }
 }
