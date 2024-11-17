@@ -90,19 +90,19 @@ export default {
     text: 'click to play',
   },
   'scene.menu.continue': {
-    text: 'Continue',
+    text: 'continue',
   },
   'scene.menu.restart': {
-    text: 'Restart',
+    text: 'restart',
   },
   'scene.menu.quit': {
-    text: 'Quit',
+    text: 'quit',
   },
   'scene.prompt.continue': {
-    text: 'Press space to continue',
+    text: 'press space to continue',
   },
   'title.prompt.start': {
-    text: 'Press space to start',
+    text: 'press space to start',
   },
   'world.title.debug': {
     text: 'Debug Level',

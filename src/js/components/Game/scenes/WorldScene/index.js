@@ -239,7 +239,7 @@ class WorldScene extends Scene {
   /**
    * Set the state to adding review.
    */
-  setAddingReviewing() {
+  setAddingReview() {
     if (this.setState(STATES.ADDING_REVIEW)) {
       this.stop();
       this.fadeAmount = 0;
