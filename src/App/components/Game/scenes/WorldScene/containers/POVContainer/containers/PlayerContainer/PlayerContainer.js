@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
-import { GREY } from '@constants/colors';
+import { LIGHT_GREY } from '@constants/colors';
 import HUDContainer from './containers/HUDContainer';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 30;
@@ -54,7 +54,7 @@ export default class PlayerContainer extends Container {
 
     weapon.x = this.weaponCenterX + hand.posX * MAX_MOVE_X;
     weapon.y = this.weaponCenterY + hand.posY * weapon.height;
-    weapon.tint = Math.round(intensity * 255) * GREY;
+    weapon.tint = Math.round(intensity * 255) * LIGHT_GREY;
 
     super.update(ticker);
   }

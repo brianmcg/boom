@@ -2,6 +2,7 @@
   background-color: black;
   color: white;
   padding: 16px;
+  text-transform: uppercase;
 }
 
 .title {
@@ -20,7 +21,6 @@
   margin: auto;
 
   thead {
-    text-transform: uppercase;
     border-bottom: 2px solid #bc0000;
     border-top: 2px solid #bc0000;
   }

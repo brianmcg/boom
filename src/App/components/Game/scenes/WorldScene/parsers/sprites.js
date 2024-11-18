@@ -3,6 +3,18 @@
  */
 
 import {
+  ORANGE,
+  BLUE,
+  PURPLE,
+  GREEN,
+  PINK,
+  GREY,
+  BLACK,
+  WHITE,
+  RED,
+} from '@constants/colors';
+
+import {
   ColorMatrixFilter,
   Container,
   GraphicsCreator,
@@ -11,7 +23,7 @@ import {
   Sprite,
   TextSprite,
 } from '@game/core/graphics';
-import { BLACK, WHITE, RED } from '@constants/colors';
+
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
@@ -921,37 +933,28 @@ const createWorldSprites = ({ world, graphics, renderer }) => {
 };
 
 const createWorldGraphics = ({ world }) => {
-  const orange = 0xfd971f;
-  const blue = 0x66d9ef;
-  const purple = 0xae81ff;
-  // const black = 0x272822;
-  const green = 0xa6e22e;
-  const white = 0xffffff;
-  const pink = 0xf92672;
-  const grey = 0xd3d3d3;
-
   const color = body => {
     if (body.isPlayer) {
-      return green;
+      return GREEN;
     }
 
     if (body.isDoor) {
-      return white;
+      return WHITE;
     }
 
     if (body.isItem) {
-      return blue;
+      return BLUE;
     }
 
     if (body.isEnemy) {
-      return pink;
+      return PINK;
     }
 
     if (body.isDestroyable) {
-      return purple;
+      return PURPLE;
     }
 
-    return grey;
+    return GREY;
   };
 
   const alpha = body => {
@@ -1054,7 +1057,7 @@ const createWorldGraphics = ({ world }) => {
     (enemy.projectiles || []).forEach(projectile => {
       if (projectile.name) {
         projectiles[projectile.id] = GraphicsCreator.createRectangleSprite({
-          color: orange,
+          color: ORANGE,
           width: projectile.shape.width,
           height: projectile.shape.length,
           anchor: 0.5,
@@ -1067,7 +1070,7 @@ const createWorldGraphics = ({ world }) => {
     (weapon.projectiles || []).forEach(projectile => {
       if (projectile.name) {
         projectiles[projectile.id] = GraphicsCreator.createRectangleSprite({
-          color: orange,
+          color: ORANGE,
           width: projectile.shape.width,
           height: projectile.shape.length,
           anchor: 0.5,

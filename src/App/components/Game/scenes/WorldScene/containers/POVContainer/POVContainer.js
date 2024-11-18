@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@constants/config';
-import { GREY, WHITE, BLACK } from '@constants/colors';
+import { LIGHT_GREY, WHITE, BLACK } from '@constants/colors';
 import MapContainer from './containers/MapContainer';
 import InnerContainer from './containers/InnerContainer';
 import OuterContainer from './containers/OuterContainer';
@@ -555,7 +555,7 @@ export default class POVContainer extends Container {
       return BLACK;
     }
 
-    return Math.round(intensity * 255) * GREY;
+    return Math.round(intensity * 255) * LIGHT_GREY;
   }
 
   /**
