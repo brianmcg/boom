@@ -1,6 +1,6 @@
 import { Container, PixelateFilter } from '@game/core/graphics';
 
-const PIXEL_SIZE = 1.5;
+// const PIXEL_SIZE = 1.5;
 
 /**
  * Class representing a background container.
@@ -19,16 +19,16 @@ export default class BackgroundContainer extends Container {
 
     this.pixelateFilter = new PixelateFilter();
 
-    this.filters = [this.pixelateFilter];
+    // this.filters = [this.pixelateFilter];
 
-    this.pixelateFilter.enabled = true;
+    // this.pixelateFilter.enabled = true;
   }
 
-  update(ticker) {
-    super.update(ticker);
+  // update(ticker) {
+  //   super.update(ticker);
 
-    const { parent } = this.parent;
+  //   const { parent } = this.parent;
 
-    this.pixelateFilter.size = PIXEL_SIZE * parent.getStageScale();
-  }
+  //   this.pixelateFilter.size = PIXEL_SIZE * parent.getStageScale();
+  // }
 }

@@ -1,9 +1,9 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
 
-const INTERVAL = 3000;
+const INTERVAL = 4000;
 
-const SPEED = 6;
+const SPEED = 10;
 
 /**
  * Class representing a foreground container.
