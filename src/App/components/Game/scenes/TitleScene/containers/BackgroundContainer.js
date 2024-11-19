@@ -21,7 +21,7 @@ export default class BackgroundContainer extends Container {
 
     this.filters = [this.pixelateFilter];
 
-    this.pixelateFilter.enabled = false;
+    this.pixelateFilter.enabled = true;
   }
 
   update(ticker) {
