@@ -101,6 +101,16 @@ export default class Game {
     this.stats.end();
   }
 
+  pause() {
+    if (!this.scene?.isPaused()) this.music?.pause();
+    if (this.ticker.started) this.ticker.stop();
+  }
+
+  unpause() {
+    if (!this.scene?.isPaused()) this.music.play();
+    if (!this.ticker.started) this.ticker.start();
+  }
+
   showTitleScene() {
     this.showScene(SCENE_TYPES.TITLE);
   }
