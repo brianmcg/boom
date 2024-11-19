@@ -87,7 +87,6 @@ export default class Game {
   }
 
   unpause() {
-    console.log('foobar');
     if (!this.scene?.isPaused()) this.music?.play();
     if (!this.app.ticker.started) this.app.ticker.start();
   }
