@@ -43,6 +43,14 @@ export default class Game {
     this.app.ticker.add(time =>
       SHOW_STATS ? this.updateWithStats(time) : this.update(time)
     );
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.unpause();
+      } else {
+        this.pause();
+      }
+    });
   }
 
   async start() {
@@ -79,6 +87,16 @@ export default class Game {
     this.stats.begin();
     this.app.stage.children.forEach(child => child.update(ticker));
     this.stats.end();
+  }
+
+  pause() {
+    if (!this.scene?.isPaused()) this.music?.pause();
+    if (this.ticker.started) this.ticker.stop();
+  }
+
+  unpause() {
+    if (!this.scene?.isPaused()) this.music.play();
+    if (!this.ticker.started) this.ticker.start();
   }
 
   showTitleScene() {
