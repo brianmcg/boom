@@ -83,12 +83,13 @@ export default class Game {
 
   pause() {
     if (!this.scene?.isPaused()) this.music?.pause();
-    if (this.ticker.started) this.ticker.stop();
+    if (this.app.ticker.started) this.app.ticker.stop();
   }
 
   unpause() {
-    if (!this.scene?.isPaused()) this.music.play();
-    if (!this.ticker.started) this.ticker.start();
+    console.log('foobar');
+    if (!this.scene?.isPaused()) this.music?.play();
+    if (!this.app.ticker.started) this.app.ticker.start();
   }
 
   update(ticker) {
@@ -99,16 +100,6 @@ export default class Game {
     this.stats.begin();
     this.app.stage.children.forEach(child => child.update(ticker));
     this.stats.end();
-  }
-
-  pause() {
-    if (!this.scene?.isPaused()) this.music?.pause();
-    if (this.ticker.started) this.ticker.stop();
-  }
-
-  unpause() {
-    if (!this.scene?.isPaused()) this.music.play();
-    if (!this.ticker.started) this.ticker.start();
   }
 
   showTitleScene() {
