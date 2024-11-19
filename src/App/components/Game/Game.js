@@ -39,10 +39,20 @@ export default class Game {
     this.view = new GameView({ canvas: this.app.canvas });
     this.input = new InputController(this.app.canvas);
     this.app.stage.eventMode = 'static';
+
     this.app.stage.on('click', () => this.lockPointer());
+
     this.app.ticker.add(time =>
       SHOW_STATS ? this.updateWithStats(time) : this.update(time)
     );
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this.unpause();
+      } else {
+        this.pause();
+      }
+    });
   }
 
   async start() {
@@ -69,6 +79,16 @@ export default class Game {
     if (SHOW_STATS) this.stats.view.remove();
     this.removeScene();
     this.app.stop();
+  }
+
+  pause() {
+    if (!this.scene?.isPaused()) this.music?.pause();
+    if (this.ticker.started) this.ticker.stop();
+  }
+
+  unpause() {
+    if (!this.scene?.isPaused()) this.music.play();
+    if (!this.ticker.started) this.ticker.start();
   }
 
   update(ticker) {
