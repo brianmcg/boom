@@ -1,5 +1,5 @@
 import { Sprite } from '@game/core/graphics';
-import { SCREEN } from '@constants/config';
+// import { SCREEN } from '@constants/config';
 
 /**
  * Class representing a logo sprite.
