@@ -8,7 +8,7 @@ export default class InnerContainer extends ParticleContainer {
         position: false,
         rotation: false,
         uvs: true,
-        color: true,
+        color: false,
       },
     });
   }
