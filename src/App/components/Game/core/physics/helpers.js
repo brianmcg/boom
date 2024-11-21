@@ -276,15 +276,13 @@ const castCellRay = ({
   x,
   y,
   angle,
-  world,
   ignoreOverlay = true,
   radius = 0,
+  gridX,
+  gridY,
+  initialCell,
 }) => {
   const encounteredBodies = {};
-  const gridX = Math.floor(x / CELL_SIZE);
-  const gridY = Math.floor(y / CELL_SIZE);
-
-  initialCell = world.getCell(gridX, gridY);
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
@@ -983,16 +981,13 @@ const castRaySection = ({
  * @param  {World}  options.world The world in which the ray is cast.
  * @return {Array}                The raycast results.
  */
-export const castRay = ({ x, y, angle, world, ...other }) => {
+export const castRay = ({ x, y, angle, world, checkInitialCell, ...other }) => {
   let currentRay;
   let previousRay;
 
   const result = [];
   const rayAngle = angle % DEG_90 === 0 ? angle + 0.0001 : angle;
   const startPoint = { x, y };
-  const gridX = Math.floor(x / CELL_SIZE);
-  const gridY = Math.floor(y / CELL_SIZE);
-  const cell = world.getCell(gridX, gridY);
 
   for (let i = 0; i < WALL_LAYERS; i++) {
     previousRay = result[i - 1];
@@ -1018,9 +1013,25 @@ export const castRay = ({ x, y, angle, world, ...other }) => {
         angle: rayAngle,
       });
 
-      currentRay =
-        ((cell.blocking || cell.overlay) && castCellRay(options)) ||
-        castRaySection(options);
+      if (checkInitialCell) {
+        const gridX = Math.floor(x / CELL_SIZE);
+        const gridY = Math.floor(y / CELL_SIZE);
+        const initialCell = world.getCell(gridX, gridY);
+
+        if (initialCell.offset.x || initialCell.offset.y) {
+          currentRay = castCellRay(
+            Object.assign(options, {
+              initialCell,
+              gridX,
+              gridY,
+            })
+          );
+        }
+      }
+
+      if (!currentRay) {
+        currentRay = castRaySection(options);
+      }
     }
 
     result.push(currentRay);

@@ -134,6 +134,7 @@ export default class POVContainer extends Container {
         world,
         radius,
         ignoreOverlay: false,
+        checkInitialCell: true,
       });
 
       for (let i = 0, m = raySections.length; i < m; i++) {
@@ -154,6 +155,7 @@ export default class POVContainer extends Container {
             world,
             radius,
             elavation: sideHeight,
+            checkInitialCell: true,
             ignoreOverlay: player.cell.isElevator || !(isDoor && !overlay),
           });
 
@@ -170,6 +172,7 @@ export default class POVContainer extends Container {
             angle,
             world,
             radius,
+            checkInitialCell: true,
             ignoreOverlay: true,
           });
 
