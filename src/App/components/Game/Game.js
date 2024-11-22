@@ -1,6 +1,5 @@
 import { GAME_ASSETS, SCENE_TYPES } from '@constants/assets';
-import { SHOW_STATS, DEBUG } from '@constants/config';
-import { add } from '@util/dom';
+import { DEBUG } from '@constants/config';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
 import { SCREEN, LEVEL } from '@constants/config';
@@ -8,7 +7,6 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
-import Stats from './util/Stats';
 import GameView from './GameView';
 import './Game.css';
 
@@ -19,13 +17,13 @@ const SCENES = {
 };
 
 export default class Game {
-  constructor({ onLoading, onReady, onExit }) {
+  constructor({ stats, onLoading, onReady, onExit }) {
     this.app = new Application();
     this.onLoading = onLoading;
     this.onReady = onReady;
     this.onExit = onExit;
+    this.stats = stats;
 
-    if (SHOW_STATS) this.stats = new Stats();
     if (DEBUG) window.stage = this.app.stage;
   }
 
@@ -43,7 +41,7 @@ export default class Game {
     this.app.stage.on('click', () => this.lockPointer());
 
     this.app.ticker.add(time =>
-      SHOW_STATS ? this.updateWithStats(time) : this.update(time)
+      this.stats ? this.updateWithStats(time) : this.update(time)
     );
 
     document.addEventListener('visibilitychange', () => {
@@ -56,8 +54,6 @@ export default class Game {
   }
 
   async start() {
-    if (SHOW_STATS) add(document.body, this.stats.view);
-
     this.onLoading();
     this.lockPointer();
 
@@ -76,7 +72,6 @@ export default class Game {
   }
 
   stop() {
-    if (SHOW_STATS) this.stats.view.remove();
     this.removeScene();
     this.app.stop();
   }

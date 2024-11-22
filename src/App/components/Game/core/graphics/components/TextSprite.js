@@ -56,18 +56,4 @@ export default class TextSprite extends BitmapText {
   destroy(options = {}) {
     super.destroy({ ...options, texture: true });
   }
-
-  /**
-   * Set the sprite state
-   * @param {String} state The state to set.
-   */
-  setState(state) {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
-  }
 }

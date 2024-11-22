@@ -43,6 +43,10 @@ export default class MessageSprite extends TextSprite {
     this.setGrowing();
   }
 
+  fade(value) {
+    this.scale.set((1 - value) * this.scaleAmount);
+  }
+
   /**
    * Add a callback for the on complete event.
    * @param  {Function} callback The callback function.
@@ -153,5 +157,19 @@ export default class MessageSprite extends TextSprite {
     }
 
     return isStateChanged;
+  }
+
+  /**
+   * Set the sprite state
+   * @param {String} state The state to set.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 }

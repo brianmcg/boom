@@ -1,7 +1,9 @@
 import Home from './components/Home';
 import Game from './components/Game';
 import Spinner from './components/Spinner';
+import Stats from './components/Stats';
 import AppView from './AppView';
+import { SHOW_STATS } from '@constants/config';
 import { scale, add } from '@util/dom';
 import './App.css';
 
@@ -15,7 +17,10 @@ export default class App {
       onClickStart: this.onGameStart,
     });
 
+    this.stats = SHOW_STATS ? new Stats() : null;
+
     this.game = new Game({
+      stats: this.stats,
       onLoading: this.onGameLoading,
       onReady: this.onGameReady,
       onExit: this.onGameExit,
@@ -43,7 +48,11 @@ export default class App {
 
   onGameStart = () => {
     this.home.view.remove();
+
     add(this.view, this.game.view);
+
+    if (SHOW_STATS) add(this.view, this.stats.view);
+
     this.game.start();
   };
 
@@ -57,6 +66,7 @@ export default class App {
 
   onGameExit = () => {
     this.game.view.remove();
+    this.stats?.view.remove();
     add(this.view, this.home.view);
   };
 }
