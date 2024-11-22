@@ -1,5 +1,5 @@
 import { Sprite } from '@game/core/graphics';
-// import { SCREEN } from '@constants/config';
+import { SCREEN } from '@constants/config';
 
 /**
  * Class representing a logo sprite.
@@ -12,7 +12,7 @@ export default class LogoSprite extends Sprite {
   constructor(texture) {
     super(texture);
 
-    this.maxScale = 1; // SCREEN.HEIGHT / this.height / 2;
+    this.maxScale = (SCREEN.HEIGHT * 0.6) / this.height;
     this.anchor.set(0.5);
     this.scale.set(this.maxScale);
   }

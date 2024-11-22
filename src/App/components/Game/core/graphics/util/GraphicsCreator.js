@@ -39,7 +39,7 @@ export default class GraphicsCreator {
   /**
    * Create a rectangle sprite.
    * @param  {Object}           options   The base texture.
-   * @return {RectangleSprite}            The created rectangle sprite..
+   * @return {RectangleSprite}            The created rectangle sprite.
    */
   static createRectangleSprite(options) {
     const sprite = new RectangleSprite(options);
@@ -47,22 +47,22 @@ export default class GraphicsCreator {
     return sprite;
   }
 
-  static createMaskTexture({ renderer, sprite }) {
+  static createMaskTexture({ renderer, texture }) {
     const filter = new ColorMatrixFilter();
     const maskContainer = new Container();
 
     const maskBackground = new Sprite({
       texture: Texture.WHITE,
-      width: sprite.width,
-      height: sprite.height,
+      width: texture.width,
+      height: texture.height,
     });
 
-    const maskForeground = new Sprite(sprite.texture);
+    const maskForeground = new Sprite(texture);
     maskForeground.tint = BLACK;
 
     const renderTexture = RenderTexture.create({
-      width: sprite.width,
-      height: sprite.height,
+      width: texture.frame.width,
+      height: texture.frame.height,
     });
 
     maskContainer.addChild(maskBackground);

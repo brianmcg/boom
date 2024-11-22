@@ -24,8 +24,9 @@ export const parse = ({ graphics, renderer }) => {
 
   const maskTexture = GraphicsCreator.createMaskTexture({
     renderer,
-    sprite: logoSprite,
+    texture: logo,
   });
+
   const maskSprite = new LogoSprite(maskTexture);
 
   return {
