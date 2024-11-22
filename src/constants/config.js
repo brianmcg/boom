@@ -103,22 +103,31 @@ export const MOUSE_SENSITIVITY = 0.00125;
 export const WALL_LAYERS = 3;
 
 /**
+ * The screen width.
+ * @type {Object}
+ */
+export const WIDTH = 16;
+
+/**
+ * The screen height.
+ * @type {Object}
+ */
+export const HEIGHT = 9;
+
+/**
+ * The screen resolution.
+ * @type {Object}
+ */
+export const RESOLUTION = 25;
+
+/**
  * The screen dimensions.
  * @type {Object}
  */
-// export const SCREEN = { WIDTH: 210, HEIGHT: 90 };
-// export const SCREEN = { WIDTH: 300, HEIGHT: 128 };
-// export const SCREEN = { WIDTH: 315, HEIGHT: 135 };
-export const SCREEN = { WIDTH: 320, HEIGHT: 180 };
-// export const SCREEN = { WIDTH: 320, HEIGHT: 200 };
-// export const SCREEN = { WIDTH: 336, HEIGHT: 144 };
-// export const SCREEN = { WIDTH: 384, HEIGHT: 216 };
-// export const SCREEN = { WIDTH: 400, HEIGHT: 225 };
-// export const SCREEN = { WIDTH: 420, HEIGHT: 180 };
-// export const SCREEN = { WIDTH: 480, HEIGHT: 270 };
-// export const SCREEN = { WIDTH: 512, HEIGHT: 200 };
-// export const SCREEN = { WIDTH: 525, HEIGHT: 225 };
-// export const SCREEN = { WIDTH: 640, HEIGHT: 274 };
+export const SCREEN = {
+  WIDTH: WIDTH * RESOLUTION,
+  HEIGHT: HEIGHT * RESOLUTION,
+};
 
 /**
  * The default language to use.
