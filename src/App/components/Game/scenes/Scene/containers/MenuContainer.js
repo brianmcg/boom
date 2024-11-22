@@ -2,7 +2,7 @@ import { Container } from '@game/core/graphics';
 import { RED, WHITE } from '@constants/colors';
 import { SCREEN } from '@constants/config';
 
-const PADDING = 8;
+const PADDING = 10;
 
 const MAX_ALPHA = 0.7;
 
