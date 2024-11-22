@@ -24,8 +24,8 @@ export default class Game {
     this.onLoading = onLoading;
     this.onReady = onReady;
     this.onExit = onExit;
-    this.stats = SHOW_STATS ? new Stats() : null;
 
+    if (SHOW_STATS) this.stats = new Stats();
     if (DEBUG) window.stage = this.app.stage;
   }
 
@@ -47,10 +47,10 @@ export default class Game {
     );
 
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        this.unpause();
-      } else {
+      if (document.hidden) {
         this.pause();
+      } else {
+        this.unpause();
       }
     });
   }
@@ -121,9 +121,7 @@ export default class Game {
   async showScene(type, { startProps = {}, showLoader, ...other } = {}) {
     const Scene = SCENES[type];
 
-    if (showLoader) {
-      this.onLoading();
-    }
+    if (showLoader) this.onLoading();
 
     if (this.scene) {
       const { graphics, sound } = this.scene.assets;
