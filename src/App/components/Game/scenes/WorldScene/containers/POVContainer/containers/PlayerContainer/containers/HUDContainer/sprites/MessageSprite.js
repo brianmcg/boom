@@ -44,7 +44,13 @@ export default class MessageSprite extends TextSprite {
   }
 
   fade(value) {
-    this.scale.set((1 - value) * this.scaleAmount);
+    const scale = (1 - value) * this.scaleAmount;
+
+    this.scale.set(scale);
+
+    if (this.isShrinking() && scale === 0) {
+      this.visible = false;
+    }
   }
 
   /**
@@ -117,6 +123,18 @@ export default class MessageSprite extends TextSprite {
       this.scaleAmount = 0;
       this.setComplete();
     }
+  }
+
+  isShrinking() {
+    return this.state === STATES.SHRINKING;
+  }
+
+  isGrowing() {
+    this.state === STATES.GROWING;
+  }
+
+  isDisplaying() {
+    this.state === STATES.DISPLAYING;
   }
 
   /**
