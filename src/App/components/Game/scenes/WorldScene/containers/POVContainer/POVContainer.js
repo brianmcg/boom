@@ -115,7 +115,7 @@ export default class POVContainer extends Container {
 
     const { x, y, viewAngle, viewPitch, radius } = player;
 
-    const particles = [];
+    const updatedBackgroundSprites = [];
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + viewPitch;
@@ -365,7 +365,7 @@ export default class POVContainer extends Container {
           if (backgroundName) {
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            particles.push(sprite);
+            updatedBackgroundSprites.push(sprite);
           }
         }
       }
@@ -410,7 +410,7 @@ export default class POVContainer extends Container {
 
             sprite.changeTexture(backgroundName, pixelX, pixelY);
             sprite.tint = this.calculateTint(correctedDistance);
-            particles.push(sprite);
+            updatedBackgroundSprites.push(sprite);
           }
         }
       }
@@ -502,8 +502,7 @@ export default class POVContainer extends Container {
       }
     });
 
-    this.backgroundContainer.particleChildren = particles;
-    this.backgroundContainer.update();
+    this.backgroundContainer.update(updatedBackgroundSprites);
 
     super.update(ticker);
   }

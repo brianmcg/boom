@@ -12,4 +12,9 @@ export default class InnerContainer extends ParticleContainer {
       },
     });
   }
+
+  update(particles) {
+    this.particleChildren = particles;
+    super.update();
+  }
 }
