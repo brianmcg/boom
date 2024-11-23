@@ -226,7 +226,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_2"
+                        "spurt": "spurt_1"
                     },
                     "sounds": {
                         "alert": "cacodemon_sighted",
@@ -259,7 +259,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_2"
+                        "spurt": "spurt_1"
                     },
                     "sounds": {
                         "alert": "demon_sighted",
@@ -338,8 +338,8 @@
                         }
                     },
                     "effects": {
-                        "spatter": "spatter_1",
-                        "spurt": "spurt_2"
+                        "spatter": null,
+                        "spurt": null
                     },
                     "sounds": {
                         "alert": "cacodemon_sighted",
@@ -401,7 +401,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_1"
+                        "spurt": "spurt_2"
                     },
                     "sounds": {
                         "alert": "imp_sighted",
@@ -465,7 +465,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_2"
+                        "spurt": "spurt_1"
                     },
                     "sounds": {
                         "alert": "revenant_sighted",
@@ -502,7 +502,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_1"
+                        "spurt": "spurt_2"
                     },
                     "sounds": {
                         "alert": "sergeant_sighted",
@@ -593,7 +593,7 @@
                     },
                     "effects": {
                         "spatter": "spatter_1",
-                        "spurt": "spurt_1"
+                        "spurt": "spurt_2"
                     },
                     "sounds": {
                         "alert": "trooper_sighted",

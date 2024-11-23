@@ -39,7 +39,7 @@ import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 import ProjectileSprite from '../sprites/ProjectileSprite';
 
-const SPURT_SPEED = 0.6;
+const SPURT_SPEED = 0.4;
 
 const TAIL_SPEED = 0.12;
 
@@ -485,6 +485,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
       const explosionSprite = new EffectSprite(spurtTextures, {
         animationSpeed: SPURT_SPEED,
+        rotate: false,
       });
 
       memo[`${id}_${effects.spurt}`] = explosionSprite;
@@ -621,6 +622,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
       playerSpurtTextures,
       {
         animationSpeed: SPURT_SPEED,
+        rotate: false,
       }
     );
   }
