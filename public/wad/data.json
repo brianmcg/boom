@@ -281,7 +281,7 @@
                     "isFloating": true,
                     "stateDurations": {
                         "alert": 10,
-                        "aim": 100,
+                        "aim": 1000,
                         "attack": 700,
                         "hurt": 250
                     },
