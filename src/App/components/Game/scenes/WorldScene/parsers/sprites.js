@@ -39,6 +39,16 @@ import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 import ProjectileSprite from '../sprites/ProjectileSprite';
 
+const SPURT_SPEED = 0.6;
+
+const TAIL_SPEED = 0.12;
+
+const EXPLOSION_SPEED = 0.3;
+
+const SPLASH_SPEED = 0.4;
+
+const IMPACT_SPEED = 0.4;
+
 const createEnemySprite = ({ animations, textures, enemy, floorOffset }) => {
   const textureCollection = Object.keys(animations).reduce(
     (animationMemo, state) => ({
@@ -366,7 +376,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
             );
 
             memo[projectile.id] = new EffectSprite(effectTextures, {
-              animationSpeed: 0.3,
+              animationSpeed: EXPLOSION_SPEED,
             });
           }
 
@@ -380,7 +390,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
             memo[`${projectile.explosion.id}_${explode}`] = new EffectSprite(
               effectTextures,
               {
-                animationSpeed: 0.2,
+                animationSpeed: EXPLOSION_SPEED,
               }
             );
           }
@@ -392,7 +402,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
             projectile.tail.ids.forEach(id => {
               memo[id] = new EffectSprite(effectTextures, {
-                animationSpeed: 0.12,
+                animationSpeed: TAIL_SPEED,
               });
             });
           }
@@ -426,7 +436,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           memo[`${projectile.explosion.id}_${explode}`] = new EffectSprite(
             effectTextures,
             {
-              animationSpeed: 0.2,
+              animationSpeed: EXPLOSION_SPEED,
             }
           );
         }
@@ -438,7 +448,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
           projectile.tail.ids.forEach(id => {
             memo[id] = new EffectSprite(effectTextures, {
-              animationSpeed: 0.12,
+              animationSpeed: TAIL_SPEED,
             });
           });
         }
@@ -474,7 +484,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
       });
 
       const explosionSprite = new EffectSprite(spurtTextures, {
-        animationSpeed: 0.2,
+        animationSpeed: SPURT_SPEED,
       });
 
       memo[`${id}_${effects.spurt}`] = explosionSprite;
@@ -493,7 +503,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
       memo[`${enemy.id}_${enemy.splash}`] = new EffectSprite(splashTextures, {
         rotate: false,
-        animationSpeed: 0.4,
+        animationSpeed: SPLASH_SPEED,
       });
     }
 
@@ -504,7 +514,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
       memo[`${enemy.id}_${enemy.ripple}`] = new EffectSprite(rippleTextures, {
         rotate: false,
-        animationSpeed: 0.4,
+        animationSpeed: SPLASH_SPEED,
       });
     }
 
@@ -523,7 +533,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         memo[`${enemy.explosion.id}_${explode}`] = new EffectSprite(
           effectTextures,
           {
-            animationSpeed: 0.2,
+            animationSpeed: EXPLOSION_SPEED,
           }
         );
       }
@@ -535,7 +545,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
         enemy.tail.ids.forEach(id => {
           memo[id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.12,
+            animationSpeed: TAIL_SPEED,
           });
         });
       }
@@ -555,7 +565,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
       memo[`${object.explosion.id}_${explode}`] = new EffectSprite(
         effectTextures,
         {
-          animationSpeed: 0.4,
+          animationSpeed: EXPLOSION_SPEED,
         }
       );
     }
@@ -574,7 +584,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           );
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
-            animationSpeed: 0.3,
+            animationSpeed: IMPACT_SPEED,
           });
         }
       });
@@ -610,7 +620,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
     playerSpurtSprites[`${id}_${effects.spurt}`] = new EffectSprite(
       playerSpurtTextures,
       {
-        animationSpeed: 0.2,
+        animationSpeed: SPURT_SPEED,
       }
     );
   }

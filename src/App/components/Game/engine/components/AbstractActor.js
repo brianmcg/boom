@@ -1,12 +1,12 @@
-import { degrees } from '@game/core/physics';
+// import { degrees } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import AbstractDestroyableEntity from './AbstractDestroyableEntity';
 
-const DEG_180 = degrees(180);
+// const DEG_180 = degrees(180);
 
-const DEG_360 = degrees(360);
+// const DEG_360 = degrees(360);
 
-const OFFSET = CELL_SIZE * 0.001;
+// const OFFSET = CELL_SIZE * 0.001;
 
 const SPATTER_DISTANCE = Math.sqrt(
   CELL_SIZE * CELL_SIZE + CELL_SIZE * CELL_SIZE
@@ -201,20 +201,20 @@ export default class AbstractActor extends AbstractDestroyableEntity {
    * @param  {Number}  angle        The angle the damage came from.
    */
   hurt(damage, angle) {
-    if (this.health > 0) {
-      const originAngle = (angle + DEG_180) % DEG_360;
-      const sourceId = this.effects.spurt
-        ? `${this.id}_${this.effects.spurt}`
-        : null;
+    // if (this.health > 0) {
+    //   const originAngle = (angle + DEG_180) % DEG_360;
+    //   const sourceId = this.effects.spurt
+    //     ? `${this.id}_${this.effects.spurt}`
+    //     : null;
 
-      if (sourceId) {
-        this.parent.addEffect({
-          x: this.x + Math.cos(originAngle) * (this.width + OFFSET),
-          y: this.y + Math.sin(originAngle) * (this.length + OFFSET),
-          sourceId,
-        });
-      }
-    }
+    //   if (sourceId) {
+    //     this.parent.addEffect({
+    //       x: this.x + Math.cos(originAngle) * (this.width + OFFSET),
+    //       y: this.y + Math.sin(originAngle) * (this.length + OFFSET),
+    //       sourceId,
+    //     });
+    //   }
+    // }
 
     super.hurt(damage, angle);
   }

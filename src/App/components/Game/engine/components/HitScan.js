@@ -128,15 +128,21 @@ export default class HitScan extends Body {
             }
           }
 
-          if (damage) {
-            if (sourceId) {
-              parent.addEffect({
-                x: point.x + Math.cos(originAngle) * OFFSET,
-                y: point.y + Math.sin(originAngle) * OFFSET,
-                sourceId,
-              });
-            }
+          // Handle a body having it's own blast effect
+          const bodySourceId = body.effects?.spurt
+            ? `${body.id}_${body.effects.spurt}`
+            : sourceId;
 
+          if (bodySourceId) {
+            parent.addEffect({
+              x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
+              y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
+              sourceId: bodySourceId,
+              scale: 0.5,
+            });
+          }
+
+          if (damage) {
             if (body.isDestroyable && !(isExplosion && body.isBoss)) {
               body.hit({
                 damage,
@@ -158,6 +164,7 @@ export default class HitScan extends Body {
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,
+          scale: 0.5,
         });
       }
     }

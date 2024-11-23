@@ -74,7 +74,7 @@ export default class DynamicEntity extends DynamicBody {
       this.soundController.update(volume);
     }
 
-    if (this.tail) {
+    if (this.velocity && this.tail) {
       this.tailTimer += elapsedMS;
 
       if (this.tailTimer >= TAIL_INTERVAL) {
