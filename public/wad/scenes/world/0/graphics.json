@@ -2,8 +2,8 @@
     "frames": {
         "0000bc_floors_01": {
             "frame": {
-                "x": 630,
-                "y": 100,
+                "x": 98,
+                "y": 533,
                 "w": 32,
                 "h": 32
             },
@@ -22,8 +22,8 @@
         },
         "0000bc_floors_02": {
             "frame": {
-                "x": 434,
-                "y": 218,
+                "x": 115,
+                "y": 451,
                 "w": 32,
                 "h": 32
             },
@@ -42,8 +42,8 @@
         },
         "ammo": {
             "frame": {
-                "x": 125,
-                "y": 65,
+                "x": 1,
+                "y": 491,
                 "w": 48,
                 "h": 64
             },
@@ -62,8 +62,8 @@
         },
         "bc0000_floors_01": {
             "frame": {
-                "x": 468,
-                "y": 218,
+                "x": 233,
+                "y": 411,
                 "w": 32,
                 "h": 32
             },
@@ -82,8 +82,8 @@
         },
         "bc0000_floors_02": {
             "frame": {
-                "x": 664,
-                "y": 90,
+                "x": 267,
+                "y": 400,
                 "w": 32,
                 "h": 32
             },
@@ -102,8 +102,8 @@
         },
         "blast_1_01": {
             "frame": {
-                "x": 531,
-                "y": 88,
+                "x": 65,
+                "y": 485,
                 "w": 4,
                 "h": 4
             },
@@ -122,8 +122,8 @@
         },
         "blast_1_02": {
             "frame": {
-                "x": 915,
-                "y": 145,
+                "x": 303,
+                "y": 468,
                 "w": 30,
                 "h": 27
             },
@@ -142,8 +142,8 @@
         },
         "blast_1_03": {
             "frame": {
-                "x": 652,
-                "y": 181,
+                "x": 116,
+                "y": 380,
                 "w": 29,
                 "h": 27
             },
@@ -162,8 +162,8 @@
         },
         "blast_1_04": {
             "frame": {
-                "x": 363,
-                "y": 219,
+                "x": 477,
+                "y": 154,
                 "w": 34,
                 "h": 31
             },
@@ -182,8 +182,8 @@
         },
         "blast_1_05": {
             "frame": {
-                "x": 359,
-                "y": 182,
+                "x": 417,
+                "y": 332,
                 "w": 38,
                 "h": 35
             },
@@ -202,8 +202,8 @@
         },
         "blast_1_06": {
             "frame": {
-                "x": 892,
-                "y": 182,
+                "x": 485,
+                "y": 478,
                 "w": 24,
                 "h": 23
             },
@@ -222,8 +222,8 @@
         },
         "blast_2_01": {
             "frame": {
-                "x": 531,
-                "y": 88,
+                "x": 65,
+                "y": 485,
                 "w": 4,
                 "h": 4
             },
@@ -242,8 +242,8 @@
         },
         "blast_2_02": {
             "frame": {
-                "x": 966,
-                "y": 45,
+                "x": 131,
+                "y": 220,
                 "w": 38,
                 "h": 39
             },
@@ -262,8 +262,8 @@
         },
         "blast_2_03": {
             "frame": {
-                "x": 396,
-                "y": 139,
+                "x": 96,
+                "y": 567,
                 "w": 39,
                 "h": 40
             },
@@ -282,8 +282,8 @@
         },
         "blast_2_04": {
             "frame": {
-                "x": 238,
-                "y": 139,
+                "x": 375,
+                "y": 220,
                 "w": 41,
                 "h": 47
             },
@@ -302,8 +302,8 @@
         },
         "blast_2_05": {
             "frame": {
-                "x": 116,
-                "y": 195,
+                "x": 190,
+                "y": 408,
                 "w": 41,
                 "h": 32
             },
@@ -322,8 +322,8 @@
         },
         "blast_2_06": {
             "frame": {
-                "x": 632,
-                "y": 134,
+                "x": 450,
+                "y": 543,
                 "w": 30,
                 "h": 26
             },
@@ -342,8 +342,8 @@
         },
         "blue_torch_01": {
             "frame": {
-                "x": 890,
-                "y": 60,
+                "x": 335,
+                "y": 402,
                 "w": 12,
                 "h": 35
             },
@@ -362,8 +362,8 @@
         },
         "blue_torch_02": {
             "frame": {
-                "x": 836,
-                "y": 93,
+                "x": 335,
+                "y": 439,
                 "w": 12,
                 "h": 35
             },
@@ -382,8 +382,8 @@
         },
         "blue_torch_03": {
             "frame": {
-                "x": 569,
-                "y": 148,
+                "x": 349,
+                "y": 402,
                 "w": 12,
                 "h": 35
             },
@@ -402,8 +402,8 @@
         },
         "blue_torch_04": {
             "frame": {
-                "x": 604,
-                "y": 211,
+                "x": 335,
+                "y": 476,
                 "w": 12,
                 "h": 35
             },
@@ -422,8 +422,8 @@
         },
         "blue_torch_05": {
             "frame": {
-                "x": 618,
-                "y": 211,
+                "x": 160,
+                "y": 565,
                 "w": 12,
                 "h": 35
             },
@@ -442,8 +442,8 @@
         },
         "blue_torch_06": {
             "frame": {
-                "x": 732,
-                "y": 146,
+                "x": 499,
+                "y": 503,
                 "w": 12,
                 "h": 34
             },
@@ -462,8 +462,8 @@
         },
         "blue_torch_07": {
             "frame": {
-                "x": 646,
-                "y": 211,
+                "x": 499,
+                "y": 539,
                 "w": 12,
                 "h": 34
             },
@@ -482,8 +482,8 @@
         },
         "blue_torch_08": {
             "frame": {
-                "x": 632,
-                "y": 211,
+                "x": 485,
+                "y": 503,
                 "w": 12,
                 "h": 35
             },
@@ -502,8 +502,8 @@
         },
         "blue_torch_09": {
             "frame": {
-                "x": 229,
-                "y": 219,
+                "x": 494,
+                "y": 330,
                 "w": 12,
                 "h": 36
             },
@@ -522,8 +522,8 @@
         },
         "blue_torch_10": {
             "frame": {
-                "x": 945,
-                "y": 98,
+                "x": 485,
+                "y": 540,
                 "w": 12,
                 "h": 34
             },
@@ -542,8 +542,8 @@
         },
         "boot_01": {
             "frame": {
-                "x": 522,
-                "y": 1,
+                "x": 447,
+                "y": 51,
                 "w": 64,
                 "h": 47
             },
@@ -562,7 +562,7 @@
         },
         "boot_02": {
             "frame": {
-                "x": 67,
+                "x": 199,
                 "y": 65,
                 "w": 56,
                 "h": 62
@@ -582,8 +582,8 @@
         },
         "ceilings_01": {
             "frame": {
-                "x": 698,
-                "y": 90,
+                "x": 223,
+                "y": 478,
                 "w": 32,
                 "h": 32
             },
@@ -602,8 +602,8 @@
         },
         "ceilings_02": {
             "frame": {
-                "x": 802,
-                "y": 93,
+                "x": 267,
+                "y": 434,
                 "w": 32,
                 "h": 32
             },
@@ -622,8 +622,8 @@
         },
         "chaingun_01": {
             "frame": {
-                "x": 198,
-                "y": 1,
+                "x": 257,
+                "y": 65,
                 "w": 64,
                 "h": 53
             },
@@ -642,7 +642,7 @@
         },
         "chaingun_02": {
             "frame": {
-                "x": 1,
+                "x": 133,
                 "y": 1,
                 "w": 64,
                 "h": 62
@@ -663,7 +663,7 @@
         "chaingun_03": {
             "frame": {
                 "x": 1,
-                "y": 65,
+                "y": 199,
                 "w": 64,
                 "h": 62
             },
@@ -682,18 +682,18 @@
         },
         "explosion_1_01": {
             "frame": {
-                "x": 648,
-                "y": 90,
-                "w": 8,
-                "h": 8
+                "x": 495,
+                "y": 599,
+                "w": 12,
+                "h": 12
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 28,
-                "y": 28,
-                "w": 8,
-                "h": 8
+                "x": 26,
+                "y": 26,
+                "w": 12,
+                "h": 12
             },
             "sourceSize": {
                 "w": 64,
@@ -702,18 +702,18 @@
         },
         "explosion_1_02": {
             "frame": {
-                "x": 613,
-                "y": 132,
-                "w": 12,
-                "h": 12
+                "x": 189,
+                "y": 442,
+                "w": 36,
+                "h": 34
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 26,
-                "y": 26,
-                "w": 12,
-                "h": 12
+                "x": 14,
+                "y": 15,
+                "w": 36,
+                "h": 34
             },
             "sourceSize": {
                 "w": 64,
@@ -722,18 +722,18 @@
         },
         "explosion_1_03": {
             "frame": {
-                "x": 988,
-                "y": 124,
-                "w": 16,
-                "h": 16
+                "x": 385,
+                "y": 116,
+                "w": 44,
+                "h": 43
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 16,
-                "h": 16
+                "x": 10,
+                "y": 10,
+                "w": 44,
+                "h": 43
             },
             "sourceSize": {
                 "w": 64,
@@ -742,18 +742,18 @@
         },
         "explosion_1_04": {
             "frame": {
-                "x": 947,
-                "y": 156,
-                "w": 15,
-                "h": 16
+                "x": 217,
+                "y": 281,
+                "w": 48,
+                "h": 48
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 15,
-                "h": 16
+                "x": 8,
+                "y": 8,
+                "w": 48,
+                "h": 48
             },
             "sourceSize": {
                 "w": 64,
@@ -762,18 +762,18 @@
         },
         "explosion_1_05": {
             "frame": {
-                "x": 855,
-                "y": 227,
-                "w": 15,
-                "h": 16
+                "x": 311,
+                "y": 168,
+                "w": 50,
+                "h": 50
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 15,
-                "h": 16
+                "x": 7,
+                "y": 7,
+                "w": 50,
+                "h": 50
             },
             "sourceSize": {
                 "w": 64,
@@ -782,18 +782,18 @@
         },
         "explosion_1_06": {
             "frame": {
-                "x": 872,
-                "y": 236,
-                "w": 16,
-                "h": 15
+                "x": 363,
+                "y": 168,
+                "w": 50,
+                "h": 50
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 16,
-                "h": 15
+                "x": 7,
+                "y": 7,
+                "w": 50,
+                "h": 50
             },
             "sourceSize": {
                 "w": 64,
@@ -802,18 +802,58 @@
         },
         "explosion_1_07": {
             "frame": {
-                "x": 182,
-                "y": 124,
-                "w": 14,
-                "h": 12
+                "x": 325,
+                "y": 220,
+                "w": 48,
+                "h": 47
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 25,
-                "y": 26,
-                "w": 14,
-                "h": 12
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosion_1_08": {
+            "frame": {
+                "x": 66,
+                "y": 338,
+                "w": 48,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosion_1_09": {
+            "frame": {
+                "x": 65,
+                "y": 387,
+                "w": 48,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
             },
             "sourceSize": {
                 "w": 64,
@@ -822,18 +862,18 @@
         },
         "explosion_2_01": {
             "frame": {
-                "x": 646,
-                "y": 247,
-                "w": 8,
-                "h": 8
+                "x": 495,
+                "y": 599,
+                "w": 12,
+                "h": 12
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 28,
-                "y": 28,
-                "w": 8,
-                "h": 8
+                "x": 26,
+                "y": 26,
+                "w": 12,
+                "h": 12
             },
             "sourceSize": {
                 "w": 64,
@@ -842,18 +882,18 @@
         },
         "explosion_2_02": {
             "frame": {
-                "x": 828,
-                "y": 242,
-                "w": 12,
-                "h": 12
+                "x": 185,
+                "y": 478,
+                "w": 36,
+                "h": 34
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 26,
-                "y": 26,
-                "w": 12,
-                "h": 12
+                "x": 14,
+                "y": 15,
+                "w": 36,
+                "h": 34
             },
             "sourceSize": {
                 "w": 64,
@@ -862,18 +902,18 @@
         },
         "explosion_2_03": {
             "frame": {
-                "x": 988,
-                "y": 142,
-                "w": 16,
-                "h": 16
+                "x": 431,
+                "y": 116,
+                "w": 44,
+                "h": 43
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 16,
-                "h": 16
+                "x": 10,
+                "y": 10,
+                "w": 44,
+                "h": 43
             },
             "sourceSize": {
                 "w": 64,
@@ -882,18 +922,18 @@
         },
         "explosion_2_04": {
             "frame": {
-                "x": 948,
-                "y": 216,
-                "w": 15,
-                "h": 16
+                "x": 275,
+                "y": 229,
+                "w": 48,
+                "h": 48
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 15,
-                "h": 16
+                "x": 8,
+                "y": 8,
+                "w": 48,
+                "h": 48
             },
             "sourceSize": {
                 "w": 64,
@@ -902,18 +942,18 @@
         },
         "explosion_2_05": {
             "frame": {
-                "x": 965,
-                "y": 215,
-                "w": 15,
-                "h": 16
+                "x": 171,
+                "y": 195,
+                "w": 50,
+                "h": 50
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 15,
-                "h": 16
+                "x": 7,
+                "y": 7,
+                "w": 50,
+                "h": 50
             },
             "sourceSize": {
                 "w": 64,
@@ -922,18 +962,18 @@
         },
         "explosion_2_06": {
             "frame": {
-                "x": 945,
-                "y": 234,
-                "w": 16,
-                "h": 15
+                "x": 223,
+                "y": 229,
+                "w": 50,
+                "h": 50
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 24,
-                "y": 24,
-                "w": 16,
-                "h": 15
+                "x": 7,
+                "y": 7,
+                "w": 50,
+                "h": 50
             },
             "sourceSize": {
                 "w": 64,
@@ -942,18 +982,58 @@
         },
         "explosion_2_07": {
             "frame": {
-                "x": 832,
-                "y": 53,
-                "w": 14,
-                "h": 12
+                "x": 65,
+                "y": 436,
+                "w": 48,
+                "h": 47
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 25,
-                "y": 26,
-                "w": 14,
-                "h": 12
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosion_2_08": {
+            "frame": {
+                "x": 66,
+                "y": 338,
+                "w": 48,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosion_2_09": {
+            "frame": {
+                "x": 65,
+                "y": 387,
+                "w": 48,
+                "h": 47
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 8,
+                "y": 7,
+                "w": 48,
+                "h": 47
             },
             "sourceSize": {
                 "w": 64,
@@ -962,18 +1042,18 @@
         },
         "explosion_3_01": {
             "frame": {
-                "x": 918,
-                "y": 174,
-                "w": 28,
-                "h": 26
+                "x": 193,
+                "y": 187,
+                "w": 6,
+                "h": 6
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 18,
-                "y": 19,
-                "w": 28,
-                "h": 26
+                "x": 29,
+                "y": 29,
+                "w": 6,
+                "h": 6
             },
             "sourceSize": {
                 "w": 64,
@@ -982,18 +1062,18 @@
         },
         "explosion_3_02": {
             "frame": {
-                "x": 856,
-                "y": 60,
+                "x": 301,
+                "y": 436,
                 "w": 32,
-                "h": 32
+                "h": 30
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
                 "x": 16,
-                "y": 16,
+                "y": 17,
                 "w": 32,
-                "h": 32
+                "h": 30
             },
             "sourceSize": {
                 "w": 64,
@@ -1002,18 +1082,18 @@
         },
         "explosion_3_03": {
             "frame": {
-                "x": 279,
-                "y": 210,
-                "w": 34,
-                "h": 33
+                "x": 149,
+                "y": 436,
+                "w": 38,
+                "h": 36
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 15,
-                "w": 34,
-                "h": 33
+                "x": 13,
+                "y": 14,
+                "w": 38,
+                "h": 36
             },
             "sourceSize": {
                 "w": 64,
@@ -1022,18 +1102,18 @@
         },
         "explosion_3_04": {
             "frame": {
-                "x": 576,
-                "y": 64,
-                "w": 34,
-                "h": 34
+                "x": 418,
+                "y": 220,
+                "w": 44,
+                "h": 40
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 15,
-                "w": 34,
-                "h": 34
+                "x": 10,
+                "y": 12,
+                "w": 44,
+                "h": 40
             },
             "sourceSize": {
                 "w": 64,
@@ -1042,18 +1122,18 @@
         },
         "explosion_3_05": {
             "frame": {
-                "x": 399,
-                "y": 181,
-                "w": 34,
-                "h": 35
+                "x": 315,
+                "y": 284,
+                "w": 46,
+                "h": 44
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 14,
-                "w": 34,
-                "h": 35
+                "x": 9,
+                "y": 10,
+                "w": 46,
+                "h": 44
             },
             "sourceSize": {
                 "w": 64,
@@ -1062,18 +1142,18 @@
         },
         "explosion_3_06": {
             "frame": {
-                "x": 612,
-                "y": 64,
-                "w": 34,
-                "h": 34
+                "x": 74,
+                "y": 485,
+                "w": 46,
+                "h": 46
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 15,
-                "w": 34,
-                "h": 34
+                "x": 9,
+                "y": 9,
+                "w": 46,
+                "h": 46
             },
             "sourceSize": {
                 "w": 64,
@@ -1082,18 +1162,18 @@
         },
         "explosion_3_07": {
             "frame": {
-                "x": 243,
-                "y": 218,
-                "w": 34,
-                "h": 34
+                "x": 267,
+                "y": 281,
+                "w": 46,
+                "h": 46
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 15,
-                "w": 34,
-                "h": 34
+                "x": 9,
+                "y": 9,
+                "w": 46,
+                "h": 46
             },
             "sourceSize": {
                 "w": 64,
@@ -1102,18 +1182,38 @@
         },
         "explosion_3_08": {
             "frame": {
-                "x": 746,
-                "y": 124,
-                "w": 19,
-                "h": 33
+                "x": 363,
+                "y": 284,
+                "w": 44,
+                "h": 46
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 22,
-                "y": 15,
-                "w": 19,
-                "h": 33
+                "x": 10,
+                "y": 9,
+                "w": 44,
+                "h": 46
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosion_3_09": {
+            "frame": {
+                "x": 409,
+                "y": 284,
+                "w": 44,
+                "h": 46
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 10,
+                "y": 9,
+                "w": 44,
+                "h": 46
             },
             "sourceSize": {
                 "w": 64,
@@ -1122,18 +1222,18 @@
         },
         "explosion_4_01": {
             "frame": {
-                "x": 617,
-                "y": 146,
-                "w": 12,
-                "h": 12
+                "x": 465,
+                "y": 428,
+                "w": 10,
+                "h": 10
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 26,
-                "y": 26,
-                "w": 12,
-                "h": 12
+                "x": 27,
+                "y": 27,
+                "w": 10,
+                "h": 10
             },
             "sourceSize": {
                 "w": 64,
@@ -1142,18 +1242,18 @@
         },
         "explosion_4_02": {
             "frame": {
-                "x": 595,
-                "y": 181,
-                "w": 25,
-                "h": 28
+                "x": 433,
+                "y": 408,
+                "w": 30,
+                "h": 30
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 19,
-                "y": 18,
-                "w": 25,
-                "h": 28
+                "x": 17,
+                "y": 17,
+                "w": 30,
+                "h": 30
             },
             "sourceSize": {
                 "w": 64,
@@ -1162,18 +1262,18 @@
         },
         "explosion_4_03": {
             "frame": {
-                "x": 437,
-                "y": 141,
-                "w": 34,
-                "h": 37
+                "x": 323,
+                "y": 60,
+                "w": 54,
+                "h": 54
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 15,
-                "y": 13,
-                "w": 34,
-                "h": 37
+                "x": 5,
+                "y": 5,
+                "w": 54,
+                "h": 54
             },
             "sourceSize": {
                 "w": 64,
@@ -1182,18 +1282,18 @@
         },
         "explosion_4_04": {
             "frame": {
-                "x": 966,
+                "x": 265,
                 "y": 1,
-                "w": 38,
-                "h": 42
+                "w": 56,
+                "h": 62
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 13,
-                "y": 11,
-                "w": 38,
-                "h": 42
+                "x": 4,
+                "y": 1,
+                "w": 56,
+                "h": 62
             },
             "sourceSize": {
                 "w": 64,
@@ -1202,18 +1302,18 @@
         },
         "explosion_4_05": {
             "frame": {
-                "x": 314,
-                "y": 55,
-                "w": 43,
-                "h": 41
+                "x": 67,
+                "y": 197,
+                "w": 62,
+                "h": 62
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 10,
-                "y": 11,
-                "w": 43,
-                "h": 41
+                "x": 1,
+                "y": 1,
+                "w": 62,
+                "h": 62
             },
             "sourceSize": {
                 "w": 64,
@@ -1222,18 +1322,18 @@
         },
         "explosion_4_06": {
             "frame": {
-                "x": 409,
-                "y": 54,
-                "w": 47,
-                "h": 43
+                "x": 67,
+                "y": 133,
+                "w": 64,
+                "h": 62
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 8,
-                "y": 10,
-                "w": 47,
-                "h": 43
+                "x": 0,
+                "y": 1,
+                "w": 64,
+                "h": 62
             },
             "sourceSize": {
                 "w": 64,
@@ -1242,18 +1342,18 @@
         },
         "explosion_4_07": {
             "frame": {
-                "x": 259,
-                "y": 56,
-                "w": 53,
-                "h": 40
+                "x": 133,
+                "y": 65,
+                "w": 64,
+                "h": 62
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 5,
-                "y": 12,
-                "w": 53,
-                "h": 40
+                "x": 0,
+                "y": 1,
+                "w": 64,
+                "h": 62
             },
             "sourceSize": {
                 "w": 64,
@@ -1262,18 +1362,18 @@
         },
         "explosion_4_08": {
             "frame": {
-                "x": 61,
-                "y": 187,
-                "w": 53,
-                "h": 36
+                "x": 199,
+                "y": 1,
+                "w": 64,
+                "h": 62
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 5,
-                "y": 14,
-                "w": 53,
-                "h": 36
+                "x": 0,
+                "y": 1,
+                "w": 64,
+                "h": 62
             },
             "sourceSize": {
                 "w": 64,
@@ -1282,18 +1382,18 @@
         },
         "explosion_4_09": {
             "frame": {
-                "x": 258,
-                "y": 98,
-                "w": 45,
-                "h": 39
+                "x": 1,
+                "y": 1,
+                "w": 64,
+                "h": 64
             },
             "rotated": false,
-            "trimmed": true,
+            "trimmed": false,
             "spriteSourceSize": {
-                "x": 9,
-                "y": 12,
-                "w": 45,
-                "h": 39
+                "x": 0,
+                "y": 0,
+                "w": 64,
+                "h": 64
             },
             "sourceSize": {
                 "w": 64,
@@ -1302,18 +1402,18 @@
         },
         "explosion_4_10": {
             "frame": {
-                "x": 396,
-                "y": 99,
-                "w": 43,
-                "h": 38
+                "x": 1,
+                "y": 67,
+                "w": 64,
+                "h": 64
             },
             "rotated": false,
-            "trimmed": true,
+            "trimmed": false,
             "spriteSourceSize": {
-                "x": 10,
-                "y": 13,
-                "w": 43,
-                "h": 38
+                "x": 0,
+                "y": 0,
+                "w": 64,
+                "h": 64
             },
             "sourceSize": {
                 "w": 64,
@@ -1322,18 +1422,18 @@
         },
         "explosion_4_11": {
             "frame": {
-                "x": 305,
-                "y": 98,
-                "w": 43,
-                "h": 39
+                "x": 67,
+                "y": 1,
+                "w": 64,
+                "h": 64
             },
             "rotated": false,
-            "trimmed": true,
+            "trimmed": false,
             "spriteSourceSize": {
-                "x": 10,
-                "y": 12,
-                "w": 43,
-                "h": 39
+                "x": 0,
+                "y": 0,
+                "w": 64,
+                "h": 64
             },
             "sourceSize": {
                 "w": 64,
@@ -1342,18 +1442,18 @@
         },
         "explosion_4_12": {
             "frame": {
-                "x": 537,
-                "y": 88,
-                "w": 37,
-                "h": 37
+                "x": 1,
+                "y": 133,
+                "w": 64,
+                "h": 64
             },
             "rotated": false,
-            "trimmed": true,
+            "trimmed": false,
             "spriteSourceSize": {
-                "x": 13,
-                "y": 13,
-                "w": 37,
-                "h": 37
+                "x": 0,
+                "y": 0,
+                "w": 64,
+                "h": 64
             },
             "sourceSize": {
                 "w": 64,
@@ -1362,78 +1462,18 @@
         },
         "explosion_4_13": {
             "frame": {
-                "x": 819,
-                "y": 70,
-                "w": 35,
-                "h": 21
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 14,
-                "y": 21,
-                "w": 35,
-                "h": 21
-            },
-            "sourceSize": {
+                "x": 67,
+                "y": 67,
                 "w": 64,
                 "h": 64
-            }
-        },
-        "explosion_4_14": {
-            "frame": {
-                "x": 892,
-                "y": 159,
-                "w": 21,
-                "h": 21
             },
             "rotated": false,
-            "trimmed": true,
+            "trimmed": false,
             "spriteSourceSize": {
-                "x": 21,
-                "y": 21,
-                "w": 21,
-                "h": 21
-            },
-            "sourceSize": {
+                "x": 0,
+                "y": 0,
                 "w": 64,
                 "h": 64
-            }
-        },
-        "explosion_4_15": {
-            "frame": {
-                "x": 788,
-                "y": 225,
-                "w": 20,
-                "h": 18
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 22,
-                "y": 23,
-                "w": 20,
-                "h": 18
-            },
-            "sourceSize": {
-                "w": 64,
-                "h": 64
-            }
-        },
-        "explosion_4_16": {
-            "frame": {
-                "x": 485,
-                "y": 180,
-                "w": 19,
-                "h": 15
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 22,
-                "y": 24,
-                "w": 19,
-                "h": 15
             },
             "sourceSize": {
                 "w": 64,
@@ -1442,8 +1482,8 @@
         },
         "explosive_barrel_01": {
             "frame": {
-                "x": 163,
-                "y": 219,
+                "x": 152,
+                "y": 474,
                 "w": 31,
                 "h": 36
             },
@@ -1462,8 +1502,8 @@
         },
         "explosive_barrel_02": {
             "frame": {
-                "x": 196,
-                "y": 219,
+                "x": 132,
+                "y": 527,
                 "w": 31,
                 "h": 36
             },
@@ -1482,17 +1522,17 @@
         },
         "explosive_barrel_03": {
             "frame": {
-                "x": 531,
-                "y": 50,
-                "w": 43,
+                "x": 477,
+                "y": 116,
+                "w": 34,
                 "h": 36
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 10,
+                "x": 13,
                 "y": 28,
-                "w": 43,
+                "w": 34,
                 "h": 36
             },
             "sourceSize": {
@@ -1502,18 +1542,18 @@
         },
         "explosive_barrel_04": {
             "frame": {
-                "x": 359,
-                "y": 54,
-                "w": 48,
-                "h": 42
+                "x": 148,
+                "y": 397,
+                "w": 40,
+                "h": 37
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 8,
-                "y": 22,
-                "w": 48,
-                "h": 42
+                "x": 13,
+                "y": 27,
+                "w": 40,
+                "h": 37
             },
             "sourceSize": {
                 "w": 64,
@@ -1522,18 +1562,18 @@
         },
         "explosive_barrel_05": {
             "frame": {
-                "x": 123,
-                "y": 131,
-                "w": 57,
-                "h": 47
+                "x": 166,
+                "y": 281,
+                "w": 49,
+                "h": 40
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 4,
+                "x": 8,
                 "y": 17,
-                "w": 57,
-                "h": 47
+                "w": 49,
+                "h": 40
             },
             "sourceSize": {
                 "w": 64,
@@ -1542,18 +1582,18 @@
         },
         "explosive_barrel_06": {
             "frame": {
-                "x": 654,
-                "y": 1,
-                "w": 64,
-                "h": 45
+                "x": 415,
+                "y": 161,
+                "w": 49,
+                "h": 36
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 0,
-                "y": 13,
-                "w": 64,
-                "h": 45
+                "x": 8,
+                "y": 16,
+                "w": 49,
+                "h": 36
             },
             "sourceSize": {
                 "w": 64,
@@ -1562,18 +1602,18 @@
         },
         "explosive_barrel_07": {
             "frame": {
-                "x": 588,
-                "y": 1,
-                "w": 64,
-                "h": 46
+                "x": 147,
+                "y": 361,
+                "w": 49,
+                "h": 34
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 0,
-                "y": 6,
-                "w": 64,
-                "h": 46
+                "x": 7,
+                "y": 16,
+                "w": 49,
+                "h": 34
             },
             "sourceSize": {
                 "w": 64,
@@ -1582,18 +1622,18 @@
         },
         "explosive_barrel_08": {
             "frame": {
-                "x": 198,
-                "y": 56,
-                "w": 59,
-                "h": 40
+                "x": 171,
+                "y": 247,
+                "w": 50,
+                "h": 32
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 1,
-                "y": 5,
-                "w": 59,
-                "h": 40
+                "x": 7,
+                "y": 16,
+                "w": 50,
+                "h": 32
             },
             "sourceSize": {
                 "w": 64,
@@ -1603,17 +1643,37 @@
         "explosive_barrel_09": {
             "frame": {
                 "x": 198,
-                "y": 98,
-                "w": 58,
-                "h": 39
+                "y": 331,
+                "w": 49,
+                "h": 34
             },
             "rotated": false,
             "trimmed": true,
             "spriteSourceSize": {
-                "x": 1,
-                "y": 5,
-                "w": 58,
-                "h": 39
+                "x": 8,
+                "y": 16,
+                "w": 49,
+                "h": 34
+            },
+            "sourceSize": {
+                "w": 64,
+                "h": 64
+            }
+        },
+        "explosive_barrel_10": {
+            "frame": {
+                "x": 147,
+                "y": 323,
+                "w": 49,
+                "h": 36
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 8,
+                "y": 15,
+                "w": 49,
+                "h": 36
             },
             "sourceSize": {
                 "w": 64,
@@ -1622,8 +1682,8 @@
         },
         "floors_01": {
             "frame": {
-                "x": 850,
-                "y": 94,
+                "x": 301,
+                "y": 402,
                 "w": 32,
                 "h": 32
             },
@@ -1642,8 +1702,8 @@
         },
         "floors_02": {
             "frame": {
-                "x": 535,
-                "y": 148,
+                "x": 349,
+                "y": 440,
                 "w": 32,
                 "h": 32
             },
@@ -1662,8 +1722,8 @@
         },
         "health": {
             "frame": {
-                "x": 864,
-                "y": 198,
+                "x": 166,
+                "y": 261,
                 "w": 3,
                 "h": 3
             },
@@ -1682,8 +1742,8 @@
         },
         "laucher_01": {
             "frame": {
-                "x": 908,
-                "y": 1,
+                "x": 1,
+                "y": 557,
                 "w": 56,
                 "h": 51
             },
@@ -1702,8 +1762,8 @@
         },
         "laucher_02": {
             "frame": {
-                "x": 1,
-                "y": 195,
+                "x": 67,
+                "y": 261,
                 "w": 56,
                 "h": 60
             },
@@ -1722,8 +1782,8 @@
         },
         "laucher_03": {
             "frame": {
-                "x": 67,
-                "y": 1,
+                "x": 1,
+                "y": 263,
                 "w": 64,
                 "h": 62
             },
@@ -1742,8 +1802,8 @@
         },
         "laucher_04": {
             "frame": {
-                "x": 720,
-                "y": 1,
+                "x": 257,
+                "y": 120,
                 "w": 64,
                 "h": 45
             },
@@ -1762,7 +1822,7 @@
         },
         "laucher_05": {
             "frame": {
-                "x": 456,
+                "x": 447,
                 "y": 1,
                 "w": 64,
                 "h": 48
@@ -1782,8 +1842,8 @@
         },
         "lift_doors_01": {
             "frame": {
-                "x": 767,
-                "y": 126,
+                "x": 383,
+                "y": 440,
                 "w": 32,
                 "h": 32
             },
@@ -1802,8 +1862,8 @@
         },
         "lift_doors_02": {
             "frame": {
-                "x": 801,
-                "y": 127,
+                "x": 417,
+                "y": 440,
                 "w": 32,
                 "h": 32
             },
@@ -1822,8 +1882,8 @@
         },
         "lift_doors_03": {
             "frame": {
-                "x": 835,
-                "y": 130,
+                "x": 451,
+                "y": 440,
                 "w": 32,
                 "h": 32
             },
@@ -1842,8 +1902,8 @@
         },
         "objects_01": {
             "frame": {
-                "x": 175,
-                "y": 58,
+                "x": 51,
+                "y": 491,
                 "w": 21,
                 "h": 64
             },
@@ -1862,8 +1922,8 @@
         },
         "objects_02": {
             "frame": {
-                "x": 569,
-                "y": 185,
+                "x": 485,
+                "y": 447,
                 "w": 24,
                 "h": 29
             },
@@ -1882,8 +1942,8 @@
         },
         "pistol_01": {
             "frame": {
-                "x": 359,
-                "y": 139,
+                "x": 457,
+                "y": 329,
                 "w": 35,
                 "h": 41
             },
@@ -1902,8 +1962,8 @@
         },
         "pistol_02": {
             "frame": {
-                "x": 281,
-                "y": 139,
+                "x": 59,
+                "y": 557,
                 "w": 35,
                 "h": 52
             },
@@ -1922,8 +1982,8 @@
         },
         "pistol_03": {
             "frame": {
-                "x": 318,
-                "y": 139,
+                "x": 125,
+                "y": 261,
                 "w": 39,
                 "h": 59
             },
@@ -1942,8 +2002,8 @@
         },
         "pistol_04": {
             "frame": {
-                "x": 458,
-                "y": 51,
+                "x": 455,
+                "y": 284,
                 "w": 39,
                 "h": 43
             },
@@ -1962,8 +2022,8 @@
         },
         "projectile_1_01": {
             "frame": {
-                "x": 576,
-                "y": 50,
+                "x": 160,
+                "y": 602,
                 "w": 10,
                 "h": 10
             },
@@ -1982,8 +2042,8 @@
         },
         "projectile_1_02": {
             "frame": {
-                "x": 642,
-                "y": 49,
+                "x": 500,
+                "y": 100,
                 "w": 10,
                 "h": 10
             },
@@ -2002,8 +2062,8 @@
         },
         "projectile_2_01": {
             "frame": {
-                "x": 279,
-                "y": 245,
+                "x": 302,
+                "y": 366,
                 "w": 10,
                 "h": 10
             },
@@ -2022,8 +2082,8 @@
         },
         "projectile_2_02": {
             "frame": {
-                "x": 291,
-                "y": 245,
+                "x": 152,
+                "y": 512,
                 "w": 10,
                 "h": 10
             },
@@ -2042,8 +2102,8 @@
         },
         "projectile_3_01": {
             "frame": {
-                "x": 810,
-                "y": 239,
+                "x": 249,
+                "y": 351,
                 "w": 16,
                 "h": 16
             },
@@ -2062,8 +2122,8 @@
         },
         "projectile_3_02": {
             "frame": {
-                "x": 988,
-                "y": 160,
+                "x": 495,
+                "y": 368,
                 "w": 16,
                 "h": 16
             },
@@ -2082,8 +2142,8 @@
         },
         "projectile_4_01": {
             "frame": {
-                "x": 884,
-                "y": 97,
+                "x": 465,
+                "y": 408,
                 "w": 18,
                 "h": 18
             },
@@ -2102,8 +2162,8 @@
         },
         "projectile_4_02": {
             "frame": {
-                "x": 810,
-                "y": 219,
+                "x": 429,
+                "y": 572,
                 "w": 18,
                 "h": 18
             },
@@ -2122,8 +2182,8 @@
         },
         "sergeant_01": {
             "frame": {
-                "x": 441,
-                "y": 99,
+                "x": 383,
+                "y": 54,
                 "w": 30,
                 "h": 40
             },
@@ -2142,8 +2202,8 @@
         },
         "sergeant_02": {
             "frame": {
-                "x": 473,
-                "y": 96,
+                "x": 116,
+                "y": 338,
                 "w": 29,
                 "h": 40
             },
@@ -2162,8 +2222,8 @@
         },
         "sergeant_03": {
             "frame": {
-                "x": 473,
-                "y": 138,
+                "x": 223,
+                "y": 187,
                 "w": 30,
                 "h": 40
             },
@@ -2182,8 +2242,8 @@
         },
         "sergeant_04": {
             "frame": {
-                "x": 504,
-                "y": 94,
+                "x": 115,
+                "y": 409,
                 "w": 31,
                 "h": 40
             },
@@ -2202,8 +2262,8 @@
         },
         "sergeant_05": {
             "frame": {
-                "x": 869,
-                "y": 128,
+                "x": 137,
+                "y": 565,
                 "w": 21,
                 "h": 40
             },
@@ -2222,8 +2282,8 @@
         },
         "sergeant_06": {
             "frame": {
-                "x": 892,
-                "y": 117,
+                "x": 244,
+                "y": 369,
                 "w": 21,
                 "h": 40
             },
@@ -2242,8 +2302,8 @@
         },
         "sergeant_07": {
             "frame": {
-                "x": 499,
-                "y": 51,
+                "x": 415,
+                "y": 54,
                 "w": 30,
                 "h": 41
             },
@@ -2262,8 +2322,8 @@
         },
         "sergeant_08": {
             "frame": {
-                "x": 505,
-                "y": 136,
+                "x": 122,
+                "y": 485,
                 "w": 28,
                 "h": 40
             },
@@ -2282,8 +2342,8 @@
         },
         "sergeant_09": {
             "frame": {
-                "x": 915,
-                "y": 110,
+                "x": 455,
+                "y": 508,
                 "w": 28,
                 "h": 33
             },
@@ -2302,8 +2362,8 @@
         },
         "sergeant_10": {
             "frame": {
-                "x": 94,
-                "y": 229,
+                "x": 297,
+                "y": 518,
                 "w": 33,
                 "h": 26
             },
@@ -2322,8 +2382,8 @@
         },
         "sergeant_11": {
             "frame": {
-                "x": 537,
-                "y": 127,
+                "x": 297,
+                "y": 497,
                 "w": 36,
                 "h": 19
             },
@@ -2342,8 +2402,8 @@
         },
         "sergeant_12": {
             "frame": {
-                "x": 575,
-                "y": 132,
+                "x": 380,
+                "y": 269,
                 "w": 36,
                 "h": 13
             },
@@ -2362,7 +2422,7 @@
         },
         "shotgun_01": {
             "frame": {
-                "x": 848,
+                "x": 323,
                 "y": 1,
                 "w": 58,
                 "h": 57
@@ -2382,7 +2442,7 @@
         },
         "shotgun_02": {
             "frame": {
-                "x": 1,
+                "x": 133,
                 "y": 129,
                 "w": 58,
                 "h": 64
@@ -2402,7 +2462,7 @@
         },
         "shotgun_03": {
             "frame": {
-                "x": 61,
+                "x": 193,
                 "y": 129,
                 "w": 60,
                 "h": 56
@@ -2422,8 +2482,8 @@
         },
         "shotgun_04": {
             "frame": {
-                "x": 133,
-                "y": 1,
+                "x": 1,
+                "y": 327,
                 "w": 63,
                 "h": 55
             },
@@ -2442,8 +2502,8 @@
         },
         "skull_01": {
             "frame": {
-                "x": 982,
-                "y": 214,
+                "x": 332,
+                "y": 535,
                 "w": 15,
                 "h": 16
             },
@@ -2462,8 +2522,8 @@
         },
         "skull_02": {
             "frame": {
-                "x": 872,
-                "y": 218,
+                "x": 262,
+                "y": 595,
                 "w": 16,
                 "h": 16
             },
@@ -2482,8 +2542,8 @@
         },
         "skull_03": {
             "frame": {
-                "x": 988,
-                "y": 178,
+                "x": 249,
+                "y": 546,
                 "w": 16,
                 "h": 16
             },
@@ -2502,8 +2562,8 @@
         },
         "skull_04": {
             "frame": {
-                "x": 979,
-                "y": 196,
+                "x": 267,
+                "y": 546,
                 "w": 16,
                 "h": 16
             },
@@ -2522,8 +2582,8 @@
         },
         "skull_05": {
             "frame": {
-                "x": 910,
-                "y": 226,
+                "x": 482,
+                "y": 576,
                 "w": 15,
                 "h": 16
             },
@@ -2542,8 +2602,8 @@
         },
         "skull_06": {
             "frame": {
-                "x": 927,
-                "y": 224,
+                "x": 285,
+                "y": 546,
                 "w": 16,
                 "h": 16
             },
@@ -2562,8 +2622,8 @@
         },
         "skull_07": {
             "frame": {
-                "x": 963,
-                "y": 234,
+                "x": 303,
+                "y": 546,
                 "w": 16,
                 "h": 16
             },
@@ -2582,8 +2642,8 @@
         },
         "skull_08": {
             "frame": {
-                "x": 982,
-                "y": 232,
+                "x": 331,
+                "y": 553,
                 "w": 16,
                 "h": 16
             },
@@ -2602,8 +2662,8 @@
         },
         "smoke_1_01": {
             "frame": {
-                "x": 927,
-                "y": 242,
+                "x": 206,
+                "y": 537,
                 "w": 12,
                 "h": 12
             },
@@ -2622,8 +2682,8 @@
         },
         "smoke_1_02": {
             "frame": {
-                "x": 303,
-                "y": 245,
+                "x": 464,
+                "y": 249,
                 "w": 10,
                 "h": 10
             },
@@ -2642,8 +2702,8 @@
         },
         "smoke_1_03": {
             "frame": {
-                "x": 842,
-                "y": 242,
+                "x": 321,
+                "y": 546,
                 "w": 8,
                 "h": 8
             },
@@ -2662,8 +2722,8 @@
         },
         "smoke_1_04": {
             "frame": {
-                "x": 848,
-                "y": 60,
+                "x": 198,
+                "y": 323,
                 "w": 6,
                 "h": 6
             },
@@ -2682,8 +2742,8 @@
         },
         "smoke_1_05": {
             "frame": {
-                "x": 159,
-                "y": 195,
+                "x": 122,
+                "y": 527,
                 "w": 4,
                 "h": 4
             },
@@ -2702,8 +2762,8 @@
         },
         "spatter_1_01": {
             "frame": {
-                "x": 688,
-                "y": 210,
+                "x": 226,
+                "y": 546,
                 "w": 21,
                 "h": 24
             },
@@ -2722,8 +2782,8 @@
         },
         "spatter_1_02": {
             "frame": {
-                "x": 660,
-                "y": 210,
+                "x": 485,
+                "y": 390,
                 "w": 26,
                 "h": 27
             },
@@ -2742,8 +2802,8 @@
         },
         "spatter_1_03": {
             "frame": {
-                "x": 502,
-                "y": 218,
+                "x": 349,
+                "y": 474,
                 "w": 32,
                 "h": 32
             },
@@ -2762,8 +2822,8 @@
         },
         "spatter_1_04": {
             "frame": {
-                "x": 732,
-                "y": 182,
+                "x": 451,
+                "y": 589,
                 "w": 21,
                 "h": 22
             },
@@ -2782,8 +2842,8 @@
         },
         "spatter_1_05": {
             "frame": {
-                "x": 711,
-                "y": 210,
+                "x": 165,
+                "y": 540,
                 "w": 23,
                 "h": 23
             },
@@ -2802,8 +2862,8 @@
         },
         "spatter_1_06": {
             "frame": {
-                "x": 707,
-                "y": 187,
+                "x": 226,
+                "y": 572,
                 "w": 23,
                 "h": 21
             },
@@ -2822,8 +2882,8 @@
         },
         "spatter_1_07": {
             "frame": {
-                "x": 864,
-                "y": 170,
+                "x": 485,
+                "y": 419,
                 "w": 26,
                 "h": 26
             },
@@ -2842,8 +2902,8 @@
         },
         "spatter_1_08": {
             "frame": {
-                "x": 622,
-                "y": 181,
+                "x": 174,
+                "y": 565,
                 "w": 28,
                 "h": 28
             },
@@ -2862,8 +2922,8 @@
         },
         "spatter_1_09": {
             "frame": {
-                "x": 959,
-                "y": 130,
+                "x": 194,
+                "y": 514,
                 "w": 27,
                 "h": 21
             },
@@ -2882,8 +2942,8 @@
         },
         "spatter_1_10": {
             "frame": {
-                "x": 767,
-                "y": 160,
+                "x": 379,
+                "y": 96,
                 "w": 31,
                 "h": 18
             },
@@ -2902,8 +2962,8 @@
         },
         "spatter_1_11": {
             "frame": {
-                "x": 683,
-                "y": 186,
+                "x": 74,
+                "y": 533,
                 "w": 22,
                 "h": 22
             },
@@ -2922,8 +2982,8 @@
         },
         "spatter_1_12": {
             "frame": {
-                "x": 944,
-                "y": 69,
+                "x": 204,
+                "y": 566,
                 "w": 20,
                 "h": 27
             },
@@ -2942,8 +3002,8 @@
         },
         "spurt_1_01": {
             "frame": {
-                "x": 765,
-                "y": 244,
+                "x": 321,
+                "y": 556,
                 "w": 8,
                 "h": 8
             },
@@ -2962,8 +3022,8 @@
         },
         "spurt_1_02": {
             "frame": {
-                "x": 129,
-                "y": 229,
+                "x": 223,
+                "y": 512,
                 "w": 32,
                 "h": 26
             },
@@ -2982,8 +3042,8 @@
         },
         "spurt_1_03": {
             "frame": {
-                "x": 350,
-                "y": 98,
+                "x": 198,
+                "y": 367,
                 "w": 44,
                 "h": 39
             },
@@ -3002,8 +3062,8 @@
         },
         "spurt_1_04": {
             "frame": {
-                "x": 182,
-                "y": 139,
+                "x": 255,
+                "y": 167,
                 "w": 54,
                 "h": 45
             },
@@ -3022,8 +3082,8 @@
         },
         "spurt_1_05": {
             "frame": {
-                "x": 786,
-                "y": 1,
+                "x": 323,
+                "y": 116,
                 "w": 60,
                 "h": 50
             },
@@ -3042,7 +3102,7 @@
         },
         "spurt_1_06": {
             "frame": {
-                "x": 328,
+                "x": 383,
                 "y": 1,
                 "w": 62,
                 "h": 51
@@ -3062,8 +3122,8 @@
         },
         "spurt_1_07": {
             "frame": {
-                "x": 264,
-                "y": 1,
+                "x": 1,
+                "y": 384,
                 "w": 62,
                 "h": 52
             },
@@ -3082,8 +3142,8 @@
         },
         "spurt_1_08": {
             "frame": {
-                "x": 392,
-                "y": 1,
+                "x": 1,
+                "y": 438,
                 "w": 62,
                 "h": 51
             },
@@ -3102,8 +3162,8 @@
         },
         "spurt_2_01": {
             "frame": {
-                "x": 884,
-                "y": 117,
+                "x": 190,
+                "y": 397,
                 "w": 6,
                 "h": 7
             },
@@ -3122,8 +3182,8 @@
         },
         "spurt_2_02": {
             "frame": {
-                "x": 506,
-                "y": 178,
+                "x": 174,
+                "y": 595,
                 "w": 23,
                 "h": 17
             },
@@ -3142,8 +3202,8 @@
         },
         "spurt_2_03": {
             "frame": {
-                "x": 959,
-                "y": 104,
+                "x": 165,
+                "y": 514,
                 "w": 27,
                 "h": 24
             },
@@ -3162,8 +3222,8 @@
         },
         "spurt_2_04": {
             "frame": {
-                "x": 239,
-                "y": 188,
+                "x": 417,
+                "y": 542,
                 "w": 31,
                 "h": 28
             },
@@ -3182,8 +3242,8 @@
         },
         "spurt_2_05": {
             "frame": {
-                "x": 732,
-                "y": 91,
+                "x": 227,
+                "y": 445,
                 "w": 33,
                 "h": 31
             },
@@ -3202,8 +3262,8 @@
         },
         "spurt_2_06": {
             "frame": {
-                "x": 399,
-                "y": 218,
+                "x": 267,
+                "y": 366,
                 "w": 33,
                 "h": 32
             },
@@ -3222,8 +3282,8 @@
         },
         "spurt_2_07": {
             "frame": {
-                "x": 767,
-                "y": 93,
+                "x": 363,
+                "y": 407,
                 "w": 33,
                 "h": 31
             },
@@ -3242,8 +3302,8 @@
         },
         "spurt_2_08": {
             "frame": {
-                "x": 59,
-                "y": 225,
+                "x": 398,
+                "y": 408,
                 "w": 33,
                 "h": 30
             },
@@ -3262,8 +3322,8 @@
         },
         "spurt_2_09": {
             "frame": {
-                "x": 988,
-                "y": 104,
+                "x": 249,
+                "y": 331,
                 "w": 16,
                 "h": 18
             },
@@ -3282,8 +3342,8 @@
         },
         "spurt_2_10": {
             "frame": {
-                "x": 855,
-                "y": 182,
+                "x": 466,
+                "y": 161,
                 "w": 7,
                 "h": 19
             },
@@ -3302,8 +3362,8 @@
         },
         "walls_01": {
             "frame": {
-                "x": 535,
-                "y": 182,
+                "x": 383,
+                "y": 474,
                 "w": 32,
                 "h": 32
             },
@@ -3322,8 +3382,8 @@
         },
         "walls_02": {
             "frame": {
-                "x": 536,
-                "y": 216,
+                "x": 417,
+                "y": 474,
                 "w": 32,
                 "h": 32
             },
@@ -3342,8 +3402,8 @@
         },
         "walls_03": {
             "frame": {
-                "x": 664,
-                "y": 143,
+                "x": 412,
+                "y": 97,
                 "w": 32,
                 "h": 17
             },
@@ -3362,8 +3422,8 @@
         },
         "walls_04": {
             "frame": {
-                "x": 583,
-                "y": 147,
+                "x": 451,
+                "y": 474,
                 "w": 32,
                 "h": 32
             },
@@ -3382,8 +3442,8 @@
         },
         "walls_05": {
             "frame": {
-                "x": 570,
-                "y": 216,
+                "x": 421,
+                "y": 508,
                 "w": 32,
                 "h": 32
             },
@@ -3402,8 +3462,8 @@
         },
         "weapon_chaingun_01": {
             "frame": {
-                "x": 159,
-                "y": 201,
+                "x": 455,
+                "y": 372,
                 "w": 38,
                 "h": 16
             },
@@ -3422,8 +3482,8 @@
         },
         "weapon_chaingun_02": {
             "frame": {
-                "x": 318,
-                "y": 200,
+                "x": 302,
+                "y": 383,
                 "w": 39,
                 "h": 17
             },
@@ -3442,8 +3502,8 @@
         },
         "weapon_chaingun_03": {
             "frame": {
-                "x": 750,
-                "y": 48,
+                "x": 349,
+                "y": 508,
                 "w": 34,
                 "h": 19
             },
@@ -3462,8 +3522,8 @@
         },
         "weapon_chaingun_04": {
             "frame": {
-                "x": 711,
-                "y": 235,
+                "x": 278,
+                "y": 572,
                 "w": 25,
                 "h": 20
             },
@@ -3482,8 +3542,8 @@
         },
         "weapon_chaingun_05": {
             "frame": {
-                "x": 948,
-                "y": 174,
+                "x": 335,
+                "y": 513,
                 "w": 12,
                 "h": 20
             },
@@ -3502,8 +3562,8 @@
         },
         "weapon_chaingun_06": {
             "frame": {
-                "x": 755,
-                "y": 180,
+                "x": 305,
+                "y": 572,
                 "w": 25,
                 "h": 20
             },
@@ -3522,8 +3582,8 @@
         },
         "weapon_chaingun_07": {
             "frame": {
-                "x": 483,
-                "y": 197,
+                "x": 385,
+                "y": 508,
                 "w": 34,
                 "h": 19
             },
@@ -3542,8 +3602,8 @@
         },
         "weapon_chaingun_08": {
             "frame": {
-                "x": 664,
-                "y": 124,
+                "x": 262,
+                "y": 468,
                 "w": 39,
                 "h": 17
             },
@@ -3562,8 +3622,8 @@
         },
         "weapon_chaingun_09": {
             "frame": {
-                "x": 199,
-                "y": 201,
+                "x": 445,
+                "y": 390,
                 "w": 38,
                 "h": 16
             },
@@ -3582,8 +3642,8 @@
         },
         "weapon_chaingun_10": {
             "frame": {
-                "x": 966,
-                "y": 86,
+                "x": 257,
+                "y": 510,
                 "w": 38,
                 "h": 16
             },
@@ -3602,8 +3662,8 @@
         },
         "weapon_chaingun_11": {
             "frame": {
-                "x": 617,
-                "y": 162,
+                "x": 349,
+                "y": 529,
                 "w": 32,
                 "h": 17
             },
@@ -3622,8 +3682,8 @@
         },
         "weapon_chaingun_12": {
             "frame": {
-                "x": 890,
-                "y": 207,
+                "x": 199,
+                "y": 595,
                 "w": 22,
                 "h": 17
             },
@@ -3642,8 +3702,8 @@
         },
         "weapon_chaingun_13": {
             "frame": {
-                "x": 890,
-                "y": 226,
+                "x": 343,
+                "y": 383,
                 "w": 18,
                 "h": 17
             },
@@ -3662,8 +3722,8 @@
         },
         "weapon_chaingun_14": {
             "frame": {
-                "x": 964,
-                "y": 153,
+                "x": 223,
+                "y": 595,
                 "w": 22,
                 "h": 17
             },
@@ -3682,8 +3742,8 @@
         },
         "weapon_chaingun_15": {
             "frame": {
-                "x": 651,
-                "y": 162,
+                "x": 383,
+                "y": 529,
                 "w": 32,
                 "h": 17
             },
@@ -3702,8 +3762,8 @@
         },
         "weapon_chaingun_16": {
             "frame": {
-                "x": 904,
-                "y": 92,
+                "x": 257,
+                "y": 528,
                 "w": 38,
                 "h": 16
             },
@@ -3722,8 +3782,8 @@
         },
         "weapon_launcher_01": {
             "frame": {
-                "x": 123,
-                "y": 180,
+                "x": 255,
+                "y": 214,
                 "w": 53,
                 "h": 13
             },
@@ -3742,8 +3802,8 @@
         },
         "weapon_launcher_02": {
             "frame": {
-                "x": 178,
-                "y": 186,
+                "x": 67,
+                "y": 323,
                 "w": 52,
                 "h": 13
             },
@@ -3762,8 +3822,8 @@
         },
         "weapon_launcher_03": {
             "frame": {
-                "x": 315,
-                "y": 240,
+                "x": 267,
+                "y": 329,
                 "w": 46,
                 "h": 15
             },
@@ -3782,8 +3842,8 @@
         },
         "weapon_launcher_04": {
             "frame": {
-                "x": 800,
-                "y": 161,
+                "x": 466,
+                "y": 187,
                 "w": 30,
                 "h": 16
             },
@@ -3802,8 +3862,8 @@
         },
         "weapon_launcher_05": {
             "frame": {
-                "x": 964,
-                "y": 196,
+                "x": 247,
+                "y": 595,
                 "w": 13,
                 "h": 17
             },
@@ -3822,8 +3882,8 @@
         },
         "weapon_launcher_06": {
             "frame": {
-                "x": 832,
-                "y": 164,
+                "x": 450,
+                "y": 571,
                 "w": 30,
                 "h": 16
             },
@@ -3842,8 +3902,8 @@
         },
         "weapon_launcher_07": {
             "frame": {
-                "x": 437,
-                "y": 180,
+                "x": 315,
+                "y": 330,
                 "w": 46,
                 "h": 15
             },
@@ -3862,8 +3922,8 @@
         },
         "weapon_launcher_08": {
             "frame": {
-                "x": 588,
-                "y": 49,
+                "x": 363,
+                "y": 332,
                 "w": 52,
                 "h": 13
             },
@@ -3882,8 +3942,8 @@
         },
         "weapon_launcher_09": {
             "frame": {
-                "x": 908,
-                "y": 54,
+                "x": 325,
+                "y": 269,
                 "w": 53,
                 "h": 13
             },
@@ -3902,7 +3962,7 @@
         },
         "weapon_launcher_10": {
             "frame": {
-                "x": 576,
+                "x": 446,
                 "y": 100,
                 "w": 52,
                 "h": 14
@@ -3922,8 +3982,8 @@
         },
         "weapon_launcher_11": {
             "frame": {
-                "x": 272,
-                "y": 193,
+                "x": 363,
+                "y": 368,
                 "w": 44,
                 "h": 15
             },
@@ -3942,8 +4002,8 @@
         },
         "weapon_launcher_12": {
             "frame": {
-                "x": 698,
-                "y": 146,
+                "x": 349,
+                "y": 548,
                 "w": 32,
                 "h": 16
             },
@@ -3962,8 +4022,8 @@
         },
         "weapon_launcher_13": {
             "frame": {
-                "x": 948,
-                "y": 196,
+                "x": 190,
+                "y": 540,
                 "w": 14,
                 "h": 18
             },
@@ -3982,8 +4042,8 @@
         },
         "weapon_launcher_14": {
             "frame": {
-                "x": 660,
-                "y": 239,
+                "x": 383,
+                "y": 548,
                 "w": 32,
                 "h": 16
             },
@@ -4002,8 +4062,8 @@
         },
         "weapon_launcher_15": {
             "frame": {
-                "x": 786,
-                "y": 53,
+                "x": 409,
+                "y": 369,
                 "w": 44,
                 "h": 15
             },
@@ -4022,8 +4082,8 @@
         },
         "weapon_launcher_16": {
             "frame": {
-                "x": 576,
-                "y": 116,
+                "x": 315,
+                "y": 347,
                 "w": 52,
                 "h": 14
             },
@@ -4042,8 +4102,8 @@
         },
         "weapon_pistol_01": {
             "frame": {
-                "x": 805,
-                "y": 179,
+                "x": 280,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4062,8 +4122,8 @@
         },
         "weapon_pistol_02": {
             "frame": {
-                "x": 763,
-                "y": 202,
+                "x": 305,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4082,8 +4142,8 @@
         },
         "weapon_pistol_03": {
             "frame": {
-                "x": 782,
-                "y": 180,
+                "x": 332,
+                "y": 572,
                 "w": 21,
                 "h": 20
             },
@@ -4102,8 +4162,8 @@
         },
         "weapon_pistol_04": {
             "frame": {
-                "x": 715,
-                "y": 164,
+                "x": 496,
+                "y": 284,
                 "w": 15,
                 "h": 21
             },
@@ -4122,8 +4182,8 @@
         },
         "weapon_pistol_05": {
             "frame": {
-                "x": 947,
-                "y": 134,
+                "x": 405,
+                "y": 566,
                 "w": 10,
                 "h": 20
             },
@@ -4142,8 +4202,8 @@
         },
         "weapon_pistol_06": {
             "frame": {
-                "x": 788,
-                "y": 202,
+                "x": 496,
+                "y": 307,
                 "w": 15,
                 "h": 21
             },
@@ -4162,8 +4222,8 @@
         },
         "weapon_pistol_07": {
             "frame": {
-                "x": 765,
-                "y": 222,
+                "x": 355,
+                "y": 572,
                 "w": 21,
                 "h": 20
             },
@@ -4182,8 +4242,8 @@
         },
         "weapon_pistol_08": {
             "frame": {
-                "x": 830,
-                "y": 182,
+                "x": 330,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4202,8 +4262,8 @@
         },
         "weapon_pistol_09": {
             "frame": {
-                "x": 805,
-                "y": 199,
+                "x": 355,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4222,8 +4282,8 @@
         },
         "weapon_pistol_10": {
             "frame": {
-                "x": 830,
-                "y": 202,
+                "x": 380,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4242,8 +4302,8 @@
         },
         "weapon_pistol_11": {
             "frame": {
-                "x": 746,
-                "y": 159,
+                "x": 430,
+                "y": 594,
                 "w": 19,
                 "h": 18
             },
@@ -4262,8 +4322,8 @@
         },
         "weapon_pistol_12": {
             "frame": {
-                "x": 519,
-                "y": 197,
+                "x": 494,
+                "y": 207,
                 "w": 14,
                 "h": 19
             },
@@ -4282,8 +4342,8 @@
         },
         "weapon_pistol_13": {
             "frame": {
-                "x": 962,
-                "y": 174,
+                "x": 417,
+                "y": 572,
                 "w": 10,
                 "h": 20
             },
@@ -4302,8 +4362,8 @@
         },
         "weapon_pistol_14": {
             "frame": {
-                "x": 694,
-                "y": 236,
+                "x": 494,
+                "y": 228,
                 "w": 14,
                 "h": 19
             },
@@ -4322,8 +4382,8 @@
         },
         "weapon_pistol_15": {
             "frame": {
-                "x": 869,
-                "y": 198,
+                "x": 474,
+                "y": 594,
                 "w": 19,
                 "h": 18
             },
@@ -4342,8 +4402,8 @@
         },
         "weapon_pistol_16": {
             "frame": {
-                "x": 830,
-                "y": 222,
+                "x": 405,
+                "y": 594,
                 "w": 23,
                 "h": 18
             },
@@ -4362,8 +4422,8 @@
         },
         "weapon_shotgun_01": {
             "frame": {
-                "x": 654,
-                "y": 48,
+                "x": 267,
+                "y": 346,
                 "w": 46,
                 "h": 18
             },
@@ -4382,8 +4442,8 @@
         },
         "weapon_shotgun_02": {
             "frame": {
-                "x": 648,
-                "y": 68,
+                "x": 418,
+                "y": 262,
                 "w": 43,
                 "h": 20
             },
@@ -4402,8 +4462,8 @@
         },
         "weapon_shotgun_03": {
             "frame": {
-                "x": 779,
-                "y": 70,
+                "x": 131,
+                "y": 197,
                 "w": 38,
                 "h": 21
             },
@@ -4422,8 +4482,8 @@
         },
         "weapon_shotgun_04": {
             "frame": {
-                "x": 736,
-                "y": 206,
+                "x": 251,
+                "y": 572,
                 "w": 25,
                 "h": 21
             },
@@ -4442,8 +4502,8 @@
         },
         "weapon_shotgun_05": {
             "frame": {
-                "x": 855,
-                "y": 203,
+                "x": 499,
+                "y": 575,
                 "w": 12,
                 "h": 22
             },
@@ -4462,8 +4522,8 @@
         },
         "weapon_shotgun_06": {
             "frame": {
-                "x": 738,
-                "y": 229,
+                "x": 378,
+                "y": 566,
                 "w": 25,
                 "h": 21
             },
@@ -4482,8 +4542,8 @@
         },
         "weapon_shotgun_07": {
             "frame": {
-                "x": 904,
-                "y": 69,
+                "x": 257,
+                "y": 487,
                 "w": 38,
                 "h": 21
             },
@@ -4502,8 +4562,8 @@
         },
         "weapon_shotgun_08": {
             "frame": {
-                "x": 693,
-                "y": 68,
+                "x": 463,
+                "y": 262,
                 "w": 43,
                 "h": 20
             },
@@ -4522,8 +4582,8 @@
         },
         "weapon_shotgun_09": {
             "frame": {
-                "x": 702,
-                "y": 48,
+                "x": 315,
+                "y": 363,
                 "w": 46,
                 "h": 18
             },
@@ -4542,8 +4602,8 @@
         },
         "weapon_shotgun_10": {
             "frame": {
-                "x": 315,
-                "y": 219,
+                "x": 415,
+                "y": 199,
                 "w": 46,
                 "h": 19
             },
@@ -4562,8 +4622,8 @@
         },
         "weapon_shotgun_11": {
             "frame": {
-                "x": 738,
-                "y": 69,
+                "x": 363,
+                "y": 385,
                 "w": 39,
                 "h": 20
             },
@@ -4582,8 +4642,8 @@
         },
         "weapon_shotgun_12": {
             "frame": {
-                "x": 918,
-                "y": 202,
+                "x": 464,
+                "y": 205,
                 "w": 28,
                 "h": 20
             },
@@ -4602,8 +4662,8 @@
         },
         "weapon_shotgun_13": {
             "frame": {
-                "x": 974,
-                "y": 172,
+                "x": 498,
+                "y": 187,
                 "w": 12,
                 "h": 18
             },
@@ -4622,8 +4682,8 @@
         },
         "weapon_shotgun_14": {
             "frame": {
-                "x": 685,
-                "y": 164,
+                "x": 464,
+                "y": 227,
                 "w": 28,
                 "h": 20
             },
@@ -4642,8 +4702,8 @@
         },
         "weapon_shotgun_15": {
             "frame": {
-                "x": 705,
-                "y": 124,
+                "x": 404,
+                "y": 386,
                 "w": 39,
                 "h": 20
             },
@@ -4662,8 +4722,8 @@
         },
         "weapon_shotgun_16": {
             "frame": {
-                "x": 435,
-                "y": 197,
+                "x": 369,
+                "y": 347,
                 "w": 46,
                 "h": 19
             },
@@ -4991,7 +5051,9 @@
             "explosion_1_04",
             "explosion_1_05",
             "explosion_1_06",
-            "explosion_1_07"
+            "explosion_1_07",
+            "explosion_1_08",
+            "explosion_1_09"
         ],
         "explosion_2": [
             "explosion_2_01",
@@ -5000,7 +5062,9 @@
             "explosion_2_04",
             "explosion_2_05",
             "explosion_2_06",
-            "explosion_2_07"
+            "explosion_2_07",
+            "explosion_2_08",
+            "explosion_2_09"
         ],
         "explosion_3": [
             "explosion_3_01",
@@ -5010,7 +5074,8 @@
             "explosion_3_05",
             "explosion_3_06",
             "explosion_3_07",
-            "explosion_3_08"
+            "explosion_3_08",
+            "explosion_3_09"
         ],
         "explosion_4": [
             "explosion_4_01",
@@ -5025,10 +5090,7 @@
             "explosion_4_10",
             "explosion_4_11",
             "explosion_4_12",
-            "explosion_4_13",
-            "explosion_4_14",
-            "explosion_4_15",
-            "explosion_4_16"
+            "explosion_4_13"
         ],
         "explosive_barrel": [
             "explosive_barrel_01",
@@ -5039,7 +5101,8 @@
             "explosive_barrel_06",
             "explosive_barrel_07",
             "explosive_barrel_08",
-            "explosive_barrel_09"
+            "explosive_barrel_09",
+            "explosive_barrel_10"
         ],
         "floors": [
             "floors_01",
@@ -5495,10 +5558,10 @@
         "image": "graphics.png",
         "format": "RGBA8888",
         "size": {
-            "w": 1005,
-            "h": 256
+            "w": 512,
+            "h": 613
         },
         "scale": "1",
-        "smartupdate": "$TexturePacker:SmartUpdate:0e965b5b04154e3f3d545d001495c2c9:3b87d93ffe64cd6d67e15484ed4929fc:a37384bf37d2ba6e9251927f9499b8b7$"
+        "smartupdate": "$TexturePacker:SmartUpdate:1c561a1dc5197a528b088205e4cec73a:f5702abebb790e0896fe05a7bc968714:a37384bf37d2ba6e9251927f9499b8b7$"
     }
 }

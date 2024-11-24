@@ -128,19 +128,15 @@ export default class HitScan extends Body {
             }
           }
 
-          // Handle a body having it's own blast effect
-          // const bodySourceId = body.effects?.spurt
-          //   ? `${body.id}_${body.effects.spurt}`
-          //   : sourceId;
-
-          // if (bodySourceId) {
-          //   parent.addEffect({
-          //     x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
-          //     y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
-          //     sourceId: bodySourceId,
-          //     scale: body.effects?.spurt ? 1 : 0.5,
-          //   });
-          // }
+          // Handle a body that doesn't have it's own impact effect
+          if (sourceId && !body.effects?.spurt) {
+            parent.addEffect({
+              x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
+              y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
+              sourceId,
+              scale: 0.5,
+            });
+          }
 
           if (damage) {
             if (body.isDestroyable && !(isExplosion && body.isBoss)) {
