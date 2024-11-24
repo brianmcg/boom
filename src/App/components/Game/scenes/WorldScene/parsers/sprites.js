@@ -586,6 +586,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
             animationSpeed: IMPACT_SPEED,
+            rotate: weapon.pellets.length > 1 ? true : false,
           });
         }
       });
