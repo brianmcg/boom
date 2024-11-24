@@ -118,7 +118,7 @@ export const HEIGHT = 9;
  * The screen resolution.
  * @type {Object}
  */
-export const RESOLUTION = 25;
+export const RESOLUTION = 24;
 
 /**
  * The screen dimensions.
