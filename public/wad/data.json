@@ -175,7 +175,7 @@
                 },
                 "cacodemon": {
                     "behaviour": "projectileenemy",
-                    "painChance": 0.5,
+                    "painChance": 0.4,
                     "acceleration": 0.00625,
                     "speed": 0.03125,
                     "maxHealth": 300,
@@ -238,7 +238,7 @@
                 },
                 "demon": {
                     "behaviour": "chaseenemy",
-                    "painChance": 0.707,
+                    "painChance": 0.25,
                     "acceleration": 0.00625,
                     "speed": 0.0390625,
                     "maxHealth": 150,
@@ -271,7 +271,7 @@
                 },
                 "elemental": {
                     "behaviour": "projectileenemy",
-                    "painChance": 0.5,
+                    "painChance": 0.3,
                     "isBoss": true,
                     "acceleration": 0.00625,
                     "maxAttacks": 3,
