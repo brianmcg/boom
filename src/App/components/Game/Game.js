@@ -160,8 +160,9 @@ export default class Game {
   }
 
   resize(scale) {
-    this.app.stage.scale.set(scale);
-    this.app.renderer.resize(SCREEN.WIDTH * scale, SCREEN.HEIGHT * scale);
+    // this.app.stage.scale.set(scale);
+    // this.app.renderer.resize(SCREEN.WIDTH * scale, SCREEN.HEIGHT * scale);
+    this.app.renderer.resolution = scale;
   }
 
   lockPointer() {
