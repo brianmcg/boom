@@ -31,9 +31,12 @@ export default class Loader {
    * @param  {Array} options.sound      The sounds to unload.
    */
   static async unload({ graphics, sound } = {}) {
+    const soundPromise = SoundLoader.unload(sound);
+    const graphicsPromise = GraphicsLoader.unload(graphics);
+
     return {
-      sound: await SoundLoader.unload(sound),
-      graphics: await GraphicsLoader.unload(graphics),
+      sound: await soundPromise,
+      graphics: await graphicsPromise,
     };
   }
 }
