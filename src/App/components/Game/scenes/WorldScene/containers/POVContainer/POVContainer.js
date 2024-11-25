@@ -31,7 +31,6 @@ let sliceY;
 let sprite;
 let spriteHeight;
 let spriteScale;
-let spriteX;
 let spriteY;
 let bottomIntersection;
 let topIntersection;
@@ -434,8 +433,7 @@ export default class POVContainer extends Container {
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
-        spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
-        sprite.x = CAMERA_CENTER_X + spriteX;
+        sprite.x = CAMERA_CENTER_X + Math.tan(spriteAngle) * CAMERA_DISTANCE;
 
         sprite.y =
           centerY -
@@ -485,8 +483,7 @@ export default class POVContainer extends Container {
         spriteScale =
           Math.abs(CAMERA_DISTANCE / correctedDistance) * effect.scale;
         spriteHeight = CELL_SIZE * spriteScale;
-        spriteX = Math.tan(spriteAngle) * CAMERA_DISTANCE;
-        sprite.x = CAMERA_CENTER_X + spriteX;
+        sprite.x = CAMERA_CENTER_X + Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.y =
           centerY -
           spriteHeight /
