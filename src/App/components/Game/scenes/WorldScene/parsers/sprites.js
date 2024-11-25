@@ -41,13 +41,15 @@ import ProjectileSprite from '../sprites/ProjectileSprite';
 
 const SPURT_SPEED = 0.4;
 
-const TAIL_SPEED = 0.12;
+const TAIL_SPEED = 0.05;
 
 const EXPLOSION_SPEED = 0.3;
 
 const SPLASH_SPEED = 0.4;
 
 const IMPACT_SPEED = 0.4;
+
+const tailSpeed = () => TAIL_SPEED * Math.random() * (1 - 0.05) + 0.05;
 
 const createEnemySprite = ({ animations, textures, enemy, floorOffset }) => {
   const textureCollection = Object.keys(animations).reduce(
@@ -402,7 +404,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
             projectile.tail.ids.forEach(id => {
               memo[id] = new EffectSprite(effectTextures, {
-                animationSpeed: TAIL_SPEED,
+                animationSpeed: tailSpeed(),
               });
             });
           }
@@ -448,7 +450,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
           projectile.tail.ids.forEach(id => {
             memo[id] = new EffectSprite(effectTextures, {
-              animationSpeed: TAIL_SPEED,
+              animationSpeed: tailSpeed(),
             });
           });
         }
@@ -546,7 +548,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
         enemy.tail.ids.forEach(id => {
           memo[id] = new EffectSprite(effectTextures, {
-            animationSpeed: TAIL_SPEED,
+            animationSpeed: tailSpeed(),
           });
         });
       }
@@ -586,7 +588,6 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
           playerHitScanSprites[id] = new EffectSprite(effectTextures, {
             animationSpeed: IMPACT_SPEED,
-            rotate: weapon.pellets.length > 1 ? true : false,
           });
         }
       });

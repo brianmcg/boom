@@ -134,7 +134,6 @@ export default class HitScan extends Body {
               x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
               y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
               sourceId,
-              scale: 0.5,
             });
           }
 
@@ -160,7 +159,6 @@ export default class HitScan extends Body {
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,
-          scale: 0.5,
         });
       }
     }

@@ -480,8 +480,7 @@ export default class POVContainer extends Container {
           (player.getAngleTo(effect) - viewAngle + DEG_360) % DEG_360;
         actualDistance = player.getDistanceTo(effect);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
-        spriteScale =
-          Math.abs(CAMERA_DISTANCE / correctedDistance) * effect.scale;
+        spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
         sprite.x = CAMERA_CENTER_X + Math.tan(spriteAngle) * CAMERA_DISTANCE;
         sprite.y =
