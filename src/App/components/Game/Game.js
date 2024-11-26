@@ -24,7 +24,7 @@ export default class Game {
     this.onExit = onExit;
     this.stats = stats;
 
-    if (DEBUG) window.stage = this.app.stage;
+    if (DEBUG) window.app = this.app;
   }
 
   async init() {
@@ -160,9 +160,7 @@ export default class Game {
   }
 
   resize(scale) {
-    // this.app.stage.scale.set(scale);
-    // this.app.renderer.resize(SCREEN.WIDTH * scale, SCREEN.HEIGHT * scale);
-    this.app.renderer.resolution = scale;
+    this.app.renderer.resize(SCREEN.WIDTH, SCREEN.HEIGHT, scale);
   }
 
   lockPointer() {

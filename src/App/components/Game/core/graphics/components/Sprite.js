@@ -14,7 +14,7 @@ class Sprite extends PixiSprite {
    * @param  {Number} options.height The sprite height.
    */
   constructor(texture, { alpha = 1, anchor = 0, width, height, tint } = {}) {
-    super(texture);
+    super({ texture, roundPixels: true });
 
     this.alpha = alpha;
 
