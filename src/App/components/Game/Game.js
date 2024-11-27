@@ -30,19 +30,22 @@ export default class Game {
   async init() {
     await this.app.init({
       autoStart: false,
+      hello: Boolean(DEBUG),
       width: SCREEN.WIDTH,
       height: SCREEN.HEIGHT,
     });
 
     this.view = new GameView({ canvas: this.app.canvas });
     this.input = new InputController(this.app.canvas);
-    this.app.stage.eventMode = 'static';
-
-    this.app.stage.on('click', () => this.lockPointer());
+    this.app.stage.eventMode = 'none';
+    this.app.stage.cullableChildren = false;
+    this.app.stage.interactiveChildren = false;
 
     this.app.ticker.add(time =>
       this.stats ? this.updateWithStats(time) : this.update(time)
     );
+
+    this.app.canvas.addEventListener('click', () => this.lockPointer());
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
@@ -164,7 +167,9 @@ export default class Game {
   }
 
   lockPointer() {
-    this.input.mouse.lockPointer();
+    if (!document.pointerLockElement) {
+      this.input.mouse.lockPointer();
+    }
   }
 
   async exit() {

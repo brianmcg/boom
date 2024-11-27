@@ -114,8 +114,10 @@ export default class Mouse {
    */
   lockPointer() {
     if (!this.isPointerLocked()) {
-      this.el.requestPointerLock();
+      return this.el.requestPointerLock();
     }
+
+    return Promise.resolve();
   }
 
   /**
