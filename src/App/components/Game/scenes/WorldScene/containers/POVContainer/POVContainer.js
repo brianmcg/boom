@@ -491,18 +491,6 @@ export default class POVContainer extends Container {
     super.update(ticker);
   }
 
-  expandEdge() {
-    const margin = 20;
-
-    this.sprites.map.walls.forEach(layer => {
-      layer[0].x = -margin;
-      layer[0].width = margin + 1;
-
-      layer[layer.length - 1].x = layer.length - 1;
-      layer[layer.length - 1].width = margin + 1;
-    });
-  }
-
   removeHud() {
     this.playerContainer.removeHud();
   }

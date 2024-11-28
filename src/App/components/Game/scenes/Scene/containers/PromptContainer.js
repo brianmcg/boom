@@ -144,10 +144,6 @@ export default class PromptContainer extends Container {
   shakeParent(amount, { direction = 1 } = {}) {
     this.shakeDirection = direction;
     this.shakeValue = Math.min(MAX_SHAKE, amount * SHAKE_FADE);
-
-    if (this.parent.viewContainer?.expandEdge) {
-      this.parent.viewContainer.expandEdge();
-    }
   }
 
   setFadingIn() {
