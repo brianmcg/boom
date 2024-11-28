@@ -7,30 +7,7 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
-/**
- * Class representing a hit scan.
- * @extends {Body}
- */
 export default class HitScan extends Body {
-  /**
-   * Creates a hit scan.
-   * @param  {Number}  options.x            The x coordinate of the body.
-   * @param  {Number}  options.y            The y coordinate of the body.
-   * @param  {Number}  options.z            The z coordinate of the body.
-   * @param  {Number}  options.width        The width of the body.
-   * @param  {Number}  options.height       The length of the body.
-   * @param  {Number}  options.height       The height of the body.
-   * @param  {Boolean} options.blocking     The blocking value of the body.
-   * @param  {Number}  options.anchor       The anchor of the body.
-   * @param  {String}  options.effect       The impact effect.
-   * @param  {Body}    options.source       The source of the hitscan.
-   * @param  {Number}  options.power        The power of the hitscan.
-   * @param  {Number}  options.range        The range of the hitscan.
-   * @param  {Number}  options.accuracy     The accuracy of the hitscan.
-   * @param  {Number}  options.fade         The fade of the hitscan.
-   * @param  {Boolean} options.penetration  The penetration of the hitscan.
-   * @param  {Boolean} options.instantKill  The hitscan instantly kills.
-   */
   constructor({
     effect,
     source,
@@ -54,10 +31,6 @@ export default class HitScan extends Body {
     this.instantKill = instantKill;
   }
 
-  /**
-   * Execute the hit scan.
-   * @param  {Number} angle The angle of the hitscan.
-   */
   run(angle) {
     const collisionsInRange = [];
 

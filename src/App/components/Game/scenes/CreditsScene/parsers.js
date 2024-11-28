@@ -5,16 +5,6 @@ import { FONT_SIZES } from '@constants/fonts';
 import { RED, WHITE, BLACK } from '@constants/colors';
 import { GraphicsCreator } from '@game/core/graphics';
 
-/**
- * @module game/scenes/credits-scene/parsers
- */
-
-/**
- * Parses the loaded scene assets.
- * @param  {Object} options.graphics  The scene graphics.
- * @param  {Array}  options.text      The scene text.
- * @return {Object}                   The parsed scene data.
- */
 export const parse = ({ graphics, text }) => {
   const { textures } = graphics;
 

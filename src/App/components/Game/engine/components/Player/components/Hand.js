@@ -28,15 +28,7 @@ const EVENTS = {
   AIMING: 'hand:aiming',
 };
 
-/**
- * Class representing an map container.
- */
 export default class Hand extends EventEmitter {
-  /**
-   * Creates a Hand.
-   * @param  {Player} player  The player.
-   * @param  {Object} sprites The player sprites.
-   */
   constructor(player) {
     super();
 
@@ -51,10 +43,6 @@ export default class Hand extends EventEmitter {
     this.weapon = null;
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta The delta time.
-   */
   update(delta) {
     this.breath += BREATH_INCREMENT * this.breathDirection * delta;
 
@@ -81,10 +69,6 @@ export default class Hand extends EventEmitter {
     }
   }
 
-  /**
-   * Update the container in the aiming state.
-   * @param  {Number} delta The delta time.
-   */
   updateAiming(delta) {
     const { rotateAngle, velocity } = this.player;
 
@@ -124,10 +108,6 @@ export default class Hand extends EventEmitter {
     }
   }
 
-  /**
-   * Update the container in teh arming state.
-   * @param  {Number} delta The delta time.
-   */
   updateArming(delta) {
     this.moveY -= CHANGE_INCREMENT_Y * delta;
 
@@ -137,10 +117,6 @@ export default class Hand extends EventEmitter {
     }
   }
 
-  /**
-   * Update the container in the unarming state.
-   * @param  {Number} delta The delta time.
-   */
   updateUnarming(delta) {
     this.moveY += CHANGE_INCREMENT_Y * delta;
 
@@ -155,50 +131,26 @@ export default class Hand extends EventEmitter {
     }
   }
 
-  /**
-   * Add a callback to the arming event.
-   * @param  {Function} callback The callback for the event.
-   */
   onArming(callback) {
     this.on(EVENTS.ARMING, callback);
   }
 
-  /**
-   * Add a callback to the unarming event.
-   * @param  {Function} callback The callback for the event.
-   */
   onUnarming(callback) {
     this.on(EVENTS.UNARMING, callback);
   }
 
-  /**
-   * Add a callback to the aiming event.
-   * @param  {Function} callback The callback for the event.
-   */
   onAiming(callback) {
     this.on(EVENTS.AIMING, callback);
   }
 
-  /**
-   * Can the weapon be changed.
-   * @return {Boolean} Can the weapon be changed.
-   */
   canChangeWeapon() {
     return this.state === STATES.AIMING || this.state === STATES.UNARMED;
   }
 
-  /**
-   * Can the weapon be used.
-   * @return {Boolean} Can the weapon be changed.
-   */
   canUseWeapon() {
     return this.state === STATES.AIMING;
   }
 
-  /**
-   * Set the aiming state.
-   * @returns {Boolean} The state changed.
-   */
   setAiming() {
     const isStateChanged = this.setState(STATES.AIMING);
 
@@ -209,10 +161,6 @@ export default class Hand extends EventEmitter {
     return isStateChanged;
   }
 
-  /**
-   * Set the arming state.
-   * @returns {Boolean} The state changed.
-   */
   setArming() {
     const isStateChanged = this.setState(STATES.ARMING);
 
@@ -223,10 +171,6 @@ export default class Hand extends EventEmitter {
     return isStateChanged;
   }
 
-  /**
-   * Set the unarming state.
-   * @returns {Boolean} The state changed.
-   */
   setUnarming() {
     if (this.setState(STATES.UNARMING)) {
       this.emit(EVENTS.UNARMING);
@@ -237,24 +181,14 @@ export default class Hand extends EventEmitter {
     return false;
   }
 
-  /**
-   * Set the dead state.
-   */
   setDying() {
     return this.setState(STATES.DYING);
   }
 
-  /**
-   * Set the stae to unarmed.
-   */
   setUnarmed() {
     return this.setState(STATES.UNARMED);
   }
 
-  /**
-   * Set the state.
-   * @param {String} state The state to set.
-   */
   setState(state) {
     if (this.state !== state) {
       this.state = state;
@@ -264,25 +198,14 @@ export default class Hand extends EventEmitter {
     return false;
   }
 
-  /**
-   * Destroy the hand.
-   */
   destroy() {
     this.removeAllListeners();
   }
 
-  /**
-   * The vertical position of the hand.
-   * @return {Number} The vertical position of the hand.
-   */
   get posY() {
     return this.moveY + this.breath;
   }
 
-  /**
-   * The horizontal position of the hand.
-   * @return {Number} The horizontal position of the hand.
-   */
   get posX() {
     return this.rotateX;
   }

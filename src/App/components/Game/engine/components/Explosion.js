@@ -8,28 +8,7 @@ const INCREMENT = 360 / 24;
 
 const ANGLES = [...Array(SPREAD).keys()].map(i => degrees(i * INCREMENT));
 
-/**
- * Class representing a hit scan.
- * @extends {Body}
- */
 export default class Explosion extends Body {
-  /**
-   * Creates an explosion.
-   * @param  {Number}  options.x            The x coordinate of the body.
-   * @param  {Number}  options.y            The y coordinate of the body.
-   * @param  {Number}  options.z            The z coordinate of the body.
-   * @param  {Number}  options.width        The width of the body.
-   * @param  {Number}  options.height       The length of the body.
-   * @param  {Number}  options.height       The height of the body.
-   * @param  {Boolean} options.blocking     The blocking value of the body.
-   * @param  {Number}  options.anchor       The anchor of the body.
-   * @param  {Body}    options.source       The source of the explosion.
-   * @param  {Number}  options.range        The range of the explosion.
-   * @param  {Object}  options.sounds       The explosion sounds.
-   * @param  {Number}  options.power        The power of the explosion.
-   * @param  {Object}  options.effects      The explosion effects.
-   * @param  {Number}  options.flash        The explosion flash.
-   */
   constructor({
     source,
     range,
@@ -63,9 +42,6 @@ export default class Explosion extends Body {
     }));
   }
 
-  /**
-   * Run the explosion.
-   */
   run() {
     this.parent = this.source.parent;
     this.x = this.source.x;

@@ -3,15 +3,7 @@ import { SCREEN } from '@constants/config';
 
 const SCALE_RATIO = SCREEN.HEIGHT / 180;
 
-/**
- * Class representing a weapon sprite.
- */
 export default class WeaponSprite extends AnimatedSprite {
-  /**
-   * Creates a weapon sprite.
-   * @param  {Object} textureCollection A hashmap containing the textures.
-   * @param  {Player} player            The player.
-   */
   constructor(textureCollection, player) {
     super(textureCollection[player.weapons[0].name].idle, {
       animationSpeed: 0.25,
@@ -55,9 +47,6 @@ export default class WeaponSprite extends AnimatedSprite {
     this.reset();
   }
 
-  /**
-   * Set the idle animation.
-   */
   reset() {
     const { weapon } = this.player;
 
@@ -70,9 +59,6 @@ export default class WeaponSprite extends AnimatedSprite {
     this.gotoAndStop(0);
   }
 
-  /**
-   * Set the using animation.
-   */
   fire() {
     const { name, automatic } = this.player.weapon;
 

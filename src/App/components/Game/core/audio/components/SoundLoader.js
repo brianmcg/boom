@@ -3,17 +3,7 @@ import Sound from './Sound';
 
 const cache = new Map();
 
-/**
- * Class representing a sound loader.
- */
 export default class SoundLoader {
-  /**
-   * Load a sound
-   * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.spriteSrc  The path to the sprite data.
-   * @param  {Object}   options.loop       Should the sound loop.
-   * @return {Promise}                     Promise that is resolved when the sound is loaded.
-   */
   static load({ src, spriteSrc, loop }) {
     if (spriteSrc) {
       return SoundLoader.loadSprite({ src, spriteSrc });
@@ -22,12 +12,6 @@ export default class SoundLoader {
     return SoundLoader.loadSrc({ src, loop });
   }
 
-  /**
-   * Load the sound sprite.
-   * @param  {String}   options.src        The path to the sound file.
-   * @param  {Object}   options.spriteSrc  The path to the sprite data.
-   * @return {Promise}                     Promise that is resolved when the sound is loaded.
-   */
   static async loadSprite({ src, spriteSrc }) {
     const response = await fetch(spriteSrc);
     const sprite = await response.json();
@@ -38,12 +22,6 @@ export default class SoundLoader {
     return sound.load();
   }
 
-  /**
-   * Load the sound
-   * @param  {String}   options.src   The path to the sound file.
-   * @param  {Object}   options.loop  Should the sound loop.
-   * @return {Promise}                Promise that is resolved when the sound is loaded.
-   */
   static loadSrc({ src, loop }) {
     const sound = new Sound({ src, loop, mute: DISABLE_MUSIC });
 
@@ -52,10 +30,6 @@ export default class SoundLoader {
     return sound.load();
   }
 
-  /**
-   * Unload sounds
-   * @param  {Array}  keys The cache keys of the sound to unload.
-   */
   static unload(src = [...cache.keys()]) {
     const keys = Array.isArray(src) ? src : [src];
 

@@ -1,7 +1,3 @@
-/**
- * @module  game/core/ai/helpers
- */
-
 import BinaryHeap from './components/BinaryHeap';
 import { manhattan } from './heuristics';
 
@@ -19,14 +15,6 @@ const pathTo = node => {
   return path;
 };
 
-/**
- * Get the path between two nodes in a graph.
- * @param  {Graph}    graph             The graph.
- * @param  {GridNode} start             The start node.
- * @param  {GridNode} end               The end node.
- * @param  {Function} options.heuristic The cost heuristic.
- * @return {Array}                      The path to the end.
- */
 export const astarSearch = (graph, start, end, options = {}) => {
   graph.init();
 

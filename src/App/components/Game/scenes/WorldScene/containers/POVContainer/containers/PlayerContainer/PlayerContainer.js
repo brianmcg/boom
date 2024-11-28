@@ -5,15 +5,7 @@ import HUDContainer from './containers/HUDContainer';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 30;
 
-/**
- * Class representing an map container.
- */
 export default class PlayerContainer extends Container {
-  /**
-   * Creates a PlayerContainer.
-   * @param  {Player} player  The player.
-   * @param  {Object} sprites The player sprites.
-   */
   constructor(player, sprites = {}) {
     super();
 
@@ -33,10 +25,6 @@ export default class PlayerContainer extends Container {
     player.onDying(() => this.removeHud());
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta The delta time.
-   */
   update(ticker) {
     const { weapon } = this.sprites;
     const { hand, parent } = this.player;
@@ -59,17 +47,10 @@ export default class PlayerContainer extends Container {
     super.update(ticker);
   }
 
-  /**
-   * Remove the HUD container.
-   */
   removeHud() {
     this.removeChild(this.hudContainer);
   }
 
-  /**
-   * Destroy the container.
-   * @param  {Object} options The destroy options.
-   */
   destroy(options) {
     const { weapon } = this.sprites;
 

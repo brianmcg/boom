@@ -1,13 +1,6 @@
 import { Howl } from 'howler';
 
-/**
- * Class representing a sound.
- */
 export default class Sound extends Howl {
-  /**
-   * @param  {String} options.src     The sound source.
-   * @param  {Object} options.sprite  The sprite description.
-   */
   constructor({ src, sprite, loop = false, mute = false }) {
     super({
       src: [src],
@@ -18,9 +11,6 @@ export default class Sound extends Howl {
     });
   }
 
-  /**
-   * @return {Promise}  Resolves when sound loads.
-   */
   load() {
     super.load();
 
@@ -29,9 +19,6 @@ export default class Sound extends Howl {
     });
   }
 
-  /**
-   * @return {Boolean}  Is the sound loaing.
-   */
   isLoaded() {
     return this.state() === 'loaded';
   }

@@ -14,37 +14,7 @@ const SPATTER_DISTANCE = Math.sqrt(
 
 const CELL_CENTER = CELL_SIZE / 4;
 
-/**
- * Abstract class representing an actor.
- * @extends {AbstractDestroyableEntity}
- */
 export default class AbstractActor extends AbstractDestroyableEntity {
-  /**
-   * Creates an abstract actor.
-   * @param  {Number}  options.x            The x coordinate of the actor.
-   * @param  {Number}  options.y            The y coordinate of the actor.
-   * @param  {Number}  options.z            The z coordinate of the actor.
-   * @param  {Number}  options.width        The width of the actor.
-   * @param  {Number}  options.height       The length of the actor.
-   * @param  {Number}  options.height       The height of the actor.
-   * @param  {Boolean} options.blocking     The blocking value of the actor.
-   * @param  {Number}  options.anchor       The anchor of the actor.
-   * @param  {Number}  options.angle        The angle of the actor.
-   * @param  {Number}  options.weight       The weight of the actor.
-   * @param  {Number}  options.autoPlay     The autopPlay value of the actor.
-   * @param  {String}  options.name         The name of the actor.
-   * @param  {Object}  options.sounds       The actor sounds.
-   * @param  {Object}  options.soundSprite  The actor sound sprite.
-   * @param  {Number}  options.scale        The actor scale.
-   * @param  {Object}  options.tail         The actor tail.
-   * @param  {Number}  options.health       The current health of the actor.
-   * @param  {Number}  options.maxHealth    The maximum health of the actor.
-   * @param  {Object}  options.effects      The effects of the actor.
-   * @param  {Number}  options.speed        The speed of the actor.
-   * @param  {Number}  options.acceleration The acceleration of the actor.
-   * @param  {Array}   options.spatters     The spatter values of the actor.
-   * @param  {String}  options.bloodColor   The blood color of the actor.
-   */
   constructor({ speed, acceleration, spatters, bloodColor, ...other }) {
     super(other);
 
@@ -75,20 +45,11 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     });
   }
 
-  /**
-   * Called when body is added to world.
-   * @param  {World} parent  The world that the body was added to.
-   */
   onAdded(parent) {
     super.onAdded(parent);
     this.startCell = this.cell;
   }
 
-  /**
-   * Update the actor.
-   * @param  {Number} delta     The time delta.
-   * @param  {Number} elapsedMS The elsapsed time in milliseconds.
-   */
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
 
@@ -105,32 +66,16 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     }
   }
 
-  /**
-   * Is the enemy alive.
-   * @return {Boolean}
-   */
   isAlive() {
     if (this.constructor === AbstractActor) {
       throw new TypeError('You have to implement this method.');
     }
   }
 
-  /**
-   * Set the actor angle to face a body.
-   * @param  {Body} body The body to face.
-   */
   face(body) {
     this.angle = this.getAngleTo(body);
   }
 
-  /**
-   * Add a hit to the actor.
-   * @param {Number}  options.damage       The damage of the hit.
-   * @param {Number}  options.angle        The angle of the hit.
-   * @param {Array}   options.rays         The ray sections.
-   * @param {Object}  options.point        The point of the collision.
-   * @param {Boolean} options.instantKill  The hit instantly kills.
-   */
   hit({ rays, point, ...options }) {
     super.hit(options);
 
@@ -195,11 +140,6 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     }
   }
 
-  /**
-   * Hurt the actor.
-   * @param  {Number}  damage       The amount to hurt the actor.
-   * @param  {Number}  angle        The angle the damage came from.
-   */
   hurt(damage, angle) {
     if (this.health > 0) {
       const originAngle = (angle + DEG_180) % DEG_360;
@@ -219,11 +159,6 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     super.hurt(damage, angle);
   }
 
-  /**
-   * Check if actor has arrived at a cell.
-   * @param  {Cell}     cell The cell to check.
-   * @return {Boolean}
-   */
   isArrivedAt(cell) {
     if (!cell) {
       return false;
@@ -235,10 +170,6 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     );
   }
 
-  /**
-   * Get the type of effects spatter.
-   * @return {Number} The type of effects spatter.
-   */
   spatter() {
     if (this.spatters.length) {
       const randomIndex = Math.floor(Math.random() * this.spatters.length);
@@ -249,10 +180,6 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     return 0;
   }
 
-  /**
-   * Stain the floor of the parent.
-   * @param  {Number} radius The radius of the stain.
-   */
   stain(radius) {
     const { x, y, parent, bloodColor } = this;
 

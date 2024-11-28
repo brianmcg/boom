@@ -1,7 +1,3 @@
-/**
- * @module  game/core/physics/helpers
- */
-
 import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
 
@@ -52,12 +48,6 @@ const DEG_180 = degrees(180);
 const DEG_270 = degrees(270);
 const DEG_360 = degrees(360);
 
-/**
- * Get the distance between two bodies.
- * @param  {Body}   bodyA The first body.
- * @param  {Body}   bodyB The second body
- * @return {Number}       The distance result.
- */
 export const getDistanceBetween = (bodyA, bodyB) => {
   const dx = bodyA.x - bodyB.x;
   const dy = bodyA.y - bodyB.y;
@@ -142,13 +132,6 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   return true;
 };
 
-/**
- * A collision between a ray and a body has occured.
- * @param  {Body}    body           The body.
- * @param  {Object}  ray.startPoint The first point of the ray.
- * @param  {Object}  ray.endPoint   The second point of the ray.
- * @return {Boolean}                Represents whether a collision has occured.
- */
 export const isRayCollision = (body, { startPoint, endPoint }) => {
   const { x, y, width, length } = body.shape;
 
@@ -170,13 +153,6 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
   );
 };
 
-/**
- * A collision between a ray and a body has occured.
- * @param  {Body}    body           The body.
- * @param  {Object}  ray.startPoint The first point of the ray.
- * @param  {Object}  ray.endPoint   The second point of the ray.
- * @return {Object}                 The point where the collision occurred.
- */
 export const getRayCollision = (body, { startPoint, endPoint }) => {
   const { x, y, width } = body.shape;
 
@@ -222,12 +198,6 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
   }, null);
 };
 
-/**
- * Check if two bodies are colliding.
- * @param  {Body} bodyA The first body.
- * @param  {Body} bodyB The second body.
- * @return {Boolean}    Are the bodies colliding.
- */
 export const isBodyCollision = (bodyA, bodyB) => {
   // Note: used for alternative collision detection.
   const startPoint = bodyA.previousPos;
@@ -245,12 +215,6 @@ export const isBodyCollision = (bodyA, bodyB) => {
   return collision || isRayCollision(bodyB, { startPoint, endPoint });
 };
 
-/**
- * Get angle between two bodies.
- * @param  {Body} bodyA The first body.
- * @param  {Body} bodyB The second body.
- * @return {Number}     The angle between two bodies.
- */
 export const getAngleBetween = (bodyA, bodyB) => {
   const dx = bodyB.x - bodyA.x;
   const dy = bodyB.y - bodyA.y;
@@ -260,12 +224,6 @@ export const getAngleBetween = (bodyA, bodyB) => {
   return angle < 0 ? angle + DEG_360 : angle;
 };
 
-/**
- * Is a dynamic body facing a another body.
- * @param  {DynamicBody}  bodyA   The first body.
- * @param  {Body}         bodyB   The second body.
- * @return {Boolean}              Is the dynamic body facing the body.
- */
 export const isFacing = (bodyA, bodyB) => {
   const angle =
     (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
@@ -496,14 +454,6 @@ const castCellRay = ({
   };
 };
 
-/**
- * Cast a ray.
- * @param  {Number} options.x     The x coordinate of the starting point.
- * @param  {Number} options.y     The y coordinate of the starting point.
- * @param  {Number} options.angle The angle of the ray.
- * @param  {World}  options.world The world in which the ray is cast.
- * @return {Object}               The cast result.
- */
 const castRaySection = ({
   x,
   y,
@@ -973,14 +923,6 @@ const castRaySection = ({
   };
 };
 
-/**
- * Cast a ray that goes through transparent cells.
- * @param  {Number} options.x     The x coordinate of the starting point.
- * @param  {Number} options.y     The y coordinate of the starting point.
- * @param  {Number} options.angle The angle of the ray.
- * @param  {World}  options.world The world in which the ray is cast.
- * @return {Array}                The raycast results.
- */
 export const castRay = ({ x, y, angle, world, checkInitialCell, ...other }) => {
   let currentRay;
   let previousRay;

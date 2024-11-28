@@ -2,15 +2,7 @@ import { MOUSE_SENSITIVITY } from '@constants/config';
 import Button from './components/Button';
 import { BUTTON_CODES } from './constants';
 
-/**
- * Class representing a mouse.
- */
 export default class Mouse {
-  /**
-   * Creates a mouse.
-   * @param  {Element} options.el               The canvas element.
-   * @param  {Number} options.moveSensitivity   The mouse moveSensitivity.
-   */
   constructor(el, moveSensitivity = MOUSE_SENSITIVITY) {
     const onMouseMove = e => {
       const x =
@@ -78,11 +70,6 @@ export default class Mouse {
     this.el = el;
   }
 
-  /**
-   * Get a button.
-   * @param  {String} name The name of the button.
-   * @return {Key}         The button.
-   */
   get(name) {
     if (this.buttons[name]) {
       return this.buttons[name];
@@ -93,25 +80,14 @@ export default class Mouse {
     return this.buttons[name];
   }
 
-  /**
-   * Add a callback to the move event.
-   * @param  {Function} callback The callback.
-   */
   onMove(callback) {
     this.moveCallback = callback;
   }
 
-  /**
-   * Add a callback to the wheel event.
-   * @param  {Function} callback The callback.
-   */
   onWheel(callback) {
     this.wheelCallback = callback;
   }
 
-  /**
-   * Lock the mouse pointer.
-   */
   lockPointer() {
     if (!this.isPointerLocked()) {
       return this.el.requestPointerLock();
@@ -120,19 +96,12 @@ export default class Mouse {
     return Promise.resolve();
   }
 
-  /**
-   * Unlock the mouse pointer.
-   */
   unlockPointer() {
     if (this.isPointerLocked()) {
       document.exitPointerLock();
     }
   }
 
-  /**
-   * Is the mouse pointer locked.
-   * @return {Boolean}
-   */
   isPointerLocked() {
     return (
       document.pointerLockElement === this.el ||
@@ -141,9 +110,6 @@ export default class Mouse {
     );
   }
 
-  /**
-   * Remove all callbacks.
-   */
   removeCallbacks() {
     this.buttons = {};
     delete this.moveCallback;

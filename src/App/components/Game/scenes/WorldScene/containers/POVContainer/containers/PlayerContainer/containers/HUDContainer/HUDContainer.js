@@ -14,15 +14,7 @@ const displayHealth = ({ health, maxHealth }) =>
 const displayAmmo = ({ weapon }) =>
   Number.isNaN(Number(weapon?.ammo)) ? '-' : weapon.ammo;
 
-/**
- * Class representing a hud container.
- */
 export default class HUDContainer extends Container {
-  /**
-   * Creates a hud container.
-   * @param  {Player} player  The player.
-   * @param  {Object} sprites The hud sprites.
-   */
   constructor(player, sprites) {
     super();
 
@@ -104,10 +96,6 @@ export default class HUDContainer extends Container {
     this.sprites = sprites;
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta The delta time.
-   */
   update(ticker) {
     const { keys, foreground } = this.sprites;
 
@@ -140,16 +128,10 @@ export default class HUDContainer extends Container {
     }
   }
 
-  /**
-   * Update the ammo amount text.
-   */
   updateHealth() {
     this.sprites.healthAmount.text = displayHealth(this.player);
   }
 
-  /**
-   * Update the health amount text.
-   */
   updateAmmo() {
     const { weapon } = this.player;
 
@@ -161,10 +143,6 @@ export default class HUDContainer extends Container {
     }
   }
 
-  /**
-   * Destroy the container.
-   * @param  {Object} options The destroy options.
-   */
   destroy(options) {
     const { keys } = this.sprites;
 

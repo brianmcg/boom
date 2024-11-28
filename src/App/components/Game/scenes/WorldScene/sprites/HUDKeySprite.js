@@ -12,14 +12,7 @@ const ROTATION_INCREMENT = 0.3;
 
 const SCALE_INCREMENT = 0.075;
 
-/**
- * Class representing a hud keyCard sprite.
- */
 export default class HUDKeySprite extends HUDSprite {
-  /**
-   * Creates a hud keyCard sprite
-   * @param  {Texture} texture     The sprite texture.
-   */
   constructor(texture) {
     super(texture);
 
@@ -30,10 +23,6 @@ export default class HUDKeySprite extends HUDSprite {
     this.anchor.set(0.5);
   }
 
-  /**
-   * Update the sprite.
-   * @param  {Number} delta The delta time.
-   */
   update(ticker) {
     switch (this.state) {
       case STATES.USING:
@@ -47,10 +36,6 @@ export default class HUDKeySprite extends HUDSprite {
     }
   }
 
-  /**
-   * Update when in using state.
-   * @param  {Number} delta The delta time.
-   */
   updateUsing(deltaTime) {
     this.rotation += ROTATION_INCREMENT * deltaTime;
 
@@ -60,10 +45,6 @@ export default class HUDKeySprite extends HUDSprite {
     }
   }
 
-  /**
-   * Update when in equipping state.
-   * @param  {Number} delta The delta time.
-   */
   updateEquipping(deltaTime) {
     this.scaleFactor += SCALE_INCREMENT * deltaTime;
 
@@ -75,18 +56,10 @@ export default class HUDKeySprite extends HUDSprite {
     this.scale.set(this.scaleFactor);
   }
 
-  /**
-   * Set the state to inactive.
-   * @return {Boolean} State change successfull.
-   */
   setInactive() {
     return this.setState(STATES.INACTIVE);
   }
 
-  /**
-   * Set the state to equipping.
-   * @return {Boolean} State change successfull.
-   */
   setEquipping() {
     const isStateChanged = this.setState(STATES.EQUIPPING);
 
@@ -98,34 +71,18 @@ export default class HUDKeySprite extends HUDSprite {
     return isStateChanged;
   }
 
-  /**
-   * Set the state to using.
-   * @return {Boolean} State change successfull.
-   */
   setUsing() {
     return this.setState(STATES.USING);
   }
 
-  /**
-   * Is the state inactive.
-   * @return {Boolean} The state is active.
-   */
   isInactive() {
     return this.state === STATES.INACTIVE;
   }
 
-  /**
-   * Is the state equipping.
-   * @return {Boolean} The state is active.
-   */
   isEquipping() {
     return this.state === STATES.EQUIPPING;
   }
 
-  /**
-   * Is the state using.
-   * @return {Boolean} The state is active.
-   */
   isUsing() {
     return this.state === STATES.USING;
   }

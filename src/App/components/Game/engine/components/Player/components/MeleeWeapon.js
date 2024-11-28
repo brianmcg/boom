@@ -1,9 +1,5 @@
 import HitScanWeapon from './HitScanWeapon';
 
-/**
- * Class representing a weapon.
- * @extends {EventEmitter}
- */
 export default class MeleeWeapon extends HitScanWeapon {
   use() {
     const result = super.use();

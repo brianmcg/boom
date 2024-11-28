@@ -15,17 +15,7 @@ const EVENTS = {
   ANIMATION_COMPLETE: 'sprite:animation:complete',
 };
 
-/**
- * Class representing an EnemySprite.
- * @extends {AnimatedEntitySprite}
- */
 export default class EnemySprite extends AnimatedEntitySprite {
-  /**
-   * Creates an EnemySprite.
-   * @param  {Array}          textureCollection   The textures for the sprite.
-   * @param  {AbstractEnemy}  options.enemy       The enemy the sprite represents.
-   * @param  {Number}         options.floorOffset The offset of the floor.
-   */
   constructor(textureCollection = [], { enemy, floorOffset } = {}) {
     const { textures } = textureCollection[STATES.IDLE];
 
@@ -64,11 +54,6 @@ export default class EnemySprite extends AnimatedEntitySprite {
     };
   }
 
-  /**
-   * Set the animation.
-   * @param {String}  state The animation state
-   * @param {Boolean} loop  Should the animation loop.
-   */
   setAnimation(state) {
     const { textures, loop } = this.textureCollection[state];
 
@@ -79,18 +64,10 @@ export default class EnemySprite extends AnimatedEntitySprite {
     this.emit(EVENTS.ANIMATION_CHANGE);
   }
 
-  /**
-   * Add a callback for the animation change event.
-   * @param  {Function} callback The callback function.
-   */
   onAnimationChange(callback) {
     this.on(EVENTS.ANIMATION_CHANGE, callback);
   }
 
-  /**
-   * Add a callback for the animation complete event.
-   * @param  {Function} callback The callback function.
-   */
   onAnimationComplete(callback) {
     this.on(EVENTS.ANIMATION_COMPLETE, callback);
   }

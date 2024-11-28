@@ -32,14 +32,7 @@ const formatPercent = (achieved, total) => {
   return isNumber(percent) ? `${percent}%` : '-';
 };
 
-/**
- * Class representing a review container.
- */
 export default class ReviewContainer extends Container {
-  /**
-   * Creates a review container.
-   * @param  {Object} sprites   The sprites for the container.
-   */
   constructor(sprites, sounds) {
     super();
 
@@ -74,26 +67,14 @@ export default class ReviewContainer extends Container {
     this.on('added', () => this.showNext());
   }
 
-  /**
-   * Add a callback for the show stat event.
-   * @param  {Function} callback The callback function.
-   */
   onShowStat(callback) {
     this.on(EVENTS.SHOW_STAT, callback);
   }
 
-  /**
-   * Emit the show stat event.
-   * @param {String} sound  The sound to play.
-   */
   emitShowStat(sound) {
     this.emit(EVENTS.SHOW_STAT, sound);
   }
 
-  /**
-   * Updates the containner.
-   * @param  {Number} delta the delta time.
-   */
   update(ticker) {
     super.update(ticker);
 
@@ -109,18 +90,11 @@ export default class ReviewContainer extends Container {
     }
   }
 
-  /**
-   * Update the pause effect.
-   * @param  {Number} value The value of the effect.
-   */
   fade(value) {
     super.fade(1 - value);
     this.alphaFactor = value * MAX_ALPHA;
   }
 
-  /**
-   * Show the next stat.
-   */
   showNext() {
     const next = this.statContainers[this.currentIndex];
 
@@ -130,14 +104,6 @@ export default class ReviewContainer extends Container {
     }
   }
 
-  /**
-   * Set the statistics text.
-   * @param {Number} options.enemiesKilled The number of enemies killed.
-   * @param {Number} options.enemiesTotal  The total number of enemies.
-   * @param {Number} options.itemsFound    The number of items found.
-   * @param {Number} options.itemsTotal    The total number of items.
-   * @param {Number} options.timeTaken     The time since the world was created.
-   */
   setStatistics({
     enemiesKilled,
     enemiesTotal,
@@ -164,10 +130,6 @@ export default class ReviewContainer extends Container {
     });
   }
 
-  /**
-   * Destroy the container.
-   * @param  {Object} options The destroy options.
-   */
   destroy(options) {
     this.statContainers.forEach(container => {
       this.removeChild(container);

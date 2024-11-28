@@ -1,19 +1,6 @@
 import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
-/**
- * Class representing an AnimatedSprite.
- * @extends {PIXI.Sprite}
- */
 export default class AnimatedSprite extends PixiAnimatedSprite {
-  /**
-   * Creates an AnimatedSprite
-   * @param  {Array}   textures               The sprite textures.
-   * @param  {Number}  options.animationSpeed The sprite animationSpeed.
-   * @param  {Number}  options.tint           The sprite tint.
-   * @param  {Number}  options.alpha          The sprite alpha.
-   * @param  {Boolean} options.loop           The sprite loop.
-   * @param  {Number}  options.anchor         The sprite anchor.
-   */
   constructor(
     textures,
     { animationSpeed = 1, tint, alpha = 1, loop = false, anchor = 0 } = {}
@@ -43,23 +30,14 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     }
   }
 
-  /**
-   * Pause the sprite.
-   */
   pause() {
     super.stop();
   }
 
-  /**
-   * Show the sprite.
-   */
   show() {
     this.visible = true;
   }
 
-  /**
-   * Hide the sprite.
-   */
   hide() {
     this.visible = false;
   }

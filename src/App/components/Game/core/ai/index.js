@@ -1,7 +1,3 @@
-/**
- * @module  game/core/ai
- */
-
 import { astarSearch } from './helpers';
 import { manhattan, diagonal } from './heuristics';
 import Graph from './components/Graph';

@@ -4,15 +4,6 @@ import { GraphicsCreator } from '@game/core/graphics';
 import LogoSprite from './sprites/LogoSprite';
 import SparksSprite from './sprites/SparksSprite';
 
-/**
- * @module game/scenes/title-scene/parsers
- */
-
-/**
- * Parses the loaded scene resources.
- * @param  {Object} options.graphics    The scene graphics.
- * @return {Object}                     The parsed scene data.
- */
 export const parse = ({ graphics, renderer }) => {
   const { data, textures } = graphics;
   const { animations } = data;

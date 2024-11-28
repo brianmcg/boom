@@ -1,7 +1,3 @@
-/**
- * @module game/scenes/world-scene/parsers/bodies
- */
-
 import { degrees, AXES } from '@game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from '@constants/assets';
 import { CELL_SIZE, ALL_WEAPONS, ALONE } from '@constants/config';
@@ -187,11 +183,6 @@ const createEnemy = ({
   });
 };
 
-/**
- * Create a world.
- * @param  {Object} data   The world data.
- * @return {World}         The created world.
- */
 export const createWorld = ({ scene, data, graphics }) => {
   const { soundSprite } = scene.game;
   const spatterTypes = Object.values(data.props.enemies).reduce(

@@ -11,14 +11,7 @@ const EVENTS = {
   CLOSE: 'menu:close',
 };
 
-/**
- * A class representing a menu container.
- */
 export default class MenuContainer extends Container {
-  /**
-   * Creates a menu container.
-   * @param  {Object} sprites The sprites.
-   */
   constructor(sprites) {
     super();
 
@@ -59,23 +52,14 @@ export default class MenuContainer extends Container {
     });
   }
 
-  /**
-   * Add a callback for the select event.
-   */
   onSelect(callback) {
     this.on(EVENTS.SELECT, callback);
   }
 
-  /**
-   * Add a callback for the select event.
-   */
   onClose(callback) {
     this.on(EVENTS.CLOSE, callback);
   }
 
-  /**
-   * Update the container.
-   */
   update(ticker) {
     super.update(ticker);
 
@@ -95,18 +79,11 @@ export default class MenuContainer extends Container {
     });
   }
 
-  /**
-   * Update the pause effect.
-   * @param  {Number} value The value of the effect.
-   */
   fade(value) {
     this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
   }
 
-  /**
-   * Highlight the next menu item.
-   */
   highlightNext() {
     const { length } = this.sprites.labels;
 
@@ -119,9 +96,6 @@ export default class MenuContainer extends Container {
     }
   }
 
-  /**
-   * Highlight the previous menu item.
-   */
   highlightPrevious() {
     const { length } = this.sprites.labels;
 
@@ -134,16 +108,10 @@ export default class MenuContainer extends Container {
     }
   }
 
-  /**
-   * Select an option.
-   */
   select() {
     this.selectedIndex = this.index;
   }
 
-  /**
-   * Set the index.
-   */
   setIndex(index) {
     const { labels } = this.sprites;
 
@@ -155,23 +123,14 @@ export default class MenuContainer extends Container {
     this.index = index;
   }
 
-  /**
-   * Play the container. This has the opposite effect of regular container.
-   */
   play() {
     super.stop();
   }
 
-  /**
-   * Stop the container. This has the opposite effect of regular container.
-   */
   stop() {
     super.play();
   }
 
-  /**
-   * Pause the container. This has the opposite effect of regular container.
-   */
   pause() {
     super.play();
   }

@@ -1,7 +1,3 @@
-/**
- * @module game/scenes/scene/parsers
- */
-
 import { TextSprite, GraphicsCreator } from '@game/core/graphics';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
@@ -48,12 +44,6 @@ const createMenuSprites = (menu, textures, animations) => {
   return { icon, labels, background };
 };
 
-/**
- * Parses the loaded scene assets.
- * @param  {Object} options.graphics  The scene graphics.
- * @param  {Array}  options.text      The scene text.
- * @return {Object}                   The parsed scene data.
- */
 export const parse = ({ graphics, text }) => {
   const { data, textures } = graphics;
   const { animations } = data;

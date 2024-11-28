@@ -1,20 +1,9 @@
-/**
- * Class representing a binary heap data structure.
- */
 export default class BinaryHeap {
-  /**
-   * Creates a binary heap.
-   * @param  {Function} scoreFunction The score function.
-   */
   constructor(scoreFunction) {
     this.content = [];
     this.scoreFunction = scoreFunction;
   }
 
-  /**
-   * Adds an element to the heap.
-   * @param  {GridNode} element The element to add.
-   */
   push(element) {
     // Add the new element to the end of the array.
     this.content.push(element);
@@ -23,10 +12,6 @@ export default class BinaryHeap {
     this.sinkDown(this.content.length - 1);
   }
 
-  /**
-   * Pop an elemnt from heap.
-   * @return {GridNode}
-   */
   pop() {
     // Store the first element so we can return it later.
     const result = this.content[0];
@@ -41,10 +26,6 @@ export default class BinaryHeap {
     return result;
   }
 
-  /**
-   * Remove a node.
-   * @param  {GridNode} node The node to remove.
-   */
   remove(node) {
     const i = this.content.indexOf(node);
 
@@ -63,26 +44,14 @@ export default class BinaryHeap {
     }
   }
 
-  /**
-   * Get the size of the heap.
-   * @return {Number} The heap size.
-   */
   size() {
     return this.content.length;
   }
 
-  /**
-   * Rescore a node.
-   * @param  {GridNode} node The node to rescore.
-   */
   rescoreElement(node) {
     this.sinkDown(this.content.indexOf(node));
   }
 
-  /**
-   * Sink a node down.
-   * @param  {Number} n The index of the node.
-   */
   sinkDown(n) {
     // Fetch the element that has to be sunk.
     const element = this.content[n];
@@ -104,10 +73,6 @@ export default class BinaryHeap {
     }
   }
 
-  /**
-   * Bubble up a node.
-   * @param  {Number} n The index of the node.
-   */
   bubbleUp(n) {
     // Look up the target element and its score.
     const { length } = this.content;

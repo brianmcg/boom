@@ -1,7 +1,3 @@
-/**
- * @module game/engine/components/world-scene/helpers
- */
-
 import { Graph } from '@game/core/ai';
 import { TRANSPARENCY } from '@game/core/physics';
 
@@ -41,12 +37,6 @@ const extrudeGrid = (grid, radius) => {
   return extrudedGrid;
 };
 
-/**
- * Create graphs for enemy pathfinding.
- * @param  {Array}  grid   The map grid.
- * @param  {Number} radius The collision radius.
- * @return {Array}         The array of Graphs.
- */
 export const createGraphs = (grid = [], radius = 1) => {
   const grids = [
     grid.map(col =>

@@ -1,13 +1,7 @@
 import Key from './components/Key';
 import { KEY_CODES } from './constants';
 
-/**
- * Class representing a keyboard.
- */
 export default class Keyboard {
-  /**
-   * Creates a keyboard instance.
-   */
   constructor() {
     this.keys = {};
 
@@ -46,11 +40,6 @@ export default class Keyboard {
     );
   }
 
-  /**
-   * Get a key.
-   * @param  {String} name The name of the key.
-   * @return {Key}         The key.
-   */
   get(name) {
     if (this.keys[name]) {
       return this.keys[name];
@@ -61,9 +50,6 @@ export default class Keyboard {
     return this.keys[name];
   }
 
-  /**
-   * Remove all callbacks.
-   */
   removeCallbacks() {
     this.keys = {};
   }

@@ -1,7 +1,3 @@
-/**
- * @module game/scenes/world-scene/parsers/sprites
- */
-
 import {
   ORANGE,
   BLUE,
@@ -1104,14 +1100,6 @@ const createWorldGraphics = ({ world }) => {
   };
 };
 
-/**
- * Creates the sprites for the scene.
- * @param  {World}  options.world     The world.
- * @param  {Object} options.graphics  The graphics.
- * @param  {Object} options.text      The text.
- * @param  {Object} options.renderer  The text.
- * @return {Object}                   The sprites for the scene.
- */
 export const createSprites = ({
   world,
   graphics,

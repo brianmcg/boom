@@ -5,29 +5,7 @@ import DynamicCell from './DynamicCell';
 
 const SHAKE_MULTIPLIER = 0.2;
 
-/**
- * Class representing a door.
- * @extends {DynamicCell}
- */
 export default class PushWall extends DynamicCell {
-  /**
-   * Creates a door cell
-   * @param  {Number}  options.x            The x coordinate of the cell.
-   * @param  {Number}  options.y            The y coordinate of the cell.
-   * @param  {Number}  options.z            The z coordinate of the cell.
-   * @param  {Number}  options.width        The width of the cell.
-   * @param  {Number}  options.height       The length of the cell.
-   * @param  {Number}  options.height       The height of the cell.
-   * @param  {Boolean} options.blocking     The blocking value of the cell.
-   * @param  {Number}  options.anchor       The anchor of the cell.
-   * @param  {String}  options.axis         The anchor of the cell.
-   * @param  {Number}  options.offset       The offset of the cell.
-   * @param  {Boolean} options.autoPlay     The cell autoPlay value.
-   * @param  {Object}  options.sides        The sides of the cell.
-   * @param  {Sound}   options.soundSprite  The soundSprite.
-   * @param  {Object}  options.sounds       The sounds.
-   * @param  {Boolean} options.reverse      Reverse the offset.
-   */
   constructor(options) {
     super(options);
 
@@ -35,10 +13,6 @@ export default class PushWall extends DynamicCell {
     this.direction = { x: 0, y: 0 };
   }
 
-  /**
-   * Push the wall.
-   * @param  {AbstractActor} user The user of the wall.
-   */
   use(user) {
     if (this.axis === AXES.X) {
       this.direction = {
@@ -67,10 +41,6 @@ export default class PushWall extends DynamicCell {
     }
   }
 
-  /**
-   * Update the door when in opening state.
-   * @param  {Number} delta The delta time.
-   */
   update(delta) {
     super.update(delta);
 
@@ -111,10 +81,6 @@ export default class PushWall extends DynamicCell {
     }
   }
 
-  /**
-   * Is there a space for the wall to move in to.
-   * @return {Boolean}
-   */
   canMove() {
     const x = this.gridX - this.direction.x;
     const y = this.gridY - this.direction.y;

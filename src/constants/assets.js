@@ -1,7 +1,3 @@
-/**
- * @module  game/constants/assets
- */
-
 const GAME_PATH = 'wad';
 
 const GAME_SOUNDS = {
@@ -19,29 +15,17 @@ const SCENE_MAP = 'map.json';
 
 const SCENE_PATH = `${GAME_PATH}/scenes`;
 
-/**
- * The scene types.
- * @type {Object}
- */
 export const SCENE_TYPES = {
   TITLE: 'title',
   WORLD: 'world',
   CREDITS: 'credits',
 };
 
-/**
- * The game font.
- * @type {Object}
- */
 export const GAME_FONT = {
   NAME: 'DoomRegular',
   FILE: 'font.xml',
 };
 
-/**
- * The enemy types.
- * @type {Object}
- */
 export const ENEMY_TYPES = {
   GUN: 'gunenemy',
   CHASE: 'chaseenemy',
@@ -50,10 +34,6 @@ export const ENEMY_TYPES = {
   ARACHNATRON: 'arachnatron',
 };
 
-/**
- * The enemy types.
- * @type {Object}
- */
 export const ITEM_TYPES = {
   KEY: 'keyitem',
   AMMO: 'ammoitem',

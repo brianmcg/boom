@@ -21,16 +21,7 @@ const FADE_PIXEL_SIZE = 4;
 
 const MAP_VIEW = DEBUG === 2;
 
-/**
- * Class representing a world scene.
- */
 export default class WorldScene extends Scene {
-  /**
-   * Create a world scene.
-   * @param  {Number} options.id      The id of the scene.
-   * @param  {Number} options.index   The index of the scene.
-   * @param  {String} options.game    The game running the scene.
-   */
   constructor({ id, index, ...options }) {
     super(options);
 
@@ -111,20 +102,11 @@ export default class WorldScene extends Scene {
     });
   }
 
-  /**
-   * Handle the prompt input.
-   */
   onPromptInput() {
     this.soundController.emitSound(this.sounds.complete);
     this.setRemovingReview();
   }
 
-  /**
-   * Create the world scene.
-   * @param  {Object} options.graphics The scene graphics.
-   * @param  {Object} options.data     The scene data.
-   * @param  {Object} options.sounds   The scene sounds.
-   */
   create({ graphics, data, sounds }) {
     super.create({ graphics, sounds });
 
@@ -162,10 +144,6 @@ export default class WorldScene extends Scene {
     this.world = world;
   }
 
-  /**
-   * Update the scene
-   * @param  {delta} delta The delta time.
-   */
   update(ticker) {
     switch (this.state) {
       case STATES.ADDING_REVIEW:
@@ -184,18 +162,10 @@ export default class WorldScene extends Scene {
     super.update(ticker);
   }
 
-  /**
-   * Update the scene in the running state.
-   * @param  {Number} delta The delta time.
-   */
   updateRunning(ticker) {
     this.world.update(ticker.deltaTime, ticker.elapsedMS);
   }
 
-  /**
-   * Update the scene when in a adding review state.
-   * @param  {Number} delta The delta value.
-   */
   updateAddingReview(deltaTime) {
     this.fadeAmount += FADE_INCREMENT * deltaTime;
 
@@ -209,20 +179,12 @@ export default class WorldScene extends Scene {
     });
   }
 
-  /**
-   * Update the scene in the reviewing state.
-   * @param  {Number} delta The delta time.
-   */
   updateDisplayingReview() {
     this.fade(this.fadeAmount, {
       pixelSize: FADE_PIXEL_SIZE,
     });
   }
 
-  /**
-   * Update the scene when in a removing review state.
-   * @param  {Number} delta The delta value.
-   */
   updateRemovingReview(deltaTime) {
     this.fadeAmount -= FADE_INCREMENT * deltaTime;
 
@@ -236,9 +198,6 @@ export default class WorldScene extends Scene {
     });
   }
 
-  /**
-   * Set the state to adding review.
-   */
   setAddingReview() {
     if (this.setState(STATES.ADDING_REVIEW)) {
       this.stop();
@@ -248,27 +207,16 @@ export default class WorldScene extends Scene {
     }
   }
 
-  /**
-   * Set player actions.
-   * @param {Object} actions The actions to set.
-   */
   assignPlayerAction(actions) {
     Object.assign(this.world.player.actions, actions);
   }
 
-  /**
-   * Increment player actions.
-   * @param  {Object} actions The actions to increment.
-   */
   incrementPlayerAction(actions) {
     Object.keys(actions).forEach(key => {
       this.world.player.actions[key] += actions[key];
     });
   }
 
-  /**
-   * Set the state to running;
-   */
   setRunning() {
     super.setRunning();
 
@@ -278,16 +226,10 @@ export default class WorldScene extends Scene {
     }
   }
 
-  /**
-   * Set the scene to the displaying review state.
-   */
   setDisplayingReview() {
     return this.setState(STATES.DISPLAYING_REVIEW);
   }
 
-  /**
-   * Set the state to removing review.
-   */
   setRemovingReview() {
     if (this.viewContainer.removeHud) {
       this.viewContainer.removeHud();
@@ -296,33 +238,21 @@ export default class WorldScene extends Scene {
     return this.setState(STATES.REMOVING_REVIEW);
   }
 
-  /**
-   * Play the scene.
-   */
   play() {
     super.play();
     this.world.play();
   }
 
-  /**
-   * Pause the scene.
-   */
   pause() {
     super.pause();
     this.world.pause();
   }
 
-  /**
-   * Stop the scene.
-   */
   stop() {
     super.stop();
     this.world.stop();
   }
 
-  /**
-   * Complete the scene.
-   */
   complete() {
     if (this.index < this.game.data.world.levels.length - 1) {
       this.game.showWorldScene({
@@ -334,17 +264,11 @@ export default class WorldScene extends Scene {
     }
   }
 
-  /**
-   * Trigger the complete event.
-   */
   triggerComplete() {
     this.removeChild(this.reviewContainer);
     super.triggerComplete();
   }
 
-  /**
-   * Restart the scene.
-   */
   restart() {
     this.game.showWorldScene({
       index: this.index,
@@ -352,16 +276,10 @@ export default class WorldScene extends Scene {
     });
   }
 
-  /**
-   * Quit the scene.
-   */
   quit() {
     this.game.showTitleScene();
   }
 
-  /**
-   * Destroy the scene.
-   */
   destroy(...options) {
     this.world.destroy();
     super.destroy(options);

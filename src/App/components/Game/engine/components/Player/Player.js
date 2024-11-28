@@ -52,27 +52,7 @@ const EVENTS = {
   EXIT: 'player:at:exit',
 };
 
-/**
- * Creates a player.
- * @extends {AbstractActor}
- */
 export default class Player extends AbstractActor {
-  /**
-   * Creates a player.
-   * @param  {Number} options.x                     The x coordinate of the player.
-   * @param  {Number} options.y                     The y coordinate of the player
-   * @param  {Number} options.width                 The width of the player.
-   * @param  {Number} options.height                The height of the player.
-   * @param  {Number} options.angle                 The angle of the player.
-   * @param  {Number} options.maxHealth             The maximum health of the player.
-   * @param  {Number}  options.health               The current health of the player.
-   * @param  {Number} options.speed                 The maximum speed of the player.
-   * @param  {Number} options.rotateSpeed         The maximum rotation speed of the player.
-   * @param  {Number} options.acceleration          The acceleration of the player.
-   * @param  {Number} options.rotateAcceleration  The rotation acceleration of the player.
-   * @param  {Array}  options.weapons               The player weapons data.
-   * @param  {Camera} options.camera                The player camera.
-   */
   constructor(options = {}) {
     const {
       rotateSpeed = 1,
@@ -179,90 +159,46 @@ export default class Player extends AbstractActor {
     this.setAlive();
   }
 
-  /**
-   * Add a callback for the message added event.
-   * @param  {Function} callback The callback function.
-   */
   onMessageAdded(callback) {
     this.on(EVENTS.MESSAGE_ADDED, callback);
   }
 
-  /**
-   * Add a callback for the use weapon event.
-   * @param  {Function} callback The callback function.
-   */
   onUseWeapon(callback) {
     this.on(EVENTS.USE_WEAPON, callback);
   }
 
-  /**
-   * Add a callback for the release weapon event.
-   * @param  {Function} callback The callback to add for the event.
-   */
   onReleaseWeapon(callback) {
     this.on(EVENTS.RELEASE_WEAPON, callback);
   }
 
-  /**
-   * Add a callback for player arriving at exit.
-   * @param  {Function} callback The callback function.
-   */
   onExit(callback) {
     this.on(EVENTS.EXIT, callback);
   }
 
-  /**
-   * Add a callback for the pick up event.
-   * @param  {Function} callback The callback function.
-   */
   onPickUp(callback) {
     this.on(EVENTS.PICK_UP, callback);
   }
 
-  /**
-   * Add a callback for the hurt event.
-   * @param  {Function} callback The callback function.
-   */
   onHurt(callback) {
     this.on(EVENTS.HURT, callback);
   }
 
-  /**
-   * Add a callback for the player dying event.
-   * @param  {Function} callback The callback function.
-   */
   onDying(callback) {
     this.on(EVENTS.DYING, callback);
   }
 
-  /**
-   * Add a callback for the player death event.
-   * @param  {Function} callback The callback function.
-   */
   onDeath(callback) {
     this.on(EVENTS.DEATH, callback);
   }
 
-  /**
-   * Add a callback to the arming event.
-   * @param  {Function} callback The callback.
-   */
   onArmWeapon(callback) {
     this.on(EVENTS.ARMING, callback);
   }
 
-  /**
-   * Add a callback to the unarming event.
-   * @param  {Function} callback The callback.
-   */
   onUnarmWeapon(callback) {
     this.on(EVENTS.UNARMING, callback);
   }
 
-  /**
-   * Start a world.
-   * @param  {String} message The message to display.
-   */
   start(message) {
     // Determine the initial weapon index
     // If weapon index is UNARMED, then try and set it to first equiped weapon.
@@ -282,10 +218,6 @@ export default class Player extends AbstractActor {
     this.addMessage(message, { priority: 1 });
   }
 
-  /**
-   * Update the player.
-   * @param  {Number} delta The delta time value.
-   */
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.ALIVE:
@@ -302,10 +234,6 @@ export default class Player extends AbstractActor {
     }
   }
 
-  /**
-   * Update the player in the default state.
-   * @param  {Number} delta The delta time value.
-   */
   updateAlive(delta, elapsedMS) {
     const {
       moveBackward,
@@ -460,10 +388,6 @@ export default class Player extends AbstractActor {
     super.update(delta, elapsedMS);
   }
 
-  /**
-   * Update the player in the dead state.
-   * @param  {Number} delta The delta time value.
-   */
   updateDying(delta) {
     // Update camera
     const { pitch, maxPitch } = this.camera;
@@ -498,10 +422,6 @@ export default class Player extends AbstractActor {
     this.viewPitch = this.camera.pitch;
   }
 
-  /**
-   * Update the player in the dead state.
-   * @param  {Number} delta The delta time.
-   */
   updateDead(delta, elapsedMS) {
     this.timer += elapsedMS;
 
@@ -511,18 +431,10 @@ export default class Player extends AbstractActor {
     }
   }
 
-  /**
-   * Add a player message.
-   * @param {String} text             The text of the message.
-   * @param {Number} options.priority The priority of the message.
-   */
   addMessage(text, options) {
     this.emit(EVENTS.MESSAGE_ADDED, text, options);
   }
 
-  /**
-   * Use current weapon.
-   */
   useWeapon() {
     if (this.hand.canUseWeapon()) {
       const { success, recoil, sound, flash } = this.weapon.use();
@@ -534,18 +446,11 @@ export default class Player extends AbstractActor {
     }
   }
 
-  /**
-   * Release the current weapon.
-   */
   releaseWeapon() {
     this.weapon?.setAiming();
     this.emit(EVENTS.RELEASE_WEAPON);
   }
 
-  /**
-   * Cycle to next weapon.
-   * @param  {Number} index The index of the weapon to cycle to.
-   */
   cycleWeapon(index) {
     const currentIndex = this.weaponIndex;
 
@@ -584,10 +489,6 @@ export default class Player extends AbstractActor {
     }
   }
 
-  /**
-   * Select the next weapon to use.
-   * @param  {String} type The type of weapon to use.
-   */
   selectWeapon(index, { silent = false } = {}) {
     if (this.weaponIndex !== index && this.hand.canChangeWeapon()) {
       const weapon = this.weapons[index];
@@ -607,9 +508,6 @@ export default class Player extends AbstractActor {
     }
   }
 
-  /**
-   * Select the previously equiped weapon.
-   */
   selectPreviousWeapon() {
     const nextIndex = this.weapons.reduce(
       (prevIndex, weapon, index) =>
@@ -624,11 +522,6 @@ export default class Player extends AbstractActor {
     });
   }
 
-  /**
-   * Hurt the player.
-   * @param  {Number} damage The amount to hurt the player.
-   * @param  {Number} angle  The angle the damage came from.
-   */
   hurt(damage, angle) {
     if (GOD_MODE) {
       return;
@@ -655,10 +548,6 @@ export default class Player extends AbstractActor {
     super.hurt(damage, angle);
   }
 
-  /**
-   * Pick up an item.
-   * @param  {Item} item The item to pick up.
-   */
   pickUp(item) {
     if (item.isAmmo) {
       return this.pickUpAmmo(item);
@@ -683,10 +572,6 @@ export default class Player extends AbstractActor {
     return false;
   }
 
-  /**
-   * Pick up a weapon
-   * @param  {Weapon} weapon  The weapon.
-   */
   pickUpWeapon({ weapon }) {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const pickedUpWeapon = this.weapons[index];
@@ -704,10 +589,6 @@ export default class Player extends AbstractActor {
     });
   }
 
-  /**
-   * Pick up ammo.
-   * @param  {Ammo} amount The amount of ammo.
-   */
   pickUpAmmo({ weapon, amount }) {
     const index = this.weapons.map(({ name }) => name).indexOf(weapon);
     const weaponToRefill = this.weapons[index];
@@ -720,10 +601,6 @@ export default class Player extends AbstractActor {
     return false;
   }
 
-  /**
-   * Pick up health.
-   * @param  {Number} amount The amount of health.
-   */
   pickUpHealth(health) {
     if (this.health < this.maxHealth) {
       this.health += health.amount;
@@ -740,10 +617,6 @@ export default class Player extends AbstractActor {
     return false;
   }
 
-  /**
-   * Pick up key.
-   * @param  {String} type The type of key.
-   */
   pickUpKey(key) {
     this.emitSound(this.sounds.item);
     this.keyCards[key.color].equip();
@@ -751,54 +624,27 @@ export default class Player extends AbstractActor {
     return true;
   }
 
-  /**
-   * Check if the player is facing a body.
-   * @param  {Body} dynamicBody The dynamic body.
-   * @param  {Body} body        The body.
-   * @return {Boolean}          The result of the check.
-   */
   isFacing(body) {
     const angle = (this.getAngleTo(body) - this.viewAngle + DEG_360) % DEG_360;
     return angle > DEG_270 || angle < DEG_90;
   }
 
-  /**
-   * Shake the player.
-   * @param  {Number} amount The amount to shake.
-   */
   shake(amount) {
     this.camera.setShake(amount);
   }
 
-  /**
-   * Recoil the player.
-   * @param  {Number} amount  The amount to recoil.
-   * @param  {Object} options The recoil options.
-   */
   recoil(amount, options) {
     this.camera.setRecoil(amount, options);
   }
 
-  /**
-   * Set the player to the alive state.
-   * @return {Boolean}
-   */
   setAlive() {
     return this.setState(STATES.ALIVE);
   }
 
-  /**
-   * Is the player in the alive state.
-   * @return {Boolean}
-   */
   isAlive() {
     return this.state === STATES.ALIVE;
   }
 
-  /**
-   * Set the player to the dying state.
-   * @return {Boolean}
-   */
   setDying() {
     const isStateChanged = this.setState(STATES.DYING);
 
@@ -810,51 +656,28 @@ export default class Player extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Is the player in the dying state.
-   * @return {Boolean}
-   */
   isDying() {
     return this.state === STATES.DYING;
   }
 
-  /**
-   * Set the player to the dead state.
-   * @return {Boolean}
-   */
   setDead() {
     return this.setState(STATES.DEAD);
   }
 
-  /**
-   * Is the player in the dead state.
-   * @return {Boolean} Is the player dead.
-   */
   isDead() {
     return this.state === STATES.DEAD;
   }
 
-  /**
-   * Destroy the player.
-   */
   destroy() {
     super.destroy();
     Object.values(this.keyCards).forEach(key => key.destroy());
     this.hand.destroy();
   }
 
-  /**
-   * Get the elavation offset for projectiles.
-   * @return {Number} The elavation offset.
-   */
   get elavationOffset() {
     return this.height - CELL_SIZE / 2;
   }
 
-  /**
-   * Get the player props.
-   * @return {Object} The player props.
-   */
   get props() {
     const { weapons, weaponIndex, health } = this;
 

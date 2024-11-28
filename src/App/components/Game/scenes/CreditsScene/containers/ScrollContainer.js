@@ -9,15 +9,7 @@ const SCROLL_SPEED = SCREEN.HEIGHT / 480;
 
 const SCROLL_COMPLETE_EVENT = 'scroll:complete';
 
-/**
- * Class representing a scroll container.
- */
 export default class ScrollContainer extends Container {
-  /**
-   * Creates a scroll container.
-   * @param  {Object}     options.credits The credits data.
-   * @param  {TextSprite} options.end     The end text.
-   */
   constructor({ logo, credits, end }) {
     super();
     const textHeight = credits[0][0].height;
@@ -53,18 +45,10 @@ export default class ScrollContainer extends Container {
     this.addChild(end);
   }
 
-  /**
-   * Add a callback for the scoll complete event.
-   * @param  {Function} callback The callback function.
-   */
   onScrollComplete(callback) {
     this.on(SCROLL_COMPLETE_EVENT, callback);
   }
 
-  /**
-   * Updates the scroll container.
-   * @param  {Number} delta The delta time.
-   */
   scroll(ticker) {
     this.children.forEach(child => {
       child.y -= SCROLL_SPEED * ticker.deltaTime;

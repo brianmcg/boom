@@ -16,15 +16,7 @@ import {
   PAUSE_PIXEL_SIZE,
 } from './constants';
 
-/**
- * Class representing a scene.
- * @class
- */
 export default class Scene extends Container {
-  /**
-   * Create a Scene.
-   * @param  {String}   options.game        The game running the scene.
-   */
   constructor({ game }) {
     super();
 
@@ -56,11 +48,6 @@ export default class Scene extends Container {
     this.setLoading();
   }
 
-  /**
-   * Create the scene.
-   * @param  {Object} options.graphics The scene graphics.
-   * @param  {Object} options.sounds   The scene sounds.
-   */
   create({ graphics, sounds }) {
     const text = {
       menu: this.menu.map(item => item.label),
@@ -90,18 +77,11 @@ export default class Scene extends Container {
     this.setFadingIn();
   }
 
-  /**
-   * Handle the prompt input.
-   */
   onPromptInput() {
     this.soundController.emitSound(this.sounds.complete);
     this.triggerComplete();
   }
 
-  /**
-   * Update the scene.
-   * @param  {Number} delta The delta value.
-   */
   update(ticker) {
     switch (this.state) {
       case STATES.FADING_IN:
@@ -129,10 +109,6 @@ export default class Scene extends Container {
     super.update(ticker);
   }
 
-  /**
-   * Update the scene when in a fade in state.
-   * @param  {Number} delta The delta value.
-   */
   updateFadingIn(deltaTime) {
     this.fadeAmount -= FADE_INCREMENT * deltaTime;
 
@@ -146,18 +122,10 @@ export default class Scene extends Container {
     });
   }
 
-  /**
-   * Update the scene when in a running state.
-   * @param  {Number} delta The delta value.
-   */
   updateRunning() {
     this.setPrompting();
   }
 
-  /**
-   * Update the scene when in a pausing state.
-   * @param  {Number} delta The delta value.
-   */
   updatePausing(deltaTime) {
     this.fadeAmount += PAUSE_INCREMENT * deltaTime;
 
@@ -171,20 +139,12 @@ export default class Scene extends Container {
     });
   }
 
-  /**
-   * Update the scene when in a paused state.
-   * @param  {Number} delta The delta value.
-   */
   updatePaused() {
     this.fade(this.fadeAmount, {
       pixelSize: PAUSE_PIXEL_SIZE,
     });
   }
 
-  /**
-   * Update the scene when in a unpausing state.
-   * @param  {Number} delta The delta value.
-   */
   updateUnpausing(deltaTime) {
     this.fadeAmount -= PAUSE_INCREMENT * deltaTime;
 
@@ -198,10 +158,6 @@ export default class Scene extends Container {
     });
   }
 
-  /**
-   * Update the scene when in a fade out state.
-   * @param  {Number} delta The delta value.
-   */
   updateFadingOut(deltaTime) {
     this.fadeAmount += FADE_INCREMENT * deltaTime;
 
@@ -215,62 +171,38 @@ export default class Scene extends Container {
     });
   }
 
-  /**
-   * Highlight the next menu item.
-   */
   menuHighlightNext() {
     this.soundController.emitSound(this.sounds.highlight);
     this.menuContainer.highlightNext();
   }
 
-  /**
-   * Highlight the previous menu item.
-   */
   menuHighlightPrevious() {
     this.soundController.emitSound(this.sounds.highlight);
     this.menuContainer.highlightPrevious();
   }
 
-  /**
-   * Select the next menu item.
-   */
   menuSelect() {
     this.menuContainer.select();
     this.hideMenu();
   }
 
-  /**
-   * Show the menu.
-   */
   showMenu() {
     this.addChild(this.menuContainer);
     this.setPausing();
   }
 
-  /**
-   * Hide the menu.
-   */
   hideMenu() {
     this.setUnpausing();
   }
 
-  /**
-   * Get the scale of the stage.
-   */
   getStageScale() {
     return this.parent.scale.x;
   }
 
-  /**
-   * Handle a state change to loading.
-   */
   setLoading() {
     return this.setState(STATES.LOADING);
   }
 
-  /**
-   * Handle a state change to fading in.
-   */
   setFadingIn() {
     const isStateChanged = this.setState(STATES.FADING_IN);
 
@@ -282,9 +214,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Handle a state change to running.
-   */
   setRunning() {
     const isStateChanged = this.setState(STATES.RUNNING);
 
@@ -299,9 +228,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Set the state to the pausing state.
-   */
   setPausing() {
     const isStateChanged = this.setState(STATES.PAUSING);
 
@@ -315,16 +241,10 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Set the state to the paused state.
-   */
   setPaused() {
     return this.setState(STATES.PAUSED);
   }
 
-  /**
-   * Set the state to the unpausing state.
-   */
   setUnpausing() {
     const isStateChanged = this.setState(STATES.UNPAUSING);
 
@@ -335,9 +255,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Handle a state change to prompting.
-   */
   setPrompting() {
     const isStateChanged = this.setState(STATES.PROMPTING);
 
@@ -348,9 +265,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Handle a state change to fading out.
-   */
   setFadingOut() {
     const isStateChanged = this.setState(STATES.FADING_OUT);
 
@@ -362,9 +276,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Handle a state change to stopped.
-   */
   setStopped() {
     const isStateChanged = this.setState(STATES.STOPPED);
 
@@ -389,92 +300,51 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Move the x coordinate of the container.
-   * @param  {Number} x The c x coordinate.
-   */
   moveX(x) {
     this.x = x * this.scale.x;
   }
 
-  /**
-   * Move the y coordinate of the container.
-   * @param  {Number} y The c y coordinate.
-   */
   moveY(y) {
     this.y = y * this.scale.y;
   }
 
-  /**
-   * Check if the scene is in the running state.
-   * @return {Boolean} The result of the check.
-   */
   isRunning() {
     return this.state === STATES.RUNNING;
   }
 
-  /**
-   * Check if the scene is in the paused state.
-   * @return {Boolean} The result of the check.
-   */
   isPaused() {
     return this.state === STATES.PAUSED;
   }
 
-  /**
-   * Check if the scene is in the prompting state.
-   * @return {Boolean} The result of the check.
-   */
   isPrompting() {
     return this.state === STATES.PROMPTING;
   }
 
-  /**
-   * Trigger the complete event.
-   */
   triggerComplete() {
     this.setStopEvent(EVENTS.COMPLETE);
     this.setFadingOut();
   }
 
-  /**
-   * Trigger the restart event.
-   */
   triggerRestart() {
     this.setStopEvent(EVENTS.RESTART);
     this.setFadingOut();
   }
 
-  /**
-   * Trigger the quit event.
-   */
   triggerQuit() {
     this.setStopEvent(EVENTS.QUIT);
     this.setFadingOut();
   }
 
-  /**
-   * Resize the scene.
-   * @param  {Object} scale The new scale dimensions.
-   */
   resize(scale) {
     if (this.state !== STATES.STOPPED) {
       this.scale.set(scale);
     }
   }
 
-  /**
-   * Set the event to emit when stopped.
-   * @param {String} stopEvent The new stopEvent.
-   */
   setStopEvent(stopEvent) {
     this.stopEvent = stopEvent;
   }
 
-  /**
-   * Set the scene state.
-   * @param {String} state The scene state.
-   */
   setState(state) {
     const isStateChanged = super.setState(state);
 
@@ -485,9 +355,6 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
-  /**
-   * Destroy the scene.
-   */
   destroy(options) {
     this.game.input.reset();
 

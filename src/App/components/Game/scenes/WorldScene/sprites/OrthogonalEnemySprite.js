@@ -12,16 +12,7 @@ const ACTIONS = {
 
 const MAX_ANGLE_ID = 7;
 
-/**
- * Class representing an OrthogonalEnemySprite.
- * @extends {AnimatedEntitySprite}
- */
 export default class OrthogonalEnemySprite extends AnimatedEntitySprite {
-  /**
-   * Creates an OrthogonalEnemySprite.
-   * @param  {Enemy}  enemy             The enemy.
-   * @param  {Array}  textureCollection The textures for the sprite.
-   */
   constructor(enemy, textureCollection = []) {
     super(textureCollection[ACTIONS.MOVING][0], {
       animationSpeed: 0.125,
@@ -34,9 +25,6 @@ export default class OrthogonalEnemySprite extends AnimatedEntitySprite {
     this.textureCollection = textureCollection;
   }
 
-  /**
-   * Animate the sprite.
-   */
   update() {
     const { enemy } = this;
 
@@ -92,13 +80,6 @@ export default class OrthogonalEnemySprite extends AnimatedEntitySprite {
     }
   }
 
-  /**
-   * Update the sprite textures.
-   * @param  {String}   options.actionId The id of the action.
-   * @param  {String}   options.angleId  The id of the angle.
-   * @param  {Number}   options.frame    The frame number.
-   * @param  {Boolean}  options.loop     The loop options.
-   */
   updateTextures({ actionId, angleId, frame, loop }) {
     if (this.actionId !== actionId || this.angleId !== angleId) {
       this.loop = loop;

@@ -4,30 +4,7 @@ import { MAX_SOUND_DISTANCE } from '@constants/config';
 
 const TAIL_INTERVAL = 25;
 
-/**
- * Class representing a dynamic entity.
- * @extends {DynamicBody}
- */
 export default class DynamicEntity extends DynamicBody {
-  /**
-   * Creates a dynamic entity.
-   * @param  {Number}  options.x            The x coordinate of the entity.
-   * @param  {Number}  options.y            The y coordinate of the entity.
-   * @param  {Number}  options.z            The z coordinate of the entity.
-   * @param  {Number}  options.width        The width of the entity.
-   * @param  {Number}  options.height       The length of the entity.
-   * @param  {Number}  options.height       The height of the entity.
-   * @param  {Boolean} options.blocking     The blocking value of the entity.
-   * @param  {Number}  options.anchor       The anchor of the entity.
-   * @param  {Number}  options.angle        The angle of the entity.
-   * @param  {Number}  options.weight       The weight of the entity.
-   * @param  {Number}  options.autoPlay     The autopPlay value of the entity.
-   * @param  {String}  options.name         The name of the entity.
-   * @param  {Object}  options.sounds       The entity sounds.
-   * @param  {Object}  options.soundSprite  The entity sound sprite.
-   * @param  {Number}  options.scale        The entity scale.
-   * @param  {Object}  options.tail         The entity tail.
-   */
   constructor({ name, sounds = {}, soundSprite, scale = 1, tail, ...other }) {
     super(other);
 
@@ -57,11 +34,6 @@ export default class DynamicEntity extends DynamicBody {
     }
   }
 
-  /**
-   * Update the entity.
-   * @param  {Number} delta     The delta time.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
 
@@ -97,11 +69,6 @@ export default class DynamicEntity extends DynamicBody {
     super.update(delta);
   }
 
-  /**
-   * Emit a sound.
-   * @param {String}  name The name of the sound.
-   * @param {Boolean} loop Loop the sound.
-   */
   emitSound(name, loop) {
     if (name && this.soundController) {
       const volume =
@@ -113,48 +80,30 @@ export default class DynamicEntity extends DynamicBody {
     }
   }
 
-  /**
-   * Stop a sound.
-   * @param  {String} name The name of the sound.
-   */
   stopSound(name) {
     if (this.soundController) {
       this.soundController.stopSound(name);
     }
   }
 
-  /**
-   * Play the entity.
-   */
   play() {
     if (this.soundController) {
       this.soundController.play();
     }
   }
 
-  /**
-   * Pause the entity.
-   */
   pause() {
     if (this.soundController) {
       this.soundController.pause();
     }
   }
 
-  /**
-   * Stop the entity.
-   */
   stop() {
     if (this.soundController) {
       this.soundController.stop();
     }
   }
 
-  /**
-   * Check if a sound is playing..
-   * @param  {String}  name The name of the sound.
-   * @return {Boolean}      The result of the check.
-   */
   isPlaying(name) {
     if (this.soundController) {
       return this.soundController.isPlaying(name);

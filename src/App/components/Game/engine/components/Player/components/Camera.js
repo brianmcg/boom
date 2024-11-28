@@ -12,14 +12,7 @@ const MIN_SHAKE = degrees(1) * 0.1;
 const MAX_SHAKE = degrees(10);
 const SHAKE_MULTIPLIER = 10;
 
-/**
- * Class representing a camera.
- */
 export default class Camera {
-  /**
-   * Creates a camera.
-   * @param  {Player} player  The player.
-   */
   constructor(player) {
     this.player = player;
     this.height = 0;
@@ -34,20 +27,13 @@ export default class Camera {
     this.maxPitch = 192;
   }
 
-  /**
-   * Updates the camera.
-   * @param  {Number} delta The delta time.
-   */
   update(delta) {
+    // TODO: Use states
     this.updateHeight(delta);
     this.updatePitch(delta);
     this.updateYaw(delta);
   }
 
-  /**
-   * Update the camera height.
-   * @param  {Number} delta The delta time.
-   */
   updateHeight(delta) {
     const { velocity, speed } = this.player;
 
@@ -74,9 +60,6 @@ export default class Camera {
     }
   }
 
-  /**
-   * Update the rotation according to player actions.
-   */
   updatePitch() {
     if (this.recoilAmount) {
       this.pitch += this.recoilAmount * this.recoilDirection;
@@ -92,9 +75,6 @@ export default class Camera {
     }
   }
 
-  /**
-   * Update the shake effect.
-   */
   updateYaw(delta) {
     if (this.shakeAmount) {
       if (this.shakeDirection > 0) {
@@ -124,21 +104,12 @@ export default class Camera {
     this.angle = (this.shakeAngle - this.player.moveAngle + DEG_360) % DEG_360;
   }
 
-  /**
-   * Set shake amount.
-   * @param {Number} amount The amount to shake.
-   */
   setShake(amount, { direction = 1 } = {}) {
     const shakeAngle = degrees(Math.round(amount * SHAKE_MULTIPLIER));
     this.shakeDirection = direction;
     this.shakeAmount = Math.min(MAX_SHAKE, shakeAngle * SHAKE_FADE);
   }
 
-  /**
-   * Set the recoil amount.
-   * @param {Number}  amount       The recoil amount.
-   * @param {Boolean} options.down Is the recoil downwards.
-   */
   setRecoil(amount, { direction = 1 } = {}) {
     this.recoilDirection = direction;
     this.recoilAmount = Math.min(MAX_RECOIL, amount);

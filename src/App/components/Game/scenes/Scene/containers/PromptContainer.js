@@ -26,14 +26,7 @@ const STATES = {
   SHRINKING: 'prompt:shrinking',
 };
 
-/**
- * Class representing a prompt container.
- */
 export default class PromptContainer extends Container {
-  /**
-   * Create a prompt container.
-   * @param {TextSprite} sprite The prompt text sprite.
-   */
   constructor(sprite, sound) {
     super();
 
@@ -56,10 +49,6 @@ export default class PromptContainer extends Container {
     this.setFadingIn();
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta   The delta time.
-   */
   update(ticker) {
     switch (this.state) {
       case STATES.FADING_IN:
@@ -109,10 +98,6 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Update in the fading in state.
-   * @param  {Number} delta The delta time.
-   */
   updateFadingIn(deltaTime) {
     this.scaleFactor += FADE_INCREMENT * deltaTime;
 
@@ -127,10 +112,6 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Update the container in the growing state.
-   * @param  {Number} delta     The delta time.
-   */
   updateGrowing(deltaTime) {
     this.scaleFactor += deltaTime * PULSE_INCREMENT;
 
@@ -141,10 +122,6 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Update the container in the static state.
-   * @param  {Number} delta     The delta time.
-   */
   updateStatic(elapsedMS) {
     this.timer += elapsedMS;
 
@@ -154,10 +131,6 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Update the container in the shrinking state.
-   * @param  {Number} delta     The delta time.
-   */
   updateShrinking(deltaTime) {
     this.scaleFactor -= deltaTime * PULSE_INCREMENT * 1.5;
 
@@ -168,11 +141,6 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Shake the parent of this container.
-   * @param {Number} amount            The amount to shake.
-   * @param {Number} options.direction The direction of the shake;
-   */
   shakeParent(amount, { direction = 1 } = {}) {
     this.shakeDirection = direction;
     this.shakeValue = Math.min(MAX_SHAKE, amount * SHAKE_FADE);
@@ -182,30 +150,18 @@ export default class PromptContainer extends Container {
     }
   }
 
-  /**
-   * Set the container to the fading in state.
-   */
   setFadingIn() {
     return this.setState(STATES.FADING_IN);
   }
 
-  /**
-   * Set the container to the growing state.
-   */
   setGrowing() {
     return this.setState(STATES.GROWING);
   }
 
-  /**
-   * Set the container to the static state.
-   */
   setStatic() {
     return this.setState(STATES.STATIC);
   }
 
-  /**
-   * Set the container to the shrinking state.
-   */
   setShrinking() {
     return this.setState(STATES.SHRINKING);
   }

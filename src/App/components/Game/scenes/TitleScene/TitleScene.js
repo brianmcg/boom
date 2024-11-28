@@ -6,15 +6,7 @@ import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';
 import Scene, { STATES } from '../Scene';
 
-/**
- * Class representing a TitleScene.
- * @extends {Scene}
- */
 export default class TitleScene extends Scene {
-  /**
-   * Creates a TitleScene.
-   * @param  {String} options.game    The game running the scene.
-   */
   constructor(options) {
     super(options);
 
@@ -40,10 +32,6 @@ export default class TitleScene extends Scene {
     });
   }
 
-  /**
-   * Create the TitleScene options.
-   * @param  {Object} options.graphics The scene graphics.
-   */
   create(options) {
     const { renderer } = this.game.app;
     const { sprites } = parse({ ...options, renderer });
@@ -54,23 +42,14 @@ export default class TitleScene extends Scene {
     super.create(options);
   }
 
-  /**
-   * Complete the scene.
-   */
   complete() {
     this.game.showWorldScene();
   }
 
-  /**
-   * Restart the scene.
-   */
   restart() {
     this.game.showTitleScene();
   }
 
-  /**
-   * Quit the scene.
-   */
   quit() {
     this.game.exit();
   }

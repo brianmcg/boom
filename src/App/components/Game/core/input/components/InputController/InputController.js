@@ -1,25 +1,13 @@
 import Mouse from './components/Mouse';
 import Keyboard from './components/Keyboard';
 
-/**
- * Class representing an input controller.
- */
 export default class InputController {
-  /**
-   * The HTML element to lock the mouse to.
-   * @param  {Element} element The element to lock the mouse to.
-   */
   constructor(element) {
     this.keyboard = new Keyboard();
     this.mouse = new Mouse(element);
     this.states = {};
   }
 
-  /**
-   * Add controls.
-   * @param {String} state    The game state the controls are for.
-   * @param {Object} controls The controls.
-   */
   add(state, controls = {}) {
     if (this.states[state]) {
       Object.keys(controls).forEach(key => {
@@ -34,9 +22,6 @@ export default class InputController {
     }
   }
 
-  /**
-   * Set the controls for a game state.
-   */
   set(state) {
     this.removeCallbacks();
 
@@ -84,17 +69,11 @@ export default class InputController {
     }
   }
 
-  /**
-   * Reset the input controller.
-   */
   reset() {
     this.removeCallbacks();
     this.states = {};
   }
 
-  /**
-   * Remove all added callbacks.
-   */
   removeCallbacks() {
     this.keyboard.removeCallbacks();
     this.mouse.removeCallbacks();

@@ -50,50 +50,7 @@ const randomizeRange = range => {
   return Math.max((range - deviation) * CELL_SIZE, CELL_SIZE);
 };
 
-/**
- * Abstract class representing an enemy.
- * @extends {AbstractActor}
- */
 export default class AbstractEnemy extends AbstractActor {
-  /**
-   * Creates an abstract enemy.
-   * @param  {Number}  options.x              The x coordinate of the enemy.
-   * @param  {Number}  options.y              The y coordinate of the enemy.
-   * @param  {Number}  options.z              The z coordinate of the enemy.
-   * @param  {Number}  options.width          The width of the enemy.
-   * @param  {Number}  options.height         The length of the enemy.
-   * @param  {Number}  options.height         The height of the enemy.
-   * @param  {Boolean} options.blocking       The blocking value of the enemy.
-   * @param  {Number}  options.anchor         The anchor of the enemy.
-   * @param  {Number}  options.painChance     The probability of going into the pain state.
-   * @param  {Number}  options.isBoss         The enemy is a boss.
-   * @param  {Number}  options.angle          The angle of the enemy.
-   * @param  {Number}  options.weight         The weight of the enemy.
-   * @param  {Number}  options.autoPlay       The autopPlay value of the enemy.
-   * @param  {String}  options.name           The name of the enemy.
-   * @param  {Object}  options.sounds         The enemy sounds.
-   * @param  {Object}  options.soundSprite    The enemy sound sprite.
-   * @param  {Number}  options.scale          The enemy scale.
-   * @param  {Object}  options.tail           The enemy tail.
-   * @param  {Number}  options.health         The current health of the enemy.
-   * @param  {Number}  options.maxHealth      The maximum health of the enemy.
-   * @param  {Object}  options.effects        The effects of the enemy.
-   * @param  {Number}  options.speed          The speed of the enemy.
-   * @param  {Number}  options.acceleration   The acceleration of the enemy.
-   * @param  {Array}   options.spatters       The spatter values of the enemy.
-   * @param  {String}  options.bloodColor     The blood color of the enemy.
-   * @param  {Number}  options.stateDurations The times to stay in each state.
-   * @param  {Number}  options.maxAttacks     The max number of attacks before evading.
-   * @param  {Boolean} options.float          The float enemy property.
-   * @param  {Boolean} options.submerged      The submerged enemy property.
-   * @param  {Object}  options.primaryAttack  The primary attack properties.
-   * @param  {Number}  options.proneHeight    The height of the enemy while prone.
-   * @param  {Object}  options.explosion      The enemy explosion properties.
-   * @param  {String}  options.type           The type of enemy.
-   * @param  {String}  options.splash         The type of splash.
-   * @param  {String}  options.ripple         The type of ripple.
-   * @param  {Item}    options.spawnItem      The item to spawn when enemy dies.
-   */
   constructor({
     stateDurations,
     maxAttacks,
@@ -215,11 +172,6 @@ export default class AbstractEnemy extends AbstractActor {
     this.setIdle();
   }
 
-  /**
-   * Update the enemy.
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
 
@@ -266,11 +218,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in idle state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateIdle(delta, elapsedMS) {
     if (this.findPlayer()) {
       this.setAlerted();
@@ -287,11 +234,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in the alerted state.
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateAlerted(delta, elapsedMS) {
     this.alertTimer += elapsedMS;
 
@@ -307,9 +249,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in chasing state
-   */
   updateChasing() {
     const nextCell = this.path[this.pathIndex];
 
@@ -346,9 +285,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in chasing state
-   */
   updateRetreating() {
     const nextCell = this.path[this.pathIndex];
 
@@ -381,9 +317,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update the enemy in the evading state.
-   */
   updateEvading() {
     if (
       this.evadeDestination.bodies.some(b => b.id !== this.id && b.blocking) ||
@@ -399,11 +332,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in aiming state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateAiming(delta, elapsedMS) {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
@@ -420,11 +348,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in attacking state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateAttacking(delta, elapsedMS) {
     if (this.findPlayer()) {
       if (this.distanceToPlayer <= this.primaryAttack.range) {
@@ -450,11 +373,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in hurt state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateHurting(delta, elapsedMS) {
     this.hurtTimer += elapsedMS;
 
@@ -463,11 +381,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Update enemy in hurt state
-   * @param  {Number} delta      The delta time.
-   * @param  {Number} elapsedMS  The elapsed time.
-   */
   updateDead(delta, elapsedMS) {
     this.velocity *= FORCE_FADE;
     this.z = 0;
@@ -502,10 +415,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Can the enemy attack.
-   * @return {Boolean}
-   */
   canAttack() {
     if (this.speed === 0) {
       return true;
@@ -527,9 +436,6 @@ export default class AbstractEnemy extends AbstractActor {
     return inRange;
   }
 
-  /**
-   * Attack a target.
-   */
   attack() {
     this.parent.addFlashLight(this.primaryAttack.flash);
 
@@ -538,28 +444,18 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Execute completed attack behavior.
-   */
   onAttackComplete() {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }
   }
 
-  /**
-   * Execute recovery behaviour.
-   */
   onHurtComplete() {
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('You have to implement this method.');
     }
   }
 
-  /**
-   * Try and locate the player
-   * @return {Cell} The cell the player was located at.
-   */
   findPlayer() {
     const { player } = this.parent;
 
@@ -578,12 +474,6 @@ export default class AbstractEnemy extends AbstractActor {
     return null;
   }
 
-  /**
-   * Hurt the enemy
-   * @param  {Number}  damage       The damage to health.
-   * @param  {Number}  angle        The angle the damage came from.
-   * @param  {Boolean} instantKill  Instantly kill the enemy.
-   */
   hurt(damage, angle = 0, instantKill = false) {
     super.hurt(damage, angle);
 
@@ -619,10 +509,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Find a free cell to move to.
-   * @return {Cell} The cell to move to.
-   */
   findEvadeDestination() {
     const { parent } = this;
     const { player } = parent;
@@ -687,9 +573,6 @@ export default class AbstractEnemy extends AbstractActor {
     );
   }
 
-  /**
-   * Start moving.
-   */
   onStartMoving() {
     const { moving } = this.sounds;
 
@@ -700,10 +583,6 @@ export default class AbstractEnemy extends AbstractActor {
     this.velocity = this.speed;
   }
 
-  /**
-   * Stop moving.
-   * @param  {Boolean} velocity Reset the velocity.
-   */
   onStopMoving(resetVelocity = true) {
     const { moving } = this.sounds;
 
@@ -716,21 +595,12 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Get the generated damage of an attack.
-   * @return {Number} The amount of damage.
-   */
   attackDamage() {
     const { power, accuracy } = this.primaryAttack;
 
     return power * (Math.floor(Math.random() * accuracy) + 1);
   }
 
-  /**
-   * Find the path to a target.
-   * @param  {Body}   target The target to find a path to.
-   * @return {Array}         The path to the target.
-   */
   findPath(target) {
     return this.parent.findPath(
       this,
@@ -740,90 +610,46 @@ export default class AbstractEnemy extends AbstractActor {
     );
   }
 
-  /**
-   * Set the attack range.
-   * @param {Number} range The range to set.
-   */
   setRange(range) {
     this.primaryAttack = { ...this.primaryAttack, range };
   }
 
-  /**
-   * Add a callback to the idle state change.
-   * @param  {Function} callback The callback function.
-   */
   onIdle(callback) {
     this.on(STATES.IDLE, callback);
   }
 
-  /**
-   * Add a callback to the alerted state change.
-   * @param  {Function} callback The callback function.
-   */
   onAlerted(callback) {
     this.on(STATES.ALERTED, callback);
   }
 
-  /**
-   * Add a callback to the evading state change.
-   * @param  {Function} callback The callback function.
-   */
   onEvading(callback) {
     this.on(STATES.EVADING, callback);
   }
 
-  /**
-   * Add a callback to the chasing state change.
-   * @param  {Function} callback The callback function.
-   */
   onChasing(callback) {
     this.on(STATES.CHASING, callback);
   }
 
-  /**
-   * Add a callback to the retreating change.
-   * @param  {Function} callback The callback function.
-   */
   onRetreating(callback) {
     this.on(STATES.RETREATING, callback);
   }
 
-  /**
-   * Add a callback to the aiming state change.
-   * @param  {Function} callback The callback function.
-   */
   onAiming(callback) {
     this.on(STATES.AIMING, callback);
   }
 
-  /**
-   * Add a callback to the attacking state change.
-   * @param  {Function} callback The callback function.
-   */
   onAttacking(callback) {
     this.on(STATES.ATTACKING, callback);
   }
 
-  /**
-   * Add a callback to the hurting state change.
-   * @param  {Function} callback The callback function.
-   */
   onHurting(callback) {
     this.on(STATES.HURTING, callback);
   }
 
-  /**
-   * Add a callback to the dead state change.
-   * @param  {Function} callback The callback function.
-   */
   onDead(callback) {
     this.on(STATES.DEAD, callback);
   }
 
-  /**
-   * Set the enemy state.
-   * @return {Boolean}  State change successful.
-   */
   setIdle() {
     const isStateChanged = this.setState(STATES.IDLE);
 
@@ -834,10 +660,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the alerted state.
-   * @return {Boolean}  State change successful.
-   */
   setAlerted() {
     const isStateChanged = this.setState(STATES.ALERTED);
 
@@ -847,10 +669,6 @@ export default class AbstractEnemy extends AbstractActor {
     }
   }
 
-  /**
-   * Set the enemy to the evading state.
-   * @return {Boolean}  State change successful.
-   */
   setEvading() {
     const isStateChanged = this.setState(STATES.EVADING);
 
@@ -867,10 +685,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the moving state.
-   * @return {Boolean}  State change successful.
-   */
   setChasing() {
     const isStateChanged = this.setState(STATES.CHASING);
 
@@ -891,10 +705,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the aiming state.
-   * @return {Boolean}  State change successful.
-   */
   setAiming() {
     const isStateChanged = this.setState(STATES.AIMING);
 
@@ -905,10 +715,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the attacking state.
-   * @return {Boolean}  State change successful.
-   */
   setAttacking() {
     const isStateChanged = this.setState(STATES.ATTACKING);
 
@@ -922,10 +728,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the hurting state.
-   * @return {Boolean}  State change successful.
-   */
   setHurting() {
     const isStateChanged = this.setState(STATES.HURTING);
 
@@ -936,10 +738,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Set the enemy to the dead state.
-   * @return {Boolean}  State change successful.
-   */
   setDead() {
     const isStateChanged = this.setState(STATES.DEAD);
 
@@ -973,91 +771,46 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * Is the enemy in the idle state.
-   * @return {Boolean}
-   */
   isIdle() {
     return this.state === STATES.IDLE;
   }
 
-  /**
-   * Is the enemy in the alerted state.
-   * @return {Boolean}
-   */
   isAlerted() {
     return this.state === STATES.ALERTED;
   }
 
-  /**
-   * Is the enemy in the evading state.
-   * @return {Boolean} [description]
-   */
   isEvading() {
     return this.state === STATES.EVADING;
   }
 
-  /**
-   * Is the enemy in the chasing state.
-   * @return {Boolean}
-   */
   isChasing() {
     return this.state === STATES.CHASING;
   }
 
-  /**
-   * Is the enemy in the retreating state.
-   * @return {Boolean}
-   */
   isRetreating() {
     return this.state === STATES.RETREATING;
   }
 
-  /**
-   * Is the enemy in the aiming state.
-   * @return {Boolean}
-   */
   isAiming() {
     return this.state === STATES.AIMING;
   }
 
-  /**
-   * Is the enemy in the attacking state.
-   * @return {Boolean}
-   */
   isAttacking() {
     return this.state === STATES.ATTACKING;
   }
 
-  /**
-   * Is the enemy in the hurt state.
-   * @return {Boolean}
-   */
   isHurting() {
     return this.state === STATES.HURTING;
   }
 
-  /**
-   * Is the enemy in the dead state.
-   * @return {Boolean}
-   */
   isDead() {
     return this.state === STATES.DEAD;
   }
 
-  /**
-   * Is the enemy alive.
-   * @return {Boolean}
-   */
   isAlive() {
     return this.state !== STATES.DEAD;
   }
 
-  /**
-   * Set the state.
-   * @param  {String} state The new state.
-   * @return {Boolean}      State change succesful.
-   */
   setState(state) {
     const isStateChanged = this.isAlive() && super.setState(state);
 
@@ -1074,10 +827,6 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  /**
-   * The elavation.
-   * @member {Number}
-   */
   get elavation() {
     return this.z + this.floatAmount;
   }

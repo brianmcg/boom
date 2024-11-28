@@ -14,35 +14,7 @@ const HALF_CELL_SIZE = CELL_SIZE / 2;
 
 const SHAKE_MULTIPLIER = 0.1;
 
-/**
- * Class representing a door.
- * @extends {DynamicCell}
- */
 export default class Door extends DynamicCell {
-  /**
-   * Creates a door cell
-   * @param  {Number}  options.x            The x coordinate of the door.
-   * @param  {Number}  options.y            The y coordinate of the door.
-   * @param  {Number}  options.z            The z coordinate of the door.
-   * @param  {Number}  options.width        The width of the door.
-   * @param  {Number}  options.height       The length of the door.
-   * @param  {Number}  options.height       The height of the door.
-   * @param  {Boolean} options.blocking     The blocking value of the door.
-   * @param  {Number}  options.anchor       The anchor of the door.
-   * @param  {String}  options.axis         The anchor of the door.
-   * @param  {Number}  options.offset       The offset of the door.
-   * @param  {Boolean} options.autoPlay     The cell autoPlay value.
-   * @param  {Object}  options.sides        The sides of the door.
-   * @param  {Sound}   options.soundSprite  The soundSprite.
-   * @param  {Object}  options.sounds       The sounds.
-   * @param  {Boolean} options.reverse      Reverse the offset.
-   * @param  {String}  options.key          The key that unlocks the door.
-   * @param  {Number}  options.interval     The time the door remains open.
-   * @param  {Boolean} options.double       Double door options.
-   * @param  {Boolean} options.entrance     Entrance door option.
-   * @param  {Boolean} options.exit         Exit door option.
-   * @param  {Boolean} options.active       Active door option.
-   */
   constructor({
     key,
     interval,
@@ -67,10 +39,6 @@ export default class Door extends DynamicCell {
     this.setClosed();
   }
 
-  /**
-   * Open the door.
-   * @param  {AbstractActor} user The user of the door.
-   */
   use(user) {
     if (this.active && this.isClosed()) {
       if (this.keyCard && user.isPlayer) {
@@ -93,11 +61,6 @@ export default class Door extends DynamicCell {
     }
   }
 
-  /**
-   * Update the door.
-   * @param  {Number} delta     The delta time.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.OPENING: {
@@ -119,10 +82,6 @@ export default class Door extends DynamicCell {
     super.update(delta, elapsedMS);
   }
 
-  /**
-   * Update the door when in opening state.
-   * @param  {Number} delta The delta time.
-   */
   updateOpening(delta) {
     const { axis, speed } = this;
 
@@ -134,10 +93,6 @@ export default class Door extends DynamicCell {
     }
   }
 
-  /**
-   * Update the door when in closing state.
-   * @param  {Number} delta The delta time.
-   */
   updateClosing(delta) {
     const { axis, speed } = this;
 
@@ -153,11 +108,6 @@ export default class Door extends DynamicCell {
     }
   }
 
-  /**
-   * Update the door when in opened state.
-   * @param  {Number} delta The delta time.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   updateOpened(delta, elapsedMS) {
     if (this.timer) {
       this.timer -= elapsedMS;
@@ -179,10 +129,6 @@ export default class Door extends DynamicCell {
     }
   }
 
-  /**
-   * Set the door to the opening state.
-   * @return {Boolean} State change successful.
-   */
   setOpening() {
     const isStateChanged = this.setState(STATES.OPENING);
 
@@ -194,10 +140,6 @@ export default class Door extends DynamicCell {
     return isStateChanged;
   }
 
-  /**
-   * Set the door to the opened state.
-   * @return {Boolean} State change successful.
-   */
   setOpened() {
     const isStateChanged = this.setState(STATES.OPENED);
 
@@ -213,10 +155,6 @@ export default class Door extends DynamicCell {
     return isStateChanged;
   }
 
-  /**
-   * Set the door to the closing state.
-   * @return {Boolean} State change successful.
-   */
   setClosing() {
     const isStateChanged = this.setState(STATES.CLOSING);
 
@@ -228,10 +166,6 @@ export default class Door extends DynamicCell {
     return isStateChanged;
   }
 
-  /**
-   * Set the door to the closed state.
-   * @return {Boolean} State change successful.
-   */
   setClosed() {
     const isStateChanged = this.setState(STATES.CLOSED);
 
@@ -242,42 +176,22 @@ export default class Door extends DynamicCell {
     return isStateChanged;
   }
 
-  /**
-   * Is the door opening.
-   * @return {Boolean}
-   */
   isOpening() {
     return this.state === STATES.OPENING;
   }
 
-  /**
-   * Is the door opened.
-   * @return {Boolean}
-   */
   isOpened() {
     return this.state === STATES.OPENED;
   }
 
-  /**
-   * Is the door closing.
-   * @return {Boolean}
-   */
   isClosing() {
     return this.state === STATES.CLOSING;
   }
 
-  /**
-   * Is the door closed.
-   * @return {Boolean}
-   */
   isClosed() {
     return this.state === STATES.CLOSED;
   }
 
-  /**
-   * Get the shape of the door.
-   * @return {Object} The door shape properties.
-   */
   get shape() {
     if (this.offset.x === CELL_SIZE || this.offset.y === CELL_SIZE) {
       if (this.axis === 'y') {

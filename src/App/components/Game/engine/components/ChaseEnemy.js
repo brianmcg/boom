@@ -5,29 +5,16 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-/**
- * Abstract class representing a gun enemy.
- * @extends {AbstractEnemy}
- */
 export default class ChaseEnemy extends AbstractEnemy {
-  /**
-   * Execute completed attack behavior.
-   */
   onAttackComplete() {
     this.setChasing();
   }
 
-  /**
-   * Execute recovery behaviour.
-   */
   onHurtComplete() {
     this.target = this.parent.player;
     this.setChasing();
   }
 
-  /**
-   * Attack a target.
-   */
   attack() {
     const { player } = this.parent;
 

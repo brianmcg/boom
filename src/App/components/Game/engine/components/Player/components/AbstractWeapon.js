@@ -12,34 +12,7 @@ const transformRangeForWorld = (range, offset) =>
 const transformRangeForData = (range, offset) =>
   range === Number.MAX_VALUE ? null : (range - offset) / CELL_SIZE;
 
-/**
- * Class representing a weapon.
- * @extends {EventEmitter}
- */
 export default class AbstractWeapon {
-  /**
-   * Creates a weapon.
-   * @param  {Player}  options.player     The player.
-   * @param  {Number}  options.power      The power of the weapon.
-   * @param  {Boolean} options.equiped    Is the weapon equiped.
-   * @param  {Number}  options.recoil     The recoil of the weapon.
-   * @param  {Number}  options.maxAmmo    The max amount of ammo the weapon can hold.
-   * @param  {Number}  options.range      The range of the weapon.
-   * @param  {Number}  options.accuracy   The accuracy of the weapon.
-   * @param  {Number}  options.pellets    The number of pellets per use.
-   * @param  {Number}  options.spread     The spread of the pellets.
-   * @param  {Object}  options.sounds     The weapon sounds.
-   * @param  {String}  options.name       The weapon name.
-   * @param  {Number}  options.ammo       The ammo of the weapon.
-   * @param  {Number}  options.rate       The rate of fire.
-   * @param  {Number}  options.automatic  Automatic weapon option.
-   * @param  {Number}  options.type       The type of weapon.
-   * @param  {Object}  options.projectile The weapon projectile data.
-   * @param  {Number}  options.anchorX    The x anchor of the weapon.
-   * @param  {Number}  options.anchorY    The y anchor of the weapon.
-   * @param  {Number}  options.scale      The scale of the weapon.
-   * @param  {Boolean} options.melee      The melee option.
-   */
   constructor({
     accuracy,
     ammo,
@@ -94,11 +67,6 @@ export default class AbstractWeapon {
     this.sounds = sounds;
   }
 
-  /**
-   * Update the weapon.
-   * @param  {Number} delta The delta time.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   update(delta, elapsedMS) {
     switch (this.state) {
       case STATES.USING:
@@ -120,9 +88,6 @@ export default class AbstractWeapon {
     }
   }
 
-  /**
-   * Use the weapon.
-   */
   use() {
     if (this.constructor === AbstractWeapon) {
       throw new TypeError('You have to implement this method.');
@@ -131,11 +96,6 @@ export default class AbstractWeapon {
     return { success: this.canUse() && this.setUsing() };
   }
 
-  /**
-   * Add ammo to the weapon.
-   * @param  {Number}  amount The amount of ammo to add.
-   * @return {Boolean} Representing add ammo success.
-   */
   addAmmo(amount = 0) {
     if (this.ammo < this.maxAmmo) {
       this.ammo += amount;
@@ -150,66 +110,34 @@ export default class AbstractWeapon {
     return false;
   }
 
-  /**
-   * Can the weapon be used.
-   * @return {Boolean}
-   */
   canUse() {
     return this.isAiming();
   }
 
-  /**
-   * Set the state to aiming.
-   * @return {Boolean} Has the state changed to aiming.
-   */
   setAiming() {
     return this.setState(STATES.AIMING);
   }
 
-  /**
-   * Set the state to using.
-   * @return {Boolean} Has the state changed to using.
-   */
   setUsing() {
     return this.setState(STATES.USING);
   }
 
-  /**
-   * Set the state to loading.
-   * @return {Boolean} Has the state changed to loading.
-   */
   setLoading() {
     return this.setState(STATES.LOADING);
   }
 
-  /**
-   * Is the weapon in the aiming state.
-   * @return {Boolean}
-   */
   isAiming() {
     return this.state === STATES.AIMING;
   }
 
-  /**
-   * Is the weapon in the using state.
-   * @return {Boolean}
-   */
   isUsing() {
     return this.state === STATES.USING;
   }
 
-  /**
-   * Is the weapon in the loading state.
-   * @return {Boolean}
-   */
   isLoading() {
     return this.state === STATES.LOADING;
   }
 
-  /**
-   * Set the weapon state.
-   * @param {String} state The new state.
-   */
   setState(state) {
     if (this.state !== state) {
       this.timer = 0;
@@ -221,10 +149,6 @@ export default class AbstractWeapon {
     return false;
   }
 
-  /**
-   * Get the weapon props.
-   * @return {Object} The weapon props.
-   */
   get props() {
     const {
       accuracy,

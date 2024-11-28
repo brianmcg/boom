@@ -5,16 +5,7 @@ const INTERVAL = 4000;
 
 const SPEED = 10;
 
-/**
- * Class representing a foreground container.
- */
 export default class ForegroundContainer extends Container {
-  /**
-   * Creates a foreground container.
-   * @param  {LogoSprite}   options.logo   The logo sprite.
-   * @param  {LogoSprite}   options.light  The logo sprite.
-   * @param  {LogoSprite}   options.mask   The logo sprite.
-   */
   constructor(sprites) {
     super();
 
@@ -40,11 +31,6 @@ export default class ForegroundContainer extends Container {
     this.animate = false;
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta     The delta time value.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   update({ deltaTime, elapsedMS }) {
     const { light } = this.sprites;
 

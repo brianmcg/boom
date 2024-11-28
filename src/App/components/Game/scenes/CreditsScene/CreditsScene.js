@@ -5,14 +5,7 @@ import ScrollContainer from './containers/ScrollContainer';
 import { Container } from '@game/core/graphics';
 import Scene from '../Scene';
 
-/**
- * Class representing a CreditsScene.
- */
 export default class CreditsScene extends Scene {
-  /**
-   * Creates a CreditsScene.
-   * @param  {String} options.game    The game running the scene.
-   */
   constructor(options) {
     super(options);
 
@@ -32,10 +25,6 @@ export default class CreditsScene extends Scene {
     this.promptOption = translate('scene.prompt.continue');
   }
 
-  /**
-   * Create the credits scene.
-   * @param  {Object} options.graphics The scene graphics.
-   */
   create(options) {
     super.create(options);
 
@@ -117,31 +106,18 @@ export default class CreditsScene extends Scene {
     return this.scrollContainer.scroll(ticker);
   }
 
-  /**
-   * Complete the scene.
-   */
   complete() {
     this.game.showTitleScene();
   }
 
-  /**
-   * Restart the scene.
-   */
   restart() {
     this.game.showCreditsScene();
   }
 
-  /**
-   * Quit the scene.
-   */
   quit() {
     this.game.showTitleScene();
   }
 
-  /**
-   * Destroy the scene.
-   * @param  {Object} options The destroy options.
-   */
   destroy(options) {
     this.removeChild(this.scrollContainer);
     this.scrollContainer.destroy(options);

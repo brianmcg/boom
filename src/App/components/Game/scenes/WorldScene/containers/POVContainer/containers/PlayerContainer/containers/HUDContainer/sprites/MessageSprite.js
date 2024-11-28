@@ -15,16 +15,7 @@ const STATES = {
   COMPLETE: 'message:complete',
 };
 
-/**
- * Class representing a message sprite.
- * @extends {TextSprite}
- */
 export default class MessageSprite extends TextSprite {
-  /**
-   * Creates a message sprite.
-   * @param  {String} text             The message text.
-   * @param  {Number} options.priority The priority of the message.
-   */
   constructor(text, { priority = 0 } = {}) {
     super({
       text,
@@ -53,19 +44,10 @@ export default class MessageSprite extends TextSprite {
     }
   }
 
-  /**
-   * Add a callback for the on complete event.
-   * @param  {Function} callback The callback function.
-   */
   onComplete(callback) {
     this.on(STATES.COMPLETE, callback);
   }
 
-  /**
-   * Update the sprite.
-   * @param  {Number} delta     The time delta.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   update(ticker) {
     switch (this.state) {
       case STATES.GROWING:
@@ -82,10 +64,6 @@ export default class MessageSprite extends TextSprite {
     }
   }
 
-  /**
-   * Update the sprite in the growing state.
-   * @param  {Number} delta     The time delta.
-   */
   updateGrowing(deltaTime) {
     this.scale.set(this.scaleAmount);
 
@@ -97,10 +75,6 @@ export default class MessageSprite extends TextSprite {
     }
   }
 
-  /**
-   * Update the sprite in the displaying state.
-   * @param  {Number} elapsedMS The elapsed time in milliseconds.
-   */
   updateDisplaying(elapsedMS) {
     this.timer += elapsedMS;
 
@@ -110,10 +84,6 @@ export default class MessageSprite extends TextSprite {
     }
   }
 
-  /**
-   * Update the sprite in the shrinking state.
-   * @param  {Number} delta     The time delta.
-   */
   updateShrinking(deltaTime) {
     this.scale.set(this.scaleAmount);
 
@@ -137,16 +107,10 @@ export default class MessageSprite extends TextSprite {
     this.state === STATES.DISPLAYING;
   }
 
-  /**
-   * Set the sprite to the growing state.
-   */
   setGrowing() {
     return this.setState(STATES.GROWING);
   }
 
-  /**
-   * Set the sprite to the displaying state.
-   */
   setDisplaying() {
     const isStateChanged = this.setState(STATES.DISPLAYING);
 
@@ -157,16 +121,10 @@ export default class MessageSprite extends TextSprite {
     return isStateChanged;
   }
 
-  /**
-   * Set the sprite to the shrinking state.
-   */
   setShrinking() {
     return this.setState(STATES.SHRINKING);
   }
 
-  /**
-   * Set the sprite to the complete state.
-   */
   setComplete() {
     const isStateChanged = this.setState(STATES.COMPLETE);
 
@@ -177,10 +135,6 @@ export default class MessageSprite extends TextSprite {
     return isStateChanged;
   }
 
-  /**
-   * Set the sprite state
-   * @param {String} state The state to set.
-   */
   setState(state) {
     if (this.state !== state) {
       this.state = state;

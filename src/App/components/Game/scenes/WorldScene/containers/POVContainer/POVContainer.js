@@ -44,15 +44,7 @@ let mapXTmp;
 let mapYTmp;
 let backgroundCellTmp;
 
-/**
- * Class representing a POVContainer.
- */
 export default class POVContainer extends Container {
-  /**
-   * Creates a POVContainer.
-   * @param  {World}  options.world   The world.
-   * @param  {Object} options.sprites The sprites object.
-   */
   constructor({ world, sprites }) {
     super();
 
@@ -75,11 +67,6 @@ export default class POVContainer extends Container {
     this.addChild(this.playerContainer);
   }
 
-  /**
-   * Update the container.
-   * @param  {Number} delta     The time delta.
-   * @param  {Number} elapsedMS The elapsed time since the last frame.
-   */
   update(ticker) {
     const { world } = this;
 
@@ -504,9 +491,6 @@ export default class POVContainer extends Container {
     super.update(ticker);
   }
 
-  /**
-   * Expand the edge wall slices.
-   */
   expandEdge() {
     const margin = 20;
 
@@ -519,18 +503,10 @@ export default class POVContainer extends Container {
     });
   }
 
-  /**
-   * Remove the HUD diplay.
-   */
   removeHud() {
     this.playerContainer.removeHud();
   }
 
-  /**
-   * Calculate the tint.
-   * @param  {Number}  distance The distance.
-   * @param  {Boolean} darken   Darken the sprite.
-   */
   calculateTint(distance, darken) {
     const { light, brightness, visibility } = this.world;
 
@@ -557,10 +533,6 @@ export default class POVContainer extends Container {
     return Math.round(intensity * 255) * LIGHT_GREY;
   }
 
-  /**
-   * Destroy the container.
-   * @param  {Object} options The destroy options.
-   */
   destroy(options) {
     this.removeChild(this.backgroundContainer);
     this.removeChild(this.mapContainer);
