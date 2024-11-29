@@ -8,8 +8,8 @@ const scale = () => {
   const windowHeight = window.innerHeight;
   const widthRatio = windowWidth / SCREEN.WIDTH;
   const heightRatio = windowHeight / SCREEN.HEIGHT;
-  // return Math.min(widthRatio, heightRatio);
-  return Math.max(1, Math.floor(Math.min(widthRatio, heightRatio)));
+  return Math.min(widthRatio, heightRatio);
+  // return Math.max(1, Math.floor(Math.min(widthRatio, heightRatio)));
 };
 
 export { add, tags, scale, state };

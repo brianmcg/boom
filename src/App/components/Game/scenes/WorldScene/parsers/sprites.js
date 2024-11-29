@@ -655,7 +655,9 @@ const createEntitySprites = ({ animations, textures, world }) => {
       });
     } else if (object.animated) {
       const animationTextures = animations[object.name].map(t => textures[t]);
-      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures);
+      entitySprites[object.id] = new AnimatedEntitySprite(animationTextures, {
+        animationSpeed: object.animationSpeed,
+      });
     } else {
       entitySprites[object.id] = new EntitySprite(textures[object.name]);
     }
