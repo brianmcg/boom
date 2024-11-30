@@ -1,13 +1,29 @@
 import { Sprite as PixiSprite } from 'pixi.js';
 
 class Sprite extends PixiSprite {
-  constructor(texture, { anchor = 0 } = {}) {
-    super({ texture });
+  constructor(texture, { alpha = 1, anchor = 0, width, height, tint } = {}) {
+    super({ texture, roundPixels: true });
 
-    if (Array.isArray(anchor)) {
-      this.anchor.set(...anchor);
-    } else {
-      this.anchor.set(anchor);
+    this.alpha = alpha;
+
+    if (anchor) {
+      if (Array.isArray(anchor)) {
+        this.anchor.set(...anchor);
+      } else {
+        this.anchor.set(anchor);
+      }
+    }
+
+    if (width || width === 0) {
+      this.width = width;
+    }
+
+    if (height || width === 0) {
+      this.height = height;
+    }
+
+    if (tint || tint === 0) {
+      this.tint = tint;
     }
   }
 
