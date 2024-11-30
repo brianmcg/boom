@@ -116,17 +116,29 @@ export default {
   'world.title.dungeon_1': {
     text: 'prison block',
   },
-  'world.title.sewers_1': {
+  'world.title.dungeon_2': {
+    text: 'Barracks',
+  },
+  'world.title.underground_1': {
+    text: 'basement',
+  },
+  'world.title.underground_2': {
     text: 'sewer network',
   },
-  'world.title.sewers_2': {
+  'world.title.underground_3': {
     text: 'treatment plant',
   },
   'world.title.lab_1': {
     text: 'secret lab',
   },
+  'world.title.lab_2': {
+    text: 'research facility',
+  },
   'world.title.mansion_1': {
-    text: 'mansion',
+    text: 'mansion lobby',
+  },
+  'world.title.mansion_2': {
+    text: 'mansion residence',
   },
   'world.title.roof_1': {
     text: 'rooftop',

@@ -134,6 +134,7 @@ export default class Game {
       this.app.stage.addChild(this.scene);
 
       const { graphics, sound, data } = await Loader.load(this.scene.assets);
+
       const sceneProps = this.data[type].props || {};
       const sounds = this.data[type].sounds || {};
 
