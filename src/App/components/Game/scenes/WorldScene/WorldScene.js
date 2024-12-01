@@ -63,6 +63,7 @@ export default class WorldScene extends Scene {
         [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
         [KEYS.CTRL]: () => this.assignPlayerAction({ attack: true }),
         [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: true }),
+        [KEYS.ALT]: () => this.assignPlayerAction({ secondaryAttack: true }),
         [KEYS.NUM_1]: () => this.assignPlayerAction({ selectWeapon: 1 }),
         [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 2 }),
         [KEYS.NUM_3]: () => this.assignPlayerAction({ selectWeapon: 3 }),

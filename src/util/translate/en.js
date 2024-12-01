@@ -48,7 +48,7 @@ export default {
     text: 'e',
   },
   'home.action.attack': {
-    text: 'attack',
+    text: 'shoot',
   },
   'home.input.mouse.left': {
     text: 'mouse left click',
@@ -72,7 +72,7 @@ export default {
     text: 'shift',
   },
   'home.action.pause': {
-    text: 'menu',
+    text: 'menu open / close',
   },
   'home.input.pause': {
     text: 'q',
