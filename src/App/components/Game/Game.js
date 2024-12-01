@@ -7,6 +7,7 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
+// import LocalStorage from './util/LocalStorage';
 import GameView from './GameView';
 import './Game.css';
 
@@ -104,6 +105,8 @@ export default class Game {
   }
 
   showWorldScene({ index = LEVEL, ...other } = {}) {
+    // LocalStorage.set(index, other);
+
     this.showScene(SCENE_TYPES.WORLD, {
       index,
       showLoader: true,

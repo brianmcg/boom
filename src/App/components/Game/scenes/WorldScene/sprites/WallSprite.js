@@ -7,6 +7,7 @@ export default class WallSprite extends Sprite {
 
     this.textures = textures;
     this.zOrder = Number.MAX_VALUE;
+    this.roundPixels = true;
   }
 
   changeTexture(name, offset, spatter) {

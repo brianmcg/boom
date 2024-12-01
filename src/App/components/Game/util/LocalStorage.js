@@ -8,7 +8,7 @@ export default class LocalStorage {
 
   static set(key, value) {
     const data = LocalStorage.data();
-    localStorage.setItem(KEY, JSON.stringify({ ...data, key: value }));
+    localStorage.setItem(KEY, JSON.stringify({ ...data, [key]: value }));
   }
 
   static data() {
