@@ -33,7 +33,7 @@ export default class MenuContainer extends Container {
       });
 
       labelContainer.x = SCREEN.WIDTH / 2;
-      labelContainer.y = SCREEN.HEIGHT / 2;
+      labelContainer.y = SCREEN.HEIGHT / 2 - labelContainer.height / 2;
 
       icon.anchor.x = 0.5;
       labelContainer.addChild(icon);
