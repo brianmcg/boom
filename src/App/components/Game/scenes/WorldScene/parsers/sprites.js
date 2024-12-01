@@ -178,6 +178,7 @@ const createWallSprites = ({
             name: side.name,
             transparent: !!transparency,
             rotate: !overlay,
+            height: cell.height,
           });
         }
       });
@@ -191,12 +192,13 @@ const createWallSprites = ({
           name: overlay.name,
           transparent: true,
           rotate: false,
+          height: cell.height,
         });
       }
     });
   });
 
-  wallImages.forEach(({ name, transparent, rotate }) => {
+  wallImages.forEach(({ name, transparent, rotate, height }) => {
     wallTextures[name] = [];
 
     const { frame } = frames[name];
@@ -212,9 +214,6 @@ const createWallSprites = ({
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
       const spatterColorTextures = spatters.map(spatter => {
         const wallHeight = wallTexture.height;
-        const floorHeight = world.floorOffset
-          ? CELL_SIZE * world.floorOffset - 1
-          : 0;
 
         const renderTexture = GraphicsCreator.createRenderTexture({
           width: CELL_SIZE,
@@ -227,9 +226,10 @@ const createWallSprites = ({
           tint: parseInt(bloodColor, 16),
         });
 
-        wallSprite.y = wallTexture.frame.height - wallHeight + floorHeight;
+        wallSprite.y = height - wallHeight;
         spatterSprite.x = CELL_SIZE / 2;
-        spatterSprite.y = wallHeight - spatterSprite.height / 2;
+
+        spatterSprite.y = height - spatterSprite.height / 2;
         spatterSprite.anchor.set(0.5);
         spatterSprite.rotation = rotate
           ? (Math.floor(Math.random() * 4) * Math.PI) / 2
@@ -247,7 +247,7 @@ const createWallSprites = ({
         spatterContainer.removeChildren();
         spatterContainer.addChild(wallSprite);
 
-        // TODO: Add spatter to single transparent walls.
+        // TODO: Don't create spatter sprites for transparent walls.
         if (!transparent) {
           spatterContainer.addChild(spatterSprite);
         }

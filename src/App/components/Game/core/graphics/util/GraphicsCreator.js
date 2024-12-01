@@ -28,7 +28,7 @@ export default class GraphicsCreator {
     return sprite;
   }
 
-  static createMaskTexture({ renderer, texture }) {
+  static createMaskTexture({ renderer, texture, reverse = true }) {
     const filter = new ColorMatrixFilter();
     const maskContainer = new Container();
 
@@ -49,7 +49,8 @@ export default class GraphicsCreator {
     maskContainer.addChild(maskBackground);
     maskContainer.addChild(maskForeground);
 
-    filter.negative();
+    if (reverse) filter.negative();
+
     maskContainer.filters = [filter];
 
     renderer.render({
