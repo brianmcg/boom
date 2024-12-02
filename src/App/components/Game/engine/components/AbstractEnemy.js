@@ -164,7 +164,7 @@ export default class AbstractEnemy extends AbstractActor {
       type: Door,
       onStart: body => {
         if (!this.isDead() && !this.isHurting() && body.use) {
-          body.use();
+          body.use(this);
         }
       },
     });
