@@ -36,7 +36,8 @@ export default class HUDContainer extends Container {
     ammoIcon.x = SCREEN.WIDTH - ammoIcon.width / 2 - HUD_PADDING;
     ammoIcon.y = SCREEN.HEIGHT - ammoIcon.height / 2 - HUD_PADDING;
 
-    ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - HUD_PADDING / 2;
+    ammoAmount.x =
+      ammoIcon.x - ammoIcon.width / 2 - ammoAmount.width / 2 - HUD_PADDING / 2;
     ammoAmount.y = ammoIcon.y;
 
     this.addChild(ammoIcon);
