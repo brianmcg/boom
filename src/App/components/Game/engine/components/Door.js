@@ -41,7 +41,7 @@ export default class Door extends DynamicCell {
 
   use(user) {
     if (this.active && this.isClosed()) {
-      if (this.keyCard && user.isPlayer) {
+      if (this.keyCard && user?.isPlayer) {
         const keyCard = user.keyCards[this.keyCard];
 
         if (keyCard && keyCard.isEquiped()) {

@@ -14,8 +14,9 @@ export default class Sound extends Howl {
   load() {
     super.load();
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.once('load', () => resolve(this));
+      this.once('loaderror', () => reject(new Error('sound:loaderror')));
     });
   }
 

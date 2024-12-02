@@ -61,18 +61,22 @@ export default class Game {
     this.onLoading();
     this.lockPointer();
 
-    const { sound, data } = await Loader.load(GAME_ASSETS);
+    try {
+      const { sound, data } = await Loader.load(GAME_ASSETS);
 
-    this.soundSprite = sound;
-    this.data = data;
+      this.soundSprite = sound;
+      this.data = data;
 
-    if (DEBUG) {
-      this.showWorldScene();
-    } else {
-      this.showTitleScene();
+      if (DEBUG) {
+        this.showWorldScene();
+      } else {
+        this.showTitleScene();
+      }
+
+      this.app.start();
+    } catch (e) {
+      console.error('ERROR', e.message);
     }
-
-    this.app.start();
   }
 
   stop() {
@@ -136,27 +140,31 @@ export default class Game {
       this.scene = new Scene({ game: this, ...other });
       this.app.stage.addChild(this.scene);
 
-      const { graphics, sound, data } = await Loader.load(this.scene.assets);
+      try {
+        const { graphics, sound, data } = await Loader.load(this.scene.assets);
 
-      const sceneProps = this.data[type].props || {};
-      const sounds = this.data[type].sounds || {};
+        const sceneProps = this.data[type].props || {};
+        const sounds = this.data[type].sounds || {};
 
-      const props = {
-        ...sceneProps,
-        player: { ...sceneProps.player, ...startProps.player },
-      };
+        const props = {
+          ...sceneProps,
+          player: { ...sceneProps.player, ...startProps.player },
+        };
 
-      if (!sound.loop()) {
-        sound.once('end', sound.unload);
+        if (!sound.loop()) {
+          sound.once('end', sound.unload);
+        }
+
+        sound.once('fade', sound.stop);
+
+        this.music = sound;
+
+        this.scene.create({ sounds, graphics, data: { ...data, props } });
+
+        this.onReady();
+      } catch (e) {
+        console.error('ERROR', e.message);
       }
-
-      sound.once('fade', sound.stop);
-
-      this.music = sound;
-
-      this.scene.create({ sounds, graphics, data: { ...data, props } });
-
-      this.onReady();
     }
   }
 
