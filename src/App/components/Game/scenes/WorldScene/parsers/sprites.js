@@ -151,6 +151,8 @@ const createWallSprites = ({
 
   // const floorHeight = (wallTexture.height * world.floorOffset) + 1;
 
+  const floorHeight = world.floorOffset ? CELL_SIZE * world.floorOffset - 1 : 0;
+
   const spatterTypes = [...world.enemies, world.player].reduce(
     (memo, { effects }) => {
       if (effects.spatter && !memo.includes(effects.spatter)) {
@@ -226,10 +228,10 @@ const createWallSprites = ({
           tint: parseInt(bloodColor, 16),
         });
 
-        wallSprite.y = height - wallHeight;
+        wallSprite.y = wallTexture.frame.height - wallHeight + floorHeight;
         spatterSprite.x = CELL_SIZE / 2;
-
         spatterSprite.y = height - spatterSprite.height / 2;
+
         spatterSprite.anchor.set(0.5);
         spatterSprite.rotation = rotate
           ? (Math.floor(Math.random() * 4) * Math.PI) / 2
