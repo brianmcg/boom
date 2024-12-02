@@ -1,5 +1,5 @@
 import { SCREEN } from '@constants/config';
-import { RED } from '@constants/colors';
+import { BLACK } from '@constants/colors';
 import { GraphicsCreator } from '@game/core/graphics';
 import LogoSprite from './sprites/LogoSprite';
 import SparksSprite from './sprites/SparksSprite';
@@ -26,8 +26,7 @@ export const parse = ({ graphics, renderer }) => {
         background: GraphicsCreator.createRectangleSprite({
           width: SCREEN.WIDTH,
           height: SCREEN.HEIGHT,
-          color: RED,
-          alpha: 0.05,
+          color: BLACK,
         }),
         sparks: new SparksSprite(sparksTextures),
       },

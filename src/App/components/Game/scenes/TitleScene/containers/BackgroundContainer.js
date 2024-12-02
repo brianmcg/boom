@@ -1,6 +1,6 @@
-import { Container, PixelateFilter } from '@game/core/graphics';
+import { Container } from '@game/core/graphics';
 
-// const PIXEL_SIZE = 1.5;
+// const PIXEL_SIZE = 2;
 
 export default class BackgroundContainer extends Container {
   constructor({ sparks, background }) {
@@ -9,7 +9,7 @@ export default class BackgroundContainer extends Container {
     this.addChild(background);
     this.addChild(sparks);
 
-    this.pixelateFilter = new PixelateFilter();
+    // this.pixelateFilter = new PixelateFilter();
 
     // this.filters = [this.pixelateFilter];
 

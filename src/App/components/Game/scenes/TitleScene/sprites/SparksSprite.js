@@ -6,6 +6,7 @@ export default class SparksSprite extends AnimatedSprite {
     super(textures, {
       animationSpeed: 0.4,
       loop: true,
+      alpha: 0.75,
     });
 
     const ratio = SCREEN.WIDTH / this.width;
