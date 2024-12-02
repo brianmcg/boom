@@ -1,15 +1,16 @@
 .home {
   background-color: black;
   color: white;
-  padding: 16px;
+  padding: 32px;
   text-transform: uppercase;
 }
 
 .title {
+  font-family: DoomRegular;
   display: block;
   font-size: 40px;
   line-height: 40px;
-  margin: 20px;
+  margin: 24px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -17,8 +18,12 @@
 .table {
   border-collapse: collapse;
   margin: 20px 0;
-  font-size: 16px;
+  font-size: 20px;
   margin: auto;
+
+  tr:first-child td {
+    padding-top: 16px;
+  }
 
   thead {
     border-bottom: 2px solid #bc0000;
@@ -46,11 +51,11 @@
   border: 2px solid #bc0000;
   color: #bc0000;
   cursor: pointer;
-  margin: 20px auto;
+  margin: 24px auto;
   padding: 16px;
   text-align: center;
   width: 256px;
-  font-size: 14px;
+  font-size: 24px;
   transition:
     border 500ms,
     color 500ms;

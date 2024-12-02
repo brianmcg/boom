@@ -1,8 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { RED, WHITE } from '@constants/colors';
-import { SCREEN } from '@constants/config';
-
-const PADDING = 10;
+import { SCREEN, SCREEN_PADDING } from '@constants/config';
+import { PixelateFilter } from '@game/core/graphics';
 
 const MAX_ALPHA = 0.7;
 
@@ -27,15 +26,13 @@ export default class MenuContainer extends Container {
 
     if (labels.length) {
       labels.forEach((label, i) => {
-        label.y = PADDING * i + label.height * i - label.height;
-        label.anchor.x = 0.5;
+        label.y = SCREEN_PADDING * i + label.height * i - label.height / 2;
         labelContainer.addChild(label);
       });
 
       labelContainer.x = SCREEN.WIDTH / 2;
       labelContainer.y = SCREEN.HEIGHT / 2 - labelContainer.height / 2;
 
-      icon.anchor.x = 0.5;
       labelContainer.addChild(icon);
     }
 
@@ -50,6 +47,11 @@ export default class MenuContainer extends Container {
         this.emit(EVENTS.CLOSE);
       }
     });
+
+    this.pixelateFilter = new PixelateFilter();
+    this.pixelateFilter.enabled = false;
+
+    this.filters = [this.pixelateFilter];
   }
 
   onSelect(callback) {
@@ -74,14 +76,27 @@ export default class MenuContainer extends Container {
 
       if (i === this.index) {
         icon.y = label.y;
-        icon.x = label.x - label.width / 2 - PADDING;
+        icon.x = label.x - label.width / 2 - SCREEN_PADDING;
       }
     });
   }
 
-  fade(value) {
+  fade(value, { pixelSize = 1 }) {
+    this.pixelateFilter.enabled = value !== 1;
     this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
+
+    let size = (1 - value) * pixelSize;
+
+    if (this.parent) {
+      size *= this.parent.getStageScale();
+    }
+
+    if (size < 1) {
+      size = 1;
+    }
+
+    this.pixelateFilter.size = size;
   }
 
   highlightNext() {

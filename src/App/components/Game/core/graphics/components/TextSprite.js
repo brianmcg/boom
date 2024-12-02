@@ -3,7 +3,7 @@ import { BitmapText } from 'pixi.js';
 
 export default class TextSprite extends BitmapText {
   constructor({
-    text,
+    text = '',
     fontFamily,
     fontSize,
     color,
@@ -13,7 +13,7 @@ export default class TextSprite extends BitmapText {
     anchor,
     maxWidth = SCREEN.WIDTH,
   }) {
-    super({ text, style: { fontFamily, fontSize } });
+    super({ text: text.toUpperCase(), style: { fontFamily, fontSize } });
 
     this.x = x;
     this.y = y;

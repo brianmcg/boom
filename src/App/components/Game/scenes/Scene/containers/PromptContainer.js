@@ -1,9 +1,7 @@
 import { Container } from '@game/core/graphics';
-import { SCREEN } from '@constants/config';
+import { SCREEN, SCREEN_PADDING } from '@constants/config';
 
 const PULSE_INTERVAL = 100;
-
-const PADDING = 8;
 
 const PULSE_MAX_SCALE = 1.15;
 
@@ -31,7 +29,7 @@ export default class PromptContainer extends Container {
     super();
 
     sprite.x = SCREEN.WIDTH / 2;
-    sprite.y = SCREEN.HEIGHT - sprite.height - PADDING;
+    sprite.y = SCREEN.HEIGHT - sprite.height / 2 - SCREEN_PADDING * 1.5;
     sprite.scale.set(0);
 
     this.minHeight = sprite.height;

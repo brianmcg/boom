@@ -28,8 +28,9 @@ const createMenuSprites = (menu, textures, animations) => {
       new TextSprite({
         fontFamily: GAME_FONT.NAME,
         fontSize: FONT_SIZES.SMALL,
-        text: key.toUpperCase(),
+        text: key,
         color: index ? WHITE : RED,
+        anchor: 0.5,
       }),
     ],
     []

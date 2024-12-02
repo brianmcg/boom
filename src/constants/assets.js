@@ -22,8 +22,8 @@ export const SCENE_TYPES = {
 };
 
 export const GAME_FONT = {
-  NAME: 'DoomRegular',
-  FILE: 'font.xml',
+  NAME: '04b03',
+  FILE: '04b03.xml',
 };
 
 export const ENEMY_TYPES = {

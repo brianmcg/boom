@@ -3,6 +3,11 @@
   src: url('/src/assets/fonts/DoomRegular.ttf');
 }
 
+@font-face {
+  font-family: '04b03';
+  src: url('/src/assets/fonts/04b03.ttf');
+}
+
 body {
   margin: 0;
   background-color: black;

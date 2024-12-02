@@ -20,19 +20,23 @@ export default class HUDContainer extends Container {
 
     const { healthIcon, healthAmount, ammoIcon, ammoAmount, keys } = sprites;
 
-    healthIcon.x = HUD_PADDING;
-    healthIcon.y = SCREEN.HEIGHT - healthIcon.height - HUD_PADDING;
+    healthIcon.x = healthIcon.width / 2 + HUD_PADDING;
+    healthIcon.y = SCREEN.HEIGHT - healthIcon.height / 2 - HUD_PADDING;
 
     healthAmount.text = displayHealth(player);
     ammoAmount.text = displayAmmo(player);
 
-    healthAmount.x = healthIcon.x + healthIcon.width + HUD_PADDING / 2;
+    healthAmount.x =
+      healthIcon.x +
+      healthIcon.width / 2 +
+      healthAmount.width / 2 +
+      HUD_PADDING / 2;
     healthAmount.y = healthIcon.y;
 
-    ammoIcon.x = SCREEN.WIDTH - ammoIcon.width - HUD_PADDING;
-    ammoIcon.y = SCREEN.HEIGHT - ammoIcon.height - HUD_PADDING;
+    ammoIcon.x = SCREEN.WIDTH - ammoIcon.width / 2 - HUD_PADDING;
+    ammoIcon.y = SCREEN.HEIGHT - ammoIcon.height / 2 - HUD_PADDING;
 
-    ammoAmount.x = ammoIcon.x - ammoIcon.width - HUD_PADDING / 2;
+    ammoAmount.x = ammoIcon.x - ammoIcon.width / 2 - HUD_PADDING / 2;
     ammoAmount.y = ammoIcon.y;
 
     this.addChild(ammoIcon);
@@ -139,7 +143,11 @@ export default class HUDContainer extends Container {
       const { ammoIcon, ammoAmount } = this.sprites;
 
       ammoAmount.text = displayAmmo(this.player);
-      ammoAmount.x = ammoIcon.x - ammoAmount.width - HUD_PADDING / 2;
+      ammoAmount.x =
+        ammoIcon.x -
+        ammoIcon.width / 2 -
+        ammoAmount.width / 2 -
+        HUD_PADDING / 2;
     }
   }
 

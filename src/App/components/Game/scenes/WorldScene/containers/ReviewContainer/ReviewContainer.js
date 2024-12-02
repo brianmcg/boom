@@ -1,8 +1,8 @@
 import { Container } from '@game/core/graphics';
-import { SCREEN } from '@constants/config';
+import { SCREEN, SCREEN_PADDING } from '@constants/config';
 import StatContainer from './containers/StatContainer';
 
-const TEXT_PADDING = SCREEN.HEIGHT / 40;
+const TEXT_PADDING = SCREEN_PADDING / 2;
 
 const MAX_ALPHA = 0.7;
 
@@ -38,21 +38,25 @@ export default class ReviewContainer extends Container {
 
     const { title, stats, background } = sprites;
     const statsHeight = stats.enemies.name.height;
-    const statsStartY = title.height + TEXT_PADDING * 10;
 
     this.statContainers = Object.values(stats).reduce(
       (memo, { name, value }, i) => [
         ...memo,
         new StatContainer({
           sprites: [name, value],
-          y: statsStartY + i * (TEXT_PADDING * 2 + statsHeight),
+          y:
+            title.y +
+            title.height / 2 +
+            SCREEN_PADDING +
+            TEXT_PADDING +
+            i * (TEXT_PADDING * 2 + statsHeight),
           sound: sounds.pause,
         }),
       ],
       [
         new StatContainer({
           sprites: [title],
-          y: title.height / 2 + TEXT_PADDING * 4,
+          y: title.height / 2 + SCREEN_PADDING,
           sound: sounds.complete,
         }),
       ]

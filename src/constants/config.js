@@ -53,6 +53,8 @@ export const SCREEN = {
   HEIGHT: HEIGHT * RESOLUTION,
 };
 
+export const SCREEN_PADDING = SCREEN.HEIGHT / 20;
+
 export const DEFAULT_LANGUAGE = 'en';
 
 export const FOV = 90;

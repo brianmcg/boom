@@ -816,22 +816,24 @@ const createHudSprites = ({ world, textures, animations }) => {
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
     color: WHITE,
-    anchor: 0,
+    anchor: 0.5,
   });
 
   const ammoAmount = new TextSprite({
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
     color: WHITE,
-    anchor: 0,
+    anchor: 0.5,
   });
 
   const ammoIcon = new HUDSprite(textures.ammo, {
     maxScale: healthAmount.height / textures.ammo.frame.height,
+    anchor: 0.5,
   });
 
   const healthIcon = new HUDSprite(textures.health, {
     maxScale: healthAmount.height / textures.health.frame.height,
+    anchor: 0.5,
   });
 
   const items = world.enemies.reduce(
