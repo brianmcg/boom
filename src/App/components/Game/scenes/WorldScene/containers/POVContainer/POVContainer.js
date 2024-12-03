@@ -476,8 +476,8 @@ export default class POVContainer extends Container {
             (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)) +
           spriteHeight / 2;
 
-        sprite.width = spriteHeight;
-        sprite.height = spriteHeight;
+        sprite.width = spriteHeight * effect.scale;
+        sprite.height = spriteHeight * effect.scale;
         sprite.zOrder = actualDistance;
         sprite.tint = this.calculateTint(actualDistance);
         sprite.visible = true;

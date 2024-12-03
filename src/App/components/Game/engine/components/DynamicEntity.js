@@ -55,6 +55,7 @@ export default class DynamicEntity extends DynamicBody {
           y: this.y,
           z: this.z,
           sourceId: this.tail.ids[this.tailId],
+          scale: Math.random() * 0.5 + 0.5,
         });
 
         this.tailTimer = 0;
