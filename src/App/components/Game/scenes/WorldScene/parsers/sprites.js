@@ -39,7 +39,7 @@ const SPURT_SPEED = 0.4;
 
 const TAIL_SPEED = 0.05;
 
-const EXPLOSION_SPEED = 0.3;
+const EXPLOSION_SPEED = 0.25;
 
 const SPLASH_SPEED = 0.4;
 
@@ -130,7 +130,7 @@ const createWallSpriteMask = ({
 
   const sprite = new Sprite(renderTexture);
 
-  sprite.blendMode = 'overlay'; // BLEND_MODES.MULTIPLY;
+  sprite.blendMode = 'overlay';
 
   return sprite;
 };
@@ -147,10 +147,6 @@ const createWallSprites = ({
   const wallTextures = {};
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
   const spatterContainer = new Container();
-  // const floorOffset = world.floorOffset * CELL_SIZE;
-
-  // const floorHeight = (wallTexture.height * world.floorOffset) + 1;
-
   const floorHeight = world.floorOffset ? CELL_SIZE * world.floorOffset - 1 : 0;
 
   const spatterTypes = [...world.enemies, world.player].reduce(
@@ -417,15 +413,6 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
   const playerExplosionSprites = world.player.weapons.reduce((memo, weapon) => {
     if (weapon.projectiles) {
       weapon.projectiles.forEach(projectile => {
-        // if (projectile.effects?.impact) {
-        //   const effectTextures = animations[projectile.effects.impact].map(
-        //     animation => textures[animation],
-        //   );
-        //   memo[projectile.id] = new EffectSprite(effectTextures, {
-        //     animationSpeed: 0.2,
-        //   });
-        // }
-
         const explode = projectile.explosion?.effects.explode;
 
         if (explode) {
@@ -535,6 +522,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           effectTextures,
           {
             animationSpeed: EXPLOSION_SPEED,
+            rotate: false,
           }
         );
       }
@@ -567,6 +555,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         effectTextures,
         {
           animationSpeed: EXPLOSION_SPEED,
+          rotate: false,
         }
       );
     }
