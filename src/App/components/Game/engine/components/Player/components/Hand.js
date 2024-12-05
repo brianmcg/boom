@@ -109,7 +109,11 @@ export default class Hand extends EventEmitter {
   }
 
   updateArming(delta) {
-    this.moveY -= CHANGE_INCREMENT_Y * delta;
+    const changeIncrement =
+      this.player.weapon.type === 3
+        ? CHANGE_INCREMENT_Y * 4
+        : CHANGE_INCREMENT_Y;
+    this.moveY -= changeIncrement * delta;
 
     if (this.moveY <= 0) {
       this.moveY = 0;
@@ -118,6 +122,11 @@ export default class Hand extends EventEmitter {
   }
 
   updateUnarming(delta) {
+    // const changeIncrement =
+    //   this.player.weapon.type === 3
+    //     ? CHANGE_INCREMENT_Y * 4
+    //     : CHANGE_INCREMENT_Y;
+
     this.moveY += CHANGE_INCREMENT_Y * delta;
 
     if (this.moveY >= 1) {
