@@ -1,89 +1,80 @@
 import { Container } from '@game/core/graphics';
-import { RED, WHITE } from '@constants/colors';
+import { RED, WHITE, DARK_GREY } from '@constants/colors';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
 import { PixelateFilter } from '@game/core/graphics';
 
 const MAX_ALPHA = 0.7;
 
-const EVENTS = {
-  SELECT: 'menu:select',
-  CLOSE: 'menu:close',
-};
-
 export default class MenuContainer extends Container {
-  constructor(sprites) {
+  constructor({ menu, sprites }) {
     super();
 
     this.sprites = sprites;
+    this.menu = menu;
+    this.iconHeight = sprites.icon.height;
     this.scaleFactor = 0;
-    this.alphaFactor = 0;
-
-    const { icon, labels, background } = this.sprites;
-
-    const labelContainer = new Container();
-
-    this.addChild(background);
-
-    if (labels.length) {
-      labels.forEach((label, i) => {
-        label.y = SCREEN_PADDING * i + label.height * i - label.height / 2;
-        labelContainer.addChild(label);
-      });
-
-      labelContainer.x = SCREEN.WIDTH / 2;
-      labelContainer.y = SCREEN.HEIGHT / 2 - labelContainer.height / 2;
-
-      labelContainer.addChild(icon);
-    }
-
-    this.addChild(labelContainer);
-
-    this.on('added', () => this.setIndex(0));
-
-    this.on('removed', () => {
-      if (this.selectedIndex !== null) {
-        this.emit(EVENTS.SELECT, this.selectedIndex);
-      } else {
-        this.emit(EVENTS.CLOSE);
-      }
-    });
-
+    this.optionContainer = new Container();
     this.pixelateFilter = new PixelateFilter();
     this.pixelateFilter.enabled = false;
-
     this.filters = [this.pixelateFilter];
+
+    this.addChild(this.sprites.background);
+    this.addChild(this.optionContainer);
+
+    // this.optionContainer.x = SCREEN.WIDTH / 2;
+    this.updateMenu();
   }
 
-  onSelect(callback) {
-    this.on(EVENTS.SELECT, callback);
-  }
+  updateMenu() {
+    this.optionContainer.removeChildren();
 
-  onClose(callback) {
-    this.on(EVENTS.CLOSE, callback);
+    const { icon, labels } = this.sprites;
+    const currentOptions = this.menu.getCurrentOptions();
+
+    currentOptions.forEach((option, i) => {
+      const label = labels[option.id];
+
+      label.y =
+        (SCREEN_PADDING / 2) * i + this.iconHeight * i - this.iconHeight / 2;
+
+      if (option.highlighted) {
+        icon.y = label.y;
+        label.tint = RED;
+        icon.x = label.x - icon.width - SCREEN_PADDING / 2;
+      } else {
+        label.tint = WHITE;
+      }
+
+      if (option.disabled) {
+        label.tint = DARK_GREY;
+      }
+
+      this.optionContainer.addChild(label);
+    });
+
+    this.optionContainer.x = SCREEN.WIDTH / 2 - this.optionContainer.width / 2;
+
+    this.optionContainer.y =
+      SCREEN.HEIGHT / 2 - this.optionContainer.height / 2;
+
+    this.optionContainer.addChild(icon);
   }
 
   update(ticker) {
     super.update(ticker);
 
-    const { icon, labels, background } = this.sprites;
+    if (this.scaleFactor < 1) {
+      const { icon, labels, background } = this.sprites;
+      icon.setScale(this.scaleFactor);
+      background.alpha = this.scaleFactor * MAX_ALPHA;
+      Object.values(labels).forEach(label => label.scale.set(this.scaleFactor));
+    }
 
-    icon.setScale(this.scaleFactor);
-
-    background.alpha = this.alphaFactor;
-
-    labels.forEach((label, i) => {
-      label.scale.set(this.scaleFactor);
-
-      if (i === this.index) {
-        icon.y = label.y;
-        icon.x = label.x - label.width / 2 - SCREEN_PADDING;
-      }
-    });
+    this.updateMenu();
   }
 
   fade(value, { pixelSize = 1 }) {
     this.pixelateFilter.enabled = value !== 1;
-    this.alphaFactor = value * MAX_ALPHA;
     this.scaleFactor = value;
 
     let size = (1 - value) * pixelSize;
@@ -97,45 +88,6 @@ export default class MenuContainer extends Container {
     }
 
     this.pixelateFilter.size = size;
-  }
-
-  highlightNext() {
-    const { length } = this.sprites.labels;
-
-    if (length) {
-      if (this.index < length - 1) {
-        this.setIndex(this.index + 1);
-      } else {
-        this.setIndex(0);
-      }
-    }
-  }
-
-  highlightPrevious() {
-    const { length } = this.sprites.labels;
-
-    if (length) {
-      if (this.index > 0) {
-        this.setIndex(this.index - 1);
-      } else {
-        this.setIndex(length - 1);
-      }
-    }
-  }
-
-  select() {
-    this.selectedIndex = this.index;
-  }
-
-  setIndex(index) {
-    const { labels } = this.sprites;
-
-    labels.forEach((child, i) => {
-      child.tint = index === i ? RED : WHITE;
-    });
-
-    this.selectedIndex = null;
-    this.index = index;
   }
 
   play() {

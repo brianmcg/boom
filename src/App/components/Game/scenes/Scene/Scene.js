@@ -1,3 +1,4 @@
+import translate from '@util/translate';
 import { KEYS } from '@game/core/input';
 import { Container, GraphicsCreator } from '@game/core/graphics';
 import { SoundSpriteController } from '@game/core/audio';
@@ -6,10 +7,10 @@ import { parse } from './parsers';
 import MainContainer from './containers/MainContainer';
 import MenuContainer from './containers/MenuContainer';
 import PromptContainer from './containers/PromptContainer';
+import Menu from './Menu';
 
 import {
   STATES,
-  EVENTS,
   PAUSE_INCREMENT,
   FADE_INCREMENT,
   FADE_PIXEL_SIZE,
@@ -24,18 +25,25 @@ export default class Scene extends Container {
 
     this.mainContainer = new MainContainer();
 
+    this.menu = new Menu([
+      {
+        label: translate('scene.menu.quit'),
+        zOrder: Number.MAX_VALUE,
+        action: () => this.onSelectQuit(),
+      },
+    ]);
+
     this.game.input.add(STATES.PAUSED, {
       onKeyDown: {
-        [KEYS.Q]: () => this.hideMenu(),
         [KEYS.UP_ARROW]: () => this.menuHighlightPrevious(),
         [KEYS.DOWN_ARROW]: () => this.menuHighlightNext(),
-        [KEYS.ENTER]: () => this.menuSelect(),
+        [KEYS.SPACE]: () => this.menuSelect(),
       },
     });
 
     this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
-        [KEYS.Q]: () => this.showMenu(),
+        [KEYS.SPACE]: () => this.showMenu(),
       },
     });
 
@@ -45,12 +53,27 @@ export default class Scene extends Container {
       },
     });
 
+    this.stopMusicOnPause = true;
+
     this.setLoading();
+  }
+
+  onPromptInput() {
+    this.soundController.emitSound(this.sounds.complete);
+    this.setFadingOut();
+  }
+
+  onSelectQuit() {
+    this.onStop = () => this.game.exit();
+    this.setFadingOut();
   }
 
   create({ graphics, sounds }) {
     const text = {
-      menu: this.menu.map(item => item.label),
+      menu: this.menu.options.reduce(
+        (memo, { id, label }) => ({ ...memo, [id]: label }),
+        {}
+      ),
       prompt: this.promptOption,
     };
 
@@ -58,11 +81,10 @@ export default class Scene extends Container {
 
     this.sounds = sounds;
 
-    this.menuContainer = new MenuContainer(sprites.menu);
-
-    this.menuContainer.onSelect(index => this.menu[index].action());
-
-    this.menuContainer.onClose(() => this.setRunning());
+    this.menuContainer = new MenuContainer({
+      menu: this.menu,
+      sprites: sprites.menu,
+    });
 
     this.promptContainer = new PromptContainer(
       sprites.prompt,
@@ -71,15 +93,10 @@ export default class Scene extends Container {
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),
-      soundSprite: this.game.soundSprite,
+      soundSprite: this.game.assets.sound,
     });
 
     this.setFadingIn();
-  }
-
-  onPromptInput() {
-    this.soundController.emitSound(this.sounds.complete);
-    this.triggerComplete();
   }
 
   update(ticker) {
@@ -91,10 +108,10 @@ export default class Scene extends Container {
         this.updateRunning(ticker);
         break;
       case STATES.PAUSING:
-        this.updatePausing(ticker.deltaTime);
+        this.updatePausing(ticker);
         break;
       case STATES.PAUSED:
-        this.updatePaused();
+        this.updatePaused(ticker);
         break;
       case STATES.UNPAUSING:
         this.updateUnpausing(ticker.deltaTime);
@@ -126,8 +143,8 @@ export default class Scene extends Container {
     this.setPrompting();
   }
 
-  updatePausing(deltaTime) {
-    this.fadeAmount += PAUSE_INCREMENT * deltaTime;
+  updatePausing(ticker) {
+    this.fadeAmount += PAUSE_INCREMENT * ticker.deltaTime;
 
     if (this.fadeAmount >= 1) {
       this.fadeAmount = 1;
@@ -173,17 +190,22 @@ export default class Scene extends Container {
 
   menuHighlightNext() {
     this.soundController.emitSound(this.sounds.highlight);
-    this.menuContainer.highlightNext();
+    this.menu.highlightNext();
   }
 
   menuHighlightPrevious() {
     this.soundController.emitSound(this.sounds.highlight);
-    this.menuContainer.highlightPrevious();
+    this.menu.highlightPrevious();
   }
 
   menuSelect() {
-    this.menuContainer.select();
-    this.hideMenu();
+    const action = this.menu.select();
+    this.soundController.emitSound(this.sounds.pause);
+
+    if (action) {
+      this.menuContainer.once('removed', () => action());
+      this.setUnpausing();
+    }
   }
 
   showMenu() {
@@ -191,8 +213,12 @@ export default class Scene extends Container {
     this.setPausing();
   }
 
-  hideMenu() {
-    this.setUnpausing();
+  moveX(x) {
+    this.x = x * this.scale.x;
+  }
+
+  moveY(y) {
+    this.y = y * this.scale.y;
   }
 
   getStageScale() {
@@ -233,9 +259,9 @@ export default class Scene extends Container {
 
     if (isStateChanged) {
       this.pause();
-      this.game.music.pause();
       this.soundController.emitSound(this.sounds.pause);
       this.fadeAmount = 0;
+      if (this.stopMusicOnPause) this.game.music.pause();
     }
 
     return isStateChanged;
@@ -249,7 +275,7 @@ export default class Scene extends Container {
     const isStateChanged = this.setState(STATES.UNPAUSING);
 
     if (isStateChanged) {
-      this.soundController.emitSound(this.sounds.pause);
+      // this.soundController.emitSound(this.sounds.pause);
     }
 
     return isStateChanged;
@@ -281,31 +307,10 @@ export default class Scene extends Container {
 
     if (isStateChanged) {
       this.game.app.renderer.clear();
-
-      switch (this.stopEvent) {
-        case EVENTS.COMPLETE:
-          this.complete();
-          break;
-        case EVENTS.RESTART:
-          this.restart();
-          break;
-        case EVENTS.QUIT:
-          this.quit();
-          break;
-        default:
-          break;
-      }
+      this.onStop();
     }
 
     return isStateChanged;
-  }
-
-  moveX(x) {
-    this.x = x * this.scale.x;
-  }
-
-  moveY(y) {
-    this.y = y * this.scale.y;
   }
 
   isRunning() {
@@ -320,29 +325,10 @@ export default class Scene extends Container {
     return this.state === STATES.PROMPTING;
   }
 
-  triggerComplete() {
-    this.setStopEvent(EVENTS.COMPLETE);
-    this.setFadingOut();
-  }
-
-  triggerRestart() {
-    this.setStopEvent(EVENTS.RESTART);
-    this.setFadingOut();
-  }
-
-  triggerQuit() {
-    this.setStopEvent(EVENTS.QUIT);
-    this.setFadingOut();
-  }
-
   resize(scale) {
     if (this.state !== STATES.STOPPED) {
       this.scale.set(scale);
     }
-  }
-
-  setStopEvent(stopEvent) {
-    this.stopEvent = stopEvent;
   }
 
   setState(state) {

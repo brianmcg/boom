@@ -25,7 +25,11 @@ export default class TextSprite extends BitmapText {
     }
 
     if (anchor) {
-      this.anchor.set(anchor);
+      if (Array.isArray(anchor)) {
+        this.anchor.set(...anchor);
+      } else {
+        this.anchor.set(anchor);
+      }
     }
   }
 

@@ -14,6 +14,8 @@ export const PURPLE = 0xae81ff;
 
 export const GREEN = 0xa6e22e;
 
+export const DARK_GREY = 0x808080;
+
 export const PINK = 0xf92672;
 
 export const GREY = 0xd3d3d3;

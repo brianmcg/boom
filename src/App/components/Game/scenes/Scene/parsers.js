@@ -1,7 +1,7 @@
 import { TextSprite, GraphicsCreator } from '@game/core/graphics';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
-import { WHITE, RED, BLACK } from '@constants/colors';
+import { RED, BLACK } from '@constants/colors';
 import { SCREEN } from '@constants/config';
 import MenuIconSprite from './sprites/MenuIconSprite';
 
@@ -22,24 +22,23 @@ const createMenuSprites = (menu, textures, animations) => {
     alpha: 0.75,
   });
 
-  const labels = menu.reduce(
-    (memo, key, index) => [
+  const labels = Object.entries(menu).reduce(
+    (memo, [key, value]) => ({
       ...memo,
-      new TextSprite({
+      [key]: new TextSprite({
         fontFamily: GAME_FONT.NAME,
         fontSize: FONT_SIZES.SMALL,
-        text: key,
-        color: index ? WHITE : RED,
-        anchor: 0.5,
+        text: value,
+        anchor: [0, 0.5],
       }),
-    ],
-    []
+    }),
+    {}
   );
 
   const menuTextures = animations.skull.map(image => textures[image]);
 
   const icon = new MenuIconSprite(menuTextures, {
-    size: labels[0].height,
+    size: Object.values(labels)[0].height * 0.5,
   });
 
   return { icon, labels, background };

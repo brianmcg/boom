@@ -1,56 +1,103 @@
 import translate from '@util/translate';
 import { TITLE_SCENE_ASSETS } from '@constants/assets';
-import { KEYS } from '@game/core/input';
 import { parse } from './parsers';
 import BackgroundContainer from './containers/BackgroundContainer';
 import ForegroundContainer from './containers/ForegroundContainer';
-import Scene, { STATES } from '../Scene';
+import Scene from '../Scene';
 
 export default class TitleScene extends Scene {
-  constructor(options) {
-    super(options);
+  constructor({ data, ...other }) {
+    super(other);
 
     this.assets = TITLE_SCENE_ASSETS;
 
-    this.menu = [
-      {
-        label: translate('scene.menu.continue'),
-        action: () => this.setRunning(),
-      },
-      {
-        label: translate('scene.menu.quit'),
-        action: () => this.triggerQuit(),
-      },
-    ];
+    this.menu.add({
+      label: translate('title.menu.new'),
+      action: () => this.onSelectNewGame(),
+    });
+
+    this.menu.add({
+      label: translate('title.menu.load'),
+      disabled: Object.keys(data).length < 1,
+      menu: Object.values(data).map(data => ({
+        label: `${data.index}. ${translate(`world.title.${data.id}`)}`,
+        action: () => this.onSelectLoadGame(data),
+      })),
+    });
+
+    this.stopMusicOnPause = false;
 
     this.promptOption = translate('title.prompt.start');
+  }
 
-    this.game.input.add(STATES.PROMPTING, {
-      onKeyDown: {
-        [KEYS.Q]: () => this.showMenu(),
-      },
-    });
+  onPromptInput() {
+    this.showMenu();
+  }
+
+  onSelectNewGame() {
+    this.onStop = () => this.game.showWorldScene();
+    this.setFadingOut();
+  }
+
+  onSelectLoadGame(data) {
+    this.onStop = () => this.game.showWorldScene(data);
+    this.setFadingOut();
   }
 
   create(options) {
     const { renderer } = this.game.app;
     const { sprites } = parse({ ...options, renderer });
 
-    this.mainContainer.addChild(new BackgroundContainer(sprites.background));
-    this.mainContainer.addChild(new ForegroundContainer(sprites.foreground));
+    this.sparks = sprites.background.sparks;
+
+    this.backgroundContainer = new BackgroundContainer(sprites.background);
+    this.foregroundContainer = new ForegroundContainer(sprites.foreground);
+
+    this.mainContainer.addChild(this.backgroundContainer);
+    this.mainContainer.addChild(this.foregroundContainer);
 
     super.create(options);
   }
 
-  complete() {
-    this.game.showWorldScene();
+  setPaused() {
+    const isStateChanged = super.setPaused();
+
+    if (isStateChanged) {
+      this.promptContainer.removeFromParent();
+      this.foregroundContainer.removeChildren();
+    }
+
+    return isStateChanged;
   }
 
-  restart() {
-    this.game.showTitleScene();
+  setPausing() {
+    const isStateChanged = super.setPausing();
+
+    if (isStateChanged) {
+      this.mainContainer.pixelateFilter.enabled = false;
+      this.backgroundContainer.play();
+    }
+
+    return isStateChanged;
   }
 
-  quit() {
-    this.game.exit();
+  setFadingOut() {
+    const isStateChanged = super.setFadingOut();
+
+    if (isStateChanged) {
+      this.mainContainer.pixelateFilter.enabled = true;
+    }
+
+    return isStateChanged;
+  }
+
+  updatePausing(ticker) {
+    super.updatePausing(ticker);
+    this.backgroundContainer.update(ticker);
+  }
+
+  updatePaused(ticker) {
+    super.updatePaused();
+    this.sparks.update(ticker);
   }
 }

@@ -11,18 +11,23 @@ export default class CreditsScene extends Scene {
 
     this.assets = CREDITS_SCENE_ASSETS;
 
-    this.menu = [
-      {
-        label: translate('scene.menu.continue'),
-        action: () => this.setRunning(),
-      },
-      {
-        label: translate('scene.menu.quit'),
-        action: () => this.triggerQuit(),
-      },
-    ];
+    this.menu.add({
+      label: translate('credits.menu.continue'),
+      action: () => this.setRunning(),
+    });
 
     this.promptOption = translate('scene.prompt.continue');
+  }
+
+  onPromptInput() {
+    this.soundController.emitSound(this.sounds.complete);
+    this.onStop = () => this.game.showTitleScene();
+    this.setFadingOut();
+  }
+
+  onSelectQuit() {
+    this.onStop = () => this.game.showTitleScene();
+    this.setFadingOut();
   }
 
   create(options) {
@@ -104,18 +109,6 @@ export default class CreditsScene extends Scene {
 
   updateRunning(ticker) {
     return this.scrollContainer.scroll(ticker);
-  }
-
-  complete() {
-    this.game.showTitleScene();
-  }
-
-  restart() {
-    this.game.showCreditsScene();
-  }
-
-  quit() {
-    this.game.showTitleScene();
   }
 
   destroy(options) {

@@ -168,7 +168,7 @@ export default class World extends PhysicsWorld {
   }
 
   onPlayerDeath() {
-    this.scene.triggerRestart();
+    this.scene.onSelectRestart();
   }
 
   addEffect(options) {

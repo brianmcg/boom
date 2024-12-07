@@ -1,4 +1,4 @@
-import { Sprite, TextSprite } from '@game/core/graphics';
+import { FadeSprite, TextSprite } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
@@ -8,7 +8,7 @@ import { GraphicsCreator } from '@game/core/graphics';
 export const parse = ({ graphics, text }) => {
   const { textures } = graphics;
 
-  const logo = new Sprite(textures.logo);
+  const logo = new FadeSprite(textures.logo);
 
   const credits = text.credits.reduce((memo, credit) => {
     const key = new TextSprite({

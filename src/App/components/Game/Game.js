@@ -7,7 +7,7 @@ import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
 import Loader from './util/Loader';
-// import LocalStorage from './util/LocalStorage';
+import LocalStorage from './util/LocalStorage';
 import GameView from './GameView';
 import './Game.css';
 
@@ -62,21 +62,18 @@ export default class Game {
     this.lockPointer();
 
     try {
-      const { sound, data } = await Loader.load(GAME_ASSETS);
-
-      this.soundSprite = sound;
-      this.data = data;
-
-      if (DEBUG) {
-        this.showWorldScene();
-      } else {
-        this.showTitleScene();
-      }
-
-      this.app.start();
+      this.assets = await Loader.load(GAME_ASSETS);
     } catch (e) {
       console.error('ERROR', e.message);
     }
+
+    if (DEBUG) {
+      this.showWorldScene();
+    } else {
+      this.showTitleScene();
+    }
+
+    this.app.start();
   }
 
   stop() {
@@ -105,16 +102,18 @@ export default class Game {
   }
 
   showTitleScene() {
-    this.showScene(SCENE_TYPES.TITLE);
+    this.showScene(SCENE_TYPES.TITLE, { data: LocalStorage.data() });
   }
 
   showWorldScene({ index = LEVEL, ...other } = {}) {
-    // LocalStorage.set(index, other);
+    const id = this.assets.data.world.levels[index];
+
+    LocalStorage.set(index, { ...other, id, index });
 
     this.showScene(SCENE_TYPES.WORLD, {
+      id,
       index,
       showLoader: true,
-      id: this.data.world.levels[index],
       ...other,
     });
   }
@@ -141,30 +140,33 @@ export default class Game {
       this.app.stage.addChild(this.scene);
 
       try {
-        const { graphics, sound, data } = await Loader.load(this.scene.assets);
-
-        const sceneProps = this.data[type].props || {};
-        const sounds = this.data[type].sounds || {};
-
-        const props = {
-          ...sceneProps,
-          player: { ...sceneProps.player, ...startProps.player },
-        };
-
-        if (!sound.loop()) {
-          sound.once('end', sound.unload);
-        }
-
-        sound.once('fade', sound.stop);
-
-        this.music = sound;
-
-        this.scene.create({ sounds, graphics, data: { ...data, props } });
-
-        this.onReady();
+        this.sceneAssets = await Loader.load(this.scene.assets);
       } catch (e) {
         console.error('ERROR', e.message);
       }
+
+      const { graphics, sound, data } = this.sceneAssets;
+
+      const sceneProps = this.assets.data[type].props || {};
+      const sounds = this.assets.data[type].sounds || {};
+
+      const props = {
+        ...sceneProps,
+        player: { ...sceneProps.player, ...startProps.player },
+      };
+
+      if (!sound.loop()) {
+        sound.once('end', sound.unload);
+      }
+
+      sound.once('fade', sound.stop);
+
+      this.music = sound;
+
+      this.scene.create({ sounds, graphics, data: { ...data, props } });
+      this.sceneAssets = null;
+
+      this.onReady();
     }
   }
 

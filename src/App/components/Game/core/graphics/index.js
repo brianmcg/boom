@@ -16,6 +16,7 @@ import Container from './components/Container';
 import Line from './components/Line';
 import Sprite from './components/Sprite';
 import TextSprite from './components/TextSprite';
+import FadeSprite from './components/FadeSprite';
 
 import GraphicsCreator from './util/GraphicsCreator';
 import GraphicsLoader from './util/GraphicsLoader';
@@ -29,6 +30,7 @@ export {
   ColorMatrixFilter,
   Container,
   EventEmitter,
+  FadeSprite,
   GraphicsCreator,
   GraphicsLoader,
   Line,

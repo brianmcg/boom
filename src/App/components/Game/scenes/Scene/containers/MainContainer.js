@@ -27,16 +27,16 @@ export default class MainContainer extends Container {
 
   pause() {
     super.pause();
-    this.pixelateFilter.enabled = true;
+    this.filters = [this.pixelateFilter];
   }
 
   stop() {
     super.stop();
-    this.pixelateFilter.enabled = true;
+    this.filters = [this.pixelateFilter];
   }
 
   play() {
     super.play();
-    this.pixelateFilter.enabled = false;
+    this.filters = [];
   }
 }

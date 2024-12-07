@@ -184,7 +184,7 @@ const createEnemy = ({
 };
 
 export const createWorld = ({ scene, data, graphics }) => {
-  const { soundSprite } = scene.game;
+  const { sound: soundSprite } = scene.game.assets;
   const spatterTypes = Object.values(data.props.enemies).reduce(
     (memo, { effects }) => {
       if (effects.spatter && !memo.includes(effects.spatter)) {

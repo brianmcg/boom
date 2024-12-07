@@ -29,20 +29,15 @@ export default class WorldScene extends Scene {
 
     this.assets = WORLD_SCENE_ASSETS(index);
 
-    this.menu = [
-      {
-        label: translate('scene.menu.continue'),
-        action: () => this.setRunning(),
-      },
-      {
-        label: translate('scene.menu.restart'),
-        action: () => this.triggerRestart(),
-      },
-      {
-        label: translate('scene.menu.quit'),
-        action: () => this.triggerQuit(),
-      },
-    ];
+    this.menu.add({
+      label: translate('world.menu.continue'),
+      action: () => this.onSelectContinue(),
+    });
+
+    this.menu.add({
+      label: translate('world.menu.restart'),
+      action: () => this.onSelectRestart(),
+    });
 
     this.promptOption = translate('scene.prompt.continue');
 
@@ -60,7 +55,7 @@ export default class WorldScene extends Scene {
         [KEYS.A]: () => this.assignPlayerAction({ strafeLeft: true }),
         [KEYS.D]: () => this.assignPlayerAction({ strafeRight: true }),
         [KEYS.E]: () => this.assignPlayerAction({ use: true }),
-        [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
+        // [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
         [KEYS.CTRL]: () => this.assignPlayerAction({ attack: true }),
         [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: true }),
         [KEYS.ALT]: () => this.assignPlayerAction({ secondaryAttack: true }),
@@ -104,8 +99,38 @@ export default class WorldScene extends Scene {
   }
 
   onPromptInput() {
+    this.onStop = () => {
+      if (this.index < this.game.assets.data.world.levels.length - 1) {
+        this.game.showWorldScene({
+          index: this.index + 1,
+          startProps: this.world.props,
+        });
+      } else {
+        this.game.showCreditsScene();
+      }
+    };
+
     this.soundController.emitSound(this.sounds.complete);
     this.setRemovingReview();
+  }
+
+  onSelectContinue() {
+    this.setRunning();
+  }
+
+  onSelectRestart() {
+    this.onStop = () =>
+      this.game.showWorldScene({
+        index: this.index,
+        startProps: this.world.startProps,
+      });
+
+    this.setFadingOut();
+  }
+
+  onSelectQuit() {
+    this.onStop = () => this.game.showTitleScene();
+    this.setFadingOut();
   }
 
   create({ graphics, data, sounds }) {
@@ -191,7 +216,8 @@ export default class WorldScene extends Scene {
 
     if (this.fadeAmount <= 0) {
       this.fadeAmount = 0;
-      this.triggerComplete();
+      this.removeChild(this.reviewContainer);
+      this.setFadingOut();
     }
 
     this.fade(this.fadeAmount, {
@@ -199,13 +225,19 @@ export default class WorldScene extends Scene {
     });
   }
 
-  setAddingReview() {
-    if (this.setState(STATES.ADDING_REVIEW)) {
-      this.stop();
-      this.fadeAmount = 0;
-      this.reviewContainer.setStatistics(this.world.getStatistics());
-      this.addChild(this.reviewContainer);
-    }
+  play() {
+    super.play();
+    this.world.play();
+  }
+
+  pause() {
+    super.pause();
+    this.world.pause();
+  }
+
+  stop() {
+    super.stop();
+    this.world.stop();
   }
 
   assignPlayerAction(actions) {
@@ -227,6 +259,15 @@ export default class WorldScene extends Scene {
     }
   }
 
+  setAddingReview() {
+    if (this.setState(STATES.ADDING_REVIEW)) {
+      this.stop();
+      this.fadeAmount = 0;
+      this.reviewContainer.setStatistics(this.world.getStatistics());
+      this.addChild(this.reviewContainer);
+    }
+  }
+
   setDisplayingReview() {
     return this.setState(STATES.DISPLAYING_REVIEW);
   }
@@ -237,48 +278,6 @@ export default class WorldScene extends Scene {
     }
 
     return this.setState(STATES.REMOVING_REVIEW);
-  }
-
-  play() {
-    super.play();
-    this.world.play();
-  }
-
-  pause() {
-    super.pause();
-    this.world.pause();
-  }
-
-  stop() {
-    super.stop();
-    this.world.stop();
-  }
-
-  complete() {
-    if (this.index < this.game.data.world.levels.length - 1) {
-      this.game.showWorldScene({
-        index: this.index + 1,
-        startProps: this.world.props,
-      });
-    } else {
-      this.game.showCreditsScene();
-    }
-  }
-
-  triggerComplete() {
-    this.removeChild(this.reviewContainer);
-    super.triggerComplete();
-  }
-
-  restart() {
-    this.game.showWorldScene({
-      index: this.index,
-      startProps: this.world.startProps,
-    });
-  }
-
-  quit() {
-    this.game.showTitleScene();
   }
 
   destroy(...options) {
