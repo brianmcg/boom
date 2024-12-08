@@ -28,7 +28,7 @@ export default class Scene extends Container {
     this.menu = new Menu([
       {
         label: translate('scene.menu.quit'),
-        zOrder: Number.MAX_VALUE,
+        zOrder: 1,
         action: () => this.onSelectQuit(),
       },
     ]);
@@ -37,19 +37,27 @@ export default class Scene extends Container {
       onKeyDown: {
         [KEYS.UP_ARROW]: () => this.menuHighlightPrevious(),
         [KEYS.DOWN_ARROW]: () => this.menuHighlightNext(),
-        [KEYS.SPACE]: () => this.menuSelect(),
+        [KEYS.SPACE]: () => this.hideMenu(),
+        [KEYS.Q]: () => this.hideMenu(),
+        [KEYS.W]: () => this.menuHighlightPrevious(),
+        [KEYS.S]: () => this.menuHighlightNext(),
+        [KEYS.ENTER]: () => this.menuSelect(),
+        [KEYS.E]: () => this.menuSelect(),
       },
     });
 
     this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
-        [KEYS.SPACE]: () => this.showMenu(),
+        [KEYS.Q]: () => this.showMenu(),
+        [KEYS.ENTER]: () => this.showMenu(),
       },
     });
 
     this.game.input.add(STATES.PROMPTING, {
       onKeyDown: {
-        [KEYS.SPACE]: () => this.onPromptInput(),
+        [KEYS.ENTER]: () => this.onPromptInput(),
+        [KEYS.E]: () => this.onPromptInput(),
+        [KEYS.Q]: () => this.onPromptInput(),
       },
     });
 
@@ -102,7 +110,7 @@ export default class Scene extends Container {
   update(ticker) {
     switch (this.state) {
       case STATES.FADING_IN:
-        this.updateFadingIn(ticker.deltaTime);
+        this.updateFadingIn(ticker);
         break;
       case STATES.RUNNING:
         this.updateRunning(ticker);
@@ -114,10 +122,10 @@ export default class Scene extends Container {
         this.updatePaused(ticker);
         break;
       case STATES.UNPAUSING:
-        this.updateUnpausing(ticker.deltaTime);
+        this.updateUnpausing(ticker);
         break;
       case STATES.FADING_OUT:
-        this.updateFadingOut(ticker.deltaTime);
+        this.updateFadingOut(ticker);
         break;
       default:
         break;
@@ -126,8 +134,8 @@ export default class Scene extends Container {
     super.update(ticker);
   }
 
-  updateFadingIn(deltaTime) {
-    this.fadeAmount -= FADE_INCREMENT * deltaTime;
+  updateFadingIn(ticker) {
+    this.fadeAmount -= FADE_INCREMENT * ticker.deltaTime;
 
     if (this.fadeAmount <= 0) {
       this.fadeAmount = 0;
@@ -162,8 +170,8 @@ export default class Scene extends Container {
     });
   }
 
-  updateUnpausing(deltaTime) {
-    this.fadeAmount -= PAUSE_INCREMENT * deltaTime;
+  updateUnpausing(ticker) {
+    this.fadeAmount -= PAUSE_INCREMENT * ticker.deltaTime;
 
     if (this.fadeAmount <= 0) {
       this.fadeAmount = 0;
@@ -175,8 +183,8 @@ export default class Scene extends Container {
     });
   }
 
-  updateFadingOut(deltaTime) {
-    this.fadeAmount += FADE_INCREMENT * deltaTime;
+  updateFadingOut(ticker) {
+    this.fadeAmount += FADE_INCREMENT * ticker.deltaTime;
 
     if (this.fadeAmount >= 1) {
       this.fadeAmount = 1;
@@ -213,6 +221,13 @@ export default class Scene extends Container {
     this.setPausing();
   }
 
+  hideMenu() {
+    this.soundController.emitSound(this.sounds.pause);
+
+    this.menuContainer.once('removed', () => this.setRunning());
+    this.setUnpausing();
+  }
+
   moveX(x) {
     this.x = x * this.scale.x;
   }
@@ -244,10 +259,12 @@ export default class Scene extends Container {
     const isStateChanged = this.setState(STATES.RUNNING);
 
     if (isStateChanged) {
+      const music = this.game.getMusic();
+
       this.play();
 
-      if (this.game.music.isLoaded()) {
-        this.game.music.play();
+      if (music.isLoaded() && !music.playing()) {
+        music.play();
       }
     }
 
@@ -261,7 +278,10 @@ export default class Scene extends Container {
       this.pause();
       this.soundController.emitSound(this.sounds.pause);
       this.fadeAmount = 0;
-      if (this.stopMusicOnPause) this.game.music.pause();
+
+      if (this.stopMusicOnPause) {
+        this.game.getMusic().pause();
+      }
     }
 
     return isStateChanged;
@@ -272,13 +292,7 @@ export default class Scene extends Container {
   }
 
   setUnpausing() {
-    const isStateChanged = this.setState(STATES.UNPAUSING);
-
-    if (isStateChanged) {
-      // this.soundController.emitSound(this.sounds.pause);
-    }
-
-    return isStateChanged;
+    return this.setState(STATES.UNPAUSING);
   }
 
   setPrompting() {
@@ -296,7 +310,7 @@ export default class Scene extends Container {
 
     if (isStateChanged) {
       this.stop();
-      this.game.music.fade(MUSIC_VOLUME, 0, 750);
+      this.game.getMusic().fade(MUSIC_VOLUME, 0, 750);
     }
 
     return isStateChanged;

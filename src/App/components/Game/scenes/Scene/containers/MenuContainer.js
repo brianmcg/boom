@@ -21,7 +21,17 @@ export default class MenuContainer extends Container {
     this.addChild(this.sprites.background);
     this.addChild(this.optionContainer);
 
-    // this.optionContainer.x = SCREEN.WIDTH / 2;
+    this.updateMenu();
+  }
+
+  update(ticker) {
+    super.update(ticker);
+
+    if (this.scaleFactor < 1) {
+      this.optionContainer.scale.set(this.scaleFactor);
+      this.sprites.background.alpha = this.scaleFactor * MAX_ALPHA;
+    }
+
     this.updateMenu();
   }
 
@@ -35,7 +45,7 @@ export default class MenuContainer extends Container {
       const label = labels[option.id];
 
       label.y =
-        (SCREEN_PADDING / 2) * i + this.iconHeight * i - this.iconHeight / 2;
+        (SCREEN_PADDING / 2) * i + label.height * (i + 1) - label.height / 2;
 
       if (option.highlighted) {
         icon.y = label.y;
@@ -60,21 +70,8 @@ export default class MenuContainer extends Container {
     this.optionContainer.addChild(icon);
   }
 
-  update(ticker) {
-    super.update(ticker);
-
-    if (this.scaleFactor < 1) {
-      const { icon, labels, background } = this.sprites;
-      icon.setScale(this.scaleFactor);
-      background.alpha = this.scaleFactor * MAX_ALPHA;
-      Object.values(labels).forEach(label => label.scale.set(this.scaleFactor));
-    }
-
-    this.updateMenu();
-  }
-
   fade(value, { pixelSize = 1 }) {
-    this.pixelateFilter.enabled = value !== 1;
+    this.pixelateFilter.enabled = value !== 1 && value !== 0;
     this.scaleFactor = value;
 
     let size = (1 - value) * pixelSize;

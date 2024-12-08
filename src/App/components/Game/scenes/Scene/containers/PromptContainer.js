@@ -1,5 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
+import { PixelateFilter } from '@game/core/graphics';
 
 const PULSE_INTERVAL = 100;
 
@@ -45,6 +46,11 @@ export default class PromptContainer extends Container {
 
     this.addChild(sprite);
     this.setFadingIn();
+
+    this.pixelateFilter = new PixelateFilter();
+    this.pixelateFilter.enabled = false;
+
+    this.filters = [this.pixelateFilter];
   }
 
   update(ticker) {
@@ -137,6 +143,24 @@ export default class PromptContainer extends Container {
 
       this.setGrowing();
     }
+  }
+
+  fade(value, { pixelSize = 1 }) {
+    super.fade(value, { pixelSize });
+
+    this.pixelateFilter.enabled = value !== 1 && value !== 0;
+
+    let size = (1 - value) * pixelSize * 2;
+
+    if (this.parent) {
+      size *= this.parent.getStageScale();
+    }
+
+    if (size < 1) {
+      size = 1;
+    }
+
+    this.pixelateFilter.size = size;
   }
 
   shakeParent(amount, { direction = 1 } = {}) {

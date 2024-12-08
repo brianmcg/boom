@@ -72,9 +72,15 @@ export default {
     text: 'shift',
   },
   'home.action.pause': {
-    text: 'menu open / close',
+    text: 'menu open',
   },
   'home.input.pause': {
+    text: 'enter',
+  },
+  'home.action.unpause': {
+    text: 'menu close',
+  },
+  'home.input.unpause': {
     text: 'space',
   },
   'home.action.menu.nav': {
@@ -87,7 +93,7 @@ export default {
     text: 'menu select',
   },
   'home.input.menu.select': {
-    text: 'space',
+    text: 'enter',
   },
   'home.title': {
     text: 'boom controls',
@@ -99,7 +105,7 @@ export default {
     text: 'quit',
   },
   'scene.prompt.continue': {
-    text: 'press space to continue',
+    text: 'press enter to continue',
   },
   'title.menu.new': {
     text: 'new game',
@@ -108,7 +114,7 @@ export default {
     text: 'load game',
   },
   'title.prompt.start': {
-    text: 'press space to start',
+    text: 'press enter to start',
   },
   'world.title.debug': {
     text: 'debug level',

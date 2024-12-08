@@ -101,31 +101,12 @@ export default class ReviewContainer extends Container {
   }
 
   fade(value, { pixelSize = 1 }) {
-    // console.log(value);
     super.fade(1 - value);
     this.alphaFactor = value * MAX_ALPHA;
 
-    this.pixelateFilter.enabled = value !== 1;
+    this.pixelateFilter.enabled = value !== 1 && value !== 0;
 
     let size = (1 - value) * pixelSize * 3;
-
-    if (this.parent) {
-      size *= this.parent.getStageScale();
-    }
-
-    if (size < 1) {
-      size = 1;
-    }
-
-    this.pixelateFilter.size = size;
-  }
-
-  foo(value, { pixelSize = 1 }) {
-    this.pixelateFilter.enabled = value !== 1;
-    this.alphaFactor = value * MAX_ALPHA;
-    this.scaleFactor = value;
-
-    let size = (1 - value) * pixelSize;
 
     if (this.parent) {
       size *= this.parent.getStageScale();

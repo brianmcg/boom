@@ -59,15 +59,16 @@ export default class TitleScene extends Scene {
     super.create(options);
   }
 
-  setPaused() {
-    const isStateChanged = super.setPaused();
+  menuSelect() {
+    const action = this.menu.select();
+    this.soundController.emitSound(this.sounds.pause);
 
-    if (isStateChanged) {
+    if (action) {
       this.promptContainer.removeFromParent();
-      this.foregroundContainer.removeChildren();
+      this.foregroundContainer.removeFromParent();
+      this.menuContainer.once('removed', () => action());
+      this.setUnpausing();
     }
-
-    return isStateChanged;
   }
 
   setPausing() {
@@ -99,5 +100,10 @@ export default class TitleScene extends Scene {
   updatePaused(ticker) {
     super.updatePaused();
     this.sparks.update(ticker);
+  }
+
+  updateUnpausing(ticker) {
+    super.updateUnpausing(ticker);
+    this.backgroundContainer.update(ticker);
   }
 }

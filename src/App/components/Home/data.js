@@ -62,4 +62,8 @@ export const rows = [
     action: 'home.action.menu.select',
     key: 'home.input.menu.select',
   },
+  {
+    action: 'home.action.unpause',
+    key: 'home.input.unpause',
+  },
 ];

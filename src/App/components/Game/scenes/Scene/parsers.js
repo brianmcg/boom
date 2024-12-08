@@ -38,7 +38,7 @@ const createMenuSprites = (menu, textures, animations) => {
   const menuTextures = animations.skull.map(image => textures[image]);
 
   const icon = new MenuIconSprite(menuTextures, {
-    size: Object.values(labels)[0].height * 0.5,
+    size: Object.values(labels)[0].height,
   });
 
   return { icon, labels, background };

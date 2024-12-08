@@ -76,21 +76,6 @@ export default class Game {
     this.app.start();
   }
 
-  stop() {
-    this.removeScene();
-    this.app.stop();
-  }
-
-  pause() {
-    if (!this.scene?.isPaused()) this.music?.pause();
-    if (this.app.ticker.started) this.app.ticker.stop();
-  }
-
-  unpause() {
-    if (!this.scene?.isPaused()) this.music?.play();
-    if (!this.app.ticker.started) this.app.ticker.start();
-  }
-
   update(ticker) {
     this.app.stage.children.forEach(child => child.update(ticker));
   }
@@ -161,10 +146,7 @@ export default class Game {
 
       sound.once('fade', sound.stop);
 
-      this.music = sound;
-
       this.scene.create({ sounds, graphics, data: { ...data, props } });
-      this.sceneAssets = null;
 
       this.onReady();
     }
@@ -174,6 +156,7 @@ export default class Game {
     this.app.stage.removeChild(this.scene);
     this.scene.destroy();
     this.scene = null;
+    this.sceneAssets = null;
   }
 
   resize(scale) {
@@ -186,8 +169,18 @@ export default class Game {
     }
   }
 
+  getLevels() {
+    return this.assets.data.world.levels;
+  }
+
+  getMusic() {
+    return this.sceneAssets.sound;
+  }
+
   async exit() {
-    this.stop();
+    this.assets = null;
+    this.removeScene();
+    this.app.stop();
     await Loader.unload();
     this.onExit();
   }

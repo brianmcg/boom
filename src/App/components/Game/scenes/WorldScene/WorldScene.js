@@ -55,7 +55,7 @@ export default class WorldScene extends Scene {
         [KEYS.A]: () => this.assignPlayerAction({ strafeLeft: true }),
         [KEYS.D]: () => this.assignPlayerAction({ strafeRight: true }),
         [KEYS.E]: () => this.assignPlayerAction({ use: true }),
-        // [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
+        [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
         [KEYS.CTRL]: () => this.assignPlayerAction({ attack: true }),
         [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: true }),
         [KEYS.ALT]: () => this.assignPlayerAction({ secondaryAttack: true }),
@@ -100,7 +100,7 @@ export default class WorldScene extends Scene {
 
   onPromptInput() {
     this.onStop = () => {
-      if (this.index < this.game.assets.data.world.levels.length - 1) {
+      if (this.index < this.game.getLevels().length - 1) {
         this.game.showWorldScene({
           index: this.index + 1,
           startProps: this.world.props,

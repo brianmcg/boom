@@ -33,13 +33,13 @@ export default {
     text: 'turn left',
   },
   'home.input.turn.left': {
-    text: 'mouse move',
+    text: 'mouse move left',
   },
   'home.action.turn.right': {
     text: 'turn right',
   },
   'home.input.turn.right': {
-    text: 'mouse move',
+    text: 'mouse move right',
   },
   'home.action.use': {
     text: 'open / push',
@@ -48,16 +48,16 @@ export default {
     text: 'e',
   },
   'home.action.attack': {
-    text: 'attack',
+    text: 'shoot',
   },
   'home.input.mouse.left': {
-    text: 'mouse left click',
+    text: 'mouse left button',
   },
   'home.action.boot': {
     text: 'kick',
   },
   'home.input.mouse.right': {
-    text: 'mouse right click',
+    text: 'mouse right button',
   },
   'home.action.weapon': {
     text: 'select weapon',
@@ -72,13 +72,19 @@ export default {
     text: 'shift',
   },
   'home.action.pause': {
-    text: 'menu',
+    text: 'menu open',
   },
   'home.input.pause': {
-    text: 'q',
+    text: 'enter',
+  },
+  'home.action.unpause': {
+    text: 'menu close',
+  },
+  'home.input.unpause': {
+    text: 'space',
   },
   'home.action.menu.nav': {
-    text: 'menu highlight',
+    text: 'menu navigate',
   },
   'home.input.menu.nav': {
     text: 'up arrow / down arrow',
@@ -95,20 +101,20 @@ export default {
   'home.play': {
     text: 'click to play',
   },
-  'scene.menu.continue': {
-    text: 'continue',
-  },
-  'scene.menu.restart': {
-    text: 'restart',
-  },
   'scene.menu.quit': {
     text: 'quit',
   },
   'scene.prompt.continue': {
-    text: 'press space to continue',
+    text: 'press enter to continue',
+  },
+  'title.menu.new': {
+    text: 'new game',
+  },
+  'title.menu.load': {
+    text: 'load game',
   },
   'title.prompt.start': {
-    text: 'press space to start',
+    text: 'press enter to start',
   },
   'world.title.debug': {
     text: 'debug level',
@@ -117,7 +123,7 @@ export default {
     text: 'prison block',
   },
   'world.title.dungeon_2': {
-    text: 'Barracks',
+    text: 'barracks',
   },
   'world.title.underground_1': {
     text: 'basement',
@@ -142,6 +148,12 @@ export default {
   },
   'world.title.roof_1': {
     text: 'rooftop',
+  },
+  'world.menu.continue': {
+    text: 'continue',
+  },
+  'world.menu.restart': {
+    text: 'restart',
   },
   'world.review.enemies': {
     text: 'kills',
@@ -204,6 +216,9 @@ export default {
   },
   'world.color.red': {
     text: 'red',
+  },
+  'credits.menu.continue': {
+    text: 'continue',
   },
   'credits.scroll.animator': {
     text: 'animator',
