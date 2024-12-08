@@ -6,4 +6,16 @@ export default class Stats extends StatsJS {
     super();
     this.view = new StatsView({ child: this.dom });
   }
+
+  showFPS() {
+    this.showPanel(0);
+  }
+
+  showMS() {
+    this.showPanel(1);
+  }
+
+  showMB() {
+    this.showPanel(2);
+  }
 }

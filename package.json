@@ -22,7 +22,7 @@
   "dependencies": {
     "howler": "^2.2.4",
     "pixi-filters": "^6.0.5",
-    "pixi.js": "^8.6.2",
+    "pixi.js": "^8.6.3",
     "stats.js": "^0.17.0",
     "vanjs-core": "^1.5.2"
   }
