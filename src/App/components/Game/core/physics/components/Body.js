@@ -43,9 +43,10 @@ export default class Body extends EventEmitter {
     this.z = z;
   }
 
-  remove() {
+  removeFromParent() {
     if (this.parent) {
       this.parent.remove(this);
+      this.parent = null;
     }
   }
 
@@ -61,10 +62,6 @@ export default class Body extends EventEmitter {
     return getDistanceBetween(this, body);
   }
 
-  destroy() {
-    this.removeAllListeners();
-  }
-
   setState(state) {
     if (this.state !== state) {
       this.state = state;
@@ -73,6 +70,11 @@ export default class Body extends EventEmitter {
     }
 
     return false;
+  }
+
+  destroy() {
+    this.removeFromParent();
+    this.removeAllListeners();
   }
 
   get elavation() {

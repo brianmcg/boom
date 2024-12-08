@@ -20,7 +20,6 @@ export default class Projectile extends DynamicEntity {
     length = CELL_SIZE / 4,
     speed = 0,
     source,
-    effects,
     weight = 0,
     queue,
     explosion,
@@ -37,7 +36,6 @@ export default class Projectile extends DynamicEntity {
     });
 
     this.source = source;
-    this.effects = effects;
     this.velocity = speed * CELL_SIZE;
     this.queue = queue;
     this.baseElavation = elavation * CELL_SIZE;
@@ -103,7 +101,7 @@ export default class Projectile extends DynamicEntity {
   }
 
   updateColliding() {
-    this.remove();
+    this.removeFromParent();
     this.queue.push(this);
     this.setIdle();
   }
@@ -141,5 +139,11 @@ export default class Projectile extends DynamicEntity {
     }
 
     return isStateChanged;
+  }
+
+  destroy() {
+    this.explosion.destroy();
+    this.source = null;
+    this.explosion = null;
   }
 }

@@ -152,9 +152,19 @@ export default class Game {
     }
   }
 
+  pause() {
+    if (!this.scene?.isPaused()) this.music?.pause();
+    if (this.app.ticker.started) this.app.ticker.stop();
+  }
+
+  unpause() {
+    if (!this.scene?.isPaused()) this.music?.play();
+    if (!this.app.ticker.started) this.app.ticker.start();
+  }
+
   removeScene() {
     this.app.stage.removeChild(this.scene);
-    this.scene.destroy();
+    this.scene.destroy({ texture: true });
     this.scene = null;
     this.sceneAssets = null;
   }

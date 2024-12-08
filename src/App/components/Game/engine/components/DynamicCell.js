@@ -74,4 +74,11 @@ export default class DynamicCell extends PhysicsDynamicCell {
     super.startUpdates();
     this.distanceToPlayer = this.getDistanceTo(this.parent.player);
   }
+
+  destroy(options) {
+    super.destroy(options);
+    this.stop();
+    this.stopSound();
+    this.stopUpdates();
+  }
 }

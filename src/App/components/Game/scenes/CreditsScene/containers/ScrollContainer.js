@@ -10,8 +10,9 @@ const SCROLL_SPEED = SCREEN.HEIGHT / 480;
 const SCROLL_COMPLETE_EVENT = 'scroll:complete';
 
 export default class ScrollContainer extends Container {
-  constructor({ logo, credits, end }) {
+  constructor(sprites) {
     super();
+    const { logo, credits, end } = sprites;
     const textHeight = credits[0][0].height;
 
     logo.anchor.set(0.5);
@@ -43,6 +44,7 @@ export default class ScrollContainer extends Container {
       this.getChildAt(this.children.length - 1).y + SCREEN.HEIGHT + end.height;
 
     this.addChild(end);
+    this.sprites = sprites;
   }
 
   onScrollComplete(callback) {
@@ -58,5 +60,20 @@ export default class ScrollContainer extends Container {
       this.scrolling = false;
       this.emit(SCROLL_COMPLETE_EVENT);
     }
+  }
+
+  destroy(options) {
+    const { logo, credits, end } = this.sprites;
+
+    logo.destroy(options);
+    end.destroy(options);
+
+    credits.forEach(credit => {
+      credit.forEach(sprite => {
+        sprite.destroy(options);
+      });
+    });
+
+    super.destroy(options);
   }
 }

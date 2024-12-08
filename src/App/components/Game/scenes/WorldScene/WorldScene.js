@@ -168,6 +168,7 @@ export default class WorldScene extends Scene {
     );
 
     this.world = world;
+    this.sprites = sprites;
   }
 
   update(ticker) {
@@ -280,8 +281,13 @@ export default class WorldScene extends Scene {
     return this.setState(STATES.REMOVING_REVIEW);
   }
 
-  destroy(...options) {
+  destroy(options) {
+    this.reviewContainer.destroy(options);
+    this.mainContainer.destroy(options);
+
     this.world.destroy();
+    this.world = null;
+    this.sprites = null;
     super.destroy(options);
   }
 }

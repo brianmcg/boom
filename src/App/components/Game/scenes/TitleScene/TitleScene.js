@@ -45,18 +45,18 @@ export default class TitleScene extends Scene {
   }
 
   create(options) {
+    super.create(options);
+
     const { renderer } = this.game.app;
     const { sprites } = parse({ ...options, renderer });
 
-    this.sparks = sprites.background.sparks;
+    this.sprites = sprites;
 
     this.backgroundContainer = new BackgroundContainer(sprites.background);
     this.foregroundContainer = new ForegroundContainer(sprites.foreground);
 
     this.mainContainer.addChild(this.backgroundContainer);
     this.mainContainer.addChild(this.foregroundContainer);
-
-    super.create(options);
   }
 
   menuSelect() {
@@ -99,11 +99,17 @@ export default class TitleScene extends Scene {
 
   updatePaused(ticker) {
     super.updatePaused();
-    this.sparks.update(ticker);
+    this.sprites.background.sparks.update(ticker);
   }
 
   updateUnpausing(ticker) {
     super.updateUnpausing(ticker);
     this.backgroundContainer.update(ticker);
+  }
+
+  destroy(options) {
+    this.foregroundContainer.destroy(options);
+    this.backgroundContainer.destroy(options);
+    super.destroy(options);
   }
 }

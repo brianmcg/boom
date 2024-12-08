@@ -87,6 +87,8 @@ export default class Container extends PixiContainer {
       if (child instanceof Container) child.destroy(options);
     });
 
+    this.removeFromParent(this);
+
     super.destroy(options);
   }
 

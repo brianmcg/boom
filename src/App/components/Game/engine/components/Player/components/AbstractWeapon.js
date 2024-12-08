@@ -149,6 +149,10 @@ export default class AbstractWeapon {
     return false;
   }
 
+  destroy() {
+    this.projectiles.forEach(projectile => projectile.destroy());
+  }
+
   get props() {
     const {
       accuracy,

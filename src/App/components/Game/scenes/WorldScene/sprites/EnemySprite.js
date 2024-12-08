@@ -39,7 +39,7 @@ export default class EnemySprite extends AnimatedEntitySprite {
         this.emit(EVENTS.ANIMATION_COMPLETE);
 
         if (enemy.explode) {
-          enemy.remove();
+          enemy.removeFromParent();
         }
 
         if (enemy.ripple) {

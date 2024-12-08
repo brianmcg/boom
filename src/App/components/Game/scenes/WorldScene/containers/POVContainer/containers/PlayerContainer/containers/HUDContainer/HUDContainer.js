@@ -153,13 +153,15 @@ export default class HUDContainer extends Container {
   }
 
   destroy(options) {
-    const { keys } = this.sprites;
+    const { foreground, healthIcon, healthAmount, ammoIcon, ammoAmount, keys } =
+      this.sprites;
 
-    Object.values(keys).forEach(sprite => {
-      sprite.removeAllListeners?.();
-      this.removeChild(sprite);
-      sprite.destroy(options);
-    });
+    foreground.destroy(options);
+    healthIcon.destroy(options);
+    healthAmount.destroy(options);
+    ammoIcon.destroy(options);
+    ammoAmount.destroy(options);
+    Object.values(keys).forEach(sprite => sprite.destroy(options));
 
     super.destroy(options);
   }

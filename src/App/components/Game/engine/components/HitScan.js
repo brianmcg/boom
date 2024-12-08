@@ -138,4 +138,9 @@ export default class HitScan extends Body {
 
     return collisionsInRange;
   }
+
+  destroy() {
+    super.destroy();
+    this.source = null;
+  }
 }

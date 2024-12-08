@@ -65,4 +65,9 @@ export default class ProjectileEnemy extends AbstractEnemy {
       });
     }
   }
+
+  destroy() {
+    super.destroy();
+    this.projectiles.forEach(projectile => projectile.destroy());
+  }
 }

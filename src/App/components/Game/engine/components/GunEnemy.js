@@ -60,4 +60,9 @@ export default class GunEnemy extends AbstractEnemy {
 
     this.emitSound(this.sounds.attack);
   }
+
+  destroy() {
+    super.destroy();
+    this.projectiles.forEach(projectile => projectile.destroy());
+  }
 }

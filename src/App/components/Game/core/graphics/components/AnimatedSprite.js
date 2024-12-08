@@ -41,4 +41,9 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
   hide() {
     this.visible = false;
   }
+
+  destroy(options) {
+    this.removeAllListeners();
+    super.destroy(options);
+  }
 }

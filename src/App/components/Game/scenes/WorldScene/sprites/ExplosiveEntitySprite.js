@@ -17,7 +17,7 @@ export default class ExplosiveEntitySprite extends AnimatedEntitySprite {
     this.onComplete = () => {
       this.isComplete = true;
       this.emit(EVENTS.ANIMATION_COMPLETE);
-      entity.remove();
+      entity.removeFromParent();
     };
 
     this.entity = entity;
@@ -35,5 +35,11 @@ export default class ExplosiveEntitySprite extends AnimatedEntitySprite {
 
   onAnimationComplete(callback) {
     this.on(EVENTS.ANIMATION_COMPLETE, callback);
+  }
+
+  destroy(options) {
+    this.entity?.destroy();
+    this.entity = null;
+    super.destroy(options);
   }
 }

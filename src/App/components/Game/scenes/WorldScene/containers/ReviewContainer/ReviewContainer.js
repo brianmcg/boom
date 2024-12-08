@@ -155,6 +155,17 @@ export default class ReviewContainer extends Container {
   }
 
   destroy(options) {
+    const { background, title, stats } = this.sprites;
+
+    background.destroy(options);
+
+    title.destroy(options);
+
+    Object.values(stats).forEach(({ name, value }) => {
+      name.destroy(options);
+      value.destroy(options);
+    });
+
     this.statContainers.forEach(container => {
       this.removeChild(container);
       container.destroy(options);

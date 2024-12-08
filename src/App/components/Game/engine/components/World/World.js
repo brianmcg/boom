@@ -223,6 +223,15 @@ export default class World extends PhysicsWorld {
     };
   }
 
+  destroy(options) {
+    this.scene = null;
+    this.player.destroy();
+    this.items.forEach(item => item.destroy());
+    this.enemies.forEach(enemy => enemy.destroy());
+    this.objects.forEach(object => object.destroy());
+    super.destroy(options);
+  }
+
   get props() {
     return { player: this.player.props };
   }

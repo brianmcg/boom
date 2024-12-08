@@ -85,4 +85,10 @@ export default class Explosion extends Body {
 
     this.source.emitSound(this.sounds.explode);
   }
+
+  destroy() {
+    super.destroy();
+    this.hitScans.forEach(({ hitScan }) => hitScan.destroy());
+    this.source = null;
+  }
 }

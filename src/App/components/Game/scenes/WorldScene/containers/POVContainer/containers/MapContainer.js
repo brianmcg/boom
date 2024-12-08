@@ -34,7 +34,7 @@ export default class MapContainer extends Container {
 
       sprite.onComplete = () => {
         this.removeChild(sprite);
-        effect.remove();
+        effect.removeFromParent();
       };
 
       this.addChild(sprite);
@@ -49,7 +49,11 @@ export default class MapContainer extends Container {
   }
 
   destroy(options) {
-    const { effects, entities } = this.sprites;
+    const { effects, entities, walls } = this.sprites;
+
+    walls.forEach(layer => {
+      layer.forEach(slice => slice.destroy(options));
+    });
 
     Object.values(entities).forEach(sprite => {
       sprite.removeAllListeners?.();

@@ -526,12 +526,6 @@ export default class POVContainer extends Container {
     this.removeChild(this.mapContainer);
     this.removeChild(this.playerContainer);
 
-    this.sprites.background.forEach(slice => {
-      slice.forEach(pixel => {
-        this.backgroundContainer.addParticle(pixel);
-      });
-    });
-
     this.backgroundContainer.destroy(options);
     this.mapContainer.destroy(options);
     this.playerContainer.destroy(options);

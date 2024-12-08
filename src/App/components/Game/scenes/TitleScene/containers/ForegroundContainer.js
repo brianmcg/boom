@@ -50,4 +50,9 @@ export default class ForegroundContainer extends Container {
       }
     }
   }
+
+  destroy(options) {
+    Object.values(this.sprites).forEach(sprite => sprite.destroy(options));
+    super.destroy(options);
+  }
 }

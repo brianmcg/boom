@@ -368,6 +368,8 @@ export default class Scene extends Container {
 
     GraphicsCreator.clear();
 
+    this.game = null;
+
     super.destroy(options);
   }
 }

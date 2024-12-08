@@ -46,4 +46,9 @@ export default class ExplosiveEntity extends AbstractDestroyableEntity {
       }
     }
   }
+
+  destroy() {
+    super.destroy();
+    this.explosion.destroy();
+  }
 }

@@ -122,4 +122,9 @@ export default class AbstractItem extends DynamicEntity {
   setRemoved() {
     this.isRemoved = true;
   }
+
+  destroy(options) {
+    super.destroy(options);
+    this.nextParent = null;
+  }
 }

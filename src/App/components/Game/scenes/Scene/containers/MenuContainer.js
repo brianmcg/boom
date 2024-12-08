@@ -98,4 +98,14 @@ export default class MenuContainer extends Container {
   pause() {
     super.play();
   }
+
+  destroy(options) {
+    const { icon, labels, background } = this.sprites;
+
+    icon.destroy(options);
+    background.destroy(options);
+    Object.values(labels).forEach(sprite => sprite.destroy(options));
+
+    super.destroy(options);
+  }
 }

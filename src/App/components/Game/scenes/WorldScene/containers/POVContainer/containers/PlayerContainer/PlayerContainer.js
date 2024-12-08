@@ -52,15 +52,8 @@ export default class PlayerContainer extends Container {
   }
 
   destroy(options) {
-    const { weapon } = this.sprites;
-
-    weapon.removeAllListeners();
-    this.removeChild(weapon);
-    weapon.destroy();
-
-    this.removeChild(this.hudContainer);
+    this.sprites.weapon.destroy(options);
     this.hudContainer.destroy(options);
-
     super.destroy(options);
   }
 }

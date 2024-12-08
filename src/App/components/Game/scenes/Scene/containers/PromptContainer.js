@@ -183,4 +183,9 @@ export default class PromptContainer extends Container {
   setShrinking() {
     return this.setState(STATES.SHRINKING);
   }
+
+  destroy(options) {
+    this.sprite.destroy(options);
+    super.destroy(options);
+  }
 }

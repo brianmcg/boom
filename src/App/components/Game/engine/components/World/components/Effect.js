@@ -9,7 +9,14 @@ export default class Effect {
     this.scale = scale;
   }
 
-  remove() {
-    this.parent.removeEffect(this);
+  removeFromParent() {
+    if (this.parent) {
+      this.parent.removeEffect(this);
+      this.parent = null;
+    }
+  }
+
+  destroy() {
+    this.removeFromParent();
   }
 }

@@ -25,7 +25,7 @@ export const ALL_WEAPONS =
 
 export const DISABLE_SOUND = parseBoolParam('disableSound');
 
-export const SHOW_STATS = parseBoolParam('stats') || Boolean(DEBUG);
+export const SHOW_STATS = parseNumParam('stats') || DEBUG;
 
 export const DISABLE_MUSIC =
   DISABLE_SOUND || parseBoolParam('disableMusic') || Boolean(DEBUG);

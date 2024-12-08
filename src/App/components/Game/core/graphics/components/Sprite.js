@@ -44,6 +44,11 @@ class Sprite extends PixiSprite {
 
     return false;
   }
+
+  destroy(options) {
+    this.removeAllListeners();
+    super.destroy(options);
+  }
 }
 
 export default Sprite;
