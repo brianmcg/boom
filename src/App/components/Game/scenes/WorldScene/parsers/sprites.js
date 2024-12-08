@@ -132,6 +132,12 @@ const createWallSpriteMask = ({
 
   sprite.blendMode = 'overlay';
 
+  maskContainer.destroy({ texture: true });
+  maskForeground.destroy({ texture: true });
+  maskBackground.destroy({ texture: true });
+  floorOffset.destroy({ texture: true });
+  maskContainer.destroy({ texture: true });
+
   return sprite;
 };
 
@@ -242,7 +248,6 @@ const createWallSprites = ({
           });
         }
 
-        spatterContainer.removeChildren();
         spatterContainer.addChild(wallSprite);
 
         // TODO: Don't create spatter sprites for transparent walls.
@@ -254,6 +259,10 @@ const createWallSprites = ({
           container: spatterContainer,
           target: renderTexture,
         });
+
+        spatterContainer.removeChildren();
+        wallSprite.destroy({ texture: true });
+        spatterSprite.destroy({ texture: true });
 
         return renderTexture;
       });
@@ -277,6 +286,8 @@ const createWallSprites = ({
       wallSprites[j].push(new WallSprite(wallTextures, i));
     }
   }
+
+  spatterContainer.destroy({ texture: true });
 
   return wallSprites;
 };
@@ -459,13 +470,15 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           height: spurtSprite.height,
         });
 
-        spurtContainer.removeChildren();
         spurtContainer.addChild(spurtSprite);
 
         renderer.render({
           container: spurtContainer,
           target: renderTexture,
         });
+
+        spurtContainer.removeChildren();
+        spurtSprite.destroy({ texture: true });
 
         return renderTexture;
       });
@@ -596,13 +609,15 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         height: spurtSprite.height,
       });
 
-      spurtContainer.removeChildren();
       spurtContainer.addChild(spurtSprite);
 
       renderer.render({
         container: spurtContainer,
         target: renderTexture,
       });
+
+      spurtContainer.removeChildren();
+      spurtSprite.destroy({ texture: true });
 
       return renderTexture;
     });
@@ -615,6 +630,8 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
       }
     );
   }
+
+  spurtContainer.destroy({ texture: true });
 
   return {
     ...playerExplosionSprites,

@@ -163,7 +163,7 @@ export default class Game {
   }
 
   removeScene() {
-    this.app.stage.removeChild(this.scene);
+    this.app.stage.removeChildren();
     this.scene.destroy({ texture: true });
     this.scene = null;
     this.sceneAssets = null;

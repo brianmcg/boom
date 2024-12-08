@@ -71,4 +71,12 @@ export default class EnemySprite extends AnimatedEntitySprite {
   onAnimationComplete(callback) {
     this.on(EVENTS.ANIMATION_COMPLETE, callback);
   }
+
+  // destroy(options) {
+  //   super.destroy(options);
+
+  //   Object.values(this.textureCollection).forEach(({ textures }) => {
+  //     textures.forEach(texture => texture.destroy());
+  //   });
+  // }
 }

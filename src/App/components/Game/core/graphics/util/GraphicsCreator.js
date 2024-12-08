@@ -58,6 +58,10 @@ export default class GraphicsCreator {
       target: renderTexture,
     });
 
+    maskContainer.destroy({ texture: true });
+    maskBackground.destroy({ texture: true });
+    maskForeground.destroy({ texture: true });
+
     CreatedTextureCache.add(renderTexture);
 
     return renderTexture;

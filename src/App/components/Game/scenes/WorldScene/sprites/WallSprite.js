@@ -13,4 +13,16 @@ export default class WallSprite extends Sprite {
   changeTexture(name, offset, spatter) {
     this.texture = this.textures[name][offset][spatter];
   }
+
+  // destroy(options) {
+  //   super.destroy(options);
+
+  //   Object.values(this.textures).forEach(values => {
+  //     values.forEach(textures => {
+  //       textures.forEach(texture => {
+  //         texture.destroy();
+  //       });
+  //     });
+  //   });
+  // }
 }
