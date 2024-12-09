@@ -106,6 +106,9 @@ export default class MenuContainer extends Container {
     background.destroy(options);
     Object.values(labels).forEach(sprite => sprite.destroy(options));
 
+    this.pixelateFilter.destroy();
+    this.filters = [];
+
     super.destroy(options);
   }
 }

@@ -113,5 +113,6 @@ export default class Mouse {
   removeCallbacks() {
     this.buttons = {};
     delete this.moveCallback;
+    delete this.wheelCallback;
   }
 }

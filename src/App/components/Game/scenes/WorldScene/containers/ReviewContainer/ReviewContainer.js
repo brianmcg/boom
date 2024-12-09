@@ -171,6 +171,9 @@ export default class ReviewContainer extends Container {
       container.destroy(options);
     });
 
+    this.pixelateFilter.destroy();
+    this.filters = [];
+
     super.destroy(options);
   }
 }

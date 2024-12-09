@@ -12,6 +12,8 @@ export default class InnerContainer extends ParticleContainer {
         color: false,
       },
     });
+
+    this.interactiveChildren = false;
   }
 
   update(particleChildren) {

@@ -1,36 +1,6 @@
 import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
 
-let horizontalGrid;
-let verticalGrid;
-let distToNextHorizontalGrid;
-let distToNextVerticalGrid;
-let distToHorizontalGridBeingHit;
-let distToVerticalGridBeingHit;
-let distToNextXIntersection;
-let distToNextYIntersection;
-let xIntersection;
-let yIntersection;
-let xGridIndex;
-let yGridIndex;
-let xOffsetDist;
-let yOffsetDist;
-let xOffsetHit;
-let yOffsetHit;
-let initialCell;
-let horizontalCell;
-let verticalCell;
-let offsetRatio;
-let horizontalBody;
-let verticalBody;
-let horizontalOverlay;
-let verticalOverlay;
-let side;
-let rayEndPoint;
-let initialCellBody;
-let encounteredBodyValues;
-let encounterdBody;
-
 const DEGREES = [...Array(361).keys()].map(
   degrees => (degrees * Math.PI) / 180
 );
@@ -240,6 +210,20 @@ const castCellRay = ({
   gridY,
   initialCell,
 }) => {
+  let horizontalGrid;
+  let verticalGrid;
+  let distToHorizontalGridBeingHit;
+  let distToVerticalGridBeingHit;
+  let xIntersection;
+  let yIntersection;
+  let xOffsetHit;
+  let yOffsetHit;
+
+  let horizontalOverlay;
+  let verticalOverlay;
+  let side;
+  let rayEndPoint;
+  let initialCellBody;
   const encounteredBodies = {};
 
   if (angle > 0 && angle < DEG_180) {
@@ -463,6 +447,36 @@ const castRaySection = ({
   elavation = 0,
   radius = 0,
 }) => {
+  let horizontalGrid;
+  let verticalGrid;
+  let distToNextHorizontalGrid;
+  let distToNextVerticalGrid;
+  let distToHorizontalGridBeingHit;
+  let distToVerticalGridBeingHit;
+  let distToNextXIntersection;
+  let distToNextYIntersection;
+  let xIntersection;
+  let yIntersection;
+  let xGridIndex;
+  let yGridIndex;
+  let xOffsetDist;
+  let yOffsetDist;
+  let xOffsetHit;
+  let yOffsetHit;
+  let initialCell;
+  let horizontalCell;
+  let verticalCell;
+  let offsetRatio;
+  let horizontalBody;
+  let verticalBody;
+  let horizontalOverlay;
+  let verticalOverlay;
+  let side;
+  let rayEndPoint;
+  let initialCellBody;
+  let encounteredBodyValues;
+  let encounterdBody;
+
   const encounteredBodies = {};
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);

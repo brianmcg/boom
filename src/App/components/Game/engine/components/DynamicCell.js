@@ -26,10 +26,6 @@ export default class DynamicCell extends PhysicsDynamicCell {
     this.parent = parent;
   }
 
-  onRemoved() {
-    this.parent = null;
-  }
-
   emitSound(name, loop) {
     const volume =
       this.distanceToPlayer > MAX_SOUND_DISTANCE
@@ -76,9 +72,11 @@ export default class DynamicCell extends PhysicsDynamicCell {
   }
 
   destroy(options) {
-    super.destroy(options);
     this.stop();
     this.stopSound();
-    this.stopUpdates();
+    this.soundController = null;
+    this.sounds = null;
+    this.parent = null;
+    super.destroy(options);
   }
 }

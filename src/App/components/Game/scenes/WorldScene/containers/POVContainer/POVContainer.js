@@ -17,33 +17,6 @@ const RAY_ANGLES = [...Array(SCREEN.WIDTH).keys()].map(i =>
   Math.atan((i - CAMERA_CENTER_X) / CAMERA_DISTANCE)
 );
 
-let spriteAngle;
-let centerY;
-let gridX;
-let gridY;
-let mapX;
-let mapY;
-let pixelX;
-let pixelY;
-let backgroundName;
-let angle;
-let sliceY;
-let sprite;
-let spriteHeight;
-let spriteScale;
-let spriteY;
-let bottomIntersection;
-let topIntersection;
-let actualDistance;
-let correctedDistance;
-let backgroundCell;
-let sideHeight;
-let stainColor;
-let correctedDistanceTmp;
-let mapXTmp;
-let mapYTmp;
-let backgroundCellTmp;
-
 export default class POVContainer extends Container {
   constructor({ world, sprites }) {
     super();
@@ -68,6 +41,33 @@ export default class POVContainer extends Container {
   }
 
   update(ticker) {
+    let spriteAngle;
+    let centerY;
+    let gridX;
+    let gridY;
+    let mapX;
+    let mapY;
+    let pixelX;
+    let pixelY;
+    let backgroundName;
+    let angle;
+    let sliceY;
+    let sprite;
+    let spriteHeight;
+    let spriteScale;
+    let spriteY;
+    let bottomIntersection;
+    let topIntersection;
+    let actualDistance;
+    let correctedDistance;
+    let backgroundCell;
+    let sideHeight;
+    let stainColor;
+    let correctedDistanceTmp;
+    let mapXTmp;
+    let mapYTmp;
+    let backgroundCellTmp;
+
     const { world } = this;
 
     const { player, maxMapX, maxMapY, effects, floorOffset } = world;
@@ -529,6 +529,9 @@ export default class POVContainer extends Container {
     this.backgroundContainer.destroy(options);
     this.mapContainer.destroy(options);
     this.playerContainer.destroy(options);
+
+    this.sprites = null;
+    this.displayedEntities = [];
 
     super.destroy(options);
   }

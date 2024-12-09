@@ -20,4 +20,9 @@ export default class DynamicCell extends Cell {
       this.parent.stopUpdates(this);
     }
   }
+
+  destroy(options) {
+    this.stopUpdates();
+    super.destroy(options);
+  }
 }

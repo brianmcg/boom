@@ -282,12 +282,13 @@ export default class WorldScene extends Scene {
   }
 
   destroy(options) {
+    this.removeChild(this.reviewContainer);
     this.reviewContainer.destroy(options);
-    this.mainContainer.destroy(options);
-
+    this.stop();
+    super.destroy(options);
     this.world.destroy();
+    this.onStop = null;
     this.world = null;
     this.sprites = null;
-    super.destroy(options);
   }
 }

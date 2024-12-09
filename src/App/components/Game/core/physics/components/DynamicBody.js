@@ -184,4 +184,11 @@ export default class DynamicBody extends Body {
   getAngleTo(body) {
     return getAngleBetween(this, body);
   }
+
+  destroy(options) {
+    this.trackedCollisions = [];
+    this.stopUpdates();
+    super.destroy(options);
+    this.cell = null;
+  }
 }

@@ -111,5 +111,6 @@ export default class TitleScene extends Scene {
     this.foregroundContainer.destroy(options);
     this.backgroundContainer.destroy(options);
     super.destroy(options);
+    this.sprites = null;
   }
 }

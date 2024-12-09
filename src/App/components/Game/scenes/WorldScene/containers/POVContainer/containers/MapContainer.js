@@ -52,7 +52,10 @@ export default class MapContainer extends Container {
     const { effects, entities, walls } = this.sprites;
 
     walls.forEach(layer => {
-      layer.forEach(slice => slice.destroy(options));
+      layer.forEach(slice => {
+        this.removeChild(slice);
+        slice.destroy(options);
+      });
     });
 
     Object.values(entities).forEach(sprite => {
@@ -66,6 +69,8 @@ export default class MapContainer extends Container {
       this.removeChild(sprite);
       sprite.destroy(options);
     });
+
+    this.sprites = null;
 
     super.destroy(options);
   }

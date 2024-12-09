@@ -25,6 +25,8 @@ class Sprite extends PixiSprite {
     if (tint || tint === 0) {
       this.tint = tint;
     }
+
+    this.interactiveChildren = false;
   }
 
   show() {

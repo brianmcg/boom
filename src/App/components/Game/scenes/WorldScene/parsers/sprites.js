@@ -279,6 +279,8 @@ const createWallSprites = ({
         );
       });
     }
+
+    wallTexture.destroy();
   });
 
   for (let i = 0; i < SCREEN.WIDTH; i++) {

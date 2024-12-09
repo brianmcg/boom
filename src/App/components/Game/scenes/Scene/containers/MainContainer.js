@@ -39,4 +39,10 @@ export default class MainContainer extends Container {
     super.play();
     this.filters = [];
   }
+
+  destroy(options) {
+    this.pixelateFilter.destroy();
+    this.filters = [];
+    super.destroy(options);
+  }
 }

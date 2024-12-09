@@ -129,4 +129,15 @@ export default class Menu {
       option.highlighted = this.currentIndex === i;
     });
   }
+
+  destroy() {
+    this.options.forEach(option => {
+      delete option.action;
+    });
+
+    this.options = null;
+    this.currentMenuId = null;
+    this.currentIndex = null;
+    this.selectedAction = null;
+  }
 }

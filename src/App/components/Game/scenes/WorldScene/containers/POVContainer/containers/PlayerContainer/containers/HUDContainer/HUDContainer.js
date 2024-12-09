@@ -18,6 +18,8 @@ export default class HUDContainer extends Container {
   constructor(player, sprites) {
     super();
 
+    this.messageCache = [];
+
     const { healthIcon, healthAmount, ammoIcon, ammoAmount, keys } = sprites;
 
     healthIcon.x = healthIcon.width / 2 + HUD_PADDING;
@@ -72,6 +74,7 @@ export default class HUDContainer extends Container {
       const sprite = new MessageSprite(text, options);
 
       this.messages.push(sprite);
+      this.messageCache.push(sprite);
 
       sprite.onComplete(() => {
         this.messages = this.messages.filter(message => message !== sprite);
@@ -156,6 +159,7 @@ export default class HUDContainer extends Container {
     const { foreground, healthIcon, healthAmount, ammoIcon, ammoAmount, keys } =
       this.sprites;
 
+    this.messageCache.forEach(sprite => sprite.destroy(options));
     foreground.destroy(options);
     healthIcon.destroy(options);
     healthAmount.destroy(options);

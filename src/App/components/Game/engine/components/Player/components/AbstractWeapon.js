@@ -150,6 +150,7 @@ export default class AbstractWeapon {
   }
 
   destroy() {
+    this.player = null;
     this.projectiles.forEach(projectile => projectile.destroy());
   }
 

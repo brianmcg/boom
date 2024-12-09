@@ -37,7 +37,8 @@ export default class TextSprite extends BitmapText {
     this.scale.set(1 - value);
   }
 
-  destroy(options = {}) {
-    super.destroy({ ...options, texture: true });
+  destroy(options) {
+    this.removeAllListeners();
+    super.destroy(options);
   }
 }

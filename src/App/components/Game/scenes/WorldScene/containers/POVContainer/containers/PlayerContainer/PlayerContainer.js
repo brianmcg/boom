@@ -55,5 +55,6 @@ export default class PlayerContainer extends Container {
     this.sprites.weapon.destroy(options);
     this.hudContainer.destroy(options);
     super.destroy(options);
+    this.sprites = null;
   }
 }

@@ -320,7 +320,6 @@ export default class Scene extends Container {
     const isStateChanged = this.setState(STATES.STOPPED);
 
     if (isStateChanged) {
-      this.game.app.renderer.clear();
       this.onStop();
     }
 
@@ -357,6 +356,10 @@ export default class Scene extends Container {
 
   destroy(options) {
     this.game.input.reset();
+    this.soundController.stopSound(name);
+    this.soundController.stop();
+    this.soundController = null;
+    this.sounds = null;
 
     this.removeChild(this.mainContainer);
     this.removeChild(this.menuContainer);
@@ -367,6 +370,9 @@ export default class Scene extends Container {
     this.promptContainer.destroy(options);
 
     GraphicsCreator.clear();
+
+    this.menu.destroy();
+    this.menu = null;
 
     this.game = null;
 

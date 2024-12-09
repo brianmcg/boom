@@ -3,6 +3,7 @@ import { Container as PixiContainer } from 'pixi.js';
 export default class Container extends PixiContainer {
   constructor() {
     super();
+    this.interactiveChildren = false;
     this.playableChildren = [];
     this.fadeableChildren = [];
     this.playing = true;
@@ -88,6 +89,9 @@ export default class Container extends PixiContainer {
     });
 
     this.removeFromParent(this);
+
+    this.playableChildren = [];
+    this.fadeableChildren = [];
 
     super.destroy(options);
   }

@@ -8,6 +8,7 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     super(textures, false);
 
     this.animationSpeed = animationSpeed;
+    this.interactiveChildren = false;
 
     if (loop || loop === false) {
       this.loop = loop;
@@ -43,7 +44,9 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
   }
 
   destroy(options) {
+    this.stop();
     this.removeAllListeners();
     super.destroy(options);
+    this.onAnimationChange = null;
   }
 }

@@ -186,6 +186,9 @@ export default class PromptContainer extends Container {
 
   destroy(options) {
     this.sprite.destroy(options);
+    this.pixelateFilter.destroy();
+    this.filters = [];
+
     super.destroy(options);
   }
 }
