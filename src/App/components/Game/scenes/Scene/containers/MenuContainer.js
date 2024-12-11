@@ -109,6 +109,13 @@ export default class MenuContainer extends Container {
     this.pixelateFilter.destroy();
     this.filters = [];
 
+    this.optionContainer = null;
+    this.sprites = null;
+    this.menu = null;
+    this.pixelateFilter = null;
+    this.iconHeight = null;
+    this.scaleFactor = null;
+
     super.destroy(options);
   }
 }

@@ -670,7 +670,9 @@ export default class Player extends AbstractActor {
 
   destroy() {
     super.destroy();
+
     Object.values(this.keyCards).forEach(key => key.destroy());
+
     this.hand.destroy();
     this.weapons.forEach(weapon => weapon.destroy());
     this.weapons = null;

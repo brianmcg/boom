@@ -12,12 +12,12 @@ import {
 
 import {
   ColorMatrixFilter,
-  Container,
   GraphicsCreator,
   Line,
   Rectangle,
   Sprite,
   TextSprite,
+  PixiContainer,
 } from '@game/core/graphics';
 
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
@@ -94,12 +94,7 @@ const createWallSpriteMask = ({
   wallHeight,
   renderer,
 }) => {
-  const renderTexture = GraphicsCreator.createRenderTexture({
-    width: CELL_SIZE,
-    height: wallHeight,
-  });
-
-  const maskContainer = new Container();
+  const maskContainer = new PixiContainer();
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite(wallTexture);
 
@@ -123,20 +118,20 @@ const createWallSpriteMask = ({
 
   filter.negative();
 
-  renderer.render({
-    container: maskContainer,
-    target: renderTexture,
+  const renderTexture = renderer.generateTexture({
+    antialias: false,
+    target: maskContainer,
   });
 
   const sprite = new Sprite(renderTexture);
 
   sprite.blendMode = 'overlay';
 
-  maskContainer.destroy({ texture: true });
-  maskForeground.destroy({ texture: true });
-  maskBackground.destroy({ texture: true });
-  floorOffset.destroy({ texture: true });
-  maskContainer.destroy({ texture: true });
+  maskContainer.destroy({ texture: true, children: true, context: true });
+  maskForeground.destroy({ texture: true, children: true, context: true });
+  maskBackground.destroy({ texture: true, children: true, context: true });
+  floorOffset.destroy({ texture: true, children: true, context: true });
+  maskContainer.destroy({ texture: true, children: true, context: true });
 
   return sprite;
 };
@@ -152,7 +147,7 @@ const createWallSprites = ({
   const wallImages = [];
   const wallTextures = {};
   const wallSprites = [...Array(WALL_LAYERS)].map(() => []);
-  const spatterContainer = new Container();
+  const spatterPixiContainer = new PixiContainer();
   const floorHeight = world.floorOffset ? CELL_SIZE * world.floorOffset - 1 : 0;
 
   const spatterTypes = [...world.enemies, world.player].reduce(
@@ -218,12 +213,6 @@ const createWallSprites = ({
     const spatterTextures = bloodColors.reduce((memo, bloodColor) => {
       const spatterColorTextures = spatters.map(spatter => {
         const wallHeight = wallTexture.height;
-
-        const renderTexture = GraphicsCreator.createRenderTexture({
-          width: CELL_SIZE,
-          height: wallHeight,
-        });
-
         const spatterTexture = textures[spatter];
         const wallSprite = new Sprite(wallTexture);
         const spatterSprite = new Sprite(spatterTexture, {
@@ -248,21 +237,21 @@ const createWallSprites = ({
           });
         }
 
-        spatterContainer.addChild(wallSprite);
+        spatterPixiContainer.addChild(wallSprite);
 
         // TODO: Don't create spatter sprites for transparent walls.
         if (!transparent) {
-          spatterContainer.addChild(spatterSprite);
+          spatterPixiContainer.addChild(spatterSprite);
         }
 
-        renderer.render({
-          container: spatterContainer,
-          target: renderTexture,
+        const renderTexture = renderer.generateTexture({
+          antialias: false,
+          target: spatterPixiContainer,
         });
 
-        spatterContainer.removeChildren();
-        wallSprite.destroy({ texture: true });
-        spatterSprite.destroy({ texture: true });
+        spatterPixiContainer.removeChildren();
+        wallSprite.destroy({ texture: true, children: true, context: true });
+        spatterSprite.destroy({ texture: true, children: true, context: true });
 
         return renderTexture;
       });
@@ -289,7 +278,11 @@ const createWallSprites = ({
     }
   }
 
-  spatterContainer.destroy({ texture: true });
+  spatterPixiContainer.destroy({
+    texture: true,
+    children: true,
+    context: true,
+  });
 
   return wallSprites;
 };
@@ -373,7 +366,7 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
 };
 
 const createEffectsSprites = ({ animations, textures, world, renderer }) => {
-  const spurtContainer = new Container();
+  const spurtPixiContainer = new PixiContainer();
 
   const enemyProjectileExplosionSprites = world.enemies.reduce(
     (memo, enemy) => {
@@ -467,20 +460,15 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           tint: parseInt(bloodColor, 16),
         });
 
-        const renderTexture = GraphicsCreator.createRenderTexture({
-          width: spurtSprite.width,
-          height: spurtSprite.height,
+        spurtPixiContainer.addChild(spurtSprite);
+
+        const renderTexture = renderer.generateTexture({
+          antialias: false,
+          target: spurtPixiContainer,
         });
 
-        spurtContainer.addChild(spurtSprite);
-
-        renderer.render({
-          container: spurtContainer,
-          target: renderTexture,
-        });
-
-        spurtContainer.removeChildren();
-        spurtSprite.destroy({ texture: true });
+        spurtPixiContainer.removeChildren();
+        spurtSprite.destroy({ texture: true, children: true, context: true });
 
         return renderTexture;
       });
@@ -606,20 +594,15 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         tint: parseInt(bloodColor, 16),
       });
 
-      const renderTexture = GraphicsCreator.createRenderTexture({
-        width: spurtSprite.width,
-        height: spurtSprite.height,
+      spurtPixiContainer.addChild(spurtSprite);
+
+      const renderTexture = renderer.generateTexture({
+        antialias: false,
+        target: spurtPixiContainer,
       });
 
-      spurtContainer.addChild(spurtSprite);
-
-      renderer.render({
-        container: spurtContainer,
-        target: renderTexture,
-      });
-
-      spurtContainer.removeChildren();
-      spurtSprite.destroy({ texture: true });
+      spurtPixiContainer.removeChildren();
+      spurtSprite.destroy({ texture: true, children: true, context: true });
 
       return renderTexture;
     });
@@ -633,7 +616,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
     );
   }
 
-  spurtContainer.destroy({ texture: true });
+  spurtPixiContainer.destroy({ texture: true, children: true, context: true });
 
   return {
     ...playerExplosionSprites,

@@ -36,4 +36,10 @@ export default class Cell extends Body {
   isVertical() {
     return this.axis === AXES.Y;
   }
+
+  destroy() {
+    this.bodies = [];
+    this.axis = null;
+    this.offset = {};
+  }
 }

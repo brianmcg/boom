@@ -66,7 +66,7 @@ export default class TitleScene extends Scene {
     if (action) {
       this.promptContainer.removeFromParent();
       this.foregroundContainer.removeFromParent();
-      this.menuContainer.once('removed', () => action());
+      this.menuContainer.once('removed', action);
       this.setUnpausing();
     }
   }
@@ -110,7 +110,16 @@ export default class TitleScene extends Scene {
   destroy(options) {
     this.foregroundContainer.destroy(options);
     this.backgroundContainer.destroy(options);
-    super.destroy(options);
+
+    this.foregroundContainer = null;
+    this.backgroundContainer = null;
     this.sprites = null;
+    this.onSelectLoadGame = null;
+    this.onPromptInput = null;
+    this.onSelectNewGame = null;
+    this.onSelectLoadGame = null;
+    this.menuSelect = null;
+
+    super.destroy(options);
   }
 }

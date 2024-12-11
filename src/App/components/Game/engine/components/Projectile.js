@@ -142,6 +142,7 @@ export default class Projectile extends DynamicEntity {
   }
 
   destroy() {
+    super.destroy();
     this.explosion.destroy();
     this.source = null;
     this.explosion = null;

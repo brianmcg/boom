@@ -133,6 +133,10 @@ export default class World extends EventEmitter {
 
   destroy() {
     this.removeAllListeners();
-    Object.values(this.bodies).forEach(body => body.destroy());
+    this.grid.forEach(row => row.forEach(cell => cell.destroy()));
+
+    this.bodies = {};
+    this.dynamicBodies = [];
+    this.grid = [];
   }
 }

@@ -73,8 +73,8 @@ export default class Body extends EventEmitter {
   }
 
   destroy() {
-    this.removeFromParent();
     this.removeAllListeners();
+    this.parent = null;
   }
 
   get elavation() {

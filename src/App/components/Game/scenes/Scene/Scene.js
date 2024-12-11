@@ -211,7 +211,7 @@ export default class Scene extends Container {
     this.soundController.emitSound(this.sounds.pause);
 
     if (action) {
-      this.menuContainer.once('removed', () => action());
+      this.menuContainer.once('removed', action);
       this.setUnpausing();
     }
   }
@@ -355,11 +355,13 @@ export default class Scene extends Container {
   }
 
   destroy(options) {
+    super.destroy(options);
+
+    GraphicsCreator.clear();
+
     this.game.input.reset();
     this.soundController.stopSound(name);
     this.soundController.stop();
-    this.soundController = null;
-    this.sounds = null;
 
     this.removeChild(this.mainContainer);
     this.removeChild(this.menuContainer);
@@ -369,13 +371,23 @@ export default class Scene extends Container {
     this.menuContainer.destroy(options);
     this.promptContainer.destroy(options);
 
-    GraphicsCreator.clear();
-
     this.menu.destroy();
+
     this.menu = null;
-
+    this.mainContainer = null;
+    this.menuContainer = null;
+    this.promptContainer = null;
+    this.soundController = null;
+    this.sounds = null;
+    this.menu = null;
     this.game = null;
-
-    super.destroy(options);
+    this.onSelectQuit = null;
+    this.menuHighlightPrevious = null;
+    this.menuHighlightNext = null;
+    this.hideMenu = null;
+    this.menuHighlightPrevious = null;
+    this.menuSelect = null;
+    this.showMenu = null;
+    this.onPromptInput = null;
   }
 }

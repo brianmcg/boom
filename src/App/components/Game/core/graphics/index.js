@@ -7,6 +7,7 @@ import {
   Rectangle,
   TextureStyle,
   ParticleContainer,
+  Container as PixiContainer,
 } from 'pixi.js';
 
 import { PixelateFilter } from 'pixi-filters';
@@ -37,6 +38,7 @@ export {
   Particle,
   ParticleContainer,
   PixelateFilter,
+  PixiContainer,
   Rectangle,
   Sprite,
   TextSprite,

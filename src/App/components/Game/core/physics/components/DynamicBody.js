@@ -186,9 +186,18 @@ export default class DynamicBody extends Body {
   }
 
   destroy(options) {
-    this.trackedCollisions = [];
-    this.stopUpdates();
     super.destroy(options);
+
+    this.collisions = [];
+    this.trackedCollisions = [];
+
+    this.cell = null;
+    this.parent = null;
+    this.cell = null;
+    this.onCollision = null;
+    this.onCollisionStart = null;
+    this.onCollisionEnd = null;
+    this.parent = null;
     this.cell = null;
   }
 }

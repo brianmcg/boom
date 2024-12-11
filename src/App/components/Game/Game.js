@@ -170,7 +170,7 @@ export default class Game {
 
   removeScene() {
     this.app.stage.removeChildren();
-    this.scene.destroy({ texture: true });
+    this.scene.destroy({ texture: true, children: true, context: true });
     this.scene = null;
     this.sceneAssets = null;
   }
@@ -198,6 +198,7 @@ export default class Game {
     this.removeScene();
     this.app.stop();
     await Loader.unload();
+
     this.onExit();
   }
 }

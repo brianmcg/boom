@@ -224,12 +224,33 @@ export default class World extends PhysicsWorld {
   }
 
   destroy(options) {
-    this.scene = null;
+    super.destroy(options);
     this.player.destroy();
     this.items.forEach(item => item.destroy());
     this.enemies.forEach(enemy => enemy.destroy());
     this.objects.forEach(object => object.destroy());
-    super.destroy(options);
+
+    this.effects = null;
+    this.items = null;
+    this.enemies = null;
+    this.objects = null;
+    this.scene = null;
+    this.exit = null;
+    this.entrance = null;
+    this.onEffectAdded = null;
+    this.onPlayerDeath = null;
+    this.onPlayerPickUp = null;
+    this.effects = null;
+    this.exit = null;
+    this.entrance = null;
+    this.secrets = null;
+    this.graphs = null;
+    this.stains = null;
+    this.alwaysRender = null;
+    this.waypoints = null;
+    this.spawnPoints = null;
+    this.startProps = null;
+    this.scene = null;
   }
 
   get props() {
