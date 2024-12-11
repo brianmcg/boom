@@ -35,21 +35,21 @@ export default class Scene extends Container {
 
     this.game.input.add(STATES.PAUSED, {
       onKeyDown: {
-        [KEYS.UP_ARROW]: () => this.menuHighlightPrevious(),
-        [KEYS.DOWN_ARROW]: () => this.menuHighlightNext(),
-        [KEYS.SPACE]: () => this.hideMenu(),
-        [KEYS.Q]: () => this.hideMenu(),
-        [KEYS.W]: () => this.menuHighlightPrevious(),
-        [KEYS.S]: () => this.menuHighlightNext(),
-        [KEYS.ENTER]: () => this.menuSelect(),
-        [KEYS.E]: () => this.menuSelect(),
+        [KEYS.UP_ARROW]: () => this.onMenuHighlightPrevious(),
+        [KEYS.DOWN_ARROW]: () => this.onMenuHighlightNext(),
+        [KEYS.SPACE]: () => this.onHideMenu(),
+        [KEYS.Q]: () => this.onHideMenu(),
+        [KEYS.W]: () => this.onMenuHighlightPrevious(),
+        [KEYS.S]: () => this.onMenuHighlightNext(),
+        [KEYS.ENTER]: () => this.onMenuSelect(),
+        [KEYS.E]: () => this.onMenuSelect(),
       },
     });
 
     this.game.input.add(STATES.RUNNING, {
       onKeyDown: {
-        [KEYS.Q]: () => this.showMenu(),
-        [KEYS.ENTER]: () => this.showMenu(),
+        [KEYS.Q]: () => this.onShowMenu(),
+        [KEYS.ENTER]: () => this.onShowMenu(),
       },
     });
 
@@ -74,6 +74,39 @@ export default class Scene extends Container {
   onSelectQuit() {
     this.onStop = () => this.game.exit();
     this.setFadingOut();
+  }
+
+  onMenuHighlightNext() {
+    this.soundController.emitSound(this.sounds.highlight);
+    this.menu.highlightNext();
+  }
+
+  onMenuHighlightPrevious() {
+    this.soundController.emitSound(this.sounds.highlight);
+    this.menu.highlightPrevious();
+  }
+
+  onMenuSelect() {
+    const action = this.menu.select();
+    this.soundController.emitSound(this.sounds.pause);
+
+    if (action) {
+      this.menuContainer.once('removed', action);
+      this.setUnpausing();
+    }
+  }
+
+  onShowMenu() {
+    this.menu.reset();
+    this.addChild(this.menuContainer);
+    this.setPausing();
+  }
+
+  onHideMenu() {
+    this.soundController.emitSound(this.sounds.pause);
+
+    this.menuContainer.once('removed', () => this.setRunning());
+    this.setUnpausing();
   }
 
   create({ graphics, sounds }) {
@@ -196,50 +229,6 @@ export default class Scene extends Container {
     });
   }
 
-  menuHighlightNext() {
-    this.soundController.emitSound(this.sounds.highlight);
-    this.menu.highlightNext();
-  }
-
-  menuHighlightPrevious() {
-    this.soundController.emitSound(this.sounds.highlight);
-    this.menu.highlightPrevious();
-  }
-
-  menuSelect() {
-    const action = this.menu.select();
-    this.soundController.emitSound(this.sounds.pause);
-
-    if (action) {
-      this.menuContainer.once('removed', action);
-      this.setUnpausing();
-    }
-  }
-
-  showMenu() {
-    this.addChild(this.menuContainer);
-    this.setPausing();
-  }
-
-  hideMenu() {
-    this.soundController.emitSound(this.sounds.pause);
-
-    this.menuContainer.once('removed', () => this.setRunning());
-    this.setUnpausing();
-  }
-
-  moveX(x) {
-    this.x = x * this.scale.x;
-  }
-
-  moveY(y) {
-    this.y = y * this.scale.y;
-  }
-
-  getStageScale() {
-    return this.parent.scale.x;
-  }
-
   setLoading() {
     return this.setState(STATES.LOADING);
   }
@@ -354,6 +343,18 @@ export default class Scene extends Container {
     return isStateChanged;
   }
 
+  moveX(x) {
+    this.x = x * this.scale.x;
+  }
+
+  moveY(y) {
+    this.y = y * this.scale.y;
+  }
+
+  getStageScale() {
+    return this.parent.scale.x;
+  }
+
   destroy(options) {
     super.destroy(options);
 
@@ -382,12 +383,12 @@ export default class Scene extends Container {
     this.menu = null;
     this.game = null;
     this.onSelectQuit = null;
-    this.menuHighlightPrevious = null;
-    this.menuHighlightNext = null;
-    this.hideMenu = null;
-    this.menuHighlightPrevious = null;
-    this.menuSelect = null;
-    this.showMenu = null;
+    this.onMenuHighlightPrevious = null;
+    this.onMenuHighlightNext = null;
+    this.onHideMenu = null;
+    this.onMenuHighlightPrevious = null;
+    this.onMenuSelect = null;
+    this.onShowMenu = null;
     this.onPromptInput = null;
   }
 }

@@ -9,6 +9,7 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
 
     this.animationSpeed = animationSpeed;
     this.interactiveChildren = false;
+    this.eventMode = 'none';
 
     if (loop || loop === false) {
       this.loop = loop;

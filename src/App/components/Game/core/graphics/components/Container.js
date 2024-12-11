@@ -4,6 +4,7 @@ export default class Container extends PixiContainer {
   constructor() {
     super();
     this.interactiveChildren = false;
+    this.eventMode = 'none';
     this.playableChildren = [];
     this.fadeableChildren = [];
     this.playing = true;

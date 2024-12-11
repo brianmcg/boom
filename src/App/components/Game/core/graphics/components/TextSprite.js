@@ -19,6 +19,8 @@ export default class TextSprite extends BitmapText {
     this.y = y;
     this.alpha = alpha;
     this.maxWidth = maxWidth;
+    this.interactiveChildren = false;
+    this.eventMode = 'none';
 
     if (color || color === 0) {
       this.tint = color;

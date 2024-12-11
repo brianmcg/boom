@@ -117,6 +117,12 @@ export default class Menu {
     }
   }
 
+  reset() {
+    this.currentMenuId = ROOT_MENU_ID;
+    this.currentIndex = 0;
+    this.updateOptions();
+  }
+
   getCurrentOptions() {
     return this.options.filter(option => option.menuId === this.currentMenuId);
   }

@@ -27,6 +27,7 @@ class Sprite extends PixiSprite {
     }
 
     this.interactiveChildren = false;
+    this.eventMode = 'none';
   }
 
   show() {

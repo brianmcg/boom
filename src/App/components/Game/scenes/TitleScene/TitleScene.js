@@ -31,7 +31,7 @@ export default class TitleScene extends Scene {
   }
 
   onPromptInput() {
-    this.showMenu();
+    this.onShowMenu();
   }
 
   onSelectNewGame() {
@@ -42,6 +42,18 @@ export default class TitleScene extends Scene {
   onSelectLoadGame(data) {
     this.onStop = () => this.game.showWorldScene(data);
     this.setFadingOut();
+  }
+
+  onMenuSelect() {
+    const action = this.menu.select();
+    this.soundController.emitSound(this.sounds.pause);
+
+    if (action) {
+      this.promptContainer.removeFromParent();
+      this.foregroundContainer.removeFromParent();
+      this.menuContainer.once('removed', action);
+      this.setUnpausing();
+    }
   }
 
   create(options) {
@@ -57,18 +69,6 @@ export default class TitleScene extends Scene {
 
     this.mainContainer.addChild(this.backgroundContainer);
     this.mainContainer.addChild(this.foregroundContainer);
-  }
-
-  menuSelect() {
-    const action = this.menu.select();
-    this.soundController.emitSound(this.sounds.pause);
-
-    if (action) {
-      this.promptContainer.removeFromParent();
-      this.foregroundContainer.removeFromParent();
-      this.menuContainer.once('removed', action);
-      this.setUnpausing();
-    }
   }
 
   setPausing() {
@@ -118,7 +118,7 @@ export default class TitleScene extends Scene {
     this.onPromptInput = null;
     this.onSelectNewGame = null;
     this.onSelectLoadGame = null;
-    this.menuSelect = null;
+    this.onMenuSelect = null;
 
     super.destroy(options);
   }
