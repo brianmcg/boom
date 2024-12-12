@@ -221,7 +221,7 @@ export default class Scene extends Container {
 
     if (this.fadeAmount >= 1) {
       this.fadeAmount = 1;
-      this.setStopped();
+      return this.setStopped();
     }
 
     this.fade(this.fadeAmount, {
@@ -298,8 +298,8 @@ export default class Scene extends Container {
     const isStateChanged = this.setState(STATES.FADING_OUT);
 
     if (isStateChanged) {
-      this.stop();
       this.game.getMusic().fade(MUSIC_VOLUME, 0, 750);
+      this.stop();
     }
 
     return isStateChanged;

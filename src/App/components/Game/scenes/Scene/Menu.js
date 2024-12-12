@@ -138,7 +138,7 @@ export default class Menu {
 
   destroy() {
     this.options.forEach(option => {
-      delete option.action;
+      option.action = null;
     });
 
     this.options = null;
