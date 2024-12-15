@@ -39,10 +39,9 @@ export default class Container extends PixiContainer {
   }
 
   removeChildren() {
-    super.removeChildren();
-
     this.playableChildren = [];
     this.fadeableChildren = [];
+    return super.removeChildren();
   }
 
   update(ticker) {
