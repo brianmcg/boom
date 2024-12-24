@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
-import { PixelateFilter } from '@game/core/graphics';
+import SceneCreator from '../util/SceneCreator';
 
 const PULSE_INTERVAL = 100;
 
@@ -26,7 +26,7 @@ const STATES = {
 };
 
 export default class PromptContainer extends Container {
-  constructor(sprite, sound) {
+  constructor({ sprite, sound }) {
     super();
 
     sprite.x = SCREEN.WIDTH / 2;
@@ -47,7 +47,7 @@ export default class PromptContainer extends Container {
     this.addChild(sprite);
     this.setFadingIn();
 
-    this.pixelateFilter = new PixelateFilter();
+    this.pixelateFilter = SceneCreator.createPixelateFilter();
     this.pixelateFilter.enabled = false;
 
     this.filters = [this.pixelateFilter];
@@ -185,10 +185,7 @@ export default class PromptContainer extends Container {
   }
 
   destroy(options) {
-    this.sprite.destroy(options);
-    this.pixelateFilter.destroy();
-    this.filters = [];
-
     super.destroy(options);
+    this.pixelateFilter = null;
   }
 }

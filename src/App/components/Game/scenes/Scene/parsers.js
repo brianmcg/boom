@@ -1,12 +1,11 @@
-import { TextSprite, GraphicsCreator } from '@game/core/graphics';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
 import { RED, BLACK } from '@constants/colors';
 import { SCREEN } from '@constants/config';
-import MenuIconSprite from './sprites/MenuIconSprite';
+import SceneCreator from './util/SceneCreator';
 
 const createPromptSprite = text =>
-  new TextSprite({
+  SceneCreator.createTextSprite({
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.SMALL,
     text,
@@ -15,7 +14,7 @@ const createPromptSprite = text =>
   });
 
 const createMenuSprites = (menu, textures, animations) => {
-  const background = GraphicsCreator.createRectangleSprite({
+  const background = SceneCreator.createRectangleSprite({
     width: SCREEN.WIDTH * 1.5,
     height: SCREEN.HEIGHT * 1.5,
     color: BLACK,
@@ -25,7 +24,7 @@ const createMenuSprites = (menu, textures, animations) => {
   const labels = Object.entries(menu).reduce(
     (memo, [key, value]) => ({
       ...memo,
-      [key]: new TextSprite({
+      [key]: SceneCreator.createTextSprite({
         fontFamily: GAME_FONT.NAME,
         fontSize: FONT_SIZES.SMALL,
         text: value,
@@ -37,7 +36,7 @@ const createMenuSprites = (menu, textures, animations) => {
 
   const menuTextures = animations.skull.map(image => textures[image]);
 
-  const icon = new MenuIconSprite({
+  const icon = SceneCreator.createMenuIconSprite({
     textures: menuTextures,
     size: Object.values(labels)[0].height,
   });

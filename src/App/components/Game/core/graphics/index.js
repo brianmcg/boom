@@ -7,7 +7,8 @@ import {
   Rectangle,
   TextureStyle,
   ParticleContainer,
-  Container as PixiContainer,
+  Texture,
+  RenderTexture,
 } from 'pixi.js';
 
 import { PixelateFilter } from 'pixi-filters';
@@ -21,10 +22,13 @@ import FadeSprite from './components/FadeSprite';
 
 import GraphicsCreator from './util/GraphicsCreator';
 import GraphicsLoader from './util/GraphicsLoader';
+import GraphicsCache from './util/GraphicsCache';
 
 TextureStyle.defaultOptions.scaleMode = 'nearest';
 
 export {
+  GraphicsCache,
+  Texture,
   AnimatedSprite,
   Application,
   Assets,
@@ -38,8 +42,8 @@ export {
   Particle,
   ParticleContainer,
   PixelateFilter,
-  PixiContainer,
   Rectangle,
   Sprite,
   TextSprite,
+  RenderTexture,
 };

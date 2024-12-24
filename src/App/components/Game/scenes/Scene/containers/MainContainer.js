@@ -1,10 +1,11 @@
-import { Container, PixelateFilter } from '@game/core/graphics';
+import { Container } from '@game/core/graphics';
+import SceneCreator from '../util/SceneCreator';
 
 export default class MainContainer extends Container {
   constructor() {
     super();
 
-    this.pixelateFilter = new PixelateFilter();
+    this.pixelateFilter = SceneCreator.createPixelateFilter();
     this.filters = [this.pixelateFilter];
     this.pixelateFilter.enabled = true;
   }
@@ -41,8 +42,7 @@ export default class MainContainer extends Container {
   }
 
   destroy(options) {
-    this.pixelateFilter.destroy();
-    this.filters = [];
     super.destroy(options);
+    this.pixelateFilter = null;
   }
 }

@@ -1,30 +1,47 @@
-import {
-  Texture,
-  RenderTexture,
-  ColorMatrixFilter,
-  Container,
-  Sprite,
-} from 'pixi.js';
-import CreatedTextureCache from './CreatedTextureCache';
-import RectangleSprite from '../components/RectangleSprite';
+import { ColorMatrixFilter, Texture, RenderTexture } from 'pixi.js';
 import { BLACK } from '@constants/colors';
+import GraphicsCache from './GraphicsCache';
+import RectangleSprite from '../components/RectangleSprite';
+import Sprite from '../components/Sprite';
+import Container from '../components/Container';
+import TextSprite from '../components/TextSprite';
+import { PixelateFilter } from 'pixi-filters';
 
 export default class GraphicsCreator {
+  static createContainer(options) {
+    const container = new Container(options);
+    GraphicsCache.addContainer(container);
+    return container;
+  }
+
+  static createPixelateFilter(options) {
+    const filter = new PixelateFilter(options);
+    GraphicsCache.addFilter(filter);
+    return filter;
+  }
+
+  static createTextSprite(options) {
+    const sprite = new TextSprite(options);
+    GraphicsCache.addSprite(sprite);
+    return sprite;
+  }
+
   static createTexture(source, frame) {
     const texture = new Texture({ source, frame });
-    CreatedTextureCache.add(texture);
+    GraphicsCache.addTexture(texture);
     return texture;
   }
 
   static createRenderTexture(options) {
     const texture = RenderTexture.create(options);
-    CreatedTextureCache.add(texture);
+    GraphicsCache.addTexture(texture);
     return texture;
   }
 
   static createRectangleSprite(options) {
     const sprite = new RectangleSprite(options);
-    CreatedTextureCache.add(sprite.texture);
+    GraphicsCache.addSprite(sprite);
+    GraphicsCache.addTexture(sprite.texture);
     return sprite;
   }
 
@@ -34,8 +51,6 @@ export default class GraphicsCreator {
 
     const maskBackground = new Sprite({
       texture: Texture.WHITE,
-      width: texture.width,
-      height: texture.height,
     });
 
     const maskForeground = new Sprite({ texture });
@@ -58,16 +73,14 @@ export default class GraphicsCreator {
       target: renderTexture,
     });
 
+    maskContainer.filters = [];
+    filter.destroy();
     maskContainer.destroy({ texture: true });
     maskBackground.destroy({ texture: true });
     maskForeground.destroy({ texture: true });
 
-    CreatedTextureCache.add(renderTexture);
+    GraphicsCache.addTexture(renderTexture);
 
     return renderTexture;
-  }
-
-  static clear() {
-    CreatedTextureCache.clear();
   }
 }

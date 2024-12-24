@@ -79,13 +79,10 @@ export default class Container extends PixiContainer {
 
   destroy(options) {
     super.destroy(options);
-    this.removeFromParent(this);
-    this.removeAllListeners();
-    this.removeChildren();
 
-    this.children = [];
     this.playableChildren = [];
     this.fadeableChildren = [];
+    this.filters = [];
   }
 
   setState(state) {

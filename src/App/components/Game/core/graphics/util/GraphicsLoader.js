@@ -1,8 +1,17 @@
 import { Assets } from 'pixi.js';
+import GraphicsCache from './GraphicsCache';
 
 export default class GraphicsLoader {
-  static load(src) {
-    return Assets.load(src);
+  static async load(src) {
+    const assets = await Assets.load(src);
+
+    if (assets.textures) {
+      Object.values(assets.textures).forEach(texture =>
+        GraphicsCache.addTexture(texture)
+      );
+    }
+
+    return assets;
   }
 
   static unload(src = GraphicsLoader.cacheKeys) {

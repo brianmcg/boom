@@ -1,13 +1,12 @@
 import translate from '@util/translate';
 import { KEYS } from '@game/core/input';
-import { Container, GraphicsCreator } from '@game/core/graphics';
+import { Container, GraphicsCache } from '@game/core/graphics';
 import { SoundSpriteController } from '@game/core/audio';
 import { MUSIC_VOLUME } from '@constants/config';
 import { parse } from './parsers';
-import MainContainer from './containers/MainContainer';
-import MenuContainer from './containers/MenuContainer';
-import PromptContainer from './containers/PromptContainer';
 import Menu from './Menu';
+
+import SceneCreator from './util/SceneCreator';
 
 import {
   STATES,
@@ -23,7 +22,7 @@ export default class Scene extends Container {
 
     this.game = game;
 
-    this.mainContainer = new MainContainer();
+    this.mainContainer = SceneCreator.createMainContainer();
 
     this.menu = new Menu([
       {
@@ -122,15 +121,15 @@ export default class Scene extends Container {
 
     this.sounds = sounds;
 
-    this.menuContainer = new MenuContainer({
+    this.menuContainer = SceneCreator.createMenuContainer({
       menu: this.menu,
       sprites: sprites.menu,
     });
 
-    this.promptContainer = new PromptContainer(
-      sprites.prompt,
-      this.sounds.complete
-    );
+    this.promptContainer = SceneCreator.createPromptContainer({
+      sprite: sprites.prompt,
+      sound: this.sounds.complete,
+    });
 
     this.soundController = new SoundSpriteController({
       sounds: Object.values(this.sounds),
@@ -356,22 +355,13 @@ export default class Scene extends Container {
   }
 
   destroy(options) {
-    GraphicsCreator.clear();
-
     this.game.input.reset();
-    this.soundController.stopSound(name);
     this.soundController.stop();
-
-    this.removeChild(this.mainContainer);
-    this.removeChild(this.menuContainer);
-    this.removeChild(this.promptContainer);
-
-    this.mainContainer.destroy(options);
-    this.menuContainer.destroy(options);
-    this.promptContainer.destroy(options);
-
     this.menu.destroy();
+
     super.destroy(options);
+
+    GraphicsCache.clear();
 
     this.menu = null;
     this.mainContainer = null;

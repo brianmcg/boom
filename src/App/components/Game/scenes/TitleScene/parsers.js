@@ -1,8 +1,6 @@
 import { SCREEN } from '@constants/config';
 import { BLACK } from '@constants/colors';
-import { GraphicsCreator } from '@game/core/graphics';
-import LogoSprite from './sprites/LogoSprite';
-import SparksSprite from './sprites/SparksSprite';
+import TitleSceneCreator from './util/TitleSceneCreator';
 
 export const parse = ({ graphics, renderer }) => {
   const { data, textures } = graphics;
@@ -10,25 +8,29 @@ export const parse = ({ graphics, renderer }) => {
   const { light, logo } = textures;
   const sparksTextures = animations.sparks.map(image => textures[image]);
 
-  const logoSprite = new LogoSprite({ texture: logo });
-  const lightSprite = new LogoSprite({ texture: light });
+  const logoSprite = TitleSceneCreator.createLogoSprite({ texture: logo });
+  const lightSprite = TitleSceneCreator.createLogoSprite({ texture: light });
 
-  const maskTexture = GraphicsCreator.createMaskTexture({
+  const maskTexture = TitleSceneCreator.createMaskTexture({
     renderer,
     texture: logo,
   });
 
-  const maskSprite = new LogoSprite({ texture: maskTexture });
+  const maskSprite = TitleSceneCreator.createLogoSprite({
+    texture: maskTexture,
+  });
 
   return {
     sprites: {
       background: {
-        background: GraphicsCreator.createRectangleSprite({
+        background: TitleSceneCreator.createRectangleSprite({
           width: SCREEN.WIDTH,
           height: SCREEN.HEIGHT,
           color: BLACK,
         }),
-        sparks: new SparksSprite({ textures: sparksTextures }),
+        sparks: TitleSceneCreator.createSparksSprite({
+          textures: sparksTextures,
+        }),
       },
       foreground: {
         logo: logoSprite,

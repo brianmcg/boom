@@ -1,9 +1,8 @@
 import translate from '@util/translate';
 import { TITLE_SCENE_ASSETS } from '@constants/assets';
 import { parse } from './parsers';
-import BackgroundContainer from './containers/BackgroundContainer';
-import ForegroundContainer from './containers/ForegroundContainer';
 import Scene from '../Scene';
+import TitleSceneCreator from './util/TitleSceneCreator';
 
 export default class TitleScene extends Scene {
   constructor({ data, ...other }) {
@@ -64,8 +63,13 @@ export default class TitleScene extends Scene {
 
     this.sprites = sprites;
 
-    this.backgroundContainer = new BackgroundContainer(sprites.background);
-    this.foregroundContainer = new ForegroundContainer(sprites.foreground);
+    this.backgroundContainer = TitleSceneCreator.createBackgroundContainer(
+      sprites.background
+    );
+
+    this.foregroundContainer = TitleSceneCreator.createForegroundContainer(
+      sprites.foreground
+    );
 
     this.mainContainer.addChild(this.backgroundContainer);
     this.mainContainer.addChild(this.foregroundContainer);
@@ -108,18 +112,9 @@ export default class TitleScene extends Scene {
   }
 
   destroy(options) {
-    this.foregroundContainer.destroy(options);
-    this.backgroundContainer.destroy(options);
-
+    super.destroy(options);
     this.foregroundContainer = null;
     this.backgroundContainer = null;
     this.sprites = null;
-    this.onSelectLoadGame = null;
-    this.onPromptInput = null;
-    this.onSelectNewGame = null;
-    this.onSelectLoadGame = null;
-    this.onMenuSelect = null;
-
-    super.destroy(options);
   }
 }
