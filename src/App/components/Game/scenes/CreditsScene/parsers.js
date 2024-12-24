@@ -8,7 +8,7 @@ import { GraphicsCreator } from '@game/core/graphics';
 export const parse = ({ graphics, text }) => {
   const { textures } = graphics;
 
-  const logo = new FadeSprite(textures.logo);
+  const logo = new FadeSprite({ texture: textures.logo });
 
   const credits = text.credits.reduce((memo, credit) => {
     const key = new TextSprite({

@@ -102,7 +102,7 @@ const createWallSpriteMask = ({
 
   const maskContainer = new Container();
   const filter = new ColorMatrixFilter();
-  const maskForeground = new Sprite(wallTexture);
+  const maskForeground = new Sprite({ texture: wallTexture });
 
   const maskBackground = GraphicsCreator.createRectangleSprite({
     width: CELL_SIZE,
@@ -129,7 +129,7 @@ const createWallSpriteMask = ({
     target: renderTexture,
   });
 
-  const sprite = new Sprite(renderTexture);
+  const sprite = new Sprite({ texture: renderTexture });
 
   sprite.blendMode = 'overlay';
 
@@ -225,8 +225,9 @@ const createWallSprites = ({
         });
 
         const spatterTexture = textures[spatter];
-        const wallSprite = new Sprite(wallTexture);
-        const spatterSprite = new Sprite(spatterTexture, {
+        const wallSprite = new Sprite({ texture: wallTexture });
+        const spatterSprite = new Sprite({
+          texture: spatterTexture,
           tint: parseInt(bloodColor, 16),
         });
 
@@ -285,7 +286,7 @@ const createWallSprites = ({
 
   for (let i = 0; i < SCREEN.WIDTH; i++) {
     for (let j = 0; j < WALL_LAYERS; j++) {
-      wallSprites[j].push(new WallSprite(wallTextures, i));
+      wallSprites[j].push(new WallSprite({ textures: wallTextures, index: i }));
     }
   }
 
@@ -304,11 +305,7 @@ const createSkySprites = ({ world, textures }) => {
     const width = texture.width * ratio;
 
     return [...Array(numberOfSprites).keys()].map(
-      () =>
-        new Sprite(texture, {
-          width,
-          height,
-        })
+      () => new Sprite({ texture, width, height })
     );
   }
 
@@ -462,7 +459,8 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
     if (effects.spurt) {
       const spurtTextures = animations[effects.spurt].map(animation => {
-        const spurtSprite = new Sprite(textures[animation], {
+        const spurtSprite = new Sprite({
+          texture: textures[animation],
           tint: parseInt(bloodColor, 16),
         });
 
@@ -602,7 +600,8 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
 
   if (effects.spurt) {
     const playerSpurtTextures = animations[effects.spurt].map(animation => {
-      const spurtSprite = new Sprite(textures[animation], {
+      const spurtSprite = new Sprite({
+        texture: textures[animation],
         tint: parseInt(bloodColor, 16),
       });
 
@@ -667,7 +666,9 @@ const createEntitySprites = ({ animations, textures, world }) => {
         animationSpeed: object.animationSpeed,
       });
     } else {
-      entitySprites[object.id] = new EntitySprite(textures[object.name]);
+      entitySprites[object.id] = new EntitySprite({
+        texture: textures[object.name],
+      });
     }
   });
 
@@ -828,12 +829,14 @@ const createHudSprites = ({ world, textures, animations }) => {
     anchor: 0.5,
   });
 
-  const ammoIcon = new HUDSprite(textures.ammo, {
+  const ammoIcon = new HUDSprite({
+    texture: textures.ammo,
     maxScale: healthAmount.height / textures.ammo.frame.height,
     anchor: 0.5,
   });
 
-  const healthIcon = new HUDSprite(textures.health, {
+  const healthIcon = new HUDSprite({
+    texture: textures.health,
     maxScale: healthAmount.height / textures.health.frame.height,
     anchor: 0.5,
   });

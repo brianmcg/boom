@@ -1,8 +1,8 @@
 import { Sprite } from '@game/core/graphics';
 
 export default class HUDSprite extends Sprite {
-  constructor(texture, { maxScale = 1, anchor } = {}) {
-    super(texture);
+  constructor({ texture, maxScale = 1, anchor } = {}) {
+    super({ texture });
 
     this.maxScale = maxScale;
     this.scale.set(maxScale);

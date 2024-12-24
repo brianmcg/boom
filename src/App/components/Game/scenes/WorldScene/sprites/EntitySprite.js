@@ -1,8 +1,8 @@
 import { Sprite, GraphicsCreator } from '@game/core/graphics';
 
 export default class EntitySprite extends Sprite {
-  constructor(texture, { floorOffset = 0, anchor = [0.5, 1] } = {}) {
-    super(texture, { anchor });
+  constructor({ texture, floorOffset = 0, anchor = [0.5, 1] } = {}) {
+    super({ texture, anchor });
     this.zOrder = Number.MAX_VALUE;
 
     if (floorOffset) {

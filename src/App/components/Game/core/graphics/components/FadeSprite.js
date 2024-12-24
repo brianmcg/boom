@@ -1,8 +1,8 @@
 import { Sprite } from '@game/core/graphics';
 
 export default class FadeSprite extends Sprite {
-  constructor(texture, { maxScale = 1 } = {}) {
-    super(texture);
+  constructor({ texture, maxScale = 1 } = {}) {
+    super({ texture });
 
     this.maxScale = maxScale;
     this.anchor.set(0.5);

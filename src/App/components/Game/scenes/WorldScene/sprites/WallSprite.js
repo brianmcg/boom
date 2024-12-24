@@ -1,7 +1,7 @@
 import { Sprite } from '@game/core/graphics';
 
 export default class WallSprite extends Sprite {
-  constructor(textures, index) {
+  constructor({ textures, index }) {
     super();
     this.x = index;
 

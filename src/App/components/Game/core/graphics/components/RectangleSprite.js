@@ -10,7 +10,7 @@ export default class RectangleSprite extends Sprite {
     alpha = 1,
     anchor = 0,
   } = {}) {
-    super(Texture.WHITE);
+    super({ texture: Texture.WHITE });
 
     this.x = x;
     this.y = y;

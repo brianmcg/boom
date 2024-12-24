@@ -38,7 +38,7 @@ export default class GraphicsCreator {
       height: texture.height,
     });
 
-    const maskForeground = new Sprite(texture);
+    const maskForeground = new Sprite({ texture });
     maskForeground.tint = BLACK;
 
     const renderTexture = RenderTexture.create({

@@ -10,15 +10,15 @@ export const parse = ({ graphics, renderer }) => {
   const { light, logo } = textures;
   const sparksTextures = animations.sparks.map(image => textures[image]);
 
-  const logoSprite = new LogoSprite(logo);
-  const lightSprite = new LogoSprite(light);
+  const logoSprite = new LogoSprite({ texture: logo });
+  const lightSprite = new LogoSprite({ texture: light });
 
   const maskTexture = GraphicsCreator.createMaskTexture({
     renderer,
     texture: logo,
   });
 
-  const maskSprite = new LogoSprite(maskTexture);
+  const maskSprite = new LogoSprite({ texture: maskTexture });
 
   return {
     sprites: {
