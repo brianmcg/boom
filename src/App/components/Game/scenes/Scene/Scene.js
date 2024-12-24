@@ -356,8 +356,6 @@ export default class Scene extends Container {
   }
 
   destroy(options) {
-    super.destroy(options);
-
     GraphicsCreator.clear();
 
     this.game.input.reset();
@@ -373,6 +371,7 @@ export default class Scene extends Container {
     this.promptContainer.destroy(options);
 
     this.menu.destroy();
+    super.destroy(options);
 
     this.menu = null;
     this.mainContainer = null;
@@ -382,13 +381,5 @@ export default class Scene extends Container {
     this.sounds = null;
     this.menu = null;
     this.game = null;
-    this.onSelectQuit = null;
-    this.onMenuHighlightPrevious = null;
-    this.onMenuHighlightNext = null;
-    this.onHideMenu = null;
-    this.onMenuHighlightPrevious = null;
-    this.onMenuSelect = null;
-    this.onShowMenu = null;
-    this.onPromptInput = null;
   }
 }
