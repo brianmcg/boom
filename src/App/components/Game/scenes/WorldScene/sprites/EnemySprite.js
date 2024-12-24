@@ -16,10 +16,12 @@ const EVENTS = {
 };
 
 export default class EnemySprite extends AnimatedEntitySprite {
-  constructor(textureCollection = [], { enemy, floorOffset } = {}) {
-    const { textures } = textureCollection[STATES.IDLE];
-
-    super(textures, { animationSpeed: 0.15, floorOffset });
+  constructor({ textureCollection = [], enemy, floorOffset } = {}) {
+    super({
+      textures: textureCollection[STATES.IDLE].textures,
+      animationSpeed: 0.15,
+      floorOffset,
+    });
 
     enemy.onIdle(() => this.setAnimation(STATES.IDLE));
     enemy.onAlerted(() => this.setAnimation(STATES.IDLE));

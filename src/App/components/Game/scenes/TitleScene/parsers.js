@@ -28,7 +28,7 @@ export const parse = ({ graphics, renderer }) => {
           height: SCREEN.HEIGHT,
           color: BLACK,
         }),
-        sparks: new SparksSprite(sparksTextures),
+        sparks: new SparksSprite({ textures: sparksTextures }),
       },
       foreground: {
         logo: logoSprite,

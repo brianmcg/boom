@@ -6,8 +6,8 @@ const EVENTS = {
 };
 
 export default class ExplosiveEntitySprite extends AnimatedEntitySprite {
-  constructor(textures, { entity, ...options }) {
-    super(textures, { ...options, loop: false, autoPlay: false });
+  constructor({ textures, entity, ...options }) {
+    super({ ...options, textures, loop: false, autoPlay: false });
 
     entity.onExplode(() => {
       this.emit(EVENTS.ANIMATION_CHANGE);

@@ -1,10 +1,14 @@
 import { AnimatedSprite as PixiAnimatedSprite } from 'pixi.js';
 
 export default class AnimatedSprite extends PixiAnimatedSprite {
-  constructor(
+  constructor({
     textures,
-    { animationSpeed = 1, tint, alpha = 1, loop = false, anchor = 0 } = {}
-  ) {
+    animationSpeed = 1,
+    tint,
+    alpha = 1,
+    loop = false,
+    anchor = 0,
+  } = {}) {
     super(textures, false);
 
     this.animationSpeed = animationSpeed;

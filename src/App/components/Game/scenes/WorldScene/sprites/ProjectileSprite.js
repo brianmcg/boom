@@ -1,8 +1,8 @@
 import AnimatedEntitySprite from './AnimatedEntitySprite';
 
 export default class ProjectileSprite extends AnimatedEntitySprite {
-  constructor(textures, { rotate = 0, ...other } = {}) {
-    super(textures, other);
+  constructor({ textures, rotate = 0, ...other } = {}) {
+    super({ textures, ...other });
     this.rotate = rotate;
   }
 

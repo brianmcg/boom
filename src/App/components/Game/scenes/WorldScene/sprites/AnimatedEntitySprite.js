@@ -1,19 +1,18 @@
 import { AnimatedSprite, GraphicsCreator } from '@game/core/graphics';
 
 export default class AnimatedEntitySprite extends AnimatedSprite {
-  constructor(
+  constructor({
     textures,
-    {
-      animationSpeed = 0.2,
-      loop = true,
-      autoPlay = true,
-      floorOffset = 0,
-      anchor = [0.5, 1],
-      ...other
-    } = {}
-  ) {
-    super(textures, {
+    animationSpeed = 0.2,
+    loop = true,
+    autoPlay = true,
+    floorOffset = 0,
+    anchor = [0.5, 1],
+    ...other
+  } = {}) {
+    super({
       ...other,
+      textures,
       animationSpeed,
       loop,
       anchor,

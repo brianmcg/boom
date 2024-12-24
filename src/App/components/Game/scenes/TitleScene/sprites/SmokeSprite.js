@@ -2,8 +2,9 @@ import { AnimatedSprite } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
 
 export default class SmokeSprite extends AnimatedSprite {
-  constructor(textures = []) {
-    super(textures, {
+  constructor({ textures = [] }) {
+    super({
+      textures,
       animationSpeed: 0.3,
       loop: true,
     });

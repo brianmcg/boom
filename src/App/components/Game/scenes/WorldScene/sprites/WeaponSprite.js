@@ -4,8 +4,9 @@ import { SCREEN } from '@constants/config';
 const SCALE_RATIO = SCREEN.HEIGHT / 180;
 
 export default class WeaponSprite extends AnimatedSprite {
-  constructor(textureCollection, player) {
-    super(textureCollection[player.weapons[0].name].idle, {
+  constructor({ textureCollection, player }) {
+    super({
+      textures: textureCollection[player.weapons[0].name].idle,
       animationSpeed: 0.25,
       loop: false,
     });
