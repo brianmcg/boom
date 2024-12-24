@@ -16,7 +16,7 @@ const STATES = {
 };
 
 export default class MessageSprite extends TextSprite {
-  constructor(text, { priority = 0 } = {}) {
+  constructor({ text, priority = 0 } = {}) {
     super({
       text,
       fontFamily: GAME_FONT.NAME,

@@ -4,10 +4,11 @@ import { DEBUG } from '@constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
 
 import { parse } from './parsers';
-import POVContainer from './containers/POVContainer';
-import MapContainer from './containers/MapContainer';
-import ReviewContainer from './containers/ReviewContainer';
+// import POVContainer from './containers/POVContainer';
+// import TopDownContainer from './containers/TopDownContainer';
+// import ReviewContainer from './containers/ReviewContainer';
 import Scene, { STATES } from '../Scene';
+import WorldSceneCreator from './util/WorldSceneCreator';
 
 Object.assign(STATES, {
   ADDING_REVIEW: 'world:scene:adding:review',
@@ -158,11 +159,19 @@ export default class WorldScene extends Scene {
     });
 
     this.viewContainer = MAP_VIEW
-      ? new MapContainer({ world, sprites: sprites.world })
-      : new POVContainer({ world, sprites: sprites.world });
+      ? WorldSceneCreator.createTopDownContainer({
+          world,
+          sprites: sprites.world,
+        })
+      : WorldSceneCreator.createPOVContainer({ world, sprites: sprites.world });
 
     this.mainContainer.addChild(this.viewContainer);
-    this.reviewContainer = new ReviewContainer(sprites.review, this.sounds);
+
+    this.reviewContainer = WorldSceneCreator.createReviewContainer({
+      sprites: sprites.review,
+      sounds: this.sounds,
+    });
+
     this.reviewContainer.onShowStat(sound =>
       this.soundController.emitSound(sound)
     );
@@ -282,13 +291,13 @@ export default class WorldScene extends Scene {
   }
 
   destroy(options) {
-    this.removeChild(this.reviewContainer);
-    this.reviewContainer.destroy(options);
     this.stop();
     super.destroy(options);
     this.world.destroy();
     this.onStop = null;
     this.world = null;
     this.sprites = null;
+    this.viewContainer = null;
+    this.reviewContainer = null;
   }
 }

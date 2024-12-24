@@ -1,7 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
-import StatContainer from './containers/StatContainer';
-import { PixelateFilter } from '@game/core/graphics';
+import WorldSceneCreator from '../../util/WorldSceneCreator';
 
 const TEXT_PADDING = SCREEN_PADDING / 2;
 
@@ -34,7 +33,7 @@ const formatPercent = (achieved, total) => {
 };
 
 export default class ReviewContainer extends Container {
-  constructor(sprites, sounds) {
+  constructor({ sprites, sounds }) {
     super();
 
     const { title, stats, background } = sprites;
@@ -43,7 +42,7 @@ export default class ReviewContainer extends Container {
     this.statContainers = Object.values(stats).reduce(
       (memo, { name, value }, i) => [
         ...memo,
-        new StatContainer({
+        WorldSceneCreator.createStatContainer({
           sprites: [name, value],
           y:
             title.y +
@@ -55,7 +54,7 @@ export default class ReviewContainer extends Container {
         }),
       ],
       [
-        new StatContainer({
+        WorldSceneCreator.createStatContainer({
           sprites: [title],
           y: title.height / 2 + SCREEN_PADDING,
           sound: sounds.complete,
@@ -69,7 +68,7 @@ export default class ReviewContainer extends Container {
 
     this.addChild(background);
 
-    this.pixelateFilter = new PixelateFilter();
+    this.pixelateFilter = WorldSceneCreator.createPixelateFilter();
     this.pixelateFilter.enabled = false;
 
     this.filters = [this.pixelateFilter];
@@ -155,25 +154,8 @@ export default class ReviewContainer extends Container {
   }
 
   destroy(options) {
-    const { background, title, stats } = this.sprites;
-
-    background.destroy(options);
-
-    title.destroy(options);
-
-    Object.values(stats).forEach(({ name, value }) => {
-      name.destroy(options);
-      value.destroy(options);
-    });
-
-    this.statContainers.forEach(container => {
-      this.removeChild(container);
-      container.destroy(options);
-    });
-
-    this.pixelateFilter.destroy();
-    this.filters = [];
-
     super.destroy(options);
+    this.pixelateFilter = null;
+    this.sprites = null;
   }
 }

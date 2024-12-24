@@ -1,7 +1,7 @@
 import { Particle } from '@game/core/graphics';
 
 export default class BackgroundSprite extends Particle {
-  constructor(textures, x, y) {
+  constructor({ textures, x, y }) {
     super();
     this.x = x;
     this.y = y;

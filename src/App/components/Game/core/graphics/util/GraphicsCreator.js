@@ -8,6 +8,12 @@ import TextSprite from '../components/TextSprite';
 import { PixelateFilter } from 'pixi-filters';
 
 export default class GraphicsCreator {
+  static createSprite(options) {
+    const sprite = new Sprite(options);
+    GraphicsCache.addSprite(sprite);
+    return sprite;
+  }
+
   static createContainer(options) {
     const container = new Container(options);
     GraphicsCache.addContainer(container);
@@ -38,10 +44,14 @@ export default class GraphicsCreator {
     return texture;
   }
 
-  static createRectangleSprite(options) {
+  static createRectangleSprite({ cache = true, ...options }) {
     const sprite = new RectangleSprite(options);
-    GraphicsCache.addSprite(sprite);
-    GraphicsCache.addTexture(sprite.texture);
+
+    if (cache) {
+      GraphicsCache.addSprite(sprite);
+      GraphicsCache.addTexture(sprite.texture);
+    }
+
     return sprite;
   }
 

@@ -16,14 +16,13 @@ export default class InnerContainer extends ParticleContainer {
     this.interactiveChildren = false;
   }
 
-  update(particleChildren) {
+  update(particleChildren = []) {
     this.particleChildren = particleChildren;
     super.update();
   }
 
   destroy(options) {
     this.removeParticles(0, this.particleChildren.length);
-    this.particleChildren = [];
     this.update();
     super.destroy(options);
   }

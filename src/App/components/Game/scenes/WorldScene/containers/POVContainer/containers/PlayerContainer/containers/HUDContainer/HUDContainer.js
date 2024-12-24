@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
-import MessageSprite from './sprites/MessageSprite';
+import WorldSceneCreator from '../../../../../../util/WorldSceneCreator';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
 
@@ -15,7 +15,7 @@ const displayAmmo = ({ weapon }) =>
   Number.isNaN(Number(weapon?.ammo)) ? '-' : weapon.ammo;
 
 export default class HUDContainer extends Container {
-  constructor(player, sprites) {
+  constructor({ player, sprites }) {
     super();
 
     this.messageCache = [];
@@ -70,8 +70,12 @@ export default class HUDContainer extends Container {
 
     this.messages = [];
 
+    // TODO: Handle message sprite destroy properly.
     player.onMessageAdded((text, options) => {
-      const sprite = new MessageSprite(text, options);
+      const sprite = WorldSceneCreator.createMessageSprite({
+        ...options,
+        text,
+      });
 
       this.messages.push(sprite);
       this.messageCache.push(sprite);
@@ -156,17 +160,13 @@ export default class HUDContainer extends Container {
   }
 
   destroy(options) {
-    const { foreground, healthIcon, healthAmount, ammoIcon, ammoAmount, keys } =
-      this.sprites;
-
     this.messageCache.forEach(sprite => sprite.destroy(options));
-    foreground.destroy(options);
-    healthIcon.destroy(options);
-    healthAmount.destroy(options);
-    ammoIcon.destroy(options);
-    ammoAmount.destroy(options);
-    Object.values(keys).forEach(sprite => sprite.destroy(options));
 
     super.destroy(options);
+
+    this.player = null;
+    this.sprites = null;
+    this.messages = [];
+    this.messageCache = [];
   }
 }

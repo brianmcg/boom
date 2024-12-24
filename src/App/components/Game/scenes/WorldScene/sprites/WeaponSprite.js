@@ -71,14 +71,7 @@ export default class WeaponSprite extends AnimatedSprite {
   }
 
   destroy(options) {
-    Object.values(this.textureCollection).forEach(({ idle, firing }) => {
-      idle.forEach(texture => texture.destroy());
-      firing.forEach(texture => texture.destroy());
-    });
-
     super.destroy(options);
-    this.onComplete = null;
-    this.onLoop = null;
     this.textureCollection = null;
     this.player = null;
   }

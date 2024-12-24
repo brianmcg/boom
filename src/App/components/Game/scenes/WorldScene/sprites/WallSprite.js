@@ -16,15 +16,6 @@ export default class WallSprite extends Sprite {
 
   destroy(options) {
     super.destroy(options);
-
-    Object.values(this.textures).forEach(values => {
-      values.forEach(textures => {
-        textures.forEach(texture => {
-          texture.destroy();
-        });
-      });
-    });
-
     this.textures = null;
   }
 }

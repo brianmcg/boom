@@ -115,13 +115,8 @@ export default class Game {
     if (this.scene) {
       const { graphics, sound } = this.scene.assets;
 
-      this.app.canvas.style.display = 'none';
-
-      await (() => new Promise(resolve => setTimeout(() => resolve(), 0)))();
-
+      this.app.ticker.stop();
       this.removeScene();
-
-      this.app.canvas.style.display = 'flex';
 
       await Loader.unload({ graphics, sound: sound.src });
     }
@@ -153,6 +148,8 @@ export default class Game {
       sound.once('fade', sound.stop);
 
       this.scene.create({ sounds, graphics, data: { ...data, props } });
+
+      this.app.ticker.start();
 
       this.onReady();
     }

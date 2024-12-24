@@ -8,7 +8,7 @@ export default class OuterContainer extends Container {
   }
 
   destroy(options) {
-    this.sprites.forEach(sprite => sprite.destroy(options));
     super.destroy(options);
+    this.sprites = null;
   }
 }

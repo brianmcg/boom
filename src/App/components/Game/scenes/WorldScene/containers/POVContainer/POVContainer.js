@@ -2,10 +2,7 @@ import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@constants/config';
 import { LIGHT_GREY, WHITE, BLACK } from '@constants/colors';
-import MapContainer from './containers/MapContainer';
-import InnerContainer from './containers/InnerContainer';
-import OuterContainer from './containers/OuterContainer';
-import PlayerContainer from './containers/PlayerContainer';
+import WorldSceneCreator from '../../util/WorldSceneCreator';
 
 const DEG_360 = degrees(360);
 const HALF_FOV = degrees(FOV) / 2;
@@ -26,17 +23,25 @@ export default class POVContainer extends Container {
     this.displayedEntities = [];
 
     if (sprites.sky.length) {
-      this.outerContainer = new OuterContainer(sprites.sky);
+      this.outerContainer = WorldSceneCreator.createOuterContainer(sprites.sky);
       this.addChild(this.outerContainer);
     }
 
-    this.backgroundContainer = new InnerContainer();
+    this.backgroundContainer = WorldSceneCreator.createInnerContainer();
     this.addChild(this.backgroundContainer);
 
-    this.mapContainer = new MapContainer(world, sprites.map);
+    this.mapContainer = WorldSceneCreator.createMapContainer({
+      world,
+      sprites: sprites.map,
+    });
+
     this.addChild(this.mapContainer);
 
-    this.playerContainer = new PlayerContainer(world.player, sprites.player);
+    this.playerContainer = WorldSceneCreator.createPlayerContainer({
+      player: world.player,
+      sprites: sprites.player,
+    });
+
     this.addChild(this.playerContainer);
   }
 
@@ -522,17 +527,12 @@ export default class POVContainer extends Container {
   }
 
   destroy(options) {
-    this.removeChild(this.backgroundContainer);
-    this.removeChild(this.mapContainer);
-    this.removeChild(this.playerContainer);
+    super.destroy(options);
 
-    this.backgroundContainer.destroy(options);
-    this.mapContainer.destroy(options);
-    this.playerContainer.destroy(options);
-
+    this.backgroundContainer = null;
+    this.mapContainer = null;
+    this.playerContainer = null;
     this.sprites = null;
     this.displayedEntities = [];
-
-    super.destroy(options);
   }
 }

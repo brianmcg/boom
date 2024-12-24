@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 
 export default class MapContainer extends Container {
-  constructor(world, sprites) {
+  constructor({ world, sprites }) {
     super();
 
     const { walls, entities, effects } = sprites;
@@ -49,29 +49,7 @@ export default class MapContainer extends Container {
   }
 
   destroy(options) {
-    const { effects, entities, walls } = this.sprites;
-
-    walls.forEach(layer => {
-      layer.forEach(slice => {
-        this.removeChild(slice);
-        slice.destroy(options);
-      });
-    });
-
-    Object.values(entities).forEach(sprite => {
-      sprite.removeAllListeners?.();
-      this.removeChild(sprite);
-      sprite.destroy(options);
-    });
-
-    Object.values(effects).forEach(sprite => {
-      sprite.removeAllListeners?.();
-      this.removeChild(sprite);
-      sprite.destroy(options);
-    });
-
-    this.sprites = null;
-
     super.destroy(options);
+    this.sprites = null;
   }
 }

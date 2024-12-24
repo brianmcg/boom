@@ -56,5 +56,6 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     this.onAnimationChange = null;
     this.onComplete = null;
     this.onFrameChange = null;
+    this.onLoop = null;
   }
 }

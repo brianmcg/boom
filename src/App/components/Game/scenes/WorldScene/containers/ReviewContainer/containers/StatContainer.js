@@ -44,4 +44,10 @@ export default class StatContainer extends Container {
 
     this.children.forEach(child => child.scale.set(this.scaleAmount));
   }
+
+  destroy(options) {
+    super.destroy(options);
+    this.sprites = null;
+    this.sound = null;
+  }
 }

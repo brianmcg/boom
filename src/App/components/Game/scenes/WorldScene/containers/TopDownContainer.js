@@ -18,7 +18,7 @@ const CENTER = {
 const ANGLE_SPRITE_LENGTH = CELL_SIZE / 2;
 
 // TODO: Change weapons and remove explosive barrels.
-export default class MapContainer extends Container {
+export default class TopDownContainer extends Container {
   constructor({ world, sprites }) {
     super();
 

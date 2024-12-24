@@ -1,17 +1,20 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
 import { LIGHT_GREY } from '@constants/colors';
-import HUDContainer from './containers/HUDContainer';
+import WorldSceneCreator from '../../../../util/WorldSceneCreator';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 30;
 
 export default class PlayerContainer extends Container {
-  constructor(player, sprites = {}) {
+  constructor({ player, sprites = {} }) {
     super();
 
     const { weapon, hud } = sprites;
 
-    this.hudContainer = new HUDContainer(player, hud);
+    this.hudContainer = WorldSceneCreator.createHUDContainer({
+      player,
+      sprites: hud,
+    });
 
     this.addChild(weapon);
     this.addChild(this.hudContainer);
@@ -52,9 +55,9 @@ export default class PlayerContainer extends Container {
   }
 
   destroy(options) {
-    this.sprites.weapon.destroy(options);
-    this.hudContainer.destroy(options);
     super.destroy(options);
     this.sprites = null;
+    this.hudContainer = null;
+    this.player = null;
   }
 }
