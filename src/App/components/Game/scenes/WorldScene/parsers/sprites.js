@@ -16,7 +16,6 @@ import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
 import WorldSceneCreator from '../util/WorldSceneCreator';
 import { Sprite, Container, Rectangle } from '@game/core/graphics';
-import GraphicsCache from '../../../core/graphics/util/GraphicsCache';
 
 const SPURT_SPEED = 0.4;
 

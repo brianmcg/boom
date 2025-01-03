@@ -5,9 +5,16 @@ import RectangleSprite from '../components/RectangleSprite';
 import Sprite from '../components/Sprite';
 import Container from '../components/Container';
 import TextSprite from '../components/TextSprite';
+import FadeSprite from '../components/FadeSprite';
 import { PixelateFilter } from 'pixi-filters';
 
 export default class GraphicsCreator {
+  static createFadeSprite(options) {
+    const sprite = new FadeSprite(options);
+    GraphicsCache.addSprite(sprite);
+    return sprite;
+  }
+
   static createSprite(options) {
     const sprite = new Sprite(options);
     GraphicsCache.addSprite(sprite);

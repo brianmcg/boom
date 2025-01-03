@@ -63,17 +63,7 @@ export default class ScrollContainer extends Container {
   }
 
   destroy(options) {
-    const { logo, credits, end } = this.sprites;
-
-    logo.destroy(options);
-    end.destroy(options);
-
-    credits.forEach(credit => {
-      credit.forEach(sprite => {
-        sprite.destroy(options);
-      });
-    });
-
     super.destroy(options);
+    this.sprites = null;
   }
 }

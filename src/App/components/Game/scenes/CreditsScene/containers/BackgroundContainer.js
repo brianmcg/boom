@@ -8,7 +8,7 @@ export default class BackgroundContainer extends Container {
   }
 
   destroy(options) {
-    this.sprite.destroy(options);
     super.destroy(options);
+    this.sprite = null;
   }
 }
