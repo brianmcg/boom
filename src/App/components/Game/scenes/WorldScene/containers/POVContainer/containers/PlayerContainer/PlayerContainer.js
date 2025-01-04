@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
 import { LIGHT_GREY } from '@constants/colors';
-import WorldSceneCreator from '../../../../util/WorldSceneCreator';
+import WorldGraphics from '../../../../utils/WorldGraphics';
 
 const MAX_MOVE_X = SCREEN.WIDTH / 30;
 
@@ -11,7 +11,7 @@ export default class PlayerContainer extends Container {
 
     const { weapon, hud } = sprites;
 
-    this.hudContainer = WorldSceneCreator.createHUDContainer({
+    this.hudContainer = WorldGraphics.createHUDContainer({
       player,
       sprites: hud,
     });

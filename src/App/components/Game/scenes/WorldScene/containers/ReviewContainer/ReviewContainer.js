@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
-import WorldSceneCreator from '../../util/WorldSceneCreator';
+import WorldGraphics from '../../utils/WorldGraphics';
 
 const TEXT_PADDING = SCREEN_PADDING / 2;
 
@@ -42,7 +42,7 @@ export default class ReviewContainer extends Container {
     this.statContainers = Object.values(stats).reduce(
       (memo, { name, value }, i) => [
         ...memo,
-        WorldSceneCreator.createStatContainer({
+        WorldGraphics.createStatContainer({
           sprites: [name, value],
           y:
             title.y +
@@ -54,7 +54,7 @@ export default class ReviewContainer extends Container {
         }),
       ],
       [
-        WorldSceneCreator.createStatContainer({
+        WorldGraphics.createStatContainer({
           sprites: [title],
           y: title.height / 2 + SCREEN_PADDING,
           sound: sounds.complete,
@@ -68,7 +68,7 @@ export default class ReviewContainer extends Container {
 
     this.addChild(background);
 
-    this.pixelateFilter = WorldSceneCreator.createPixelateFilter();
+    this.pixelateFilter = WorldGraphics.createPixelateFilter();
     this.pixelateFilter.enabled = false;
 
     this.filters = [this.pixelateFilter];

@@ -1,5 +1,5 @@
 import { GraphicsCache } from '@game/core/graphics';
-import { SceneCreator } from '../../Scene';
+import { SceneGraphics } from '../../Scene';
 import TopDownContainer from '../containers/TopDownContainer';
 import MessageSprite from '../sprites/MessageSprite';
 import ReviewContainer, { StatContainer } from '../containers/ReviewContainer';
@@ -24,7 +24,7 @@ import EffectSprite from '../sprites/EffectSprite';
 import ExplosiveEntitySprite from '../sprites/ExplosiveEntitySprite';
 import ProjectileSprite from '../sprites/ProjectileSprite';
 
-export default class WorldSceneCreator extends SceneCreator {
+export default class WorldGraphics extends SceneGraphics {
   static createWallSprite(options) {
     const container = new WallSprite(options);
     GraphicsCache.addSprite(container);

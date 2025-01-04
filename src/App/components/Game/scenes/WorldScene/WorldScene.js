@@ -2,13 +2,9 @@ import translate from '@util/translate';
 import { WORLD_SCENE_ASSETS } from '@constants/assets';
 import { DEBUG } from '@constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
-
 import { parse } from './parsers';
-// import POVContainer from './containers/POVContainer';
-// import TopDownContainer from './containers/TopDownContainer';
-// import ReviewContainer from './containers/ReviewContainer';
 import Scene, { STATES } from '../Scene';
-import WorldSceneCreator from './util/WorldSceneCreator';
+import WorldGraphics from './utils/WorldGraphics';
 
 Object.assign(STATES, {
   ADDING_REVIEW: 'world:scene:adding:review',
@@ -159,15 +155,18 @@ export default class WorldScene extends Scene {
     });
 
     this.viewContainer = MAP_VIEW
-      ? WorldSceneCreator.createTopDownContainer({
+      ? WorldGraphics.createTopDownContainer({
           world,
           sprites: sprites.world,
         })
-      : WorldSceneCreator.createPOVContainer({ world, sprites: sprites.world });
+      : WorldGraphics.createPOVContainer({
+          world,
+          sprites: sprites.world,
+        });
 
     this.mainContainer.addChild(this.viewContainer);
 
-    this.reviewContainer = WorldSceneCreator.createReviewContainer({
+    this.reviewContainer = WorldGraphics.createReviewContainer({
       sprites: sprites.review,
       sounds: this.sounds,
     });

@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
-import SceneCreator from '../util/SceneCreator';
+import SceneGraphics from '../utils/SceneGraphics';
 
 const PULSE_INTERVAL = 100;
 
@@ -47,7 +47,7 @@ export default class PromptContainer extends Container {
     this.addChild(sprite);
     this.setFadingIn();
 
-    this.pixelateFilter = SceneCreator.createPixelateFilter();
+    this.pixelateFilter = SceneGraphics.createPixelateFilter();
     this.pixelateFilter.enabled = false;
 
     this.filters = [this.pixelateFilter];

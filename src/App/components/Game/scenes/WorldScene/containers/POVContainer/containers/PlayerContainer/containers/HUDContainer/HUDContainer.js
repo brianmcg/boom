@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
-import WorldSceneCreator from '../../../../../../util/WorldSceneCreator';
+import WorldGraphics from '../../../../../../utils/WorldGraphics';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
 
@@ -72,7 +72,7 @@ export default class HUDContainer extends Container {
 
     // TODO: Handle message sprite destroy properly.
     player.onMessageAdded((text, options) => {
-      const sprite = WorldSceneCreator.createMessageSprite({
+      const sprite = WorldGraphics.createMessageSprite({
         ...options,
         text,
       });

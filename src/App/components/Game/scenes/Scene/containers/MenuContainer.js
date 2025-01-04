@@ -1,7 +1,7 @@
 import { Container } from '@game/core/graphics';
 import { RED, WHITE, DARK_GREY } from '@constants/colors';
 import { SCREEN, SCREEN_PADDING } from '@constants/config';
-import SceneCreator from '../util/SceneCreator';
+import SceneGraphics from '../utils/SceneGraphics';
 
 const MAX_ALPHA = 0.7;
 
@@ -13,8 +13,8 @@ export default class MenuContainer extends Container {
     this.menu = menu;
     this.iconHeight = sprites.icon.height;
     this.scaleFactor = 0;
-    this.optionContainer = SceneCreator.createContainer();
-    this.pixelateFilter = SceneCreator.createPixelateFilter();
+    this.optionContainer = SceneGraphics.createContainer();
+    this.pixelateFilter = SceneGraphics.createPixelateFilter();
     this.pixelateFilter.enabled = false;
     this.filters = [this.pixelateFilter];
 

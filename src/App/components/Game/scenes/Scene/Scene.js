@@ -3,10 +3,8 @@ import { KEYS } from '@game/core/input';
 import { Container, GraphicsCache } from '@game/core/graphics';
 import { SoundSpriteController } from '@game/core/audio';
 import { MUSIC_VOLUME } from '@constants/config';
-import { parse } from './parsers';
-import Menu from './Menu';
-
-import SceneCreator from './util/SceneCreator';
+import Menu from './components/Menu';
+import SceneGraphics from './utils/SceneGraphics';
 
 import {
   STATES,
@@ -21,8 +19,6 @@ export default class Scene extends Container {
     super();
 
     this.game = game;
-
-    this.mainContainer = SceneCreator.createMainContainer();
 
     this.menu = new Menu([
       {
@@ -117,25 +113,26 @@ export default class Scene extends Container {
       prompt: this.promptOption,
     };
 
-    const { sprites } = parse({ graphics, text });
+    const sprites = SceneGraphics.createSceneSprites({ graphics, text });
 
-    this.sounds = sounds;
+    this.mainContainer = SceneGraphics.createMainContainer();
 
-    this.menuContainer = SceneCreator.createMenuContainer({
+    this.menuContainer = SceneGraphics.createMenuContainer({
       menu: this.menu,
       sprites: sprites.menu,
     });
 
-    this.promptContainer = SceneCreator.createPromptContainer({
+    this.promptContainer = SceneGraphics.createPromptContainer({
       sprite: sprites.prompt,
-      sound: this.sounds.complete,
+      sound: sounds.complete,
     });
 
     this.soundController = new SoundSpriteController({
-      sounds: Object.values(this.sounds),
+      sounds: Object.values(sounds),
       soundSprite: this.game.assets.sound,
     });
 
+    this.sounds = sounds;
     this.setFadingIn();
   }
 
@@ -332,16 +329,6 @@ export default class Scene extends Container {
     }
   }
 
-  setState(state) {
-    const isStateChanged = super.setState(state);
-
-    if (isStateChanged) {
-      this.game.input.set(state);
-    }
-
-    return isStateChanged;
-  }
-
   moveX(x) {
     this.x = x * this.scale.x;
   }
@@ -352,6 +339,16 @@ export default class Scene extends Container {
 
   getStageScale() {
     return this.parent.scale.x;
+  }
+
+  setState(state) {
+    const isStateChanged = super.setState(state);
+
+    if (isStateChanged) {
+      this.game.input.set(state);
+    }
+
+    return isStateChanged;
   }
 
   destroy(options) {

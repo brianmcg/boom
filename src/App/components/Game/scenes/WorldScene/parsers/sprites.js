@@ -14,7 +14,7 @@ import { ColorMatrixFilter, Line } from '@game/core/graphics';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
-import WorldSceneCreator from '../util/WorldSceneCreator';
+import WorldGraphics from '../utils/WorldGraphics';
 import { Sprite, Container, Rectangle } from '@game/core/graphics';
 
 const SPURT_SPEED = 0.4;
@@ -41,7 +41,7 @@ const createEnemySprite = ({ animations, textures, enemy, floorOffset }) => {
     {}
   );
 
-  return WorldSceneCreator.createEnemySprite({
+  return WorldGraphics.createEnemySprite({
     textureCollection,
     enemy,
     floorOffset,
@@ -65,11 +65,11 @@ const createWeaponSprite = ({ animations, textures, player }) => {
     {}
   );
 
-  return WorldSceneCreator.createWeaponSprite({ textureCollection, player });
+  return WorldGraphics.createWeaponSprite({ textureCollection, player });
 };
 
 const createProjectileSprite = ({ animations, textures, rotate }) => {
-  return WorldSceneCreator.createProjectileSprite({
+  return WorldGraphics.createProjectileSprite({
     textures: animations.map(animation => textures[animation]),
     rotate,
   });
@@ -81,7 +81,7 @@ const createWallSpriteMask = ({
   wallHeight,
   renderer,
 }) => {
-  const renderTexture = WorldSceneCreator.createRenderTexture({
+  const renderTexture = WorldGraphics.createRenderTexture({
     width: CELL_SIZE,
     height: wallHeight,
   });
@@ -90,13 +90,13 @@ const createWallSpriteMask = ({
   const filter = new ColorMatrixFilter();
   const maskForeground = new Sprite({ texture: wallTexture });
 
-  const maskBackground = WorldSceneCreator.createRectangleSprite({
+  const maskBackground = WorldGraphics.createRectangleSprite({
     width: CELL_SIZE,
     height: wallHeight,
     cache: false,
   });
 
-  const floorOffset = WorldSceneCreator.createRectangleSprite({
+  const floorOffset = WorldGraphics.createRectangleSprite({
     width: CELL_SIZE,
     height: floorHeight,
     cache: false,
@@ -201,7 +201,7 @@ const createWallSprites = ({
     for (let i = 0; i < frame.w; i++) {
       const clearSlice = new Rectangle(frame.x + i, frame.y, 1, frame.h);
       wallTextures[name].push([
-        WorldSceneCreator.createTexture(wallTexture, clearSlice),
+        WorldGraphics.createTexture(wallTexture, clearSlice),
       ]);
     }
 
@@ -209,7 +209,7 @@ const createWallSprites = ({
       const spatterColorTextures = spatters.map(spatter => {
         const wallHeight = wallTexture.height;
 
-        const renderTexture = WorldSceneCreator.createRenderTexture({
+        const renderTexture = WorldGraphics.createRenderTexture({
           width: CELL_SIZE,
           height: wallHeight,
         });
@@ -271,7 +271,7 @@ const createWallSprites = ({
 
       spatterTextures.forEach(texture => {
         wallTextures[name][i].push(
-          WorldSceneCreator.createTexture(texture, spatteredSlice)
+          WorldGraphics.createTexture(texture, spatteredSlice)
         );
       });
     }
@@ -282,7 +282,10 @@ const createWallSprites = ({
   for (let i = 0; i < SCREEN.WIDTH; i++) {
     for (let j = 0; j < WALL_LAYERS; j++) {
       wallSprites[j].push(
-        WorldSceneCreator.createWallSprite({ textures: wallTextures, index: i })
+        WorldGraphics.createWallSprite({
+          textures: wallTextures,
+          index: i,
+        })
       );
     }
   }
@@ -347,7 +350,7 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
         const col = [];
         for (let j = 0; j < CELL_SIZE; j++) {
           const pixel = new Rectangle(frame.x + i, frame.y + j, 1, 1);
-          col.push(WorldSceneCreator.createTexture(texture, pixel));
+          col.push(WorldGraphics.createTexture(texture, pixel));
         }
         backgroundTextures[image].push(col);
       }
@@ -358,7 +361,7 @@ const createBackgroundSprites = ({ world, frames, textures, bloodColors }) => {
     const col = [];
     for (let j = 0; j < SCREEN.HEIGHT; j++) {
       col.push(
-        WorldSceneCreator.createBackgroundParticle({
+        WorldGraphics.createBackgroundParticle({
           textures: backgroundTextures,
           x: i,
           y: j,
@@ -384,7 +387,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
               animation => textures[animation]
             );
 
-            memo[projectile.id] = WorldSceneCreator.createEffectSprite({
+            memo[projectile.id] = WorldGraphics.createEffectSprite({
               textures: effectTextures,
               animationSpeed: EXPLOSION_SPEED,
             });
@@ -398,7 +401,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
             );
 
             memo[`${projectile.explosion.id}_${explode}`] =
-              WorldSceneCreator.createEffectSprite({
+              WorldGraphics.createEffectSprite({
                 textures: effectTextures,
                 animationSpeed: EXPLOSION_SPEED,
               });
@@ -410,7 +413,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
             );
 
             projectile.tail.ids.forEach(id => {
-              memo[id] = WorldSceneCreator.createEffectSprite({
+              memo[id] = WorldGraphics.createEffectSprite({
                 textures: effectTextures,
                 animationSpeed: tailSpeed(),
               });
@@ -435,7 +438,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           );
 
           memo[`${projectile.explosion.id}_${explode}`] =
-            WorldSceneCreator.createEffectSprite({
+            WorldGraphics.createEffectSprite({
               textures: effectTextures,
               animationSpeed: EXPLOSION_SPEED,
             });
@@ -447,7 +450,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           );
 
           projectile.tail.ids.forEach(id => {
-            memo[id] = WorldSceneCreator.createEffectSprite({
+            memo[id] = WorldGraphics.createEffectSprite({
               textures: effectTextures,
               animationSpeed: tailSpeed(),
             });
@@ -469,7 +472,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
           tint: parseInt(bloodColor, 16),
         });
 
-        const renderTexture = WorldSceneCreator.createRenderTexture({
+        const renderTexture = WorldGraphics.createRenderTexture({
           width: spurtSprite.width,
           height: spurtSprite.height,
         });
@@ -487,7 +490,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         return renderTexture;
       });
 
-      const explosionSprite = WorldSceneCreator.createEffectSprite({
+      const explosionSprite = WorldGraphics.createEffectSprite({
         textures: spurtTextures,
         animationSpeed: SPURT_SPEED,
         rotate: false,
@@ -507,12 +510,11 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         animation => textures[animation]
       );
 
-      memo[`${enemy.id}_${enemy.splash}`] =
-        WorldSceneCreator.createEffectSprite({
-          textures: splashTextures,
-          rotate: false,
-          animationSpeed: SPLASH_SPEED,
-        });
+      memo[`${enemy.id}_${enemy.splash}`] = WorldGraphics.createEffectSprite({
+        textures: splashTextures,
+        rotate: false,
+        animationSpeed: SPLASH_SPEED,
+      });
     }
 
     if (enemy.ripple) {
@@ -520,12 +522,11 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         animation => textures[animation]
       );
 
-      memo[`${enemy.id}_${enemy.ripple}`] =
-        WorldSceneCreator.createEffectSprite({
-          textures: rippleTextures,
-          rotate: false,
-          animationSpeed: SPLASH_SPEED,
-        });
+      memo[`${enemy.id}_${enemy.ripple}`] = WorldGraphics.createEffectSprite({
+        textures: rippleTextures,
+        rotate: false,
+        animationSpeed: SPLASH_SPEED,
+      });
     }
 
     return memo;
@@ -541,7 +542,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         );
 
         memo[`${enemy.explosion.id}_${explode}`] =
-          WorldSceneCreator.createEffectSprite({
+          WorldGraphics.createEffectSprite({
             textures: effectTextures,
             animationSpeed: EXPLOSION_SPEED,
             rotate: false,
@@ -554,7 +555,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         );
 
         enemy.tail.ids.forEach(id => {
-          memo[id] = WorldSceneCreator.createEffectSprite({
+          memo[id] = WorldGraphics.createEffectSprite({
             textures: effectTextures,
             animationSpeed: tailSpeed(),
           });
@@ -574,7 +575,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
       );
 
       memo[`${object.explosion.id}_${explode}`] =
-        WorldSceneCreator.createEffectSprite({
+        WorldGraphics.createEffectSprite({
           textures: effectTextures,
           animationSpeed: EXPLOSION_SPEED,
           rotate: false,
@@ -594,7 +595,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
             animation => textures[animation]
           );
 
-          playerHitScanSprites[id] = WorldSceneCreator.createEffectSprite({
+          playerHitScanSprites[id] = WorldGraphics.createEffectSprite({
             textures: effectTextures,
             animationSpeed: IMPACT_SPEED,
           });
@@ -614,7 +615,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
         tint: parseInt(bloodColor, 16),
       });
 
-      const renderTexture = WorldSceneCreator.createRenderTexture({
+      const renderTexture = WorldGraphics.createRenderTexture({
         width: spurtSprite.width,
         height: spurtSprite.height,
       });
@@ -633,7 +634,7 @@ const createEffectsSprites = ({ animations, textures, world, renderer }) => {
     });
 
     playerSpurtSprites[`${id}_${effects.spurt}`] =
-      WorldSceneCreator.createEffectSprite({
+      WorldGraphics.createEffectSprite({
         textures: playerSpurtTextures,
         animationSpeed: SPURT_SPEED,
         rotate: false,
@@ -658,7 +659,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
   const entitySprites = {};
 
   world.items.forEach(item => {
-    entitySprites[item.id] = WorldSceneCreator.createAnimatedEntitySprite({
+    entitySprites[item.id] = WorldGraphics.createAnimatedEntitySprite({
       textures: animations[item.name].map(t => textures[t]),
       floorOffset: world.floorOffset,
     });
@@ -666,17 +667,17 @@ const createEntitySprites = ({ animations, textures, world }) => {
 
   world.objects.forEach(object => {
     if (object.explosion) {
-      entitySprites[object.id] = WorldSceneCreator.createExplosiveEntitySprite({
+      entitySprites[object.id] = WorldGraphics.createExplosiveEntitySprite({
         textures: animations[object.name].map(t => textures[t]),
         entity: object,
       });
     } else if (object.animated) {
-      entitySprites[object.id] = WorldSceneCreator.createAnimatedEntitySprite({
+      entitySprites[object.id] = WorldGraphics.createAnimatedEntitySprite({
         textures: animations[object.name].map(t => textures[t]),
         animationSpeed: object.animationSpeed,
       });
     } else {
-      entitySprites[object.id] = WorldSceneCreator.createEntitySprite({
+      entitySprites[object.id] = WorldGraphics.createEntitySprite({
         texture: textures[object.name],
       });
     }
@@ -686,11 +687,10 @@ const createEntitySprites = ({ animations, textures, world }) => {
     const { spawnItem } = enemy;
 
     if (spawnItem) {
-      entitySprites[spawnItem.id] =
-        WorldSceneCreator.createAnimatedEntitySprite({
-          textures: animations[spawnItem.name].map(t => textures[t]),
-          floorOffset: world.floorOffset,
-        });
+      entitySprites[spawnItem.id] = WorldGraphics.createAnimatedEntitySprite({
+        textures: animations[spawnItem.name].map(t => textures[t]),
+        floorOffset: world.floorOffset,
+      });
     }
 
     entitySprites[enemy.id] = createEnemySprite({
@@ -728,7 +728,7 @@ const createEntitySprites = ({ animations, textures, world }) => {
 };
 
 const createReviewSprites = text => {
-  const background = WorldSceneCreator.createRectangleSprite({
+  const background = WorldGraphics.createRectangleSprite({
     x: -SCREEN.WIDTH / 2,
     y: -SCREEN.HEIGHT / 2,
     width: SCREEN.WIDTH * 2,
@@ -737,7 +737,7 @@ const createReviewSprites = text => {
     alpha: 0,
   });
 
-  const title = WorldSceneCreator.createTextSprite({
+  const title = WorldGraphics.createTextSprite({
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.LARGE,
     text: text.title,
@@ -746,14 +746,14 @@ const createReviewSprites = text => {
   });
 
   const enemies = {
-    name: WorldSceneCreator.createTextSprite({
+    name: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: text.enemies,
       color: WHITE,
       anchor: 0.5,
     }),
-    value: WorldSceneCreator.createTextSprite({
+    value: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: '0',
@@ -763,14 +763,14 @@ const createReviewSprites = text => {
   };
 
   const items = {
-    name: WorldSceneCreator.createTextSprite({
+    name: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: text.items,
       color: WHITE,
       anchor: 0.5,
     }),
-    value: WorldSceneCreator.createTextSprite({
+    value: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: '0',
@@ -780,14 +780,14 @@ const createReviewSprites = text => {
   };
 
   const secrets = {
-    name: WorldSceneCreator.createTextSprite({
+    name: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: text.secrets,
       color: WHITE,
       anchor: 0.5,
     }),
-    value: WorldSceneCreator.createTextSprite({
+    value: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: '0',
@@ -797,14 +797,14 @@ const createReviewSprites = text => {
   };
 
   const time = {
-    name: WorldSceneCreator.createTextSprite({
+    name: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: text.time,
       color: WHITE,
       anchor: 0.5,
     }),
-    value: WorldSceneCreator.createTextSprite({
+    value: WorldGraphics.createTextSprite({
       fontFamily: GAME_FONT.NAME,
       fontSize: FONT_SIZES.MEDIUM,
       text: '0',
@@ -826,27 +826,27 @@ const createReviewSprites = text => {
 };
 
 const createHudSprites = ({ world, textures, animations }) => {
-  const healthAmount = WorldSceneCreator.createTextSprite({
+  const healthAmount = WorldGraphics.createTextSprite({
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
     color: WHITE,
     anchor: 0.5,
   });
 
-  const ammoAmount = WorldSceneCreator.createTextSprite({
+  const ammoAmount = WorldGraphics.createTextSprite({
     fontFamily: GAME_FONT.NAME,
     fontSize: FONT_SIZES.MEDIUM,
     color: WHITE,
     anchor: 0.5,
   });
 
-  const ammoIcon = WorldSceneCreator.createHUDSprite({
+  const ammoIcon = WorldGraphics.createHUDSprite({
     texture: textures.ammo,
     maxScale: healthAmount.height / textures.ammo.frame.height,
     anchor: 0.5,
   });
 
-  const healthIcon = WorldSceneCreator.createHUDSprite({
+  const healthIcon = WorldGraphics.createHUDSprite({
     texture: textures.health,
     maxScale: healthAmount.height / textures.health.frame.height,
     anchor: 0.5,
@@ -867,18 +867,18 @@ const createHudSprites = ({ world, textures, animations }) => {
     if (item.color) {
       const [name] = animations[item.name];
       const { source, frame } = textures[name];
-      const keyTexture = WorldSceneCreator.createTexture(source, frame);
+      const keyTexture = WorldGraphics.createTexture(source, frame);
 
       return {
         ...memo,
-        [item.color]: WorldSceneCreator.createHUDKeySprite(keyTexture),
+        [item.color]: WorldGraphics.createHUDKeySprite(keyTexture),
       };
     }
 
     return memo;
   }, {});
 
-  const foreground = WorldSceneCreator.createRectangleSprite({
+  const foreground = WorldGraphics.createRectangleSprite({
     width: SCREEN.WIDTH,
     height: SCREEN.HEIGHT,
     color: RED,
@@ -1010,7 +1010,7 @@ const createWorldGraphics = ({ world }) => {
         if (sector.blocking && !sector.edge) {
           return {
             ...sectorMemo,
-            [sector.id]: WorldSceneCreator.createRectangleSprite({
+            [sector.id]: WorldGraphics.createRectangleSprite({
               color: color(sector),
               alpha: alpha(sector),
               width: sector.shape.width,
@@ -1030,7 +1030,7 @@ const createWorldGraphics = ({ world }) => {
     (memo, body) => ({
       ...memo,
       [body.id]: {
-        rectangle: WorldSceneCreator.createRectangleSprite({
+        rectangle: WorldGraphics.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -1046,7 +1046,7 @@ const createWorldGraphics = ({ world }) => {
     if (body.blocking) {
       return {
         ...memo,
-        [body.id]: WorldSceneCreator.createRectangleSprite({
+        [body.id]: WorldGraphics.createRectangleSprite({
           color: color(body),
           width: body.width,
           height: body.length,
@@ -1061,7 +1061,7 @@ const createWorldGraphics = ({ world }) => {
   const items = world.items.reduce(
     (memo, body) => ({
       ...memo,
-      [body.id]: WorldSceneCreator.createRectangleSprite({
+      [body.id]: WorldGraphics.createRectangleSprite({
         color: color(body),
         width: body.width,
         height: body.length,
@@ -1072,7 +1072,7 @@ const createWorldGraphics = ({ world }) => {
   );
 
   const player = {
-    rectangle: WorldSceneCreator.createRectangleSprite({
+    rectangle: WorldGraphics.createRectangleSprite({
       color: color(world.player),
       width: world.player.shape.width,
       height: world.player.shape.length,
@@ -1086,7 +1086,7 @@ const createWorldGraphics = ({ world }) => {
   world.enemies.forEach(enemy => {
     (enemy.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = WorldSceneCreator.createRectangleSprite({
+        projectiles[projectile.id] = WorldGraphics.createRectangleSprite({
           color: ORANGE,
           width: projectile.shape.width,
           height: projectile.shape.length,
@@ -1099,7 +1099,7 @@ const createWorldGraphics = ({ world }) => {
   world.player.weapons.forEach(weapon => {
     (weapon.projectiles || []).forEach(projectile => {
       if (projectile.name) {
-        projectiles[projectile.id] = WorldSceneCreator.createRectangleSprite({
+        projectiles[projectile.id] = WorldGraphics.createRectangleSprite({
           color: ORANGE,
           width: projectile.shape.width,
           height: projectile.shape.length,

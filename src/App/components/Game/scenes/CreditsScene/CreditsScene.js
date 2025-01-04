@@ -1,8 +1,7 @@
 import translate from '@util/translate';
 import { CREDITS_SCENE_ASSETS } from '@constants/assets';
-import { parse } from './parsers';
 import Scene from '../Scene';
-import CreditsSceneCreator from './util/CreditsSceneCreator';
+import CreditsGraphics from './utils/CreditsGraphics';
 
 export default class CreditsScene extends Scene {
   constructor(options) {
@@ -94,13 +93,13 @@ export default class CreditsScene extends Scene {
       end: translate('credits.scroll.end'),
     };
 
-    const { sprites } = parse({ text, ...options });
+    const sprites = CreditsGraphics.createCreditsSprites({ text, ...options });
 
-    this.backgroundContainer = CreditsSceneCreator.createBackgroundContainer(
+    this.backgroundContainer = CreditsGraphics.createBackgroundContainer(
       sprites.background
     );
 
-    this.scrollContainer = CreditsSceneCreator.createScrollContainer(
+    this.scrollContainer = CreditsGraphics.createScrollContainer(
       sprites.scroll
     );
 

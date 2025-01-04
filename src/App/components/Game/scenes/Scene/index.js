@@ -1,6 +1,6 @@
 import Scene from './Scene';
 import { STATES } from './constants';
-import SceneCreator from './util/SceneCreator';
+import SceneGraphics from './utils/SceneGraphics';
 
-export { STATES, SceneCreator };
+export { STATES, SceneGraphics };
 export default Scene;

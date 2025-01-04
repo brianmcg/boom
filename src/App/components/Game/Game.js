@@ -115,7 +115,6 @@ export default class Game {
     if (this.scene) {
       const { graphics, sound } = this.scene.assets;
 
-      this.app.ticker.stop();
       this.removeScene();
 
       await Loader.unload({ graphics, sound: sound.src });
@@ -149,7 +148,7 @@ export default class Game {
 
       this.scene.create({ sounds, graphics, data: { ...data, props } });
 
-      this.app.ticker.start();
+      this.app.start();
 
       this.onReady();
     }
@@ -166,6 +165,7 @@ export default class Game {
   }
 
   removeScene() {
+    this.app.stop();
     this.app.stage.removeChildren();
     this.scene.destroy();
     this.scene = null;
@@ -191,9 +191,9 @@ export default class Game {
   }
 
   async exit() {
-    this.assets = null;
     this.removeScene();
-    this.app.stop();
+    this.assets = null;
+
     await Loader.unload();
 
     this.onExit();

@@ -1,11 +1,11 @@
 import { Container } from '@game/core/graphics';
-import SceneCreator from '../util/SceneCreator';
+import SceneGraphics from '../utils/SceneGraphics';
 
 export default class MainContainer extends Container {
   constructor() {
     super();
 
-    this.pixelateFilter = SceneCreator.createPixelateFilter();
+    this.pixelateFilter = SceneGraphics.createPixelateFilter();
     this.filters = [this.pixelateFilter];
     this.pixelateFilter.enabled = true;
   }

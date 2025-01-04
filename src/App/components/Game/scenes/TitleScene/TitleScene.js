@@ -1,8 +1,7 @@
 import translate from '@util/translate';
 import { TITLE_SCENE_ASSETS } from '@constants/assets';
-import { parse } from './parsers';
 import Scene from '../Scene';
-import TitleSceneCreator from './util/TitleSceneCreator';
+import TitleGraphics from './utils/TitleGraphics';
 
 export default class TitleScene extends Scene {
   constructor({ data, ...other }) {
@@ -58,17 +57,17 @@ export default class TitleScene extends Scene {
   create(options) {
     super.create(options);
 
-    const { renderer } = this.game.app;
-    const { sprites } = parse({ ...options, renderer });
+    this.sprites = TitleGraphics.createTitleSprites({
+      ...options,
+      renderer: this.game.app.renderer,
+    });
 
-    this.sprites = sprites;
-
-    this.backgroundContainer = TitleSceneCreator.createBackgroundContainer(
-      sprites.background
+    this.backgroundContainer = TitleGraphics.createBackgroundContainer(
+      this.sprites.background
     );
 
-    this.foregroundContainer = TitleSceneCreator.createForegroundContainer(
-      sprites.foreground
+    this.foregroundContainer = TitleGraphics.createForegroundContainer(
+      this.sprites.foreground
     );
 
     this.mainContainer.addChild(this.backgroundContainer);

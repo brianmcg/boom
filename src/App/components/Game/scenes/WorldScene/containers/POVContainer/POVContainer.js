@@ -2,7 +2,7 @@ import { Container } from '@game/core/graphics';
 import { degrees, castRay } from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@constants/config';
 import { LIGHT_GREY, WHITE, BLACK } from '@constants/colors';
-import WorldSceneCreator from '../../util/WorldSceneCreator';
+import WorldGraphics from '../../utils/WorldGraphics';
 
 const DEG_360 = degrees(360);
 const HALF_FOV = degrees(FOV) / 2;
@@ -23,21 +23,21 @@ export default class POVContainer extends Container {
     this.displayedEntities = [];
 
     if (sprites.sky.length) {
-      this.outerContainer = WorldSceneCreator.createOuterContainer(sprites.sky);
+      this.outerContainer = WorldGraphics.createOuterContainer(sprites.sky);
       this.addChild(this.outerContainer);
     }
 
-    this.backgroundContainer = WorldSceneCreator.createInnerContainer();
+    this.backgroundContainer = WorldGraphics.createInnerContainer();
     this.addChild(this.backgroundContainer);
 
-    this.mapContainer = WorldSceneCreator.createMapContainer({
+    this.mapContainer = WorldGraphics.createMapContainer({
       world,
       sprites: sprites.map,
     });
 
     this.addChild(this.mapContainer);
 
-    this.playerContainer = WorldSceneCreator.createPlayerContainer({
+    this.playerContainer = WorldGraphics.createPlayerContainer({
       player: world.player,
       sprites: sprites.player,
     });
