@@ -1,7 +1,7 @@
 import { createWorld } from './bodies';
 import { createSprites } from './sprites';
 
-export const parse = ({ scene, graphics, data, text, renderer, mapView }) => {
+export const parse = ({ scene, graphics, data, text, renderer, isMapView }) => {
   const world = createWorld({
     data,
     graphics,
@@ -13,7 +13,7 @@ export const parse = ({ scene, graphics, data, text, renderer, mapView }) => {
     graphics,
     text,
     renderer,
-    mapView,
+    isMapView,
   });
 
   return {

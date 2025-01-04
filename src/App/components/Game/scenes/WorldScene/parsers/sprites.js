@@ -1125,9 +1125,9 @@ export const createSprites = ({
   graphics,
   text,
   renderer,
-  mapView,
+  isMapView,
 }) => ({
-  world: mapView
+  world: isMapView
     ? createWorldGraphics({ world })
     : createWorldSprites({ world, graphics, renderer }),
   review: createReviewSprites(text.review),

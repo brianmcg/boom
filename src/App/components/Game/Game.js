@@ -6,8 +6,8 @@ import { SCREEN, LEVEL } from '@constants/config';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
-import Loader from './util/Loader';
-import LocalStorage from './util/LocalStorage';
+import Loader from './utils/Loader';
+import LocalStorage from './utils/LocalStorage';
 import GameView from './GameView';
 import './Game.css';
 

@@ -1,6 +1,6 @@
 import { GraphicsLoader } from '@game/core/graphics';
 import { SoundLoader } from '@game/core/audio';
-import DataLoader from '@game/util/DataLoader';
+import DataLoader from '@game/utils/DataLoader';
 
 export default class Loader {
   static async load({ sound, graphics, data }) {

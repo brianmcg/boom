@@ -147,7 +147,7 @@ export default class WorldScene extends Scene {
 
     const { world, sprites } = parse({
       scene: this,
-      mapView: MAP_VIEW,
+      isMapView: MAP_VIEW,
       renderer,
       graphics,
       data,
