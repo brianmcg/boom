@@ -532,6 +532,7 @@ export default class POVContainer extends Container {
     this.backgroundContainer = null;
     this.mapContainer = null;
     this.playerContainer = null;
+    this.outerContainer = null;
     this.sprites = null;
     this.displayedEntities = [];
   }

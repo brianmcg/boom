@@ -113,17 +113,20 @@ export default class Scene extends Container {
       prompt: this.promptOption,
     };
 
-    const sprites = SceneGraphics.createSceneSprites({ graphics, text });
+    const { menu, prompt } = SceneGraphics.createSceneSprites({
+      graphics,
+      text,
+    });
 
     this.mainContainer = SceneGraphics.createMainContainer();
 
     this.menuContainer = SceneGraphics.createMenuContainer({
       menu: this.menu,
-      sprites: sprites.menu,
+      sprites: menu,
     });
 
     this.promptContainer = SceneGraphics.createPromptContainer({
-      sprite: sprites.prompt,
+      sprite: prompt,
       sound: sounds.complete,
     });
 
