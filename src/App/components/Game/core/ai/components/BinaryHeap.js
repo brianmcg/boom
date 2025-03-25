@@ -23,6 +23,7 @@ export default class BinaryHeap {
       this.content[0] = end;
       this.bubbleUp(0);
     }
+
     return result;
   }
 

@@ -12,6 +12,7 @@ export default class GridNode {
     if (neighbour && neighbour.x !== this.x && neighbour.y !== this.y) {
       return this.weight * DIAGONAL_LENGTH;
     }
+
     return this.weight;
   }
 

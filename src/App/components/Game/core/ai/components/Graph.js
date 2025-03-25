@@ -38,6 +38,7 @@ export default class Graph {
     for (let i = 0; i < this.dirtyNodes.length; i++) {
       cleanNode(this.dirtyNodes[i]);
     }
+
     this.dirtyNodes = [];
   }
 
@@ -46,52 +47,52 @@ export default class Graph {
   }
 
   neighbors(node) {
-    const ret = [];
+    const result = [];
     const { grid } = this;
     const { x, y } = node;
 
     // West
     if (grid[x - 1] && grid[x - 1][y]) {
-      ret.push(grid[x - 1][y]);
+      result.push(grid[x - 1][y]);
     }
 
     // East
     if (grid[x + 1] && grid[x + 1][y]) {
-      ret.push(grid[x + 1][y]);
+      result.push(grid[x + 1][y]);
     }
 
     // South
     if (grid[x] && grid[x][y - 1]) {
-      ret.push(grid[x][y - 1]);
+      result.push(grid[x][y - 1]);
     }
 
     // North
     if (grid[x] && grid[x][y + 1]) {
-      ret.push(grid[x][y + 1]);
+      result.push(grid[x][y + 1]);
     }
 
     if (this.diagonal) {
       // Southwest
       if (grid[x - 1] && grid[x - 1][y - 1]) {
-        ret.push(grid[x - 1][y - 1]);
+        result.push(grid[x - 1][y - 1]);
       }
 
       // Southeast
       if (grid[x + 1] && grid[x + 1][y - 1]) {
-        ret.push(grid[x + 1][y - 1]);
+        result.push(grid[x + 1][y - 1]);
       }
 
       // Northwest
       if (grid[x - 1] && grid[x - 1][y + 1]) {
-        ret.push(grid[x - 1][y + 1]);
+        result.push(grid[x - 1][y + 1]);
       }
 
       // Northeast
       if (grid[x + 1] && grid[x + 1][y + 1]) {
-        ret.push(grid[x + 1][y + 1]);
+        result.push(grid[x + 1][y + 1]);
       }
     }
 
-    return ret;
+    return result;
   }
 }

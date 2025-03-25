@@ -66,6 +66,7 @@ export const astarSearch = (graph, start, end, options = {}) => {
         neighbor.g = gScore;
         neighbor.f = neighbor.g + neighbor.h;
         graph.markDirty(neighbor);
+
         if (closest) {
           // If the neighbour is closer than the current closestNode or
           // if it's equally close but has
