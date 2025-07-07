@@ -10,22 +10,26 @@ import {
   RED,
 } from '@constants/colors';
 
-import { ColorMatrixFilter, Line } from '@game/core/graphics';
+import {
+  SPURT_SPEED,
+  TAIL_SPEED,
+  EXPLOSION_SPEED,
+  SPLASH_SPEED,
+  IMPACT_SPEED,
+} from '@constants/sprites';
+
+import {
+  ColorMatrixFilter,
+  Line,
+  Sprite,
+  Container,
+  Rectangle,
+} from '@game/core/graphics';
+
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
 import WorldGraphics from '../utils/WorldGraphics';
-import { Sprite, Container, Rectangle } from '@game/core/graphics';
-
-const SPURT_SPEED = 0.4;
-
-const TAIL_SPEED = 0.05;
-
-const EXPLOSION_SPEED = 0.25;
-
-const SPLASH_SPEED = 0.4;
-
-const IMPACT_SPEED = 0.4;
 
 const tailSpeed = () => TAIL_SPEED * Math.random() * (1 - 0.05) + 0.05;
 
