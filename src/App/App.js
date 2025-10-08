@@ -51,7 +51,9 @@ export default class App {
 
     add(this.view, this.game.view);
 
-    if (SHOW_STATS) add(this.view, this.stats.view);
+    if (SHOW_STATS) {
+      add(this.view, this.stats.view);
+    }
 
     this.game.start();
   };
