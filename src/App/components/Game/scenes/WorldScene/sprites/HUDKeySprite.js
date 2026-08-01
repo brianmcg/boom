@@ -14,7 +14,7 @@ const SCALE_INCREMENT = 0.075;
 
 export default class HUDKeySprite extends HUDSprite {
   constructor(texture) {
-    super(texture);
+    super({ texture });
 
     this.scaleFactor = 0;
 
