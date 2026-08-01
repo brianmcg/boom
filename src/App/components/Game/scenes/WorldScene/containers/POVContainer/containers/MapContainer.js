@@ -1,5 +1,7 @@
 import { Container } from '@game/core/graphics';
 
+const byDepthDescending = (a, b) => b.zOrder - a.zOrder;
+
 export default class MapContainer extends Container {
   constructor({ world, sprites }) {
     super();
@@ -44,7 +46,7 @@ export default class MapContainer extends Container {
   }
 
   update(ticker) {
-    this.children.sort((a, b) => b.zOrder - a.zOrder);
+    this.children.sort(byDepthDescending);
     super.update(ticker);
   }
 

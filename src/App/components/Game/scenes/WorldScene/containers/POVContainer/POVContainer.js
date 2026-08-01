@@ -21,6 +21,7 @@ export default class POVContainer extends Container {
     this.world = world;
     this.sprites = sprites;
     this.displayedEntities = [];
+    this.updatedBackgroundSprites = [];
 
     if (sprites.sky.length) {
       this.outerContainer = WorldGraphics.createOuterContainer(sprites.sky);
@@ -95,25 +96,38 @@ export default class POVContainer extends Container {
       walls: wallSprites,
     } = mapSprites;
 
-    const totalEncounteredBodies = world.alwaysRender.reduce(
-      (memo, entity) =>
-        player.isFacing(entity) ? { ...memo, [entity.id]: entity } : memo,
-      {}
-    );
+    const totalEncounteredBodies = {};
+
+    world.alwaysRender.forEach(entity => {
+      if (player.isFacing(entity)) {
+        totalEncounteredBodies[entity.id] = entity;
+      }
+    });
 
     const floorHeight = CELL_SIZE * floorOffset;
     const doubleFloorHeight = floorHeight * 2;
 
     const { x, y, viewAngle, viewPitch, radius } = player;
 
-    const updatedBackgroundSprites = [];
+    const updatedBackgroundSprites = this.updatedBackgroundSprites;
+    updatedBackgroundSprites.length = 0;
 
     // Get center of screen
     centerY = CAMERA_CENTER_Y + viewPitch;
 
+    // Hoist the per-frame-constant background distance numerators.
+    const ceilNumerator = (world.height - player.viewHeight) * CAMERA_DISTANCE;
+    const floorNumerator = (player.viewHeight - floorHeight) * CAMERA_DISTANCE;
+
     // Iterate over screen width
     for (let xIndex = 0, l = SCREEN.WIDTH; xIndex < l; xIndex++) {
       angle = (viewAngle + RAY_ANGLES[xIndex] + DEG_360) % DEG_360;
+      spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
+
+      // Hoist the per-column trig out of the per-pixel background loops below.
+      const cosAngle = Math.cos(angle);
+      const sinAngle = Math.sin(angle);
+      const cosSpriteAngle = Math.cos(spriteAngle);
 
       const rays = [];
 
@@ -235,8 +249,7 @@ export default class POVContainer extends Container {
               sliceY = CELL_SIZE - sliceY - 1;
             }
 
-            spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
-            correctedDistance = distance * Math.cos(spriteAngle);
+            correctedDistance = distance * cosSpriteAngle;
 
             if (isOverlay) {
               spriteHeight = Math.abs(
@@ -280,7 +293,6 @@ export default class POVContainer extends Container {
             wallSprites[i][xIndex].visible = false;
             spriteY = centerY;
             spriteHeight = 0;
-            spriteAngle = (angle - viewAngle + DEG_360) % DEG_360;
           }
         } else {
           wallSprites[i][xIndex].visible = false;
@@ -293,21 +305,23 @@ export default class POVContainer extends Container {
 
       sideHeight = Math.max(CELL_SIZE, sideHeight);
 
+      // Per-column numerator for the elevated-ceiling background sample.
+      const elevatorNumerator =
+        (sideHeight - player.viewHeight) * CAMERA_DISTANCE;
+
       for (let yIndex = 0; yIndex <= topIntersection; yIndex++) {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance =
-            ((world.height - player.viewHeight) / (centerY - yIndex)) *
-            CAMERA_DISTANCE;
+          actualDistance = ceilNumerator / (centerY - yIndex);
 
-          correctedDistance = actualDistance / Math.cos(spriteAngle);
+          correctedDistance = actualDistance / cosSpriteAngle;
 
-          mapX = Math.floor(player.x + Math.cos(angle) * correctedDistance);
+          mapX = Math.floor(player.x + cosAngle * correctedDistance);
           mapX = mapX > maxMapX ? maxMapX : mapX;
           mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + Math.sin(angle) * correctedDistance);
+          mapY = Math.floor(player.y + sinAngle * correctedDistance);
           mapY = mapY > maxMapY ? maxMapY : mapY;
           mapY = mapY < 0 ? 0 : mapY;
 
@@ -317,21 +331,15 @@ export default class POVContainer extends Container {
           backgroundCell = world.getCell(gridX, gridY);
 
           if (world.height !== sideHeight) {
-            actualDistance =
-              ((sideHeight - player.viewHeight) / (centerY - yIndex)) *
-              CAMERA_DISTANCE;
+            actualDistance = elevatorNumerator / (centerY - yIndex);
 
-            correctedDistanceTmp = actualDistance / Math.cos(spriteAngle);
+            correctedDistanceTmp = actualDistance / cosSpriteAngle;
 
-            mapXTmp = Math.floor(
-              player.x + Math.cos(angle) * correctedDistanceTmp
-            );
+            mapXTmp = Math.floor(player.x + cosAngle * correctedDistanceTmp);
             mapXTmp = mapXTmp > maxMapX ? maxMapX : mapXTmp;
             mapXTmp = mapXTmp < 0 ? 0 : mapXTmp;
 
-            mapYTmp = Math.floor(
-              player.y + Math.sin(angle) * correctedDistanceTmp
-            );
+            mapYTmp = Math.floor(player.y + sinAngle * correctedDistanceTmp);
             mapYTmp = mapYTmp > maxMapY ? maxMapY : mapYTmp;
             mapYTmp = mapYTmp < 0 ? 0 : mapYTmp;
 
@@ -369,17 +377,15 @@ export default class POVContainer extends Container {
         sprite = backgroundSprites[xIndex][yIndex];
 
         if (sprite) {
-          actualDistance =
-            ((player.viewHeight - floorHeight) / (yIndex - centerY + 1)) *
-            CAMERA_DISTANCE;
+          actualDistance = floorNumerator / (yIndex - centerY + 1);
 
-          correctedDistance = actualDistance / Math.cos(spriteAngle);
+          correctedDistance = actualDistance / cosSpriteAngle;
 
-          mapX = Math.floor(player.x + Math.cos(angle) * correctedDistance);
+          mapX = Math.floor(player.x + cosAngle * correctedDistance);
           mapX = mapX > maxMapX ? maxMapX : mapX;
           mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + Math.sin(angle) * correctedDistance);
+          mapY = Math.floor(player.y + sinAngle * correctedDistance);
           mapY = mapY > maxMapY ? maxMapY : mapY;
           mapY = mapY < 0 ? 0 : mapY;
 
@@ -535,5 +541,6 @@ export default class POVContainer extends Container {
     this.outerContainer = null;
     this.sprites = null;
     this.displayedEntities = [];
+    this.updatedBackgroundSprites = null;
   }
 }
