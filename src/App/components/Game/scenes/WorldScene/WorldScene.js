@@ -2,8 +2,8 @@ import translate from '@util/translate';
 import { WORLD_SCENE_ASSETS } from '@constants/assets';
 import { DEBUG } from '@constants/config';
 import { KEYS, BUTTONS } from '@game/core/input';
-import { parse } from './parsers';
 import Scene, { STATES } from '../Scene';
+import WorldBodies from './utils/WorldBodies';
 import WorldGraphics from './utils/WorldGraphics';
 
 Object.assign(STATES, {
@@ -145,13 +145,14 @@ export default class WorldScene extends Scene {
       },
     };
 
-    const { world, sprites } = parse({
-      scene: this,
-      isMapView: MAP_VIEW,
-      renderer,
+    const world = WorldBodies.createWorld({ scene: this, graphics, data });
+
+    const sprites = WorldGraphics.createSprites({
+      world,
       graphics,
-      data,
       text,
+      renderer,
+      isMapView: MAP_VIEW,
     });
 
     this.viewContainer = MAP_VIEW
