@@ -114,9 +114,10 @@ export default class DynamicEntity extends DynamicBody {
   }
 
   destroy(options) {
-    this.stop();
-    this.stopSound();
-    this.soundController = null;
+    if (this.soundController) {
+      this.soundController.destroy();
+      this.soundController = null;
+    }
     this.sounds = null;
     super.destroy(options);
   }

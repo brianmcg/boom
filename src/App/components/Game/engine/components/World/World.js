@@ -237,12 +237,6 @@ export default class World extends PhysicsWorld {
     this.scene = null;
     this.exit = null;
     this.entrance = null;
-    this.onEffectAdded = null;
-    this.onPlayerDeath = null;
-    this.onPlayerPickUp = null;
-    this.effects = null;
-    this.exit = null;
-    this.entrance = null;
     this.secrets = null;
     this.graphs = null;
     this.stains = null;
@@ -250,7 +244,6 @@ export default class World extends PhysicsWorld {
     this.waypoints = null;
     this.spawnPoints = null;
     this.startProps = null;
-    this.scene = null;
   }
 
   get props() {

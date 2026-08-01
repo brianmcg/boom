@@ -72,8 +72,7 @@ export default class DynamicCell extends PhysicsDynamicCell {
   }
 
   destroy(options) {
-    this.stop();
-    this.stopSound();
+    this.soundController.destroy();
     this.soundController = null;
     this.sounds = null;
     this.parent = null;

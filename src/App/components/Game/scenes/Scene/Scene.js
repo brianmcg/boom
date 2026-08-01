@@ -356,7 +356,7 @@ export default class Scene extends Container {
 
   destroy(options) {
     this.game.input.reset();
-    this.soundController.stop();
+    this.soundController.destroy();
     this.menu.destroy();
 
     super.destroy(options);

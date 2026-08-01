@@ -677,6 +677,9 @@ export default class Player extends AbstractActor {
     this.weapons.forEach(weapon => weapon.destroy());
     this.weapons = null;
     this.hand = null;
+    this.camera = null;
+    this.weapon = null;
+    this.sounds = null;
     this.actions = null;
     this.keyCards = null;
   }

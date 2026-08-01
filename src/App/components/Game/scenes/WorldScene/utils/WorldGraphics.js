@@ -29,7 +29,6 @@ import {
 } from '@constants/sprites';
 import { SceneGraphics } from '../../Scene';
 import TopDownContainer from '../containers/TopDownContainer';
-import MessageSprite from '../sprites/MessageSprite';
 import ReviewContainer, { StatContainer } from '../containers/ReviewContainer';
 
 import POVContainer, {
@@ -171,10 +170,10 @@ export default class WorldGraphics extends SceneGraphics {
     return container;
   }
 
-  static createMessageSprite(options) {
-    const sprite = new MessageSprite(options);
-    GraphicsCache.addSprite(sprite);
-    return sprite;
+  static createLine(options) {
+    const line = new Line(options);
+    GraphicsCache.addSprite(line);
+    return line;
   }
 
   static tailSpeed() {
@@ -462,9 +461,11 @@ export default class WorldGraphics extends SceneGraphics {
       const height = texture.height * ratio;
       const width = texture.width * ratio;
 
-      return [...Array(numberOfSprites).keys()].map(
-        () => new Sprite({ texture, width, height })
-      );
+      return [...Array(numberOfSprites).keys()].map(() => {
+        const sprite = new Sprite({ texture, width, height });
+        GraphicsCache.addSprite(sprite);
+        return sprite;
+      });
     }
 
     return [];
@@ -1158,12 +1159,11 @@ export default class WorldGraphics extends SceneGraphics {
       return 1;
     };
 
-    const lines = [...Array(SCREEN.WIDTH).keys()].map(
-      () =>
-        new Line({
-          color: 0xe6db74,
-          alpha: 0.25,
-        })
+    const lines = [...Array(SCREEN.WIDTH).keys()].map(() =>
+      WorldGraphics.createLine({
+        color: 0xe6db74,
+        alpha: 0.25,
+      })
     );
 
     const grid = world.grid.reduce(
@@ -1199,7 +1199,7 @@ export default class WorldGraphics extends SceneGraphics {
             height: body.length,
             anchor: 0.5,
           }),
-          line: new Line({ color: WHITE }),
+          line: WorldGraphics.createLine({ color: WHITE }),
         },
       }),
       {}
@@ -1241,7 +1241,7 @@ export default class WorldGraphics extends SceneGraphics {
         height: world.player.shape.length,
         anchor: 0.5,
       }),
-      line: new Line({ color: WHITE }),
+      line: WorldGraphics.createLine({ color: WHITE }),
     };
 
     const projectiles = {};

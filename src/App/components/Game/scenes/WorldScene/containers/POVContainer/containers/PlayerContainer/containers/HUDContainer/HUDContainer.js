@@ -1,6 +1,6 @@
 import { Container } from '@game/core/graphics';
 import { SCREEN } from '@constants/config';
-import WorldGraphics from '../../../../../../utils/WorldGraphics';
+import MessageSprite from '../../../../../../sprites/MessageSprite';
 
 const HUD_PADDING = SCREEN.HEIGHT / 24;
 
@@ -17,8 +17,6 @@ const displayAmmo = ({ weapon }) =>
 export default class HUDContainer extends Container {
   constructor({ player, sprites }) {
     super();
-
-    this.messageCache = [];
 
     const { healthIcon, healthAmount, ammoIcon, ammoAmount, keys } = sprites;
 
@@ -70,15 +68,16 @@ export default class HUDContainer extends Container {
 
     this.messages = [];
 
-    // TODO: Handle message sprite destroy properly.
+    // Message sprites are owned entirely by this container (not registered in
+    // GraphicsCache): each is destroyed the moment its animation completes, and
+    // any still in flight when the scene exits are swept in destroy().
     player.onMessageAdded((text, options) => {
-      const sprite = WorldGraphics.createMessageSprite({
+      const sprite = new MessageSprite({
         ...options,
         text,
       });
 
       this.messages.push(sprite);
-      this.messageCache.push(sprite);
 
       sprite.onComplete(() => {
         this.messages = this.messages.filter(message => message !== sprite);
@@ -160,13 +159,12 @@ export default class HUDContainer extends Container {
   }
 
   destroy(options) {
-    this.messageCache.forEach(sprite => sprite.destroy(options));
+    this.messages.forEach(sprite => sprite.destroy(options));
 
     super.destroy(options);
 
     this.player = null;
     this.sprites = null;
     this.messages = [];
-    this.messageCache = [];
   }
 }

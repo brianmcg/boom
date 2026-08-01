@@ -74,4 +74,16 @@ export default class SoundSpriteController {
 
     return false;
   }
+
+  destroy() {
+    this.stop();
+
+    // Remove any `end` handlers still attached to the shared sound sprite for
+    // sounds that were stopped (or are looping) without firing `end`.
+    this.playing.forEach(id => this.soundSprite.off('end', undefined, id));
+
+    this.playing = [];
+    this.lastPlayed = null;
+    this.soundSprite = null;
+  }
 }
