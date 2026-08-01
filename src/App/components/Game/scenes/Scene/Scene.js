@@ -363,13 +363,13 @@ export default class Scene extends Container {
 
     GraphicsCache.clear();
 
+    this.onStop = null;
     this.menu = null;
     this.mainContainer = null;
     this.menuContainer = null;
     this.promptContainer = null;
     this.soundController = null;
     this.sounds = null;
-    this.menu = null;
     this.game = null;
   }
 }
