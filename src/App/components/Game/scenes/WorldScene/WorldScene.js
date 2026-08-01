@@ -292,8 +292,8 @@ export default class WorldScene extends Scene {
 
   destroy(options) {
     this.stop();
-    super.destroy(options);
     this.world.destroy();
+    super.destroy(options);
     this.onStop = null;
     this.world = null;
     this.sprites = null;
