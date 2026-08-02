@@ -1,3 +1,6 @@
+const D = 1;
+const D2 = Math.sqrt(2);
+
 export const manhattan = (current, goal) => {
   const d1 = Math.abs(goal.x - current.x);
   const d2 = Math.abs(goal.y - current.y);
@@ -5,8 +8,6 @@ export const manhattan = (current, goal) => {
 };
 
 export const diagonal = (current, goal) => {
-  const D = 1;
-  const D2 = Math.sqrt(2);
   const d1 = Math.abs(goal.x - current.x);
   const d2 = Math.abs(goal.y - current.y);
   return D * (d1 + d2) + (D2 - 2 * D) * Math.min(d1, d2);
