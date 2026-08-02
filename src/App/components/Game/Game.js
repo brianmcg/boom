@@ -170,6 +170,16 @@ export default class Game {
     this.scene.destroy();
     this.scene = null;
     this.sceneAssets = null;
+
+    // Pixi keeps the previous frame's instruction set on the persistent stage;
+    // truncate it so stale slots stop retaining the destroyed scene's
+    // containers. Safe because the stage is empty and Pixi only reads
+    // `instructions` up to `instructionSize`, which resets on the next render.
+    const { renderGroup } = this.app.stage;
+
+    if (renderGroup) {
+      renderGroup.instructionSet.instructions.length = 0;
+    }
   }
 
   resize(scale) {
