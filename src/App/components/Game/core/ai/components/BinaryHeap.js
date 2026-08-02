@@ -56,6 +56,7 @@ export default class BinaryHeap {
   sinkDown(n) {
     // Fetch the element that has to be sunk.
     const element = this.content[n];
+    const elemScore = this.scoreFunction(element);
 
     // When at 0, an element can not sink any further.
     while (n > 0) {
@@ -63,7 +64,7 @@ export default class BinaryHeap {
       const parentN = ((n + 1) >> 1) - 1;
       const parent = this.content[parentN];
       // Swap the elements if the parent is greater.
-      if (this.scoreFunction(element) < this.scoreFunction(parent)) {
+      if (elemScore < this.scoreFunction(parent)) {
         this.content[parentN] = element;
         this.content[n] = parent;
         // Update 'n' to continue at the new position.
