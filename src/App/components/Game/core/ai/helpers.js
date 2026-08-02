@@ -8,11 +8,11 @@ const pathTo = node => {
   let curr = node;
 
   while (curr.parent) {
-    path.unshift(curr);
+    path.push(curr);
     curr = curr.parent;
   }
 
-  return path;
+  return path.reverse();
 };
 
 export const astarSearch = (graph, start, end, options = {}) => {
