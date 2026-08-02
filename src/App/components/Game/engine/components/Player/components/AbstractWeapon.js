@@ -55,11 +55,11 @@ export default class AbstractWeapon {
     this.range = transformRangeForWorld(range, player.width / 2);
     this.spread = spread;
     this.type = type;
-    this.pellets = [...Array(pellets).keys()].map(i => i);
-    this.spreadAngle =
-      pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / 2 : 0;
-    this.pelletAngle =
-      pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) / pellets : 0;
+    this.pellets = [...Array(pellets).keys()];
+    const spreadRatio =
+      pellets > 1 ? Math.atan2(CELL_SIZE, spread * CELL_SIZE) : 0;
+    this.spreadAngle = spreadRatio / 2;
+    this.pelletAngle = pellets > 1 ? spreadRatio / pellets : 0;
     this.projectile = projectile;
     this.state = STATES.AIMING;
     this.name = name;

@@ -11,13 +11,14 @@ export default class GunEnemy extends AbstractEnemy {
 
     const { pellets, spread } = primaryAttack;
 
+    const spreadRatio =
+      pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) : 0;
+
     this.primaryAttack = {
       ...this.primaryAttack,
-      pellets: [...Array(pellets).keys()].map(i => i),
-      spreadAngle:
-        pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / 2 : 0,
-      pelletAngle:
-        pellets > 1 ? Math.atan2(CELL_SIZE, CELL_SIZE * spread) / pellets : 0,
+      pellets: [...Array(pellets).keys()],
+      spreadAngle: spreadRatio / 2,
+      pelletAngle: pellets > 1 ? spreadRatio / pellets : 0,
     };
 
     this.graphIndex = 1;
