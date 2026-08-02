@@ -226,6 +226,11 @@ const castCellRay = ({
   let initialCellBody;
   const encounteredBodies = {};
 
+  const cosAngle = Math.cos(angle);
+  const sinAngle = Math.sin(angle);
+  const tanAngle = Math.tan(angle);
+  const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
+
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
 
@@ -237,7 +242,7 @@ const castCellRay = ({
       horizontalGrid -= initialCell.offset.y;
     }
 
-    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+    xIntersection = (horizontalGrid - y) / tanAngle + x;
   } else {
     horizontalGrid = gridY * CELL_SIZE;
 
@@ -249,11 +254,11 @@ const castCellRay = ({
       horizontalGrid += CELL_SIZE - initialCell.offset.y;
     }
 
-    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+    xIntersection = (horizontalGrid - y) / tanAngle + x;
     horizontalGrid -= 1;
   }
 
-  distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+  distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
 
   horizontalOverlay =
     initialCell.axis === X && !ignoreOverlay && initialCell.overlay;
@@ -273,7 +278,7 @@ const castCellRay = ({
       verticalGrid -= initialCell.offset.x;
     }
 
-    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+    yIntersection = tanAngle * (verticalGrid - x) + y;
   } else {
     verticalGrid = gridX * CELL_SIZE;
 
@@ -285,11 +290,11 @@ const castCellRay = ({
       verticalGrid += CELL_SIZE - initialCell.offset.x;
     }
 
-    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+    yIntersection = tanAngle * (verticalGrid - x) + y;
     verticalGrid -= 1;
   }
 
-  distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+  distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
 
   verticalOverlay =
     initialCell.axis === Y && !ignoreOverlay && initialCell.overlay;
@@ -343,10 +348,7 @@ const castCellRay = ({
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
         isRayCollision(initialCellBody, {
-          startPoint: {
-            x: x + Math.cos(angle) * radius,
-            y: y + Math.sin(angle) * radius,
-          },
+          startPoint: rayStart,
           endPoint: rayEndPoint,
         })
       ) {
@@ -415,10 +417,7 @@ const castCellRay = ({
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
       isRayCollision(initialCellBody, {
-        startPoint: {
-          x: x + Math.cos(angle) * radius,
-          y: y + Math.sin(angle) * radius,
-        },
+        startPoint: rayStart,
         endPoint: rayEndPoint,
       })
     ) {
@@ -481,16 +480,21 @@ const castRaySection = ({
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);
 
+  const cosAngle = Math.cos(angle);
+  const sinAngle = Math.sin(angle);
+  const tanAngle = Math.tan(angle);
+  const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
+
   initialCell = world.getCell(gridX, gridY);
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
     distToNextHorizontalGrid = CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+    xIntersection = (horizontalGrid - y) / tanAngle + x;
   } else {
     horizontalGrid = gridY * CELL_SIZE;
     distToNextHorizontalGrid = -CELL_SIZE;
-    xIntersection = (horizontalGrid - y) / Math.tan(angle) + x;
+    xIntersection = (horizontalGrid - y) / tanAngle + x;
     horizontalGrid -= 1;
   }
 
@@ -498,12 +502,12 @@ const castRaySection = ({
     distToHorizontalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (angle >= DEG_90 && angle < DEG_270) {
-      distToNextXIntersection = CELL_SIZE / Math.tan(angle);
+      distToNextXIntersection = CELL_SIZE / tanAngle;
       if (distToNextXIntersection > 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
     } else {
-      distToNextXIntersection = CELL_SIZE / Math.tan(angle);
+      distToNextXIntersection = CELL_SIZE / tanAngle;
       if (distToNextXIntersection < 0) {
         distToNextXIntersection = -distToNextXIntersection;
       }
@@ -554,7 +558,7 @@ const castRaySection = ({
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit =
-                (xIntersection - x) / Math.cos(angle) - 0.01;
+                (xIntersection - x) / cosAngle - 0.01;
               break;
             } else if (horizontalCell.double) {
               if (
@@ -565,7 +569,7 @@ const castRaySection = ({
                 xIntersection += xOffsetDist;
                 horizontalGrid += yOffsetDist;
                 distToHorizontalGridBeingHit =
-                  (xIntersection - x) / Math.cos(angle);
+                  (xIntersection - x) / cosAngle;
                 break;
               } else {
                 xIntersection += distToNextXIntersection;
@@ -578,7 +582,7 @@ const castRaySection = ({
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit =
-                (xIntersection - x) / Math.cos(angle);
+                (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
@@ -596,7 +600,7 @@ const castRaySection = ({
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit =
-                (xIntersection - x) / Math.cos(angle);
+                (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
@@ -631,7 +635,7 @@ const castRaySection = ({
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit =
-                (xIntersection - x) / Math.cos(angle);
+                (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
@@ -639,11 +643,11 @@ const castRaySection = ({
             }
           } else {
             distToHorizontalGridBeingHit =
-              (xIntersection - x) / Math.cos(angle);
+              (xIntersection - x) / cosAngle;
             break;
           }
         } else {
-          distToHorizontalGridBeingHit = (xIntersection - x) / Math.cos(angle);
+          distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
           break;
         }
       } else {
@@ -661,11 +665,11 @@ const castRaySection = ({
   if (angle < DEG_90 || angle > DEG_270) {
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
     distToNextVerticalGrid = CELL_SIZE;
-    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+    yIntersection = tanAngle * (verticalGrid - x) + y;
   } else {
     verticalGrid = gridX * CELL_SIZE;
     distToNextVerticalGrid = -CELL_SIZE;
-    yIntersection = Math.tan(angle) * (verticalGrid - x) + y;
+    yIntersection = tanAngle * (verticalGrid - x) + y;
     verticalGrid -= 1;
   }
 
@@ -673,12 +677,12 @@ const castRaySection = ({
     distToVerticalGridBeingHit = Number.MAX_VALUE;
   } else {
     if (angle >= 0 && angle < DEG_180) {
-      distToNextYIntersection = CELL_SIZE * Math.tan(angle);
+      distToNextYIntersection = CELL_SIZE * tanAngle;
       if (distToNextYIntersection < 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
     } else {
-      distToNextYIntersection = CELL_SIZE * Math.tan(angle);
+      distToNextYIntersection = CELL_SIZE * tanAngle;
       if (distToNextYIntersection > 0) {
         distToNextYIntersection = -distToNextYIntersection;
       }
@@ -729,7 +733,7 @@ const castRaySection = ({
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit =
-                (yIntersection - y) / Math.sin(angle) - 0.01;
+                (yIntersection - y) / sinAngle - 0.01;
               break;
             } else if (verticalCell.double) {
               if (
@@ -739,7 +743,7 @@ const castRaySection = ({
                 yIntersection += yOffsetDist;
                 verticalGrid += xOffsetDist;
                 distToVerticalGridBeingHit =
-                  (yIntersection - y) / Math.sin(angle);
+                  (yIntersection - y) / sinAngle;
                 break;
               } else {
                 yIntersection += distToNextYIntersection;
@@ -749,7 +753,7 @@ const castRaySection = ({
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit =
-                (yIntersection - y) / Math.sin(angle);
+                (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
@@ -767,7 +771,7 @@ const castRaySection = ({
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit =
-                (yIntersection - y) / Math.sin(angle);
+                (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
@@ -801,18 +805,18 @@ const castRaySection = ({
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
               distToVerticalGridBeingHit =
-                (yIntersection - y) / Math.sin(angle);
+                (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
               verticalGrid += distToNextVerticalGrid;
             }
           } else {
-            distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+            distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
             break;
           }
         } else {
-          distToVerticalGridBeingHit = (yIntersection - y) / Math.sin(angle);
+          distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
           break;
         }
       } else {
@@ -842,10 +846,7 @@ const castRaySection = ({
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
         isRayCollision(initialCellBody, {
-          startPoint: {
-            x: x + Math.cos(angle) * radius,
-            y: y + Math.sin(angle) * radius,
-          },
+          startPoint: rayStart,
           endPoint: rayEndPoint,
         })
       ) {
@@ -897,10 +898,7 @@ const castRaySection = ({
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
       isRayCollision(initialCellBody, {
-        startPoint: {
-          x: x + Math.cos(angle) * radius,
-          y: y + Math.sin(angle) * radius,
-        },
+        startPoint: rayStart,
         endPoint: rayEndPoint,
       })
     ) {
