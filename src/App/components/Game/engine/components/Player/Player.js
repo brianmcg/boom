@@ -573,7 +573,7 @@ export default class Player extends AbstractActor {
   }
 
   pickUpWeapon({ weapon }) {
-    const index = this.weapons.map(({ name }) => name).indexOf(weapon);
+    const index = this.weapons.findIndex(w => w.name === weapon);
     const pickedUpWeapon = this.weapons[index];
 
     if (!pickedUpWeapon.equiped) {
@@ -590,7 +590,7 @@ export default class Player extends AbstractActor {
   }
 
   pickUpAmmo({ weapon, amount }) {
-    const index = this.weapons.map(({ name }) => name).indexOf(weapon);
+    const index = this.weapons.findIndex(w => w.name === weapon);
     const weaponToRefill = this.weapons[index];
 
     if (weaponToRefill.equiped && weaponToRefill.addAmmo(amount)) {
