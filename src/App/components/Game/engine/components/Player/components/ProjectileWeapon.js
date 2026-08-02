@@ -10,17 +10,22 @@ export default class ProjectileWeapon extends AbstractWeapon {
 
     const { amount, ...otherOptions } = this.projectile;
 
+    // `projectiles` is the full, immutable set (used for teardown and sprite
+    // creation); `pool` is the mutable set of available projectiles. In-flight
+    // projectiles leave the pool but remain in `projectiles`.
+    this.pool = [];
     this.projectiles = [];
 
     [...Array(amount).keys()].forEach(() => {
-      this.projectiles.push(
-        new Projectile({
-          ...otherOptions,
-          source: this.player,
-          soundSprite,
-          queue: this.projectiles,
-        })
-      );
+      const projectile = new Projectile({
+        ...otherOptions,
+        source: this.player,
+        soundSprite,
+        queue: this.pool,
+      });
+
+      this.pool.push(projectile);
+      this.projectiles.push(projectile);
     });
   }
 
@@ -31,7 +36,7 @@ export default class ProjectileWeapon extends AbstractWeapon {
       const { angle, moveAngle, parent } = this.player;
       const damage =
         this.power * (Math.floor(Math.random() * this.accuracy) + 1);
-      const projectile = this.projectiles.shift();
+      const projectile = this.pool.shift();
 
       projectile.set({
         angle: (angle - moveAngle + DEG_360) % DEG_360,
@@ -56,6 +61,6 @@ export default class ProjectileWeapon extends AbstractWeapon {
   }
 
   canUse() {
-    return super.canUse() && this.ammo > 0 && !!this.projectiles.length;
+    return super.canUse() && this.ammo > 0 && !!this.pool.length;
   }
 }

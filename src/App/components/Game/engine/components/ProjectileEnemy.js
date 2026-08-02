@@ -9,17 +9,22 @@ export default class ProjectileEnemy extends AbstractEnemy {
     const { pellets, projectile, pelletAngle = 30 } = primaryAttack;
     const { amount, ...projectileProps } = projectile;
 
+    // `projectiles` is the full, immutable set (used for teardown and sprite
+    // creation); `pool` is the mutable set of available projectiles. In-flight
+    // projectiles leave the pool but remain in `projectiles`.
+    this.pool = [];
     this.projectiles = [];
 
     [...Array(amount).keys()].forEach(() => {
-      this.projectiles.push(
-        new Projectile({
-          ...projectileProps,
-          source: this,
-          soundSprite,
-          queue: this.projectiles,
-        })
-      );
+      const projectile = new Projectile({
+        ...projectileProps,
+        source: this,
+        soundSprite,
+        queue: this.pool,
+      });
+
+      this.pool.push(projectile);
+      this.projectiles.push(projectile);
     });
 
     this.graphIndex = 1;
@@ -51,9 +56,9 @@ export default class ProjectileEnemy extends AbstractEnemy {
 
     this.emitSound(this.sounds.attack);
 
-    if (this.projectiles.length) {
+    if (this.pool.length) {
       this.offsets.forEach(offset => {
-        const projectile = this.projectiles.shift();
+        const projectile = this.pool.shift();
 
         projectile.set({
           offset,
