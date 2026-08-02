@@ -51,45 +51,49 @@ export default class Graph {
     const { grid } = this;
     const { x, y } = node;
 
+    const west = grid[x - 1];
+    const mid = grid[x];
+    const east = grid[x + 1];
+
     // West
-    if (grid[x - 1] && grid[x - 1][y]) {
-      result.push(grid[x - 1][y]);
+    if (west && west[y]) {
+      result.push(west[y]);
     }
 
     // East
-    if (grid[x + 1] && grid[x + 1][y]) {
-      result.push(grid[x + 1][y]);
+    if (east && east[y]) {
+      result.push(east[y]);
     }
 
     // South
-    if (grid[x] && grid[x][y - 1]) {
-      result.push(grid[x][y - 1]);
+    if (mid && mid[y - 1]) {
+      result.push(mid[y - 1]);
     }
 
     // North
-    if (grid[x] && grid[x][y + 1]) {
-      result.push(grid[x][y + 1]);
+    if (mid && mid[y + 1]) {
+      result.push(mid[y + 1]);
     }
 
     if (this.diagonal) {
       // Southwest
-      if (grid[x - 1] && grid[x - 1][y - 1]) {
-        result.push(grid[x - 1][y - 1]);
+      if (west && west[y - 1]) {
+        result.push(west[y - 1]);
       }
 
       // Southeast
-      if (grid[x + 1] && grid[x + 1][y - 1]) {
-        result.push(grid[x + 1][y - 1]);
+      if (east && east[y - 1]) {
+        result.push(east[y - 1]);
       }
 
       // Northwest
-      if (grid[x - 1] && grid[x - 1][y + 1]) {
-        result.push(grid[x - 1][y + 1]);
+      if (west && west[y + 1]) {
+        result.push(west[y + 1]);
       }
 
       // Northeast
-      if (grid[x + 1] && grid[x + 1][y + 1]) {
-        result.push(grid[x + 1][y + 1]);
+      if (east && east[y + 1]) {
+        result.push(east[y + 1]);
       }
     }
 
