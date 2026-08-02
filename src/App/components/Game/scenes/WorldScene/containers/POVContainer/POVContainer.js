@@ -309,19 +309,21 @@ export default class POVContainer extends Container {
       const elevatorNumerator =
         (sideHeight - player.viewHeight) * CAMERA_DISTANCE;
 
+      const columnSprites = backgroundSprites[xIndex];
+
       for (let yIndex = 0; yIndex <= topIntersection; yIndex++) {
-        sprite = backgroundSprites[xIndex][yIndex];
+        sprite = columnSprites[yIndex];
 
         if (sprite) {
           actualDistance = ceilNumerator / (centerY - yIndex);
 
           correctedDistance = actualDistance / cosSpriteAngle;
 
-          mapX = Math.floor(player.x + cosAngle * correctedDistance);
+          mapX = Math.floor(x + cosAngle * correctedDistance);
           mapX = mapX > maxMapX ? maxMapX : mapX;
           mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + sinAngle * correctedDistance);
+          mapY = Math.floor(y + sinAngle * correctedDistance);
           mapY = mapY > maxMapY ? maxMapY : mapY;
           mapY = mapY < 0 ? 0 : mapY;
 
@@ -335,11 +337,11 @@ export default class POVContainer extends Container {
 
             correctedDistanceTmp = actualDistance / cosSpriteAngle;
 
-            mapXTmp = Math.floor(player.x + cosAngle * correctedDistanceTmp);
+            mapXTmp = Math.floor(x + cosAngle * correctedDistanceTmp);
             mapXTmp = mapXTmp > maxMapX ? maxMapX : mapXTmp;
             mapXTmp = mapXTmp < 0 ? 0 : mapXTmp;
 
-            mapYTmp = Math.floor(player.y + sinAngle * correctedDistanceTmp);
+            mapYTmp = Math.floor(y + sinAngle * correctedDistanceTmp);
             mapYTmp = mapYTmp > maxMapY ? maxMapY : mapYTmp;
             mapYTmp = mapYTmp < 0 ? 0 : mapYTmp;
 
@@ -374,18 +376,18 @@ export default class POVContainer extends Container {
         yIndex < m;
         yIndex++
       ) {
-        sprite = backgroundSprites[xIndex][yIndex];
+        sprite = columnSprites[yIndex];
 
         if (sprite) {
           actualDistance = floorNumerator / (yIndex - centerY + 1);
 
           correctedDistance = actualDistance / cosSpriteAngle;
 
-          mapX = Math.floor(player.x + cosAngle * correctedDistance);
+          mapX = Math.floor(x + cosAngle * correctedDistance);
           mapX = mapX > maxMapX ? maxMapX : mapX;
           mapX = mapX < 0 ? 0 : mapX;
 
-          mapY = Math.floor(player.y + sinAngle * correctedDistance);
+          mapY = Math.floor(y + sinAngle * correctedDistance);
           mapY = mapY > maxMapY ? maxMapY : mapY;
           mapY = mapY < 0 ? 0 : mapY;
 
