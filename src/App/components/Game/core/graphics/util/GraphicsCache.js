@@ -31,7 +31,13 @@ export default class GraphicsCache {
   static clear() {
     containerCache.forEach(container => container.destroy());
     spriteCache.forEach(sprite => sprite.destroy());
-    textureCache.forEach(texture => texture.destroy());
+    textureCache.forEach(texture => {
+      // Destroy the underlying TextureSource / render target too, otherwise the
+      // persistent renderer keeps every generated texture's GPU resources alive.
+      if (!texture.destroyed) {
+        texture.destroy(true);
+      }
+    });
     filterCache.forEach(filter => filter.destroy());
 
     containerCache.length = 0;
