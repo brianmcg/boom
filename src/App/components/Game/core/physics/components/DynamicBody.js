@@ -28,6 +28,7 @@ export default class DynamicBody extends Body {
     this.collisions = [];
     this.trackedCollisions = [];
     this.autoPlay = autoPlay;
+    this.previousPos = { x: 0, y: 0 };
     this.collisionRadius = Math.ceil(this.width / CELL_SIZE);
   }
 
@@ -65,10 +66,8 @@ export default class DynamicBody extends Body {
 
     const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
-    this.previousPos = {
-      x: this.x,
-      y: this.y,
-    };
+    this.previousPos.x = this.x;
+    this.previousPos.y = this.y;
 
     // Unmark id from cell before moving
     this.cell.remove(this);
@@ -190,14 +189,9 @@ export default class DynamicBody extends Body {
 
     this.collisions = [];
     this.trackedCollisions = [];
+    this.previousPos = null;
 
     this.cell = null;
     this.parent = null;
-    this.cell = null;
-    this.onCollision = null;
-    this.onCollisionStart = null;
-    this.onCollisionEnd = null;
-    this.parent = null;
-    this.cell = null;
   }
 }
