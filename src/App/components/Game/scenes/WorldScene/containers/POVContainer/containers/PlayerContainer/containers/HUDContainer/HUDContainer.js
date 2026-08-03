@@ -105,27 +105,28 @@ export default class HUDContainer extends Container {
 
     this.player = player;
     this.sprites = sprites;
+    this.keySprites = Object.values(sprites.keys);
   }
 
   update(ticker) {
-    const { keys, foreground } = this.sprites;
+    const { foreground } = this.sprites;
 
     // Update each key card sprite if it is active.
-    Object.values(keys).forEach(key => {
+    this.keySprites.forEach(key => {
       if (!key.isInactive()) {
         key.update(ticker);
       }
     });
 
-    // Update messages.
-    this.messages.forEach((message, i) => {
-      let y = HUD_PADDING + this.messages[0].height / 2;
+    // Position messages, stacking each below the previous one. Done in a
+    // separate pass from update() below so the layout uses pre-update heights.
+    let messageY = this.messages.length
+      ? HUD_PADDING + this.messages[0].height / 2
+      : 0;
 
-      for (let j = 0; j < i; j++) {
-        y += this.messages[j].height + MESSAGE_PADDING;
-      }
-
-      message.y = y;
+    this.messages.forEach(message => {
+      message.y = messageY;
+      messageY += message.height + MESSAGE_PADDING;
     });
 
     this.messages.forEach(message => message.update(ticker));
