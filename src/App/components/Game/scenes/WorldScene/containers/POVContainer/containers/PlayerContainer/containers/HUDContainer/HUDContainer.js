@@ -131,11 +131,13 @@ export default class HUDContainer extends Container {
 
     this.messages.forEach(message => message.update(ticker));
 
-    // Update foreground.
-    if (this.player.vision) {
+    // Red hurt overlay: only present (and re-added on top) while actually
+    // visible. During normal play (vision === 1) it stays out of the child list
+    // instead of being re-parented every frame at alpha 0.
+    if (this.player.vision < 1) {
       foreground.alpha = 1 - this.player.vision;
       this.addChild(foreground);
-    } else {
+    } else if (foreground.parent) {
       this.removeChild(foreground);
     }
   }
