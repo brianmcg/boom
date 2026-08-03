@@ -484,6 +484,7 @@ const castRaySection = ({
   const sinAngle = Math.sin(angle);
   const tanAngle = Math.tan(angle);
   const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
+  const originPoint = { x, y };
 
   initialCell = world.getCell(gridX, gridY);
 
@@ -861,7 +862,7 @@ const castRaySection = ({
 
       if (
         !isRayCollision(encounterdBody, {
-          startPoint: { x, y },
+          startPoint: originPoint,
           endPoint: rayEndPoint,
         })
       ) {

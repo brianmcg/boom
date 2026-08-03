@@ -66,6 +66,9 @@ export default class DynamicBody extends Body {
 
     const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
+    const halfWidth = this.width / 2;
+    const halfLength = this.length / 2;
+
     this.previousPos.x = this.x;
     this.previousPos.y = this.y;
 
@@ -85,7 +88,6 @@ export default class DynamicBody extends Body {
         if (body.blocking && body.transparency !== FULL) {
           const { shape } = body;
           const { x, width } = shape;
-          const halfWidth = this.shape.width / 2;
 
           if (this.previousPos.x < shape.x) {
             this.x = x - halfWidth - 0.0001;
@@ -109,7 +111,6 @@ export default class DynamicBody extends Body {
         if (body.blocking && body.transparency !== FULL) {
           const { shape } = body;
           const { y, length } = shape;
-          const halfLength = this.shape.length / 2;
 
           if (this.previousPos.y < shape.y) {
             this.y = y - halfLength - 0.0001;
