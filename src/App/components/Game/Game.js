@@ -2,7 +2,7 @@ import { GAME_ASSETS, SCENE_TYPES } from '@constants/assets';
 import { DEBUG } from '@constants/config';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
-import { SCREEN, LEVEL } from '@constants/config';
+import { SCREEN, LEVEL, MAX_FPS } from '@constants/config';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -16,6 +16,17 @@ const SCENES = {
   [SCENE_TYPES.WORLD]: WorldScene,
   [SCENE_TYPES.CREDITS]: CreditsScene,
 };
+
+const FRAME_MS = 1000 / MAX_FPS;
+
+// Fixed frame handed to every scene update, so the simulation advances at
+// MAX_FPS regardless of how fast the display delivers vsyncs. deltaTime is 1.0
+// at MAX_FPS, matching what Pixi's ticker reports at that rate.
+const FRAME = Object.freeze({
+  deltaTime: 1,
+  deltaMS: FRAME_MS,
+  elapsedMS: FRAME_MS,
+});
 
 export default class Game {
   constructor({ stats, onLoading, onReady, onExit }) {
@@ -35,6 +46,10 @@ export default class Game {
       width: SCREEN.WIDTH,
       height: SCREEN.HEIGHT,
     });
+
+    // Drive rendering from the fixed step below rather than from every vsync.
+    this.app.ticker.remove(this.app.render, this.app);
+    this.accumulator = 0;
 
     this.view = new GameView({ canvas: this.app.canvas });
     this.input = new InputController(this.app.canvas);
@@ -77,13 +92,32 @@ export default class Game {
   }
 
   update(ticker) {
-    this.app.stage.children.forEach(child => child.update(ticker));
+    // deltaMS rather than elapsedMS: only deltaMS is clamped by the ticker's
+    // minFPS guard, which bounds catch-up after a stall.
+    this.accumulator += ticker.deltaMS;
+
+    if (this.accumulator < FRAME_MS) return;
+
+    this.step();
   }
 
   updateWithStats(ticker) {
+    this.accumulator += ticker.deltaMS;
+
+    if (this.accumulator < FRAME_MS) return;
+
     this.stats.begin();
-    this.app.stage.children.forEach(child => child.update(ticker));
+    this.step();
     this.stats.end();
+  }
+
+  step() {
+    while (this.accumulator >= FRAME_MS) {
+      this.accumulator -= FRAME_MS;
+      this.app.stage.children.forEach(child => child.update(FRAME));
+    }
+
+    this.app.render();
   }
 
   showTitleScene() {
