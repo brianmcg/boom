@@ -15,6 +15,7 @@ npm run dev       # Vite dev server
 npm run build     # rm -rf dist && vite build
 npm run preview   # preview the production build
 npm run lint      # eslint ./src
+npm run typecheck # tsc --noEmit (checks .ts files only — see "TypeScript" below)
 npm run format    # prettier --write ./src
 npm run deploy    # scripts/deploy.sh — rsyncs dist/ to a remote host over ssh/scp (requires the `bm` ssh alias)
 ```
@@ -97,7 +98,17 @@ Classes with a long lifetime (`Scene`, `World`, entities) implement an explicit 
 
 `src/util/translate` picks `en`/`fr` (`src/util/translate/en.js`/`fr.js`) based on `navigator.language`, falling back to `DEFAULT_LANGUAGE` (`en`). Strings support `{KEY}`-style placeholders via the `keys` option (camelCase key → `CONSTANT_CASE` placeholder).
 
+### TypeScript
+
+The project is TypeScript-*capable* but not TypeScript-*converted*: the entire `src/` tree is still plain JS and stays that way unless a file is deliberately migrated. Vite (esbuild) compiles `.ts` transparently, so a new `.ts` module can be dropped anywhere in `src/` and imported from existing JS with no build changes.
+
+- `tsconfig.json` sets `allowJs: true` + `checkJs: false` — existing `.js` files are resolved and compiled but never type-checked, so `npm run typecheck` reports only on `.ts`/`.d.ts` files. Untyped JS imports come through as `any`.
+- New `.ts` files are checked under `strict` (plus `noUnusedLocals`/`noUnusedParameters`). Path aliases mirror `vite.config.js` under `compilerOptions.paths`.
+- To opt a single JS file into checking, add `// @ts-check` at the top of it rather than flipping `checkJs` globally.
+- ESLint applies `typescript-eslint` recommended rules to `**/*.ts` only; JS linting is unchanged.
+- `src/vite-env.d.ts` pulls in Vite's ambient types (asset imports, `import.meta.env`).
+
 ## Code style
 
 - Prettier config (`.prettierrc`): single quotes, semicolons, 2-space indent, `arrowParens: avoid`, `printWidth: 80`.
-- ESLint: `@eslint/js` recommended rules against browser globals (`eslint.config.js`). Run `npm run lint` before committing.
+- ESLint: `@eslint/js` recommended rules against browser globals, plus `typescript-eslint` recommended for `**/*.ts` (`eslint.config.js`). Run `npm run lint` before committing.
