@@ -569,8 +569,7 @@ const castRaySection = ({
               ) {
                 xIntersection += xOffsetDist;
                 horizontalGrid += yOffsetDist;
-                distToHorizontalGridBeingHit =
-                  (xIntersection - x) / cosAngle;
+                distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
                 break;
               } else {
                 xIntersection += distToNextXIntersection;
@@ -582,8 +581,7 @@ const castRaySection = ({
             ) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
-              distToHorizontalGridBeingHit =
-                (xIntersection - x) / cosAngle;
+              distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
@@ -600,8 +598,7 @@ const castRaySection = ({
             ) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
-              distToHorizontalGridBeingHit =
-                (xIntersection - x) / cosAngle;
+              distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
@@ -635,16 +632,14 @@ const castRaySection = ({
             ) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
-              distToHorizontalGridBeingHit =
-                (xIntersection - x) / cosAngle;
+              distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
               break;
             } else {
               xIntersection += distToNextXIntersection;
               horizontalGrid += distToNextHorizontalGrid;
             }
           } else {
-            distToHorizontalGridBeingHit =
-              (xIntersection - x) / cosAngle;
+            distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
             break;
           }
         } else {
@@ -743,8 +738,7 @@ const castRaySection = ({
               ) {
                 yIntersection += yOffsetDist;
                 verticalGrid += xOffsetDist;
-                distToVerticalGridBeingHit =
-                  (yIntersection - y) / sinAngle;
+                distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
                 break;
               } else {
                 yIntersection += distToNextYIntersection;
@@ -753,8 +747,7 @@ const castRaySection = ({
             } else if (yOffsetHit > verticalCell.offset.y) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
-              distToVerticalGridBeingHit =
-                (yIntersection - y) / sinAngle;
+              distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
@@ -771,8 +764,7 @@ const castRaySection = ({
             ) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
-              distToVerticalGridBeingHit =
-                (yIntersection - y) / sinAngle;
+              distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
@@ -805,8 +797,7 @@ const castRaySection = ({
             ) {
               yIntersection += yOffsetDist;
               verticalGrid += xOffsetDist;
-              distToVerticalGridBeingHit =
-                (yIntersection - y) / sinAngle;
+              distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
               break;
             } else {
               yIntersection += distToNextYIntersection;
