@@ -151,7 +151,7 @@ export const getRayCollision = (
   body: { shape: Shape },
   { startPoint, endPoint }: Line
 ): RayCollision | null => {
-  const { x, y, width } = body.shape;
+  const { x, y, width, length } = body.shape;
 
   return [
     getLineLineIntersection(
@@ -164,18 +164,18 @@ export const getRayCollision = (
       startPoint,
       endPoint,
       { x: x + width, y },
-      { x: x + width, y: y + width }
+      { x: x + width, y: y + length }
     ),
     getLineLineIntersection(
       startPoint,
       endPoint,
-      { x: x + width, y: y + width },
-      { x, y: y + width }
+      { x: x + width, y: y + length },
+      { x, y: y + length }
     ),
     getLineLineIntersection(
       startPoint,
       endPoint,
-      { x, y: y + width },
+      { x, y: y + length },
       { x, y }
     ),
   ].reduce<RayCollision | null>((memo, intersection) => {
@@ -499,11 +499,6 @@ const castRaySection = ({
   let yOffsetDist: number;
   let xOffsetHit: number;
   let yOffsetHit: number;
-  // Assigned inside the grid-stepping loops below. The `!` preserves the
-  // existing behaviour on the paths where a loop exits without ever running:
-  // see the note above the final `distToHorizontalGridBeingHit` comparison.
-  let horizontalCell!: RaycastableCell;
-  let verticalCell!: RaycastableCell;
   let offsetRatio: number;
   let horizontalBody: RaycastableBody;
   let verticalBody: RaycastableBody;
@@ -526,6 +521,15 @@ const castRaySection = ({
   const originPoint = { x, y };
 
   const initialCell = world.getCell(gridX, gridY)!;
+
+  // Each stepping loop below overwrites its cell on the first in-bounds
+  // iteration, so this fallback only survives when the ray leaves the grid
+  // immediately on that axis. That leaves the matching distance at MAX_VALUE,
+  // so the ray renders as nothing — but it must still name a real cell,
+  // because castRay reads `ray.cell.transparency` to decide whether to
+  // continue into the next wall layer.
+  let horizontalCell: RaycastableCell = initialCell;
+  let verticalCell: RaycastableCell = initialCell;
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
