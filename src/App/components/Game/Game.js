@@ -2,7 +2,7 @@ import { GAME_ASSETS, SCENE_TYPES } from '@constants/assets';
 import { DEBUG } from '@constants/config';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
-import { SCREEN, LEVEL } from '@constants/config';
+import { SCREEN, LEVEL, MAX_FPS } from '@constants/config';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -41,6 +41,7 @@ export default class Game {
     this.app.stage.eventMode = 'none';
     this.app.stage.cullableChildren = false;
     this.app.stage.interactiveChildren = false;
+    this.app.ticker.maxFPS = MAX_FPS;
 
     this.app.ticker.add(time =>
       this.stats ? this.updateWithStats(time) : this.update(time)
