@@ -10,7 +10,6 @@
  * `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
  * unchanged, and those come straight from the map.
  */
-import type Body from './components/Body';
 import type Cell from './components/Cell';
 
 /** A point in world space. Units are world units, not grid cells. */
@@ -53,26 +52,6 @@ export interface RaycastableWorld {
   width: number;
   length: number;
   getCell(x: number, y: number): Cell | null;
-}
-
-/**
- * A single wall layer hit by a ray.
- *
- * `isHorizontal` distinguishes a hit on a horizontal grid line from one on a
- * vertical grid line, which decides whether the texture is sampled along x or
- * y. When `isOverlay` is set, the overlay itself is `cell.overlay`, not the
- * flag.
- */
-export interface Ray {
-  startPoint: Point;
-  endPoint: Point;
-  distance: number;
-  encounteredBodies: Record<string, Body>;
-  isHorizontal: boolean;
-  side: Side | undefined;
-  cell: Cell;
-  angle: number;
-  isOverlay: boolean;
 }
 
 export interface CastRayOptions {

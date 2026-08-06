@@ -1,10 +1,10 @@
 ﻿import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
+import Ray from './components/Ray';
 import type {
   CastRayOptions,
   Line,
   Point,
-  Ray,
   RayCollision,
   Shape,
   Side,
@@ -395,17 +395,17 @@ const castCellRay = ({
 
     side = y < initialCell.y ? initialCell.left : initialCell.right;
 
-    return {
-      startPoint: { x, y },
-      endPoint: rayEndPoint,
-      distance: distToHorizontalGridBeingHit,
+    return new Ray(
+      { x, y },
+      rayEndPoint,
+      distToHorizontalGridBeingHit,
       encounteredBodies,
-      isHorizontal: true,
-      side: horizontalOverlay ? initialCell.overlay : side,
-      cell: initialCell,
+      true,
+      horizontalOverlay ? initialCell.overlay : side,
+      initialCell,
       angle,
-      isOverlay: horizontalOverlay,
-    };
+      horizontalOverlay
+    );
   }
 
   if (initialCell.axis === X) {
@@ -462,17 +462,17 @@ const castCellRay = ({
     }
   }
 
-  return {
-    startPoint: { x, y },
-    endPoint: rayEndPoint,
-    distance: distToVerticalGridBeingHit,
+  return new Ray(
+    { x, y },
+    rayEndPoint,
+    distToVerticalGridBeingHit,
     encounteredBodies,
-    isHorizontal: false,
-    side: verticalOverlay ? initialCell.overlay : side,
-    cell: initialCell,
+    false,
+    verticalOverlay ? initialCell.overlay : side,
+    initialCell,
     angle,
-    isOverlay: verticalOverlay,
-  };
+    verticalOverlay
+  );
 };
 
 const castRaySection = ({
@@ -909,17 +909,17 @@ const castRaySection = ({
 
     side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
-    return {
-      startPoint: { x, y },
-      endPoint: rayEndPoint,
-      distance: distToHorizontalGridBeingHit,
+    return new Ray(
+      { x, y },
+      rayEndPoint,
+      distToHorizontalGridBeingHit,
       encounteredBodies,
-      isHorizontal: true,
-      side: horizontalOverlay ? horizontalCell.overlay : side,
-      cell: horizontalCell,
+      true,
+      horizontalOverlay ? horizontalCell.overlay : side,
+      horizontalCell,
       angle,
-      isOverlay: horizontalOverlay,
-    };
+      horizontalOverlay
+    );
   }
 
   rayEndPoint = { x: verticalGrid, y: yIntersection };
@@ -961,17 +961,17 @@ const castRaySection = ({
 
   side = x < verticalCell.x ? verticalCell.front : verticalCell.back;
 
-  return {
-    startPoint: { x, y },
-    endPoint: rayEndPoint,
-    distance: distToVerticalGridBeingHit,
+  return new Ray(
+    { x, y },
+    rayEndPoint,
+    distToVerticalGridBeingHit,
     encounteredBodies,
-    isHorizontal: false,
-    side: verticalOverlay ? verticalCell.overlay : side,
-    cell: verticalCell,
+    false,
+    verticalOverlay ? verticalCell.overlay : side,
+    verticalCell,
     angle,
-    isOverlay: verticalOverlay,
-  };
+    verticalOverlay
+  );
 };
 
 export const castRay = ({
@@ -1000,13 +1000,7 @@ export const castRay = ({
         })
       );
 
-      currentRay.distance += previousRay.distance;
-      currentRay.startPoint = startPoint;
-
-      Object.assign(
-        currentRay.encounteredBodies,
-        previousRay.encounteredBodies
-      );
+      currentRay.continueFrom(previousRay);
     } else {
       const options = Object.assign(other, startPoint, {
         world,

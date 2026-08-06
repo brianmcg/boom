@@ -1,7 +1,8 @@
 import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
-import type { Point, Ray } from '../types';
+import type { Point } from '../types';
+import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
 import {
