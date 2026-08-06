@@ -56,16 +56,17 @@ export interface RaycastableWorld {
 /**
  * A single wall layer hit by a ray.
  *
- * Note `isHorizontal` is absent (not `false`) when the ray hit a vertical grid
- * line — a quirk the POV renderer relies on. When `isOverlay` is set, the
- * overlay itself is `cell.overlay`, not this flag.
+ * `isHorizontal` distinguishes a hit on a horizontal grid line from one on a
+ * vertical grid line, which decides whether the texture is sampled along x or
+ * y. When `isOverlay` is set, the overlay itself is `cell.overlay`, not the
+ * flag.
  */
 export interface Ray {
   startPoint: Point;
   endPoint: Point;
   distance: number;
   encounteredBodies: Record<string, RaycastableBody>;
-  isHorizontal?: true;
+  isHorizontal: boolean;
   side: Side | undefined;
   cell: Cell;
   angle: number;
