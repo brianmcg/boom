@@ -298,7 +298,7 @@ const castCellRay = ({
   distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
 
   const horizontalOverlay =
-    initialCell.axis === X && !ignoreOverlay && initialCell.overlay;
+    initialCell.axis === X && !ignoreOverlay && !!initialCell.overlay;
 
   if (horizontalOverlay) {
     distToHorizontalGridBeingHit -= 0.01;
@@ -334,7 +334,7 @@ const castCellRay = ({
   distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
 
   const verticalOverlay =
-    initialCell.axis === Y && !ignoreOverlay && initialCell.overlay;
+    initialCell.axis === Y && !ignoreOverlay && !!initialCell.overlay;
 
   if (verticalOverlay) {
     distToVerticalGridBeingHit -= 0.01;
@@ -502,8 +502,10 @@ const castRaySection = ({
   let offsetRatio: number;
   let horizontalBody: RaycastableBody;
   let verticalBody: RaycastableBody;
-  let horizontalOverlay: Side | false | undefined;
-  let verticalOverlay: Side | false | undefined;
+  // Default false rather than left unassigned: a ray that never enters a
+  // stepping loop still reports "no overlay here" rather than `undefined`.
+  let horizontalOverlay = false;
+  let verticalOverlay = false;
   let side: Side | undefined;
   let rayEndPoint: Point;
   let initialCellBody: RaycastableBody;
@@ -573,7 +575,7 @@ const castRaySection = ({
 
       horizontalCell = world.getCell(xGridIndex, yGridIndex)!;
 
-      horizontalOverlay = !ignoreOverlay && horizontalCell.overlay;
+      horizontalOverlay = !ignoreOverlay && !!horizontalCell.overlay;
 
       if (
         (horizontalCell.blocking && horizontalCell.height > elavation) ||
@@ -743,7 +745,7 @@ const castRaySection = ({
 
       verticalCell = world.getCell(xGridIndex, yGridIndex)!;
 
-      verticalOverlay = !ignoreOverlay && verticalCell.overlay;
+      verticalOverlay = !ignoreOverlay && !!verticalCell.overlay;
 
       if (
         (verticalCell.blocking && verticalCell.height > elavation) ||

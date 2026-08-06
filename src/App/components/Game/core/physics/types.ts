@@ -57,8 +57,8 @@ export interface RaycastableWorld {
  * A single wall layer hit by a ray.
  *
  * Note `isHorizontal` is absent (not `false`) when the ray hit a vertical grid
- * line, and `isOverlay` holds the overlay `Side` itself rather than a boolean.
- * Both quirks are load-bearing for the POV renderer.
+ * line — a quirk the POV renderer relies on. When `isOverlay` is set, the
+ * overlay itself is `cell.overlay`, not this flag.
  */
 export interface Ray {
   startPoint: Point;
@@ -69,7 +69,7 @@ export interface Ray {
   side: Side | undefined;
   cell: Cell;
   angle: number;
-  isOverlay: Side | false | undefined;
+  isOverlay: boolean;
 }
 
 export interface CastRayOptions {
