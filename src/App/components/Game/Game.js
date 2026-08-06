@@ -2,7 +2,7 @@ import { GAME_ASSETS, SCENE_TYPES } from '@constants/assets';
 import { DEBUG } from '@constants/config';
 import { Application } from './core/graphics';
 import { InputController } from './core/input';
-import { SCREEN, LEVEL, MAX_FPS } from '@constants/config';
+import { SCREEN, LEVEL, MAX_FPS, IS_DEV } from '@constants/config';
 import TitleScene from './scenes/TitleScene';
 import WorldScene from './scenes/WorldScene';
 import CreditsScene from './scenes/CreditsScene';
@@ -31,7 +31,7 @@ export default class Game {
   async init() {
     await this.app.init({
       autoStart: false,
-      hello: Boolean(DEBUG),
+      hello: IS_DEV,
       width: SCREEN.WIDTH,
       height: SCREEN.HEIGHT,
     });

@@ -12,6 +12,13 @@ const parseNumParam = (key, fallback = 0) => {
   return !Number.isNaN(num) ? num : fallback;
 };
 
+/**
+ * True under `npm run dev`, false in anything `vite build` produces — including
+ * `npm run preview`, which serves the built output. Statically replaced at
+ * build time, so guarded code is dropped from the bundle rather than shipped.
+ */
+export const IS_DEV = import.meta.env.DEV;
+
 export const DEBUG = parseNumParam('debug');
 
 export const LEVEL = parseNumParam('level', 1);
