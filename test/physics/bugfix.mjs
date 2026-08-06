@@ -4,6 +4,12 @@ import * as OLD from '@baseline';
 import * as NEW from '@game/core/physics';
 
 const CELL = 32;
+
+// The baseline's World takes (grid, bodies); the live one takes an options
+// object. A signature change, not a behavioural one.
+const makeWorld = (M, grid, bodies) =>
+  M === OLD ? new M.World(grid, bodies) : new M.World({ grid, bodies });
+
 let failed = false;
 const ok = (name, cond, detail) => {
   console.log(
@@ -115,7 +121,7 @@ ok('bug1: square bodies byte-identical to before (120 angles)', squareSame);
 // Build a world whose perimeter has a hole and fire straight out of it.
 // ---------------------------------------------------------------------------
 const buildLeakyWorld = M => {
-  const { Cell, World } = M;
+  const { Cell } = M;
   const N = 8;
   const grid = [];
   for (let gx = 0; gx < N; gx++) {
@@ -139,7 +145,7 @@ const buildLeakyWorld = M => {
     }
     grid.push(col);
   }
-  return new World(grid, []);
+  return makeWorld(M, grid, []);
 };
 
 const fireOutOfBounds = M => {

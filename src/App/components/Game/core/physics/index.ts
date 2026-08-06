@@ -35,6 +35,8 @@ export type {
 export type { BodyOptions } from './components/Body';
 export type { CellOptions } from './components/Cell';
 export type { DynamicCellOptions } from './components/DynamicCell';
+export type { RayOptions } from './components/Ray';
+export type { WorldOptions } from './components/World';
 export type {
   BodyConstructor,
   DynamicBodyOptions,

@@ -7,6 +7,12 @@ import * as NEW from '@game/core/physics';
 const CELL_SIZE = 32;
 const SIZE = 24;
 
+// The baseline's World takes (grid, bodies); the live one takes an options
+// object. This is a signature change, not a behavioural one — everything the
+// harness compares is downstream of construction.
+const makeWorld = (M, grid, bodies) =>
+  M === OLD ? new M.World(grid, bodies) : new M.World({ grid, bodies });
+
 const mulberry32 = a => () => {
   a |= 0;
   a = (a + 0x6d2b79f5) | 0;
@@ -109,7 +115,7 @@ const makeCell = (M, gx, gy, rnd) => {
 };
 
 const buildWorld = M => {
-  const { Body, DynamicBody, World } = M;
+  const { Body, DynamicBody } = M;
   const rnd = mulberry32(0xc0ffee);
 
   const grid = [];
@@ -157,7 +163,7 @@ const buildWorld = M => {
     bodies.push(d);
   }
 
-  return { world: new World(grid, bodies), open, dynamic };
+  return { world: makeWorld(M, grid, bodies), open, dynamic };
 };
 
 // --- serialisation -------------------------------------------------------

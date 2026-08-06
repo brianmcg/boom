@@ -4,6 +4,11 @@ import type { RaycastableWorld } from '../types';
 import type Body from './Body';
 import type Cell from './Cell';
 
+export interface WorldOptions {
+  grid: Cell[][];
+  bodies: Body[];
+}
+
 /**
  * A fixed grid of cells plus every body standing on it.
  *
@@ -34,7 +39,7 @@ export default class World extends EventEmitter implements RaycastableWorld {
   readonly maxMapX: number;
   readonly maxMapY: number;
 
-  constructor(grid: Cell[][], bodies: Body[]) {
+  constructor({ grid, bodies }: WorldOptions) {
     super();
 
     this.grid = grid;

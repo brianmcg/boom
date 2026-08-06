@@ -32,7 +32,10 @@ export default class World extends PhysicsWorld {
     waypoints = [],
     spawnPoints = [],
   }) {
-    super(grid, [...enemies.filter(e => e.add), ...items, ...objects, player]);
+    super({
+      grid,
+      bodies: [...enemies.filter(e => e.add), ...items, ...objects, player],
+    });
 
     this.waypoints = waypoints.map(({ x, y }) => this.getCell(x, y));
     this.spawnPoints = spawnPoints.map(({ x, y }) => this.getCell(x, y));

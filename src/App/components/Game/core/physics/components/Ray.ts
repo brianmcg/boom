@@ -2,6 +2,18 @@ import type Body from './Body';
 import type Cell from './Cell';
 import type { Point, Side } from '../types';
 
+export interface RayOptions {
+  startPoint: Point;
+  endPoint: Point;
+  distance: number;
+  encounteredBodies: Record<string, Body>;
+  isHorizontal: boolean;
+  side: Side | undefined;
+  cell: Cell;
+  angle: number;
+  isOverlay: boolean;
+}
+
 /**
  * A single wall layer hit by a ray.
  *
@@ -9,26 +21,46 @@ import type { Point, Side } from '../types';
  * vertical grid line, which decides whether the texture is sampled along x or
  * y. When `isOverlay` is set, the overlay itself is `cell.overlay`, not the
  * flag — and `side` has already been resolved to it by the caster.
- *
- * Rays are allocated per screen column, per wall layer, every frame, so the
- * constructor does nothing but store its arguments. The parameter properties
- * emit as real class fields, which lets V8 build the hidden class from the
- * declaration rather than by transition on each assignment — measurably the
- * faster of the two shapes, and it fixes the property order at the one place
- * the order is written down.
  */
 export default class Ray {
-  constructor(
-    public startPoint: Point,
-    public endPoint: Point,
-    public distance: number,
-    public encounteredBodies: Record<string, Body>,
-    public isHorizontal: boolean,
-    public side: Side | undefined,
-    public cell: Cell,
-    public angle: number,
-    public isOverlay: boolean
-  ) {}
+  /** Rebased onto the original origin by {@link continueFrom}. */
+  startPoint: Point;
+
+  readonly endPoint: Point;
+
+  /** Measured from `startPoint`, so it grows as layers are stitched together. */
+  distance: number;
+
+  /** Keyed by body id. The record is fixed; its contents are not. */
+  readonly encounteredBodies: Record<string, Body>;
+
+  readonly isHorizontal: boolean;
+  readonly side: Side | undefined;
+  readonly cell: Cell;
+  readonly angle: number;
+  readonly isOverlay: boolean;
+
+  constructor({
+    startPoint,
+    endPoint,
+    distance,
+    encounteredBodies,
+    isHorizontal,
+    side,
+    cell,
+    angle,
+    isOverlay,
+  }: RayOptions) {
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+    this.distance = distance;
+    this.encounteredBodies = encounteredBodies;
+    this.isHorizontal = isHorizontal;
+    this.side = side;
+    this.cell = cell;
+    this.angle = angle;
+    this.isOverlay = isOverlay;
+  }
 
   /**
    * Stitches this ray onto the one from the previous wall layer.
