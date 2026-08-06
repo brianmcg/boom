@@ -21,10 +21,10 @@ const { FULL } = TRANSPARENCY;
 const HALF_CELL = CELL_SIZE / 2;
 
 const getLineLineIntersection = (
-  l1p1: Positioned,
-  l1p2: Positioned,
-  l2p1: Positioned,
-  l2p2: Positioned
+  l1p1: Point,
+  l1p2: Point,
+  l2p1: Point,
+  l2p2: Point
 ): RayCollision | null => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
@@ -75,10 +75,10 @@ const getLineLineIntersection = (
 };
 
 const lineIntersectsLine = (
-  l1p1: Positioned,
-  l1p2: Positioned,
-  l2p1: Positioned,
-  l2p2: Positioned
+  l1p1: Point,
+  l1p2: Point,
+  l2p1: Point,
+  l2p2: Point
 ): boolean => {
   let q =
     (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) -
@@ -107,27 +107,25 @@ const lineIntersectsLine = (
   return true;
 };
 
+/** The four corners of a shape, clockwise from its top-left. */
+const corners = ({ x, y, width, length }: Shape) => ({
+  topLeft: new Point(x, y),
+  topRight: new Point(x + width, y),
+  bottomRight: new Point(x + width, y + length),
+  bottomLeft: new Point(x, y + length),
+});
+
 export const isRayCollision = (
   body: { shape: Shape },
   { startPoint, endPoint }: Line
 ): boolean => {
-  const { x, y, width, length } = body.shape;
+  const { topLeft, topRight, bottomRight, bottomLeft } = corners(body.shape);
 
   return (
-    lineIntersectsLine(startPoint, endPoint, { x, y }, { x: x + width, y }) ||
-    lineIntersectsLine(
-      startPoint,
-      endPoint,
-      { x: x + width, y },
-      { x: x + width, y: y + length }
-    ) ||
-    lineIntersectsLine(
-      startPoint,
-      endPoint,
-      { x: x + width, y: y + length },
-      { x, y: y + length }
-    ) ||
-    lineIntersectsLine(startPoint, endPoint, { x, y: y + length }, { x, y })
+    lineIntersectsLine(startPoint, endPoint, topLeft, topRight) ||
+    lineIntersectsLine(startPoint, endPoint, topRight, bottomRight) ||
+    lineIntersectsLine(startPoint, endPoint, bottomRight, bottomLeft) ||
+    lineIntersectsLine(startPoint, endPoint, bottomLeft, topLeft)
   );
 };
 
@@ -135,33 +133,13 @@ export const getRayCollision = (
   body: { shape: Shape },
   { startPoint, endPoint }: Line
 ): RayCollision | null => {
-  const { x, y, width, length } = body.shape;
+  const { topLeft, topRight, bottomRight, bottomLeft } = corners(body.shape);
 
   return [
-    getLineLineIntersection(
-      startPoint,
-      endPoint,
-      { x, y },
-      { x: x + width, y }
-    ),
-    getLineLineIntersection(
-      startPoint,
-      endPoint,
-      { x: x + width, y },
-      { x: x + width, y: y + length }
-    ),
-    getLineLineIntersection(
-      startPoint,
-      endPoint,
-      { x: x + width, y: y + length },
-      { x, y: y + length }
-    ),
-    getLineLineIntersection(
-      startPoint,
-      endPoint,
-      { x, y: y + length },
-      { x, y }
-    ),
+    getLineLineIntersection(startPoint, endPoint, topLeft, topRight),
+    getLineLineIntersection(startPoint, endPoint, topRight, bottomRight),
+    getLineLineIntersection(startPoint, endPoint, bottomRight, bottomLeft),
+    getLineLineIntersection(startPoint, endPoint, bottomLeft, topLeft),
   ].reduce<RayCollision | null>((memo, intersection) => {
     if (!intersection) {
       return memo;
@@ -180,12 +158,12 @@ export const getRayCollision = (
 };
 
 export const isBodyCollision = (
-  bodyA: { x: number; y: number; shape: Shape; previousPos: Positioned },
+  bodyA: { x: number; y: number; shape: Shape; previousPos: Point },
   bodyB: { shape: Shape }
 ): boolean => {
   // Note: used for alternative collision detection.
   const startPoint = bodyA.previousPos;
-  const endPoint = { x: bodyA.x, y: bodyA.y };
+  const endPoint = new Point(bodyA.x, bodyA.y);
 
   const shapeA = bodyA.shape;
   const shapeB = bodyB.shape;
@@ -241,7 +219,7 @@ const castCellRay = ({
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
   const tanAngle = Math.tan(angle);
-  const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
+  const rayStart = new Point(x + cosAngle * radius, y + sinAngle * radius);
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
@@ -495,8 +473,8 @@ const castRaySection = ({
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
   const tanAngle = Math.tan(angle);
-  const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
-  const originPoint = { x, y };
+  const rayStart = new Point(x + cosAngle * radius, y + sinAngle * radius);
+  const originPoint = new Point(x, y);
 
   const initialCell = world.getCell(gridX, gridY)!;
 

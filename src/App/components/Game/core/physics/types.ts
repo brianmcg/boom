@@ -94,6 +94,7 @@
  * divergence explained in `test/physics/README.md`.
  */
 import type Cell from './components/Cell';
+import type Point from './components/Point';
 
 /**
  * Anything that has a position in world space — a body, a cell, an effect.
@@ -121,10 +122,13 @@ export interface Shape {
   length: number;
 }
 
-/** A line segment, as consumed by the intersection helpers. */
+/**
+ * A line segment. Its ends *are* positions, so they are {@link Point}s — not
+ * `Positioned`, which is for things that merely have one.
+ */
 export interface Line {
-  startPoint: Positioned;
-  endPoint: Positioned;
+  startPoint: Point;
+  endPoint: Point;
 }
 
 /**
@@ -137,8 +141,14 @@ export interface Side {
   spatter: number;
 }
 
-/** The point at which a ray crossed a line, and how far along the ray it was. */
-export interface RayCollision extends Positioned {
+/**
+ * Where a ray crossed a line, and how far along the ray it was. A record rather
+ * than a {@link Point}: it is returned as a plain literal and nothing asks it
+ * to behave like a position.
+ */
+export interface RayCollision {
+  x: number;
+  y: number;
   distance: number;
 }
 
