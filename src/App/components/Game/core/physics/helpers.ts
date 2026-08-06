@@ -562,10 +562,7 @@ const castRaySection = ({
                 xIntersection += distToNextXIntersection;
                 horizontalGrid += distToNextHorizontalGrid;
               }
-            } else if (
-              (xIntersection + xOffsetDist) % CELL_SIZE >
-              horizontalCell.offset.x
-            ) {
+            } else if (xOffsetHit > horizontalCell.offset.x) {
               xIntersection += xOffsetDist;
               horizontalGrid += yOffsetDist;
               distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
