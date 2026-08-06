@@ -1,6 +1,9 @@
 import { CELL_SIZE } from '@constants/config';
-import Body from './Body';
+import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
+import type { Point, Ray } from '../types';
+import type Cell from './Cell';
+import type World from './World';
 import {
   isBodyCollision,
   getAngleBetween,
@@ -17,13 +20,69 @@ const VELOCITY_LIMIT = CELL_SIZE / 2;
 
 const { FULL } = TRANSPARENCY;
 
+/** Any `Body` subclass, including abstract ones, usable as an `instanceof` test. */
+export type BodyConstructor = abstract new (...args: never[]) => Body;
+
+/**
+ * A subscription to collisions with one kind of body. `onStart` fires the frame
+ * a collision begins, `onComplete` the frame it ends.
+ */
+export interface TrackedCollision {
+  type: BodyConstructor;
+  onStart?: (body: Body) => void;
+  onComplete?: (body: Body) => void;
+}
+
+export interface DynamicBodyOptions extends BodyOptions {
+  angle?: number;
+  /** A weightless body passes through transparent cells. */
+  weight?: number;
+  autoPlay?: boolean;
+}
+
+/**
+ * A body that moves. Each update it steps along its own angle, resolves
+ * collisions against the bodies in the surrounding cells one axis at a time,
+ * and re-registers itself with whichever cell it ended up in.
+ */
 export default class DynamicBody extends Body {
-  constructor({ angle = 0, weight = 1, autoPlay = true, ...other } = {}) {
+  velocity: number;
+  angle: number;
+
+  readonly isDynamic = true;
+
+  weight: number;
+  autoPlay: boolean;
+
+  /** How many cells out to gather potential collisions from. */
+  readonly collisionRadius: number;
+
+  /** The cell this body currently stands on, or null while unparented. */
+  cell: Cell | null = null;
+
+  /**
+   * Where the body was before the current update, used to work out which side
+   * of a blocking body it hit.
+   *
+   * @internal Public only because the collision helpers live in another module.
+   */
+  previousPos: Point | null;
+
+  /** Bodies collided with during the last update. */
+  private collisions: Body[];
+
+  private trackedCollisions: TrackedCollision[];
+
+  constructor({
+    angle = 0,
+    weight = 1,
+    autoPlay = true,
+    ...other
+  }: DynamicBodyOptions = {}) {
     super(other);
 
     this.velocity = 0;
     this.angle = angle;
-    this.isDynamic = true;
     this.weight = weight;
     this.collisions = [];
     this.trackedCollisions = [];
@@ -32,7 +91,7 @@ export default class DynamicBody extends Body {
     this.collisionRadius = Math.ceil(this.width / CELL_SIZE);
   }
 
-  onAdded(parent) {
+  onAdded(parent: World) {
     this.parent = parent;
     this.cell = parent.getCell(this.gridX, this.gridY);
   }
@@ -42,38 +101,34 @@ export default class DynamicBody extends Body {
     this.cell = null;
   }
 
-  onCollision(callback) {
-    this.on(EVENTS.COLLISION, callback);
-  }
-
-  onCollisionStart(callback) {
+  onCollisionStart(callback: (body: Body) => void) {
     this.on(EVENTS.COLLISION_START, callback);
   }
 
-  onCollisionEnd(callback) {
+  onCollisionEnd(callback: (body: Body) => void) {
     this.on(EVENTS.COLLISION_END, callback);
   }
 
-  isBodyCollision(body) {
+  isBodyCollision(body: Body): boolean {
     return !(!this.weight && body.transparency) && isBodyCollision(this, body);
   }
 
-  update(delta) {
+  update(delta: number) {
     // Get bodies from surrounding cells
-    const bodies = this.parent.getNeighbourBodies(this, this.collisionRadius);
+    const bodies = this.parent!.getNeighbourBodies(this, this.collisionRadius);
 
-    const collisions = [];
+    const collisions: Body[] = [];
 
     const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
     const halfWidth = this.width / 2;
     const halfLength = this.length / 2;
 
-    this.previousPos.x = this.x;
-    this.previousPos.y = this.y;
+    this.previousPos!.x = this.x;
+    this.previousPos!.y = this.y;
 
     // Unmark id from cell before moving
-    this.cell.remove(this);
+    this.cell!.remove(this);
 
     // Update x coordinate
     this.x += Math.cos(this.angle) * velocity;
@@ -89,7 +144,7 @@ export default class DynamicBody extends Body {
           const { shape } = body;
           const { x, width } = shape;
 
-          if (this.previousPos.x < shape.x) {
+          if (this.previousPos!.x < shape.x) {
             this.x = x - halfWidth - 0.0001;
           } else {
             this.x = x + width + halfWidth;
@@ -112,7 +167,7 @@ export default class DynamicBody extends Body {
           const { shape } = body;
           const { y, length } = shape;
 
-          if (this.previousPos.y < shape.y) {
+          if (this.previousPos!.y < shape.y) {
             this.y = y - halfLength - 0.0001;
           } else {
             this.y = y + length + halfLength;
@@ -142,16 +197,17 @@ export default class DynamicBody extends Body {
     this.collisions = collisions;
 
     // Mark current cell with id
-    this.cell = this.parent.getCell(this.gridX, this.gridY);
-    this.cell.add(this);
+    this.cell = this.parent!.getCell(this.gridX, this.gridY);
+    this.cell!.add(this);
   }
 
-  castRay(rayAngle) {
+  /** Casts along the body's own angle unless one is given. Returns the last layer hit. */
+  castRay(rayAngle?: number): Ray {
     const rays = castRay({
       x: this.x,
       y: this.y,
       angle: rayAngle === undefined ? this.angle : rayAngle,
-      world: this.parent,
+      world: this.parent!,
     });
 
     return rays[rays.length - 1];
@@ -169,23 +225,23 @@ export default class DynamicBody extends Body {
     }
   }
 
-  isFacing(body) {
+  isFacing(body: Point): boolean {
     return isFacing(this, body);
   }
 
-  addTrackedCollision(options) {
+  addTrackedCollision(options: TrackedCollision) {
     this.trackedCollisions.push(options);
   }
 
-  isCollisionTracked(body) {
+  isCollisionTracked(body: Body): boolean {
     return this.trackedCollisions.some(c => body instanceof c.type);
   }
 
-  getAngleTo(body) {
+  getAngleTo(body: Point): number {
     return getAngleBetween(this, body);
   }
 
-  destroy(options) {
+  destroy(options?: unknown) {
     super.destroy(options);
 
     this.collisions = [];

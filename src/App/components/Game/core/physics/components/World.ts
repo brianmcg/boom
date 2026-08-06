@@ -1,8 +1,40 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
+import type { RaycastableWorld } from '../types';
+import type Body from './Body';
+import type Cell from './Cell';
 
-export default class World extends EventEmitter {
-  constructor(grid, bodies) {
+/**
+ * A fixed grid of cells plus every body standing on it.
+ *
+ * The world owns the spatial index: bodies are looked up through the cell they
+ * occupy rather than by scanning a flat list, which is what keeps collision and
+ * raycasting proportional to the neighbourhood instead of the map.
+ */
+export default class World extends EventEmitter implements RaycastableWorld {
+  grid: Cell[][];
+
+  /** Every body in the world, keyed by id. */
+  bodies: Record<string, Body>;
+
+  /** The subset of bodies currently receiving `update` calls. */
+  dynamicBodies: Body[];
+
+  /** Grid dimensions, in cells. */
+  readonly width: number;
+  readonly length: number;
+
+  /** The tallest cell in the grid, in world units. */
+  readonly height: number;
+
+  protected readonly maxCellX: number;
+  protected readonly maxCellY: number;
+
+  /** Grid bounds in world units, for clamping positions. */
+  readonly maxMapX: number;
+  readonly maxMapY: number;
+
+  constructor(grid: Cell[][], bodies: Body[]) {
     super();
 
     this.grid = grid;
@@ -32,13 +64,13 @@ export default class World extends EventEmitter {
     bodies.forEach(body => this.add(body));
   }
 
-  update(delta, elapsedMS) {
-    this.dynamicBodies.forEach(body => body.update(delta, elapsedMS));
+  update(delta: number, elapsedMS: number) {
+    this.dynamicBodies.forEach(body => body.update!(delta, elapsedMS));
   }
 
-  add(body) {
+  add(body: Body) {
     if (!this.bodies[body.id]) {
-      this.getCell(body.gridX, body.gridY).add(body);
+      this.getCell(body.gridX, body.gridY)!.add(body);
 
       if (body.autoPlay) {
         this.startUpdates(body);
@@ -52,9 +84,9 @@ export default class World extends EventEmitter {
     }
   }
 
-  remove(body) {
+  remove(body: Body) {
     this.stopUpdates(body);
-    this.getCell(body.gridX, body.gridY).remove(body);
+    this.getCell(body.gridX, body.gridY)!.remove(body);
 
     if (body.onRemoved) {
       body.onRemoved();
@@ -63,19 +95,20 @@ export default class World extends EventEmitter {
     delete this.bodies[body.id];
   }
 
-  startUpdates(body) {
+  startUpdates(body: Body) {
     if (body.update) {
       this.dynamicBodies.push(body);
     }
   }
 
-  stopUpdates(body) {
+  stopUpdates(body: Body) {
     if (body.update) {
       this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
     }
   }
 
-  getCell(x, y) {
+  /** Returns null outside the grid — callers on a guarded path may assume non-null. */
+  getCell(x: number, y: number): Cell | null {
     if (x >= 0 && x <= this.maxCellX && y >= 0 && y <= this.maxCellY) {
       return this.grid[x][y];
     }
@@ -83,12 +116,12 @@ export default class World extends EventEmitter {
     return null;
   }
 
-  setCell(x, y, cell) {
+  setCell(x: number, y: number, cell: Cell) {
     this.grid[x][y] = cell;
   }
 
-  getNeighbourCells(body, radius = 1) {
-    const cells = [];
+  getNeighbourCells(body: Body, radius = 1): Cell[] {
+    const cells: Cell[] = [];
     const { gridX, gridY } = body;
 
     for (let i = gridX - radius; i <= gridX + radius; i++) {
@@ -104,8 +137,9 @@ export default class World extends EventEmitter {
     return cells;
   }
 
-  getNeighbourBodies(body, radius = 1) {
-    const bodies = [];
+  /** Every body in the surrounding cells, plus the blocking cells themselves. */
+  getNeighbourBodies(body: Body, radius = 1): Body[] {
+    const bodies: Body[] = [];
     const { gridX, gridY } = body;
 
     for (let i = gridX - radius; i <= gridX + radius; i++) {
@@ -131,7 +165,7 @@ export default class World extends EventEmitter {
     return bodies;
   }
 
-  destroy() {
+  destroy(_options?: unknown) {
     this.removeAllListeners();
     this.grid.forEach(row => row.forEach(cell => cell.destroy()));
 

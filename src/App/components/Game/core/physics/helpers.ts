@@ -1,5 +1,16 @@
 import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
+import type {
+  CastRayOptions,
+  Line,
+  Point,
+  Ray,
+  RayCollision,
+  RaycastableBody,
+  RaycastableCell,
+  Shape,
+  Side,
+} from './types';
 
 const DEGREES = [...Array(361).keys()].map(
   degrees => (degrees * Math.PI) / 180
@@ -11,21 +22,26 @@ const { FULL } = TRANSPARENCY;
 
 const HALF_CELL = CELL_SIZE / 2;
 
-export const degrees = value => DEGREES[value];
+export const degrees = (value: number): number => DEGREES[value];
 
 const DEG_90 = degrees(90);
 const DEG_180 = degrees(180);
 const DEG_270 = degrees(270);
 const DEG_360 = degrees(360);
 
-export const getDistanceBetween = (bodyA, bodyB) => {
+export const getDistanceBetween = (bodyA: Point, bodyB: Point): number => {
   const dx = bodyA.x - bodyB.x;
   const dy = bodyA.y - bodyB.y;
 
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
+const getLineLineIntersection = (
+  l1p1: Point,
+  l1p2: Point,
+  l2p1: Point,
+  l2p2: Point
+): RayCollision | null => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
   const c1 = a1 * l1p1.x + b1 * l1p1.y;
@@ -74,7 +90,12 @@ const getLineLineIntersection = (l1p1, l1p2, l2p1, l2p2) => {
   return null;
 };
 
-const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
+const lineIntersectsLine = (
+  l1p1: Point,
+  l1p2: Point,
+  l2p1: Point,
+  l2p2: Point
+): boolean => {
   let q =
     (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) -
     (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
@@ -102,7 +123,10 @@ const lineIntersectsLine = (l1p1, l1p2, l2p1, l2p2) => {
   return true;
 };
 
-export const isRayCollision = (body, { startPoint, endPoint }) => {
+export const isRayCollision = (
+  body: { shape: Shape },
+  { startPoint, endPoint }: Line
+): boolean => {
   const { x, y, width, length } = body.shape;
 
   return (
@@ -123,7 +147,10 @@ export const isRayCollision = (body, { startPoint, endPoint }) => {
   );
 };
 
-export const getRayCollision = (body, { startPoint, endPoint }) => {
+export const getRayCollision = (
+  body: { shape: Shape },
+  { startPoint, endPoint }: Line
+): RayCollision | null => {
   const { x, y, width } = body.shape;
 
   return [
@@ -151,7 +178,7 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
       { x, y: y + width },
       { x, y }
     ),
-  ].reduce((memo, intersection) => {
+  ].reduce<RayCollision | null>((memo, intersection) => {
     if (!intersection) {
       return memo;
     }
@@ -168,9 +195,12 @@ export const getRayCollision = (body, { startPoint, endPoint }) => {
   }, null);
 };
 
-export const isBodyCollision = (bodyA, bodyB) => {
+export const isBodyCollision = (
+  bodyA: { x: number; y: number; shape: Shape; previousPos: Point | null },
+  bodyB: { shape: Shape }
+): boolean => {
   // Note: used for alternative collision detection.
-  const startPoint = bodyA.previousPos;
+  const startPoint = bodyA.previousPos!;
   const endPoint = { x: bodyA.x, y: bodyA.y };
 
   const shapeA = bodyA.shape;
@@ -185,7 +215,7 @@ export const isBodyCollision = (bodyA, bodyB) => {
   return collision || isRayCollision(bodyB, { startPoint, endPoint });
 };
 
-export const getAngleBetween = (bodyA, bodyB) => {
+export const getAngleBetween = (bodyA: Point, bodyB: Point): number => {
   const dx = bodyB.x - bodyA.x;
   const dy = bodyB.y - bodyA.y;
 
@@ -194,11 +224,20 @@ export const getAngleBetween = (bodyA, bodyB) => {
   return angle < 0 ? angle + DEG_360 : angle;
 };
 
-export const isFacing = (bodyA, bodyB) => {
+export const isFacing = (
+  bodyA: Point & { angle: number },
+  bodyB: Point
+): boolean => {
   const angle =
     (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
   return angle > DEG_270 || angle < DEG_90;
 };
+
+interface CastCellRayOptions extends CastRayOptions {
+  gridX: number;
+  gridY: number;
+  initialCell: RaycastableCell;
+}
 
 const castCellRay = ({
   x,
@@ -209,22 +248,20 @@ const castCellRay = ({
   gridX,
   gridY,
   initialCell,
-}) => {
-  let horizontalGrid;
-  let verticalGrid;
-  let distToHorizontalGridBeingHit;
-  let distToVerticalGridBeingHit;
-  let xIntersection;
-  let yIntersection;
-  let xOffsetHit;
-  let yOffsetHit;
+}: CastCellRayOptions): Ray | null => {
+  let horizontalGrid: number;
+  let verticalGrid: number;
+  let distToHorizontalGridBeingHit: number;
+  let distToVerticalGridBeingHit: number;
+  let xIntersection: number;
+  let yIntersection: number;
+  let xOffsetHit: number;
+  let yOffsetHit: number;
 
-  let horizontalOverlay;
-  let verticalOverlay;
-  let side;
-  let rayEndPoint;
-  let initialCellBody;
-  const encounteredBodies = {};
+  let side: Side | undefined;
+  let rayEndPoint: Point;
+  let initialCellBody: RaycastableBody;
+  const encounteredBodies: Record<string, RaycastableBody> = {};
 
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
@@ -260,7 +297,7 @@ const castCellRay = ({
 
   distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
 
-  horizontalOverlay =
+  const horizontalOverlay =
     initialCell.axis === X && !ignoreOverlay && initialCell.overlay;
 
   if (horizontalOverlay) {
@@ -296,7 +333,7 @@ const castCellRay = ({
 
   distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
 
-  verticalOverlay =
+  const verticalOverlay =
     initialCell.axis === Y && !ignoreOverlay && initialCell.overlay;
 
   if (verticalOverlay) {
@@ -445,38 +482,40 @@ const castRaySection = ({
   ignoreOverlay = true,
   elavation = 0,
   radius = 0,
-}) => {
-  let horizontalGrid;
-  let verticalGrid;
-  let distToNextHorizontalGrid;
-  let distToNextVerticalGrid;
-  let distToHorizontalGridBeingHit;
-  let distToVerticalGridBeingHit;
-  let distToNextXIntersection;
-  let distToNextYIntersection;
-  let xIntersection;
-  let yIntersection;
-  let xGridIndex;
-  let yGridIndex;
-  let xOffsetDist;
-  let yOffsetDist;
-  let xOffsetHit;
-  let yOffsetHit;
-  let initialCell;
-  let horizontalCell;
-  let verticalCell;
-  let offsetRatio;
-  let horizontalBody;
-  let verticalBody;
-  let horizontalOverlay;
-  let verticalOverlay;
-  let side;
-  let rayEndPoint;
-  let initialCellBody;
-  let encounteredBodyValues;
-  let encounterdBody;
+}: CastRayOptions): Ray => {
+  let horizontalGrid: number;
+  let verticalGrid: number;
+  let distToNextHorizontalGrid: number;
+  let distToNextVerticalGrid: number;
+  let distToHorizontalGridBeingHit: number;
+  let distToVerticalGridBeingHit: number;
+  let distToNextXIntersection: number;
+  let distToNextYIntersection: number;
+  let xIntersection: number;
+  let yIntersection: number;
+  let xGridIndex: number;
+  let yGridIndex: number;
+  let xOffsetDist: number;
+  let yOffsetDist: number;
+  let xOffsetHit: number;
+  let yOffsetHit: number;
+  // Assigned inside the grid-stepping loops below. The `!` preserves the
+  // existing behaviour on the paths where a loop exits without ever running:
+  // see the note above the final `distToHorizontalGridBeingHit` comparison.
+  let horizontalCell!: RaycastableCell;
+  let verticalCell!: RaycastableCell;
+  let offsetRatio: number;
+  let horizontalBody: RaycastableBody;
+  let verticalBody: RaycastableBody;
+  let horizontalOverlay: Side | false | undefined;
+  let verticalOverlay: Side | false | undefined;
+  let side: Side | undefined;
+  let rayEndPoint: Point;
+  let initialCellBody: RaycastableBody;
+  let encounteredBodyValues: RaycastableBody[];
+  let encounterdBody: RaycastableBody;
 
-  const encounteredBodies = {};
+  const encounteredBodies: Record<string, RaycastableBody> = {};
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);
 
@@ -486,7 +525,7 @@ const castRaySection = ({
   const rayStart = { x: x + cosAngle * radius, y: y + sinAngle * radius };
   const originPoint = { x, y };
 
-  initialCell = world.getCell(gridX, gridY);
+  const initialCell = world.getCell(gridX, gridY)!;
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
@@ -528,7 +567,7 @@ const castRaySection = ({
         break;
       }
 
-      horizontalCell = world.getCell(xGridIndex, yGridIndex);
+      horizontalCell = world.getCell(xGridIndex, yGridIndex)!;
 
       horizontalOverlay = !ignoreOverlay && horizontalCell.overlay;
 
@@ -698,7 +737,7 @@ const castRaySection = ({
         break;
       }
 
-      verticalCell = world.getCell(xGridIndex, yGridIndex);
+      verticalCell = world.getCell(xGridIndex, yGridIndex)!;
 
       verticalOverlay = !ignoreOverlay && verticalCell.overlay;
 
@@ -927,11 +966,18 @@ const castRaySection = ({
   };
 };
 
-export const castRay = ({ x, y, angle, world, checkInitialCell, ...other }) => {
-  let currentRay;
-  let previousRay;
+export const castRay = ({
+  x,
+  y,
+  angle,
+  world,
+  checkInitialCell,
+  ...other
+}: CastRayOptions): Ray[] => {
+  let currentRay: Ray | null | undefined;
+  let previousRay: Ray | undefined;
 
-  const result = [];
+  const result: Ray[] = [];
   const rayAngle = angle % DEG_90 === 0 ? angle + 0.0001 : angle;
   const startPoint = { x, y };
 
@@ -962,7 +1008,7 @@ export const castRay = ({ x, y, angle, world, checkInitialCell, ...other }) => {
       if (checkInitialCell) {
         const gridX = Math.floor(x / CELL_SIZE);
         const gridY = Math.floor(y / CELL_SIZE);
-        const initialCell = world.getCell(gridX, gridY);
+        const initialCell = world.getCell(gridX, gridY)!;
 
         if (initialCell.offset.x || initialCell.offset.y) {
           currentRay = castCellRay(

@@ -11,4 +11,19 @@ export default [
     ...config,
     files: ['**/*.ts'],
   })),
+  {
+    files: ['**/*.ts'],
+    rules: {
+      // Match tsconfig's noUnusedLocals/noUnusedParameters, which already treat
+      // a leading underscore as "deliberately unused".
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
 ];
