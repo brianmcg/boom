@@ -1,19 +1,20 @@
 import { DEG_360 } from '../degrees';
-import type { PointLike } from '../types';
+import type { Positioned } from '../types';
 
 export const getDistanceBetween = (
-  bodyA: PointLike,
-  bodyB: PointLike
+  from: Positioned,
+  to: Positioned
 ): number => {
-  const dx = bodyA.x - bodyB.x;
-  const dy = bodyA.y - bodyB.y;
+  const dx = from.x - to.x;
+  const dy = from.y - to.y;
 
   return Math.sqrt(dx * dx + dy * dy);
 };
 
-export const getAngleBetween = (bodyA: PointLike, bodyB: PointLike): number => {
-  const dx = bodyB.x - bodyA.x;
-  const dy = bodyB.y - bodyA.y;
+/** Radians from `from` to `to`, normalised to `[0, 2π)`. */
+export const getAngleBetween = (from: Positioned, to: Positioned): number => {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
 
   const angle = Math.atan2(dy, dx) % DEG_360;
 
@@ -26,13 +27,12 @@ export const getAngleBetween = (bodyA: PointLike, bodyB: PointLike): number => {
  * Per the module's house style this is a value object, so it takes its two
  * numbers positionally rather than an options object.
  *
- * Use `Point` for a field that *holds* a position, and {@link PointLike} for a
- * parameter that merely *reads* one — `Body` and `Cell` carry their own
- * `x`/`y` and are handed to these helpers directly, so a signature demanding a
- * real `Point` would reject them. The two functions above stay free functions
- * for exactly that reason: their commonest callers are bodies, not points.
+ * `Point` is for a field that *holds* a position. Anything that merely *has*
+ * one — a body, a cell, an effect — is {@link Positioned}, which is why the two
+ * functions above are free functions taking that instead of methods on this
+ * class: in practice nobody passes a `Point` to them at all.
  */
-export default class Point implements PointLike {
+export default class Point implements Positioned {
   x: number;
   y: number;
 
@@ -41,11 +41,11 @@ export default class Point implements PointLike {
     this.y = y;
   }
 
-  distanceTo(other: PointLike): number {
+  distanceTo(other: Positioned): number {
     return getDistanceBetween(this, other);
   }
 
-  angleTo(other: PointLike): number {
+  angleTo(other: Positioned): number {
     return getAngleBetween(this, other);
   }
 }

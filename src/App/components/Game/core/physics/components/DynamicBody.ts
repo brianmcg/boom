@@ -1,7 +1,7 @@
 import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
-import type { PointLike } from '../types';
+import type { Positioned } from '../types';
 import { DEG_360 } from '../degrees';
 import Point, { getAngleBetween } from './Point';
 import type Ray from './Ray';
@@ -260,7 +260,7 @@ export default class DynamicBody extends Body {
     }
   }
 
-  isFacing(body: PointLike): boolean {
+  isFacing(body: Positioned): boolean {
     return isFacing(this, body);
   }
 
@@ -272,7 +272,7 @@ export default class DynamicBody extends Body {
     return this.trackedCollisions.some(c => body instanceof c.type);
   }
 
-  getAngleTo(body: PointLike): number {
+  getAngleTo(body: Positioned): number {
     return getAngleBetween(this, body);
   }
 

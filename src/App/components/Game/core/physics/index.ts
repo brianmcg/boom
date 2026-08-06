@@ -28,7 +28,7 @@ export type { Axis, Transparency } from './constants';
 export type {
   CastRayOptions,
   Line,
-  PointLike,
+  Positioned,
   RayCollision,
   RaycastableWorld,
   Shape,

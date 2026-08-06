@@ -6,7 +6,7 @@ import Point, { getDistanceBetween, getAngleBetween } from './components/Point';
 import type {
   CastRayOptions,
   Line,
-  PointLike,
+  Positioned,
   RayCollision,
   Shape,
   Side,
@@ -21,10 +21,10 @@ const { FULL } = TRANSPARENCY;
 const HALF_CELL = CELL_SIZE / 2;
 
 const getLineLineIntersection = (
-  l1p1: PointLike,
-  l1p2: PointLike,
-  l2p1: PointLike,
-  l2p2: PointLike
+  l1p1: Positioned,
+  l1p2: Positioned,
+  l2p1: Positioned,
+  l2p2: Positioned
 ): RayCollision | null => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
@@ -75,10 +75,10 @@ const getLineLineIntersection = (
 };
 
 const lineIntersectsLine = (
-  l1p1: PointLike,
-  l1p2: PointLike,
-  l2p1: PointLike,
-  l2p2: PointLike
+  l1p1: Positioned,
+  l1p2: Positioned,
+  l2p1: Positioned,
+  l2p2: Positioned
 ): boolean => {
   let q =
     (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) -
@@ -180,7 +180,7 @@ export const getRayCollision = (
 };
 
 export const isBodyCollision = (
-  bodyA: { x: number; y: number; shape: Shape; previousPos: PointLike },
+  bodyA: { x: number; y: number; shape: Shape; previousPos: Positioned },
   bodyB: { shape: Shape }
 ): boolean => {
   // Note: used for alternative collision detection.
@@ -200,8 +200,8 @@ export const isBodyCollision = (
 };
 
 export const isFacing = (
-  bodyA: PointLike & { angle: number },
-  bodyB: PointLike
+  bodyA: Positioned & { angle: number },
+  bodyB: Positioned
 ): boolean => {
   const angle =
     (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;

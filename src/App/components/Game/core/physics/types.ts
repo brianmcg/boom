@@ -96,15 +96,19 @@
 import type Cell from './components/Cell';
 
 /**
- * Anything with a position in world space. Units are world units, not grid
- * cells.
+ * Anything that has a position in world space — a body, a cell, an effect.
+ * Units are world units, not grid cells.
  *
- * This is the *parameter* type: `Body` and `Cell` carry their own `x`/`y` and
- * are handed to the point helpers directly, so a signature demanding a real
- * {@link Point} would reject them. Fields that hold a position use the `Point`
- * class instead.
+ * This is what "how far to that thing" and "am I facing it" take. They do not
+ * want a {@link Point}; they want something located, and read its coordinates.
+ * It cannot be `Body`, because `Effect` has a position without being one.
+ *
+ * Weak on purpose: `{ x, y }` cannot tell world space from screen space, so a
+ * Pixi sprite would satisfy it too. Enforcing that needs a branded type and an
+ * explicit opt-in on every class, which is not worth it for a mistake nobody
+ * has made. Fields that *hold* a position use the `Point` class.
  */
-export interface PointLike {
+export interface Positioned {
   x: number;
   y: number;
 }
@@ -119,8 +123,8 @@ export interface Shape {
 
 /** A line segment, as consumed by the intersection helpers. */
 export interface Line {
-  startPoint: PointLike;
-  endPoint: PointLike;
+  startPoint: Positioned;
+  endPoint: Positioned;
 }
 
 /**
@@ -134,7 +138,7 @@ export interface Side {
 }
 
 /** The point at which a ray crossed a line, and how far along the ray it was. */
-export interface RayCollision extends PointLike {
+export interface RayCollision extends Positioned {
   distance: number;
 }
 
