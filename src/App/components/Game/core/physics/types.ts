@@ -32,15 +32,20 @@
  * merely quiet, leave it writable.
  *
  * **`private` means nothing outside the class touches it** — accessor backing
- * fields, and bookkeeping like `DynamicBody.collisions`. Five fields in the
+ * fields, and bookkeeping like `DynamicBody.collisions`. Three fields in the
  * module; everything else is public. There is no `protected`: it was down to
  * one field and one method, which does not earn a third thing to remember. Add
  * it back if a class ever genuinely needs a hierarchy-only member.
  *
  * The two stack where both are true, and that is not a third category:
- * `World.maxCellX` is `private readonly` because only `getCell` reads it *and*
- * it is fixed by the grid. `collisions` is private and mutable; `Body.width` is
- * public and readonly.
+ * `collisions` is private and mutable, `Body.width` is public and readonly, and
+ * a field can be both.
+ *
+ * If a field's visibility feels arbitrary, check whether it should exist at
+ * all. `World` used to cache `maxCellX = width - 1` for `getCell`'s bounds
+ * check; it was private only because nothing outside asked for cell-space
+ * bounds, while the identical fact in world units (`maxMapX`) is public and
+ * widely used. The question had no good answer because the field was redundant.
  *
  * **A leading `_` marks an accessor's backing field, nothing else.** It is not
  * a privacy convention — it is forced, because `get angle()` cannot read a

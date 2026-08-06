@@ -32,9 +32,6 @@ export default class World extends EventEmitter implements RaycastableWorld {
   /** The tallest cell in the grid, in world units. */
   height: number;
 
-  private readonly maxCellX: number;
-  private readonly maxCellY: number;
-
   /** Grid bounds in world units, for clamping positions. */
   readonly maxMapX: number;
   readonly maxMapY: number;
@@ -48,9 +45,6 @@ export default class World extends EventEmitter implements RaycastableWorld {
 
     this.width = this.grid.length;
     this.length = this.grid[0].length;
-
-    this.maxCellX = this.width - 1;
-    this.maxCellY = this.length - 1;
 
     this.maxMapX = this.width * CELL_SIZE - 1;
     this.maxMapY = this.length * CELL_SIZE - 1;
@@ -114,7 +108,7 @@ export default class World extends EventEmitter implements RaycastableWorld {
 
   /** Returns null outside the grid — callers on a guarded path may assume non-null. */
   getCell(x: number, y: number): Cell | null {
-    if (x >= 0 && x <= this.maxCellX && y >= 0 && y <= this.maxCellY) {
+    if (x >= 0 && x < this.width && y >= 0 && y < this.length) {
       return this.grid[x][y];
     }
 
