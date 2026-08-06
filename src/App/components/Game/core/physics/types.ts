@@ -114,14 +114,6 @@ export interface Positioned {
   y: number;
 }
 
-/** An axis-aligned bounding box, positioned by its top-left corner. */
-export interface Shape {
-  x: number;
-  y: number;
-  width: number;
-  length: number;
-}
-
 /**
  * A line segment. Its ends *are* positions, so they are {@link Point}s — not
  * `Positioned`, which is for things that merely have one.

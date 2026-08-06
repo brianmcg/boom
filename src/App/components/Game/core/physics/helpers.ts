@@ -3,12 +3,12 @@ import { AXES, TRANSPARENCY } from './constants';
 import { DEG_90, DEG_180, DEG_270, DEG_360 } from './degrees';
 import Ray from './components/Ray';
 import Point, { getDistanceBetween, getAngleBetween } from './components/Point';
+import type Shape from './components/Shape';
 import type {
   CastRayOptions,
   Line,
   Positioned,
   RayCollision,
-  Shape,
   Side,
 } from './types';
 import type Body from './components/Body';
@@ -107,19 +107,11 @@ const lineIntersectsLine = (
   return true;
 };
 
-/** The four corners of a shape, clockwise from its top-left. */
-const corners = ({ x, y, width, length }: Shape) => ({
-  topLeft: new Point(x, y),
-  topRight: new Point(x + width, y),
-  bottomRight: new Point(x + width, y + length),
-  bottomLeft: new Point(x, y + length),
-});
-
 export const isRayCollision = (
   body: { shape: Shape },
   { startPoint, endPoint }: Line
 ): boolean => {
-  const { topLeft, topRight, bottomRight, bottomLeft } = corners(body.shape);
+  const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
 
   return (
     lineIntersectsLine(startPoint, endPoint, topLeft, topRight) ||
@@ -133,7 +125,7 @@ export const getRayCollision = (
   body: { shape: Shape },
   { startPoint, endPoint }: Line
 ): RayCollision | null => {
-  const { topLeft, topRight, bottomRight, bottomLeft } = corners(body.shape);
+  const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
 
   return [
     getLineLineIntersection(startPoint, endPoint, topLeft, topRight),
@@ -161,20 +153,16 @@ export const isBodyCollision = (
   bodyA: { x: number; y: number; shape: Shape; previousPos: Point },
   bodyB: { shape: Shape }
 ): boolean => {
-  // Note: used for alternative collision detection.
+  if (bodyA.shape.overlaps(bodyB.shape)) {
+    return true;
+  }
+
+  // Overlapping where it stands is the common case; this catches a body that
+  // moved far enough in one frame to pass clean through the other.
   const startPoint = bodyA.previousPos;
   const endPoint = new Point(bodyA.x, bodyA.y);
 
-  const shapeA = bodyA.shape;
-  const shapeB = bodyB.shape;
-
-  const collision =
-    shapeA.x < shapeB.x + shapeB.width &&
-    shapeA.x + shapeA.width > shapeB.x &&
-    shapeA.y < shapeB.y + shapeB.length &&
-    shapeA.length + shapeA.y > shapeB.y;
-
-  return collision || isRayCollision(bodyB, { startPoint, endPoint });
+  return isRayCollision(bodyB, { startPoint, endPoint });
 };
 
 export const isFacing = (

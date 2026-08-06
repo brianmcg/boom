@@ -8,7 +8,7 @@
 // engine cell, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
-import { DynamicBody, World } from '@game/core/physics';
+import { DynamicBody, Shape, World } from '@game/core/physics';
 import Cell from '@engine/Cell.js';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
@@ -121,6 +121,32 @@ ok(
   wall.closed !== before,
   `closed went ${before} -> ${wall.closed}`
 );
+
+// --- an opened door still produces a real Shape ---------------------------
+// Door.get shape() overrides Body's with its own geometry while the door is
+// open, and Door.js is unchecked JavaScript -- so nothing but this notices if
+// it goes back to returning an object literal. It would still have x/y/width/
+// length, and would still pass every type check, but `shape.corners()` in the
+// raycaster would throw at render time.
+const openDoor = new Door({
+  ...base,
+  axis: 'y',
+  offset: 1,
+  interval: 500,
+  soundSprite,
+  sounds,
+});
+
+openDoor.offset.x = CELL; // fully open, which is what selects the override
+openDoor.offset.y = CELL;
+
+ok('an open door has a Shape, not a literal', openDoor.shape instanceof Shape);
+ok(
+  'and that shape can find its corners',
+  typeof openDoor.shape.corners === 'function' &&
+    openDoor.shape.corners().topLeft.x === openDoor.shape.x
+);
+ok('a closed door falls back to Body.shape', door.shape instanceof Shape);
 
 // --- DynamicBody.angle is always in [0, 2pi) ------------------------------
 // The raycaster picks its quadrant branch by comparing the angle against

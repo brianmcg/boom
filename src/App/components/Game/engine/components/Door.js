@@ -1,5 +1,6 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
+import { Shape } from '@game/core/physics';
 import DynamicCell from './DynamicCell';
 
 const STATES = {
@@ -196,24 +197,24 @@ export default class Door extends DynamicCell {
           ? this.offset.x
           : CELL_SIZE - this.offset.x + this.width;
 
-        return {
-          x: this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
-          y: this.y - HALF_CELL_SIZE + this.offset.y,
-          width: this.width,
-          length: this.length,
-        };
+        return new Shape(
+          this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
+          this.y - HALF_CELL_SIZE + this.offset.y,
+          this.width,
+          this.length
+        );
       }
 
       const offsetY = this.reverse
         ? this.offset.y
         : CELL_SIZE - this.offset.y + this.length;
 
-      return {
-        x: this.x - HALF_CELL_SIZE + this.offset.x,
-        y: this.y - HALF_CELL_SIZE + (CELL_SIZE - offsetY),
-        width: this.width,
-        length: this.length,
-      };
+      return new Shape(
+        this.x - HALF_CELL_SIZE + this.offset.x,
+        this.y - HALF_CELL_SIZE + (CELL_SIZE - offsetY),
+        this.width,
+        this.length
+      );
     }
 
     return super.shape;

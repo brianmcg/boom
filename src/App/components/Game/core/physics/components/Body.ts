@@ -1,7 +1,8 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Transparency } from '../constants';
-import type { Line, Positioned, RayCollision, Shape } from '../types';
+import type { Line, Positioned, RayCollision } from '../types';
+import Shape from './Shape';
 import type World from './World';
 import { getDistanceBetween } from './Point';
 import { isRayCollision, getRayCollision } from '../helpers';
@@ -187,13 +188,14 @@ export class Body extends EventEmitter {
     return Math.floor(this.y / CELL_SIZE);
   }
 
+  /** The body's box, converted from centre-positioned to top-left-positioned. */
   get shape(): Shape {
-    return {
-      x: this.x - this.width / 2,
-      y: this.y - this.length / 2,
-      width: this.width,
-      length: this.length,
-    };
+    return new Shape(
+      this.x - this.width / 2,
+      this.y - this.length / 2,
+      this.width,
+      this.length
+    );
   }
 }
 
