@@ -49,7 +49,7 @@ export default class GraphicsCreator {
 
   static createRenderTexture(options) {
     const texture = RenderTexture.create(options);
-    GraphicsCache.addTexture(texture);
+    GraphicsCache.addRenderTexture(texture);
     return texture;
   }
 
@@ -109,7 +109,7 @@ export default class GraphicsCreator {
     maskBackground.destroy();
     maskForeground.destroy();
 
-    GraphicsCache.addTexture(renderTexture);
+    GraphicsCache.addRenderTexture(renderTexture);
 
     return renderTexture;
   }
