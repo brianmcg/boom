@@ -2,12 +2,12 @@ import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
 import type { Positioned } from '../types';
-import { DEG_360 } from '../degrees';
+import { DEG_90, DEG_270, DEG_360 } from '../degrees';
 import Point, { getAngleBetween } from './Point';
 import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
-import { isBodyCollision, castRay, isFacing } from '../helpers';
+import { lineIntersectsBody, castRay } from '../helpers';
 
 const EVENTS = {
   COLLISION_START: 'body:collision:start',
@@ -145,7 +145,21 @@ export default class DynamicBody extends Body {
   }
 
   isBodyCollision(body: Body): boolean {
-    return !(!this.weight && body.transparency) && isBodyCollision(this, body);
+    // A weightless body passes through anything rays can see through.
+    if (!this.weight && body.transparency) {
+      return false;
+    }
+
+    if (this.shape.overlaps(body.shape)) {
+      return true;
+    }
+
+    // Overlapping where it stands is the common case; this catches a body that
+    // moved far enough in one frame to pass clean through the other.
+    return lineIntersectsBody(body, {
+      startPoint: this.previousPos,
+      endPoint: new Point(this.x, this.y),
+    });
   }
 
   update(delta: number) {
@@ -260,8 +274,21 @@ export default class DynamicBody extends Body {
     }
   }
 
-  isFacing(body: Positioned): boolean {
-    return isFacing(this, body);
+  /**
+   * The direction this body considers itself to be looking, which is not
+   * always the direction it is moving. The player faces where its camera
+   * points, so `Player` overrides this with its view angle.
+   */
+  get facingAngle(): number {
+    return this.angle;
+  }
+
+  /** Whether `target` lies within the half-turn this body is facing. */
+  isFacing(target: Positioned): boolean {
+    const angle =
+      (getAngleBetween(this, target) - this.facingAngle + DEG_360) % DEG_360;
+
+    return angle > DEG_270 || angle < DEG_90;
   }
 
   addTrackedCollision(options: TrackedCollision) {

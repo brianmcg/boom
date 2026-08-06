@@ -1,17 +1,10 @@
 ﻿import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
-import { DEG_90, DEG_180, DEG_270, DEG_360 } from './degrees';
+import { DEG_90, DEG_180, DEG_270 } from './degrees';
 import Ray from './components/Ray';
-import Point, { getDistanceBetween, getAngleBetween } from './components/Point';
-import type {
-  CastRayOptions,
-  Line,
-  Positioned,
-  RayCollision,
-  Side,
-} from './types';
+import Point, { getDistanceBetween } from './components/Point';
+import type { CastRayOptions, Line, Intersection, Side } from './types';
 import type Body from './components/Body';
-import type DynamicBody from './components/DynamicBody';
 import type Cell from './components/Cell';
 
 const { X, Y } = AXES;
@@ -25,7 +18,7 @@ const getLineLineIntersection = (
   l1p2: Point,
   l2p1: Point,
   l2p2: Point
-): RayCollision | null => {
+): Intersection | null => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
   const c1 = a1 * l1p1.x + b1 * l1p1.y;
@@ -107,7 +100,7 @@ const lineIntersectsLine = (
   return true;
 };
 
-export const isRayCollision = (
+export const lineIntersectsBody = (
   body: Body,
   { startPoint, endPoint }: Line
 ): boolean => {
@@ -121,10 +114,10 @@ export const isRayCollision = (
   );
 };
 
-export const getRayCollision = (
+export const getLineBodyIntersection = (
   body: Body,
   { startPoint, endPoint }: Line
-): RayCollision | null => {
+): Intersection | null => {
   const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
 
   return [
@@ -132,7 +125,7 @@ export const getRayCollision = (
     getLineLineIntersection(startPoint, endPoint, topRight, bottomRight),
     getLineLineIntersection(startPoint, endPoint, bottomRight, bottomLeft),
     getLineLineIntersection(startPoint, endPoint, bottomLeft, topLeft),
-  ].reduce<RayCollision | null>((memo, intersection) => {
+  ].reduce<Intersection | null>((memo, intersection) => {
     if (!intersection) {
       return memo;
     }
@@ -147,28 +140,6 @@ export const getRayCollision = (
 
     return memo;
   }, null);
-};
-
-export const isBodyCollision = (bodyA: DynamicBody, bodyB: Body): boolean => {
-  if (bodyA.shape.overlaps(bodyB.shape)) {
-    return true;
-  }
-
-  // Overlapping where it stands is the common case; this catches a body that
-  // moved far enough in one frame to pass clean through the other.
-  const startPoint = bodyA.previousPos;
-  const endPoint = new Point(bodyA.x, bodyA.y);
-
-  return isRayCollision(bodyB, { startPoint, endPoint });
-};
-
-export const isFacing = (
-  bodyA: Positioned & { angle: number },
-  bodyB: Positioned
-): boolean => {
-  const angle =
-    (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
-  return angle > DEG_270 || angle < DEG_90;
 };
 
 interface CastCellRayOptions extends CastRayOptions {
@@ -322,7 +293,7 @@ const castCellRay = ({
       if (
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
-        isRayCollision(initialCellBody, {
+        lineIntersectsBody(initialCellBody, {
           startPoint: rayStart,
           endPoint: rayEndPoint,
         })
@@ -391,7 +362,7 @@ const castCellRay = ({
     if (
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
-      isRayCollision(initialCellBody, {
+      lineIntersectsBody(initialCellBody, {
         startPoint: rayStart,
         endPoint: rayEndPoint,
       })
@@ -818,7 +789,7 @@ const castRaySection = ({
       if (
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
-        isRayCollision(initialCellBody, {
+        lineIntersectsBody(initialCellBody, {
           startPoint: rayStart,
           endPoint: rayEndPoint,
         })
@@ -833,7 +804,7 @@ const castRaySection = ({
       encounterdBody = encounteredBodyValues[i];
 
       if (
-        !isRayCollision(encounterdBody, {
+        !lineIntersectsBody(encounterdBody, {
           startPoint: originPoint,
           endPoint: rayEndPoint,
         })
@@ -870,7 +841,7 @@ const castRaySection = ({
     if (
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
-      isRayCollision(initialCellBody, {
+      lineIntersectsBody(initialCellBody, {
         startPoint: rayStart,
         endPoint: rayEndPoint,
       })
@@ -885,7 +856,7 @@ const castRaySection = ({
     encounterdBody = encounteredBodyValues[i];
 
     if (
-      !isRayCollision(encounterdBody, {
+      !lineIntersectsBody(encounterdBody, {
         startPoint: new Point(x, y),
         endPoint: rayEndPoint,
       })

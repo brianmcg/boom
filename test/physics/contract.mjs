@@ -8,7 +8,7 @@
 // engine cell, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
-import { DynamicBody, Shape, World } from '@game/core/physics';
+import { DynamicBody, Point, Shape, World } from '@game/core/physics';
 import Cell from '@engine/Cell.js';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
@@ -191,6 +191,76 @@ for (let i = 0; i < 2000; i++) {
   if (body.angle !== v) exact = false;
 }
 ok('an in-range angle is stored bit-for-bit', exact);
+
+// --- Body's line-intersection API, as HitScan calls it --------------------
+// HitScan.js:52 does `body.getLineIntersection({ startPoint, endPoint })` and
+// is unchecked JavaScript, so a rename that misses it type-checks, lints and
+// builds clean, then throws the first time a hitscan weapon is fired. This is
+// the only thing that would notice.
+const blocker = new Cell({
+  x: CELL * 4 + CELL / 2,
+  y: CELL * 4 + CELL / 2,
+  width: CELL,
+  length: CELL,
+  height: CELL,
+  blocking: true,
+  sides: {},
+});
+
+const throughIt = {
+  startPoint: new Point(CELL * 2, CELL * 4 + CELL / 2),
+  endPoint: new Point(CELL * 6, CELL * 4 + CELL / 2),
+};
+
+const pastIt = {
+  startPoint: new Point(CELL * 2, CELL * 9),
+  endPoint: new Point(CELL * 6, CELL * 9),
+};
+
+ok(
+  'Body.intersectsLine exists and finds a crossing',
+  blocker.intersectsLine(throughIt) === true
+);
+ok('and reports a miss as false', blocker.intersectsLine(pastIt) === false);
+
+const hit = blocker.getLineIntersection(throughIt);
+
+ok('Body.getLineIntersection exists and returns a hit', hit !== null);
+ok(
+  'the hit carries a position and a distance',
+  typeof hit.x === 'number' &&
+    typeof hit.y === 'number' &&
+    typeof hit.distance === 'number'
+);
+eq('and it is the near edge, not the far one', hit.x, CELL * 4);
+eq('a miss returns null', blocker.getLineIntersection(pastIt), null);
+
+// --- isFacing reads facingAngle, so a subclass can redirect it ------------
+// Player faces where its camera points rather than where its body moves, and
+// used to say so by copying the whole of isFacing with viewAngle substituted.
+// It now overrides facingAngle alone, so this is the seam that makes that work.
+const looker = new DynamicBody({ x: 100, y: 100, angle: 0 });
+const ahead = { x: 200, y: 100 };
+const behind = { x: 0, y: 100 };
+
+eq('facingAngle defaults to the body angle', looker.facingAngle, looker.angle);
+ok('a body faces what is in front of it', looker.isFacing(ahead));
+ok('and not what is behind it', !looker.isFacing(behind));
+
+looker.angle = Math.PI; // turn around
+ok('turning the body turns what it faces', looker.isFacing(behind));
+
+// What Player does: keep the body angle, redirect only the facing.
+class Viewer extends DynamicBody {
+  get facingAngle() {
+    return 0; // "camera" still pointing along +x
+  }
+}
+
+const viewer = new Viewer({ x: 100, y: 100, angle: Math.PI });
+eq('the override wins over the body angle', viewer.facingAngle, 0);
+ok('and isFacing follows the override, not the body', viewer.isFacing(ahead));
+ok('so the body angle no longer decides', !viewer.isFacing(behind));
 
 // --- DynamicBody.velocity is clamped where it is used ---------------------
 // Deliberately not clamped on write: `velocity` is a plain field, and the limit

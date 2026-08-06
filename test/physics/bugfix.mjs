@@ -10,6 +10,18 @@ const CELL = 32;
 const makeWorld = (M, grid, bodies) =>
   M === OLD ? new M.World(grid, bodies) : new M.World({ grid, bodies });
 
+// Same story for the two line-intersection methods. The baseline called them
+// isRayCollision/getRayCollision, back when only the raycaster used them; they
+// are lineIntersectsBody/getLineBodyIntersection now, exposed on Body as
+// intersectsLine/getLineIntersection. Renames, not behaviour.
+const intersects = (body, line) =>
+  body.intersectsLine ? body.intersectsLine(line) : body.isRayCollision(line);
+
+const intersection = (body, line) =>
+  body.getLineIntersection
+    ? body.getLineIntersection(line)
+    : body.getRayCollision(line);
+
 let failed = false;
 const ok = (name, cond, detail) => {
   console.log(
@@ -36,8 +48,8 @@ const makeBody = M =>
 const startPoint = { x: bx, y: by - 100 };
 const endPoint = { x: bx, y: by + 100 };
 
-const oldHit = makeBody(OLD).getRayCollision({ startPoint, endPoint });
-const newHit = makeBody(NEW).getRayCollision({ startPoint, endPoint });
+const oldHit = intersection(makeBody(OLD), { startPoint, endPoint });
+const newHit = intersection(makeBody(NEW), { startPoint, endPoint });
 
 const expectedY = by - L / 2;
 ok(
@@ -51,11 +63,11 @@ ok(
 const phantomY = by + (L / 2 + W / 2) / 2; // between by+4 (real edge) and by+20
 const phantomSp = { x: bx - 100, y: phantomY };
 const phantomEp = { x: bx + 100, y: phantomY };
-const oldPhantom = makeBody(OLD).getRayCollision({
+const oldPhantom = intersection(makeBody(OLD), {
   startPoint: phantomSp,
   endPoint: phantomEp,
 });
-const newPhantom = makeBody(NEW).getRayCollision({
+const newPhantom = intersection(makeBody(NEW), {
   startPoint: phantomSp,
   endPoint: phantomEp,
 });
@@ -85,14 +97,14 @@ for (let dy = -W; dy <= W; dy += 1) {
   const sp = { x: bx - 100, y: by + dy };
   const ep = { x: bx + 100, y: by + dy };
   const b = makeBody(NEW);
-  const hit = !!b.getRayCollision({ startPoint: sp, endPoint: ep });
-  const isHit = b.isRayCollision({ startPoint: sp, endPoint: ep });
+  const hit = !!intersection(b, { startPoint: sp, endPoint: ep });
+  const isHit = intersects(b, { startPoint: sp, endPoint: ep });
   if (hit !== isHit) agree = false;
 
   const ob = makeBody(OLD);
   if (
-    !!ob.getRayCollision({ startPoint: sp, endPoint: ep }) !==
-    ob.isRayCollision({ startPoint: sp, endPoint: ep })
+    !!intersection(ob, { startPoint: sp, endPoint: ep }) !==
+    intersects(ob, { startPoint: sp, endPoint: ep })
   )
     disagreeOld++;
 }
@@ -109,8 +121,8 @@ for (let a = 0; a < 360; a += 3) {
   const sp = { x: bx + Math.cos(ang) * 90, y: by + Math.sin(ang) * 90 };
   const ep = { x: bx - Math.cos(ang) * 90, y: by - Math.sin(ang) * 90 };
   const mk = M => new M.Body({ x: bx, y: by, width: 24, length: 24 });
-  const o = mk(OLD).getRayCollision({ startPoint: sp, endPoint: ep });
-  const n = mk(NEW).getRayCollision({ startPoint: sp, endPoint: ep });
+  const o = intersection(mk(OLD), { startPoint: sp, endPoint: ep });
+  const n = intersection(mk(NEW), { startPoint: sp, endPoint: ep });
   if (JSON.stringify(o) !== JSON.stringify(n)) squareSame = false;
 }
 ok('bug1: square bodies byte-identical to before (120 angles)', squareSame);

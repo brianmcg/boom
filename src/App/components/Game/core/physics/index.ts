@@ -31,7 +31,7 @@ export type {
   CastRayOptions,
   Line,
   Positioned,
-  RayCollision,
+  Intersection,
   RaycastableWorld,
   Side,
 } from './types';

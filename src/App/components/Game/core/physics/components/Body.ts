@@ -1,11 +1,11 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Transparency } from '../constants';
-import type { Line, Positioned, RayCollision } from '../types';
+import type { Line, Positioned, Intersection } from '../types';
 import Shape from './Shape';
 import type World from './World';
 import { getDistanceBetween } from './Point';
-import { isRayCollision, getRayCollision } from '../helpers';
+import { lineIntersectsBody, getLineBodyIntersection } from '../helpers';
 
 let idCount = 0;
 
@@ -147,12 +147,12 @@ export class Body extends EventEmitter {
     }
   }
 
-  isRayCollision(ray: Line): boolean {
-    return isRayCollision(this, ray);
+  intersectsLine(line: Line): boolean {
+    return lineIntersectsBody(this, line);
   }
 
-  getRayCollision(ray: Line): RayCollision | null {
-    return getRayCollision(this, ray);
+  getLineIntersection(line: Line): Intersection | null {
+    return getLineBodyIntersection(this, line);
   }
 
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */

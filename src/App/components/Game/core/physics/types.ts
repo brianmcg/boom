@@ -80,7 +80,7 @@
  *
  * `null` marks a slot that held a value and was cleared, or a lookup that
  * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
- * of bounds, `getRayCollision()` with no intersection. `undefined` marks
+ * of bounds, `getLineBodyIntersection()` with no crossing. `undefined` marks
  * something never supplied — a constructor option left off, or a cell face the
  * map data never defined. That is why `Ray.side` is `Side | undefined` rather
  * than `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
@@ -138,7 +138,7 @@ export interface Side {
  * than a {@link Point}: it is returned as a plain literal and nothing asks it
  * to behave like a position.
  */
-export interface RayCollision {
+export interface Intersection {
   x: number;
   y: number;
   distance: number;

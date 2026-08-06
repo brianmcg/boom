@@ -13,8 +13,6 @@ import Hand from './components/Hand';
 import KeyCard from './components/KeyCard';
 
 const DEG_360 = degrees(360);
-const DEG_270 = degrees(270);
-const DEG_90 = degrees(90);
 const HEIGHT_INCREMENT = CELL_SIZE / 32;
 const DEATH_INTERVAL = 1500;
 const DYING_HEIGHT_FADE = 0.2;
@@ -624,9 +622,12 @@ export default class Player extends AbstractActor {
     return true;
   }
 
-  isFacing(body) {
-    const angle = (this.getAngleTo(body) - this.viewAngle + DEG_360) % DEG_360;
-    return angle > DEG_270 || angle < DEG_90;
+  /**
+   * The player looks where the camera points, not where its body is moving.
+   * Supplying just the angle is enough — `DynamicBody.isFacing` does the rest.
+   */
+  get facingAngle() {
+    return this.viewAngle;
   }
 
   shake(amount) {

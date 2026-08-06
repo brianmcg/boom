@@ -49,7 +49,7 @@ export default class HitScan extends Body {
     const collisions = Object.values(encounteredBodies)
       .reduce((memo, body) => {
         if (body.blocking) {
-          const point = body.getRayCollision({ startPoint, endPoint });
+          const point = body.getLineIntersection({ startPoint, endPoint });
 
           if (point) {
             memo.push({ body, point });
