@@ -274,9 +274,13 @@ export default class WorldGraphics extends SceneGraphics {
 
     maskContainer.filters = [];
     filter.destroy();
-    maskForeground.destroy({ texture: true });
-    maskBackground.destroy({ texture: true });
-    floorOffset.destroy({ texture: true });
+
+    // Sprites only, never their textures. maskForeground holds an atlas
+    // texture the wall sprites are still drawing, and the two RectangleSprites
+    // share the global Texture.WHITE. See the note in GraphicsCreator.
+    maskForeground.destroy();
+    maskBackground.destroy();
+    floorOffset.destroy();
     maskContainer.destroy();
 
     return sprite;

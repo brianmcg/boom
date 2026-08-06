@@ -1,17 +1,13 @@
 import { Assets } from 'pixi.js';
-import GraphicsCache from './GraphicsCache';
 
 export default class GraphicsLoader {
   static async load(src) {
-    const assets = await Assets.load(src);
-
-    if (assets.textures) {
-      Object.values(assets.textures).forEach(texture =>
-        GraphicsCache.addTexture(texture)
-      );
-    }
-
-    return assets;
+    // Deliberately not registered with GraphicsCache. Textures that come out of
+    // Assets belong to Assets, and `unload()` below is how they are released —
+    // destroying their TextureSource behind its back both warns and leaves
+    // Assets holding freed handles. Only textures this app creates itself
+    // (render targets, generated masks) are the cache's to destroy.
+    return Assets.load(src);
   }
 
   static unload(src = GraphicsLoader.cacheKeys) {

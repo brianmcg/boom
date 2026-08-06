@@ -41,7 +41,9 @@ export default class GraphicsCreator {
 
   static createTexture(source, frame) {
     const texture = new Texture({ source, frame });
+
     GraphicsCache.addTexture(texture);
+
     return texture;
   }
 
@@ -55,8 +57,12 @@ export default class GraphicsCreator {
     const sprite = new RectangleSprite(options);
 
     if (cache) {
+      // The sprite is ours to destroy; its texture is not. A RectangleSprite
+      // draws the global `Texture.WHITE`, shared by every rectangle in the
+      // game, and the cache destroys what it holds with `destroy(true)` —
+      // which would take the singleton's source with it, for good. It is never
+      // recreated, so the next scene to bind it renders a null resource.
       GraphicsCache.addSprite(sprite);
-      GraphicsCache.addTexture(sprite.texture);
     }
 
     return sprite;
@@ -92,9 +98,16 @@ export default class GraphicsCreator {
 
     maskContainer.filters = [];
     filter.destroy();
-    maskContainer.destroy({ texture: true });
-    maskBackground.destroy({ texture: true });
-    maskForeground.destroy({ texture: true });
+
+    // Sprites only, never their textures: maskBackground holds the global
+    // Texture.WHITE that every RectangleSprite shares, and maskForeground holds
+    // a texture from the loaded atlas that the caller is still drawing.
+    // Destroying either frees it for the whole application — Texture.WHITE is a
+    // singleton and is never recreated — and the next thing to bind it renders
+    // a null resource. Only renderTexture is ours, and GraphicsCache owns it.
+    maskContainer.destroy();
+    maskBackground.destroy();
+    maskForeground.destroy();
 
     GraphicsCache.addTexture(renderTexture);
 
