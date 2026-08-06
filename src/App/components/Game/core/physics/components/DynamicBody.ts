@@ -44,24 +44,10 @@ export interface DynamicBodyOptions extends BodyOptions {
  * and re-registers itself with whichever cell it ended up in.
  */
 export default class DynamicBody extends Body {
-  private _velocity = 0;
   private _angle = 0;
 
-  /**
-   * How fast the body moves, in world units per frame.
-   *
-   * Clamped on write rather than at the point of use, so the stored value and
-   * the value that actually moves the body are the same number. Callers set
-   * this from weapon knockback, enemy chase speed and player input, none of
-   * which knows about the limit.
-   */
-  get velocity(): number {
-    return this._velocity;
-  }
-
-  set velocity(value: number) {
-    this._velocity = value > VELOCITY_LIMIT ? VELOCITY_LIMIT : value;
-  }
+  /** How fast the body moves, in world units per frame. */
+  velocity: number;
 
   /**
    * Which way the body faces, in radians, always within `[0, 2π)`.
@@ -90,11 +76,11 @@ export default class DynamicBody extends Body {
   readonly isDynamic = true;
 
   /** A weightless body passes through transparent cells. */
-  readonly weight: number;
+  weight: number;
 
-  readonly autoPlay: boolean;
+  autoPlay: boolean;
 
-  /** How many cells out to gather potential collisions from. */
+  /** How many cells out to gather potential collisions from. Fixed by width. */
   readonly collisionRadius: number;
 
   /** The cell this body currently stands on, or null while unparented. */
@@ -106,7 +92,7 @@ export default class DynamicBody extends Body {
    *
    * @internal Public only because the collision helpers live in another module.
    */
-  readonly previousPos: Point;
+  previousPos: Point;
 
   /** Bodies collided with during the last update. */
   private collisions: Body[];
@@ -168,7 +154,7 @@ export default class DynamicBody extends Body {
 
     const collisions: Body[] = [];
 
-    const velocity = Math.min(this._velocity * delta, VELOCITY_LIMIT);
+    const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
 
     const halfWidth = this.width / 2;
     const halfLength = this.length / 2;

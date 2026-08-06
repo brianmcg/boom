@@ -15,41 +15,50 @@
  * options object for one required value adds nothing. Any further exception
  * belongs in this comment rather than just happening.
  *
- * ## What a field's modifier means
+ * ## Modifiers
  *
- * > `private` if nothing outside the class touches it; otherwise `public`. Add
- * > `readonly` if nothing reassigns it after the constructor.
+ * Two independent questions, not one scale. `private`/`public` is *who* may
+ * touch a field; `readonly` is *when* it may be written. A field can be both,
+ * either or neither.
  *
- * Two visibility levels, not three. There is no `protected` in this module: it
- * was down to one field and one method, and a third tier every reader has to
- * carry is not worth that. If a class ever genuinely needs a hierarchy-only
- * member, add it back for that case rather than reserving it in advance.
+ * **`readonly` means the value is part of what the object is** — change it and
+ * you have a different object. `Body.id`, `width`, `length`, `anchor`;
+ * `DynamicBody.collisionRadius`; `World.grid` and its dimensions; the whole of
+ * `Ray` bar the two fields `continueFrom` rebases.
  *
- * `private` is the only call here, and it is not a judgement — try it, and the
- * compiler says whether it was true. One caveat until `engine/` is TypeScript:
- * `checkJs: false` hides the JS call sites, so approximate what compiles by
- * grepping, excluding `core/ai` and `graph.grid[...]` — `GridNode` has
- * `weight`, `parent` and `closed` fields whose names collide with these.
+ * Not "nothing assigns it today". That basis was tried and it churns: it
+ * locked `Cell.transparency` because current maps happen not to animate a
+ * wall, which is a fact about content rather than about cells. If a field is
+ * merely quiet, leave it writable.
  *
- * Relaxing a modifier because a new call site needs the field is the rule
- * working, not a breach of it.
+ * **`private` means nothing outside the class touches it** — accessor backing
+ * fields, and bookkeeping like `DynamicBody.collisions`. Six fields in the
+ * module; everything else is public. There is no `protected`: it was down to
+ * one field and one method, which does not earn a third thing to remember. Add
+ * it back if a class ever genuinely needs a hierarchy-only member.
  *
- * `readonly` forces a value through the constructor, since a subclass cannot
- * assign a base class's `readonly` — that is why `Cell`'s whole contract
- * (`isDoor`, `closed`, …) arrives as options rather than being set by `Door`
- * and friends.
+ * Relaxing a modifier because a new call site needs the field is these rules
+ * working, not a breach of them. Until `engine/` is TypeScript, `checkJs:
+ * false` hides the JS call sites, so `private` has to be checked by grepping —
+ * exclude `core/ai` and `graph.grid[...]`, since `GridNode` has `weight`,
+ * `parent` and `closed` fields whose names collide with these.
  *
- * Two things sit outside the rule:
+ * Two things sit outside all of that:
  *
- * - **Value types**, for an invariant that belongs to the value rather than to
+ * - **Value types**, for an invariant belonging to the value rather than to
  *   the field holding it, so it holds everywhere the value goes — including in
  *   locals no setter could see.
- * - **Accessors**, only where a write must be normalised or clamped
- *   (`DynamicBody.angle`, `velocity`). A pair that just reads and writes its
- *   own backing field is indirection, not encapsulation. And an invariant a
- *   setter cannot actually enforce belongs in a method — see `Body.reindex`,
- *   which is not an `x`/`y` setter precisely because `DynamicBody.update`
- *   would have to bypass it.
+ * - **Accessors**, only where a write must be normalised or clamped, and only
+ *   when there is a real defect behind it. `DynamicBody.angle` is the only one:
+ *   an un-normalised angle made the raycaster step the wrong way. `velocity`
+ *   had one too and lost it — the limit belongs to how far a body may travel in
+ *   an update, not to what a caller may ask for, so it stayed at the point of
+ *   use. A pair that just reads and writes its own backing field is
+ *   indirection, not encapsulation.
+ *
+ * An invariant a setter cannot actually enforce belongs in a method — see
+ * `Body.reindex`, which is not an `x`/`y` setter precisely because
+ * `DynamicBody.update` would have to bypass it.
  *
  * ## Absence
  *

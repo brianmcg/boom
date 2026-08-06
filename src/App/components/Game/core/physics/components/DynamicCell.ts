@@ -18,7 +18,7 @@ export default class DynamicCell extends Cell {
 
   readonly isDynamic = true;
 
-  readonly autoPlay: boolean;
+  autoPlay: boolean;
 
   constructor({ speed, autoPlay = false, ...other }: DynamicCellOptions) {
     super(other);

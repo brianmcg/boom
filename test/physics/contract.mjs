@@ -166,19 +166,15 @@ for (let i = 0; i < 2000; i++) {
 }
 ok('an in-range angle is stored bit-for-bit', exact);
 
-// --- DynamicBody.velocity is clamped on write ------------------------------
-// It used to be clamped at the point of use, so the stored value and the value
-// that actually moved the body were different numbers.
+// --- DynamicBody.velocity is clamped where it is used ---------------------
+// Deliberately not clamped on write: `velocity` is a plain field, and the limit
+// applies to how far a body may travel in one update, not to what a caller may
+// ask for. Asserted through update() rather than through the field, since the
+// field is not where the guarantee lives.
 const VELOCITY_LIMIT = 16; // CELL_SIZE / 2
 
-body.velocity = 4;
-eq('velocity under the limit is untouched', body.velocity, 4);
-
 body.velocity = 999;
-eq('velocity over the limit is clamped', body.velocity, VELOCITY_LIMIT);
-
-body.velocity = -3;
-eq('negative velocity is left alone (bodies reverse)', body.velocity, -3);
+eq('velocity stores whatever it is given', body.velocity, 999);
 
 // --- setPos keeps the world's cell index in sync --------------------------
 // The world finds bodies through the cell they stand on. setPos used to move a
@@ -222,6 +218,27 @@ mover.setPos({ x: 2 * CELL + CELL / 2, y: 3 * CELL + CELL / 2 });
 ok('setPos registers the body on its new cell', to.bodies.includes(mover));
 ok('setPos unregisters it from the old one', !from.bodies.includes(mover));
 ok('setPos refreshes the cached cell', mover.cell === to);
+
+// The velocity limit, asserted where it actually applies: a body given an
+// absurd velocity may still only travel VELOCITY_LIMIT in one update.
+const sprinter = new DynamicBody({
+  x: CELL / 2,
+  y: 2 * CELL + CELL / 2,
+  angle: 0,
+  width: 8,
+  length: 8,
+});
+world.add(sprinter);
+sprinter.velocity = 9999;
+
+const startX = sprinter.x;
+world.update(1, 16);
+
+ok(
+  'an absurd velocity still moves the body at most the limit',
+  sprinter.x - startX <= VELOCITY_LIMIT,
+  `moved ${(sprinter.x - startX).toFixed(2)} of a possible 9999`
+);
 
 // Moving within one cell must not churn the index.
 const occupants = to.bodies.length;

@@ -30,7 +30,7 @@ export default class World extends EventEmitter implements RaycastableWorld {
   readonly length: number;
 
   /** The tallest cell in the grid, in world units. */
-  readonly height: number;
+  height: number;
 
   private readonly maxCellX: number;
   private readonly maxCellY: number;

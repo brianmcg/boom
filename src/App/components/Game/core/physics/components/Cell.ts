@@ -37,38 +37,36 @@ export default class Cell extends Body {
    * Which way a sliding cell is aligned. Falsy on a plain cell, which the
    * raycaster reads as a solid, immovable wall.
    */
-  readonly axis?: Axis;
+  axis?: Axis;
+
+  /** How far the cell has slid open, in world units, per axis. */
+  offset: Point;
 
   /**
-   * How far the cell has slid open, in world units, per axis. The `Point` is
-   * fixed; `Door` and `PushWall` animate its `x`/`y`.
-   */
-  readonly offset: Point;
-
-  /**
-   * Everything below is fixed when the cell is built and never changes
-   * afterwards, so subclasses pass these through `super()` rather than
-   * assigning them — a `readonly` declared here cannot be written from a
-   * subclass constructor.
+   * The contract the raycaster reads. Subclasses configure it by passing these
+   * through `super()` rather than assigning them afterwards — that is the house
+   * style for options, not a restriction. Nothing currently changes them once a
+   * cell is built, but nothing stops you: a wall that turns transparent
+   * mid-level is a feature, not a violation.
    */
 
   /** Whether rays pass through this cell into the next wall layer. */
-  readonly transparency: Transparency;
+  transparency: Transparency;
 
-  readonly isDoor: boolean;
-  readonly isPushWall: boolean;
+  isDoor: boolean;
+  isPushWall: boolean;
 
   /** A door that opens from the middle outwards rather than sliding one way. */
-  readonly double: boolean;
+  double: boolean;
 
   /** Inverts which side of the cell the offset is applied from. */
-  readonly reverse: boolean;
+  reverse: boolean;
 
   /** Renderer hint: this cell has no open face, so nothing behind it is drawn. */
-  readonly closed: boolean;
+  closed: boolean;
 
   /** Renderer hint: this cell sits on the edge of the map. */
-  readonly edge: boolean;
+  edge: boolean;
 
   /**
    * The texture drawn on each face. Left to the game layer to populate, and
