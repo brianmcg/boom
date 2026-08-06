@@ -11,43 +11,24 @@ import type { Point, Side } from '../types';
  * flag — and `side` has already been resolved to it by the caster.
  *
  * Rays are allocated per screen column, per wall layer, every frame, so the
- * constructor stays plain assignments. Declare the fields in the order the
- * constructor assigns them: the declarations give V8 a complete hidden class
- * up front, which measures faster than letting the assignments build one by
- * transition, and it keeps the property order matching the rest of the module.
+ * constructor does nothing but store its arguments. The parameter properties
+ * emit as real class fields, which lets V8 build the hidden class from the
+ * declaration rather than by transition on each assignment — measurably the
+ * faster of the two shapes, and it fixes the property order at the one place
+ * the order is written down.
  */
 export default class Ray {
-  startPoint: Point;
-  endPoint: Point;
-  distance: number;
-  encounteredBodies: Record<string, Body>;
-  isHorizontal: boolean;
-  side: Side | undefined;
-  cell: Cell;
-  angle: number;
-  isOverlay: boolean;
-
   constructor(
-    startPoint: Point,
-    endPoint: Point,
-    distance: number,
-    encounteredBodies: Record<string, Body>,
-    isHorizontal: boolean,
-    side: Side | undefined,
-    cell: Cell,
-    angle: number,
-    isOverlay: boolean
-  ) {
-    this.startPoint = startPoint;
-    this.endPoint = endPoint;
-    this.distance = distance;
-    this.encounteredBodies = encounteredBodies;
-    this.isHorizontal = isHorizontal;
-    this.side = side;
-    this.cell = cell;
-    this.angle = angle;
-    this.isOverlay = isOverlay;
-  }
+    public startPoint: Point,
+    public endPoint: Point,
+    public distance: number,
+    public encounteredBodies: Record<string, Body>,
+    public isHorizontal: boolean,
+    public side: Side | undefined,
+    public cell: Cell,
+    public angle: number,
+    public isOverlay: boolean
+  ) {}
 
   /**
    * Stitches this ray onto the one from the previous wall layer.
