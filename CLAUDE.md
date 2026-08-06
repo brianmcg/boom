@@ -101,6 +101,28 @@ Nulling plain fields does **not** help the GC. JavaScript collects by reachabili
 
 So when adding a stateful field, wire it into `destroy()` only if it owns a Pixi/Howler resource or a subscription.
 
+### pixi.js is pinned to 8.16.0 — do not bump without reading this
+
+**8.17.0 changed `BindGroup.onResourceChange`** so that destroying a texture destroys the entire bind group holding it, rather than just nulling that one slot:
+
+```js
+// 8.16 and earlier — the bind group survives, minus one resource
+if (resource.destroyed) {
+  for (const i in this.resources) {
+    if (this.resources[i] === resource) this.resources[i] = null;
+  }
+}
+
+// 8.17+ — the bind group is destroyed, `resources` becomes null
+if (resource.destroyed) this.destroy();
+```
+
+Scene teardown destroys textures — `GraphicsCache.clear()` and, unavoidably, `Assets.unload()`. Under 8.17+ that kills the bind group of any shader still holding one, including shaders Pixi keeps across scenes (`AlphaMaskPipe` borrows its `MaskFilter` from `BigPool`). The shader is then dead for the rest of the session and the next render throws `Cannot read properties of null (reading '0')` from `BindGroup.getResource`.
+
+The symptom is a crash two scene transitions later, never on the first, which makes it look unrelated to teardown. Reproduce with title → level → title → level.
+
+8.19.0 (the current `latest`) still has it. Before unpinning, check `node_modules/pixi.js/lib/rendering/renderers/gpu/shader/BindGroup.mjs` for `this.destroy()` inside `onResourceChange`.
+
 ### i18n
 
 `src/util/translate` picks `en`/`fr` (`src/util/translate/en.js`/`fr.js`) based on `navigator.language`, falling back to `DEFAULT_LANGUAGE` (`en`). Strings support `{KEY}`-style placeholders via the `keys` option (camelCase key → `CONSTANT_CASE` placeholder).
