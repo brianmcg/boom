@@ -32,10 +32,21 @@
  * merely quiet, leave it writable.
  *
  * **`private` means nothing outside the class touches it** — accessor backing
- * fields, and bookkeeping like `DynamicBody.collisions`. Six fields in the
+ * fields, and bookkeeping like `DynamicBody.collisions`. Five fields in the
  * module; everything else is public. There is no `protected`: it was down to
  * one field and one method, which does not earn a third thing to remember. Add
  * it back if a class ever genuinely needs a hierarchy-only member.
+ *
+ * The two stack where both are true, and that is not a third category:
+ * `World.maxCellX` is `private readonly` because only `getCell` reads it *and*
+ * it is fixed by the grid. `collisions` is private and mutable; `Body.width` is
+ * public and readonly.
+ *
+ * **A leading `_` marks an accessor's backing field, nothing else.** It is not
+ * a privacy convention — it is forced, because `get angle()` cannot read a
+ * field also called `angle`. Private fields without an accessor keep their real
+ * names (`collisions`, `maxCellX`). One field in this module is prefixed, and
+ * it is the one with an accessor.
  *
  * Relaxing a modifier because a new call site needs the field is these rules
  * working, not a breach of them. Until `engine/` is TypeScript, `checkJs:
