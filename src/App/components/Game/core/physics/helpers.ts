@@ -3,7 +3,6 @@ import { AXES, TRANSPARENCY } from './constants';
 import { DEG_90, DEG_180, DEG_270, DEG_360 } from './degrees';
 import Ray from './components/Ray';
 import Point, { getDistanceBetween, getAngleBetween } from './components/Point';
-import type Shape from './components/Shape';
 import type {
   CastRayOptions,
   Line,
@@ -12,6 +11,7 @@ import type {
   Side,
 } from './types';
 import type Body from './components/Body';
+import type DynamicBody from './components/DynamicBody';
 import type Cell from './components/Cell';
 
 const { X, Y } = AXES;
@@ -108,7 +108,7 @@ const lineIntersectsLine = (
 };
 
 export const isRayCollision = (
-  body: { shape: Shape },
+  body: Body,
   { startPoint, endPoint }: Line
 ): boolean => {
   const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
@@ -122,7 +122,7 @@ export const isRayCollision = (
 };
 
 export const getRayCollision = (
-  body: { shape: Shape },
+  body: Body,
   { startPoint, endPoint }: Line
 ): RayCollision | null => {
   const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
@@ -149,10 +149,7 @@ export const getRayCollision = (
   }, null);
 };
 
-export const isBodyCollision = (
-  bodyA: { x: number; y: number; shape: Shape; previousPos: Point },
-  bodyB: { shape: Shape }
-): boolean => {
+export const isBodyCollision = (bodyA: DynamicBody, bodyB: Body): boolean => {
   if (bodyA.shape.overlaps(bodyB.shape)) {
     return true;
   }
