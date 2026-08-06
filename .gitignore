@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Baseline + bundles built by test/physics/run.mjs
+test/physics/.out
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
