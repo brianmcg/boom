@@ -1,3 +1,15 @@
+/**
+ * Shared types for the physics module.
+ *
+ * Absence has two meanings here, and the split is deliberate. `null` marks a
+ * slot that held a value and was cleared, or a lookup that computed to nothing
+ * — `Body.parent` after `destroy()`, `World.getCell()` out of bounds,
+ * `getRayCollision()` with no intersection. `undefined` marks something never
+ * supplied — a constructor option left off, or a cell face the map data never
+ * defined. That is why `Ray.side` is `Side | undefined` rather than
+ * `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
+ * unchanged, and those come straight from the map.
+ */
 import type Body from './components/Body';
 import type Cell from './components/Cell';
 
