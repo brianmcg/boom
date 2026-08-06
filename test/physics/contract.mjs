@@ -8,7 +8,7 @@
 // engine cell, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
-import { DynamicBody } from '@game/core/physics';
+import { DynamicBody, World } from '@game/core/physics';
 import Cell from '@engine/Cell.js';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
@@ -179,6 +179,54 @@ eq('velocity over the limit is clamped', body.velocity, VELOCITY_LIMIT);
 
 body.velocity = -3;
 eq('negative velocity is left alone (bodies reverse)', body.velocity, -3);
+
+// --- setPos keeps the world's cell index in sync --------------------------
+// The world finds bodies through the cell they stand on. setPos used to move a
+// body without touching that index, so the body stayed findable at its old
+// position and invisible at its new one. It was only safe because its one
+// caller happened to add() the body to the world straight afterwards.
+const grid = [];
+for (let gx = 0; gx < 4; gx++) {
+  const col = [];
+  for (let gy = 0; gy < 4; gy++) {
+    col.push(
+      new Cell({
+        x: gx * CELL + CELL / 2,
+        y: gy * CELL + CELL / 2,
+        width: CELL,
+        length: CELL,
+        height: CELL,
+        blocking: false,
+        sides: {},
+      })
+    );
+  }
+  grid.push(col);
+}
+
+const world = new World({ grid, bodies: [] });
+const mover = new DynamicBody({ x: CELL / 2, y: CELL / 2, autoPlay: false });
+world.add(mover);
+
+const from = grid[0][0];
+const to = grid[2][3];
+
+ok('body starts registered on its own cell', from.bodies.includes(mover));
+
+mover.setPos({ x: 2 * CELL + CELL / 2, y: 3 * CELL + CELL / 2 });
+
+ok('setPos registers the body on its new cell', to.bodies.includes(mover));
+ok('setPos unregisters it from the old one', !from.bodies.includes(mover));
+ok('setPos refreshes the cached cell', mover.cell === to);
+
+// Moving within one cell must not churn the index.
+const occupants = to.bodies.length;
+mover.setPos({ x: 2 * CELL + 1, y: 3 * CELL + 1 });
+ok(
+  'a move inside one cell leaves the index alone',
+  to.bodies.length === occupants
+);
+ok('and the body is still registered once', to.bodies.includes(mover));
 
 console.log(failed ? '\nRESULT: FAILURES' : '\nRESULT: ALL PASS');
 process.exit(failed ? 1 : 0);

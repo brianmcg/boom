@@ -100,10 +100,47 @@ export class Body extends EventEmitter {
     this.anchor = anchor;
   }
 
+  /** Moves the body and keeps the world's cell index pointing at it. */
   setPos({ x = 0, y = 0, z = 0 }: { x?: number; y?: number; z?: number }) {
+    const previousGridX = this.gridX;
+    const previousGridY = this.gridY;
+
     this.x = x;
     this.y = y;
     this.z = z;
+
+    this.reindex(previousGridX, previousGridY);
+  }
+
+  /**
+   * Re-registers the body with the cell it now stands on.
+   *
+   * The world finds bodies through the cell they occupy rather than by
+   * scanning a list, so a body that moves without updating that index stays
+   * findable where it used to be and invisible where it actually is —
+   * collisions and raycasts both miss it.
+   *
+   * Kept as a method rather than folded into an `x`/`y` setter on purpose.
+   * `DynamicBody.update` moves one axis at a time and resolves collisions
+   * between the two steps, reassigning `x` and `y` several times per frame; a
+   * setter would re-index on each of those instead of once around the whole
+   * move, and would have to be bypassed to get the batching back — at which
+   * point it would be enforcing nothing on the hottest field in the game.
+   */
+  protected reindex(previousGridX: number, previousGridY: number) {
+    if (!this.parent) {
+      return;
+    }
+
+    const previous = this.parent.getCell(previousGridX, previousGridY);
+    const current = this.parent.getCell(this.gridX, this.gridY);
+
+    if (previous === current) {
+      return;
+    }
+
+    previous?.remove(this);
+    current?.add(this);
   }
 
   removeFromParent() {

@@ -134,6 +134,15 @@ export default class DynamicBody extends Body {
     this.cell = parent.getCell(this.gridX, this.gridY);
   }
 
+  /** Also refreshes the cached cell, which `update` otherwise maintains. */
+  protected reindex(previousGridX: number, previousGridY: number) {
+    super.reindex(previousGridX, previousGridY);
+
+    if (this.parent) {
+      this.cell = this.parent.getCell(this.gridX, this.gridY);
+    }
+  }
+
   onRemoved() {
     this.parent = null;
     this.cell = null;
