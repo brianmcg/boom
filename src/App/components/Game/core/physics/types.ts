@@ -1,14 +1,59 @@
 /**
- * Shared types for the physics module.
+ * Shared types for the physics module, and the conventions every class in it
+ * follows. `Ray` diverged from its neighbours once because none of this was
+ * written down.
  *
- * Absence has two meanings here, and the split is deliberate. `null` marks a
- * slot that held a value and was cleared, or a lookup that computed to nothing
- * — `Body.parent` after `destroy()`, `World.getCell()` out of bounds,
- * `getRayCollision()` with no intersection. `undefined` marks something never
- * supplied — a constructor option left off, or a cell face the map data never
- * defined. That is why `Ray.side` is `Side | undefined` rather than
- * `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
+ * ## How a class is written
+ *
+ * Constructors take a **single options object**, destructured with defaults,
+ * and fields are declared in the **class body** — never as constructor
+ * parameter properties, which cannot be used with a destructured options
+ * object anyway. Each options interface is exported as `<Class>Options`.
+ *
+ * The one exception is a **value object** wrapping a single primitive
+ * ({@link Point} is the current example), which takes it positionally. An
+ * options object for one required value adds nothing. Any further exception
+ * belongs in this comment rather than just happening.
+ *
+ * ## What a field's modifier means
+ *
+ * Every field sits in exactly one of these. The modifier is a claim about the
+ * field, so pick the tier by naming the invariant in a sentence — if the
+ * sentence is "it stores the value", it is the first or last.
+ *
+ * 1. `readonly` — fixed when the object is built. Note this forces the value
+ *    through the constructor: a subclass cannot assign a base class's
+ *    `readonly`, which is why `Cell`'s whole contract (`isDoor`, `closed`, …)
+ *    arrives as options rather than being set by `Door` and friends.
+ * 2. **A value type** — when the invariant belongs to the value itself rather
+ *    than to the field holding it, so it holds everywhere the value goes,
+ *    including in locals no setter could see.
+ * 3. `private` + accessor — when a write has to touch *other* state, or must
+ *    be normalised or clamped. `DynamicBody.angle` and `velocity` are the two.
+ * 4. Plain public — a free value with no invariant. Most of `Body`.
+ *
+ * An accessor pair that only reads and writes its own backing field is not
+ * encapsulation, it is indirection; prefer 1 or 4. And an invariant a setter
+ * cannot actually enforce belongs in a method instead — see `Body.reindex`,
+ * which is not an `x`/`y` setter precisely because `DynamicBody.update` would
+ * have to bypass it.
+ *
+ * ## Absence
+ *
+ * `null` marks a slot that held a value and was cleared, or a lookup that
+ * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
+ * of bounds, `getRayCollision()` with no intersection. `undefined` marks
+ * something never supplied — a constructor option left off, or a cell face the
+ * map data never defined. That is why `Ray.side` is `Side | undefined` rather
+ * than `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
  * unchanged, and those come straight from the map.
+ *
+ * ## Changing any of this
+ *
+ * `npm run test:physics` compares the module against the last commit before
+ * the TypeScript migration. A refactor must leave it reporting IDENTICAL; a
+ * deliberate behaviour change updates the harness in the same commit, with the
+ * divergence explained in `test/physics/README.md`.
  */
 import type Cell from './components/Cell';
 
