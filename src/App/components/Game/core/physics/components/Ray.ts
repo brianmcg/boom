@@ -11,21 +11,21 @@ import type { Point, Side } from '../types';
  * flag — and `side` has already been resolved to it by the caster.
  *
  * Rays are allocated per screen column, per wall layer, every frame, so the
- * constructor stays plain assignments and the fields are `declare`d: under
- * `useDefineForClassFields` a real field declaration would emit a define
- * *and* an assignment, doubling the writes per ray. `declare` erases
- * completely, leaving the same cost as the object literal this replaced.
+ * constructor stays plain assignments. Declare the fields in the order the
+ * constructor assigns them: the declarations give V8 a complete hidden class
+ * up front, which measures faster than letting the assignments build one by
+ * transition, and it keeps the property order matching the rest of the module.
  */
 export default class Ray {
-  declare startPoint: Point;
-  declare endPoint: Point;
-  declare distance: number;
-  declare encounteredBodies: Record<string, Body>;
-  declare isHorizontal: boolean;
-  declare side: Side | undefined;
-  declare cell: Cell;
-  declare angle: number;
-  declare isOverlay: boolean;
+  startPoint: Point;
+  endPoint: Point;
+  distance: number;
+  encounteredBodies: Record<string, Body>;
+  isHorizontal: boolean;
+  side: Side | undefined;
+  cell: Cell;
+  angle: number;
+  isOverlay: boolean;
 
   constructor(
     startPoint: Point,
