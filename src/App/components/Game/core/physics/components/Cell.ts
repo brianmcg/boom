@@ -1,7 +1,8 @@
 import { CELL_SIZE } from '@constants/config';
 import { AXES, TRANSPARENCY } from '../constants';
 import type { Axis, Transparency } from '../constants';
-import type { Point, Side } from '../types';
+import type { Side } from '../types';
+import Point from './Point';
 import Body, { type BodyOptions } from './Body';
 
 export interface CellOptions extends BodyOptions {
@@ -98,7 +99,7 @@ export default class Cell extends Body {
 
     this.bodies = [];
     this.axis = axis;
-    this.offset = { x: 0, y: 0 };
+    this.offset = new Point(0, 0);
 
     this.transparency = transparency;
     this.isDoor = isDoor;
@@ -138,6 +139,6 @@ export default class Cell extends Body {
   destroy(_options?: unknown) {
     this.bodies = [];
     this.axis = null;
-    this.offset = {} as Point;
+    this.offset = new Point(0, 0);
   }
 }

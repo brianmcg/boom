@@ -12,8 +12,16 @@
  */
 import type Cell from './components/Cell';
 
-/** A point in world space. Units are world units, not grid cells. */
-export interface Point {
+/**
+ * Anything with a position in world space. Units are world units, not grid
+ * cells.
+ *
+ * This is the *parameter* type: `Body` and `Cell` carry their own `x`/`y` and
+ * are handed to the point helpers directly, so a signature demanding a real
+ * {@link Point} would reject them. Fields that hold a position use the `Point`
+ * class instead.
+ */
+export interface PointLike {
   x: number;
   y: number;
 }
@@ -28,8 +36,8 @@ export interface Shape {
 
 /** A line segment, as consumed by the intersection helpers. */
 export interface Line {
-  startPoint: Point;
-  endPoint: Point;
+  startPoint: PointLike;
+  endPoint: PointLike;
 }
 
 /**
@@ -43,7 +51,7 @@ export interface Side {
 }
 
 /** The point at which a ray crossed a line, and how far along the ray it was. */
-export interface RayCollision extends Point {
+export interface RayCollision extends PointLike {
   distance: number;
 }
 

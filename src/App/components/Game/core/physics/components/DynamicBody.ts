@@ -1,16 +1,12 @@
 import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
-import type { Point } from '../types';
+import type { PointLike } from '../types';
+import Point, { getAngleBetween } from './Point';
 import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
-import {
-  isBodyCollision,
-  getAngleBetween,
-  castRay,
-  isFacing,
-} from '../helpers';
+import { isBodyCollision, castRay, isFacing } from '../helpers';
 
 const EVENTS = {
   COLLISION_START: 'body:collision:start',
@@ -88,7 +84,7 @@ export default class DynamicBody extends Body {
     this.collisions = [];
     this.trackedCollisions = [];
     this.autoPlay = autoPlay;
-    this.previousPos = { x: 0, y: 0 };
+    this.previousPos = new Point(0, 0);
     this.collisionRadius = Math.ceil(this.width / CELL_SIZE);
   }
 
@@ -226,7 +222,7 @@ export default class DynamicBody extends Body {
     }
   }
 
-  isFacing(body: Point): boolean {
+  isFacing(body: PointLike): boolean {
     return isFacing(this, body);
   }
 
@@ -238,7 +234,7 @@ export default class DynamicBody extends Body {
     return this.trackedCollisions.some(c => body instanceof c.type);
   }
 
-  getAngleTo(body: Point): number {
+  getAngleTo(body: PointLike): number {
     return getAngleBetween(this, body);
   }
 

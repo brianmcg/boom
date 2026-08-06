@@ -1,10 +1,12 @@
 ﻿import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
+import { DEG_90, DEG_180, DEG_270, DEG_360 } from './degrees';
 import Ray from './components/Ray';
+import Point, { getDistanceBetween, getAngleBetween } from './components/Point';
 import type {
   CastRayOptions,
   Line,
-  Point,
+  PointLike,
   RayCollision,
   Shape,
   Side,
@@ -12,35 +14,17 @@ import type {
 import type Body from './components/Body';
 import type Cell from './components/Cell';
 
-const DEGREES = [...Array(361).keys()].map(
-  degrees => (degrees * Math.PI) / 180
-);
-
 const { X, Y } = AXES;
 
 const { FULL } = TRANSPARENCY;
 
 const HALF_CELL = CELL_SIZE / 2;
 
-export const degrees = (value: number): number => DEGREES[value];
-
-const DEG_90 = degrees(90);
-const DEG_180 = degrees(180);
-const DEG_270 = degrees(270);
-const DEG_360 = degrees(360);
-
-export const getDistanceBetween = (bodyA: Point, bodyB: Point): number => {
-  const dx = bodyA.x - bodyB.x;
-  const dy = bodyA.y - bodyB.y;
-
-  return Math.sqrt(dx * dx + dy * dy);
-};
-
 const getLineLineIntersection = (
-  l1p1: Point,
-  l1p2: Point,
-  l2p1: Point,
-  l2p2: Point
+  l1p1: PointLike,
+  l1p2: PointLike,
+  l2p1: PointLike,
+  l2p2: PointLike
 ): RayCollision | null => {
   const a1 = l1p2.y - l1p1.y;
   const b1 = l1p1.x - l1p2.x;
@@ -91,10 +75,10 @@ const getLineLineIntersection = (
 };
 
 const lineIntersectsLine = (
-  l1p1: Point,
-  l1p2: Point,
-  l2p1: Point,
-  l2p2: Point
+  l1p1: PointLike,
+  l1p2: PointLike,
+  l2p1: PointLike,
+  l2p2: PointLike
 ): boolean => {
   let q =
     (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) -
@@ -196,7 +180,7 @@ export const getRayCollision = (
 };
 
 export const isBodyCollision = (
-  bodyA: { x: number; y: number; shape: Shape; previousPos: Point | null },
+  bodyA: { x: number; y: number; shape: Shape; previousPos: PointLike | null },
   bodyB: { shape: Shape }
 ): boolean => {
   // Note: used for alternative collision detection.
@@ -215,18 +199,9 @@ export const isBodyCollision = (
   return collision || isRayCollision(bodyB, { startPoint, endPoint });
 };
 
-export const getAngleBetween = (bodyA: Point, bodyB: Point): number => {
-  const dx = bodyB.x - bodyA.x;
-  const dy = bodyB.y - bodyA.y;
-
-  const angle = Math.atan2(dy, dx) % DEG_360;
-
-  return angle < 0 ? angle + DEG_360 : angle;
-};
-
 export const isFacing = (
-  bodyA: Point & { angle: number },
-  bodyB: Point
+  bodyA: PointLike & { angle: number },
+  bodyB: PointLike
 ): boolean => {
   const angle =
     (getAngleBetween(bodyA, bodyB) - bodyA.angle + DEG_360) % DEG_360;
@@ -376,7 +351,7 @@ const castCellRay = ({
       }
     }
 
-    rayEndPoint = { x: xIntersection, y: horizontalGrid };
+    rayEndPoint = new Point(xIntersection, horizontalGrid);
 
     for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
       initialCellBody = initialCell.bodies[i];
@@ -396,7 +371,7 @@ const castCellRay = ({
     side = y < initialCell.y ? initialCell.left : initialCell.right;
 
     return new Ray({
-      startPoint: { x, y },
+      startPoint: new Point(x, y),
       endPoint: rayEndPoint,
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
@@ -445,7 +420,7 @@ const castCellRay = ({
 
   side = x < initialCell.x ? initialCell.front : initialCell.back;
 
-  rayEndPoint = { x: verticalGrid, y: yIntersection };
+  rayEndPoint = new Point(verticalGrid, yIntersection);
 
   for (let i = 0, n = initialCell.bodies.length; i < n; i++) {
     initialCellBody = initialCell.bodies[i];
@@ -463,7 +438,7 @@ const castCellRay = ({
   }
 
   return new Ray({
-    startPoint: { x, y },
+    startPoint: new Point(x, y),
     endPoint: rayEndPoint,
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
@@ -870,7 +845,7 @@ const castRaySection = ({
   }
 
   if (distToHorizontalGridBeingHit < distToVerticalGridBeingHit) {
-    rayEndPoint = { x: xIntersection, y: horizontalGrid };
+    rayEndPoint = new Point(xIntersection, horizontalGrid);
 
     for (let i = 0, n = horizontalCell.bodies.length; i < n; i++) {
       horizontalBody = horizontalCell.bodies[i];
@@ -910,7 +885,7 @@ const castRaySection = ({
     side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
 
     return new Ray({
-      startPoint: { x, y },
+      startPoint: new Point(x, y),
       endPoint: rayEndPoint,
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
@@ -922,7 +897,7 @@ const castRaySection = ({
     });
   }
 
-  rayEndPoint = { x: verticalGrid, y: yIntersection };
+  rayEndPoint = new Point(verticalGrid, yIntersection);
 
   for (let i = 0, n = verticalCell.bodies.length; i < n; i++) {
     verticalBody = verticalCell.bodies[i];
@@ -951,7 +926,7 @@ const castRaySection = ({
 
     if (
       !isRayCollision(encounterdBody, {
-        startPoint: { x, y },
+        startPoint: new Point(x, y),
         endPoint: rayEndPoint,
       })
     ) {
@@ -962,7 +937,7 @@ const castRaySection = ({
   side = x < verticalCell.x ? verticalCell.front : verticalCell.back;
 
   return new Ray({
-    startPoint: { x, y },
+    startPoint: new Point(x, y),
     endPoint: rayEndPoint,
     distance: distToVerticalGridBeingHit,
     encounteredBodies,

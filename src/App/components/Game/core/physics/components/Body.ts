@@ -1,13 +1,10 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Transparency } from '../constants';
-import type { Line, Point, RayCollision, Shape } from '../types';
+import type { Line, PointLike, RayCollision, Shape } from '../types';
 import type World from './World';
-import {
-  isRayCollision,
-  getRayCollision,
-  getDistanceBetween,
-} from '../helpers';
+import { getDistanceBetween } from './Point';
+import { isRayCollision, getRayCollision } from '../helpers';
 
 let idCount = 0;
 
@@ -125,7 +122,7 @@ export class Body extends EventEmitter {
   }
 
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */
-  getDistanceTo(body: Point): number {
+  getDistanceTo(body: PointLike): number {
     return getDistanceBetween(this, body);
   }
 

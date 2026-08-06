@@ -4,7 +4,9 @@ import World from './components/World';
 import Cell from './components/Cell';
 import DynamicCell from './components/DynamicCell';
 import Ray from './components/Ray';
-import { degrees, castRay } from './helpers';
+import Point from './components/Point';
+import { degrees } from './degrees';
+import { castRay } from './helpers';
 import { AXES, TRANSPARENCY } from './constants';
 
 export {
@@ -14,6 +16,7 @@ export {
   Cell,
   DynamicCell,
   Ray,
+  Point,
   degrees,
   castRay,
   AXES,
@@ -25,7 +28,7 @@ export type { Axis, Transparency } from './constants';
 export type {
   CastRayOptions,
   Line,
-  Point,
+  PointLike,
   RayCollision,
   RaycastableWorld,
   Shape,
