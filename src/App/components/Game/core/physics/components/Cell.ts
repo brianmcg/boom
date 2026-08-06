@@ -1,7 +1,7 @@
 import { CELL_SIZE } from '@constants/config';
 import { AXES, TRANSPARENCY } from '../constants';
 import type { Axis, Transparency } from '../constants';
-import type { Point, RaycastableCell, Side } from '../types';
+import type { Point, Side } from '../types';
 import Body, { type BodyOptions } from './Body';
 
 export interface CellOptions extends BodyOptions {
@@ -17,11 +17,11 @@ export interface CellOptions extends BodyOptions {
  * One square of the world grid.
  *
  * A cell is a `Body` that never moves and that owns the bodies standing on it.
- * Everything below the `add`/`remove` pair is the contract the raycaster reads
- * (see {@link RaycastableCell}); subclasses in the game layer configure it
- * rather than inventing their own fields.
+ * Everything below the `add`/`remove` pair is the contract the raycaster in
+ * `helpers.ts` reads; subclasses in the game layer configure those fields
+ * rather than inventing their own.
  */
-export default class Cell extends Body implements RaycastableCell {
+export default class Cell extends Body {
   /** The bodies currently standing on this cell. */
   bodies: Body[];
 

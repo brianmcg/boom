@@ -27,7 +27,6 @@ export type {
   Ray,
   RayCollision,
   RaycastableBody,
-  RaycastableCell,
   RaycastableWorld,
   Shape,
   Side,

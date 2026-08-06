@@ -7,10 +7,10 @@ import type {
   Ray,
   RayCollision,
   RaycastableBody,
-  RaycastableCell,
   Shape,
   Side,
 } from './types';
+import type Cell from './components/Cell';
 
 const DEGREES = [...Array(361).keys()].map(
   degrees => (degrees * Math.PI) / 180
@@ -236,7 +236,7 @@ export const isFacing = (
 interface CastCellRayOptions extends CastRayOptions {
   gridX: number;
   gridY: number;
-  initialCell: RaycastableCell;
+  initialCell: Cell;
 }
 
 const castCellRay = ({
@@ -528,8 +528,8 @@ const castRaySection = ({
   // so the ray renders as nothing — but it must still name a real cell,
   // because castRay reads `ray.cell.transparency` to decide whether to
   // continue into the next wall layer.
-  let horizontalCell: RaycastableCell = initialCell;
-  let verticalCell: RaycastableCell = initialCell;
+  let horizontalCell: Cell = initialCell;
+  let verticalCell: Cell = initialCell;
 
   if (angle > 0 && angle < DEG_180) {
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;

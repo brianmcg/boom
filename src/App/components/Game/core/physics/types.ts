@@ -1,4 +1,4 @@
-import type { Axis, Transparency } from './constants';
+import type Cell from './components/Cell';
 
 /** A point in world space. Units are world units, not grid cells. */
 export interface Point {
@@ -46,39 +46,11 @@ export interface RaycastableBody {
   shape: Shape;
 }
 
-/**
- * The raycaster's view of a cell. Everything here is read by `castRaySection` /
- * `castCellRay`, which is why `Cell` declares all of it rather than leaving it
- * to the game layer to bolt on.
- */
-export interface RaycastableCell extends RaycastableBody {
-  bodies: RaycastableBody[];
-  blocking: boolean;
-  height: number;
-  gridX: number;
-  gridY: number;
-  /** Alignment of a door or push wall. Falsy on a plain cell, which reads as a solid wall. */
-  axis?: Axis | null;
-  /** How far the cell has slid open, in world units, per axis. */
-  offset: Point;
-  transparency: Transparency;
-  isDoor: boolean;
-  isPushWall: boolean;
-  double: boolean;
-  reverse: boolean;
-  front?: Side;
-  left?: Side;
-  back?: Side;
-  right?: Side;
-  /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
-  overlay?: Side;
-}
-
 /** The raycaster's view of the world: a bounded grid it can look cells up in. */
 export interface RaycastableWorld {
   width: number;
   length: number;
-  getCell(x: number, y: number): RaycastableCell | null;
+  getCell(x: number, y: number): Cell | null;
 }
 
 /**
@@ -95,7 +67,7 @@ export interface Ray {
   encounteredBodies: Record<string, RaycastableBody>;
   isHorizontal?: true;
   side: Side | undefined;
-  cell: RaycastableCell;
+  cell: Cell;
   angle: number;
   isOverlay: Side | false | undefined;
 }
