@@ -1,4 +1,4 @@
-import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
+﻿import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from './constants';
 import type {
   CastRayOptions,
@@ -6,10 +6,10 @@ import type {
   Point,
   Ray,
   RayCollision,
-  RaycastableBody,
   Shape,
   Side,
 } from './types';
+import type Body from './components/Body';
 import type Cell from './components/Cell';
 
 const DEGREES = [...Array(361).keys()].map(
@@ -260,8 +260,8 @@ const castCellRay = ({
 
   let side: Side | undefined;
   let rayEndPoint: Point;
-  let initialCellBody: RaycastableBody;
-  const encounteredBodies: Record<string, RaycastableBody> = {};
+  let initialCellBody: Body;
+  const encounteredBodies: Record<string, Body> = {};
 
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
@@ -501,19 +501,19 @@ const castRaySection = ({
   let xOffsetHit: number;
   let yOffsetHit: number;
   let offsetRatio: number;
-  let horizontalBody: RaycastableBody;
-  let verticalBody: RaycastableBody;
+  let horizontalBody: Body;
+  let verticalBody: Body;
   // Default false rather than left unassigned: a ray that never enters a
   // stepping loop still reports "no overlay here" rather than `undefined`.
   let horizontalOverlay = false;
   let verticalOverlay = false;
   let side: Side | undefined;
   let rayEndPoint: Point;
-  let initialCellBody: RaycastableBody;
-  let encounteredBodyValues: RaycastableBody[];
-  let encounterdBody: RaycastableBody;
+  let initialCellBody: Body;
+  let encounteredBodyValues: Body[];
+  let encounterdBody: Body;
 
-  const encounteredBodies: Record<string, RaycastableBody> = {};
+  const encounteredBodies: Record<string, Body> = {};
   const gridX = Math.floor(x / CELL_SIZE);
   const gridY = Math.floor(y / CELL_SIZE);
 
@@ -528,7 +528,7 @@ const castRaySection = ({
   // Each stepping loop below overwrites its cell on the first in-bounds
   // iteration, so this fallback only survives when the ray leaves the grid
   // immediately on that axis. That leaves the matching distance at MAX_VALUE,
-  // so the ray renders as nothing — but it must still name a real cell,
+  // so the ray renders as nothing â€” but it must still name a real cell,
   // because castRay reads `ray.cell.transparency` to decide whether to
   // continue into the next wall layer.
   let horizontalCell: Cell = initialCell;

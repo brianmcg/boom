@@ -1,3 +1,4 @@
+import type Body from './components/Body';
 import type Cell from './components/Cell';
 
 /** A point in world space. Units are world units, not grid cells. */
@@ -35,17 +36,6 @@ export interface RayCollision extends Point {
   distance: number;
 }
 
-/**
- * The raycaster's view of a body: enough to test a ray against it and to key it
- * in an `encounteredBodies` map.
- */
-export interface RaycastableBody {
-  id: string;
-  x: number;
-  y: number;
-  shape: Shape;
-}
-
 /** The raycaster's view of the world: a bounded grid it can look cells up in. */
 export interface RaycastableWorld {
   width: number;
@@ -65,7 +55,7 @@ export interface Ray {
   startPoint: Point;
   endPoint: Point;
   distance: number;
-  encounteredBodies: Record<string, RaycastableBody>;
+  encounteredBodies: Record<string, Body>;
   isHorizontal: boolean;
   side: Side | undefined;
   cell: Cell;
