@@ -1180,8 +1180,8 @@ export default class WorldGraphics extends SceneGraphics {
               [sector.id]: WorldGraphics.createRectangleSprite({
                 color: color(sector),
                 alpha: alpha(sector),
-                width: sector.shape.width,
-                height: sector.shape.length,
+                width: sector.width,
+                height: sector.length,
                 anchor: 0.5,
               }),
             };
@@ -1241,8 +1241,8 @@ export default class WorldGraphics extends SceneGraphics {
     const player = {
       rectangle: WorldGraphics.createRectangleSprite({
         color: color(world.player),
-        width: world.player.shape.width,
-        height: world.player.shape.length,
+        width: world.player.width,
+        height: world.player.length,
         anchor: 0.5,
       }),
       line: WorldGraphics.createLine({ color: WHITE }),
@@ -1255,8 +1255,8 @@ export default class WorldGraphics extends SceneGraphics {
         if (projectile.name) {
           projectiles[projectile.id] = WorldGraphics.createRectangleSprite({
             color: ORANGE,
-            width: projectile.shape.width,
-            height: projectile.shape.length,
+            width: projectile.width,
+            height: projectile.length,
             anchor: 0.5,
           });
         }
@@ -1268,8 +1268,8 @@ export default class WorldGraphics extends SceneGraphics {
         if (projectile.name) {
           projectiles[projectile.id] = WorldGraphics.createRectangleSprite({
             color: ORANGE,
-            width: projectile.shape.width,
-            height: projectile.shape.length,
+            width: projectile.width,
+            height: projectile.length,
             anchor: 0.5,
           });
         }
