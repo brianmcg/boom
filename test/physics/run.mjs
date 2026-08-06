@@ -88,7 +88,7 @@ async function bundle(name) {
 
 // cell-contract asserts forward against what the map data means, so it needs
 // no baseline; the other two compare against it.
-const ALL_SUITES = ['equivalence', 'bugfix', 'cell-contract'];
+const ALL_SUITES = ['equivalence', 'bugfix', 'contract'];
 const USES_BASELINE = new Set(['equivalence', 'bugfix']);
 
 const only = process.argv[2];

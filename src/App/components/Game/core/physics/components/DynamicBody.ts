@@ -2,6 +2,7 @@ import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
 import type { PointLike } from '../types';
+import { DEG_360 } from '../degrees';
 import Point, { getAngleBetween } from './Point';
 import type Ray from './Ray';
 import type Cell from './Cell';
@@ -43,8 +44,48 @@ export interface DynamicBodyOptions extends BodyOptions {
  * and re-registers itself with whichever cell it ended up in.
  */
 export default class DynamicBody extends Body {
-  velocity: number;
-  angle: number;
+  private _velocity = 0;
+  private _angle = 0;
+
+  /**
+   * How fast the body moves, in world units per frame.
+   *
+   * Clamped on write rather than at the point of use, so the stored value and
+   * the value that actually moves the body are the same number. Callers set
+   * this from weapon knockback, enemy chase speed and player input, none of
+   * which knows about the limit.
+   */
+  get velocity(): number {
+    return this._velocity;
+  }
+
+  set velocity(value: number) {
+    this._velocity = value > VELOCITY_LIMIT ? VELOCITY_LIMIT : value;
+  }
+
+  /**
+   * Which way the body faces, in radians, always within `[0, 2π)`.
+   *
+   * The raycaster picks a quadrant by comparing the angle against `DEG_90`,
+   * `DEG_180` and `DEG_270`, which is only meaningful on a normalised angle.
+   * Every caller used to guarantee that by hand — `(x + DEG_360) % DEG_360`,
+   * with `DEG_360` redeclared in eight engine files. Normalising here makes
+   * those redundant rather than load-bearing, and they stay correct in the
+   * meantime because normalisation is idempotent.
+   *
+   * Wrapped the same way `getAngleBetween` does, and deliberately not as
+   * `((v % DEG_360) + DEG_360) % DEG_360`: adding 2π to an angle that is
+   * already in range and taking the modulus back loses a few bits, so that
+   * form silently perturbs every angle it touches.
+   */
+  get angle(): number {
+    return this._angle;
+  }
+
+  set angle(value: number) {
+    const wrapped = value % DEG_360;
+    this._angle = wrapped < 0 ? wrapped + DEG_360 : wrapped;
+  }
 
   readonly isDynamic = true;
 
@@ -116,7 +157,7 @@ export default class DynamicBody extends Body {
 
     const collisions: Body[] = [];
 
-    const velocity = Math.min(this.velocity * delta, VELOCITY_LIMIT);
+    const velocity = Math.min(this._velocity * delta, VELOCITY_LIMIT);
 
     const halfWidth = this.width / 2;
     const halfLength = this.length / 2;

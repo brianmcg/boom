@@ -288,7 +288,15 @@ const runSim = M => {
         ])
       );
     }
-    if (step % 37 === 0) dynamic.forEach(d => (d.angle += 0.31));
+    // Normalised on assignment because the live module now does that in the
+    // setter and the baseline never did, so an un-normalised turn is the one
+    // thing the two cannot agree on. Every real caller in engine/ already
+    // normalises here, which is what makes this the faithful comparison
+    // rather than a papered-over one — and `contract` asserts the guarantee
+    // itself. See the divergence note in the README.
+    if (step % 37 === 0) {
+      dynamic.forEach(d => (d.angle = (d.angle + 0.31) % (Math.PI * 2)));
+    }
   }
 
   return trace;

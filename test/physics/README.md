@@ -36,13 +36,21 @@ deliberately, in the same commit, with the divergence explained. What must not
 happen is advancing `BASELINE_SHA` to make a red run go green: that pins the
 oracle to the very change you were trying to check.
 
-Two known future divergences, from the encapsulation plan:
+### Divergences accepted so far
 
-- clamping `DynamicBody.velocity` on write rather than at use changes the
-  stored value
-- moving fields behind accessors renames own keys (`_angle` for `angle`), which
-  the cell-shape audit compares — `norm()` in `equivalence.mjs` needs to strip
-  the underscore
+**`DynamicBody.angle` is normalised on write.** The baseline let a body's angle
+drift past 2π and then chose the wrong quadrant branch in the raycaster:
+`6.3879` fails `angle < DEG_180` while the geometrically identical `0.1047`
+passes, so the ray stepped toward `-y` when it should have stepped toward
+`+y`. The sim now normalises when it turns a body, which is what every real
+caller in `engine/` already does; `contract` asserts the guarantee, including
+that an in-range angle is stored bit-for-bit — the obvious
+`((v % TAU) + TAU) % TAU` form is _not_ the identity and perturbed every angle
+in the sim.
+
+Still to come, when `Body.x`/`y` move behind accessors: own keys get renamed
+(`_x` for `x`), which the cell-shape audit compares, so `norm()` in
+`equivalence.mjs` will need to strip the underscore.
 
 ## Stubs
 

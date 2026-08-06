@@ -1,11 +1,14 @@
-// The engine's cell subclasses configure the contract that the raycaster in
-// core/physics reads: transparency, isDoor, isPushWall, double, reverse,
-// closed, edge. Those fields are readonly on the core Cell, so subclasses can
-// only set them by passing options through super() — and nothing else in the
-// suite covers that, because the other two build core Cells directly.
+// The invariants core/physics enforces, asserted forward against what they
+// are supposed to mean rather than against the pre-migration baseline.
 //
-// This suite asserts forward, against what the map data means, rather than
-// against the pre-migration baseline.
+// Two things live here. The cell section covers the contract the raycaster
+// reads off a cell — transparency, isDoor, isPushWall, double, reverse,
+// closed, edge — which is readonly on the core Cell, so subclasses can only
+// set it by passing options through super(); neither other suite builds an
+// engine cell, so nothing else covers that plumbing. The body section covers
+// guarantees the baseline did not make at all, which is exactly why the
+// equivalence suite cannot be the thing that checks them.
+import { DynamicBody } from '@game/core/physics';
 import Cell from '@engine/Cell.js';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
@@ -118,6 +121,64 @@ ok(
   wall.closed !== before,
   `closed went ${before} -> ${wall.closed}`
 );
+
+// --- DynamicBody.angle is always in [0, 2pi) ------------------------------
+// The raycaster picks its quadrant branch by comparing the angle against
+// DEG_90/DEG_180/DEG_270. The baseline let a body's angle drift past 2pi --
+// `d.angle += 0.31` forever -- and then stepped the ray the wrong way, because
+// 6.3879 fails `angle < PI` while the geometrically identical 0.1047 passes.
+const TAU = Math.PI * 2;
+const body = new DynamicBody({ x: 100, y: 100, angle: 0.5 });
+
+eq('angle survives an in-range write exactly', body.angle, 0.5);
+
+body.angle = 0.5 + TAU;
+ok(
+  'an angle a full turn over wraps back',
+  Math.abs(body.angle - 0.5) < 1e-12,
+  `got ${body.angle}`
+);
+
+body.angle = -0.25;
+ok(
+  'a negative angle wraps up into range',
+  Math.abs(body.angle - (TAU - 0.25)) < 1e-12,
+  `got ${body.angle}`
+);
+
+// The drift the baseline got wrong, reproduced directly.
+body.angle = 0.5;
+for (let i = 0; i < 40; i++) body.angle = body.angle + 0.31;
+ok(
+  'repeated turns never leave the range',
+  body.angle >= 0 && body.angle < TAU,
+  `after 40 turns of 0.31: ${body.angle}`
+);
+
+// Normalising must not perturb an angle that is already in range: the obvious
+// ((v % TAU) + TAU) % TAU form loses a few bits on every write, which showed
+// up as drift across the whole dynamic-body sim.
+let exact = true;
+for (let i = 0; i < 2000; i++) {
+  const v = (i / 2000) * TAU;
+  body.angle = v;
+  if (body.angle !== v) exact = false;
+}
+ok('an in-range angle is stored bit-for-bit', exact);
+
+// --- DynamicBody.velocity is clamped on write ------------------------------
+// It used to be clamped at the point of use, so the stored value and the value
+// that actually moved the body were different numbers.
+const VELOCITY_LIMIT = 16; // CELL_SIZE / 2
+
+body.velocity = 4;
+eq('velocity under the limit is untouched', body.velocity, 4);
+
+body.velocity = 999;
+eq('velocity over the limit is clamped', body.velocity, VELOCITY_LIMIT);
+
+body.velocity = -3;
+eq('negative velocity is left alone (bodies reverse)', body.velocity, -3);
 
 console.log(failed ? '\nRESULT: FAILURES' : '\nRESULT: ALL PASS');
 process.exit(failed ? 1 : 0);
