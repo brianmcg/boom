@@ -11,6 +11,13 @@ export interface CellOptions extends BodyOptions {
    * on {@link Cell.offset} — the input and the stored value are different units.
    */
   offset?: number;
+  transparency?: Transparency;
+  isDoor?: boolean;
+  isPushWall?: boolean;
+  double?: boolean;
+  reverse?: boolean;
+  closed?: boolean;
+  edge?: boolean;
 }
 
 /**
@@ -34,23 +41,30 @@ export default class Cell extends Body {
   /** How far the cell has slid open, in world units, per axis. */
   offset: Point;
 
-  /** Whether rays pass through this cell into the next wall layer. */
-  transparency: Transparency = TRANSPARENCY.NONE;
+  /**
+   * Everything below is fixed when the cell is built and never changes
+   * afterwards, so subclasses pass these through `super()` rather than
+   * assigning them — a `readonly` declared here cannot be written from a
+   * subclass constructor.
+   */
 
-  isDoor = false;
-  isPushWall = false;
+  /** Whether rays pass through this cell into the next wall layer. */
+  readonly transparency: Transparency;
+
+  readonly isDoor: boolean;
+  readonly isPushWall: boolean;
 
   /** A door that opens from the middle outwards rather than sliding one way. */
-  double = false;
+  readonly double: boolean;
 
   /** Inverts which side of the cell the offset is applied from. */
-  reverse = false;
+  readonly reverse: boolean;
 
   /** Renderer hint: this cell has no open face, so nothing behind it is drawn. */
-  closed = false;
+  readonly closed: boolean;
 
   /** Renderer hint: this cell sits on the edge of the map. */
-  edge = false;
+  readonly edge: boolean;
 
   /**
    * The texture drawn on each face. Left to the game layer to populate, and
@@ -68,12 +82,31 @@ export default class Cell extends Body {
   /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
   declare overlay?: Side;
 
-  constructor({ axis, offset = 0, ...other }: CellOptions) {
+  constructor({
+    axis,
+    offset = 0,
+    transparency = TRANSPARENCY.NONE,
+    isDoor = false,
+    isPushWall = false,
+    double = false,
+    reverse = false,
+    closed = false,
+    edge = false,
+    ...other
+  }: CellOptions) {
     super(other);
 
     this.bodies = [];
     this.axis = axis;
     this.offset = { x: 0, y: 0 };
+
+    this.transparency = transparency;
+    this.isDoor = isDoor;
+    this.isPushWall = isPushWall;
+    this.double = double;
+    this.reverse = reverse;
+    this.closed = closed;
+    this.edge = edge;
 
     if (this.isHorizontal()) {
       this.offset.y = CELL_SIZE * offset;

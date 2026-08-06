@@ -14,11 +14,11 @@ export interface DynamicCellOptions extends CellOptions {
  */
 export default class DynamicCell extends Cell {
   /** Slide speed in world units per frame. */
-  speed: number;
+  readonly speed: number;
 
   readonly isDynamic = true;
 
-  autoPlay: boolean;
+  readonly autoPlay: boolean;
 
   constructor({ speed, autoPlay = false, ...other }: DynamicCellOptions) {
     super(other);

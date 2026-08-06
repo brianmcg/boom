@@ -53,7 +53,7 @@ export default class DynamicBody extends Body {
   readonly isDynamic = true;
 
   weight: number;
-  autoPlay: boolean;
+  readonly autoPlay: boolean;
 
   /** How many cells out to gather potential collisions from. */
   readonly collisionRadius: number;

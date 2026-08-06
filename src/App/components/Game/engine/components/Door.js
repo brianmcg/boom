@@ -18,20 +18,17 @@ export default class Door extends DynamicCell {
   constructor({
     key,
     interval,
-    double,
     entrance = false,
     exit = false,
     active = true,
     ...other
   }) {
-    super(other);
+    super({ ...other, isDoor: true });
 
     this.timer = 0;
     this.keyCard = key;
     this.interval = interval;
-    this.isDoor = true;
     this.active = active;
-    this.double = double;
     this.entrance = entrance;
     this.exit = exit;
     this.isElevator = entrance || exit;

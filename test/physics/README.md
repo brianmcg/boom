@@ -2,16 +2,25 @@
 
 `npm run test:physics`
 
-Two suites, both comparing the live `core/physics` module against the last
-commit before the TypeScript migration (`0560ed04`). There is no test runner in
-this repo and these are not unit tests — they exist because the raycaster has
-no other safety net and a silent regression in it is very hard to spot by
-playing.
+Three suites over the live `core/physics` module, two of them comparing it
+against the last commit before the TypeScript migration (`0560ed04`). There is
+no test runner in this repo and these are not unit tests — they exist because
+the raycaster has no other safety net and a silent regression in it is very
+hard to spot by playing.
 
-| suite         | asserts                                                                                                                                                                                                |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `equivalence` | the module behaves **identically** to the baseline: ~10k rays across 4 option sets, a 400-step dynamic-body sim, the `degrees` table, the constants, and the own-key shape of every concrete cell type |
-| `bugfix`      | the two bugs fixed in `31126d83` are still fixed, checked against independently computed truth rather than against the baseline                                                                        |
+| suite           | asserts                                                                                                                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `equivalence`   | the module behaves **identically** to the baseline: ~10k rays across 4 option sets, a 400-step dynamic-body sim, the `degrees` table, the constants, and the own-key shape of every concrete cell type  |
+| `bugfix`        | the two bugs fixed in `31126d83` are still fixed, checked against independently computed truth rather than against the baseline                                                                         |
+| `cell-contract` | the engine's cell subclasses (`Cell`, `TransparentCell`, `Door`, `PushWall`) configure the contract the raycaster reads — `transparency`, `isDoor`, `isPushWall`, `double`, `reverse`, `closed`, `edge` |
+
+Run one with `npm run test:physics <suite>`.
+
+`cell-contract` exists because those seven fields are `readonly` on the core
+`Cell`, which means a subclass can only set them by passing options through
+`super()` — and neither other suite covers that, since both build core `Cell`s
+directly. It asserts forward against what the map data means rather than
+against the baseline, so it needs no baseline at all.
 
 The baseline is extracted from git at run time, so no copy of the deleted
 JavaScript lives in the tree. `BASELINE_SHA` in `run.mjs` pins it.

@@ -73,8 +73,12 @@ export class Body extends EventEmitter {
   /** The world this body belongs to, or null once removed. */
   parent: World | null = null;
 
-  /** Subclass-defined state machine label. Always set via {@link setState}. */
-  state?: string;
+  /**
+   * Subclass-defined state machine label. Always set via {@link setState}, and
+   * `protected` because nothing outside the hierarchy reads it — every use in
+   * the codebase is `this.state`.
+   */
+  protected state?: string;
 
   constructor({
     x = 0,

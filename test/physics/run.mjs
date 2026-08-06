@@ -75,19 +75,29 @@ async function bundle(name) {
     alias: {
       '@baseline': join(BASELINE, 'index.js'),
       '@constants/config': join(HERE, 'stubs', 'config.js'),
+      '@util/translate': join(HERE, 'stubs', 'translate.js'),
+      '@game/core/audio': join(HERE, 'stubs', 'audio.js'),
       '@game/core/graphics': join(HERE, 'stubs', 'graphics.js'),
       '@game/core/physics': join(REPO, PHYSICS, 'index.ts'),
+      '@engine': join(REPO, 'src/App/components/Game/engine/components'),
     },
   });
 
   return outfile;
 }
 
+// cell-contract asserts forward against what the map data means, so it needs
+// no baseline; the other two compare against it.
+const ALL_SUITES = ['equivalence', 'bugfix', 'cell-contract'];
+const USES_BASELINE = new Set(['equivalence', 'bugfix']);
+
 const only = process.argv[2];
-const suites = ['equivalence', 'bugfix'].filter(s => !only || s === only);
+const suites = ALL_SUITES.filter(s => !only || s === only);
 
 if (!suites.length) {
-  console.error(`unknown suite "${only}" — expected equivalence or bugfix`);
+  console.error(
+    `unknown suite "${only}" — expected one of ${ALL_SUITES.join(', ')}`
+  );
   process.exit(2);
 }
 
@@ -96,7 +106,8 @@ extractBaseline();
 let failed = false;
 
 for (const suite of suites) {
-  console.log(`\n--- ${suite} (baseline ${BASELINE_SHA}) ---`);
+  const label = USES_BASELINE.has(suite) ? ` (baseline ${BASELINE_SHA})` : '';
+  console.log(`\n--- ${suite}${label} ---`);
 
   try {
     execFileSync(process.execPath, [await bundle(suite)], {
