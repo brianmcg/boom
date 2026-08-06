@@ -37,10 +37,13 @@ export default class Cell extends Body {
    * Which way a sliding cell is aligned. Falsy on a plain cell, which the
    * raycaster reads as a solid, immovable wall.
    */
-  axis?: Axis | null;
+  readonly axis?: Axis;
 
-  /** How far the cell has slid open, in world units, per axis. */
-  offset: Point;
+  /**
+   * How far the cell has slid open, in world units, per axis. The `Point` is
+   * fixed; `Door` and `PushWall` animate its `x`/`y`.
+   */
+  readonly offset: Point;
 
   /**
    * Everything below is fixed when the cell is built and never changes
@@ -136,9 +139,9 @@ export default class Cell extends Body {
     return this.axis === AXES.Y;
   }
 
-  destroy(_options?: unknown) {
+  destroy(options?: unknown) {
+    super.destroy(options);
+
     this.bodies = [];
-    this.axis = null;
-    this.offset = new Point(0, 0);
   }
 }

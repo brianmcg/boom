@@ -70,12 +70,8 @@ export class Body extends EventEmitter {
   /** The world this body belongs to, or null once removed. */
   parent: World | null = null;
 
-  /**
-   * Subclass-defined state machine label. Always set via {@link setState}, and
-   * `protected` because nothing outside the hierarchy reads it — every use in
-   * the codebase is `this.state`.
-   */
-  protected state?: string;
+  /** Subclass-defined state machine label. Always set via {@link setState}. */
+  state?: string;
 
   constructor({
     x = 0,
@@ -127,7 +123,7 @@ export class Body extends EventEmitter {
    * move, and would have to be bypassed to get the batching back — at which
    * point it would be enforcing nothing on the hottest field in the game.
    */
-  protected reindex(previousGridX: number, previousGridY: number) {
+  reindex(previousGridX: number, previousGridY: number) {
     if (!this.parent) {
       return;
     }

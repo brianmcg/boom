@@ -180,11 +180,11 @@ export const getRayCollision = (
 };
 
 export const isBodyCollision = (
-  bodyA: { x: number; y: number; shape: Shape; previousPos: PointLike | null },
+  bodyA: { x: number; y: number; shape: Shape; previousPos: PointLike },
   bodyB: { shape: Shape }
 ): boolean => {
   // Note: used for alternative collision detection.
-  const startPoint = bodyA.previousPos!;
+  const startPoint = bodyA.previousPos;
   const endPoint = { x: bodyA.x, y: bodyA.y };
 
   const shapeA = bodyA.shape;

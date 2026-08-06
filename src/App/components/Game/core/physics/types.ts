@@ -17,26 +17,39 @@
  *
  * ## What a field's modifier means
  *
- * Every field sits in exactly one of these. The modifier is a claim about the
- * field, so pick the tier by naming the invariant in a sentence — if the
- * sentence is "it stores the value", it is the first or last.
+ * > `private` if nothing outside the class touches it; otherwise `public`. Add
+ * > `readonly` if nothing reassigns it after the constructor.
  *
- * 1. `readonly` — fixed when the object is built. Note this forces the value
- *    through the constructor: a subclass cannot assign a base class's
- *    `readonly`, which is why `Cell`'s whole contract (`isDoor`, `closed`, …)
- *    arrives as options rather than being set by `Door` and friends.
- * 2. **A value type** — when the invariant belongs to the value itself rather
- *    than to the field holding it, so it holds everywhere the value goes,
- *    including in locals no setter could see.
- * 3. `private` + accessor — when a write has to touch *other* state, or must
- *    be normalised or clamped. `DynamicBody.angle` and `velocity` are the two.
- * 4. Plain public — a free value with no invariant. Most of `Body`.
+ * Two visibility levels, not three. There is no `protected` in this module: it
+ * was down to one field and one method, and a third tier every reader has to
+ * carry is not worth that. If a class ever genuinely needs a hierarchy-only
+ * member, add it back for that case rather than reserving it in advance.
  *
- * An accessor pair that only reads and writes its own backing field is not
- * encapsulation, it is indirection; prefer 1 or 4. And an invariant a setter
- * cannot actually enforce belongs in a method instead — see `Body.reindex`,
- * which is not an `x`/`y` setter precisely because `DynamicBody.update` would
- * have to bypass it.
+ * `private` is the only call here, and it is not a judgement — try it, and the
+ * compiler says whether it was true. One caveat until `engine/` is TypeScript:
+ * `checkJs: false` hides the JS call sites, so approximate what compiles by
+ * grepping, excluding `core/ai` and `graph.grid[...]` — `GridNode` has
+ * `weight`, `parent` and `closed` fields whose names collide with these.
+ *
+ * Relaxing a modifier because a new call site needs the field is the rule
+ * working, not a breach of it.
+ *
+ * `readonly` forces a value through the constructor, since a subclass cannot
+ * assign a base class's `readonly` — that is why `Cell`'s whole contract
+ * (`isDoor`, `closed`, …) arrives as options rather than being set by `Door`
+ * and friends.
+ *
+ * Two things sit outside the rule:
+ *
+ * - **Value types**, for an invariant that belongs to the value rather than to
+ *   the field holding it, so it holds everywhere the value goes — including in
+ *   locals no setter could see.
+ * - **Accessors**, only where a write must be normalised or clamped
+ *   (`DynamicBody.angle`, `velocity`). A pair that just reads and writes its
+ *   own backing field is indirection, not encapsulation. And an invariant a
+ *   setter cannot actually enforce belongs in a method — see `Body.reindex`,
+ *   which is not an `x`/`y` setter precisely because `DynamicBody.update`
+ *   would have to bypass it.
  *
  * ## Absence
  *

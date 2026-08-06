@@ -185,25 +185,29 @@ eq('negative velocity is left alone (bodies reverse)', body.velocity, -3);
 // body without touching that index, so the body stayed findable at its old
 // position and invisible at its new one. It was only safe because its one
 // caller happened to add() the body to the world straight afterwards.
-const grid = [];
-for (let gx = 0; gx < 4; gx++) {
-  const col = [];
-  for (let gy = 0; gy < 4; gy++) {
-    col.push(
-      new Cell({
-        x: gx * CELL + CELL / 2,
-        y: gy * CELL + CELL / 2,
-        width: CELL,
-        length: CELL,
-        height: CELL,
-        blocking: false,
-        sides: {},
-      })
-    );
+const makeGrid = () => {
+  const grid = [];
+  for (let gx = 0; gx < 4; gx++) {
+    const col = [];
+    for (let gy = 0; gy < 4; gy++) {
+      col.push(
+        new Cell({
+          x: gx * CELL + CELL / 2,
+          y: gy * CELL + CELL / 2,
+          width: CELL,
+          length: CELL,
+          height: CELL,
+          blocking: false,
+          sides: {},
+        })
+      );
+    }
+    grid.push(col);
   }
-  grid.push(col);
-}
+  return grid;
+};
 
+const grid = makeGrid();
 const world = new World({ grid, bodies: [] });
 const mover = new DynamicBody({ x: CELL / 2, y: CELL / 2, autoPlay: false });
 world.add(mover);
@@ -227,6 +231,67 @@ ok(
   to.bodies.length === occupants
 );
 ok('and the body is still registered once', to.bodies.includes(mover));
+
+// --- destroy() unsubscribes, and that is the point of it ------------------
+// Nulling plain fields never helped the GC — JavaScript collects by
+// reachability, so the whole subgraph goes when its owner is dropped. What
+// destroy() is actually for is releasing what the GC cannot see: Pixi/Howler
+// handles, and listener closures, which capture whatever subscribed.
+//
+// Cell.destroy() used not to call super.destroy(), so cells kept every
+// listener and kept pointing at their World. Nothing else exercises teardown.
+const doomed = new World({ grid: makeGrid(), bodies: [] });
+const cell = doomed.grid[1][1];
+const occupant = new DynamicBody({
+  x: CELL + CELL / 2,
+  y: CELL + CELL / 2,
+  autoPlay: false,
+});
+doomed.add(occupant);
+
+let cellEvents = 0;
+let worldEvents = 0;
+cell.on('test', () => (cellEvents += 1));
+doomed.on('test', () => (worldEvents += 1));
+
+cell.emit('test');
+doomed.emit('test');
+ok('listeners fire before teardown', cellEvents === 1 && worldEvents === 1);
+
+doomed.destroy();
+
+cell.emit('test');
+doomed.emit('test');
+eq('cell listeners are gone after destroy', cellEvents, 1);
+eq('world listeners are gone after destroy', worldEvents, 1);
+
+ok('cell drops its back-reference to the world', cell.parent === null);
+ok('cell releases the bodies standing on it', cell.bodies.length === 0);
+
+// Bodies are not the core World's to destroy — the engine World destroys the
+// player, items, enemies and objects itself. Destroying one directly is what
+// exercises Body/DynamicBody.destroy.
+let bodyEvents = 0;
+occupant.on('test', () => (bodyEvents += 1));
+occupant.emit('test');
+occupant.destroy();
+occupant.emit('test');
+
+eq('body listeners are gone after destroy', bodyEvents, 1);
+ok('a destroyed body drops its cell', occupant.cell === null);
+ok('a destroyed body drops its parent', occupant.parent === null);
+ok(
+  'but keeps previousPos, which dies with it',
+  occupant.previousPos && typeof occupant.previousPos.x === 'number'
+);
+
+// The inert fields are deliberately left alone now: they die with their owner,
+// and leaving them be is what lets them be readonly.
+ok('grid is left intact rather than emptied', doomed.grid.length === 4);
+ok(
+  'offset survives teardown',
+  cell.offset && typeof cell.offset.x === 'number'
+);
 
 console.log(failed ? '\nRESULT: FAILURES' : '\nRESULT: ALL PASS');
 process.exit(failed ? 1 : 0);

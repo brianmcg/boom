@@ -17,7 +17,7 @@ export interface WorldOptions {
  * raycasting proportional to the neighbourhood instead of the map.
  */
 export default class World extends EventEmitter implements RaycastableWorld {
-  grid: Cell[][];
+  readonly grid: Cell[][];
 
   /** Every body in the world, keyed by id. */
   bodies: Record<string, Body>;
@@ -32,8 +32,8 @@ export default class World extends EventEmitter implements RaycastableWorld {
   /** The tallest cell in the grid, in world units. */
   readonly height: number;
 
-  protected readonly maxCellX: number;
-  protected readonly maxCellY: number;
+  private readonly maxCellX: number;
+  private readonly maxCellY: number;
 
   /** Grid bounds in world units, for clamping positions. */
   readonly maxMapX: number;
@@ -173,9 +173,5 @@ export default class World extends EventEmitter implements RaycastableWorld {
   destroy(_options?: unknown) {
     this.removeAllListeners();
     this.grid.forEach(row => row.forEach(cell => cell.destroy()));
-
-    this.bodies = {};
-    this.dynamicBodies = [];
-    this.grid = [];
   }
 }

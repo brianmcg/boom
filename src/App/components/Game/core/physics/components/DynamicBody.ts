@@ -89,7 +89,9 @@ export default class DynamicBody extends Body {
 
   readonly isDynamic = true;
 
-  weight: number;
+  /** A weightless body passes through transparent cells. */
+  readonly weight: number;
+
   readonly autoPlay: boolean;
 
   /** How many cells out to gather potential collisions from. */
@@ -104,7 +106,7 @@ export default class DynamicBody extends Body {
    *
    * @internal Public only because the collision helpers live in another module.
    */
-  previousPos: Point | null;
+  readonly previousPos: Point;
 
   /** Bodies collided with during the last update. */
   private collisions: Body[];
@@ -135,7 +137,7 @@ export default class DynamicBody extends Body {
   }
 
   /** Also refreshes the cached cell, which `update` otherwise maintains. */
-  protected reindex(previousGridX: number, previousGridY: number) {
+  reindex(previousGridX: number, previousGridY: number) {
     super.reindex(previousGridX, previousGridY);
 
     if (this.parent) {
@@ -171,8 +173,8 @@ export default class DynamicBody extends Body {
     const halfWidth = this.width / 2;
     const halfLength = this.length / 2;
 
-    this.previousPos!.x = this.x;
-    this.previousPos!.y = this.y;
+    this.previousPos.x = this.x;
+    this.previousPos.y = this.y;
 
     // Unmark id from cell before moving
     this.cell!.remove(this);
@@ -191,7 +193,7 @@ export default class DynamicBody extends Body {
           const { shape } = body;
           const { x, width } = shape;
 
-          if (this.previousPos!.x < shape.x) {
+          if (this.previousPos.x < shape.x) {
             this.x = x - halfWidth - 0.0001;
           } else {
             this.x = x + width + halfWidth;
@@ -214,7 +216,7 @@ export default class DynamicBody extends Body {
           const { shape } = body;
           const { y, length } = shape;
 
-          if (this.previousPos!.y < shape.y) {
+          if (this.previousPos.y < shape.y) {
             this.y = y - halfLength - 0.0001;
           } else {
             this.y = y + length + halfLength;
@@ -291,11 +293,8 @@ export default class DynamicBody extends Body {
   destroy(options?: unknown) {
     super.destroy(options);
 
-    this.collisions = [];
-    this.trackedCollisions = [];
-    this.previousPos = null;
-
+    // Only the back-references up the graph. Everything else this body holds
+    // dies with it — see the note on destroy() in CLAUDE.md.
     this.cell = null;
-    this.parent = null;
   }
 }

@@ -92,7 +92,14 @@ Each `core/*` subsystem and `engine/` exposes a single `index.js` that re-export
 
 ### Memory management convention
 
-Classes with a long lifetime (`Scene`, `World`, entities) implement an explicit `destroy()` that nulls out references and calls `destroy()` on owned children/PixiJS objects — several past commits are specifically about fixing leaks here ("Updated memory management", "Fixed destroy scene bug"). When adding new stateful fields to these classes, wire them into the corresponding `destroy()`.
+Classes with a long lifetime (`Scene`, `World`, entities) implement an explicit `destroy()`. It exists for two things, and **neither of them is helping the garbage collector**:
+
+1. **Releasing resources the GC does not manage.** PixiJS display objects, textures and Howler sounds hold GPU and audio handles that are only freed by calling their own `destroy()`. Every leak this repo has actually fixed was one of these — see "Destroy texture sources on cache clear to fix GPU leak" and "Destroy sprites.js textures".
+2. **Unsubscribing.** `removeAllListeners()` matters because an emitter holds its listener closures, and those closures capture whatever subscribed. A listener left on a long-lived emitter keeps the short-lived subscriber alive.
+
+Nulling plain fields does **not** help the GC. JavaScript collects by reachability, so when the owner is dropped its whole subgraph goes with it, cycles included; `this.grid = []` just mutates an object that is about to be freed. Null a field only when it is a back-reference *up* the graph that could pin something large if the object outlives its owner — `Body.parent` and `DynamicBody.cell` are the two in `core/physics`. Otherwise leave it, so the field can stay `readonly`.
+
+So when adding a stateful field, wire it into `destroy()` only if it owns a Pixi/Howler resource or a subscription.
 
 ### i18n
 
