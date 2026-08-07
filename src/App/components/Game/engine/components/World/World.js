@@ -64,7 +64,7 @@ export default class World extends PhysicsWorld {
     );
 
     // Create graphs for pathfinding.
-    this.graphs = this.dynamicBodies
+    this.graphs = this.updatableBodies
       .reduce((memo, b) => {
         if (
           b.isEnemy &&
@@ -137,7 +137,7 @@ export default class World extends PhysicsWorld {
 
     graph.diagonal = diagonal;
 
-    this.dynamicBodies.forEach(({ gridX, gridY }) => {
+    this.updatableBodies.forEach(({ gridX, gridY }) => {
       const node = graph.grid[gridX][gridY];
       initialWeights.push({ x: gridX, y: gridY, weight: node.weight });
       node.weight = NODE_WEIGHTS.DYNAMIC_BODY;
@@ -159,15 +159,15 @@ export default class World extends PhysicsWorld {
   }
 
   play() {
-    this.dynamicBodies.forEach(body => body.play());
+    this.updatableBodies.forEach(body => body.play());
   }
 
   pause() {
-    this.dynamicBodies.forEach(body => body.pause());
+    this.updatableBodies.forEach(body => body.pause());
   }
 
   stop() {
-    this.dynamicBodies.forEach(body => body.stop());
+    this.updatableBodies.forEach(body => body.stop());
   }
 
   onPlayerDeath() {

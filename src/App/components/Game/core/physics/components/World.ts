@@ -9,6 +9,25 @@ export interface WorldOptions {
 }
 
 /**
+ * A body carrying the optional `update` that `Body` merely allows for.
+ *
+ * Deliberately not a class: the two branches that update — `DynamicBody`, and
+ * `DynamicCell` by way of doors and push walls — meet only at `Body`, and
+ * physics `DynamicCell` does not define `update` at all. Its subclasses in the
+ * game layer do. So the thing `updatableBodies` requires is the method, not a
+ * place in the hierarchy, and `isUpdatable` checks for it rather than trusting
+ * a declaration nothing verifies.
+ *
+ * Private to this file. It exists to spell out what `startUpdates` already
+ * enforces, not to add a noun to the module.
+ */
+type UpdatableBody = Body & {
+  update(delta: number, elapsedMS: number): void;
+};
+
+const isUpdatable = (body: Body): body is UpdatableBody => !!body.update;
+
+/**
  * A fixed grid of cells plus every body standing on it.
  *
  * The world owns the spatial index: bodies are looked up through the cell they
@@ -22,7 +41,7 @@ export default class World extends EventEmitter {
   bodies: Record<string, Body>;
 
   /** The subset of bodies currently receiving `update` calls. */
-  dynamicBodies: Body[];
+  updatableBodies: UpdatableBody[];
 
   /** Grid dimensions, in cells. */
   readonly width: number;
@@ -40,7 +59,7 @@ export default class World extends EventEmitter {
 
     this.grid = grid;
     this.bodies = {};
-    this.dynamicBodies = [];
+    this.updatableBodies = [];
 
     this.width = this.grid.length;
     this.length = this.grid[0].length;
@@ -63,7 +82,7 @@ export default class World extends EventEmitter {
   }
 
   update(delta: number, elapsedMS: number) {
-    this.dynamicBodies.forEach(body => body.update!(delta, elapsedMS));
+    this.updatableBodies.forEach(body => body.update(delta, elapsedMS));
   }
 
   add(body: Body) {
@@ -94,14 +113,14 @@ export default class World extends EventEmitter {
   }
 
   startUpdates(body: Body) {
-    if (body.update) {
-      this.dynamicBodies.push(body);
+    if (isUpdatable(body)) {
+      this.updatableBodies.push(body);
     }
   }
 
   stopUpdates(body: Body) {
-    if (body.update) {
-      this.dynamicBodies = this.dynamicBodies.filter(d => d.id !== body.id);
+    if (isUpdatable(body)) {
+      this.updatableBodies = this.updatableBodies.filter(d => d.id !== body.id);
     }
   }
 
