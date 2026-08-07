@@ -38,15 +38,24 @@ oracle to the very change you were trying to check.
 
 ### Divergences accepted so far
 
-**`DynamicBody.angle` is normalised on write.** The baseline let a body's angle
-drift past 2π and then chose the wrong quadrant branch in the raycaster:
-`6.3879` fails `angle < DEG_180` while the geometrically identical `0.1047`
-passes, so the ray stepped toward `-y` when it should have stepped toward
-`+y`. The sim now normalises when it turns a body, which is what every real
-caller in `engine/` already does; `contract` asserts the guarantee, including
-that an in-range angle is stored bit-for-bit — the obvious
-`((v % TAU) + TAU) % TAU` form is _not_ the identity and perturbed every angle
-in the sim.
+**None.** `equivalence` currently reports IDENTICAL with no allowances.
+
+One was accepted and then withdrawn. `4bef6dca` gave `DynamicBody.angle` a
+normalising setter, which the baseline had no equivalent of, so the sim had to
+normalise its turns for the two to agree. The setter has since been removed:
+the invariant has to survive the raw arithmetic `engine/` does on the number,
+so it belongs in an `Angle` value type once `engine/` is TypeScript, not in a
+setter on one field. The sim's turn went back to `d.angle += 0.31`, drifting
+past 2π exactly as it always did — which is the stronger comparison, since both
+modules now have to agree on a drifted angle too.
+
+The bug that episode found is real and still worth knowing: `6.3879` fails
+`angle < DEG_180` while the geometrically identical `0.1047` passes, so an
+angle that drifts out of `[0, 2π)` makes the ray step toward `-y` instead of
+`+y`. Every writer in `engine/` normalises, and `AbstractEnemy.js:500` was
+fixed to join them. `contract` now asserts the _absence_ of normalisation on
+the field, so a setter reappearing without the value-type plan being finished
+shows up as a failure.
 
 ### Renames the harness carries shims for
 
@@ -66,9 +75,11 @@ otherwise a pure rename reads as a lost key plus a truthy added one. The audit
 keeps its teeth either way: a door still reports `displaces` as an added falsy
 key, and a push wall still reports `retracts`.
 
-Still to come, when `Body.x`/`y` move behind accessors: own keys get renamed
-(`_x` for `x`), which the cell-shape audit compares, so `norm()` in
-`equivalence.mjs` will need to strip the underscore.
+Worth knowing if accessors ever do arrive: a backing field renames the own key
+(`_x` for `x`), and the cell-shape audit compares those, so `norm()` in
+`equivalence.mjs` would need to strip the underscore. The module's position is
+currently that value types beat accessors — see the conventions doc in
+`core/physics/types.ts`.
 
 ## Stubs
 

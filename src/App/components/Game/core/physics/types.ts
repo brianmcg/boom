@@ -47,11 +47,11 @@
  * wall, which is a fact about content rather than about cells. If a field is
  * merely quiet, leave it writable.
  *
- * **`private` means nothing outside the class touches it** — accessor backing
- * fields, and bookkeeping like `DynamicBody.collisions`. Three fields in the
- * module; everything else is public. There is no `protected`: it was down to
- * one field and one method, which does not earn a third thing to remember. Add
- * it back if a class ever genuinely needs a hierarchy-only member.
+ * **`private` means nothing outside the class touches it** — bookkeeping like
+ * `DynamicBody.collisions` and `trackedCollisions`. Two fields in the module;
+ * everything else is public. There is no `protected`: it was down to one field
+ * and one method, which does not earn a third thing to remember. Add it back if
+ * a class ever genuinely needs a hierarchy-only member.
  *
  * The two stack where both are true, and that is not a third category:
  * `collisions` is private and mutable, `Body.width` is public and readonly, and
@@ -63,11 +63,10 @@
  * bounds, while the identical fact in world units (`maxMapX`) is public and
  * widely used. The question had no good answer because the field was redundant.
  *
- * **A leading `_` marks an accessor's backing field, nothing else.** It is not
- * a privacy convention — it is forced, because `get angle()` cannot read a
- * field also called `angle`. Private fields without an accessor keep their real
- * names (`collisions`, `maxCellX`). One field in this module is prefixed, and
- * it is the one with an accessor.
+ * **A leading `_` would mark an accessor's backing field, nothing else** — it
+ * is not a privacy convention, it is forced, because `get angle()` cannot read
+ * a field also called `angle`. No field in this module is prefixed, because
+ * none has an accessor. Private fields keep their real names (`collisions`).
  *
  * Relaxing a modifier because a new call site needs the field is these rules
  * working, not a breach of them. Until `engine/` is TypeScript, `checkJs:
@@ -75,22 +74,28 @@
  * exclude `core/ai` and `graph.grid[...]`, since `GridNode` has `weight`,
  * `parent` and `closed` fields whose names collide with these.
  *
- * Two things sit outside all of that:
+ * **There are no accessors in this module, and that is the position.** Both
+ * candidates were tried and both were removed:
  *
- * - **Value types**, for an invariant belonging to the value rather than to
- *   the field holding it, so it holds everywhere the value goes — including in
- *   locals no setter could see.
- * - **Accessors**, only where a write must be normalised or clamped, and only
- *   when there is a real defect behind it. `DynamicBody.angle` is the only one:
- *   an un-normalised angle made the raycaster step the wrong way. `velocity`
- *   had one too and lost it — the limit belongs to how far a body may travel in
- *   an update, not to what a caller may ask for, so it stayed at the point of
- *   use. A pair that just reads and writes its own backing field is
- *   indirection, not encapsulation.
+ * - `DynamicBody.velocity` — the limit belongs to how far a body may travel in
+ *   one update, not to what a caller may ask for, so it stayed at the point of
+ *   use in `update`.
+ * - `DynamicBody.angle` — normalisation has to survive the raw arithmetic
+ *   `engine/` does on the number, and a setter guards only assignment to one
+ *   field. It belongs in an `Angle` **value type**, which carries the invariant
+ *   everywhere the value goes, including into locals no setter could see. That
+ *   needs `engine/` to be TypeScript first; until then the invariant stays with
+ *   the callers, which is where it already was.
  *
- * An invariant a setter cannot actually enforce belongs in a method — see
- * `Body.reindex`, which is not an `x`/`y` setter precisely because
- * `DynamicBody.update` would have to bypass it.
+ * That is the general shape: an invariant that belongs to the *value* wants a
+ * value type, not an accessor on whichever field happens to hold it today. A
+ * pair that just reads and writes its own backing field is indirection, not
+ * encapsulation — and an invariant a setter cannot actually enforce belongs in
+ * a method, see `Body.reindex`, which is not an `x`/`y` setter precisely
+ * because `DynamicBody.update` would have to bypass it.
+ *
+ * If a real defect ever needs one before the value type lands, add it — but
+ * write down why the value type could not do the job.
  *
  * ## Absence
  *

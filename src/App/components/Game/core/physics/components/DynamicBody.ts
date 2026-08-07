@@ -46,34 +46,34 @@ export interface DynamicBodyOptions extends BodyOptions {
  * and re-registers itself with whichever cell it ended up in.
  */
 export default class DynamicBody extends Body {
-  private _angle = 0;
-
   /** How fast the body moves, in world units per frame. */
   velocity: number;
 
   /**
-   * Which way the body faces, in radians, always within `[0, 2π)`.
+   * Which way the body faces, in radians. **Callers must keep it within
+   * `[0, 2π)`** — the raycaster picks a quadrant by comparing against `DEG_90`,
+   * `DEG_180` and `DEG_270`, and an angle that has drifted outside the range
+   * takes the wrong branch: `6.3879` fails `angle < DEG_180` while the
+   * identical direction `0.1047` passes, so the ray steps toward `-y` instead
+   * of `+y`.
    *
-   * The raycaster picks a quadrant by comparing the angle against `DEG_90`,
-   * `DEG_180` and `DEG_270`, which is only meaningful on a normalised angle.
-   * Every caller used to guarantee that by hand — `(x + DEG_360) % DEG_360`,
-   * with `DEG_360` redeclared in eight engine files. Normalising here makes
-   * those redundant rather than load-bearing, and they stay correct in the
-   * meantime because normalisation is idempotent.
+   * Every writer in `engine/` does this, either explicitly as
+   * `(x + DEG_360) % DEG_360` or by taking the value from `getAngleBetween`,
+   * which normalises internally.
    *
-   * Wrapped the same way `getAngleBetween` does, and deliberately not as
-   * `((v % DEG_360) + DEG_360) % DEG_360`: adding 2π to an angle that is
+   * A normalising setter lived here for three commits and was removed on
+   * purpose: an invariant this widely shared belongs in an `Angle` value type
+   * that carries it everywhere the number goes, including through the raw
+   * arithmetic `engine/` does on it. That type needs `engine/` to be
+   * TypeScript first — until then a setter would guard only assignment to this
+   * one field, which is not where the invariant lives.
+   *
+   * If you write the normalisation by hand, wrap the way `getAngleBetween`
+   * does. Not `((v % DEG_360) + DEG_360) % DEG_360`: adding 2π to an angle
    * already in range and taking the modulus back loses a few bits, so that
    * form silently perturbs every angle it touches.
    */
-  get angle(): number {
-    return this._angle;
-  }
-
-  set angle(value: number) {
-    const wrapped = value % DEG_360;
-    this._angle = wrapped < 0 ? wrapped + DEG_360 : wrapped;
-  }
+  angle: number;
 
   readonly isDynamic = true;
 

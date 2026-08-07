@@ -498,7 +498,11 @@ export default class AbstractEnemy extends AbstractActor {
           this.spawnItem.y = this.y;
           this.spawnItem.velocity = this.isBoss ? 0 : this.velocity * 0.5;
           this.spawnItem.angle =
-            this.angle - degrees(30) + degrees(Math.floor(Math.random() * 60));
+            (this.angle -
+              degrees(30) +
+              degrees(Math.floor(Math.random() * 60)) +
+              DEG_360) %
+            DEG_360;
           this.parent.add(this.spawnItem);
           this.spawnItem.setSpawning();
         }

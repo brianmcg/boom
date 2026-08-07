@@ -158,49 +158,46 @@ ok(
 );
 ok('a closed door falls back to Body.shape', door.shape instanceof Shape);
 
-// --- DynamicBody.angle is always in [0, 2pi) ------------------------------
-// The raycaster picks its quadrant branch by comparing the angle against
-// DEG_90/DEG_180/DEG_270. The baseline let a body's angle drift past 2pi --
-// `d.angle += 0.31` forever -- and then stepped the ray the wrong way, because
-// 6.3879 fails `angle < PI` while the geometrically identical 0.1047 passes.
+// --- DynamicBody.angle is a plain field ------------------------------------
+// The raycaster needs the angle within [0, 2pi) -- it picks its quadrant by
+// comparing against DEG_90/DEG_180/DEG_270, and 6.3879 fails `angle < PI`
+// while the geometrically identical 0.1047 passes, so a drifted angle steps
+// the ray toward -y instead of +y.
+//
+// That invariant is the CALLER's, not the field's. A normalising setter lived
+// here briefly and was removed: the same invariant has to hold through the raw
+// arithmetic engine/ does on the number, which a setter on one field cannot
+// reach. It belongs in an Angle value type, once engine/ is TypeScript.
+//
+// So these assert the absence of normalisation. If a setter comes back without
+// that plan being finished, this section says so.
 const TAU = Math.PI * 2;
 const body = new DynamicBody({ x: 100, y: 100, angle: 0.5 });
 
 eq('angle survives an in-range write exactly', body.angle, 0.5);
 
 body.angle = 0.5 + TAU;
-ok(
-  'an angle a full turn over wraps back',
-  Math.abs(body.angle - 0.5) < 1e-12,
-  `got ${body.angle}`
-);
+eq('an out-of-range angle is stored as given', body.angle, 0.5 + TAU);
 
 body.angle = -0.25;
-ok(
-  'a negative angle wraps up into range',
-  Math.abs(body.angle - (TAU - 0.25)) < 1e-12,
-  `got ${body.angle}`
-);
+eq('a negative angle is stored as given', body.angle, -0.25);
 
-// The drift the baseline got wrong, reproduced directly.
-body.angle = 0.5;
-for (let i = 0; i < 40; i++) body.angle = body.angle + 0.31;
-ok(
-  'repeated turns never leave the range',
-  body.angle >= 0 && body.angle < TAU,
-  `after 40 turns of 0.31: ${body.angle}`
-);
+// Whatever normalises, wherever it ends up living, must not perturb an angle
+// already in range: the obvious ((v % TAU) + TAU) % TAU form loses a few bits
+// on every write, which showed up as drift across the whole sim.
+const wrap = v => {
+  const w = v % TAU;
+  return w < 0 ? w + TAU : w;
+};
 
-// Normalising must not perturb an angle that is already in range: the obvious
-// ((v % TAU) + TAU) % TAU form loses a few bits on every write, which showed
-// up as drift across the whole dynamic-body sim.
 let exact = true;
 for (let i = 0; i < 2000; i++) {
   const v = (i / 2000) * TAU;
-  body.angle = v;
-  if (body.angle !== v) exact = false;
+  if (wrap(v) !== v) exact = false;
 }
-ok('an in-range angle is stored bit-for-bit', exact);
+ok('the wrap engine/ uses is exact for in-range angles', exact);
+ok('and still brings a drifted angle back', wrap(0.5 + TAU) - 0.5 < 1e-12);
+ok('and a negative one', Math.abs(wrap(-0.25) - (TAU - 0.25)) < 1e-12);
 
 // --- Body's line-intersection API, as HitScan calls it --------------------
 // HitScan.js:52 does `body.getLineIntersection({ startPoint, endPoint })` and
