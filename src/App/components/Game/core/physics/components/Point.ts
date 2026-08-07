@@ -1,4 +1,4 @@
-import { DEG_360 } from '../degrees';
+import { DEG_360 } from '../utils/degrees';
 import type { Positioned } from '../types';
 
 export const getDistanceBetween = (

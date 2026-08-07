@@ -12,7 +12,7 @@ const makeWorld = (M, grid, bodies) =>
 
 // Same story for the two line-intersection methods. The baseline called them
 // isRayCollision/getRayCollision, back when only the raycaster used them; they
-// are lineIntersectsBody/getLineBodyIntersection now, exposed on Body as
+// are isLineBodyIntersection/getLineBodyIntersection now, exposed on Body as
 // intersectsLine/getLineIntersection. Renames, not behaviour.
 const intersects = (body, line) =>
   body.intersectsLine ? body.intersectsLine(line) : body.isRayCollision(line);

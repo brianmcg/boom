@@ -5,7 +5,10 @@ import type { Line, Positioned, Intersection } from '../types';
 import Shape from './Shape';
 import type World from './World';
 import { getDistanceBetween } from './Point';
-import { lineIntersectsBody, getLineBodyIntersection } from '../helpers';
+import {
+  isLineBodyIntersection,
+  getLineBodyIntersection,
+} from '../utils/intersections';
 
 let idCount = 0;
 
@@ -148,7 +151,7 @@ export class Body extends EventEmitter {
   }
 
   intersectsLine(line: Line): boolean {
-    return lineIntersectsBody(this, line);
+    return isLineBodyIntersection(this, line);
   }
 
   getLineIntersection(line: Line): Intersection | null {

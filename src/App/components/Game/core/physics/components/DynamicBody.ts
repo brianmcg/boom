@@ -2,12 +2,13 @@ import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
 import type { Positioned } from '../types';
-import { DEG_90, DEG_270, DEG_360 } from '../degrees';
+import { DEG_90, DEG_270, DEG_360 } from '../utils/degrees';
 import Point, { getAngleBetween } from './Point';
 import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
-import { lineIntersectsBody, castRay } from '../helpers';
+import { isLineBodyIntersection } from '../utils/intersections';
+import { castRay } from '../utils/castRay';
 
 const EVENTS = {
   COLLISION_START: 'body:collision:start',
@@ -156,7 +157,7 @@ export default class DynamicBody extends Body {
 
     // Overlapping where it stands is the common case; this catches a body that
     // moved far enough in one frame to pass clean through the other.
-    return lineIntersectsBody(body, {
+    return isLineBodyIntersection(body, {
       startPoint: this.previousPos,
       endPoint: new Point(this.x, this.y),
     });
