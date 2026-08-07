@@ -12,15 +12,23 @@ const makeWorld = (M, grid, bodies) =>
 
 // Same story for the two line-intersection methods. The baseline called them
 // isRayCollision/getRayCollision, back when only the raycaster used them; they
-// are isLineBodyIntersection/getLineBodyIntersection now, exposed on Body as
-// intersectsLine/getLineIntersection. Renames, not behaviour.
+// are isLineBodyIntersection/getLineBodyIntersectionDistance now, exposed on
+// Body as intersectsLine/getLineIntersectionDistance. Renames, not behaviour.
 const intersects = (body, line) =>
   body.intersectsLine ? body.intersectsLine(line) : body.isRayCollision(line);
 
-const intersection = (body, line) =>
-  body.getLineIntersection
-    ? body.getLineIntersection(line)
-    : body.getRayCollision(line);
+// The live one returns a bare distance now; the baseline returns
+// { x, y, distance }. Nothing ever read the coordinates, so they were dropped.
+// Normalise both to a distance-or-null.
+const distanceOf = (body, line) => {
+  if (body.getLineIntersectionDistance) {
+    return body.getLineIntersectionDistance(line);
+  }
+
+  const hit = body.getRayCollision(line);
+
+  return hit ? hit.distance : null;
+};
 
 let failed = false;
 const ok = (name, cond, detail) => {
@@ -48,14 +56,18 @@ const makeBody = M =>
 const startPoint = { x: bx, y: by - 100 };
 const endPoint = { x: bx, y: by + 100 };
 
-const oldHit = intersection(makeBody(OLD), { startPoint, endPoint });
-const newHit = intersection(makeBody(NEW), { startPoint, endPoint });
+const oldHit = distanceOf(makeBody(OLD), { startPoint, endPoint });
+const newHit = distanceOf(makeBody(NEW), { startPoint, endPoint });
 
+// The probe runs straight up the centre line, so the distance travelled IS the
+// near edge's offset — `expectedDistance` says "the edge is at by - L/2" as
+// exactly as reading the crossing's y did, before the coordinates were dropped.
 const expectedY = by - L / 2;
+const expectedDistance = expectedY - startPoint.y;
 ok(
   'bug1: hits the near edge at y = by - length/2',
-  newHit && Math.abs(newHit.y - expectedY) < 1e-9,
-  `expected y=${expectedY}, new=${newHit && newHit.y}, old=${oldHit && oldHit.y}`
+  newHit !== null && Math.abs(newHit - expectedDistance) < 1e-9,
+  `edge at y=${expectedY} means distance ${expectedDistance}; new=${newHit}, old=${oldHit}`
 );
 // A discriminating ray: horizontal, at a y that is outside the box by length
 // but inside the phantom box the bug extended to y + width. The body is not
@@ -63,31 +75,25 @@ ok(
 const phantomY = by + (L / 2 + W / 2) / 2; // between by+4 (real edge) and by+20
 const phantomSp = { x: bx - 100, y: phantomY };
 const phantomEp = { x: bx + 100, y: phantomY };
-const oldPhantom = intersection(makeBody(OLD), {
+const oldPhantom = distanceOf(makeBody(OLD), {
   startPoint: phantomSp,
   endPoint: phantomEp,
 });
-const newPhantom = intersection(makeBody(NEW), {
+const newPhantom = distanceOf(makeBody(NEW), {
   startPoint: phantomSp,
   endPoint: phantomEp,
 });
 
 ok(
   'bug1: old module reported a phantom hit below the body',
-  !!oldPhantom,
-  `y=${phantomY}, body spans y ${by - L / 2}..${by + L / 2}, old hit=${JSON.stringify(oldPhantom)}`
+  oldPhantom !== null,
+  `y=${phantomY}, body spans y ${by - L / 2}..${by + L / 2}, old distance=${oldPhantom}`
 );
 ok(
   'bug1: fixed module correctly reports no hit there',
   newPhantom === null,
-  `got ${JSON.stringify(newPhantom)}`
+  `got ${newPhantom}`
 );
-ok(
-  'bug1: reported distance matches the corrected hit point',
-  newHit && Math.abs(newHit.distance - (expectedY - startPoint.y)) < 1e-9,
-  `expected ${expectedY - startPoint.y}, got ${newHit && newHit.distance}`
-);
-
 // getRayCollision must now agree with isRayCollision, which always used length.
 // Probe a band that is inside the box by width but outside it by length: the
 // buggy version reports a hit there, isRayCollision does not.
@@ -97,13 +103,13 @@ for (let dy = -W; dy <= W; dy += 1) {
   const sp = { x: bx - 100, y: by + dy };
   const ep = { x: bx + 100, y: by + dy };
   const b = makeBody(NEW);
-  const hit = !!intersection(b, { startPoint: sp, endPoint: ep });
+  const hit = distanceOf(b, { startPoint: sp, endPoint: ep }) !== null;
   const isHit = intersects(b, { startPoint: sp, endPoint: ep });
   if (hit !== isHit) agree = false;
 
   const ob = makeBody(OLD);
   if (
-    !!intersection(ob, { startPoint: sp, endPoint: ep }) !==
+    (distanceOf(ob, { startPoint: sp, endPoint: ep }) !== null) !==
     intersects(ob, { startPoint: sp, endPoint: ep })
   )
     disagreeOld++;
@@ -121,11 +127,11 @@ for (let a = 0; a < 360; a += 3) {
   const sp = { x: bx + Math.cos(ang) * 90, y: by + Math.sin(ang) * 90 };
   const ep = { x: bx - Math.cos(ang) * 90, y: by - Math.sin(ang) * 90 };
   const mk = M => new M.Body({ x: bx, y: by, width: 24, length: 24 });
-  const o = intersection(mk(OLD), { startPoint: sp, endPoint: ep });
-  const n = intersection(mk(NEW), { startPoint: sp, endPoint: ep });
-  if (JSON.stringify(o) !== JSON.stringify(n)) squareSame = false;
+  const o = distanceOf(mk(OLD), { startPoint: sp, endPoint: ep });
+  const n = distanceOf(mk(NEW), { startPoint: sp, endPoint: ep });
+  if (o !== n) squareSame = false;
 }
-ok('bug1: square bodies byte-identical to before (120 angles)', squareSame);
+ok('bug1: square bodies identical to before (120 angles)', squareSame);
 
 // ---------------------------------------------------------------------------
 // Bug 2: a ray that leaves the grid on both axes fell through to the vertical

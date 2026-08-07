@@ -49,41 +49,36 @@ export default class HitScan extends Body {
     const collisions = Object.values(encounteredBodies)
       .reduce((memo, body) => {
         if (body.blocking) {
-          const point = body.getLineIntersection({ startPoint, endPoint });
+          const hitDistance = body.getLineIntersectionDistance({
+            startPoint,
+            endPoint,
+          });
 
-          if (point) {
-            memo.push({ body, point });
+          // Not `if (hitDistance)`: 0 is a real hit, from a shot that starts
+          // exactly on the body's edge.
+          if (hitDistance !== null) {
+            memo.push({ body, distance: hitDistance });
           }
 
           return memo;
         }
         return memo;
       }, [])
-      .sort((a, b) => {
-        if (a.point.distance > b.point.distance) {
-          return 1;
-        }
-
-        if (a.point.distance < b.point.distance) {
-          return -1;
-        }
-
-        return 0;
-      });
+      .sort((a, b) => a.distance - b.distance);
 
     if (collisions.length) {
       // Handle collision with object.
       for (let i = 0; i < collisions.length; i++) {
-        const { point, body } = collisions[i];
+        const { distance: hitDistance, body } = collisions[i];
 
-        if (point.distance <= this.range) {
+        if (hitDistance <= this.range) {
           let damage =
             this.power * (Math.floor(Math.random() * this.accuracy) + 1);
 
           collisionsInRange.push(body);
 
           if (this.fade) {
-            damage *= (this.range - point.distance) / this.range;
+            damage *= (this.range - hitDistance) / this.range;
           }
 
           if (i > 0) {
@@ -115,7 +110,7 @@ export default class HitScan extends Body {
               body.hit({
                 damage,
                 angle,
-                point,
+                distance: hitDistance,
                 rays,
                 instantKill: this.instantKill,
               });

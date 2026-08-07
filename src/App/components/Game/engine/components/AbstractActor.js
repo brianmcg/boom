@@ -76,10 +76,12 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     this.angle = this.getAngleTo(body);
   }
 
-  hit({ rays, point, ...options }) {
+  hit({ rays, distance, ...options }) {
     super.hit(options);
 
-    if (point && rays) {
+    // A number check rather than a truthiness one: 0 is a real hit distance,
+    // and ChaseEnemy/Projectile call hit() without one at all.
+    if (typeof distance === 'number' && rays) {
       const {
         side,
         cell,
@@ -87,7 +89,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
         encounteredBodies,
       } = rays.reduce(
         (memo, ray) => {
-          if (ray.distance > point.distance) {
+          if (ray.distance > distance) {
             if (ray.distance < memo.distance) {
               return ray;
             }
@@ -127,7 +129,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
         nearest?.id === this.id &&
         side &&
         !side.spatter &&
-        sectionDistance - point.distance < SPATTER_DISTANCE
+        sectionDistance - distance < SPATTER_DISTANCE
       ) {
         const spatter = this.spatter();
 

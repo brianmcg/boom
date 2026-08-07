@@ -10,9 +10,9 @@
  * `castRay`, `UpdatableBody` with the `World` field it types.
  *
  * **This file is not "the types folder".** It holds the shared vocabulary that
- * belongs to no single file — `Positioned`, `Line`, `Side`, `Sides`,
- * `Intersection` — and nothing else. A type with an obvious owner goes with its
- * owner, so that changing one and not the other is hard.
+ * belongs to no single file — `Positioned`, `Line`, `Side`, `Sides` — and
+ * nothing else. A type with an obvious owner goes with its owner, so that
+ * changing one and not the other is hard.
  *
  * `Axis` and `Transparency` stay in `constants.ts` for the strongest version of
  * that: they are *derived* from `AXES` and `TRANSPARENCY` by indexed access, so
@@ -101,11 +101,19 @@
  *
  * `null` marks a slot that held a value and was cleared, or a lookup that
  * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
- * of bounds, `getLineBodyIntersection()` with no crossing. `undefined` marks
- * something never supplied — a constructor option left off, or a cell face the
- * map data never defined. That is why `Ray.side` is `Side | undefined` rather
- * than `Side | null`: it passes through `Cell.front`/`left`/`back`/`right`
- * unchanged, and those come straight from the map.
+ * of bounds, `getLineBodyIntersectionDistance()` with no crossing. `undefined`
+ * marks something never supplied — a constructor option left off, or a cell
+ * face the map data never defined. That is why `Ray.side` is `Side | undefined`
+ * rather than `Side | null`: it passes through
+ * `Cell.front`/`left`/`back`/`right` unchanged, and those come straight from
+ * the map.
+ *
+ * Where the absent case shares a type with a real one, `null` is what keeps
+ * them apart, and callers must test for it rather than for truthiness.
+ * `getLineBodyIntersectionDistance()` is the live example: `0` is a real
+ * crossing, from a line starting on the body's edge, so `if (distance)` drops a
+ * point-blank hit. `contract` pins that distinction because both callers are
+ * unchecked JavaScript.
  *
  * ## Changing any of this
  *
@@ -189,15 +197,4 @@ export interface Sides {
   bottom?: Side;
   /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
   overlay?: Side;
-}
-
-/**
- * Where a ray crossed a line, and how far along the ray it was. A record rather
- * than a {@link Point}: it is returned as a plain literal and nothing asks it
- * to behave like a position.
- */
-export interface Intersection {
-  x: number;
-  y: number;
-  distance: number;
 }

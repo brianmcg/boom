@@ -1,19 +1,25 @@
 /**
- * Where a line segment crosses a body's box, and whether it crosses at all.
+ * Whether a line segment crosses a body's box, and how far along it does so.
  * Pure geometry: no grid, no cells, no world. `Body` wraps both exports as
- * `intersectsLine` and `getLineIntersection`; the raycaster in `castRay.ts`
- * uses `isLineBodyIntersection` to find the bodies a ray passes through.
+ * `intersectsLine` and `getLineIntersectionDistance`; the raycaster in
+ * `castRay.ts` uses `isLineBodyIntersection` to find the bodies a ray passes
+ * through.
+ *
+ * These used to return `{ x, y, distance }`. Nothing ever read the
+ * coordinates — every consumer sorted, range-checked or faded by distance —
+ * so they are locals now. The crossing point is still computed, because the
+ * bounds tests need it; it is just no longer carried out of the module.
  */
 import { getDistanceBetween } from './measure';
-import type { Line, Intersection } from '../types';
+import type { Line } from '../types';
 import type Point from '../components/Point';
 import type Body from '../components/Body';
 
 /**
- * Where the segment `startPoint`→`endPoint` crosses the segment
- * `edgeStart`→`edgeEnd`, or null if they miss.
+ * How far along `startPoint`→`endPoint` it crosses `edgeStart`→`edgeEnd`, or
+ * null if they miss.
  *
- * The two pairs are not interchangeable: `distance` is measured from
+ * The two pairs are not interchangeable: the distance is measured from
  * `startPoint`, so the first pair must be the line being cast and the second
  * the edge being tested against. Both callers pass a box edge as the second.
  */
@@ -22,7 +28,7 @@ const getLineLineIntersection = (
   endPoint: Point,
   edgeStart: Point,
   edgeEnd: Point
-): Intersection | null => {
+): number | null => {
   const a1 = endPoint.y - startPoint.y;
   const b1 = startPoint.x - endPoint.x;
   const c1 = a1 * startPoint.x + b1 * startPoint.y;
@@ -58,13 +64,13 @@ const getLineLineIntersection = (
   if (edgeStart.x === edgeEnd.x) {
     if (edgeStart.y < edgeEnd.y) {
       if (y >= edgeStart.y && y <= edgeEnd.y) {
-        return { x, y, distance: getDistanceBetween(startPoint, { x, y }) };
+        return getDistanceBetween(startPoint, { x, y });
       }
       return null;
     }
 
     if (y >= edgeEnd.y && y <= edgeStart.y) {
-      return { x, y, distance: getDistanceBetween(startPoint, { x, y }) };
+      return getDistanceBetween(startPoint, { x, y });
     }
 
     return null;
@@ -73,13 +79,13 @@ const getLineLineIntersection = (
   if (edgeStart.y === edgeEnd.y) {
     if (edgeStart.x < edgeEnd.x) {
       if (x >= edgeStart.x && x <= edgeEnd.x) {
-        return { x, y, distance: getDistanceBetween(startPoint, { x, y }) };
+        return getDistanceBetween(startPoint, { x, y });
       }
       return null;
     }
 
     if (x >= edgeEnd.x && x <= edgeStart.x) {
-      return { x, y, distance: getDistanceBetween(startPoint, { x, y }) };
+      return getDistanceBetween(startPoint, { x, y });
     }
 
     return null;
@@ -139,30 +145,25 @@ export const isLineBodyIntersection = (
   );
 };
 
-export const getLineBodyIntersection = (
+/**
+ * How far along the line it first crosses the body, or null if it misses.
+ *
+ * Null and `0` are different answers: `0` is a real crossing, from a line that
+ * starts exactly on the body's edge. Callers must test `!== null`, not
+ * truthiness.
+ */
+export const getLineBodyIntersectionDistance = (
   body: Body,
   { startPoint, endPoint }: Line
-): Intersection | null => {
+): number | null => {
   const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
 
-  return [
+  const crossings = [
     getLineLineIntersection(startPoint, endPoint, topLeft, topRight),
     getLineLineIntersection(startPoint, endPoint, topRight, bottomRight),
     getLineLineIntersection(startPoint, endPoint, bottomRight, bottomLeft),
     getLineLineIntersection(startPoint, endPoint, bottomLeft, topLeft),
-  ].reduce<Intersection | null>((memo, intersection) => {
-    if (!intersection) {
-      return memo;
-    }
+  ].filter(crossing => crossing !== null);
 
-    if (!memo) {
-      return intersection;
-    }
-
-    if (intersection.distance < memo.distance) {
-      return intersection;
-    }
-
-    return memo;
-  }, null);
+  return crossings.length ? Math.min(...crossings) : null;
 };

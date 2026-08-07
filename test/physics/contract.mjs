@@ -200,7 +200,7 @@ ok('and still brings a drifted angle back', wrap(0.5 + TAU) - 0.5 < 1e-12);
 ok('and a negative one', Math.abs(wrap(-0.25) - (TAU - 0.25)) < 1e-12);
 
 // --- Body's line-intersection API, as HitScan calls it --------------------
-// HitScan.js:52 does `body.getLineIntersection({ startPoint, endPoint })` and
+// HitScan.js does `body.getLineIntersectionDistance({ startPoint, endPoint })`
 // is unchecked JavaScript, so a rename that misses it type-checks, lints and
 // builds clean, then throws the first time a hitscan weapon is fired. This is
 // the only thing that would notice.
@@ -230,17 +230,34 @@ ok(
 );
 ok('and reports a miss as false', blocker.intersectsLine(pastIt) === false);
 
-const hit = blocker.getLineIntersection(throughIt);
+const hit = blocker.getLineIntersectionDistance(throughIt);
 
-ok('Body.getLineIntersection exists and returns a hit', hit !== null);
-ok(
-  'the hit carries a position and a distance',
-  typeof hit.x === 'number' &&
-    typeof hit.y === 'number' &&
-    typeof hit.distance === 'number'
+ok('Body.getLineIntersectionDistance exists and returns a hit', hit !== null);
+ok('the hit is a bare distance', typeof hit === 'number');
+// The ray starts at CELL * 2 and the blocker's near face is at CELL * 4.
+eq('and it is the near edge, not the far one', hit, CELL * 2);
+eq('a miss returns null', blocker.getLineIntersectionDistance(pastIt), null);
+
+// null and 0 are different answers, and this is the distinction that breaks if
+// a caller writes `if (distance)`. A line starting exactly on the near face has
+// travelled nothing and still hit. HitScan.js is unchecked JavaScript, so this
+// is the only thing standing between that and a silently dropped point-blank
+// shot.
+const onTheEdge = {
+  startPoint: new Point(CELL * 4, CELL * 4 + CELL / 2),
+  endPoint: new Point(CELL * 6, CELL * 4 + CELL / 2),
+};
+
+eq(
+  'a line starting on the edge hits at distance 0',
+  blocker.getLineIntersectionDistance(onTheEdge),
+  0
 );
-eq('and it is the near edge, not the far one', hit.x, CELL * 4);
-eq('a miss returns null', blocker.getLineIntersection(pastIt), null);
+ok(
+  'and 0 is distinguishable from a miss',
+  blocker.getLineIntersectionDistance(onTheEdge) !== null &&
+    blocker.getLineIntersectionDistance(pastIt) === null
+);
 
 // The crossing has to lie on the SEGMENT, not on the infinite line through it.
 // Only the box's own edges were bounded, so a body entirely behind startPoint
@@ -257,7 +274,7 @@ const behindIt = {
 
 eq(
   'a body behind the segment is not a hit',
-  blocker.getLineIntersection(behindIt),
+  blocker.getLineIntersectionDistance(behindIt),
   null
 );
 ok(
@@ -299,7 +316,7 @@ for (let a = 0; a < 360; a += 3) {
   for (const { startPoint, endPoint, expected } of probes) {
     const line = { startPoint, endPoint };
     const bool = blocker.intersectsLine(line);
-    const found = blocker.getLineIntersection(line) !== null;
+    const found = blocker.getLineIntersectionDistance(line) !== null;
 
     if (bool !== found || bool !== expected) disagreements++;
     else if (!expected) stoppedShort++;

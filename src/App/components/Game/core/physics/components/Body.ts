@@ -1,13 +1,13 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Transparency } from '../constants';
-import type { Line, Positioned, Intersection } from '../types';
+import type { Line, Positioned } from '../types';
 import Shape from './Shape';
 import type World from './World';
 import { getDistanceBetween } from '../utils/measure';
 import {
   isLineBodyIntersection,
-  getLineBodyIntersection,
+  getLineBodyIntersectionDistance,
 } from '../utils/intersections';
 
 let idCount = 0;
@@ -154,8 +154,9 @@ export class Body extends EventEmitter {
     return isLineBodyIntersection(this, line);
   }
 
-  getLineIntersection(line: Line): Intersection | null {
-    return getLineBodyIntersection(this, line);
+  /** Null is a miss; `0` is a hit from a line starting on this body's edge. */
+  getLineIntersectionDistance(line: Line): number | null {
+    return getLineBodyIntersectionDistance(this, line);
   }
 
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */
