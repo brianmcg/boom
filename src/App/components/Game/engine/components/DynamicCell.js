@@ -14,10 +14,6 @@ export default class DynamicCell extends PhysicsDynamicCell {
     });
   }
 
-  onAdded(parent) {
-    this.parent = parent;
-  }
-
   /**
    * Subclass-defined state machine label, and the only way to set it.
    * Returns true only when the state actually changed.

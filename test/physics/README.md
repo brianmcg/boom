@@ -45,9 +45,26 @@ oracle to the very change you were trying to check.
 
 ### Divergences accepted so far
 
-**None.** `equivalence` currently reports IDENTICAL with no allowances.
+**`DynamicCell` takes its `parent` on add.** The baseline left that to the
+engine subclass, so a bare physics `DynamicCell` in a world had `parent ===
+null`; it now holds the world, and the cell-shape audit reports `parent` as a
+truthy added key on a door.
 
-One was accepted and then withdrawn. `4bef6dca` gave `DynamicBody.angle` a
+Behaviourally inert, but by argument rather than by value: every read of
+`parent` on a physics `DynamicCell` is `startUpdates`/`stopUpdates`, both
+guarded by `if (this.parent)`, and nothing calls those on a cell the game layer
+has not touched. That is why it is here and not in `ADDED_TRUTHY`, whose
+entries have to _prove_ they are benign — "both components are zero" is a
+proof, "holds a world reference nobody reads" is a claim.
+
+The change is worth the entry: `parent` is the reference the class needs to do
+anything at all, nothing else assigns it, and having the engine subclass supply
+it meant an override that did not call `super` — the same shape as the bug that
+froze every door in the game.
+
+Ray output and the dynamic-body sim are unaffected and still IDENTICAL.
+
+One divergence was accepted and then withdrawn. `4bef6dca` gave `DynamicBody.angle` a
 normalising setter, which the baseline had no equivalent of, so the sim had to
 normalise its turns for the two to agree. The setter has since been removed:
 the invariant has to survive the raw arithmetic `engine/` does on the number,
@@ -88,16 +105,24 @@ exactly as the baseline's did. `ADDED_TRUTHY` in `equivalence.mjs` records the
 deliberate exceptions — new fields that are objects, and therefore truthy, but
 empty.
 
-| field                      | accepted when           |
-| -------------------------- | ----------------------- |
-| `velocity` (`DynamicCell`) | both components are `0` |
+| field                      | accepted when                                 |
+| -------------------------- | --------------------------------------------- |
+| `velocity` (`DynamicCell`) | both components are `0`                       |
+| `parent` (`DynamicCell`)   | **unconditionally** — a divergence, see above |
 
-`velocity` is the slide rate physics applies to `offset` each frame. A cell
-nobody has opened has a zero one and sits exactly where the baseline's did, so
-the addition is invisible in behaviour — which is what the exception asserts,
-rather than assuming. It is checked, not skipped: a non-zero velocity on an
-untouched cell still fails, and the key still appears in the PASS line's
-added-keys list so it stays visible.
+`velocity` is the exception working properly. It is the slide rate physics
+applies to `offset` each frame; a cell nobody has opened has a zero one and
+sits exactly where the baseline's did, and the predicate _proves_ that. A
+non-zero velocity on an untouched cell still fails, and the key still appears
+in the PASS line's added-keys list, so it stays visible.
+
+`parent` is the exception used as a marker instead. Its predicate asserts
+nothing, because what makes it benign — every read is guarded, and nothing
+calls the guarded paths on an untouched cell — is an argument rather than
+something a value can demonstrate. It is recorded under **Divergences accepted
+so far** for that reason. Prefer the `velocity` shape; reach for this one only
+when the reasoning genuinely cannot be reduced to a check, and write the
+reasoning down when you do.
 
 ### Renames the harness carries shims for
 

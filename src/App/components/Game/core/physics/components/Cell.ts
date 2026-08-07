@@ -42,7 +42,27 @@ export default class Cell extends Body {
    */
   axis?: Axis;
 
-  /** How far the cell has slid open, in world units, per axis. */
+  /**
+   * How far the cell's surface has moved, in world units.
+   *
+   * **The two components are different quantities, not one quantity on two
+   * axes.** For a cell aligned to `x`:
+   *
+   * - `offset.y` insets the surface from the cell boundary — where the slab
+   *   sits. `castRay` applies it as `horizontalGrid -= offset.y`.
+   * - `offset.x` is the gap opened *along* the surface. `castRay` tests a
+   *   crossing against it to decide whether the ray passes through the
+   *   opening.
+   *
+   * Swap the components for a cell aligned to `y`.
+   *
+   * Which one a subclass moves is what separates {@link Cell.retracts} from
+   * {@link Cell.displaces}: a door slides the parallel component, opening a
+   * gap; a push wall slides the perpendicular one, taking the whole slab with
+   * it. The constructor's `offset` option initialises the perpendicular one,
+   * which is why a door starts inset half a cell and a push wall starts
+   * where it will later slide.
+   */
   offset: Point;
 
   /**

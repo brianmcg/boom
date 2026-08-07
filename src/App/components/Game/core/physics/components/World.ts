@@ -1,5 +1,7 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
+import DynamicBody from './DynamicBody';
+import DynamicCell from './DynamicCell';
 import type Body from './Body';
 import type Cell from './Cell';
 
@@ -9,23 +11,22 @@ export interface WorldOptions {
 }
 
 /**
- * A body carrying the optional `update` that `Body` merely allows for.
+ * The two branches that move. Everything in the codebase with an `update`
+ * descends from one of these and nothing else.
  *
- * Deliberately not a class: the two branches that update — `DynamicBody`, and
- * `DynamicCell` by way of doors and push walls — meet only at `Body`, and
- * physics `DynamicCell` does not define `update` at all. Its subclasses in the
- * game layer do. So the thing `updatableBodies` requires is the method, not a
- * place in the hierarchy, and `isUpdatable` checks for it rather than trusting
- * a declaration nothing verifies.
+ * This used to be `Body & { update(...) }` with a duck-type check, because
+ * physics `DynamicCell` had no `update` of its own — its game-layer subclasses
+ * supplied it, so the hierarchy could not be trusted to answer. Now that a
+ * `DynamicCell` slides itself, both branches really do carry the method and
+ * `instanceof` can ask the question directly.
  *
- * Private to this file. It exists to spell out what `startUpdates` already
- * enforces, not to add a noun to the module.
+ * `autoPlay` comes along for free: both classes declare it as a real field, so
+ * neither it nor `update` needs declaring on `Body`.
  */
-type UpdatableBody = Body & {
-  update(delta: number, elapsedMS: number): void;
-};
+type UpdatableBody = DynamicBody | DynamicCell;
 
-const isUpdatable = (body: Body): body is UpdatableBody => !!body.update;
+const isUpdatable = (body: Body): body is UpdatableBody =>
+  body instanceof DynamicBody || body instanceof DynamicCell;
 
 /**
  * A fixed grid of cells plus every body standing on it.
@@ -87,17 +88,19 @@ export default class World extends EventEmitter {
 
   add(body: Body) {
     if (!this.bodies[body.id]) {
+      // Narrowed once and held, so the ordering below stays exactly as it was:
+      // register for updates, record the body, then hand it its world.
+      const updatable = isUpdatable(body) ? body : null;
+
       this.getCell(body.gridX, body.gridY)!.add(body);
 
-      if (body.autoPlay) {
-        this.startUpdates(body);
+      if (updatable?.autoPlay) {
+        this.startUpdates(updatable);
       }
 
       this.bodies[body.id] = body;
 
-      if (body.onAdded) {
-        body.onAdded(this);
-      }
+      updatable?.onAdded(this);
     }
   }
 
@@ -105,7 +108,7 @@ export default class World extends EventEmitter {
     this.stopUpdates(body);
     this.getCell(body.gridX, body.gridY)!.remove(body);
 
-    if (body.onRemoved) {
+    if (isUpdatable(body)) {
       body.onRemoved();
     }
 

@@ -1,6 +1,7 @@
 import { CELL_SIZE } from '@constants/config';
 import Cell, { type CellOptions } from './Cell';
 import Point from './Point';
+import type World from './World';
 
 export interface DynamicCellOptions extends CellOptions {
   /** How far the cell slides per frame, as a ratio of a cell. */
@@ -36,6 +37,17 @@ export default class DynamicCell extends Cell {
 
   readonly isDynamic = true;
 
+  /**
+   * The world this cell belongs to, or null once removed.
+   *
+   * Declared here rather than on `Body`, and duplicated on `DynamicBody`,
+   * because those two are the only things that ever hold one — a static cell
+   * never looks outward — and they meet nowhere below `Body`. Same trade as
+   * `setState`: one field in two places beats one field on a class that has no
+   * use for it.
+   */
+  parent: World | null = null;
+
   autoPlay: boolean;
 
   constructor({ speed, autoPlay = false, ...other }: DynamicCellOptions) {
@@ -49,10 +61,32 @@ export default class DynamicCell extends Cell {
    * Slides by the current velocity. Deliberately does not clamp or react to
    * reaching a limit — a door stopping at `CELL_SIZE` and a push wall swapping
    * grid cells are game rules, and they live in the subclasses.
+   *
+   * Takes `_elapsedMS` without using it because `World.update` calls every
+   * updatable body with both, and the union of the two branches only accepts
+   * what they both declare. Subclasses in `engine/` do use it.
    */
-  update(delta: number) {
+  update(delta: number, _elapsedMS?: number) {
     this.offset.x += this.velocity.x * delta;
     this.offset.y += this.velocity.y * delta;
+  }
+
+  /**
+   * Takes the world reference this class needs to do anything at all —
+   * `startUpdates`, `stopUpdates` and every subclass that queries its
+   * neighbours all read `parent`, and nothing else assigns it.
+   *
+   * A static `Cell` never gets one and never wants one: it does not look
+   * outward. That is what makes this a `DynamicCell` concern rather than a
+   * `Body` one.
+   */
+  onAdded(parent: World) {
+    this.parent = parent;
+  }
+
+  /** Symmetric with `onAdded`, so a removed cell holds no stale world. */
+  onRemoved() {
+    this.parent = null;
   }
 
   startUpdates() {
@@ -70,5 +104,8 @@ export default class DynamicCell extends Cell {
   destroy(options?: unknown) {
     this.stopUpdates();
     super.destroy(options);
+
+    // The one back-reference up the graph, same as DynamicBody's.
+    this.parent = null;
   }
 }

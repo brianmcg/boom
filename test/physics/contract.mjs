@@ -581,6 +581,27 @@ ok(
   `offset.${pushAxis} went ${pushedFrom} -> ${secret.offset[pushAxis]}`
 );
 
+// isUpdatable narrowed from "has an update method" to "is a DynamicBody or a
+// DynamicCell" — which is what let `update` and `autoPlay` come off Body. The
+// two tests agree on everything in the codebase, since nothing outside those
+// two branches has an update, but the new rule is stricter. Record it, so the
+// day someone bolts an update onto a plain Cell and wonders why it never runs,
+// this says why.
+const bolted = new Cell({ ...base });
+bolted.update = () => {};
+world.startUpdates(bolted);
+
+ok(
+  'an update bolted onto a plain cell does not make it updatable',
+  !world.updatableBodies.includes(bolted)
+);
+ok(
+  'while both real branches are',
+  world.updatableBodies.includes(slidingDoor) &&
+    world.updatableBodies.includes(secret),
+  'an opened door stays registered for its auto-close timer; only setClosed unregisters'
+);
+
 // Moving within one cell must not churn the index.
 const occupants = to.bodies.length;
 mover.setPos({ x: 2 * CELL + 1, y: 3 * CELL + 1 });
@@ -597,7 +618,7 @@ ok('and the body is still registered once', to.bodies.includes(mover));
 // handles, and listener closures, which capture whatever subscribed.
 //
 // Cell.destroy() used not to call super.destroy(), so cells kept every
-// listener and kept pointing at their World. Nothing else exercises teardown.
+// listener. Nothing else exercises teardown.
 const doomed = new World({ grid: makeGrid(), bodies: [] });
 const cell = doomed.grid[1][1];
 const occupant = new DynamicBody({
@@ -623,7 +644,11 @@ doomed.emit('test');
 eq('cell listeners are gone after destroy', cellEvents, 1);
 eq('world listeners are gone after destroy', worldEvents, 1);
 
-ok('cell drops its back-reference to the world', cell.parent === null);
+// This used to read "cell drops its back-reference to the world". A static
+// cell has no such reference now: `parent` lives on DynamicBody and
+// DynamicCell, the only two things that ever look outward. So the guarantee
+// became a stronger one — there is nothing to drop.
+eq('a static cell holds no world reference at all', cell.parent, undefined);
 ok('cell releases the bodies standing on it', cell.bodies.length === 0);
 
 // Bodies are not the core World's to destroy — the engine World destroys the

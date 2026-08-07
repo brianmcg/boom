@@ -417,6 +417,13 @@ const ADDED_TRUTHY = {
   // and only moves when Door/PushWall set the velocity, so a cell nobody has
   // touched sits exactly where the baseline's did.
   velocity: v => v.x === 0 && v.y === 0,
+
+  // A DynamicCell takes the world on add now; the baseline left that to the
+  // engine subclass. Accepted as a DIVERGENCE, not proven benign here — see
+  // the README. Every read of it is guarded by `if (this.parent)` and nothing
+  // calls those paths on an untouched cell, but that is an argument, not
+  // something this predicate can check, so it deliberately asserts nothing.
+  parent: () => true,
 };
 
 const oldCells = sample(OLD);

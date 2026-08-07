@@ -1,10 +1,8 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
-import type { Transparency } from '../constants';
 import type { Line } from '../types';
 import Point from './Point';
 import Shape from './Shape';
-import type World from './World';
 import {
   isLineShapeIntersection,
   getLineShapeIntersectionDistance,
@@ -29,31 +27,16 @@ export interface BodyOptions {
 }
 
 /**
- * Members that only some bodies have, declared here because `World` and
- * `DynamicBody` reach for them on any `Body` they are handed.
- *
- * Merged into the class as an interface rather than declared in the class body:
- * an interface emits nothing at runtime, and method syntax (rather than a
- * function-typed property) is what lets subclasses implement them as real
- * methods.
- */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging -- deliberate: see above
-export interface Body {
-  /** Start receiving `update` calls as soon as the body is added to a world. */
-  autoPlay?: boolean;
-  onAdded?(parent: World): void;
-  onRemoved?(): void;
-  update?(delta: number, elapsedMS: number): void;
-  /** Set by `Cell`; read here so collision code can treat any body uniformly. */
-  transparency?: Transparency;
-}
-
-/**
  * An axis-aligned box in the world grid. Bodies are positioned by their centre
  * point, but collide and raycast against the top-left-anchored `shape`.
+ *
+ * It knows nothing about the world it sits in — no `parent`, no lifecycle
+ * hooks, no way to move itself between cells. Only the two branches that
+ * actually look outward carry that: `DynamicBody` and `DynamicCell` each hold
+ * their own `parent`, because they are the only things that ever set or read
+ * one, and they meet nowhere lower than here.
  */
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging -- merges with the interface above
-export class Body extends EventEmitter {
+export default class Body extends EventEmitter {
   readonly id: string;
 
   /**
@@ -81,9 +64,6 @@ export class Body extends EventEmitter {
   blocking: boolean;
 
   readonly anchor: number;
-
-  /** The world this body belongs to, or null once removed. */
-  parent: World | null = null;
 
   /**
    * `x` and `y` delegate to {@link pos}.
@@ -137,56 +117,6 @@ export class Body extends EventEmitter {
     this.anchor = anchor;
   }
 
-  /** Moves the body and keeps the world's cell index pointing at it. */
-  setPos({ x = 0, y = 0, z = 0 }: { x?: number; y?: number; z?: number }) {
-    const previousGridX = this.gridX;
-    const previousGridY = this.gridY;
-
-    this.x = x;
-    this.y = y;
-    this.z = z;
-
-    this.reindex(previousGridX, previousGridY);
-  }
-
-  /**
-   * Re-registers the body with the cell it now stands on.
-   *
-   * The world finds bodies through the cell they occupy rather than by
-   * scanning a list, so a body that moves without updating that index stays
-   * findable where it used to be and invisible where it actually is —
-   * collisions and raycasts both miss it.
-   *
-   * Kept as a method rather than folded into an `x`/`y` setter on purpose.
-   * `DynamicBody.update` moves one axis at a time and resolves collisions
-   * between the two steps, reassigning `x` and `y` several times per frame; a
-   * setter would re-index on each of those instead of once around the whole
-   * move, and would have to be bypassed to get the batching back — at which
-   * point it would be enforcing nothing on the hottest field in the game.
-   */
-  protected reindex(previousGridX: number, previousGridY: number) {
-    if (!this.parent) {
-      return;
-    }
-
-    const previous = this.parent.getCell(previousGridX, previousGridY);
-    const current = this.parent.getCell(this.gridX, this.gridY);
-
-    if (previous === current) {
-      return;
-    }
-
-    previous?.remove(this);
-    current?.add(this);
-  }
-
-  removeFromParent() {
-    if (this.parent) {
-      this.parent.remove(this);
-      this.parent = null;
-    }
-  }
-
   intersectsLine(line: Line): boolean {
     return isLineShapeIntersection(this.shape, line);
   }
@@ -203,7 +133,6 @@ export class Body extends EventEmitter {
 
   destroy(_options?: unknown) {
     this.removeAllListeners();
-    this.parent = null;
   }
 
   get elavation(): number {
@@ -228,7 +157,3 @@ export class Body extends EventEmitter {
     );
   }
 }
-
-// Declared separately: a class merged with an interface cannot be exported
-// inline as the default.
-export default Body;

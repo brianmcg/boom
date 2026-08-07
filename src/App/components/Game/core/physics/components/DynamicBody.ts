@@ -4,7 +4,7 @@ import { TRANSPARENCY } from '../constants';
 import { DEG_90, DEG_270, DEG_360 } from '../utils/degrees';
 import Point from './Point';
 import type Ray from './Ray';
-import type Cell from './Cell';
+import Cell from './Cell';
 import type World from './World';
 import { isLineShapeIntersection } from '../utils/intersections';
 import { castRay } from '../utils/castRay';
@@ -78,6 +78,9 @@ export default class DynamicBody extends Body {
   /** How many cells out to gather potential collisions from. Fixed by width. */
   readonly collisionRadius: number;
 
+  /** The world this body belongs to, or null once removed. */
+  parent: World | null = null;
+
   /** The cell this body currently stands on, or null while unparented. */
   cell: Cell | null = null;
 
@@ -118,12 +121,54 @@ export default class DynamicBody extends Body {
     this.cell = parent.getCell(this.gridX, this.gridY);
   }
 
-  /** Also refreshes the cached cell, which `update` otherwise maintains. */
-  protected reindex(previousGridX: number, previousGridY: number) {
-    super.reindex(previousGridX, previousGridY);
+  /** Moves the body and keeps the world's cell index pointing at it. */
+  setPos({ x = 0, y = 0, z = 0 }: { x?: number; y?: number; z?: number }) {
+    const previousGridX = this.gridX;
+    const previousGridY = this.gridY;
 
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+    this.reindex(previousGridX, previousGridY);
+  }
+
+  /**
+   * Re-registers the body with the cell it now stands on, and refreshes the
+   * cached one.
+   *
+   * The world finds bodies through the cell they occupy rather than by
+   * scanning a list, so a body that moves without updating that index stays
+   * findable where it used to be and invisible where it actually is —
+   * collisions and raycasts both miss it.
+   *
+   * Kept as a method rather than folded into an `x`/`y` setter on purpose.
+   * `update` moves one axis at a time and resolves collisions between the two
+   * steps, reassigning `x` and `y` several times per frame; a setter would
+   * re-index on each of those instead of once around the whole move, and would
+   * have to be bypassed to get the batching back — at which point it would be
+   * enforcing nothing on the hottest field in the game.
+   */
+  private reindex(previousGridX: number, previousGridY: number) {
+    if (!this.parent) {
+      return;
+    }
+
+    const previous = this.parent.getCell(previousGridX, previousGridY);
+    const current = this.parent.getCell(this.gridX, this.gridY);
+
+    if (previous !== current) {
+      previous?.remove(this);
+      current?.add(this);
+    }
+
+    this.cell = current;
+  }
+
+  removeFromParent() {
     if (this.parent) {
-      this.cell = this.parent.getCell(this.gridX, this.gridY);
+      this.parent.remove(this);
+      this.parent = null;
     }
   }
 
@@ -134,7 +179,7 @@ export default class DynamicBody extends Body {
 
   isBodyCollision(body: Body): boolean {
     // A weightless body passes through anything rays can see through.
-    if (!this.weight && body.transparency) {
+    if (!this.weight && body instanceof Cell && body.transparency) {
       return false;
     }
 
@@ -154,7 +199,12 @@ export default class DynamicBody extends Body {
     });
   }
 
-  update(delta: number) {
+  /**
+   * Takes `_elapsedMS` without using it because `World.update` calls every
+   * updatable body with both, and the union of the two updatable branches only
+   * accepts what they both declare. Subclasses in `engine/` do use it.
+   */
+  update(delta: number, _elapsedMS?: number) {
     // Get bodies from surrounding cells
     const bodies = this.parent!.getNeighbourBodies(this, this.collisionRadius);
 
@@ -181,7 +231,10 @@ export default class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking && body.transparency !== FULL) {
+        if (
+          body.blocking &&
+          !(body instanceof Cell && body.transparency === FULL)
+        ) {
           const { shape } = body;
           const { x, width } = shape;
 
@@ -204,7 +257,10 @@ export default class DynamicBody extends Body {
           collisions.push(body);
         }
 
-        if (body.blocking && body.transparency !== FULL) {
+        if (
+          body.blocking &&
+          !(body instanceof Cell && body.transparency === FULL)
+        ) {
           const { shape } = body;
           const { y, length } = shape;
 
@@ -300,6 +356,7 @@ export default class DynamicBody extends Body {
 
     // Only the back-references up the graph. Everything else this body holds
     // dies with it — see the note on destroy() in CLAUDE.md.
+    this.parent = null;
     this.cell = null;
   }
 }
