@@ -81,7 +81,17 @@ export default class Player extends AbstractActor {
     this.vision = 1;
     this.rotateAngle = 0;
     this.timer = 0;
-    this.moveAngle = 0;
+
+    /**
+     * Where the player is turned. Rotation only — strafing never moves it.
+     *
+     * `angle`, which is what physics travels along, is this plus the strafe
+     * offset, recomputed each frame. The offset itself is a local: nothing
+     * outside `updateAlive` needs it now that the camera and the weapons read
+     * `heading` directly.
+     */
+    this.heading = this.angle;
+
     this.isPlayer = true;
     this.distanceToPlayer = 0;
 
@@ -117,7 +127,7 @@ export default class Player extends AbstractActor {
     );
 
     this.viewHeight = this.z + this.height + this.camera.height;
-    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
     this.addTrackedCollision({
@@ -250,8 +260,6 @@ export default class Player extends AbstractActor {
       secondaryAttack,
     } = this.actions;
 
-    const previousMoveAngle = this.moveAngle;
-
     let moveX = 0;
     let moveY = 0;
 
@@ -279,8 +287,11 @@ export default class Player extends AbstractActor {
       this.rotateAngle = 0;
     }
 
-    // Update movement.
-    this.angle = (this.angle + this.rotateAngle * delta + DEG_360) % DEG_360;
+    // Update movement. `heading` is where the player is turned — rotation
+    // only, never touched by strafing — and `angle` is where they actually
+    // travel, which is `heading` plus the strafe offset.
+    this.heading =
+      (this.heading + this.rotateAngle * delta + DEG_360) % DEG_360;
 
     if (moveForward || moveBackward || strafeLeft || strafeRight) {
       this.velocity = Math.min(this.velocity + this.acceleration, this.speed);
@@ -300,12 +311,11 @@ export default class Player extends AbstractActor {
       this.velocity = 0;
     }
 
-    this.moveAngle = -Math.atan2(-moveY, moveX);
+    // moveX/moveY are a direction in player-local space — forward is +x,
+    // strafe-right is +y — so the two axes compose into the diagonals.
+    const moveAngle = Math.atan2(moveY, moveX);
 
-    if (this.moveAngle !== previousMoveAngle) {
-      this.angle =
-        (this.angle - previousMoveAngle + this.moveAngle + DEG_360) % DEG_360;
-    }
+    this.angle = (this.heading + moveAngle + DEG_360) % DEG_360;
 
     // Update height.
     if (crouch) {
@@ -366,7 +376,7 @@ export default class Player extends AbstractActor {
 
     // Update view
     this.viewHeight = this.z + this.height + this.camera.height;
-    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
     // Update actions.
@@ -416,7 +426,7 @@ export default class Player extends AbstractActor {
 
     // Update view
     this.viewHeight = this.z + this.height + this.camera.height;
-    this.viewAngle = (this.angle + this.camera.angle + DEG_360) % DEG_360;
+    this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
   }
 

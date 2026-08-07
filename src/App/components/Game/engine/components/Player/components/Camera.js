@@ -1,6 +1,5 @@
 import { degrees } from '@game/core/physics';
 
-const DEG_360 = degrees(360);
 const HEIGHT_INCREMENT = 0.04;
 const MAX_HEIGHT = 1;
 const PITCH_VELOCITY = 4;
@@ -101,7 +100,10 @@ export default class Camera {
       this.shakeAngle = 0;
     }
 
-    this.angle = (this.shakeAngle - this.player.moveAngle + DEG_360) % DEG_360;
+    // Shake only. This used to subtract the player's strafe offset back out,
+    // because `player.angle` had it added in; `player.heading` carries the
+    // facing directly now, so the camera has nothing to correct for.
+    this.angle = this.shakeAngle;
   }
 
   setShake(amount, { direction = 1 } = {}) {

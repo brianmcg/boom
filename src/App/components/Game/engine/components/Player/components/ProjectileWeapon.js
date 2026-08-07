@@ -1,8 +1,5 @@
-import { degrees } from '@game/core/physics';
 import AbstractWeapon from './AbstractWeapon';
 import Projectile from '../../Projectile';
-
-const DEG_360 = degrees(360);
 
 export default class ProjectileWeapon extends AbstractWeapon {
   constructor({ soundSprite, ...other }) {
@@ -33,13 +30,14 @@ export default class ProjectileWeapon extends AbstractWeapon {
     const result = super.use();
 
     if (result.success) {
-      const { angle, moveAngle, parent } = this.player;
+      const { heading, parent } = this.player;
       const damage =
         this.power * (Math.floor(Math.random() * this.accuracy) + 1);
       const projectile = this.pool.shift();
 
       projectile.set({
-        angle: (angle - moveAngle + DEG_360) % DEG_360,
+        // Fire where the player is facing, not where they are sliding.
+        angle: heading,
         damage,
       });
 

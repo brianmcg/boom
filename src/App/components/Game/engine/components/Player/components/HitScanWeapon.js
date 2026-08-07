@@ -34,10 +34,8 @@ export default class HitScanWeapon extends AbstractWeapon {
 
       const collisions = [];
 
-      const projectileAngle =
-        (player.angle - player.moveAngle + DEG_360) % DEG_360;
-
-      let rayAngle = (projectileAngle - spreadAngle + DEG_360) % DEG_360;
+      // Fire where the player is facing, not where they are sliding.
+      let rayAngle = (player.heading - spreadAngle + DEG_360) % DEG_360;
 
       for (let i = 0; i < pellets.length; i++) {
         const projectile = projectiles.shift();
