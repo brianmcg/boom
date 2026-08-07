@@ -3,6 +3,22 @@
  * follows. `Ray` diverged from its neighbours once because none of this was
  * written down.
  *
+ * ## Where things live
+ *
+ * `components/` holds the classes, `utils/` the free functions, and each owns
+ * the types that describe it: `BodyOptions` with `Body`, `CastRayOptions` with
+ * `castRay`, `UpdatableBody` with the `World` field it types.
+ *
+ * **This file is not "the types folder".** It holds the shared vocabulary that
+ * belongs to no single file — `Positioned`, `Line`, `Side`, `Sides`,
+ * `Intersection` — and nothing else. A type with an obvious owner goes with its
+ * owner, so that changing one and not the other is hard.
+ *
+ * `Axis` and `Transparency` stay in `constants.ts` for the strongest version of
+ * that: they are *derived* from `AXES` and `TRANSPARENCY` by indexed access, so
+ * adding a member to the constant widens the type on its own. Split them and
+ * whoever edits the constant no longer sees that a type follows from it.
+ *
  * ## How a class is written
  *
  * Constructors take a **single options object**, destructured with defaults,
@@ -94,7 +110,6 @@
  * divergence explained in `test/physics/README.md`.
  */
 import type Point from './components/Point';
-import type World from './components/World';
 
 /**
  * Anything that has a position in world space — a body, a cell, an effect.
@@ -125,7 +140,25 @@ export interface Line {
 
 /**
  * One face of a cell: which texture to draw, how tall to draw it, and how much
- * blood has been splattered on it. Absent when the face is never drawn.
+ * blood has been splattered on it.
+ *
+ * **Physics never reads any of these.** It is a token: `castRay` decides which
+ * face a ray hit — `y < cell.y ? cell.left : cell.right` — and `Ray.side`
+ * carries that object out untouched. The single mention in the whole module is
+ * the assignment in `Ray`'s constructor. `POVContainer` is the only reader, on
+ * its way to `WallSprite.changeTexture(name, sliceY, spatter)`.
+ *
+ * So do not trim members physics "does not need" — that is all of them — and
+ * do not go looking for where the raycaster uses `height`. Physics selects a
+ * face; it never opens one.
+ *
+ * What physics *does* read is whether a cell has an `overlay` at all: eight
+ * sites in `castRay` branch on its presence, and that moves the grid line and
+ * the hit distance. Presence is geometry; contents are not.
+ *
+ * `spatter` is a different kind of member from the other two. `name` and
+ * `height` come from the map data at construction; `spatter` is game state,
+ * written at runtime by `AbstractActor` when blood lands on a wall.
  */
 export interface Side {
   name: string;
@@ -162,18 +195,4 @@ export interface Intersection {
   x: number;
   y: number;
   distance: number;
-}
-
-export interface CastRayOptions {
-  x: number;
-  y: number;
-  angle: number;
-  world: World;
-  /** Cast from inside a partially-open cell before stepping to the next one. */
-  checkInitialCell?: boolean;
-  ignoreOverlay?: boolean;
-  /** Height of the ray; cells no taller than this are passed straight through. */
-  elavation?: number;
-  /** Offsets the ray's origin along its own angle, so a body doesn't hit itself. */
-  radius?: number;
 }

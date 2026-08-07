@@ -4,7 +4,7 @@ import type { Transparency } from '../constants';
 import type { Line, Positioned, Intersection } from '../types';
 import Shape from './Shape';
 import type World from './World';
-import { getDistanceBetween } from './Point';
+import { getDistanceBetween } from '../utils/measure';
 import {
   isLineBodyIntersection,
   getLineBodyIntersection,

@@ -18,9 +18,10 @@ import { DEG_90, DEG_180, DEG_270 } from './degrees';
 import Ray from '../components/Ray';
 import Point from '../components/Point';
 import { isLineBodyIntersection } from './intersections';
-import type { CastRayOptions, Side } from '../types';
+import type { Side } from '../types';
 import type Body from '../components/Body';
 import type Cell from '../components/Cell';
+import type World from '../components/World';
 
 const { X, Y } = AXES;
 
@@ -28,6 +29,21 @@ const { FULL } = TRANSPARENCY;
 
 const HALF_CELL = CELL_SIZE / 2;
 
+export interface CastRayOptions {
+  x: number;
+  y: number;
+  angle: number;
+  world: World;
+  /** Cast from inside a partially-open cell before stepping to the next one. */
+  checkInitialCell?: boolean;
+  ignoreOverlay?: boolean;
+  /** Height of the ray; cells no taller than this are passed straight through. */
+  elavation?: number;
+  /** Offsets the ray's origin along its own angle, so a body doesn't hit itself. */
+  radius?: number;
+}
+
+/** What {@link castCellRay} needs on top of the public options. */
 interface CastCellRayOptions extends CastRayOptions {
   gridX: number;
   gridY: number;

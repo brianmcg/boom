@@ -27,14 +27,9 @@ export {
 
 export type { Axis, Transparency } from './constants';
 
-export type {
-  CastRayOptions,
-  Line,
-  Positioned,
-  Intersection,
-  Side,
-  Sides,
-} from './types';
+export type { Line, Positioned, Intersection, Side, Sides } from './types';
+
+export type { CastRayOptions } from './utils/castRay';
 
 export type { BodyOptions } from './components/Body';
 export type { CellOptions } from './components/Cell';
