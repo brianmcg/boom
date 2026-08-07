@@ -32,7 +32,6 @@ export type {
   Line,
   Positioned,
   Intersection,
-  RaycastableWorld,
   Side,
   Sides,
 } from './types';

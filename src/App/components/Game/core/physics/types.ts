@@ -93,8 +93,8 @@
  * deliberate behaviour change updates the harness in the same commit, with the
  * divergence explained in `test/physics/README.md`.
  */
-import type Cell from './components/Cell';
 import type Point from './components/Point';
+import type World from './components/World';
 
 /**
  * Anything that has a position in world space — a body, a cell, an effect.
@@ -164,18 +164,11 @@ export interface Intersection {
   distance: number;
 }
 
-/** The raycaster's view of the world: a bounded grid it can look cells up in. */
-export interface RaycastableWorld {
-  width: number;
-  length: number;
-  getCell(x: number, y: number): Cell | null;
-}
-
 export interface CastRayOptions {
   x: number;
   y: number;
   angle: number;
-  world: RaycastableWorld;
+  world: World;
   /** Cast from inside a partially-open cell before stepping to the next one. */
   checkInitialCell?: boolean;
   ignoreOverlay?: boolean;

@@ -1,6 +1,5 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
-import type { RaycastableWorld } from '../types';
 import type Body from './Body';
 import type Cell from './Cell';
 
@@ -16,7 +15,7 @@ export interface WorldOptions {
  * occupy rather than by scanning a flat list, which is what keeps collision and
  * raycasting proportional to the neighbourhood instead of the map.
  */
-export default class World extends EventEmitter implements RaycastableWorld {
+export default class World extends EventEmitter {
   readonly grid: Cell[][];
 
   /** Every body in the world, keyed by id. */
