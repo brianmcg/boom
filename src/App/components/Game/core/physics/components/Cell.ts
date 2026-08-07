@@ -157,11 +157,12 @@ export default class Cell extends Body {
     this.bodies = this.bodies.filter(b => b.id !== body.id);
   }
 
-  isHorizontal(): boolean {
+  /** Only the constructor asks, to decide which axis `offset` applies to. */
+  private isHorizontal(): boolean {
     return this.axis === AXES.X;
   }
 
-  isVertical(): boolean {
+  private isVertical(): boolean {
     return this.axis === AXES.Y;
   }
 

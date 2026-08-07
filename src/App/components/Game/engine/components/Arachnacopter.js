@@ -84,7 +84,9 @@ export default class Arachnacopter extends ProjectileEnemy {
   }
 
   spawnSecondPhase() {
-    const distances = this.parent.spawnPoints.map(c => this.getDistanceTo(c));
+    const distances = this.parent.spawnPoints.map(c =>
+      this.getDistanceTo(c.pos)
+    );
     const nearest = Math.min(...distances);
     const index = distances.indexOf(nearest);
     const { x, y } = this.parent.spawnPoints[index];

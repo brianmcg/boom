@@ -523,7 +523,7 @@ export default class AbstractEnemy extends AbstractActor {
       (Math.round(Math.random()) ? [DEG_90, -DEG_90] : [-DEG_90, DEG_90])
         .reduce((memo, angleOffset) => {
           const angle =
-            (this.getAngleTo(player) + angleOffset + DEG_360) % DEG_360;
+            (this.getAngleTo(player.pos) + angleOffset + DEG_360) % DEG_360;
           const x = Math.floor(
             (this.x + Math.cos(angle) * this.evadeDistance) / this.evadeDistance
           );
@@ -568,7 +568,7 @@ export default class AbstractEnemy extends AbstractActor {
           return cell;
         }
 
-        if (player.getDistanceTo(cell) < player.getDistanceTo(memo)) {
+        if (player.getDistanceTo(cell.pos) < player.getDistanceTo(memo.pos)) {
           return cell;
         }
 

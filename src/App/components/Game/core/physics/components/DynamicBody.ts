@@ -1,20 +1,13 @@
 import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
-import type { Positioned } from '../types';
 import { DEG_90, DEG_270, DEG_360 } from '../utils/degrees';
 import Point from './Point';
-import { getAngleBetween } from '../utils/measure';
 import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
 import { isLineBodyIntersection } from '../utils/intersections';
 import { castRay } from '../utils/castRay';
-
-const EVENTS = {
-  COLLISION_START: 'body:collision:start',
-  COLLISION_END: 'body:collision:end',
-};
 
 const VELOCITY_LIMIT = CELL_SIZE / 2;
 
@@ -92,9 +85,10 @@ export default class DynamicBody extends Body {
    * Where the body was before the current update, used to work out which side
    * of a blocking body it hit.
    *
-   * @internal Public only because the collision helpers live in another module.
+   * Was public while `isBodyCollision` lived in another module; that moved onto
+   * this class, so nothing outside reads it any more.
    */
-  previousPos: Point;
+  private previousPos: Point;
 
   /** Bodies collided with during the last update. */
   private collisions: Body[];
@@ -125,7 +119,7 @@ export default class DynamicBody extends Body {
   }
 
   /** Also refreshes the cached cell, which `update` otherwise maintains. */
-  reindex(previousGridX: number, previousGridY: number) {
+  protected reindex(previousGridX: number, previousGridY: number) {
     super.reindex(previousGridX, previousGridY);
 
     if (this.parent) {
@@ -136,14 +130,6 @@ export default class DynamicBody extends Body {
   onRemoved() {
     this.parent = null;
     this.cell = null;
-  }
-
-  onCollisionStart(callback: (body: Body) => void) {
-    this.on(EVENTS.COLLISION_START, callback);
-  }
-
-  onCollisionEnd(callback: (body: Body) => void) {
-    this.on(EVENTS.COLLISION_END, callback);
   }
 
   isBodyCollision(body: Body): boolean {
@@ -160,7 +146,7 @@ export default class DynamicBody extends Body {
     // moved far enough in one frame to pass clean through the other.
     return isLineBodyIntersection(body, {
       startPoint: this.previousPos,
-      endPoint: new Point(this.x, this.y),
+      endPoint: this.pos,
     });
   }
 
@@ -281,14 +267,14 @@ export default class DynamicBody extends Body {
    * always the direction it is moving. The player faces where its camera
    * points, so `Player` overrides this with its view angle.
    */
-  get facingAngle(): number {
+  protected get facingAngle(): number {
     return this.angle;
   }
 
   /** Whether `target` lies within the half-turn this body is facing. */
-  isFacing(target: Positioned): boolean {
+  isFacing(target: Point): boolean {
     const angle =
-      (getAngleBetween(this, target) - this.facingAngle + DEG_360) % DEG_360;
+      (this.pos.angleTo(target) - this.facingAngle + DEG_360) % DEG_360;
 
     return angle > DEG_270 || angle < DEG_90;
   }
@@ -297,12 +283,12 @@ export default class DynamicBody extends Body {
     this.trackedCollisions.push(options);
   }
 
-  isCollisionTracked(body: Body): boolean {
+  private isCollisionTracked(body: Body): boolean {
     return this.trackedCollisions.some(c => body instanceof c.type);
   }
 
-  getAngleTo(body: Positioned): number {
-    return getAngleBetween(this, body);
+  getAngleTo(target: Point): number {
+    return this.pos.angleTo(target);
   }
 
   destroy(options?: unknown) {

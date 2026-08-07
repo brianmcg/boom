@@ -1,10 +1,10 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Transparency } from '../constants';
-import type { Line, Positioned } from '../types';
+import type { Line } from '../types';
+import Point from './Point';
 import Shape from './Shape';
 import type World from './World';
-import { getDistanceBetween } from '../utils/measure';
 import {
   isLineBodyIntersection,
   getLineBodyIntersectionDistance,
@@ -56,8 +56,19 @@ export interface Body {
 export class Body extends EventEmitter {
   readonly id: string;
 
-  x: number;
-  y: number;
+  /**
+   * Where the body is. A body *has* a position rather than being one, so it
+   * holds a {@link Point} rather than a loose pair of numbers — which is what
+   * lets `getDistanceTo` and friends take a `Point` and mean it.
+   *
+   * `readonly` so two bodies can never end up sharing one by assignment.
+   * Moving a body mutates `pos.x`/`pos.y`, usually through the accessors below.
+   *
+   * `z` stays a field of its own: the grid is two-dimensional and `z` is
+   * elevation above it, not part of the position within it.
+   */
+  readonly pos: Point;
+
   z: number;
 
   readonly width: number;
@@ -75,7 +86,37 @@ export class Body extends EventEmitter {
   parent: World | null = null;
 
   /** Subclass-defined state machine label. Always set via {@link setState}. */
-  state?: string;
+  protected state?: string;
+
+  /**
+   * `x` and `y` delegate to {@link pos}.
+   *
+   * These are the module's only accessors, and they are the exception the
+   * conventions doc allows for: not enforcing an invariant, just keeping one
+   * representation behind an API that ~200 call sites in unchecked
+   * JavaScript already use. Reads and writes both behave exactly as the plain
+   * fields did.
+   *
+   * The one visible difference is that `x`/`y` now live on the prototype
+   * rather than on the instance, so they no longer appear in `Object.keys` or
+   * a spread. Nothing in the codebase does either to a body; `equivalence`'s
+   * cell-shape audit does, and carries a shim for it.
+   */
+  get x(): number {
+    return this.pos.x;
+  }
+
+  set x(value: number) {
+    this.pos.x = value;
+  }
+
+  get y(): number {
+    return this.pos.y;
+  }
+
+  set y(value: number) {
+    this.pos.y = value;
+  }
 
   constructor({
     x = 0,
@@ -90,8 +131,7 @@ export class Body extends EventEmitter {
     super();
 
     this.id = generateId(this);
-    this.x = x;
-    this.y = y;
+    this.pos = new Point(x, y);
     this.z = z;
     this.width = width;
     this.length = length;
@@ -127,7 +167,7 @@ export class Body extends EventEmitter {
    * move, and would have to be bypassed to get the batching back — at which
    * point it would be enforcing nothing on the hottest field in the game.
    */
-  reindex(previousGridX: number, previousGridY: number) {
+  protected reindex(previousGridX: number, previousGridY: number) {
     if (!this.parent) {
       return;
     }
@@ -160,12 +200,12 @@ export class Body extends EventEmitter {
   }
 
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */
-  getDistanceTo(body: Positioned): number {
-    return getDistanceBetween(this, body);
+  getDistanceTo(target: Point): number {
+    return this.pos.distanceTo(target);
   }
 
   /** Returns true only when the state actually changed. */
-  setState(state: string): boolean {
+  protected setState(state: string): boolean {
     if (this.state !== state) {
       this.state = state;
 

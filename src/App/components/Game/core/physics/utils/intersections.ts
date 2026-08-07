@@ -10,9 +10,8 @@
  * so they are locals now. The crossing point is still computed, because the
  * bounds tests need it; it is just no longer carried out of the module.
  */
-import { getDistanceBetween } from './measure';
 import type { Line } from '../types';
-import type Point from '../components/Point';
+import Point from '../components/Point';
 import type Body from '../components/Body';
 
 /**
@@ -64,13 +63,13 @@ const getLineLineIntersection = (
   if (edgeStart.x === edgeEnd.x) {
     if (edgeStart.y < edgeEnd.y) {
       if (y >= edgeStart.y && y <= edgeEnd.y) {
-        return getDistanceBetween(startPoint, { x, y });
+        return startPoint.distanceTo(new Point(x, y));
       }
       return null;
     }
 
     if (y >= edgeEnd.y && y <= edgeStart.y) {
-      return getDistanceBetween(startPoint, { x, y });
+      return startPoint.distanceTo(new Point(x, y));
     }
 
     return null;
@@ -79,13 +78,13 @@ const getLineLineIntersection = (
   if (edgeStart.y === edgeEnd.y) {
     if (edgeStart.x < edgeEnd.x) {
       if (x >= edgeStart.x && x <= edgeEnd.x) {
-        return getDistanceBetween(startPoint, { x, y });
+        return startPoint.distanceTo(new Point(x, y));
       }
       return null;
     }
 
     if (x >= edgeEnd.x && x <= edgeStart.x) {
-      return getDistanceBetween(startPoint, { x, y });
+      return startPoint.distanceTo(new Point(x, y));
     }
 
     return null;

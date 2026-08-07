@@ -47,7 +47,7 @@ export default class Explosion extends Body {
     this.x = this.source.x;
     this.y = this.source.y;
 
-    const distanceToPlayer = this.source.getDistanceTo(this.parent.player);
+    const distanceToPlayer = this.source.getDistanceTo(this.parent.player.pos);
     const shake = (CELL_SIZE / distanceToPlayer) * (this.power / CELL_SIZE);
     const range = Math.ceil(this.range / CELL_SIZE);
     const deadBodies = [];

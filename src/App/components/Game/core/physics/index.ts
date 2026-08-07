@@ -27,7 +27,7 @@ export {
 
 export type { Axis, Transparency } from './constants';
 
-export type { Line, Positioned, Side, Sides } from './types';
+export type { Line, Side, Sides } from './types';
 
 export type { CastRayOptions } from './utils/castRay';
 

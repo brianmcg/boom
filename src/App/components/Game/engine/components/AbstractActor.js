@@ -1,4 +1,4 @@
-import { degrees } from '@game/core/physics';
+import { degrees, Point } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import AbstractDestroyableEntity from './AbstractDestroyableEntity';
 
@@ -56,7 +56,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     // Update elavation.
     if (this.isAlive() && this.standingOn.length) {
       this.z = this.standingOn.reduce((maxElavation, body) => {
-        const distance = this.getDistanceTo(body);
+        const distance = this.getDistanceTo(body.pos);
         const { proneHeight, width } = body;
         const elavation = (proneHeight * Math.abs(width - distance)) / width;
         return elavation > maxElavation ? elavation : maxElavation;
@@ -73,7 +73,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
   }
 
   face(body) {
-    this.angle = this.getAngleTo(body);
+    this.angle = this.getAngleTo(body.pos);
   }
 
   hit({ rays, distance, ...options }) {
@@ -109,8 +109,8 @@ export default class AbstractActor extends AbstractDestroyableEntity {
             return 1;
           }
 
-          const distanceA = a.getDistanceTo(cell);
-          const distanceB = b.getDistanceTo(cell);
+          const distanceA = a.getDistanceTo(cell.pos);
+          const distanceB = b.getDistanceTo(cell.pos);
 
           if (distanceA < distanceB) {
             return 1;
@@ -188,7 +188,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     if (bloodColor) {
       for (let i = Math.round(x - radius); i < x + radius; i++) {
         for (let j = Math.round(y - radius); j < y + radius; j++) {
-          if (this.getDistanceTo({ x: i, y: j }) < radius) {
+          if (this.getDistanceTo(new Point(i, j)) < radius) {
             parent.stains[i][j] = bloodColor;
           }
         }

@@ -27,7 +27,7 @@ export default class PushWall extends DynamicCell {
 
     if (!this.isPushed && this.canMove()) {
       this.isPushed = true;
-      this.distanceToPlayer = this.getDistanceTo(user);
+      this.distanceToPlayer = this.getDistanceTo(user.pos);
       this.emitSound(this.sounds.start);
       this.emitSound(this.sounds.move, true);
       const shake =

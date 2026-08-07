@@ -32,7 +32,7 @@ export default class DynamicCell extends PhysicsDynamicCell {
   }
 
   update() {
-    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
 
     const volume =
       this.distanceToPlayer > MAX_SOUND_DISTANCE
@@ -60,7 +60,7 @@ export default class DynamicCell extends PhysicsDynamicCell {
 
   startUpdates() {
     super.startUpdates();
-    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
   }
 
   destroy(options) {

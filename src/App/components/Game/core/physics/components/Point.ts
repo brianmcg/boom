@@ -1,5 +1,4 @@
 import { getAngleBetween, getDistanceBetween } from '../utils/measure';
-import type { Positioned } from '../types';
 
 /**
  * A position in world space.
@@ -7,12 +6,16 @@ import type { Positioned } from '../types';
  * Per the module's house style this is a value object, so it takes its two
  * numbers positionally rather than an options object.
  *
- * `Point` is for a field that *holds* a position. Anything that merely *has*
- * one — a body, a cell, an effect — is {@link Positioned}, which is why the
- * measuring functions these methods delegate to live in `utils/measure.ts` and
- * take that instead.
+ * Everything with a position in the world holds one of these — `Body.pos`,
+ * `Ray.startPoint`, a `Shape`'s corners, an `Effect`'s `pos`. There is no
+ * separate "something that has coordinates" type: a caller that wants to
+ * measure against a body passes `body.pos`, which is the position itself.
+ *
+ * That is what makes this a class rather than an interface. A bare `{ x, y }`
+ * does not satisfy it, so a body, cell or sprite cannot be passed where a
+ * position belongs.
  */
-export default class Point implements Positioned {
+export default class Point {
   x: number;
   y: number;
 
@@ -21,11 +24,11 @@ export default class Point implements Positioned {
     this.y = y;
   }
 
-  distanceTo(other: Positioned): number {
+  distanceTo(other: Point): number {
     return getDistanceBetween(this, other);
   }
 
-  angleTo(other: Positioned): number {
+  angleTo(other: Point): number {
     return getAngleBetween(this, other);
   }
 }

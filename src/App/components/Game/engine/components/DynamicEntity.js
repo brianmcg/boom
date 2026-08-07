@@ -35,7 +35,7 @@ export default class DynamicEntity extends DynamicBody {
   }
 
   update(delta, elapsedMS) {
-    this.distanceToPlayer = this.getDistanceTo(this.parent.player);
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
 
     const volume =
       this.distanceToPlayer > MAX_SOUND_DISTANCE

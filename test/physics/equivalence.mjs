@@ -390,6 +390,24 @@ const sample = M => {
   return seen;
 };
 
+// A body's x and y moved into a `pos` Point behind accessors, so they are on
+// the prototype now rather than being own keys. The audit compares own keys, so
+// project both sides into the same logical shape first: drop `pos`, and read
+// x/y explicitly, which works on either module. Everything else still diffs by
+// name, so the audit keeps its teeth on every other field.
+const logicalShape = cell => {
+  const shape = {};
+
+  for (const key of Object.keys(cell)) {
+    if (key !== 'pos') shape[key] = cell[key];
+  }
+
+  shape.x = cell.x;
+  shape.y = cell.y;
+
+  return shape;
+};
+
 const oldCells = sample(OLD);
 const newCells = sample(NEW);
 
@@ -397,16 +415,18 @@ for (const kind of Object.keys(oldCells)) {
   // Map the baseline's key names through the rename before diffing, so the
   // deliberate isDoor -> retracts / isPushWall -> displaces rename does not read
   // as a lost key plus a truthy added one. Everything else still diffs by name.
-  const o = Object.keys(oldCells[kind]).map(k => RENAMED[k] ?? k);
-  const n = Object.keys(newCells[kind]);
+  const oldCell = logicalShape(oldCells[kind]);
+  const newCell = logicalShape(newCells[kind]);
+  const o = Object.keys(oldCell).map(k => RENAMED[k] ?? k);
+  const n = Object.keys(newCell);
   const lost = o.filter(k => !n.includes(k));
   const added = n.filter(k => !o.includes(k));
-  const changed = Object.keys(oldCells[kind]).filter(
+  const changed = Object.keys(oldCell).filter(
     k =>
-      norm(JSON.stringify(oldCells[kind][k])) !==
-      norm(JSON.stringify(newCells[kind][RENAMED[k] ?? k]))
+      norm(JSON.stringify(oldCell[k])) !==
+      norm(JSON.stringify(newCell[RENAMED[k] ?? k]))
   );
-  const truthyAdded = added.filter(k => newCells[kind][k]);
+  const truthyAdded = added.filter(k => newCell[k]);
 
   if (lost.length || truthyAdded.length || changed.length) {
     failed = true;

@@ -72,7 +72,7 @@ export default class Projectile extends DynamicEntity {
   handleCollision(body) {
     if (body.blocking && this.setColliding() && !body.edge) {
       if (body.isDestroyable) {
-        const angle = (body.getAngleTo(this) + DEG_180) % DEG_360;
+        const angle = (body.getAngleTo(this.pos) + DEG_180) % DEG_360;
 
         body.hit({ damage: this.damage, angle });
       }

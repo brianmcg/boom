@@ -20,7 +20,7 @@ export default class ChaseEnemy extends AbstractEnemy {
 
     this.emitSound(this.sounds.attack);
 
-    const angle = (this.getAngleTo(player) - DEG_180 + DEG_360) % DEG_360;
+    const angle = (this.getAngleTo(player.pos) - DEG_180 + DEG_360) % DEG_360;
     const damage = this.attackDamage();
 
     player.hit({ damage, angle });

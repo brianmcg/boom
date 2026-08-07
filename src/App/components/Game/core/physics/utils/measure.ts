@@ -7,12 +7,9 @@
  * for the cases where you do hold one.
  */
 import { DEG_360 } from './degrees';
-import type { Positioned } from '../types';
+import type Point from '../components/Point';
 
-export const getDistanceBetween = (
-  from: Positioned,
-  to: Positioned
-): number => {
+export const getDistanceBetween = (from: Point, to: Point): number => {
   const dx = from.x - to.x;
   const dy = from.y - to.y;
 
@@ -20,7 +17,7 @@ export const getDistanceBetween = (
 };
 
 /** Radians from `from` to `to`, normalised to `[0, 2π)`. */
-export const getAngleBetween = (from: Positioned, to: Positioned): number => {
+export const getAngleBetween = (from: Point, to: Point): number => {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
 

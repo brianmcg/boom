@@ -14,15 +14,31 @@ const makeWorld = (M, grid, bodies) =>
 // isRayCollision/getRayCollision, back when only the raycaster used them; they
 // are isLineBodyIntersection/getLineBodyIntersectionDistance now, exposed on
 // Body as intersectsLine/getLineIntersectionDistance. Renames, not behaviour.
+// The live module now requires real Points, not bare { x, y }: a position IS a
+// Point, and `getLineLineIntersection` calls `startPoint.distanceTo(...)` on
+// one. The baseline predates the class entirely, so it can only take literals.
+// Every probe below writes literals; this converts them per module.
+const isNew = body => !!body.intersectsLine;
+
+const toLine = (body, { startPoint, endPoint }) =>
+  isNew(body)
+    ? {
+        startPoint: new NEW.Point(startPoint.x, startPoint.y),
+        endPoint: new NEW.Point(endPoint.x, endPoint.y),
+      }
+    : { startPoint, endPoint };
+
 const intersects = (body, line) =>
-  body.intersectsLine ? body.intersectsLine(line) : body.isRayCollision(line);
+  isNew(body)
+    ? body.intersectsLine(toLine(body, line))
+    : body.isRayCollision(line);
 
 // The live one returns a bare distance now; the baseline returns
 // { x, y, distance }. Nothing ever read the coordinates, so they were dropped.
 // Normalise both to a distance-or-null.
 const distanceOf = (body, line) => {
   if (body.getLineIntersectionDistance) {
-    return body.getLineIntersectionDistance(line);
+    return body.getLineIntersectionDistance(toLine(body, line));
   }
 
   const hit = body.getRayCollision(line);

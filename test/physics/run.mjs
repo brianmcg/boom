@@ -86,8 +86,8 @@ async function bundle(name) {
   return outfile;
 }
 
-// cell-contract asserts forward against what the map data means, so it needs
-// no baseline; the other two compare against it.
+// contract asserts forward against what things are supposed to mean, so it
+// needs no baseline; the other two compare against it.
 const ALL_SUITES = ['equivalence', 'bugfix', 'contract'];
 const USES_BASELINE = new Set(['equivalence', 'bugfix']);
 

@@ -84,7 +84,7 @@ export default class HitScan extends Body {
           if (i > 0) {
             if (this.penetration) {
               if (
-                body.getDistanceTo(collisions[0].body) <
+                body.getDistanceTo(collisions[0].body.pos) <
                 this.penetration.distance * CELL_SIZE
               ) {
                 damage *= this.penetration.fade / i;

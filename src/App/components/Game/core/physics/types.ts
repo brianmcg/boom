@@ -10,9 +10,9 @@
  * `castRay`, `UpdatableBody` with the `World` field it types.
  *
  * **This file is not "the types folder".** It holds the shared vocabulary that
- * belongs to no single file — `Positioned`, `Line`, `Side`, `Sides` — and
- * nothing else. A type with an obvious owner goes with its owner, so that
- * changing one and not the other is hard.
+ * belongs to no single file — `Line`, `Side`, `Sides` — and nothing else. A
+ * type with an obvious owner goes with its owner, so that changing one and not
+ * the other is hard.
  *
  * `Axis` and `Transparency` stay in `constants.ts` for the strongest version of
  * that: they are *derived* from `AXES` and `TRANSPARENCY` by indexed access, so
@@ -34,8 +34,30 @@
  * ## Modifiers
  *
  * Two independent questions, not one scale. `private`/`public` is *who* may
- * touch a field; `readonly` is *when* it may be written. A field can be both,
+ * touch a member; `readonly` is *when* it may be written. A member can be both,
  * either or neither.
+ *
+ * **The visibility rules below cover methods and accessors, not just fields.**
+ * Every example here happens to be a field, which reads as if they were a
+ * field-only convention — they are not. `private helper()` and
+ * `protected hook()` are as ordinary as the field forms, and ask the same
+ * question: does anything outside the class call this?
+ *
+ * `readonly` is the one exception: fields only. On a method it is a compile
+ * error, not a subtly different meaning. Worth saying because Java's `final`
+ * *does* apply to methods, where it seals them against overriding —
+ * TypeScript has no equivalent of that at all.
+ *
+ * Accessors take visibility too, and may differ between the halves in one
+ * direction only: a getter must be at least as accessible as its setter. So
+ * public-read/private-write is available; the reverse is a compile error.
+ *
+ * All of this is erased at build time, so it constrains only this module.
+ * `engine/` is unchecked JavaScript and can read and write a `private` field
+ * freely — it stays an ordinary own property at runtime. Real enforcement
+ * needs JavaScript's `#name`, which is not an own key and throws on outside
+ * access; nothing here uses it, and adopting it would break any engine or
+ * harness code reaching in.
  *
  * **`readonly` means the value is part of what the object is** — change it and
  * you have a different object. `Body.id`, `width`, `length`, `anchor`;
@@ -48,14 +70,30 @@
  * merely quiet, leave it writable.
  *
  * **`private` means nothing outside the class touches it** — bookkeeping like
- * `DynamicBody.collisions` and `trackedCollisions`. Two fields in the module;
- * everything else is public. There is no `protected`: it was down to one field
- * and one method, which does not earn a third thing to remember. Add it back if
- * a class ever genuinely needs a hierarchy-only member.
+ * `DynamicBody.collisions`, `trackedCollisions` and `previousPos`, and helpers
+ * only the class itself calls, like `Cell.isHorizontal`/`isVertical` (asked
+ * once, by the constructor) and `DynamicBody.isCollisionTracked`.
  *
- * The two stack where both are true, and that is not a third category:
- * `collisions` is private and mutable, `Body.width` is public and readonly, and
- * a field can be both.
+ * **`protected` means the class and its subclasses, and nothing else.** Reach
+ * for it whenever that is the real audience: something the hierarchy needs and
+ * callers do not. Four members qualify today —
+ *
+ * - `Body.state` and `Body.setState` — every engine actor drives its own state
+ *   machine, and both are only ever touched through `this`.
+ * - `Body.reindex` — called by `setPos`, overridden by `DynamicBody`.
+ * - `DynamicBody.facingAngle` — exists so `Player` can point `isFacing` at its
+ *   camera rather than its body.
+ *
+ * An earlier version of this note told you not to use `protected` at all, on
+ * the grounds that too few members qualified to earn a third modifier. That was
+ * the wrong test. Pick the modifier that describes the member's real audience;
+ * how many others happen to share it is not the question.
+ *
+ * Public is what is left over — the module's actual surface, not a default.
+ *
+ * Visibility and `readonly` stack where both are true, and that is not a third
+ * category: `collisions` is private and mutable, `Body.width` is public and
+ * readonly, and a field can be both.
  *
  * If a field's visibility feels arbitrary, check whether it should exist at
  * all. `World` used to cache `maxCellX = width - 1` for `getCell`'s bounds
@@ -63,10 +101,11 @@
  * bounds, while the identical fact in world units (`maxMapX`) is public and
  * widely used. The question had no good answer because the field was redundant.
  *
- * **A leading `_` would mark an accessor's backing field, nothing else** — it
- * is not a privacy convention, it is forced, because `get angle()` cannot read
- * a field also called `angle`. No field in this module is prefixed, because
- * none has an accessor. Private fields keep their real names (`collisions`).
+ * **No field in this module is `_`-prefixed.** The prefix is only ever forced,
+ * when an accessor cannot read a field of its own name — and the one accessor
+ * pair here does not have that problem, because `x`/`y` are backed by `pos`,
+ * which is a better name than `_x` would have been. If you find yourself
+ * reaching for `_`, check whether the backing field wants a real name first.
  *
  * Relaxing a modifier because a new call site needs the field is these rules
  * working, not a breach of them. Until `engine/` is TypeScript, `checkJs:
@@ -74,8 +113,14 @@
  * exclude `core/ai` and `graph.grid[...]`, since `GridNode` has `weight`,
  * `parent` and `closed` fields whose names collide with these.
  *
- * **There are no accessors in this module, and that is the position.** Both
- * candidates were tried and both were removed:
+ * **Accessors are for hiding a representation, not for enforcing an
+ * invariant.** `Body.x`/`y` are the module's only ones: the position lives in
+ * a `Point` at `Body.pos`, and the accessors keep the ~200 `body.x` call sites
+ * in unchecked JavaScript working unchanged. They add no rule — they read and
+ * write `pos.x` and nothing else. That is the legitimate use.
+ *
+ * An accessor added to *enforce* something is the suspicious kind, and both
+ * attempts were removed:
  *
  * - `DynamicBody.velocity` — the limit belongs to how far a body may travel in
  *   one update, not to what a caller may ask for, so it stayed at the point of
@@ -87,15 +132,15 @@
  *   needs `engine/` to be TypeScript first; until then the invariant stays with
  *   the callers, which is where it already was.
  *
- * That is the general shape: an invariant that belongs to the *value* wants a
- * value type, not an accessor on whichever field happens to hold it today. A
- * pair that just reads and writes its own backing field is indirection, not
- * encapsulation — and an invariant a setter cannot actually enforce belongs in
- * a method, see `Body.reindex`, which is not an `x`/`y` setter precisely
- * because `DynamicBody.update` would have to bypass it.
+ * `Body.pos` is that same idea working: an invariant belonging to the *value*
+ * wants a value type. A position is a `Point`, so nothing loose can be passed
+ * where one belongs — and `getDistanceTo(body.pos)` says what it means, which
+ * `getDistanceTo(body)` never did.
  *
- * If a real defect ever needs one before the value type lands, add it — but
- * write down why the value type could not do the job.
+ * An invariant a setter cannot actually enforce belongs in a method — see
+ * `Body.reindex`, which is deliberately not folded into the `x`/`y` setters,
+ * because `DynamicBody.update` moves one axis at a time and would have to
+ * bypass it.
  *
  * ## Absence
  *
@@ -124,28 +169,7 @@
  */
 import type Point from './components/Point';
 
-/**
- * Anything that has a position in world space — a body, a cell, an effect.
- * Units are world units, not grid cells.
- *
- * This is what "how far to that thing" and "am I facing it" take. They do not
- * want a {@link Point}; they want something located, and read its coordinates.
- * It cannot be `Body`, because `Effect` has a position without being one.
- *
- * Weak on purpose: `{ x, y }` cannot tell world space from screen space, so a
- * Pixi sprite would satisfy it too. Enforcing that needs a branded type and an
- * explicit opt-in on every class, which is not worth it for a mistake nobody
- * has made. Fields that *hold* a position use the `Point` class.
- */
-export interface Positioned {
-  x: number;
-  y: number;
-}
-
-/**
- * A line segment. Its ends *are* positions, so they are {@link Point}s — not
- * `Positioned`, which is for things that merely have one.
- */
+/** A line segment, between two positions. */
 export interface Line {
   startPoint: Point;
   endPoint: Point;

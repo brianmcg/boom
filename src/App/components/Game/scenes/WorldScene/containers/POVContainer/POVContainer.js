@@ -99,7 +99,7 @@ export default class POVContainer extends Container {
     const totalEncounteredBodies = {};
 
     world.alwaysRender.forEach(entity => {
-      if (player.isFacing(entity)) {
+      if (player.isFacing(entity.pos)) {
         totalEncounteredBodies[entity.id] = entity;
       }
     });
@@ -428,8 +428,9 @@ export default class POVContainer extends Container {
       sprite = entititySprites[body.id];
 
       if (sprite) {
-        spriteAngle = (player.getAngleTo(body) - viewAngle + DEG_360) % DEG_360;
-        actualDistance = player.getDistanceTo(body);
+        spriteAngle =
+          (player.getAngleTo(body.pos) - viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(body.pos);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
@@ -475,10 +476,10 @@ export default class POVContainer extends Container {
     effects.forEach(effect => {
       sprite = effectSprites[effect.sourceId];
 
-      if (player.isFacing(effect)) {
+      if (player.isFacing(effect.pos)) {
         spriteAngle =
-          (player.getAngleTo(effect) - viewAngle + DEG_360) % DEG_360;
-        actualDistance = player.getDistanceTo(effect);
+          (player.getAngleTo(effect.pos) - viewAngle + DEG_360) % DEG_360;
+        actualDistance = player.getDistanceTo(effect.pos);
         correctedDistance = Math.cos(spriteAngle) * actualDistance;
         spriteScale = Math.abs(CAMERA_DISTANCE / correctedDistance);
         spriteHeight = CELL_SIZE * spriteScale;
