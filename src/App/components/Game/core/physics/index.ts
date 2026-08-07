@@ -34,6 +34,7 @@ export type {
   Intersection,
   RaycastableWorld,
   Side,
+  Sides,
 } from './types';
 
 export type { BodyOptions } from './components/Body';

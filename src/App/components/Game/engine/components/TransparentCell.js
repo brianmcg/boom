@@ -1,4 +1,4 @@
-import Cell from './Cell';
+import { Cell } from '@game/core/physics';
 
 /**
  * A cell rays pass through. `transparency` is a plain `Cell` option, so this

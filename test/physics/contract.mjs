@@ -3,13 +3,12 @@
 //
 // Two things live here. The cell section covers the contract the raycaster
 // reads off a cell — transparency, isDoor, isPushWall, double, reverse,
-// closed, edge — which is readonly on the core Cell, so subclasses can only
-// set it by passing options through super(); neither other suite builds an
-// engine cell, so nothing else covers that plumbing. The body section covers
+// closed, edge, and the sides — which subclasses can only set by passing
+// options through super(); every subclass that does so is unchecked
+// JavaScript, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
-import { DynamicBody, Point, Shape, World } from '@game/core/physics';
-import Cell from '@engine/Cell.js';
+import { Cell, DynamicBody, Point, Shape, World } from '@game/core/physics';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
 import PushWall from '@engine/PushWall.js';
@@ -62,6 +61,17 @@ const bare = new Cell({ ...base });
 eq('omitted closed defaults to false', bare.closed, false);
 eq('omitted edge defaults to false', bare.edge, false);
 eq('omitted reverse defaults to false', bare.reverse, false);
+
+// The sides moved off the engine subclass and onto Cell itself. Every caller
+// that supplies them is unchecked JavaScript, so a face that silently stopped
+// arriving would render as a blank wall rather than fail anything.
+ok('a plain cell carries the side it was given', wall.front?.name === 'f');
+eq('a face the map omitted is undefined', wall.back, undefined);
+eq(
+  'sides omitted entirely leaves every face undefined',
+  new Cell({ ...base, sides: undefined }).front,
+  undefined
+);
 
 // --- transparent ----------------------------------------------------------
 const glass = new TransparentCell({

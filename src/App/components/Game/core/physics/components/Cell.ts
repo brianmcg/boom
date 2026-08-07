@@ -1,12 +1,14 @@
 import { CELL_SIZE } from '@constants/config';
 import { AXES, TRANSPARENCY } from '../constants';
 import type { Axis, Transparency } from '../constants';
-import type { Side } from '../types';
+import type { Side, Sides } from '../types';
 import Point from './Point';
 import Body, { type BodyOptions } from './Body';
 
 export interface CellOptions extends BodyOptions {
   axis?: Axis;
+  /** The texture drawn on each face. Faces the map data omits stay undefined. */
+  sides?: Sides;
   /**
    * How far open the cell starts, as a ratio of a cell. Stored as world units
    * on {@link Cell.offset} — the input and the stored value are different units.
@@ -26,7 +28,7 @@ export interface CellOptions extends BodyOptions {
  *
  * A cell is a `Body` that never moves and that owns the bodies standing on it.
  * Everything below the `add`/`remove` pair is the contract the raycaster in
- * `helpers.ts` reads; subclasses in the game layer configure those fields
+ * `utils/castRay.ts` reads; subclasses in the game layer configure those fields
  * rather than inventing their own.
  */
 export default class Cell extends Body {
@@ -69,24 +71,27 @@ export default class Cell extends Body {
   edge: boolean;
 
   /**
-   * The texture drawn on each face. Left to the game layer to populate, and
-   * `declare`d so this class contributes no runtime property of its own — the
-   * raycaster passes these values through verbatim and distinguishes "absent"
-   * from "present".
+   * The texture drawn on each face, spread onto the cell so the raycaster can
+   * read a face by name. Undefined where the map data defined no face; the
+   * raycaster passes that through verbatim, which is how {@link Ray.side} ends
+   * up `Side | undefined`.
    */
-  declare front?: Side;
-  declare left?: Side;
-  declare back?: Side;
-  declare right?: Side;
-  declare top?: Side;
-  declare bottom?: Side;
+  front?: Side;
+  left?: Side;
+  back?: Side;
+  right?: Side;
+
+  /** Read by the renderer, not the raycaster: the ceiling and floor behind. */
+  top?: Side;
+  bottom?: Side;
 
   /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
-  declare overlay?: Side;
+  overlay?: Side;
 
   constructor({
     axis,
     offset = 0,
+    sides = {},
     transparency = TRANSPARENCY.NONE,
     isDoor = false,
     isPushWall = false,
@@ -101,6 +106,14 @@ export default class Cell extends Body {
     this.bodies = [];
     this.axis = axis;
     this.offset = new Point(0, 0);
+
+    this.front = sides.front;
+    this.left = sides.left;
+    this.back = sides.back;
+    this.right = sides.right;
+    this.top = sides.top;
+    this.bottom = sides.bottom;
+    this.overlay = sides.overlay;
 
     this.transparency = transparency;
     this.isDoor = isDoor;

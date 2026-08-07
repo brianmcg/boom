@@ -134,6 +134,26 @@ export interface Side {
 }
 
 /**
+ * The faces of a cell. Every one is optional: the map data defines only the
+ * faces a level actually draws.
+ *
+ * `front`/`left`/`back`/`right` and `overlay` are what the raycaster returns as
+ * {@link Ray.side}. `top` and `bottom` are read only by the renderer, for the
+ * ceiling and floor behind a cell, and live here so a cell's faces stay one
+ * object rather than being split across two layers.
+ */
+export interface Sides {
+  front?: Side;
+  left?: Side;
+  back?: Side;
+  right?: Side;
+  top?: Side;
+  bottom?: Side;
+  /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
+  overlay?: Side;
+}
+
+/**
  * Where a ray crossed a line, and how far along the ray it was. A record rather
  * than a {@link Point}: it is returned as a plain literal and nothing asks it
  * to behave like a position.

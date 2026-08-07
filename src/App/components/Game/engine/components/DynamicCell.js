@@ -3,16 +3,9 @@ import { DynamicCell as PhysicsDynamicCell } from '@game/core/physics';
 import { SoundSpriteController } from '@game/core/audio';
 
 export default class DynamicCell extends PhysicsDynamicCell {
-  constructor({ sides = {}, soundSprite, sounds, ...other }) {
+  constructor({ soundSprite, sounds, ...other }) {
     super(other);
 
-    this.front = sides.front;
-    this.left = sides.left;
-    this.back = sides.back;
-    this.right = sides.right;
-    this.bottom = sides.bottom;
-    this.top = sides.top;
-    this.overlay = sides.overlay;
     this.sounds = sounds;
 
     this.soundController = new SoundSpriteController({

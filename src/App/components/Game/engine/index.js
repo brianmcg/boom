@@ -1,4 +1,4 @@
-import Cell from './components/Cell';
+import { Cell } from '@game/core/physics';
 import World from './components/World';
 import Door from './components/Door';
 import Entity from './components/Entity';
