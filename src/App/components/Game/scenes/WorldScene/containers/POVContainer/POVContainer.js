@@ -145,7 +145,7 @@ export default class POVContainer extends Container {
       for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
 
-        const { overlay, closed, isDoor, transparency } = cell;
+        const { overlay, closed, retracts, transparency } = cell;
 
         sideHeight = side?.height || world.height;
 
@@ -161,7 +161,7 @@ export default class POVContainer extends Container {
             radius,
             elavation: sideHeight,
             checkInitialCell: true,
-            ignoreOverlay: player.cell.isElevator || !(isDoor && !overlay),
+            ignoreOverlay: player.cell.isElevator || !(retracts && !overlay),
           });
 
           for (let j = 0, n = elavatedRays.length; j < n; j++) {
@@ -219,7 +219,7 @@ export default class POVContainer extends Container {
             sideHeight = side.height;
 
             // Determine the slice to render.
-            if (!isOverlay && cell.isDoor) {
+            if (!isOverlay && cell.retracts) {
               if (cell.double) {
                 if (isHorizontal) {
                   if (endPoint.x % CELL_SIZE < HALF_CELL) {

@@ -59,7 +59,7 @@ export default class World extends PhysicsWorld {
     this.floorOffset = floorOffset;
 
     this.secrets = this.grid.reduce(
-      (memo, col) => [...memo, ...col.filter(cell => cell.isPushWall)],
+      (memo, col) => [...memo, ...col.filter(cell => cell.displaces)],
       []
     );
 

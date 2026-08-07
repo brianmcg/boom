@@ -296,7 +296,7 @@ export default class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.isDoor) {
+      if (nextCell.retracts) {
         nextCell.use(this);
       }
 

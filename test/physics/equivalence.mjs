@@ -13,6 +13,25 @@ const SIZE = 24;
 const makeWorld = (M, grid, bodies) =>
   M === OLD ? new M.World(grid, bodies) : new M.World({ grid, bodies });
 
+// isDoor/isPushWall were renamed to retracts/displaces: they name what `offset`
+// does to the geometry (surface retracts leaving a gap / surface translates
+// whole) rather than the game object built from it. The baseline still has the
+// old names, so set and read them under whichever name the module uses.
+const RENAMED = { isDoor: 'retracts', isPushWall: 'displaces' };
+
+const setRetracts = (M, cell) => {
+  if (M === OLD) cell.isDoor = true;
+  else cell.retracts = true;
+};
+
+const setDisplaces = (M, cell) => {
+  if (M === OLD) cell.isPushWall = true;
+  else cell.displaces = true;
+};
+
+const retracts = cell => cell.retracts ?? cell.isDoor;
+const displaces = cell => cell.displaces ?? cell.isPushWall;
+
 const mulberry32 = a => () => {
   a |= 0;
   a = (a + 0x6d2b79f5) | 0;
@@ -76,7 +95,7 @@ const makeCell = (M, gx, gy, rnd) => {
         axis,
       });
       addSides(cell, gx, gy);
-      cell.isDoor = true;
+      setRetracts(M, cell);
       cell.double = kind === 9;
       cell.reverse = rnd() < 0.5;
       const open = rnd() * CELL_SIZE;
@@ -89,7 +108,7 @@ const makeCell = (M, gx, gy, rnd) => {
       // Push wall, mid-slide.
       const cell = new Cell({ ...base, blocking: true, axis });
       addSides(cell, gx, gy);
-      cell.isPushWall = true;
+      setDisplaces(M, cell);
       const open = rnd() * CELL_SIZE;
       if (axis === AXES.X) cell.offset.y = open || 1;
       else cell.offset.x = open || 1;
@@ -358,9 +377,9 @@ const sample = M => {
   const seen = {};
   for (const col of world.grid)
     for (const cell of col) {
-      const kind = cell.isDoor
+      const kind = retracts(cell)
         ? 'door'
-        : cell.isPushWall
+        : displaces(cell)
           ? 'pushWall'
           : cell.transparency
             ? 'transparent'
@@ -376,14 +395,17 @@ const oldCells = sample(OLD);
 const newCells = sample(NEW);
 
 for (const kind of Object.keys(oldCells)) {
-  const o = Object.keys(oldCells[kind]);
+  // Map the baseline's key names through the rename before diffing, so the
+  // deliberate isDoor -> retracts / isPushWall -> displaces rename does not read
+  // as a lost key plus a truthy added one. Everything else still diffs by name.
+  const o = Object.keys(oldCells[kind]).map(k => RENAMED[k] ?? k);
   const n = Object.keys(newCells[kind]);
   const lost = o.filter(k => !n.includes(k));
   const added = n.filter(k => !o.includes(k));
-  const changed = o.filter(
+  const changed = Object.keys(oldCells[kind]).filter(
     k =>
       norm(JSON.stringify(oldCells[kind][k])) !==
-      norm(JSON.stringify(newCells[kind][k]))
+      norm(JSON.stringify(newCells[kind][RENAMED[k] ?? k]))
   );
   const truthyAdded = added.filter(k => newCells[kind][k]);
 

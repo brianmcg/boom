@@ -171,7 +171,7 @@ const castCellRay = ({
     }
 
     // if door offset miss.
-    if (!horizontalOverlay && initialCell.isDoor) {
+    if (!horizontalOverlay && initialCell.retracts) {
       xOffsetHit = xIntersection % CELL_SIZE;
 
       if (initialCell.double) {
@@ -238,7 +238,7 @@ const castCellRay = ({
   }
 
   // if door offset miss.
-  if (!verticalOverlay && initialCell.isDoor) {
+  if (!verticalOverlay && initialCell.retracts) {
     yOffsetHit = yIntersection % CELL_SIZE;
 
     if (initialCell.double) {
@@ -394,7 +394,7 @@ const castRaySection = ({
         horizontalOverlay
       ) {
         if (horizontalCell.axis) {
-          if (horizontalCell.isDoor) {
+          if (horizontalCell.retracts) {
             if (horizontalCell.reverse) {
               if (y < horizontalCell.y) {
                 offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
@@ -441,7 +441,7 @@ const castRaySection = ({
               xIntersection += distToNextXIntersection;
               horizontalGrid += distToNextHorizontalGrid;
             }
-          } else if (horizontalCell.isPushWall) {
+          } else if (horizontalCell.displaces) {
             offsetRatio = CELL_SIZE / horizontalCell.offset.y;
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
@@ -561,7 +561,7 @@ const castRaySection = ({
         verticalOverlay
       ) {
         if (verticalCell.axis) {
-          if (verticalCell.isDoor) {
+          if (verticalCell.retracts) {
             if (verticalCell.reverse) {
               if (x < verticalCell.x) {
                 offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
@@ -607,7 +607,7 @@ const castRaySection = ({
               yIntersection += distToNextYIntersection;
               verticalGrid += distToNextVerticalGrid;
             }
-          } else if (verticalCell.isPushWall) {
+          } else if (verticalCell.displaces) {
             offsetRatio = CELL_SIZE / verticalCell.offset.x;
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;

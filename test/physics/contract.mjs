@@ -2,7 +2,7 @@
 // are supposed to mean rather than against the pre-migration baseline.
 //
 // Two things live here. The cell section covers the contract the raycaster
-// reads off a cell — transparency, isDoor, isPushWall, double, reverse,
+// reads off a cell — transparency, retracts, displaces, double, reverse,
 // closed, edge, and the sides — which subclasses can only set by passing
 // options through super(); every subclass that does so is unchecked
 // JavaScript, so nothing else covers that plumbing. The body section covers
@@ -51,8 +51,8 @@ const wall = new Cell({ ...base, closed: true, edge: true, reverse: true });
 eq('wall.closed', wall.closed, true);
 eq('wall.edge', wall.edge, true);
 eq('wall.reverse', wall.reverse, true);
-eq('wall.isDoor', wall.isDoor, false);
-eq('wall.isPushWall', wall.isPushWall, false);
+eq('wall.retracts', wall.retracts, false);
+eq('wall.displaces', wall.displaces, false);
 eq('wall.transparency', wall.transparency, TRANSPARENCY.NONE);
 
 // A map that omits these must yield false, not undefined — every read is a
@@ -81,7 +81,7 @@ const glass = new TransparentCell({
 });
 eq('transparent.transparency', glass.transparency, TRANSPARENCY.PARTIAL);
 eq('transparent.reverse', glass.reverse, true);
-eq('transparent.isDoor', glass.isDoor, false);
+eq('transparent.retracts', glass.retracts, false);
 ok('TransparentCell still carries its sides', glass.front?.name === 'f');
 
 // --- door -----------------------------------------------------------------
@@ -95,15 +95,15 @@ const door = new Door({
   soundSprite,
   sounds,
 });
-eq('door.isDoor', door.isDoor, true);
+eq('door.retracts', door.retracts, true);
 eq('door.double', door.double, true);
 eq('door.reverse', door.reverse, true);
-eq('door.isPushWall', door.isPushWall, false);
+eq('door.displaces', door.displaces, false);
 ok('door kept its own options', door.interval === 500);
 
 const singleDoor = new Door({ ...base, interval: 500, soundSprite, sounds });
 eq('omitted double defaults to false', singleDoor.double, false);
-eq('single door is still a door', singleDoor.isDoor, true);
+eq('single door is still a door', singleDoor.retracts, true);
 
 // --- push wall ------------------------------------------------------------
 const push = new PushWall({
@@ -113,8 +113,8 @@ const push = new PushWall({
   soundSprite,
   sounds,
 });
-eq('pushWall.isPushWall', push.isPushWall, true);
-eq('pushWall.isDoor', push.isDoor, false);
+eq('pushWall.displaces', push.displaces, true);
+eq('pushWall.retracts', push.retracts, false);
 
 // --- readonly is real -----------------------------------------------------
 // TypeScript erases `readonly`, so this documents that the guarantee is a

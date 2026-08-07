@@ -7,7 +7,7 @@ const SHAKE_MULTIPLIER = 0.2;
 
 export default class PushWall extends DynamicCell {
   constructor(options) {
-    super({ ...options, isPushWall: true });
+    super({ ...options, displaces: true });
 
     this.direction = { x: 0, y: 0 };
   }

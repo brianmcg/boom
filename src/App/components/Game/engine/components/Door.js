@@ -24,7 +24,7 @@ export default class Door extends DynamicCell {
     active = true,
     ...other
   }) {
-    super({ ...other, isDoor: true });
+    super({ ...other, retracts: true });
 
     this.timer = 0;
     this.keyCard = key;

@@ -15,8 +15,9 @@ export interface CellOptions extends BodyOptions {
    */
   offset?: number;
   transparency?: Transparency;
-  isDoor?: boolean;
-  isPushWall?: boolean;
+  retracts?: boolean;
+  displaces?: boolean;
+  /** Only meaningful with {@link CellOptions.retracts}. */
   double?: boolean;
   reverse?: boolean;
   closed?: boolean;
@@ -55,10 +56,24 @@ export default class Cell extends Body {
   /** Whether rays pass through this cell into the next wall layer. */
   transparency: Transparency;
 
-  isDoor: boolean;
-  isPushWall: boolean;
+  /**
+   * What `offset` does to this cell's surface. Both are only read when `axis`
+   * is set, and they are mutually exclusive — the raycaster tests `retracts`,
+   * then `displaces`, then `transparency`.
+   *
+   * **`retracts`** — the surface slides back within its own cell, leaving an
+   * opening. A ray crossing the opened part passes through and keeps stepping;
+   * one crossing the remaining leaf hits it. Doors are built from this.
+   *
+   * **`displaces`** — the whole surface translates as a solid slab. Nothing
+   * opens, so there is no gap test: the hit plane simply moves, and the ray
+   * misses only once the slab has left this cell entirely. Push walls are built
+   * from this.
+   */
+  retracts: boolean;
+  displaces: boolean;
 
-  /** A door that opens from the middle outwards rather than sliding one way. */
+  /** A retracting cell that parts from the middle rather than one way. */
   double: boolean;
 
   /** Inverts which side of the cell the offset is applied from. */
@@ -93,8 +108,8 @@ export default class Cell extends Body {
     offset = 0,
     sides = {},
     transparency = TRANSPARENCY.NONE,
-    isDoor = false,
-    isPushWall = false,
+    retracts = false,
+    displaces = false,
     double = false,
     reverse = false,
     closed = false,
@@ -116,8 +131,8 @@ export default class Cell extends Body {
     this.overlay = sides.overlay;
 
     this.transparency = transparency;
-    this.isDoor = isDoor;
-    this.isPushWall = isPushWall;
+    this.retracts = retracts;
+    this.displaces = displaces;
     this.double = double;
     this.reverse = reverse;
     this.closed = closed;

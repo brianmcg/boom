@@ -1136,7 +1136,7 @@ export default class WorldGraphics extends SceneGraphics {
         return GREEN;
       }
 
-      if (body.isDoor) {
+      if (body.retracts) {
         return WHITE;
       }
 

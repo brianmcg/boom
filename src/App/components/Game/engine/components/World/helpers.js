@@ -43,8 +43,8 @@ export const createGraphs = (grid = [], radius = 1) => {
       col.map(cell => {
         if (
           cell.blocking &&
-          !cell.isDoor &&
-          !cell.isPushWall &&
+          !cell.retracts &&
+          !cell.displaces &&
           cell.transparency !== TRANSPARENCY.FULL
         ) {
           return NODE_WEIGHTS.WALL;
@@ -63,7 +63,7 @@ export const createGraphs = (grid = [], radius = 1) => {
           return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
         }
 
-        if (cell.blocking && !cell.isDoor && !cell.isPushWall) {
+        if (cell.blocking && !cell.retracts && !cell.displaces) {
           return NODE_WEIGHTS.WALL;
         }
 

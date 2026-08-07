@@ -127,7 +127,7 @@ export default class TopDownContainer extends Container {
     // Update cells
     grid.forEach(col => {
       col.forEach(sector => {
-        if (sector.isDoor || (sector.blocking && !sector.edge)) {
+        if (sector.retracts || (sector.blocking && !sector.edge)) {
           const sprite = gridSprites[sector.id];
           const { shape } = sector;
           sprite.x = CENTER.X - (player.x - (shape.x + shape.width / 2));

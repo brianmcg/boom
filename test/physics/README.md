@@ -8,11 +8,11 @@ no test runner in this repo and these are not unit tests — they exist because
 the raycaster has no other safety net and a silent regression in it is very
 hard to spot by playing.
 
-| suite           | asserts                                                                                                                                                                                                 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `equivalence`   | the module behaves **identically** to the baseline: ~10k rays across 4 option sets, a 400-step dynamic-body sim, the `degrees` table, the constants, and the own-key shape of every concrete cell type  |
-| `bugfix`        | the two bugs fixed in `31126d83` are still fixed, checked against independently computed truth rather than against the baseline                                                                         |
-| `cell-contract` | the engine's cell subclasses (`Cell`, `TransparentCell`, `Door`, `PushWall`) configure the contract the raycaster reads — `transparency`, `isDoor`, `isPushWall`, `double`, `reverse`, `closed`, `edge` |
+| suite           | asserts                                                                                                                                                                                                                 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `equivalence`   | the module behaves **identically** to the baseline: ~10k rays across 4 option sets, a 400-step dynamic-body sim, the `degrees` table, the constants, and the own-key shape of every concrete cell type                  |
+| `bugfix`        | the two bugs fixed in `31126d83` are still fixed, checked against independently computed truth rather than against the baseline                                                                                         |
+| `cell-contract` | the engine's cell subclasses (`Cell`, `TransparentCell`, `Door`, `PushWall`) configure the contract the raycaster reads — `transparency`, `retracts`, `displaces`, `double`, `reverse`, `closed`, `edge`, and the sides |
 
 Run one with `npm run test:physics <suite>`.
 
@@ -47,6 +47,24 @@ caller in `engine/` already does; `contract` asserts the guarantee, including
 that an in-range angle is stored bit-for-bit — the obvious
 `((v % TAU) + TAU) % TAU` form is _not_ the identity and perturbed every angle
 in the sim.
+
+### Renames the harness carries shims for
+
+Not divergences — the baseline behaves the same, it just spells things
+differently, so the harness translates rather than accepting a difference.
+
+| baseline                             | live                                     | shim                                                            |
+| ------------------------------------ | ---------------------------------------- | --------------------------------------------------------------- |
+| `new World(grid, bodies)`            | `new World({ grid, bodies })`            | `makeWorld` in `equivalence.mjs` and `bugfix.mjs`               |
+| `isRayCollision` / `getRayCollision` | `intersectsLine` / `getLineIntersection` | `intersects` / `intersection` in `bugfix.mjs`                   |
+| `isDoor` / `isPushWall`              | `retracts` / `displaces`                 | `setRetracts` / `setDisplaces` / `RENAMED` in `equivalence.mjs` |
+
+The last one needs care in two places, because the cell-shape audit compares
+own keys by name. `makeCell` sets the flag under the name that module knows,
+and the audit maps the baseline's key names through `RENAMED` before diffing —
+otherwise a pure rename reads as a lost key plus a truthy added one. The audit
+keeps its teeth either way: a door still reports `displaces` as an added falsy
+key, and a push wall still reports `retracts`.
 
 Still to come, when `Body.x`/`y` move behind accessors: own keys get renamed
 (`_x` for `x`), which the cell-shape audit compares, so `norm()` in
