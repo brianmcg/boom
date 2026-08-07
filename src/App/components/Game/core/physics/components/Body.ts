@@ -85,9 +85,6 @@ export class Body extends EventEmitter {
   /** The world this body belongs to, or null once removed. */
   parent: World | null = null;
 
-  /** Subclass-defined state machine label. Always set via {@link setState}. */
-  protected state?: string;
-
   /**
    * `x` and `y` delegate to {@link pos}.
    *
@@ -202,17 +199,6 @@ export class Body extends EventEmitter {
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */
   getDistanceTo(target: Point): number {
     return this.pos.distanceTo(target);
-  }
-
-  /** Returns true only when the state actually changed. */
-  protected setState(state: string): boolean {
-    if (this.state !== state) {
-      this.state = state;
-
-      return true;
-    }
-
-    return false;
   }
 
   destroy(_options?: unknown) {

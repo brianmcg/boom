@@ -76,10 +76,8 @@
  *
  * **`protected` means the class and its subclasses, and nothing else.** Reach
  * for it whenever that is the real audience: something the hierarchy needs and
- * callers do not. Four members qualify today —
+ * callers do not. Two members qualify today —
  *
- * - `Body.state` and `Body.setState` — every engine actor drives its own state
- *   machine, and both are only ever touched through `this`.
  * - `Body.reindex` — called by `setPos`, overridden by `DynamicBody`.
  * - `DynamicBody.facingAngle` — exists so `Player` can point `isFacing` at its
  *   camera rather than its body.
@@ -88,6 +86,12 @@
  * the grounds that too few members qualified to earn a third modifier. That was
  * the wrong test. Pick the modifier that describes the member's real audience;
  * how many others happen to share it is not the question.
+ *
+ * A third qualified and then left the module entirely. `Body.state`/`setState`
+ * were `protected` because only subclasses touched them — and *every* subclass
+ * that did was in `engine/`, while physics never read a state at all. Marking
+ * the audience correctly is what made it obvious the member was in the wrong
+ * layer. They live on `DynamicEntity` and `DynamicCell` now.
  *
  * Public is what is left over — the module's actual surface, not a default.
  *

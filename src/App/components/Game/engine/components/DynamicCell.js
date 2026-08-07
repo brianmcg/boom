@@ -18,6 +18,24 @@ export default class DynamicCell extends PhysicsDynamicCell {
     this.parent = parent;
   }
 
+  /**
+   * Subclass-defined state machine label, and the only way to set it.
+   * Returns true only when the state actually changed.
+   *
+   * The twin of `DynamicEntity.setState`. Both branches descend from `Body`
+   * and nothing lower, so this is duplicated rather than shared — physics is
+   * the wrong place for it, since nothing there reads a state.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
+
   emitSound(name, loop) {
     const volume =
       this.distanceToPlayer > MAX_SOUND_DISTANCE

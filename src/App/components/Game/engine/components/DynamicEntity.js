@@ -34,6 +34,24 @@ export default class DynamicEntity extends DynamicBody {
     }
   }
 
+  /**
+   * Subclass-defined state machine label, and the only way to set it.
+   * Returns true only when the state actually changed.
+   *
+   * Lived on the core `Body` until physics stopped knowing about it — nothing
+   * there ever read it. It is duplicated on `DynamicCell` because Door needs it
+   * on the cell branch, and the two branches meet no lower than `Body`.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
+  }
+
   update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
 
