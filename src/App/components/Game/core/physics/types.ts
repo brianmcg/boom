@@ -150,7 +150,7 @@
  *
  * `null` marks a slot that held a value and was cleared, or a lookup that
  * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
- * of bounds, `getLineBodyIntersectionDistance()` with no crossing. `undefined`
+ * of bounds, `getLineShapeIntersectionDistance()` with no crossing. `undefined`
  * marks something never supplied — a constructor option left off, or a cell
  * face the map data never defined. That is why `Ray.side` is `Side | undefined`
  * rather than `Side | null`: it passes through
@@ -159,7 +159,7 @@
  *
  * Where the absent case shares a type with a real one, `null` is what keeps
  * them apart, and callers must test for it rather than for truthiness.
- * `getLineBodyIntersectionDistance()` is the live example: `0` is a real
+ * `getLineShapeIntersectionDistance()` is the live example: `0` is a real
  * crossing, from a line starting on the body's edge, so `if (distance)` drops a
  * point-blank hit. `contract` pins that distinction because both callers are
  * unchecked JavaScript.

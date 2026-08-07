@@ -6,8 +6,8 @@ import Point from './Point';
 import Shape from './Shape';
 import type World from './World';
 import {
-  isLineBodyIntersection,
-  getLineBodyIntersectionDistance,
+  isLineShapeIntersection,
+  getLineShapeIntersectionDistance,
 } from '../utils/intersections';
 
 let idCount = 0;
@@ -188,12 +188,12 @@ export class Body extends EventEmitter {
   }
 
   intersectsLine(line: Line): boolean {
-    return isLineBodyIntersection(this, line);
+    return isLineShapeIntersection(this.shape, line);
   }
 
   /** Null is a miss; `0` is a hit from a line starting on this body's edge. */
   getLineIntersectionDistance(line: Line): number | null {
-    return getLineBodyIntersectionDistance(this, line);
+    return getLineShapeIntersectionDistance(this.shape, line);
   }
 
   /** Accepts any point, not just a body — callers pass bare grid coordinates. */

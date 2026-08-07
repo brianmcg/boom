@@ -69,10 +69,10 @@ shows up as a failure.
 IDENTICAL means "unchanged on what this exercises", not "unchanged". The gap is
 worth knowing about, and there is one instance of it.
 
-`getLineBodyIntersectionDistance` used to bound its crossing to the box's edges
+`getLineShapeIntersectionDistance` used to bound its crossing to the box's edges
 but not to the line segment, so a body entirely behind `startPoint` reported a
 hit at an unsigned distance. `equivalence` never noticed because `castRay` only calls the
-boolean sibling `isLineBodyIntersection`; `bugfix` never noticed because every
+boolean sibling `isLineShapeIntersection`; `bugfix` never noticed because every
 probe in it spans its body. Fixing it moved neither suite. `contract` now pins
 it, with a 240-probe sweep asserting that "whether" and "where" agree both when
 a segment reaches the box and when it stops short.

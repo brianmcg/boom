@@ -1,9 +1,15 @@
 /**
- * Whether a line segment crosses a body's box, and how far along it does so.
- * Pure geometry: no grid, no cells, no world. `Body` wraps both exports as
- * `intersectsLine` and `getLineIntersectionDistance`; the raycaster in
- * `castRay.ts` uses `isLineBodyIntersection` to find the bodies a ray passes
- * through.
+ * Whether a line segment crosses a box, and how far along it does so.
+ *
+ * Pure geometry: no grid, no cells, no world, and no bodies either. Both
+ * exports used to take a `Body` and immediately reach for `body.shape` — the
+ * only thing either ever touched — so they take the {@link Shape} now. That
+ * removes the cycle with `Body`, and stops the names promising knowledge of
+ * blocking or transparency that this file has never had.
+ *
+ * `Body` wraps both as `intersectsLine` and `getLineIntersectionDistance`,
+ * passing its own shape; the raycaster in `castRay.ts` calls
+ * `isLineShapeIntersection` directly to find the bodies a ray passes through.
  *
  * These used to return `{ x, y, distance }`. Nothing ever read the
  * coordinates — every consumer sorted, range-checked or faded by distance —
@@ -12,7 +18,7 @@
  */
 import type { Line } from '../types';
 import Point from '../components/Point';
-import type Body from '../components/Body';
+import type Shape from '../components/Shape';
 
 /**
  * How far along `startPoint`→`endPoint` it crosses `edgeStart`→`edgeEnd`, or
@@ -130,11 +136,11 @@ const lineIntersectsLine = (
   return true;
 };
 
-export const isLineBodyIntersection = (
-  body: Body,
+export const isLineShapeIntersection = (
+  shape: Shape,
   { startPoint, endPoint }: Line
 ): boolean => {
-  const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
+  const { topLeft, topRight, bottomRight, bottomLeft } = shape.corners();
 
   return (
     lineIntersectsLine(startPoint, endPoint, topLeft, topRight) ||
@@ -145,17 +151,17 @@ export const isLineBodyIntersection = (
 };
 
 /**
- * How far along the line it first crosses the body, or null if it misses.
+ * How far along the line it first crosses the box, or null if it misses.
  *
  * Null and `0` are different answers: `0` is a real crossing, from a line that
- * starts exactly on the body's edge. Callers must test `!== null`, not
+ * starts exactly on the box's edge. Callers must test `!== null`, not
  * truthiness.
  */
-export const getLineBodyIntersectionDistance = (
-  body: Body,
+export const getLineShapeIntersectionDistance = (
+  shape: Shape,
   { startPoint, endPoint }: Line
 ): number | null => {
-  const { topLeft, topRight, bottomRight, bottomLeft } = body.shape.corners();
+  const { topLeft, topRight, bottomRight, bottomLeft } = shape.corners();
 
   const crossings = [
     getLineLineIntersection(startPoint, endPoint, topLeft, topRight),

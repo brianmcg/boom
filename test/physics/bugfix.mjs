@@ -12,12 +12,14 @@ const makeWorld = (M, grid, bodies) =>
 
 // Same story for the two line-intersection methods. The baseline called them
 // isRayCollision/getRayCollision, back when only the raycaster used them; they
-// are isLineBodyIntersection/getLineBodyIntersectionDistance now, exposed on
+// are isLineShapeIntersection/getLineShapeIntersectionDistance now, exposed on
 // Body as intersectsLine/getLineIntersectionDistance. Renames, not behaviour.
-// The live module now requires real Points, not bare { x, y }: a position IS a
-// Point, and `getLineLineIntersection` calls `startPoint.distanceTo(...)` on
-// one. The baseline predates the class entirely, so it can only take literals.
-// Every probe below writes literals; this converts them per module.
+
+// Separately: the live module requires real Points, not bare { x, y }, because
+// a position IS a Point and `getLineLineIntersection` calls
+// `startPoint.distanceTo(...)` on one. The baseline predates the class
+// entirely, so it can only take literals. Every probe below writes literals;
+// this converts them per module.
 const isNew = body => !!body.intersectsLine;
 
 const toLine = (body, { startPoint, endPoint }) =>

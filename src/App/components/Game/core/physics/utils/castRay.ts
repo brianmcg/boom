@@ -17,7 +17,7 @@ import { AXES, TRANSPARENCY } from '../constants';
 import { DEG_90, DEG_180, DEG_270 } from './degrees';
 import Ray from '../components/Ray';
 import Point from '../components/Point';
-import { isLineBodyIntersection } from './intersections';
+import { isLineShapeIntersection } from './intersections';
 import type { Side } from '../types';
 import type Body from '../components/Body';
 import type Cell from '../components/Cell';
@@ -195,7 +195,7 @@ const castCellRay = ({
       if (
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
-        isLineBodyIntersection(initialCellBody, {
+        isLineShapeIntersection(initialCellBody.shape, {
           startPoint: rayStart,
           endPoint: rayEndPoint,
         })
@@ -264,7 +264,7 @@ const castCellRay = ({
     if (
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
-      isLineBodyIntersection(initialCellBody, {
+      isLineShapeIntersection(initialCellBody.shape, {
         startPoint: rayStart,
         endPoint: rayEndPoint,
       })
@@ -691,7 +691,7 @@ const castRaySection = ({
       if (
         x !== initialCellBody.x &&
         y !== initialCellBody.y &&
-        isLineBodyIntersection(initialCellBody, {
+        isLineShapeIntersection(initialCellBody.shape, {
           startPoint: rayStart,
           endPoint: rayEndPoint,
         })
@@ -706,7 +706,7 @@ const castRaySection = ({
       encounterdBody = encounteredBodyValues[i];
 
       if (
-        !isLineBodyIntersection(encounterdBody, {
+        !isLineShapeIntersection(encounterdBody.shape, {
           startPoint: originPoint,
           endPoint: rayEndPoint,
         })
@@ -743,7 +743,7 @@ const castRaySection = ({
     if (
       x !== initialCellBody.x &&
       y !== initialCellBody.y &&
-      isLineBodyIntersection(initialCellBody, {
+      isLineShapeIntersection(initialCellBody.shape, {
         startPoint: rayStart,
         endPoint: rayEndPoint,
       })
@@ -758,7 +758,7 @@ const castRaySection = ({
     encounterdBody = encounteredBodyValues[i];
 
     if (
-      !isLineBodyIntersection(encounterdBody, {
+      !isLineShapeIntersection(encounterdBody.shape, {
         startPoint: new Point(x, y),
         endPoint: rayEndPoint,
       })

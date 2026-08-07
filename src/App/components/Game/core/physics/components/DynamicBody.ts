@@ -6,7 +6,7 @@ import Point from './Point';
 import type Ray from './Ray';
 import type Cell from './Cell';
 import type World from './World';
-import { isLineBodyIntersection } from '../utils/intersections';
+import { isLineShapeIntersection } from '../utils/intersections';
 import { castRay } from '../utils/castRay';
 
 const VELOCITY_LIMIT = CELL_SIZE / 2;
@@ -138,13 +138,17 @@ export default class DynamicBody extends Body {
       return false;
     }
 
-    if (this.shape.overlaps(body.shape)) {
+    // Hoisted because `body.shape` builds a fresh Shape on every access, and
+    // this runs per body per axis per frame.
+    const { shape } = body;
+
+    if (this.shape.overlaps(shape)) {
       return true;
     }
 
     // Overlapping where it stands is the common case; this catches a body that
     // moved far enough in one frame to pass clean through the other.
-    return isLineBodyIntersection(body, {
+    return isLineShapeIntersection(shape, {
       startPoint: this.previousPos,
       endPoint: this.pos,
     });
