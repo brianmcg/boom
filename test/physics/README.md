@@ -80,6 +80,25 @@ a segment reaches the box and when it stops short.
 The lesson generalises: before trusting a green run, check that the suite
 actually reaches the code you changed.
 
+### Fields the cell-shape audit accepts as added
+
+The audit's rule is that a key present on a live cell but not on a baseline one
+must hold a **falsy** value, so a cell the game layer never touched behaves
+exactly as the baseline's did. `ADDED_TRUTHY` in `equivalence.mjs` records the
+deliberate exceptions — new fields that are objects, and therefore truthy, but
+empty.
+
+| field                      | accepted when           |
+| -------------------------- | ----------------------- |
+| `velocity` (`DynamicCell`) | both components are `0` |
+
+`velocity` is the slide rate physics applies to `offset` each frame. A cell
+nobody has opened has a zero one and sits exactly where the baseline's did, so
+the addition is invisible in behaviour — which is what the exception asserts,
+rather than assuming. It is checked, not skipped: a non-zero velocity on an
+untouched cell still fails, and the key still appears in the PASS line's
+added-keys list so it stays visible.
+
 ### Renames the harness carries shims for
 
 Not divergences — the baseline behaves the same, it just spells things

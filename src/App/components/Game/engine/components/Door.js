@@ -59,14 +59,30 @@ export default class Door extends DynamicCell {
     }
   }
 
+  // super.update() comes FIRST: it is what slides the door now, so checking a
+  // limit before it ran would test last frame's offset.
   update(delta, elapsedMS) {
+    super.update(delta, elapsedMS);
+
+    const { axis } = this;
+
     switch (this.state) {
       case STATES.OPENING: {
-        this.updateOpening(delta, elapsedMS);
+        if (this.offset[axis] > CELL_SIZE) {
+          this.offset[axis] = CELL_SIZE;
+          this.setOpened();
+        }
         break;
       }
       case STATES.CLOSING: {
-        this.updateClosing(delta, elapsedMS);
+        if (this.offset[axis] < 0) {
+          if (this.entrance) {
+            this.active = false;
+          }
+
+          this.offset[axis] = 0;
+          this.setClosed();
+        }
         break;
       }
       case STATES.OPENED: {
@@ -75,34 +91,6 @@ export default class Door extends DynamicCell {
       }
       default:
         break;
-    }
-
-    super.update(delta, elapsedMS);
-  }
-
-  updateOpening(delta) {
-    const { axis, speed } = this;
-
-    this.offset[axis] += speed * delta;
-
-    if (this.offset[axis] > CELL_SIZE) {
-      this.offset[axis] = CELL_SIZE;
-      this.setOpened();
-    }
-  }
-
-  updateClosing(delta) {
-    const { axis, speed } = this;
-
-    this.offset[axis] -= speed * 0.5 * delta;
-
-    if (this.offset[axis] < 0) {
-      if (this.entrance) {
-        this.active = false;
-      }
-
-      this.offset[axis] = 0;
-      this.setClosed();
     }
   }
 
@@ -131,6 +119,7 @@ export default class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.OPENING);
 
     if (isStateChanged) {
+      this.velocity[this.axis] = this.speed;
       this.startUpdates();
       this.emitSound(this.sounds.open);
     }
@@ -145,6 +134,7 @@ export default class Door extends DynamicCell {
       const distance = this.distanceToPlayer || CELL_SIZE;
       const shake = (CELL_SIZE / distance) * this.speed * SHAKE_MULTIPLIER;
 
+      this.velocity[this.axis] = 0;
       this.blocking = false;
       this.timer = this.interval;
       this.parent.player.shake(shake);
@@ -157,6 +147,7 @@ export default class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.CLOSING);
 
     if (isStateChanged) {
+      this.velocity[this.axis] = -this.speed * 0.5;
       this.blocking = true;
       this.emitSound(this.sounds.close);
     }
@@ -168,6 +159,7 @@ export default class Door extends DynamicCell {
     const isStateChanged = this.setState(STATES.CLOSED);
 
     if (isStateChanged) {
+      this.velocity[this.axis] = 0;
       this.stopUpdates();
     }
 

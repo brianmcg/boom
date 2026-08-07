@@ -34,19 +34,24 @@ export default class PushWall extends DynamicCell {
         (CELL_SIZE / this.distanceToPlayer) * this.speed * SHAKE_MULTIPLIER;
 
       this.parent.player.shake(shake);
+      this.velocity[this.slideAxis] = this.speed;
       this.startUpdates();
 
       user.addMessage(translate('world.wall.secret'));
     }
   }
 
+  /** A push wall slides across its axis, not along it, unlike a door. */
+  get slideAxis() {
+    return this.axis === AXES.X ? AXES.Y : AXES.X;
+  }
+
+  // super.update() slides by the velocity; everything below reacts to it
+  // arriving at the next cell.
   update(delta) {
     super.update(delta);
 
-    const { x, y, speed } = this;
-    const axis = this.axis === AXES.X ? AXES.Y : AXES.X;
-
-    this.offset[axis] += speed * delta;
+    const { x, y, speed, slideAxis: axis } = this;
 
     if (this.offset[axis] > CELL_SIZE) {
       const currentGridX = this.gridX;
@@ -71,6 +76,7 @@ export default class PushWall extends DynamicCell {
           (CELL_SIZE / this.distanceToPlayer) * speed * SHAKE_MULTIPLIER;
 
         this.offset[axis] = 0.1 * CELL_SIZE;
+        this.velocity[axis] = 0;
         this.parent.player.shake(shake);
         this.stopSound(this.sounds.move);
         this.emitSound(this.sounds.stop);

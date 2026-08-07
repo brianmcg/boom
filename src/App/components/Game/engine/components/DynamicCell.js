@@ -49,7 +49,12 @@ export default class DynamicCell extends PhysicsDynamicCell {
     this.soundController.stopSound(name);
   }
 
-  update() {
+  // Must chain: physics DynamicCell.update is what slides the cell by its
+  // velocity, so swallowing the call leaves doors and push walls frozen while
+  // still playing their sounds.
+  update(delta) {
+    super.update(delta);
+
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
 
     const volume =

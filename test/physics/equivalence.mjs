@@ -408,6 +408,17 @@ const logicalShape = cell => {
   return shape;
 };
 
+// The audit's rule is that an added key must hold a falsy value, so that a
+// cell the game layer left alone behaves exactly as the baseline's did. These
+// are the deliberate exceptions: new fields that are objects, and so truthy,
+// but empty. Anything not listed here still has to be falsy.
+const ADDED_TRUTHY = {
+  // A zero slide rate on every DynamicCell. The offset it drives starts at 0
+  // and only moves when Door/PushWall set the velocity, so a cell nobody has
+  // touched sits exactly where the baseline's did.
+  velocity: v => v.x === 0 && v.y === 0,
+};
+
 const oldCells = sample(OLD);
 const newCells = sample(NEW);
 
@@ -426,7 +437,9 @@ for (const kind of Object.keys(oldCells)) {
       norm(JSON.stringify(oldCell[k])) !==
       norm(JSON.stringify(newCell[RENAMED[k] ?? k]))
   );
-  const truthyAdded = added.filter(k => newCell[k]);
+  const truthyAdded = added.filter(
+    k => newCell[k] && !ADDED_TRUTHY[k]?.(newCell[k])
+  );
 
   if (lost.length || truthyAdded.length || changed.length) {
     failed = true;

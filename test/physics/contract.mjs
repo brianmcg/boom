@@ -8,7 +8,14 @@
 // JavaScript, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
-import { Cell, DynamicBody, Point, Shape, World } from '@game/core/physics';
+import {
+  Cell,
+  DynamicBody,
+  DynamicCell,
+  Point,
+  Shape,
+  World,
+} from '@game/core/physics';
 import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
 import PushWall from '@engine/PushWall.js';
@@ -115,6 +122,48 @@ const push = new PushWall({
 });
 eq('pushWall.displaces', push.displaces, true);
 eq('pushWall.retracts', push.retracts, false);
+
+// --- DynamicCell slides by its velocity -----------------------------------
+// Physics owns the movement; Door and PushWall own what reaching a limit
+// means. `equivalence` cannot see any of this: the DynamicCells it builds are
+// never registered for updates, so `world.update` never calls their `update`.
+const slider = new DynamicCell({ ...base, axis: 'x', speed: 0.5 });
+
+eq('a new cell is stationary on x', slider.velocity.x, 0);
+eq('and on y', slider.velocity.y, 0);
+
+slider.update(1);
+eq('a zero velocity leaves the offset alone', slider.offset.y, 0);
+
+slider.velocity.y = 4;
+slider.update(1);
+eq('the offset advances by velocity * delta', slider.offset.y, 4);
+
+slider.update(0.5);
+eq('and scales with delta', slider.offset.y, 6);
+
+slider.velocity.y = -6;
+slider.update(1);
+eq('a negative velocity closes', slider.offset.y, 0);
+
+slider.velocity.x = 3;
+slider.velocity.y = 0;
+slider.update(1);
+ok(
+  'the two axes move independently',
+  slider.offset.x === 3 && slider.offset.y === 0,
+  `x=${slider.offset.x}, y=${slider.offset.y}`
+);
+
+// Nothing here clamps: a door stopping at CELL_SIZE is Door's rule, not this
+// class's, and physics must not quietly enforce it.
+slider.velocity.x = CELL * 10;
+slider.update(1);
+ok(
+  'physics does not clamp — overrun is the subclass’s to catch',
+  slider.offset.x > CELL,
+  `offset.x=${slider.offset.x}`
+);
 
 // --- readonly is real -----------------------------------------------------
 // TypeScript erases `readonly`, so this documents that the guarantee is a
@@ -428,6 +477,108 @@ ok(
   'an absurd velocity still moves the body at most the limit',
   sprinter.x - startX <= VELOCITY_LIMIT,
   `moved ${(sprinter.x - startX).toFixed(2)} of a possible 9999`
+);
+
+// Park it: this world gets ticked repeatedly below, and a body still moving at
+// the limit walks off a 4x4 grid in seven frames, whereupon getCell returns
+// null and its next update throws.
+sprinter.velocity = 0;
+
+// --- a real engine cell, driven through a real world tick -----------------
+// Doors once shipped completely frozen while every check here passed. Engine
+// DynamicCell.update overrode its parent without calling super, so the chain
+// stopped one level short of the physics update that does the sliding — and
+// nothing drove a real engine cell through a real tick to notice.
+//
+// `equivalence` builds DynamicCells but never registers them, so world.update
+// never calls them. The Door assertions higher up only read fields off one.
+// This is the section that fails if any override in the chain stops chaining.
+//
+// Physics World has no player; the engine path reads two things off one.
+world.player = { pos: new Point(0, 0), shake: () => {} };
+
+const slidingDoor = new Door({
+  x: CELL + CELL / 2,
+  y: CELL + CELL / 2,
+  width: CELL,
+  length: CELL,
+  height: CELL,
+  blocking: true,
+  sides: {},
+  axis: 'x',
+  speed: 0.25, // 8 world units per frame, so four frames to open
+  interval: 1000,
+  soundSprite,
+  sounds,
+});
+
+const doorAxis = slidingDoor.axis;
+
+world.setCell(1, 1, slidingDoor);
+world.add(slidingDoor);
+
+eq('a closed door is stationary', slidingDoor.velocity[doorAxis], 0);
+
+slidingDoor.use();
+
+ok(
+  'using a door registers it for updates',
+  world.updatableBodies.includes(slidingDoor)
+);
+ok('and gives it a velocity', slidingDoor.velocity[doorAxis] > 0);
+
+const beforeTick = slidingDoor.offset[doorAxis];
+world.update(1, 16);
+
+ok(
+  'a world tick actually slides the door',
+  slidingDoor.offset[doorAxis] > beforeTick,
+  `offset.${doorAxis} went ${beforeTick} -> ${slidingDoor.offset[doorAxis]}`
+);
+
+// Run it to completion: the door must stop exactly at CELL, not overshoot.
+for (let i = 0; i < 10; i++) world.update(1, 16);
+
+eq('and stops at exactly one cell', slidingDoor.offset[doorAxis], CELL);
+ok('reporting itself opened', slidingDoor.isOpened());
+eq('with the velocity zeroed', slidingDoor.velocity[doorAxis], 0);
+
+// PushWall takes the other branch of the same chain.
+// Placed with room behind it: `canMove` looks at the cell it would move INTO,
+// and getCell returns null off the edge of the 4x4 grid.
+const secret = new PushWall({
+  x: 2 * CELL + CELL / 2,
+  y: 2 * CELL + CELL / 2,
+  width: CELL,
+  length: CELL,
+  height: CELL,
+  blocking: true,
+  sides: {},
+  axis: 'x',
+  speed: 0.25,
+  soundSprite,
+  sounds,
+});
+
+world.setCell(2, 2, secret);
+world.add(secret);
+
+// Pushed from the far side, so it travels toward grid row 1.
+secret.use({
+  gridX: 2,
+  gridY: 3,
+  pos: new Point(2 * CELL + CELL / 2, 3 * CELL + CELL / 2),
+  addMessage: () => {},
+});
+
+const pushAxis = secret.slideAxis;
+const pushedFrom = secret.offset[pushAxis];
+world.update(1, 16);
+
+ok(
+  'a world tick actually slides a push wall',
+  secret.offset[pushAxis] > pushedFrom,
+  `offset.${pushAxis} went ${pushedFrom} -> ${secret.offset[pushAxis]}`
 );
 
 // Moving within one cell must not churn the index.
