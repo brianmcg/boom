@@ -242,6 +242,76 @@ ok(
 eq('and it is the near edge, not the far one', hit.x, CELL * 4);
 eq('a miss returns null', blocker.getLineIntersection(pastIt), null);
 
+// The crossing has to lie on the SEGMENT, not on the infinite line through it.
+// Only the box's own edges were bounded, so a body entirely behind startPoint
+// reported a hit at an unsigned distance — the box 160 units behind you
+// answering "160 units away".
+//
+// Nothing else notices. castRay only ever calls the boolean sibling, so
+// `equivalence` is silent, and every probe in `bugfix` spans its body, so that
+// is silent too. This section is the only thing pinning it.
+const behindIt = {
+  startPoint: new Point(CELL * 6, CELL * 4 + CELL / 2),
+  endPoint: new Point(CELL * 8, CELL * 4 + CELL / 2),
+};
+
+eq(
+  'a body behind the segment is not a hit',
+  blocker.getLineIntersection(behindIt),
+  null
+);
+ok(
+  'and the boolean sibling agrees',
+  blocker.intersectsLine(behindIt) === false
+);
+
+// The real invariant: one answers "whether", the other "where", and they must
+// never disagree. Probed all round the box, with a segment that reaches it and
+// one that stops short — the stopping-short half is what the bug got wrong.
+let disagreements = 0;
+let stoppedShort = 0;
+
+for (let a = 0; a < 360; a += 3) {
+  const rad = (a * Math.PI) / 180;
+  const far = new Point(
+    blocker.x + Math.cos(rad) * 90,
+    blocker.y + Math.sin(rad) * 90
+  );
+
+  const probes = [
+    // stops well outside the box: both must say no
+    {
+      startPoint: far,
+      endPoint: new Point(
+        blocker.x + Math.cos(rad) * 40,
+        blocker.y + Math.sin(rad) * 40
+      ),
+      expected: false,
+    },
+    // runs to the centre: both must say yes
+    {
+      startPoint: far,
+      endPoint: new Point(blocker.x, blocker.y),
+      expected: true,
+    },
+  ];
+
+  for (const { startPoint, endPoint, expected } of probes) {
+    const line = { startPoint, endPoint };
+    const bool = blocker.intersectsLine(line);
+    const found = blocker.getLineIntersection(line) !== null;
+
+    if (bool !== found || bool !== expected) disagreements++;
+    else if (!expected) stoppedShort++;
+  }
+}
+
+ok(
+  'whether and where agree on 240 probes around the box',
+  disagreements === 0,
+  `${disagreements} disagreements; ${stoppedShort} probes correctly stopped short`
+);
+
 // --- isFacing reads facingAngle, so a subclass can redirect it ------------
 // Player faces where its camera points rather than where its body moves, and
 // used to say so by copying the whole of isFacing with viewAngle substituted.

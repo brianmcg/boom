@@ -38,6 +38,23 @@ const getLineLineIntersection = (
   const x = (b2 * c1 - b1 * c2) / determinant;
   const y = (a1 * c2 - a2 * c1) / determinant;
 
+  // The crossing has to lie on the segment, not merely on the infinite line
+  // through it. Without this a body entirely behind `startPoint` reports a hit,
+  // at an unsigned distance, because only the edge was ever bounded — the box
+  // 160 units behind you answers "160 units away". `lineIntersectsLine` has
+  // always rejected that through its r/s bounds, and the two have to agree.
+  //
+  // The point is known to be on the line, so bounding its box is exactly the
+  // segment test.
+  if (
+    x < Math.min(startPoint.x, endPoint.x) ||
+    x > Math.max(startPoint.x, endPoint.x) ||
+    y < Math.min(startPoint.y, endPoint.y) ||
+    y > Math.max(startPoint.y, endPoint.y)
+  ) {
+    return null;
+  }
+
   if (edgeStart.x === edgeEnd.x) {
     if (edgeStart.y < edgeEnd.y) {
       if (y >= edgeStart.y && y <= edgeEnd.y) {
