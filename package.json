@@ -11,6 +11,7 @@
     "lint": "eslint ./src",
     "typecheck": "tsc --noEmit",
     "test:physics": "node test/physics/run.mjs",
+    "test:ai": "node test/ai/run.mjs",
     "format": "prettier --write ./src"
   },
   "devDependencies": {
