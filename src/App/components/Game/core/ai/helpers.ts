@@ -1,11 +1,13 @@
 import BinaryHeap from './components/BinaryHeap';
-import { manhattan } from './heuristics';
+import type Graph from './components/Graph';
+import type GridNode from './components/GridNode';
+import { manhattan, type Heuristic } from './heuristics';
 
-const getHeap = () => new BinaryHeap(node => node.f);
+const getHeap = () => new BinaryHeap<GridNode>(node => node.f);
 
-const pathTo = node => {
+const pathTo = (node: GridNode) => {
   const path = [];
-  let curr = node;
+  let curr: GridNode | null = node;
 
   while (curr.parent) {
     path.push(curr);
@@ -15,7 +17,22 @@ const pathTo = node => {
   return path.reverse();
 };
 
-export const astarSearch = (graph, start, end, options = {}) => {
+export interface AstarSearchOptions {
+  /** Defaults to {@link manhattan}. */
+  heuristic?: Heuristic;
+  /**
+   * Return the route to the node that got nearest, when the goal cannot be
+   * reached at all, rather than an empty path.
+   */
+  closest?: boolean;
+}
+
+export const astarSearch = (
+  graph: Graph,
+  start: GridNode,
+  end: GridNode,
+  options: AstarSearchOptions = {}
+): GridNode[] => {
   graph.init();
 
   const heuristic = options.heuristic || manhattan;
@@ -31,7 +48,8 @@ export const astarSearch = (graph, start, end, options = {}) => {
 
   while (openHeap.size() > 0) {
     // Grab the lowest f(x) to process next.  Heap keeps this sorted for us.
-    const currentNode = openHeap.pop();
+    // Non-null because the loop condition just checked the heap is not empty.
+    const currentNode = openHeap.pop()!;
 
     // End case -- result has been found, return the traced path.
     if (currentNode === end) {

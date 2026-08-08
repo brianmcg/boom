@@ -1,6 +1,6 @@
 import GridNode from './GridNode';
 
-const cleanNode = node => {
+const cleanNode = (node: GridNode) => {
   node.f = 0;
   node.g = 0;
   node.h = 0;
@@ -9,12 +9,39 @@ const cleanNode = node => {
   node.parent = null;
 };
 
+export interface GraphOptions {
+  /** Whether the eight-way neighbours are reachable, or only the four. */
+  diagonal?: boolean;
+}
+
+/**
+ * A grid of {@link GridNode}s built from a grid of weights, and the neighbour
+ * lookup A* walks it by.
+ *
+ * `engine` builds one per enemy radius and keeps it for the level's lifetime,
+ * so the same graph is searched many times — which is what `init()` and the
+ * dirty list are for.
+ */
 export default class Graph {
-  constructor(gridIn, options = {}) {
+  private readonly nodes: GridNode[] = [];
+
+  readonly grid: GridNode[][] = [];
+
+  /**
+   * Not `readonly`: `World.findPath` sets it per search, so one graph serves
+   * both the four-way and eight-way callers.
+   */
+  diagonal: boolean;
+
+  private dirtyNodes: GridNode[] = [];
+
+  constructor(gridIn: number[][], options: GraphOptions = {}) {
+    // Redundant per the types, and kept anyway: a default parameter fires only
+    // on `undefined`, so this is what stops an explicit `null` from throwing.
     options = options || {};
-    this.nodes = [];
+
     this.diagonal = !!options.diagonal;
-    this.grid = [];
+
     for (let x = 0; x < gridIn.length; x++) {
       this.grid[x] = [];
 
@@ -24,11 +51,13 @@ export default class Graph {
         this.nodes.push(node);
       }
     }
+
     this.init();
   }
 
   init() {
     this.dirtyNodes = [];
+
     for (let i = 0; i < this.nodes.length; i++) {
       cleanNode(this.nodes[i]);
     }
@@ -42,11 +71,11 @@ export default class Graph {
     this.dirtyNodes = [];
   }
 
-  markDirty(node) {
+  markDirty(node: GridNode) {
     this.dirtyNodes.push(node);
   }
 
-  neighbors(node) {
+  neighbors(node: GridNode): GridNode[] {
     const result = [];
     const { grid } = this;
     const { x, y } = node;

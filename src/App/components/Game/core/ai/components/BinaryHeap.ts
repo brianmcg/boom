@@ -1,10 +1,20 @@
-export default class BinaryHeap {
-  constructor(scoreFunction) {
-    this.content = [];
+/**
+ * A min-heap ordered by a caller-supplied score.
+ *
+ * Generic because a heap is: nothing here reads anything about `T` except
+ * through `scoreFunction`. `astarSearch` is the only user and orders
+ * {@link GridNode} by `f`.
+ */
+export default class BinaryHeap<T> {
+  private readonly content: T[] = [];
+
+  private readonly scoreFunction: (element: T) => number;
+
+  constructor(scoreFunction: (element: T) => number) {
     this.scoreFunction = scoreFunction;
   }
 
-  push(element) {
+  push(element: T) {
     // Add the new element to the end of the array.
     this.content.push(element);
 
@@ -12,7 +22,7 @@ export default class BinaryHeap {
     this.sinkDown(this.content.length - 1);
   }
 
-  pop() {
+  pop(): T | undefined {
     // Store the first element so we can return it later.
     const result = this.content[0];
     // Get the element at the end of the array.
@@ -20,14 +30,16 @@ export default class BinaryHeap {
     // If there are any elements left, put the end element at the
     // start, and let it bubble up.
     if (this.content.length > 0) {
-      this.content[0] = end;
+      // Still non-empty after the pop means there were at least two elements,
+      // so `end` is a real one. `Array.pop`'s type cannot express that.
+      this.content[0] = end as T;
       this.bubbleUp(0);
     }
 
     return result;
   }
 
-  remove(node) {
+  remove(node: T) {
     const i = this.content.indexOf(node);
 
     // When it is found, the process seen in 'pop' is repeated
@@ -35,9 +47,9 @@ export default class BinaryHeap {
     const end = this.content.pop();
 
     if (i !== this.content.length - 1) {
-      this.content[i] = end;
+      this.content[i] = end as T;
 
-      if (this.scoreFunction(end) < this.scoreFunction(node)) {
+      if (this.scoreFunction(end as T) < this.scoreFunction(node)) {
         this.sinkDown(i);
       } else {
         this.bubbleUp(i);
@@ -45,15 +57,15 @@ export default class BinaryHeap {
     }
   }
 
-  size() {
+  size(): number {
     return this.content.length;
   }
 
-  rescoreElement(node) {
+  rescoreElement(node: T) {
     this.sinkDown(this.content.indexOf(node));
   }
 
-  sinkDown(n) {
+  private sinkDown(n: number) {
     // Fetch the element that has to be sunk.
     const element = this.content[n];
     const elemScore = this.scoreFunction(element);
@@ -75,7 +87,7 @@ export default class BinaryHeap {
     }
   }
 
-  bubbleUp(n) {
+  private bubbleUp(n: number) {
     // Look up the target element and its score.
     const { length } = this.content;
     const element = this.content[n];
@@ -87,7 +99,10 @@ export default class BinaryHeap {
       const child1N = child2N - 1;
       // This is used to store the new position of the element, if any.
       let swap = null;
-      let child1Score;
+      // Initialised only to satisfy definite assignment. It is read solely in
+      // the `swap === null ? ... : child1Score` arm below, which is reachable
+      // only once the branch that assigns it has run, so the 0 never surfaces.
+      let child1Score = 0;
       // If the first child exists (is inside the array)...
       if (child1N < length) {
         // Look it up and compute its score.
