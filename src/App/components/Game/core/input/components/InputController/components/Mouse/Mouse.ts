@@ -2,32 +2,6 @@ import { MOUSE_SENSITIVITY } from '@constants/config';
 import Button from './components/Button';
 import { BUTTON_CODES } from './constants';
 
-/**
- * The vendor-prefixed pointer-lock and movement APIs this module still reaches
- * for. None are in `lib.dom`, because all three were superseded years before
- * the versions of Chrome, Firefox and Safari that can run this game.
- *
- * They are typed rather than removed: dropping them is a behaviour change, not
- * a conversion. Each borrows the standard member's own type so the fallbacks
- * cannot drift from what they are standing in for.
- */
-interface VendorMouseEvent extends MouseEvent {
-  mozMovementX?: number;
-  webkitMovementX?: number;
-}
-
-interface VendorElement extends HTMLElement {
-  mozRequestPointerLock?: HTMLElement['requestPointerLock'];
-  webkitRequestPointerLock?: HTMLElement['requestPointerLock'];
-}
-
-interface VendorDocument extends Document {
-  mozExitPointerLock?: Document['exitPointerLock'];
-  webkitExitPointerLock?: Document['exitPointerLock'];
-  mozPointerLockElement?: Document['pointerLockElement'];
-  webkitPointerLockElement?: Document['pointerLockElement'];
-}
-
 /** Receives the horizontal movement of a locked pointer, already scaled. */
 export type MoveCallback = (x: number) => void;
 
@@ -44,15 +18,8 @@ export default class Mouse {
   wheelCallback?: WheelCallback;
 
   constructor(el: HTMLElement, moveSensitivity: number = MOUSE_SENSITIVITY) {
-    const vendorDocument = document as VendorDocument;
-    const vendorEl = el as VendorElement;
-
-    const onMouseMove = (e: VendorMouseEvent) => {
-      const x =
-        moveSensitivity * e.movementX ||
-        e.mozMovementX ||
-        e.webkitMovementX ||
-        0;
+    const onMouseMove = (e: MouseEvent) => {
+      const x = moveSensitivity * (e.movementX || 0);
 
       if (this.moveCallback) {
         this.moveCallback(x);
@@ -95,20 +62,7 @@ export default class Mouse {
       }
     };
 
-    // Assigning the winning implementation onto the standard name, so the rest
-    // of the class can call one thing. The cast is because the whole chain can
-    // be undefined, which is what happens on a browser supporting none of them.
-    el.requestPointerLock = (vendorEl.requestPointerLock ||
-      vendorEl.mozRequestPointerLock ||
-      vendorEl.webkitRequestPointerLock) as HTMLElement['requestPointerLock'];
-
-    document.exitPointerLock = (vendorDocument.exitPointerLock ||
-      vendorDocument.mozExitPointerLock ||
-      vendorDocument.webkitExitPointerLock) as Document['exitPointerLock'];
-
     document.addEventListener('pointerlockchange', onChange, false);
-    document.addEventListener('mozpointerlockchange', onChange, false);
-    document.addEventListener('webkitpointerlockchange', onChange, false);
 
     this.buttons = {};
     this.el = el;
@@ -147,13 +101,7 @@ export default class Mouse {
   }
 
   isPointerLocked(): boolean {
-    const vendorDocument = document as VendorDocument;
-
-    return (
-      document.pointerLockElement === this.el ||
-      vendorDocument.mozPointerLockElement === this.el ||
-      vendorDocument.webkitPointerLockElement === this.el
-    );
+    return document.pointerLockElement === this.el;
   }
 
   removeCallbacks() {
