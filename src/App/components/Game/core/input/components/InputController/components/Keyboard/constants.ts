@@ -30,13 +30,8 @@ export const KEYS = {
 export type KeyName = (typeof KEYS)[keyof typeof KEYS];
 
 /**
- * `KeyboardEvent.keyCode` to the name callers bind against.
- *
- * The `undefined` at 27 is not a typo, and is a defect being preserved rather
- * than fixed: this read `27: KEYS.ESC` in JavaScript, and `KEYS` has never had
- * an `ESC` member, so the entry has always evaluated to `undefined`. Escape
- * therefore looks up `keys['undefined']`, which nothing ever binds. Written out
- * literally here because `KEYS.ESC` does not compile once `KEYS` is typed.
+ * `KeyboardEvent.keyCode` to the name callers bind against. A code with no
+ * entry yields `undefined`, which binds nothing.
  */
 export const KEY_CODES: Record<number, KeyName | undefined> = {
   18: KEYS.ALT,
@@ -47,7 +42,6 @@ export const KEY_CODES: Record<number, KeyName | undefined> = {
   32: KEYS.SPACE,
   17: KEYS.CTRL,
   16: KEYS.SHIFT,
-  27: undefined,
   13: KEYS.ENTER,
   49: KEYS.NUM_1,
   50: KEYS.NUM_2,
