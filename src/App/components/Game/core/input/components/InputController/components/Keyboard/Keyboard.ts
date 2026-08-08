@@ -13,10 +13,17 @@ export default class Keyboard {
         e.stopPropagation();
 
         if (!e.repeat) {
-          const key = this.keys[KEY_CODES[e.keyCode] as string];
+          // An unmapped code has no name, and must not be looked up: indexing
+          // with `undefined` reads the property literally named "undefined",
+          // which every unmapped key on the keyboard would share.
+          const name = KEY_CODES[e.keyCode];
 
-          if (key && key.downCallback) {
-            key.downCallback();
+          if (name) {
+            const key = this.keys[name];
+
+            if (key && key.downCallback) {
+              key.downCallback();
+            }
           }
         }
       },
@@ -30,10 +37,14 @@ export default class Keyboard {
         e.preventDefault();
         e.stopPropagation();
 
-        const key = this.keys[KEY_CODES[e.keyCode] as string];
+        const name = KEY_CODES[e.keyCode];
 
-        if (key && key.upCallback) {
-          key.upCallback();
+        if (name) {
+          const key = this.keys[name];
+
+          if (key && key.upCallback) {
+            key.upCallback();
+          }
         }
       },
       false
