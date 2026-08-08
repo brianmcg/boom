@@ -95,7 +95,9 @@ extractBaseline();
 
 let failed = false;
 
-for (const suite of ['equivalence']) {
+// equivalence must report IDENTICAL; bugfix asserts the one place the live
+// module is deliberately not identical.
+for (const suite of ['equivalence', 'bugfix']) {
   console.log(`\n--- ${suite} (baseline ${BASELINE_SHA}) ---`);
 
   try {

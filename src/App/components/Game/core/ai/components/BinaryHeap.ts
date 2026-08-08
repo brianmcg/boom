@@ -42,11 +42,26 @@ export default class BinaryHeap<T> {
   remove(node: T) {
     const i = this.content.indexOf(node);
 
+    // Absent: nothing to remove. Without this the pop below still runs, and
+    // since `indexOf` returned -1 the fill-the-hole branch writes to index -1
+    // — a plain property, not an element — so the popped element is simply
+    // lost. Removing something the heap never held silently deleted a real
+    // member instead, without throwing.
+    if (i === -1) {
+      return;
+    }
+
     // When it is found, the process seen in 'pop' is repeated
     // to fill up the hole.
     const end = this.content.pop();
 
-    if (i !== this.content.length - 1) {
+    // `content.length` is already the index the popped element occupied, so
+    // `i === length` means `node` was the last element and the pop above has
+    // finished the job. Comparing against `length - 1`, as this did until
+    // 2026-08-08, is off by one in both directions: it re-added the last
+    // element, and it skipped the fill for the second-to-last, which left
+    // `node` in place and silently discarded `end` instead.
+    if (i !== this.content.length) {
       this.content[i] = end as T;
 
       if (this.scoreFunction(end as T) < this.scoreFunction(node)) {
