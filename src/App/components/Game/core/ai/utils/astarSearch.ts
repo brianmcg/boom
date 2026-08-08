@@ -1,6 +1,6 @@
-import BinaryHeap from './components/BinaryHeap';
-import type Graph from './components/Graph';
-import type GridNode from './components/GridNode';
+import BinaryHeap from '../components/BinaryHeap';
+import type Graph from '../components/Graph';
+import type GridNode from '../components/GridNode';
 import { manhattan, type Heuristic } from './heuristics';
 
 const getHeap = () => new BinaryHeap<GridNode>(node => node.f);

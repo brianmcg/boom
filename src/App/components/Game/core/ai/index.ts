@@ -1,5 +1,5 @@
-import { astarSearch } from './helpers';
-import { manhattan, diagonal } from './heuristics';
+import { astarSearch } from './utils/astarSearch';
+import { manhattan, diagonal } from './utils/heuristics';
 import Graph from './components/Graph';
 import type GridNode from './components/GridNode';
 
