@@ -1,5 +1,5 @@
 import { MOUSE_SENSITIVITY } from '@constants/config';
-import Button from './components/Button';
+import Binding from '../Binding';
 import { BUTTON_CODES } from './constants';
 
 /** Receives the horizontal movement of a locked pointer, already scaled. */
@@ -9,7 +9,7 @@ export type MoveCallback = (x: number) => void;
 export type WheelCallback = (y: number) => void;
 
 export default class Mouse {
-  private buttons: Record<string, Button> = {};
+  private buttons: Record<string, Binding> = {};
 
   private readonly el: HTMLElement;
 
@@ -68,12 +68,12 @@ export default class Mouse {
     this.el = el;
   }
 
-  get(name: string): Button {
+  get(name: string): Binding {
     if (this.buttons[name]) {
       return this.buttons[name];
     }
 
-    this.buttons[name] = new Button();
+    this.buttons[name] = new Binding();
 
     return this.buttons[name];
   }

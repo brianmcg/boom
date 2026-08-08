@@ -1,8 +1,8 @@
-import Key from './components/Key';
+import Binding from '../Binding';
 import { KEY_CODES } from './constants';
 
 export default class Keyboard {
-  private keys: Record<string, Key> = {};
+  private keys: Record<string, Binding> = {};
 
   constructor() {
     // On key down, update the pressed and help hashmaps.
@@ -51,12 +51,12 @@ export default class Keyboard {
     );
   }
 
-  get(name: string): Key {
+  get(name: string): Binding {
     if (this.keys[name]) {
       return this.keys[name];
     }
 
-    this.keys[name] = new Key();
+    this.keys[name] = new Binding();
 
     return this.keys[name];
   }
