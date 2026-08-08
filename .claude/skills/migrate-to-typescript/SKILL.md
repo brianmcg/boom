@@ -1,13 +1,14 @@
 ---
 name: migrate-to-typescript
-description: Convert a JavaScript module in src/ to TypeScript. Covers the order to take modules in, separating the conversion from the redesign it provokes, deciding how you will know nothing broke, and the traps that have already cost this repo a bug.
+description: Convert a JavaScript module in src/ to TypeScript, changing types and nothing else. Covers the order to take modules in, why bugs and dead code the conversion uncovers get reported rather than fixed, deciding how you will know nothing broke, and the traps that have already cost this repo a bug.
 ---
 
 # Migrating a module to TypeScript
 
-Written after `core/physics` was converted (15 files, 41 commits). It is one
-data point, so prefer the reasoning here to the letter of it, and correct this
-file when a run contradicts it.
+Written after `core/physics` (15 files, 41 commits) and `core/ai` (6 files, 2).
+Two data points, so prefer the reasoning here to the letter of it, and correct
+this file when a run contradicts it — both sections below have been corrected
+that way already.
 
 ## Order
 
@@ -17,7 +18,8 @@ less than it appears to.
 
 ```
 core/physics          done
-core/ai, core/input   no inheritance at all — purely mechanical
+core/ai               done
+core/input            no inheritance at all — purely mechanical
 core/audio            one class extends Howl
 core/graphics         seven classes extend Pixi — see the accessor trap below
 engine                depends on all of core; inheritance up to 8 levels deep
@@ -28,30 +30,62 @@ Size and difficulty do not agree, and neither do size and risk. `core/audio`
 is 4 files of Howler wrapper. `core/graphics` is small but carries the worst
 trap in the repo. `engine` is 41 files and will be mostly design work.
 
-## The one discipline: convert, then redesign
+## The one discipline: convert, and only convert
 
 Writing a type forces you to say what something _is_, so conversion surfaces
 design problems. In `core/physics` it surfaced at least six — a base class
 carrying members only some subclasses used, two parameters named after the
 caller's concepts rather than their own, an interface whose only read field was
-one of four.
+one of four. In `core/ai` it surfaced four unreachable things in 377 lines.
 
-**Do not fix them while converting.** Keep a list as you hit them and act after.
+**Migrating a module means converting it and nothing else.** Change what the
+type system forces and leave everything else alone. Dead code, redundant
+mechanisms, defensive lines the types make look pointless, and outright bugs
+all stay, in TypeScript form.
 
-1. Convert mechanically. No behaviour change, no renames, no restructuring.
-   Types describe what the code already does, however wrong that is.
-2. Verify (below). Commit.
-3. Then take the list one item at a time, each its own commit, each verified.
+1. Convert mechanically. No behaviour change, no renames, no restructuring, no
+   deletions, no fixes. Types describe what the code already does, however
+   wrong that is.
+2. Verify (below). Do not commit until asked — see the rule below.
+3. Present what you found as a list of findings, with the evidence, and stop.
 
-This is what makes the redesigns safe: the conversion underneath them is
-already pinned, so when something breaks there is one change to look at. It
-also keeps the commits readable, which matters more than it sounds — the
-history is how the next session learns why a shape is the way it is.
+**Bugs are the hardest case and the clearest one.** A migration that also fixes
+something is no longer a migration: the fix is a behaviour change, and it is
+buried in a diff being reviewed as a conversion. Report it with a reproduction
+and leave the code wrong. `core/ai` has one — `BinaryHeap.remove` is a silent
+no-op on the last element, because after the `pop()` it compares the old index
+against the already-shortened length. It is still there. That is the model.
 
-When a design question comes up, evaluate it against the code and give a
-recommendation with evidence. Do not ratify a proposal because it was
-proposed. Several of the physics changes were improved by pushing back, and
-one bad idea was dropped only because it was argued down.
+Note this reverses `core/physics`, where a real `getLineBodyIntersection` bug
+was found and fixed mid-migration. Do not take that as the precedent.
+
+The same goes for lines the types make look redundant. Dropping
+`options = options || {}` from `Graph`'s constructor looked like tidying, but a
+default parameter fires only on `undefined`, so `new Graph(grid, null)` went
+from returning `false` to throwing. It is back, with a comment saying why.
+
+**Evidence is not authorisation.** Measuring that `euclidean` explored 15–25%
+more nodes for identical paths answered "is this worse", not "should this
+exist" — and unused code is often kept deliberately, for a use that has not
+arrived. Four deletions of provably unreachable code were made on that basis
+and all four were reverted.
+
+**Do not commit.** Seven commits went in unasked during `core/ai` and were
+reset. The diff gets reviewed and playtested first, then a commit is asked for
+by name. A yes to a plan that mentions commits is not standing authorisation.
+
+None of this is bureaucracy. A conversion that carries fixes and deletions
+cannot be reviewed as a conversion — every surprise in the diff has two
+possible causes instead of one — and it cannot be verified by a harness either,
+because the harness's whole claim is that behaviour did not change. Keeping
+them apart is also what makes any later redesign safe: the conversion
+underneath it is already pinned.
+
+When a design question _is_ put to you, evaluate it against the code and give a
+recommendation with evidence. Do not ratify a proposal because it was proposed.
+Several of the physics changes were improved by pushing back, and one bad idea
+was dropped only because it was argued down. That is about arguing a position,
+never about acting on one unasked.
 
 ## Decide up front how you will know nothing broke
 
@@ -68,7 +102,21 @@ bundled with esbuild, run against the live TS on identical input. See
 `test/physics/README.md` for how the three suites divide up and what a
 divergence is allowed to be. `npm run test:physics`.
 
-For most modules the answer is no and no, and building one is ceremony.
+**Small does not mean no.** `core/ai` is 377 lines and also answered yes to
+both: A\* returns a path, so a bug yields a valid-but-suboptimal route that
+enemies still follow, and the module imports nothing at all, which makes a grid
+in and a path out the entire fixture — cheaper than physics was. Ask the two
+questions rather than reading them off the file count. `test/ai/` is the
+smaller worked example; `npm run test:ai`.
+
+**Compare state, not just the return value.** `core/ai` compares the whole
+graph after each search, not only the path, and injecting a heap fault proved
+why: it produced _the same path_ by a different exploration order. A
+return-value-only harness passes that and leaves the bug to surface later as
+occasionally-worse behaviour.
+
+For many modules the answer is genuinely no and no, and building one is
+ceremony.
 
 **Whatever you decide, a green run only proves the suite reached the code.**
 This is not a platitude. During the physics work `typecheck`, `lint`, the full
@@ -121,8 +169,9 @@ will be. `engine` also dispatches state from `update` to `updateIdle`,
 not overrides, and telling the two apart matters before you move anything.
 
 **Renames do not propagate into modules that are still JavaScript.** Nothing
-flags the stale call sites. Grep for them and fix them by hand, in the same
-commit.
+flags the stale call sites — which is a reason a migration does not rename
+anything. If one is asked for later, as its own change, grep every call site
+and update them by hand in that same change.
 
 **Measure before claiming a performance difference.** Reading the code got it
 backwards twice in the physics work; a one-minute `node` script settled each.
