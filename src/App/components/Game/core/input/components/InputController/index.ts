@@ -3,4 +3,5 @@ import { BUTTONS } from './components/Mouse';
 import { KEYS } from './components/Keyboard';
 
 export { BUTTONS, KEYS };
+export type { Controls } from './InputController';
 export default InputController;

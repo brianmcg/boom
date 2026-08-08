@@ -2,9 +2,9 @@ import Key from './components/Key';
 import { KEY_CODES } from './constants';
 
 export default class Keyboard {
-  constructor() {
-    this.keys = {};
+  private keys: Record<string, Key> = {};
 
+  constructor() {
     // On key down, update the pressed and help hashmaps.
     document.addEventListener(
       'keydown',
@@ -13,7 +13,7 @@ export default class Keyboard {
         e.stopPropagation();
 
         if (!e.repeat) {
-          const key = this.keys[KEY_CODES[e.keyCode]];
+          const key = this.keys[KEY_CODES[e.keyCode] as string];
 
           if (key && key.downCallback) {
             key.downCallback();
@@ -30,7 +30,7 @@ export default class Keyboard {
         e.preventDefault();
         e.stopPropagation();
 
-        const key = this.keys[KEY_CODES[e.keyCode]];
+        const key = this.keys[KEY_CODES[e.keyCode] as string];
 
         if (key && key.upCallback) {
           key.upCallback();
@@ -40,7 +40,7 @@ export default class Keyboard {
     );
   }
 
-  get(name) {
+  get(name: string): Key {
     if (this.keys[name]) {
       return this.keys[name];
     }
