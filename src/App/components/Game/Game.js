@@ -94,7 +94,7 @@ export default class Game {
   showWorldScene({ index = LEVEL, ...other } = {}) {
     const id = this.assets.data.world.levels[index];
 
-    LocalStorage.set(index, { ...other, id, index });
+    LocalStorage.set(String(index), { ...other, id, index });
 
     this.showScene(SCENE_TYPES.WORLD, {
       id,
@@ -114,11 +114,12 @@ export default class Game {
     if (showLoader) this.onLoading();
 
     if (this.scene) {
-      const { graphics, sound } = this.scene.assets;
+      // Captured before removeScene, which destroys the scene and nulls it.
+      const { assets } = this.scene;
 
       this.removeScene();
 
-      await Loader.unload({ graphics, sound: sound.src });
+      await Loader.unload(assets);
     }
 
     if (Scene) {
