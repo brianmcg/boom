@@ -1,6 +1,6 @@
 import { degrees } from '@game/core/physics';
 import AbstractWeapon from './AbstractWeapon';
-import HitScan from '../../HitScan';
+import HitScan from '../../../damage/HitScan';
 
 const DEG_360 = degrees(360);
 

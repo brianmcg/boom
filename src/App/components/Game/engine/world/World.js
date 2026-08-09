@@ -1,8 +1,8 @@
 import { search } from '@game/core/ai';
 import { DisplaceableCell, World as PhysicsWorld } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
-import Effect from './components/Effect';
-import { NODE_WEIGHTS, createGraphs } from './helpers';
+import Effect from './effects/Effect';
+import { NODE_WEIGHTS, createGraphs } from '../utils/createGraphs';
 
 const ENTRANCE_INTERVAL = 700;
 

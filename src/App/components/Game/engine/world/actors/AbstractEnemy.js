@@ -1,9 +1,9 @@
 import { degrees, RetractableCell, TRANSPARENCY } from '@game/core/physics';
-import TransparentMapCell from './TransparentMapCell';
+import TransparentMapCell from '../cells/TransparentMapCell';
 import { CELL_SIZE, UPDATE_DISTANCE } from '@constants/config';
 import AbstractActor from './AbstractActor';
-import Explosion from './Explosion';
-import Door from './Door';
+import Explosion from '../damage/Explosion';
+import Door from '../cells/Door';
 
 const STATES = {
   IDLE: 'enemy:idle',

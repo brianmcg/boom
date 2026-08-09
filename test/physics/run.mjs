@@ -79,7 +79,7 @@ async function bundle(name) {
       '@game/core/audio': join(HERE, 'stubs', 'audio.js'),
       '@game/core/graphics': join(HERE, 'stubs', 'graphics.js'),
       '@game/core/physics': join(REPO, PHYSICS, 'index.ts'),
-      '@engine': join(REPO, 'src/App/components/Game/engine/components'),
+      '@engine': join(REPO, 'src/App/components/Game/engine/world'),
     },
   });
 

@@ -1,7 +1,7 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
 import { RetractableCell } from '@game/core/physics';
-import PositionalAudio from './PositionalAudio';
+import PositionalAudio from '../../audio/PositionalAudio';
 
 const STATES = {
   OPENING: 'door:opening',

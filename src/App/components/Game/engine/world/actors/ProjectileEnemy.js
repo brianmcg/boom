@@ -1,6 +1,6 @@
 import { degrees } from '@game/core/physics';
 import AbstractEnemy from './AbstractEnemy';
-import Projectile from './Projectile';
+import Projectile from '../damage/Projectile';
 
 export default class ProjectileEnemy extends AbstractEnemy {
   constructor({ primaryAttack = {}, soundSprite = {}, ...other }) {

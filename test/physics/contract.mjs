@@ -20,8 +20,8 @@ import {
   TransparentCell,
   World,
 } from '@game/core/physics';
-import Door from '@engine/Door.js';
-import PushWall from '@engine/PushWall.js';
+import Door from '@engine/cells/Door.js';
+import PushWall from '@engine/cells/PushWall.js';
 
 const CELL = 32;
 const TRANSPARENCY = { NONE: 0, PARTIAL: 1, FULL: 2 };

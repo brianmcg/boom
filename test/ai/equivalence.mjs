@@ -21,7 +21,7 @@ const mulberry32 = a => () => {
 };
 
 // The values engine actually puts in a grid — see NODE_WEIGHTS in
-// engine/components/World/helpers.js. 0 is a wall; the rest are traversable at
+// engine/utils/createGraphs.js. 0 is a wall; the rest are traversable at
 // increasing cost, so paths prefer open floor and route around bodies.
 const WEIGHTS = { WALL: 0, FREE: 1, DYNAMIC_BODY: 20, STATIC_BODY: 100 };
 

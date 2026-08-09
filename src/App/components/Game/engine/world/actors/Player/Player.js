@@ -3,7 +3,7 @@ import { degrees } from '@game/core/physics';
 import { WEAPON_TYPES } from '@constants/assets';
 import { CELL_SIZE, GOD_MODE, HEALTH_MODIFIER } from '@constants/config';
 import AbstractActor from '../AbstractActor';
-import AbstractItem from '../AbstractItem';
+import AbstractItem from '../../items/AbstractItem';
 import SecondaryWeapon from './components/SecondaryWeapon';
 import BulletWeapon from './components/BulletWeapon';
 

@@ -1,5 +1,5 @@
 import { CELL_SIZE } from '@constants/config';
-import DynamicEntity from './DynamicEntity';
+import DynamicEntity from '../base/DynamicEntity';
 
 const SCALE_INCREMENT = 0.05;
 

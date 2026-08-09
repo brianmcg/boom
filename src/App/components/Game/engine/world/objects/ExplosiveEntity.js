@@ -1,5 +1,5 @@
-import AbstractDestroyableEntity from './AbstractDestroyableEntity';
-import Explosion from './Explosion';
+import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
+import Explosion from '../damage/Explosion';
 
 const EXPLODE_EVENT = 'entity:explode';
 

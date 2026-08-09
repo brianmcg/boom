@@ -1,5 +1,5 @@
 import { DynamicBody } from '@game/core/physics';
-import PositionalAudio from './PositionalAudio';
+import PositionalAudio from '../../audio/PositionalAudio';
 
 const TAIL_INTERVAL = 25;
 

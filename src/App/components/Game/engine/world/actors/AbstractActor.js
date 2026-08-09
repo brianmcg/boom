@@ -1,6 +1,6 @@
 import { degrees, Point } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
-import AbstractDestroyableEntity from './AbstractDestroyableEntity';
+import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
 
 const DEG_180 = degrees(180);
 

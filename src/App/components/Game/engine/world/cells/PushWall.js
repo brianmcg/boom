@@ -1,7 +1,7 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
 import { AXES, DisplaceableCell } from '@game/core/physics';
-import PositionalAudio from './PositionalAudio';
+import PositionalAudio from '../../audio/PositionalAudio';
 
 const SHAKE_MULTIPLIER = 0.2;
 

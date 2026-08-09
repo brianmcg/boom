@@ -1,5 +1,5 @@
 import AbstractWeapon from './AbstractWeapon';
-import Projectile from '../../Projectile';
+import Projectile from '../../../damage/Projectile';
 
 export default class ProjectileWeapon extends AbstractWeapon {
   constructor({ soundSprite, ...other }) {

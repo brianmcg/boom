@@ -1,6 +1,6 @@
 import { Body, degrees } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
-import DynamicEntity from './DynamicEntity';
+import DynamicEntity from '../base/DynamicEntity';
 import Explosion from './Explosion';
 
 const STATES = {

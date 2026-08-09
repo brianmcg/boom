@@ -1,7 +1,7 @@
 import { CELL_SIZE } from '@constants/config';
 import { degrees } from '@game/core/physics';
 import AbstractEnemy from './AbstractEnemy';
-import HitScan from './HitScan';
+import HitScan from '../damage/HitScan';
 
 const DEG_360 = degrees(360);
 
