@@ -1,6 +1,6 @@
 import { GraphicsLoader } from '@game/core/graphics';
 import { SoundLoader, type SoundAsset } from '@game/core/audio';
-import DataLoader from '@game/utils/DataLoader';
+import DataLoader from './DataLoader';
 
 /** What a scene declares in `constants/assets`. Only world scenes have data. */
 export interface AssetSources {
