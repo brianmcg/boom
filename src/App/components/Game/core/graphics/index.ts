@@ -47,3 +47,12 @@ export {
   TextSprite,
   RenderTexture,
 };
+
+export type { Anchor } from './types';
+export type { AnimatedSpriteOptions } from './components/AnimatedSprite';
+export type { FadeSpriteOptions } from './components/FadeSprite';
+export type { LineOptions } from './components/Line';
+export type { RectangleSpriteOptions } from './components/RectangleSprite';
+export type { SpriteOptions } from './components/Sprite';
+export type { TextSpriteOptions } from './components/TextSprite';
+export type { MaskTextureOptions } from './util/GraphicsCreator';

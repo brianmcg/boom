@@ -1,17 +1,19 @@
-const containerCache = [];
-const spriteCache = [];
-const textureCache = [];
-const renderTextureCache = [];
-const filterCache = [];
+import type { Container, Filter, RenderTexture, Texture } from 'pixi.js';
+
+const containerCache: Container[] = [];
+const spriteCache: Container[] = [];
+const textureCache: Texture[] = [];
+const renderTextureCache: RenderTexture[] = [];
+const filterCache: Filter[] = [];
 
 export default class GraphicsCache {
-  static addContainer(container) {
+  static addContainer(container?: Container) {
     if (container?.destroy) {
       containerCache.push(container);
     }
   }
 
-  static addSprite(sprite) {
+  static addSprite(sprite?: Container) {
     if (sprite?.destroy) {
       spriteCache.push(sprite);
     }
@@ -23,7 +25,7 @@ export default class GraphicsCache {
    * belongs to whoever made it. The world scene registers tens of thousands of
    * these, all framing a handful of atlas pages.
    */
-  static addTexture(texture) {
+  static addTexture(texture?: Texture) {
     if (texture?.destroy) {
       textureCache.push(texture);
     }
@@ -33,13 +35,13 @@ export default class GraphicsCache {
    * A texture that created its own source — a render target. Nothing else holds
    * that source, so this is the only thing that can free the GPU memory.
    */
-  static addRenderTexture(texture) {
+  static addRenderTexture(texture?: RenderTexture) {
     if (texture?.destroy) {
       renderTextureCache.push(texture);
     }
   }
 
-  static addFilter(filter) {
+  static addFilter(filter?: Filter) {
     if (filter) {
       filterCache.push(filter);
     }

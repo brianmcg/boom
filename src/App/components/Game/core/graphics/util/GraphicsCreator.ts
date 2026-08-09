@@ -1,45 +1,67 @@
-import { ColorMatrixFilter, Texture, RenderTexture } from 'pixi.js';
+import {
+  ColorMatrixFilter,
+  Texture,
+  RenderTexture,
+  type Renderer,
+  type TextureSource,
+} from 'pixi.js';
 import { BLACK } from '@constants/colors';
 import GraphicsCache from './GraphicsCache';
-import RectangleSprite from '../components/RectangleSprite';
-import Sprite from '../components/Sprite';
+import RectangleSprite, {
+  type RectangleSpriteOptions,
+} from '../components/RectangleSprite';
+import Sprite, { type SpriteOptions } from '../components/Sprite';
 import Container from '../components/Container';
-import TextSprite from '../components/TextSprite';
-import FadeSprite from '../components/FadeSprite';
+import TextSprite, { type TextSpriteOptions } from '../components/TextSprite';
+import FadeSprite, { type FadeSpriteOptions } from '../components/FadeSprite';
 import { PixelateFilter } from 'pixi-filters';
 
+/** What `RenderTexture.create` takes, which Pixi does not export by name. */
+type RenderTextureOptions = Parameters<typeof RenderTexture.create>[0];
+
+/** What `PixelateFilter` takes. */
+type PixelateFilterOptions = ConstructorParameters<typeof PixelateFilter>[0];
+
+export interface MaskTextureOptions {
+  renderer: Renderer;
+  texture: Texture;
+  reverse?: boolean;
+}
+
 export default class GraphicsCreator {
-  static createFadeSprite(options) {
+  static createFadeSprite(options?: FadeSpriteOptions) {
     const sprite = new FadeSprite(options);
     GraphicsCache.addSprite(sprite);
     return sprite;
   }
 
-  static createSprite(options) {
+  static createSprite(options?: SpriteOptions) {
     const sprite = new Sprite(options);
     GraphicsCache.addSprite(sprite);
     return sprite;
   }
 
-  static createContainer(options) {
-    const container = new Container(options);
+  // Container's constructor takes nothing, so whatever is passed here is
+  // dropped. Preserved as written; see the migration findings.
+  static createContainer(_options?: unknown) {
+    const container = new Container();
     GraphicsCache.addContainer(container);
     return container;
   }
 
-  static createPixelateFilter(options) {
+  static createPixelateFilter(options?: PixelateFilterOptions) {
     const filter = new PixelateFilter(options);
     GraphicsCache.addFilter(filter);
     return filter;
   }
 
-  static createTextSprite(options) {
+  static createTextSprite(options: TextSpriteOptions) {
     const sprite = new TextSprite(options);
     GraphicsCache.addSprite(sprite);
     return sprite;
   }
 
-  static createTexture(source, frame) {
+  static createTexture(source: TextureSource, frame: Texture['frame']) {
     const texture = new Texture({ source, frame });
 
     GraphicsCache.addTexture(texture);
@@ -47,13 +69,16 @@ export default class GraphicsCreator {
     return texture;
   }
 
-  static createRenderTexture(options) {
+  static createRenderTexture(options: RenderTextureOptions) {
     const texture = RenderTexture.create(options);
     GraphicsCache.addRenderTexture(texture);
     return texture;
   }
 
-  static createRectangleSprite({ cache = true, ...options }) {
+  static createRectangleSprite({
+    cache = true,
+    ...options
+  }: RectangleSpriteOptions & { cache?: boolean }) {
     const sprite = new RectangleSprite(options);
 
     if (cache) {
@@ -68,7 +93,11 @@ export default class GraphicsCreator {
     return sprite;
   }
 
-  static createMaskTexture({ renderer, texture, reverse = true }) {
+  static createMaskTexture({
+    renderer,
+    texture,
+    reverse = true,
+  }: MaskTextureOptions) {
     const filter = new ColorMatrixFilter();
     const maskContainer = new Container();
 
@@ -87,7 +116,9 @@ export default class GraphicsCreator {
     maskContainer.addChild(maskBackground);
     maskContainer.addChild(maskForeground);
 
-    if (reverse) filter.negative();
+    // Pixi requires the argument; calling it bare passes `undefined`, which
+    // `_loadMatrix(matrix, multiply = false)` defaults to exactly this.
+    if (reverse) filter.negative(false);
 
     maskContainer.filters = [filter];
 

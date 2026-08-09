@@ -1,5 +1,20 @@
-import { Texture, Sprite } from 'pixi.js';
+import { Texture, Sprite, type ColorSource } from 'pixi.js';
+import type { Anchor } from '../types';
 
+export interface RectangleSpriteOptions {
+  color?: ColorSource;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  alpha?: number;
+  anchor?: Anchor;
+}
+
+/**
+ * Extends Pixi's `Sprite`, not this module's — so it has no `show`, `hide`,
+ * `setState` or listener-clearing `destroy`. See the migration findings.
+ */
 export default class RectangleSprite extends Sprite {
   constructor({
     color,
@@ -9,9 +24,10 @@ export default class RectangleSprite extends Sprite {
     height = 10,
     alpha = 1,
     anchor = 0,
-  } = {}) {
+  }: RectangleSpriteOptions = {}) {
     super({ texture: Texture.WHITE });
 
+    // All Pixi accessors: assignments, never fields.
     this.x = x;
     this.y = y;
     this.width = width;
