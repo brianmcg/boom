@@ -64,6 +64,7 @@ export default class Player extends AbstractActor {
     } = options;
 
     super({
+      state: STATES.ALIVE,
       soundSprite,
       maxHealth: maxHealth * HEALTH_MODIFIER,
       ...other,
@@ -163,8 +164,6 @@ export default class Player extends AbstractActor {
 
     this.radius =
       Math.sqrt(this.width * this.width + this.width * this.width) / 2;
-
-    this.setAlive();
   }
 
   onMessageAdded(callback) {

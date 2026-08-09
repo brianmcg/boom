@@ -24,7 +24,7 @@ export default class ExplosiveEntitySprite extends AnimatedEntitySprite {
   }
 
   play() {
-    if (this.entity.isExploding) {
+    if (this.entity.isExploding()) {
       super.play();
     }
   }

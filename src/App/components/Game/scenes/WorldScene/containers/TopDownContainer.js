@@ -167,7 +167,7 @@ export default class TopDownContainer extends Container {
         sprite.x = CENTER.X - (player.x - object.x);
         sprite.y = CENTER.Y - (player.y - object.y);
 
-        if (object.isExploding) {
+        if (object.isExploding()) {
           this.removeChild(sprite);
         }
       }

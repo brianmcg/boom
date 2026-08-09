@@ -1,6 +1,7 @@
 import { Body, degrees } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import DynamicEntity from '../base/DynamicEntity';
+import Tail from '../effects/Tail';
 import Explosion from './Explosion';
 
 const STATES = {
@@ -24,9 +25,11 @@ export default class Projectile extends DynamicEntity {
     queue,
     explosion,
     elavation = 0,
+    tail,
     ...other
   }) {
     super({
+      state: STATES.IDLE,
       width,
       height,
       length,
@@ -42,6 +45,10 @@ export default class Projectile extends DynamicEntity {
 
     this.timer = 0;
 
+    if (tail) {
+      this.tail = new Tail({ source: this, ...tail });
+    }
+
     if (explosion) {
       this.explosion = new Explosion({ source: this, ...explosion });
     }
@@ -50,8 +57,6 @@ export default class Projectile extends DynamicEntity {
       type: Body,
       onStart: body => this.handleCollision(body),
     });
-
-    this.setIdle();
   }
 
   onAdded(parent) {
@@ -97,6 +102,10 @@ export default class Projectile extends DynamicEntity {
   }
 
   updateTravalling(delta, elapsedMS) {
+    // Before the move, so a puff lands where the projectile was at the start
+    // of the frame.
+    this.tail?.update(elapsedMS);
+
     super.update(delta, elapsedMS);
   }
 

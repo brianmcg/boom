@@ -8,13 +8,15 @@ const FORCE_FADE = 0.85;
 const MIN_FORCE = 0.1;
 
 const STATES = {
+  /** Sitting on the floor waiting to be picked up — the `default` branch of `update`. */
+  IDLE: 'item:idle',
   RESPAWNING: 'item:respawning',
   SPAWNING: 'item:spawning',
 };
 
 export default class AbstractItem extends DynamicEntity {
   constructor({ type, floorOffset, respawn, ...other }) {
-    super({ blocking: false, autoPlay: false, ...other });
+    super({ state: STATES.IDLE, blocking: false, autoPlay: false, ...other });
 
     this.isItem = true;
     this.type = type;

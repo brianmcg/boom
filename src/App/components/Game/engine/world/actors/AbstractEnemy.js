@@ -2,6 +2,7 @@ import { degrees, RetractableCell, TRANSPARENCY } from '@game/core/physics';
 import TransparentMapCell from '../cells/TransparentMapCell';
 import { CELL_SIZE, UPDATE_DISTANCE } from '@constants/config';
 import AbstractActor from './AbstractActor';
+import Tail from '../effects/Tail';
 import Explosion from '../damage/Explosion';
 import Door from '../cells/Door';
 
@@ -71,9 +72,10 @@ export default class AbstractEnemy extends AbstractActor {
     alwaysRender,
     add = true,
     spawnEnemy,
+    tail,
     ...other
   }) {
-    super(other);
+    super({ state: STATES.IDLE, ...other });
 
     if (this.constructor === AbstractEnemy) {
       throw new TypeError('Can not construct abstract class.');
@@ -85,6 +87,10 @@ export default class AbstractEnemy extends AbstractActor {
       alert: alertTime = 1000,
       aim: aimTime = 200,
     } = stateDurations;
+
+    if (tail) {
+      this.tail = new Tail({ source: this, ...tail });
+    }
 
     this.spawnEnemy = spawnEnemy;
     this.explode = explode;
@@ -132,6 +138,11 @@ export default class AbstractEnemy extends AbstractActor {
 
     this.path = [];
 
+    // Was set only as a side effect of the `setIdle()` that used to end this
+    // constructor; the initial state comes from `super` now, so it is set here
+    // alongside the path it indexes into.
+    this.pathIndex = 0;
+
     this.addTrackedCollision({
       type: AbstractEnemy,
       onStart: enemy => {
@@ -168,11 +179,13 @@ export default class AbstractEnemy extends AbstractActor {
         }
       },
     });
-
-    this.setIdle();
   }
 
   update(delta, elapsedMS) {
+    // Before the move, so a puff lands where the enemy was at the start of the
+    // frame.
+    this.tail?.update(elapsedMS);
+
     super.update(delta, elapsedMS);
 
     if (this.distanceToPlayer < UPDATE_DISTANCE) {
