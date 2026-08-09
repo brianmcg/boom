@@ -48,7 +48,7 @@ export default class EnemySprite extends AnimatedEntitySprite {
           enemy.parent.addEffect({
             x: enemy.x,
             y: enemy.y,
-            z: enemy.z,
+            elavation: enemy.elavation,
             sourceId: `${enemy.id}_${enemy.ripple}`,
           });
         }

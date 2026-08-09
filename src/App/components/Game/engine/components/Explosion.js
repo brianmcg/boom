@@ -75,7 +75,7 @@ export default class Explosion extends Body {
     this.parent.addEffect({
       x: this.source.x,
       y: this.source.y,
-      z: this.source.z,
+      elavation: this.source.elavation,
       sourceId: `${this.id}_${this.effects.explode}`,
     });
 

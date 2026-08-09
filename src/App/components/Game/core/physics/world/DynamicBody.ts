@@ -122,13 +122,12 @@ export default class DynamicBody extends Body {
   }
 
   /** Moves the body and keeps the world's cell index pointing at it. */
-  setPos({ x = 0, y = 0, z = 0 }: { x?: number; y?: number; z?: number }) {
+  setPos({ x = 0, y = 0 }: { x?: number; y?: number }) {
     const previousGridX = this.gridX;
     const previousGridY = this.gridY;
 
     this.x = x;
     this.y = y;
-    this.z = z;
 
     this.reindex(previousGridX, previousGridY);
   }

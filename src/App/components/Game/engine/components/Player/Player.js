@@ -126,7 +126,7 @@ export default class Player extends AbstractActor {
       this.sounds
     );
 
-    this.viewHeight = this.z + this.height + this.camera.height;
+    this.viewHeight = this.elavation + this.height + this.camera.height;
     this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
@@ -375,7 +375,7 @@ export default class Player extends AbstractActor {
     }
 
     // Update view
-    this.viewHeight = this.z + this.height + this.camera.height;
+    this.viewHeight = this.elavation + this.height + this.camera.height;
     this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
 
@@ -425,7 +425,7 @@ export default class Player extends AbstractActor {
     this.hand.update(delta);
 
     // Update view
-    this.viewHeight = this.z + this.height + this.camera.height;
+    this.viewHeight = this.elavation + this.height + this.camera.height;
     this.viewAngle = (this.heading + this.camera.angle + DEG_360) % DEG_360;
     this.viewPitch = this.camera.pitch;
   }

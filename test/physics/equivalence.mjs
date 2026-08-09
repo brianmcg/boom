@@ -19,12 +19,12 @@ const makeWorld = (M, grid, bodies) =>
 // old names, so set and read them under whichever name the module uses.
 const RENAMED = { isDoor: 'retracts', isPushWall: 'displaces' };
 
-// Keys the baseline's Body assigned that the live one no longer has. `anchor`
-// moved to the engine layer: physics never read it, and the one line that does
-// — POVContainer positioning a sprite — only ever sees engine entities, which
-// declare it themselves now. A cell carried the field and nothing looked at it.
-// See DIVERGENCES in README.md.
-const REMOVED = new Set(['anchor']);
+// Keys the baseline's Body assigned that the live one no longer has. Both moved
+// to the engine layer, because physics read neither: `anchor` and `z` were only
+// ever consumed by POVContainer positioning a sprite, and a cell is drawn as a
+// wall strip rather than a sprite, so it carried both and nothing looked at
+// either. See DIVERGENCES in README.md.
+const REMOVED = new Set(['anchor', 'z']);
 
 const setRetracts = (M, cell) => {
   if (M === OLD) cell.isDoor = true;

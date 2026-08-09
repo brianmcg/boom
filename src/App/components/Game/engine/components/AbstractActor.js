@@ -55,14 +55,14 @@ export default class AbstractActor extends AbstractDestroyableEntity {
 
     // Update elavation.
     if (this.isAlive() && this.standingOn.length) {
-      this.z = this.standingOn.reduce((maxElavation, body) => {
+      this.elavation = this.standingOn.reduce((maxElavation, body) => {
         const distance = this.getDistanceTo(body.pos);
         const { proneHeight, width } = body;
         const elavation = (proneHeight * Math.abs(width - distance)) / width;
         return elavation > maxElavation ? elavation : maxElavation;
       }, 0);
     } else if (!this.isBoss) {
-      this.z = 0;
+      this.elavation = 0;
     }
   }
 

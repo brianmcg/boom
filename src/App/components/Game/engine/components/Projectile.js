@@ -107,13 +107,13 @@ export default class Projectile extends DynamicEntity {
   }
 
   set({ angle = 0, damage = 0, offset = 0 }) {
-    const { x, y, elavation, elavationOffset = 0, width } = this.source;
+    const { x, y, visualElavation, elavationOffset = 0, width } = this.source;
 
     const distance = Math.sqrt(width * width + width * width) + 1;
 
     this.x = x + Math.cos(angle + offset) * distance;
     this.y = y + Math.sin(angle + offset) * distance;
-    this.z = this.baseElavation + elavation + elavationOffset;
+    this.elavation = this.baseElavation + visualElavation + elavationOffset;
 
     this.angle = angle;
     this.damage = damage;

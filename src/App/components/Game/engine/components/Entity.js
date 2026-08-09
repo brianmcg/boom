@@ -7,6 +7,7 @@ export default class Entity extends Body {
     animated = false,
     scale = 1,
     anchor = 1,
+    elavation = 0,
     alwaysRender,
     ...other
   }) {
@@ -22,6 +23,18 @@ export default class Entity extends Body {
     // and everything drawn as a sprite comes from one or the other.
     this.anchor = anchor;
 
+    // Height above the floor. Declared on both branches for the same reason.
+    this.elavation = elavation;
+
     this.alwaysRender = alwaysRender;
+  }
+
+  /**
+   * Where the body appears to be, which is where it is unless a subclass moves
+   * it about for effect — see `AbstractEnemy`, whose floating enemies bob.
+   * `POVContainer` and `Projectile` want this, never the stored elevation.
+   */
+  get visualElavation() {
+    return this.elavation;
   }
 }

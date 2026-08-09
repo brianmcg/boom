@@ -257,7 +257,7 @@ export default class WorldBodies {
               name: object.name,
               x: CELL_SIZE * object.x + CELL_SIZE / 2,
               y: CELL_SIZE * object.y + CELL_SIZE / 2,
-              z: object.z * CELL_SIZE,
+              elavation: object.z * CELL_SIZE,
               blocking: object.blocking,
               width: Math.ceil(CELL_SIZE * object.width),
               length: Math.ceil(CELL_SIZE * object.length),

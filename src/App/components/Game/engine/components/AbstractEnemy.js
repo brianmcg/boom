@@ -383,7 +383,7 @@ export default class AbstractEnemy extends AbstractActor {
 
   updateDead(delta, elapsedMS) {
     this.velocity *= FORCE_FADE;
-    this.z = 0;
+    this.elavation = 0;
     this.floatAmount = 0;
 
     if (this.velocity <= MIN_FORCE) {
@@ -762,7 +762,7 @@ export default class AbstractEnemy extends AbstractActor {
         this.parent.addEffect({
           x: this.x,
           y: this.y,
-          z: this.z,
+          elavation: this.elavation,
           sourceId: `${this.id}_${this.splash}`,
         });
       }
@@ -831,7 +831,7 @@ export default class AbstractEnemy extends AbstractActor {
     return isStateChanged;
   }
 
-  get elavation() {
-    return this.z + this.floatAmount;
+  get visualElavation() {
+    return this.elavation + this.floatAmount;
   }
 }

@@ -1,11 +1,11 @@
 import { Point } from '@game/core/physics';
 
 export default class Effect {
-  constructor({ sourceId, type, x, y, z = 0, parent, scale = 1 }) {
+  constructor({ sourceId, type, x, y, elavation = 0, parent, scale = 1 }) {
     // An effect has a world position without being a Body, which is why the
     // measuring methods take a Point rather than anything body-shaped.
     this.pos = new Point(x, y);
-    this.z = z;
+    this.elavation = elavation;
     this.sourceId = sourceId;
     this.parent = parent;
     this.type = type;

@@ -11,7 +11,7 @@ export default class Arachnacopter extends ProjectileEnemy {
     super(other);
 
     this.maxElavation = maxElavation * CELL_SIZE;
-    this.z = this.maxElavation;
+    this.elavation = this.maxElavation;
     this.graphIndex = 0;
     this.hideTimer = 0;
     this.setHiding();
@@ -47,10 +47,10 @@ export default class Arachnacopter extends ProjectileEnemy {
   }
 
   updateDescending(delta) {
-    this.z -= this.speed * delta;
+    this.elavation -= this.speed * delta;
 
-    if (this.z <= 0) {
-      this.z = 0;
+    if (this.elavation <= 0) {
+      this.elavation = 0;
       this.setIdle();
     }
   }
@@ -68,9 +68,9 @@ export default class Arachnacopter extends ProjectileEnemy {
   }
 
   updateDead(delta) {
-    this.z += this.speed * delta;
+    this.elavation += this.speed * delta;
 
-    if (this.z >= this.maxElavation) {
+    if (this.elavation >= this.maxElavation) {
       this.stopUpdates();
       this.spawnSecondPhase();
       this.parent.remove(this);
@@ -95,7 +95,8 @@ export default class Arachnacopter extends ProjectileEnemy {
       e => e.name === this.spawnEnemy
     );
 
-    spawnEnemy.setPos({ x, y, z: this.z });
+    spawnEnemy.setPos({ x, y });
+    spawnEnemy.elavation = this.elavation;
 
     this.parent.add(spawnEnemy);
   }

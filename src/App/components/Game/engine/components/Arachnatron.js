@@ -33,10 +33,10 @@ export default class Arachnatron extends GunEnemy {
   }
 
   updateDescending(delta) {
-    this.z -= this.speed * 2.5 * delta;
+    this.elavation -= this.speed * 2.5 * delta;
 
-    if (this.z <= 0) {
-      this.z = 0;
+    if (this.elavation <= 0) {
+      this.elavation = 0;
       this.blocking = true;
       this.setIdle();
     }

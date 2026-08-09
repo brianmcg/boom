@@ -26,7 +26,7 @@ export default class AbstractItem extends DynamicEntity {
     }
 
     if (floorOffset) {
-      this.z = CELL_SIZE * floorOffset * 0.75;
+      this.elavation = CELL_SIZE * floorOffset * 0.75;
     }
 
     if (this.constructor === AbstractItem) {

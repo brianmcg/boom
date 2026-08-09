@@ -64,6 +64,24 @@ froze every door in the game.
 
 Ray output and the dynamic-body sim are unaffected and still IDENTICAL.
 
+**`Body` no longer has `z`.** Same story, one step further. Physics declared
+elevation, exposed it through `get elavation()`, let `setPos` write it — and
+computed with it nowhere. `castRay`'s `elavation` option is a different thing
+that stays: it is the height a ray is cast at, and `POVContainer` feeds it a
+wall's `sideHeight`.
+
+It moved to `Entity` and `DynamicEntity` under the name `elavation`, so the
+stored value has one name instead of two. What was `Body.get elavation()` is
+now `get visualElavation()` on both, because `AbstractEnemy` overrides it to
+add the bob of a floating enemy — a derived value its two readers want, and
+which merging the names would have silently thrown away.
+
+`setPos` lost its `z` parameter with it. `contract.mjs` needed no change: both
+its calls already passed only `x` and `y`, and the one caller in the game
+(`Arachnacopter`, spawning) now assigns elevation after the move, which is
+equivalent because elevation plays no part in the cell reindexing `setPos`
+does.
+
 **`Body` no longer has `anchor`.** The audit reported it as `lost` on all five
 cell kinds, which is exactly right — the key really is gone. `REMOVED` in
 `equivalence.mjs` drops it from both sides of the diff.

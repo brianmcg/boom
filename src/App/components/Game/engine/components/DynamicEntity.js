@@ -11,6 +11,7 @@ export default class DynamicEntity extends DynamicBody {
     soundSprite,
     scale = 1,
     anchor = 1,
+    elavation = 0,
     tail,
     ...other
   }) {
@@ -22,6 +23,9 @@ export default class DynamicEntity extends DynamicBody {
     // both this and Entity because they are sibling branches of Body, and
     // everything drawn as a sprite comes from one or the other.
     this.anchor = anchor;
+
+    // Height above the floor. Declared on both branches for the same reason.
+    this.elavation = elavation;
 
     this.sounds = sounds;
     this.name = name;
@@ -82,7 +86,7 @@ export default class DynamicEntity extends DynamicBody {
         this.parent.addEffect({
           x: this.x,
           y: this.y,
-          z: this.z,
+          elavation: this.elavation,
           sourceId: this.tail.ids[this.tailId],
           scale: Math.random() * 0.5 + 0.5,
         });
@@ -149,5 +153,14 @@ export default class DynamicEntity extends DynamicBody {
     }
     this.sounds = null;
     super.destroy(options);
+  }
+
+  /**
+   * Where the body appears to be, which is where it is unless a subclass moves
+   * it about for effect — see `AbstractEnemy`, whose floating enemies bob.
+   * `POVContainer` and `Projectile` want this, never the stored elevation.
+   */
+  get visualElavation() {
+    return this.elavation;
   }
 }

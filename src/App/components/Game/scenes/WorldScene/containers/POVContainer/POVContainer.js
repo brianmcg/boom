@@ -440,7 +440,9 @@ export default class POVContainer extends Container {
           centerY -
           spriteHeight /
             (CELL_SIZE /
-              (CELL_SIZE * body.anchor + body.elavation - player.viewHeight)) +
+              (CELL_SIZE * body.anchor +
+                body.visualElavation -
+                player.viewHeight)) +
           spriteHeight;
 
         sprite.width = spriteHeight * body.scale;
@@ -487,7 +489,7 @@ export default class POVContainer extends Container {
         sprite.y =
           centerY -
           spriteHeight /
-            (CELL_SIZE / (CELL_SIZE + effect.z - player.viewHeight)) +
+            (CELL_SIZE / (CELL_SIZE + effect.elavation - player.viewHeight)) +
           spriteHeight / 2;
 
         sprite.width = spriteHeight * effect.scale;

@@ -18,7 +18,6 @@ const generateId = (body: Body): string => {
 export interface BodyOptions {
   x?: number;
   y?: number;
-  z?: number;
   width?: number;
   length?: number;
   height?: number;
@@ -45,13 +44,8 @@ export default class Body extends EventEmitter {
    *
    * `readonly` so two bodies can never end up sharing one by assignment.
    * Moving a body mutates `pos.x`/`pos.y`, usually through the accessors below.
-   *
-   * `z` stays a field of its own: the grid is two-dimensional and `z` is
-   * elevation above it, not part of the position within it.
    */
   readonly pos: Point;
-
-  z: number;
 
   readonly width: number;
   readonly length: number;
@@ -95,7 +89,6 @@ export default class Body extends EventEmitter {
   constructor({
     x = 0,
     y = 0,
-    z = 0,
     width = CELL_SIZE * 0.5,
     length = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
@@ -105,7 +98,6 @@ export default class Body extends EventEmitter {
 
     this.id = generateId(this);
     this.pos = new Point(x, y);
-    this.z = z;
     this.width = width;
     this.length = length;
     this.height = height;
@@ -128,10 +120,6 @@ export default class Body extends EventEmitter {
 
   destroy(_options?: unknown) {
     this.removeAllListeners();
-  }
-
-  get elavation(): number {
-    return this.z;
   }
 
   get gridX(): number {
