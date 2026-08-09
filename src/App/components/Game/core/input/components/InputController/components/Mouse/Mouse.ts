@@ -19,33 +19,22 @@ export default class Mouse {
 
   constructor(el: HTMLElement, moveSensitivity: number = MOUSE_SENSITIVITY) {
     const onMouseMove = (e: MouseEvent) => {
-      const x = moveSensitivity * (e.movementX || 0);
-
-      if (this.moveCallback) {
-        this.moveCallback(x);
-      }
+      const x = moveSensitivity * (e.movementX ?? 0);
+      this?.moveCallback?.(x);
     };
 
     const onMouseDown = (e: MouseEvent) => {
       const button = this.buttons[BUTTON_CODES[e.button] as string];
-
-      if (button && button.downCallback) {
-        button.downCallback();
-      }
+      button?.downCallback?.();
     };
 
     const onMouseUp = (e: MouseEvent) => {
       const button = this.buttons[BUTTON_CODES[e.button] as string];
-
-      if (button && button.upCallback) {
-        button.upCallback();
-      }
+      button?.upCallback?.();
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (this.wheelCallback) {
-        this.wheelCallback(Math.sign(e.deltaY));
-      }
+      this.wheelCallback?.(Math.sign(e.deltaY));
     };
 
     const onChange = () => {
@@ -68,6 +57,14 @@ export default class Mouse {
     this.el = el;
   }
 
+  onMove(callback: MoveCallback) {
+    this.moveCallback = callback;
+  }
+
+  onWheel(callback: WheelCallback) {
+    this.wheelCallback = callback;
+  }
+
   get(name: string): Binding {
     if (this.buttons[name]) {
       return this.buttons[name];
@@ -76,14 +73,6 @@ export default class Mouse {
     this.buttons[name] = new Binding();
 
     return this.buttons[name];
-  }
-
-  onMove(callback: MoveCallback) {
-    this.moveCallback = callback;
-  }
-
-  onWheel(callback: WheelCallback) {
-    this.wheelCallback = callback;
   }
 
   lockPointer() {
@@ -106,7 +95,7 @@ export default class Mouse {
 
   removeCallbacks() {
     this.buttons = {};
-    delete this.moveCallback;
-    delete this.wheelCallback;
+    this.moveCallback = undefined;
+    this.wheelCallback = undefined;
   }
 }

@@ -8,7 +8,7 @@ export const BUTTONS = {
 export type ButtonName = (typeof BUTTONS)[keyof typeof BUTTONS];
 
 /** `MouseEvent.button` to the name callers bind against. */
-export const BUTTON_CODES: Record<number, ButtonName | undefined> = {
+export const BUTTON_CODES: Record<number, ButtonName> = {
   0: BUTTONS.LEFT,
   1: BUTTONS.MIDDLE,
   2: BUTTONS.RIGHT,
