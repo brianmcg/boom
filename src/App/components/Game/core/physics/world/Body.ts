@@ -23,7 +23,6 @@ export interface BodyOptions {
   length?: number;
   height?: number;
   blocking?: boolean;
-  anchor?: number;
 }
 
 /**
@@ -63,8 +62,6 @@ export default class Body extends EventEmitter {
   /** Whether the body stops movement and rays. Doors and corpses toggle this. */
   blocking: boolean;
 
-  readonly anchor: number;
-
   /**
    * `x` and `y` delegate to {@link pos}.
    *
@@ -103,7 +100,6 @@ export default class Body extends EventEmitter {
     length = CELL_SIZE * 0.5,
     height = CELL_SIZE * 0.5,
     blocking = true,
-    anchor = 1,
   }: BodyOptions = {}) {
     super();
 
@@ -114,7 +110,6 @@ export default class Body extends EventEmitter {
     this.length = length;
     this.height = height;
     this.blocking = blocking;
-    this.anchor = anchor;
   }
 
   intersectsLine(line: Line): boolean {

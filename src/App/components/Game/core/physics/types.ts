@@ -60,7 +60,7 @@
  * harness code reaching in.
  *
  * **`readonly` means the value is part of what the object is** — change it and
- * you have a different object. `Body.id`, `width`, `length`, `anchor`;
+ * you have a different object. `Body.id`, `width`, `length`, `pos`;
  * `DynamicBody.collisionRadius`; `World.grid` and its dimensions; the whole of
  * `Ray` bar the two fields `continueFrom` rebases.
  *

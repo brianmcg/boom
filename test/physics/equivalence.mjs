@@ -19,6 +19,13 @@ const makeWorld = (M, grid, bodies) =>
 // old names, so set and read them under whichever name the module uses.
 const RENAMED = { isDoor: 'retracts', isPushWall: 'displaces' };
 
+// Keys the baseline's Body assigned that the live one no longer has. `anchor`
+// moved to the engine layer: physics never read it, and the one line that does
+// — POVContainer positioning a sprite — only ever sees engine entities, which
+// declare it themselves now. A cell carried the field and nothing looked at it.
+// See DIVERGENCES in README.md.
+const REMOVED = new Set(['anchor']);
+
 const setRetracts = (M, cell) => {
   if (M === OLD) cell.isDoor = true;
   else cell.retracts = true;
@@ -435,14 +442,17 @@ for (const kind of Object.keys(oldCells)) {
   // as a lost key plus a truthy added one. Everything else still diffs by name.
   const oldCell = logicalShape(oldCells[kind]);
   const newCell = logicalShape(newCells[kind]);
-  const o = Object.keys(oldCell).map(k => RENAMED[k] ?? k);
+  const o = Object.keys(oldCell)
+    .filter(k => !REMOVED.has(k))
+    .map(k => RENAMED[k] ?? k);
   const n = Object.keys(newCell);
   const lost = o.filter(k => !n.includes(k));
   const added = n.filter(k => !o.includes(k));
   const changed = Object.keys(oldCell).filter(
     k =>
+      !REMOVED.has(k) &&
       norm(JSON.stringify(oldCell[k])) !==
-      norm(JSON.stringify(newCell[RENAMED[k] ?? k]))
+        norm(JSON.stringify(newCell[RENAMED[k] ?? k]))
   );
   const truthyAdded = added.filter(
     k => newCell[k] && !ADDED_TRUTHY[k]?.(newCell[k])

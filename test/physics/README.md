@@ -64,6 +64,25 @@ froze every door in the game.
 
 Ray output and the dynamic-body sim are unaffected and still IDENTICAL.
 
+**`Body` no longer has `anchor`.** The audit reported it as `lost` on all five
+cell kinds, which is exactly right — the key really is gone. `REMOVED` in
+`equivalence.mjs` drops it from both sides of the diff.
+
+Physics never read it. The only mentions in the module were the declaration,
+the constructor default and one line of prose in `types.ts`; the single reader
+in the codebase is `POVContainer`, positioning a sprite. So a cell carried a
+rendering field that nothing — renderer included — ever looked at, since cells
+are drawn as wall strips and never as sprites.
+
+It now lives on `Entity` and `DynamicEntity`, declared twice because they are
+sibling branches of `Body` and everything drawn as a sprite descends from one
+or the other. Duplicating a field is the price of getting it out of physics;
+single inheritance offers no shared engine-side base.
+
+The risk this carries is one the harness cannot check: it never renders, so a
+body reaching `POVContainer` from neither branch would read `undefined` and
+produce a `NaN` sprite position. Only a playtest closes that.
+
 One divergence was accepted and then withdrawn. `4bef6dca` gave `DynamicBody.angle` a
 normalising setter, which the baseline had no equivalent of, so the sim had to
 normalise its turns for the two to agree. The setter has since been removed:

@@ -5,10 +5,24 @@ import { MAX_SOUND_DISTANCE } from '@constants/config';
 const TAIL_INTERVAL = 25;
 
 export default class DynamicEntity extends DynamicBody {
-  constructor({ name, sounds = {}, soundSprite, scale = 1, tail, ...other }) {
+  constructor({
+    name,
+    sounds = {},
+    soundSprite,
+    scale = 1,
+    anchor = 1,
+    tail,
+    ...other
+  }) {
     super(other);
 
     this.scale = scale;
+
+    // Where the sprite sits vertically, read only by POVContainer. Declared on
+    // both this and Entity because they are sibling branches of Body, and
+    // everything drawn as a sprite comes from one or the other.
+    this.anchor = anchor;
+
     this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;
