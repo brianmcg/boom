@@ -1,6 +1,5 @@
 import { DynamicBody } from '@game/core/physics';
-import { SoundSpriteController } from '@game/core/audio';
-import { MAX_SOUND_DISTANCE } from '@constants/config';
+import PositionalAudio from './PositionalAudio';
 
 const TAIL_INTERVAL = 25;
 
@@ -44,8 +43,11 @@ export default class DynamicEntity extends DynamicBody {
       this.tailId = 0;
     }
 
+    // Most entities have no sounds at all — every ammo, health, key and
+    // weapon pickup, and the explosive barrel — so this stays optional and
+    // every use below is guarded.
     if (Object.entries(sounds).length) {
-      this.soundController = new SoundSpriteController({ soundSprite });
+      this.audio = new PositionalAudio({ soundSprite, source: this });
     }
   }
 
@@ -69,15 +71,7 @@ export default class DynamicEntity extends DynamicBody {
 
   update(delta, elapsedMS) {
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
-
-    const volume =
-      this.distanceToPlayer > MAX_SOUND_DISTANCE
-        ? 0
-        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
-
-    if (this.soundController) {
-      this.soundController.update(volume);
-    }
+    this.audio?.update();
 
     if (this.velocity && this.tail) {
       this.tailTimer += elapsedMS;
@@ -104,53 +98,32 @@ export default class DynamicEntity extends DynamicBody {
   }
 
   emitSound(name, loop) {
-    if (name && this.soundController) {
-      const volume =
-        this.distanceToPlayer > MAX_SOUND_DISTANCE
-          ? 0
-          : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
-
-      this.soundController.emitSound(name, volume, loop);
-    }
+    this.audio?.emit(name, loop);
   }
 
   stopSound(name) {
-    if (this.soundController) {
-      this.soundController.stopSound(name);
-    }
+    this.audio?.stop(name);
   }
 
   play() {
-    if (this.soundController) {
-      this.soundController.play();
-    }
+    this.audio?.play();
   }
 
   pause() {
-    if (this.soundController) {
-      this.soundController.pause();
-    }
+    this.audio?.pause();
   }
 
   stop() {
-    if (this.soundController) {
-      this.soundController.stop();
-    }
+    this.audio?.stopAll();
   }
 
   isPlaying(name) {
-    if (this.soundController) {
-      return this.soundController.isPlaying(name);
-    }
-
-    return false;
+    return this.audio?.isPlaying(name) ?? false;
   }
 
   destroy(options) {
-    if (this.soundController) {
-      this.soundController.destroy();
-      this.soundController = null;
-    }
+    this.audio?.destroy();
+    this.audio = null;
     this.sounds = null;
     super.destroy(options);
   }

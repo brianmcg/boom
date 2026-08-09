@@ -127,11 +127,12 @@ export default class Cell extends Body {
     this.closed = closed;
     this.edge = edge;
 
-    if (this.isHorizontal()) {
+    // The option is a ratio of a cell, and it initialises whichever component
+    // is perpendicular to the surface — where the surface sits. A cell with no
+    // axis has no surface to place, and keeps both components at zero.
+    if (axis === AXES.X) {
       this.offset.y = CELL_SIZE * offset;
-    }
-
-    if (this.isVertical()) {
+    } else if (axis === AXES.Y) {
       this.offset.x = CELL_SIZE * offset;
     }
   }
@@ -144,15 +145,6 @@ export default class Cell extends Body {
 
   remove(body: Body) {
     this.bodies = this.bodies.filter(b => b.id !== body.id);
-  }
-
-  /** Only the constructor asks, to decide which axis `offset` applies to. */
-  private isHorizontal(): boolean {
-    return this.axis === AXES.X;
-  }
-
-  private isVertical(): boolean {
-    return this.axis === AXES.Y;
   }
 
   destroy(options?: unknown) {

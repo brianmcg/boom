@@ -43,7 +43,7 @@ export default class Door extends RetractableCell {
     this.isElevator = entrance || exit;
 
     this.sounds = sounds;
-    this.audio = new PositionalAudio({ soundSprite, sounds });
+    this.audio = new PositionalAudio({ soundSprite, source: this });
 
     this.setClosed();
   }
@@ -97,7 +97,7 @@ export default class Door extends RetractableCell {
     super.update(delta, elapsedMS);
 
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
-    this.audio.setDistance(this.distanceToPlayer);
+    this.audio.update();
 
     if (wasOpened && this.isOpened()) {
       this.updateOpened(delta, elapsedMS);
@@ -227,7 +227,6 @@ export default class Door extends RetractableCell {
   stop() {
     this.audio.stopAll();
   }
-
   startUpdates() {
     super.startUpdates();
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);

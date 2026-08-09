@@ -17,7 +17,7 @@ export default class PushWall extends DisplaceableCell {
     super(other);
 
     this.sounds = sounds;
-    this.audio = new PositionalAudio({ soundSprite, sounds });
+    this.audio = new PositionalAudio({ soundSprite, source: this });
   }
 
   use(user) {
@@ -52,7 +52,7 @@ export default class PushWall extends DisplaceableCell {
     super.update(delta, elapsedMS);
 
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
-    this.audio.setDistance(this.distanceToPlayer);
+    this.audio.update();
   }
 
   onBlocked() {

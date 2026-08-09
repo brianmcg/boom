@@ -1,16 +1,18 @@
-// Stand-in for @game/core/audio. Cell subclasses build a SoundSpriteController
-// in their constructor, play sounds through it, and — since engine
-// DynamicCell.update sets the volume from the distance to the player — tick it
-// on every frame a cell is being updated.
+// Stand-in for @game/core/audio. Door and PushWall reach it through engine's
+// PositionalAudio, which builds one of these in its constructor, plays sounds
+// through it, and ticks it on every frame the cell is being updated.
 export class SoundSpriteController {
-  constructor({ soundSprite, sounds }) {
+  constructor({ soundSprite }) {
     this.soundSprite = soundSprite;
-    this.sounds = sounds;
   }
 
   emitSound() {}
   stopSound() {}
   update() {}
+  play() {}
+  pause() {}
+  stop() {}
+  destroy() {}
   isPlaying() {
     return false;
   }

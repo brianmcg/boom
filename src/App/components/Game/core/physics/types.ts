@@ -71,8 +71,13 @@
  *
  * **`private` means nothing outside the class touches it** — bookkeeping like
  * `DynamicBody.collisions`, `trackedCollisions` and `previousPos`, and helpers
- * only the class itself calls, like `Cell.isHorizontal`/`isVertical` (asked
- * once, by the constructor) and `DynamicBody.isCollisionTracked`.
+ * only the class itself calls, like `DynamicBody.isCollisionTracked` and
+ * `DisplaceableCell.takeNextCell`.
+ *
+ * A private helper asked exactly once, from the constructor, is not earning the
+ * name — `Cell.isHorizontal`/`isVertical` were two of those, and reading as
+ * general questions about a cell while being one line of construction logic is
+ * what got them inlined.
  *
  * **`protected` means the class and its subclasses, and nothing else.** Reach
  * for it whenever that is the real audience: something the hierarchy needs and
