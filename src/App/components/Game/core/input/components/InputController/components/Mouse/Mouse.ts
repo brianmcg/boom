@@ -20,17 +20,26 @@ export default class Mouse {
   constructor(el: HTMLElement, moveSensitivity: number = MOUSE_SENSITIVITY) {
     const onMouseMove = (e: MouseEvent) => {
       const x = moveSensitivity * (e.movementX ?? 0);
-      this?.moveCallback?.(x);
+      this.moveCallback?.(x);
     };
 
     const onMouseDown = (e: MouseEvent) => {
-      const button = this.buttons[BUTTON_CODES[e.button] as string];
-      button?.downCallback?.();
+      // An unmapped code has no name, and must not be looked up: indexing with
+      // `undefined` reads the property literally named "undefined", which every
+      // unmapped button on the mouse would share.
+      const name = BUTTON_CODES[e.button];
+
+      if (name) {
+        this.buttons[name]?.downCallback?.();
+      }
     };
 
     const onMouseUp = (e: MouseEvent) => {
-      const button = this.buttons[BUTTON_CODES[e.button] as string];
-      button?.upCallback?.();
+      const name = BUTTON_CODES[e.button];
+
+      if (name) {
+        this.buttons[name]?.upCallback?.();
+      }
     };
 
     const onWheel = (e: WheelEvent) => {
