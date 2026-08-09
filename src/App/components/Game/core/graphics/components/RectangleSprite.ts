@@ -1,4 +1,5 @@
-import { Texture, Sprite, type ColorSource } from 'pixi.js';
+import { Texture, type ColorSource } from 'pixi.js';
+import Sprite from './Sprite';
 import type { Anchor } from '../types';
 
 export interface RectangleSpriteOptions {
@@ -12,8 +13,14 @@ export interface RectangleSpriteOptions {
 }
 
 /**
- * Extends Pixi's `Sprite`, not this module's — so it has no `show`, `hide`,
- * `setState` or listener-clearing `destroy`. See the migration findings.
+ * A flat fill — a background, a mask, a fade over the screen.
+ *
+ * It draws the global `Texture.WHITE` tinted, which is why nothing may ever
+ * destroy its texture: see the note in `GraphicsCreator.createRectangleSprite`.
+ *
+ * Everything but `x` and `y` is what {@link Sprite} already does, down to the
+ * guards — `color` is its `tint`, and the size defaults mean `width` and
+ * `height` always pass its `|| === 0` test.
  */
 export default class RectangleSprite extends Sprite {
   constructor({
@@ -25,25 +32,17 @@ export default class RectangleSprite extends Sprite {
     alpha = 1,
     anchor = 0,
   }: RectangleSpriteOptions = {}) {
-    super({ texture: Texture.WHITE });
+    super({
+      texture: Texture.WHITE,
+      width,
+      height,
+      alpha,
+      anchor,
+      tint: color,
+    });
 
-    // All Pixi accessors: assignments, never fields.
+    // Pixi accessors, and not among the options Sprite takes.
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
-    this.alpha = alpha;
-
-    if (color || color === 0) {
-      this.tint = color;
-    }
-
-    if (anchor) {
-      if (Array.isArray(anchor)) {
-        this.anchor.set(...anchor);
-      } else {
-        this.anchor.set(anchor);
-      }
-    }
   }
 }

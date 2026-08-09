@@ -16,13 +16,6 @@ export interface AnimatedSpriteOptions {
 }
 
 export default class AnimatedSprite extends PixiAnimatedSprite {
-  /**
-   * Pixi's `AnimatedSprite` has no such member — only `onComplete`,
-   * `onFrameChange` and `onLoop`. Declared so `destroy` can go on clearing it
-   * as it always has; see the migration findings.
-   */
-  onAnimationChange?: (() => void) | null;
-
   constructor({
     textures,
     animationSpeed = 1,
@@ -77,10 +70,10 @@ export default class AnimatedSprite extends PixiAnimatedSprite {
     this.stop();
     this.removeAllListeners();
 
-    // `undefined` rather than `null`, which is what Pixi's types allow. Every
-    // reader is an `if (this.onComplete)` truthiness test, so the two are
+    // Pixi's own animation callbacks, and the only ones there are to clear.
+    // `undefined` rather than `null` is what its types allow, and every reader
+    // is an `if (this.onComplete)` truthiness test, so the two are
     // indistinguishable to it.
-    this.onAnimationChange = null;
     this.onComplete = undefined;
     this.onFrameChange = undefined;
     this.onLoop = undefined;
