@@ -1,7 +1,4 @@
-// Imports the module's own barrel rather than the sibling file, which is a
-// cycle — index imports FadeSprite, FadeSprite imports index. It resolves only
-// because index evaluates Sprite first. Preserved; see the migration findings.
-import { Sprite, type SpriteOptions } from '@game/core/graphics';
+import Sprite, { type SpriteOptions } from './Sprite';
 
 export interface FadeSpriteOptions extends SpriteOptions {
   maxScale?: number;

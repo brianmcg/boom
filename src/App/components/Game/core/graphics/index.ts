@@ -20,9 +20,9 @@ import Sprite from './components/Sprite';
 import TextSprite from './components/TextSprite';
 import FadeSprite from './components/FadeSprite';
 
-import GraphicsCreator from './util/GraphicsCreator';
-import GraphicsLoader from './util/GraphicsLoader';
-import GraphicsCache from './util/GraphicsCache';
+import GraphicsCreator from './utils/GraphicsCreator';
+import GraphicsLoader from './utils/GraphicsLoader';
+import GraphicsCache from './utils/GraphicsCache';
 
 TextureStyle.defaultOptions.scaleMode = 'nearest';
 
@@ -55,4 +55,4 @@ export type { LineOptions } from './components/Line';
 export type { RectangleSpriteOptions } from './components/RectangleSprite';
 export type { SpriteOptions } from './components/Sprite';
 export type { TextSpriteOptions } from './components/TextSprite';
-export type { MaskTextureOptions } from './util/GraphicsCreator';
+export type { MaskTextureOptions } from './utils/GraphicsCreator';

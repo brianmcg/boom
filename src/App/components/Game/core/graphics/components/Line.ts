@@ -1,6 +1,9 @@
 import { WHITE } from '@constants/colors';
 import { Graphics, type ColorSource, type PointData } from 'pixi.js';
 
+/** Shared, because the defaults are never written to and never handed out. */
+const ORIGIN: PointData = { x: 0, y: 0 };
+
 export interface LineOptions {
   thickness?: number;
   color?: ColorSource;
@@ -25,18 +28,10 @@ export default class Line extends Graphics {
     this.lineTo(1, 1);
   }
 
-  /**
-   * `Partial` because the defaults are exactly that — `{}` with no coordinates
-   * — so omitting a point draws to `undefined` rather than to the origin. Every
-   * caller passes both in full; preserved as written, see the findings.
-   */
-  update(
-    startPoint: Partial<PointData> = {},
-    endPoint: Partial<PointData> = {}
-  ) {
+  update(startPoint: PointData = ORIGIN, endPoint: PointData = ORIGIN) {
     this.clear();
-    this.moveTo(startPoint.x!, startPoint.y!);
-    this.lineTo(endPoint.x!, endPoint.y!);
+    this.moveTo(startPoint.x, startPoint.y);
+    this.lineTo(endPoint.x, endPoint.y);
     this.stroke({ width: this.thickness, color: this.color });
   }
 }
