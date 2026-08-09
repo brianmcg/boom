@@ -17,7 +17,7 @@ import {
   HealthItem,
   WeaponItem,
   PortalItem,
-  TransparentCell,
+  TransparentMapCell,
   Arachnacopter,
   Arachnatron,
 } from '@game/engine';
@@ -106,7 +106,7 @@ export default class WorldBodies {
     }
 
     if (cell.transparency) {
-      return new TransparentCell({
+      return new TransparentMapCell({
         x: CELL_SIZE * cell.x + CELL_SIZE / 2,
         y: CELL_SIZE * cell.y + CELL_SIZE / 2,
         blocking: cell.blocking,

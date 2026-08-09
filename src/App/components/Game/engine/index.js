@@ -1,5 +1,5 @@
 import MapCell from './components/MapCell';
-import TransparentCell from './components/TransparentCell';
+import TransparentMapCell from './components/TransparentMapCell';
 import World from './components/World';
 import Door from './components/Door';
 import Entity from './components/Entity';
@@ -33,7 +33,7 @@ export {
   WeaponItem,
   PortalItem,
   PushWall,
-  TransparentCell,
+  TransparentMapCell,
   Arachnacopter,
   Arachnatron,
 };

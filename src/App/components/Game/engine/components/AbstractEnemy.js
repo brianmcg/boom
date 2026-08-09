@@ -1,5 +1,5 @@
 import { degrees, RetractableCell, TRANSPARENCY } from '@game/core/physics';
-import TransparentCell from './TransparentCell';
+import TransparentMapCell from './TransparentMapCell';
 import { CELL_SIZE, UPDATE_DISTANCE } from '@constants/config';
 import AbstractActor from './AbstractActor';
 import Explosion from './Explosion';
@@ -148,7 +148,7 @@ export default class AbstractEnemy extends AbstractActor {
     });
 
     this.addTrackedCollision({
-      type: TransparentCell,
+      type: TransparentMapCell,
       onStart: () => {
         if (this.isAlive() && this.projectiles) {
           if (this.findPlayer()) {
@@ -258,7 +258,7 @@ export default class AbstractEnemy extends AbstractActor {
       this.face(nextCell);
 
       if (
-        nextCell instanceof TransparentCell &&
+        nextCell instanceof TransparentMapCell &&
         nextCell.transparency === TRANSPARENCY.PARTIAL &&
         this.projectiles
       ) {
