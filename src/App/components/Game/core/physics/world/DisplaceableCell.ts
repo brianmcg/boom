@@ -7,6 +7,10 @@ import DynamicCell, { type DynamicCellOptions } from './DynamicCell';
 /** How far the slab is left standing proud of its new cell once it stops. */
 const BLOCKED_OFFSET = 0.1 * CELL_SIZE;
 
+const EVENTS = {
+  BLOCKED: 'cell:blocked',
+};
+
 /**
  * A cell whose surface translates as a solid slab, taking the whole wall with
  * it. Push walls are built from this.
@@ -17,8 +21,8 @@ const BLOCKED_OFFSET = 0.1 * CELL_SIZE;
  *
  * Once the slab has travelled a full cell it swaps places with the cell ahead
  * of it in the grid and carries on, until the next one will not take it. All of
- * that is geometry. What it *means* — a sound, a shake, a secret found — is the
- * game's, and arrives through {@link onDisplaced} and {@link onBlocked}.
+ * that is geometry. What stopping *means* — a sound, a shake, a secret found —
+ * is the game's, and it subscribes through {@link onBlocked}.
  */
 export default class DisplaceableCell extends DynamicCell {
   /**
@@ -68,12 +72,11 @@ export default class DisplaceableCell extends DynamicCell {
 
     if (this.canMove()) {
       this.offset[axis] = 0;
-      this.onDisplaced();
     } else {
       this.offset[axis] = BLOCKED_OFFSET;
       this.velocity[axis] = 0;
       this.stopUpdates();
-      this.onBlocked();
+      this.emit(EVENTS.BLOCKED);
     }
   }
 
@@ -97,9 +100,8 @@ export default class DisplaceableCell extends DynamicCell {
     parent.setCell(nextGridX, nextGridY, this);
   }
 
-  /** Reached the next cell and kept going. Overridden by the game layer. */
-  onDisplaced() {}
-
-  /** Stopped, because the cell beyond will not take it. Overridden likewise. */
-  onBlocked() {}
+  /** Stopped, because the cell beyond will not take it. */
+  onBlocked(callback: () => void) {
+    this.on(EVENTS.BLOCKED, callback);
+  }
 }

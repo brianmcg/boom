@@ -197,12 +197,12 @@ const retractable = new RetractableCell({
 
 let retractedCalls = 0;
 let returnedCalls = 0;
-retractable.onRetracted = () => {
+retractable.onRetracted(() => {
   retractedCalls += 1;
-};
-retractable.onReturned = () => {
+});
+retractable.onReturned(() => {
   returnedCalls += 1;
-};
+});
 
 // A retracting cell slides the component parallel to its own axis — the gap
 // along the surface — while the perpendicular one is where the surface sits.

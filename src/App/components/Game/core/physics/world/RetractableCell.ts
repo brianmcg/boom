@@ -5,6 +5,11 @@ import DynamicCell, { type DynamicCellOptions } from './DynamicCell';
 
 const HALF_CELL_SIZE = CELL_SIZE / 2;
 
+const EVENTS = {
+  RETRACTED: 'cell:retracted',
+  RETURNED: 'cell:returned',
+};
+
 export interface RetractableCellOptions extends DynamicCellOptions {
   double?: boolean;
 }
@@ -20,7 +25,7 @@ export interface RetractableCellOptions extends DynamicCellOptions {
  * The travel runs from `0` (shut) to `CELL_SIZE` (fully retracted) along the
  * cell's own `axis`, and this class stops itself at both ends. What reaching an
  * end *means* — a timer, a sound, the cell ceasing to block — is the game's,
- * and arrives through {@link onRetracted} and {@link onReturned}.
+ * and it subscribes through {@link onRetracted} and {@link onReturned}.
  */
 export default class RetractableCell extends DynamicCell {
   /** Parts from the middle rather than one way, so both leaves move. */
@@ -49,18 +54,22 @@ export default class RetractableCell extends DynamicCell {
 
     if (this.offset[axis] > CELL_SIZE) {
       this.offset[axis] = CELL_SIZE;
-      this.onRetracted();
+      this.emit(EVENTS.RETRACTED);
     } else if (this.offset[axis] < 0) {
       this.offset[axis] = 0;
-      this.onReturned();
+      this.emit(EVENTS.RETURNED);
     }
   }
 
-  /** Fully open. Overridden by the game layer; does nothing here. */
-  onRetracted() {}
+  /** Fully open. */
+  onRetracted(callback: () => void) {
+    this.on(EVENTS.RETRACTED, callback);
+  }
 
-  /** Fully shut. Overridden by the game layer; does nothing here. */
-  onReturned() {}
+  /** Fully shut. */
+  onReturned(callback: () => void) {
+    this.on(EVENTS.RETURNED, callback);
+  }
 
   /**
    * A fully retracted cell no longer occupies the whole square, so it needs its

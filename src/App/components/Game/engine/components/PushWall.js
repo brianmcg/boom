@@ -20,6 +20,17 @@ export default class PushWall extends DisplaceableCell {
 
     this.sounds = sounds;
     this.audio = new PositionalAudio({ soundSprite, source: this });
+
+    // Stopping is DisplaceableCell's; the noise it makes about it is not.
+    this.onBlocked(() => {
+      const shake =
+        (CELL_SIZE / this.distanceToPlayer) * this.speed * SHAKE_MULTIPLIER;
+
+      this.parent.player.shake(shake);
+      this.stopSound(this.sounds.move);
+      this.emitSound(this.sounds.stop);
+      this.isOpened = true;
+    });
   }
 
   use(user) {
@@ -48,23 +59,13 @@ export default class PushWall extends DisplaceableCell {
     }
   }
 
-  // super.update() slides by the velocity and hands over the grid square;
-  // onBlocked below is what it calls when the next one will not take it.
+  // super.update() slides by the velocity and hands over the grid square,
+  // and emits when the next one will not take it.
   update(delta, elapsedMS) {
     super.update(delta, elapsedMS);
 
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
     this.audio.update();
-  }
-
-  onBlocked() {
-    const shake =
-      (CELL_SIZE / this.distanceToPlayer) * this.speed * SHAKE_MULTIPLIER;
-
-    this.parent.player.shake(shake);
-    this.stopSound(this.sounds.move);
-    this.emitSound(this.sounds.stop);
-    this.isOpened = true;
   }
 
   emitSound(name, loop) {

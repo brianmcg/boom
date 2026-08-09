@@ -48,6 +48,18 @@ export default class Door extends RetractableCell {
     this.audio = new PositionalAudio({ soundSprite, source: this });
 
     this.setClosed();
+
+    // The limits themselves are RetractableCell's; what reaching one means is
+    // this class's.
+    this.onRetracted(() => this.setOpened());
+
+    this.onReturned(() => {
+      if (this.entrance) {
+        this.active = false;
+      }
+
+      this.setClosed();
+    });
   }
 
   /**
@@ -90,8 +102,8 @@ export default class Door extends RetractableCell {
     }
   }
 
-  // super.update() comes FIRST: it is what slides the door, and it is also what
-  // calls onRetracted/onReturned. `wasOpened` is read before it, so the
+  // super.update() comes FIRST: it is what slides the door, and it is also
+  // what emits on reaching a limit. `wasOpened` is read before it, so the
   // auto-close timer never ticks on the same frame it was set.
   update(delta, elapsedMS) {
     const wasOpened = this.isOpened();
@@ -104,18 +116,6 @@ export default class Door extends RetractableCell {
     if (wasOpened && this.isOpened()) {
       this.updateOpened(delta, elapsedMS);
     }
-  }
-
-  onRetracted() {
-    this.setOpened();
-  }
-
-  onReturned() {
-    if (this.entrance) {
-      this.active = false;
-    }
-
-    this.setClosed();
   }
 
   updateOpened(delta, elapsedMS) {
