@@ -1,6 +1,6 @@
 import type { SoundSpriteDefinitions } from 'howler';
 import { DISABLE_SOUND, DISABLE_MUSIC } from '@constants/config';
-import Sound from './Sound';
+import Sound from '../components/Sound';
 
 /** A sound asset as the asset constants declare it. */
 export interface SoundAsset {
