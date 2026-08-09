@@ -41,9 +41,7 @@ export default class GraphicsCreator {
     return sprite;
   }
 
-  // Container's constructor takes nothing, so whatever is passed here is
-  // dropped. Preserved as written; see the migration findings.
-  static createContainer(_options?: unknown) {
+  static createContainer() {
     const container = new Container();
     GraphicsCache.addContainer(container);
     return container;

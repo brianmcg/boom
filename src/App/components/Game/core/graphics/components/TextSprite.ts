@@ -1,4 +1,3 @@
-import { SCREEN } from '@constants/config';
 import {
   BitmapText,
   type ColorSource,
@@ -16,13 +15,9 @@ export interface TextSpriteOptions {
   y?: number;
   alpha?: number;
   anchor?: Anchor;
-  maxWidth?: number;
 }
 
 export default class TextSprite extends BitmapText {
-  /** Not a Pixi member, and read nowhere — see the migration findings. */
-  maxWidth: number;
-
   constructor({
     text = '',
     fontFamily,
@@ -32,7 +27,6 @@ export default class TextSprite extends BitmapText {
     y = 0,
     alpha = 1,
     anchor,
-    maxWidth = SCREEN.WIDTH,
   }: TextSpriteOptions) {
     super({ text: text.toUpperCase(), style: { fontFamily, fontSize } });
 
@@ -41,7 +35,6 @@ export default class TextSprite extends BitmapText {
     this.x = x;
     this.y = y;
     this.alpha = alpha;
-    this.maxWidth = maxWidth;
     this.interactiveChildren = false;
     this.eventMode = 'none';
 
