@@ -8,10 +8,7 @@ export default class DynamicCell extends PhysicsDynamicCell {
 
     this.sounds = sounds;
 
-    this.soundController = new SoundSpriteController({
-      sounds: Object.values(this.sounds),
-      soundSprite,
-    });
+    this.soundController = new SoundSpriteController({ soundSprite });
   }
 
   /**
@@ -33,12 +30,14 @@ export default class DynamicCell extends PhysicsDynamicCell {
   }
 
   emitSound(name, loop) {
-    const volume =
-      this.distanceToPlayer > MAX_SOUND_DISTANCE
-        ? 0
-        : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
+    if (name) {
+      const volume =
+        this.distanceToPlayer > MAX_SOUND_DISTANCE
+          ? 0
+          : 1 - this.distanceToPlayer / MAX_SOUND_DISTANCE;
 
-    this.soundController.emitSound(name, volume, loop);
+      this.soundController.emitSound(name, volume, loop);
+    }
   }
 
   stopSound(name) {

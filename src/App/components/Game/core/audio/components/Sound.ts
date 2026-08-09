@@ -26,7 +26,11 @@ export interface SoundOptions {
 export default class Sound {
   private readonly howl: Howl;
 
-  readonly play = (spriteOrId?: string | number): number =>
+  /**
+   * Returns null, not an id, for a sprite name the atlas does not define —
+   * `@types/howler` declares `number`, but see `howler.js:749`.
+   */
+  readonly play = (spriteOrId?: string | number): number | null =>
     this.howl.play(spriteOrId);
 
   readonly stop = (id?: number): Sound => {

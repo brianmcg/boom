@@ -2,17 +2,15 @@ import type Sound from './Sound';
 
 /** What a `SoundSpriteController` needs to construct. */
 export interface SoundSpriteControllerOptions {
-  /** The shared sound sprite every name below plays from. */
+  /** The shared sound sprite every name plays from. */
   soundSprite: Sound;
-  /** The sprite names this controller may emit. */
-  sounds: string[];
 }
 
 /**
- * The last id played for each name this controller knows, or null for a name
- * it has not played yet.
+ * The last id played for each name, filled in as names are played. A name not
+ * played yet is absent, and reads as undefined.
  */
-type LastPlayed = Record<string, number | null>;
+type LastPlayed = Record<string, number | undefined>;
 
 export default class SoundSpriteController {
   private soundSprite: Sound | null;
@@ -21,22 +19,22 @@ export default class SoundSpriteController {
 
   private playing: number[];
 
-  constructor({ soundSprite, sounds }: SoundSpriteControllerOptions) {
+  constructor({ soundSprite }: SoundSpriteControllerOptions) {
     this.soundSprite = soundSprite;
-
-    this.lastPlayed = sounds.reduce<LastPlayed>(
-      (memo, sound) => ({
-        ...memo,
-        [sound]: null,
-      }),
-      {}
-    );
-
+    this.lastPlayed = {};
     this.playing = [];
   }
 
   emitSound(name: string, volume: number, loop?: boolean) {
     const id = this.soundSprite!.play(name);
+
+    // Null is a name the sprite does not define, so there is no sound to
+    // configure or remember. Registering the handler below against it would be
+    // worse than useless: Howler fires a listener whose id is falsy on every
+    // sound's end, not on this one's.
+    if (id === null) {
+      return;
+    }
 
     if (loop) {
       this.soundSprite!.loop(true, id);
@@ -60,18 +58,26 @@ export default class SoundSpriteController {
   stopSound(name: string) {
     const id = this.lastPlayed![name];
 
+    // Nothing to stop, and nothing that may be passed on: Howler resolves an
+    // undefined id to every id it holds, so an unknown name would stop the
+    // whole shared sprite rather than one sound.
+    if (typeof id !== 'number') {
+      return;
+    }
+
     this.playing = this.playing.filter(playingId => playingId !== id);
 
-    // A name never played is null here, and Howler matches it against no
-    // sound, so this stops nothing. Passing `undefined` instead would stop
-    // every sound on the sprite, so the null is carried through as it is.
-    this.soundSprite!.stop(id as number);
+    this.soundSprite!.stop(id);
   }
 
   pauseSound(name: string) {
     const id = this.lastPlayed![name];
 
-    this.soundSprite!.pause(id as number);
+    if (typeof id !== 'number') {
+      return;
+    }
+
+    this.soundSprite!.pause(id);
   }
 
   update(volume: number) {

@@ -131,7 +131,6 @@ export default class Scene extends Container {
     });
 
     this.soundController = new SoundSpriteController({
-      sounds: Object.values(sounds),
       soundSprite: this.game.assets.sound,
     });
 

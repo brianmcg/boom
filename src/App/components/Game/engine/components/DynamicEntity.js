@@ -27,10 +27,7 @@ export default class DynamicEntity extends DynamicBody {
     }
 
     if (Object.entries(sounds).length) {
-      this.soundController = new SoundSpriteController({
-        sounds: Object.values(this.sounds),
-        soundSprite,
-      });
+      this.soundController = new SoundSpriteController({ soundSprite });
     }
   }
 
