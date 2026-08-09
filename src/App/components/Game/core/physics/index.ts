@@ -11,7 +11,7 @@ import Point from './geometry/Point';
 import Shape from './geometry/Shape';
 import { degrees } from './utils/degrees';
 import { castRay } from './utils/castRay';
-import { AXES, TRANSPARENCY } from './constants';
+import { AXES, FACES, TRANSPARENCY } from './constants';
 
 export {
   Body,
@@ -28,12 +28,13 @@ export {
   degrees,
   castRay,
   AXES,
+  FACES,
   TRANSPARENCY,
 };
 
-export type { Axis, Transparency } from './constants';
+export type { Axis, Face, Transparency } from './constants';
 
-export type { Line, Side, Sides } from './types';
+export type { Line } from './types';
 
 export type { CastRayOptions } from './utils/castRay';
 

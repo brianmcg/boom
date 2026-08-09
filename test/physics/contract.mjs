@@ -45,7 +45,6 @@ const base = {
   length: CELL,
   height: CELL,
   blocking: true,
-  sides: { front: { name: 'f', height: CELL, spatter: 0 } },
 };
 
 const soundSprite = {
@@ -72,15 +71,16 @@ eq('omitted closed defaults to false', bare.closed, false);
 eq('omitted edge defaults to false', bare.edge, false);
 eq('omitted reverse defaults to false', bare.reverse, false);
 
-// The sides moved off the engine subclass and onto Cell itself. Every caller
-// that supplies them is unchecked JavaScript, so a face that silently stopped
-// arriving would render as a blank wall rather than fail anything.
-ok('a plain cell carries the side it was given', wall.front?.name === 'f');
-eq('a face the map omitted is undefined', wall.back, undefined);
+// A cell carries no face data at all now — what a face looks like belongs to
+// whoever draws it, and physics only ever named which one a ray hit. Presence
+// of an overlay is the exception: it moves the grid line, so it is geometry.
+eq('a cell holds no faces', wall.front, undefined);
+eq('not even the overlay itself', wall.overlay, undefined);
+eq('only whether there is one', wall.hasOverlay, false);
 eq(
-  'sides omitted entirely leaves every face undefined',
-  new Cell({ ...base, sides: undefined }).front,
-  undefined
+  'which the map data sets',
+  new Cell({ ...base, hasOverlay: true }).hasOverlay,
+  true
 );
 
 // --- transparent ----------------------------------------------------------
@@ -92,7 +92,7 @@ const glass = new TransparentCell({
 eq('transparent.transparency', glass.transparency, TRANSPARENCY.PARTIAL);
 eq('transparent.reverse', glass.reverse, true);
 ok('a grate does not move', !(glass instanceof DynamicCell));
-ok('TransparentCell still carries its sides', glass.front?.name === 'f');
+eq('a grate holds no faces either', glass.front, undefined);
 
 // --- door -----------------------------------------------------------------
 const door = new Door({

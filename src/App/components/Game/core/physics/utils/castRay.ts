@@ -13,12 +13,12 @@
  * on changing this module in `types.ts` before touching either.
  */
 import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
-import { AXES, TRANSPARENCY } from '../constants';
+import { AXES, FACES, TRANSPARENCY } from '../constants';
+import type { Face } from '../constants';
 import { DEG_90, DEG_180, DEG_270 } from './degrees';
 import Ray from '../world/Ray';
 import Point from '../geometry/Point';
 import { isLineShapeIntersection } from './intersections';
-import type { Side } from '../types';
 import type Body from '../world/Body';
 import type Cell from '../world/Cell';
 import RetractableCell from '../world/RetractableCell';
@@ -29,6 +29,8 @@ import type World from '../world/World';
 const { X, Y } = AXES;
 
 const { FULL } = TRANSPARENCY;
+
+const { FRONT, LEFT, BACK, RIGHT, OVERLAY } = FACES;
 
 const HALF_CELL = CELL_SIZE / 2;
 
@@ -72,7 +74,7 @@ const castCellRay = ({
   let xOffsetHit: number;
   let yOffsetHit: number;
 
-  let side: Side | undefined;
+  let face: Face;
   let rayEndPoint: Point;
   let initialCellBody: Body;
   const encounteredBodies: Record<string, Body> = {};
@@ -86,7 +88,7 @@ const castCellRay = ({
     horizontalGrid = CELL_SIZE + gridY * CELL_SIZE;
 
     if (
-      (initialCell.blocking || initialCell.overlay) &&
+      (initialCell.blocking || initialCell.hasOverlay) &&
       initialCell.axis === X &&
       y < horizontalGrid - initialCell.offset.y
     ) {
@@ -98,7 +100,7 @@ const castCellRay = ({
     horizontalGrid = gridY * CELL_SIZE;
 
     if (
-      (initialCell.blocking || initialCell.overlay) &&
+      (initialCell.blocking || initialCell.hasOverlay) &&
       initialCell.axis === X &&
       y > horizontalGrid + (CELL_SIZE - initialCell.offset.y)
     ) {
@@ -112,7 +114,7 @@ const castCellRay = ({
   distToHorizontalGridBeingHit = (xIntersection - x) / cosAngle;
 
   const horizontalOverlay =
-    initialCell.axis === X && !ignoreOverlay && !!initialCell.overlay;
+    initialCell.axis === X && !ignoreOverlay && initialCell.hasOverlay;
 
   if (horizontalOverlay) {
     distToHorizontalGridBeingHit -= 0.01;
@@ -122,7 +124,7 @@ const castCellRay = ({
     verticalGrid = CELL_SIZE + gridX * CELL_SIZE;
 
     if (
-      (initialCell.blocking || initialCell.overlay) &&
+      (initialCell.blocking || initialCell.hasOverlay) &&
       initialCell.axis === Y &&
       x < verticalGrid - initialCell.offset.x
     ) {
@@ -134,7 +136,7 @@ const castCellRay = ({
     verticalGrid = gridX * CELL_SIZE;
 
     if (
-      (initialCell.blocking || initialCell.overlay) &&
+      (initialCell.blocking || initialCell.hasOverlay) &&
       initialCell.axis === Y &&
       verticalGrid + (CELL_SIZE - initialCell.offset.x) < x
     ) {
@@ -148,7 +150,7 @@ const castCellRay = ({
   distToVerticalGridBeingHit = (yIntersection - y) / sinAngle;
 
   const verticalOverlay =
-    initialCell.axis === Y && !ignoreOverlay && !!initialCell.overlay;
+    initialCell.axis === Y && !ignoreOverlay && initialCell.hasOverlay;
 
   if (verticalOverlay) {
     distToVerticalGridBeingHit -= 0.01;
@@ -211,7 +213,7 @@ const castCellRay = ({
       }
     }
 
-    side = y < initialCell.y ? initialCell.left : initialCell.right;
+    face = y < initialCell.y ? LEFT : RIGHT;
 
     return new Ray({
       startPoint: new Point(x, y),
@@ -219,7 +221,7 @@ const castCellRay = ({
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: horizontalOverlay ? initialCell.overlay : side,
+      face: horizontalOverlay ? OVERLAY : face,
       cell: initialCell,
       angle,
       isOverlay: horizontalOverlay,
@@ -265,7 +267,7 @@ const castCellRay = ({
     }
   }
 
-  side = x < initialCell.x ? initialCell.front : initialCell.back;
+  face = x < initialCell.x ? FRONT : BACK;
 
   rayEndPoint = new Point(verticalGrid, yIntersection);
 
@@ -290,7 +292,7 @@ const castCellRay = ({
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
     isHorizontal: false,
-    side: verticalOverlay ? initialCell.overlay : side,
+    face: verticalOverlay ? OVERLAY : face,
     cell: initialCell,
     angle,
     isOverlay: verticalOverlay,
@@ -329,7 +331,7 @@ const castRaySection = ({
   // stepping loop still reports "no overlay here" rather than `undefined`.
   let horizontalOverlay = false;
   let verticalOverlay = false;
-  let side: Side | undefined;
+  let face: Face;
   let rayEndPoint: Point;
   let initialCellBody: Body;
   let encounteredBodyValues: Body[];
@@ -398,7 +400,7 @@ const castRaySection = ({
 
       horizontalCell = world.getCell(xGridIndex, yGridIndex)!;
 
-      horizontalOverlay = !ignoreOverlay && !!horizontalCell.overlay;
+      horizontalOverlay = !ignoreOverlay && horizontalCell.hasOverlay;
 
       if (
         (horizontalCell.blocking && horizontalCell.height > elavation) ||
@@ -565,7 +567,7 @@ const castRaySection = ({
 
       verticalCell = world.getCell(xGridIndex, yGridIndex)!;
 
-      verticalOverlay = !ignoreOverlay && !!verticalCell.overlay;
+      verticalOverlay = !ignoreOverlay && verticalCell.hasOverlay;
 
       if (
         (verticalCell.blocking && verticalCell.height > elavation) ||
@@ -726,7 +728,7 @@ const castRaySection = ({
       }
     }
 
-    side = y < horizontalCell.y ? horizontalCell.left : horizontalCell.right;
+    face = y < horizontalCell.y ? LEFT : RIGHT;
 
     return new Ray({
       startPoint: new Point(x, y),
@@ -734,7 +736,7 @@ const castRaySection = ({
       distance: distToHorizontalGridBeingHit,
       encounteredBodies,
       isHorizontal: true,
-      side: horizontalOverlay ? horizontalCell.overlay : side,
+      face: horizontalOverlay ? OVERLAY : face,
       cell: horizontalCell,
       angle,
       isOverlay: horizontalOverlay,
@@ -778,7 +780,7 @@ const castRaySection = ({
     }
   }
 
-  side = x < verticalCell.x ? verticalCell.front : verticalCell.back;
+  face = x < verticalCell.x ? FRONT : BACK;
 
   return new Ray({
     startPoint: new Point(x, y),
@@ -786,7 +788,7 @@ const castRaySection = ({
     distance: distToVerticalGridBeingHit,
     encounteredBodies,
     isHorizontal: false,
-    side: verticalOverlay ? verticalCell.overlay : side,
+    face: verticalOverlay ? OVERLAY : face,
     cell: verticalCell,
     angle,
     isOverlay: verticalOverlay,

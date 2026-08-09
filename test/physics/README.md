@@ -64,6 +64,38 @@ froze every door in the game.
 
 Ray output and the dynamic-body sim are unaffected and still IDENTICAL.
 
+**A cell no longer knows what its faces look like.** `Side` and `Sides` have
+left the module. `Cell` had seven of them — `front`, `left`, `back`, `right`,
+`top`, `bottom`, `overlay`, each carrying a texture name, a height and a blood
+level — and physics never read a single member of one. `Ray.side` is `Ray.face`
+now, naming which face was hit and nothing more; the face data lives on the
+engine cell classes — `MapCell`, `TransparentCell`, `Door` and `PushWall` — the
+way `Entity.name` holds the sprite an entity draws with.
+
+It was briefly a grid on the engine world, parallel to `World.grid`. That is
+wrong for a push wall: `DisplaceableCell.takeNextCell` swaps grid slots with the
+cell ahead of it, so faces keyed by coordinate stay with the slot while the wall
+slides out from under them. Face data has to travel with the cell.
+
+What stayed is the part that was always geometry: `Cell.hasOverlay`. An overlay
+moves the grid line and the hit distance, and eight sites in `castRay` branch on
+its presence — but only on its presence, never its contents.
+
+Shims again rather than divergences, because a ray reports exactly the face it
+always did:
+
+- `faceKey` in `serRay` maps the baseline's face object back to its name by
+  identity, so the two are compared on which face was chosen. That is what the
+  comparison was always for; it just used to be able to do it by object.
+- `serRay`'s key set maps `side` to `face`, the same field renamed, so the set
+  is still compared exactly rather than a second key being dropped.
+- `setOverlay` and `hasOverlay` in `makeCell` and the overlay audit build and
+  read whichever shape the module in hand uses.
+
+`contract` lost its "a plain cell carries the side it was given" assertions and
+gained the opposite ones — a cell holds no faces, only whether it has an
+overlay.
+
 **Cells are four classes, not one with flags.** `Cell` no longer has
 `retracts`, `displaces`, `double` or `transparency`. What a cell _is_ — plain,
 retracting, displacing, transparent — became `RetractableCell`,

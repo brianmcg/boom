@@ -83,7 +83,7 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     // and ChaseEnemy/Projectile call hit() without one at all.
     if (typeof distance === 'number' && rays) {
       const {
-        side,
+        face,
         cell,
         distance: sectionDistance,
         encounteredBodies,
@@ -98,10 +98,14 @@ export default class AbstractActor extends AbstractDestroyableEntity {
           return memo;
         },
         {
-          side: {},
+          face: null,
           distance: Number.MAX_VALUE,
         }
       );
+
+      // The ray names the face; the cell knows what it looks like, and the
+      // blood goes on it.
+      const side = cell?.faces[face];
 
       const nearest = Object.values(encounteredBodies)
         .sort((a, b) => {
@@ -135,8 +139,8 @@ export default class AbstractActor extends AbstractDestroyableEntity {
 
         side.spatter = spatter;
 
-        if (cell.overlay) {
-          cell.overlay.spatter = spatter;
+        if (cell.faces.overlay) {
+          cell.faces.overlay.spatter = spatter;
         }
       }
     }

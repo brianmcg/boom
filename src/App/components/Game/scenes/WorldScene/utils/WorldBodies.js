@@ -2,7 +2,7 @@ import { degrees, AXES } from '@game/core/physics';
 import { ITEM_TYPES, ENEMY_TYPES } from '@constants/assets';
 import { CELL_SIZE, ALL_WEAPONS, ALONE } from '@constants/config';
 import {
-  Cell,
+  MapCell,
   PushWall,
   World,
   Door,
@@ -39,8 +39,16 @@ const ENEMIES = {
 };
 
 export default class WorldBodies {
-  static createCell({ cell, props, soundSprite }) {
-    const sides = Object.keys(cell.sides).reduce(
+  /**
+   * What each face of a cell looks like: which texture, how tall to draw it,
+   * and how much blood is on it.
+   *
+   * Held by the engine cell classes rather than the physics ones, because
+   * physics never reads any of it — it names which face a ray hit and nothing
+   * more.
+   */
+  static createFaces(cell) {
+    return Object.keys(cell.sides).reduce(
       (memo, key) => ({
         ...memo,
         [key]: {
@@ -51,6 +59,11 @@ export default class WorldBodies {
       }),
       {}
     );
+  }
+
+  static createCell({ cell, props, soundSprite }) {
+    const faces = WorldBodies.createFaces(cell);
+    const hasOverlay = !!cell.sides.overlay;
 
     if (cell.door) {
       return new Door({
@@ -65,12 +78,13 @@ export default class WorldBodies {
         key: cell.key,
         offset: cell.offset || 0.5,
         double: cell.double,
-        sides,
         soundSprite,
         reverse: cell.reverse,
         entrance: cell.entrance,
         exit: cell.exit,
         active: cell.active,
+        hasOverlay,
+        faces,
       });
     }
 
@@ -85,8 +99,9 @@ export default class WorldBodies {
         axis: cell.axis,
         blocking: cell.blocking,
         offset: 0.1,
-        sides,
         soundSprite,
+        hasOverlay,
+        faces,
       });
     }
 
@@ -102,11 +117,12 @@ export default class WorldBodies {
         transparency: cell.transparency,
         offset: cell.offset,
         reverse: cell.reverse,
-        sides,
+        hasOverlay,
+        faces,
       });
     }
 
-    return new Cell({
+    return new MapCell({
       x: CELL_SIZE * cell.x + CELL_SIZE / 2,
       y: CELL_SIZE * cell.y + CELL_SIZE / 2,
       blocking: cell.blocking,
@@ -114,9 +130,10 @@ export default class WorldBodies {
       length: CELL_SIZE,
       height: cell.height * CELL_SIZE,
       reverse: cell.reverse,
-      sides,
       closed: cell.closed,
       edge: cell.edge,
+      hasOverlay,
+      faces,
     });
   }
 

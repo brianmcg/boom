@@ -148,13 +148,13 @@ export default class POVContainer extends Container {
       });
 
       for (let i = 0, m = raySections.length; i < m; i++) {
-        const { side, cell } = raySections[i];
+        const { face, cell } = raySections[i];
 
-        const { overlay, closed } = cell;
+        const { hasOverlay, closed } = cell;
         const isTransparent = cell instanceof TransparentCell;
         const isRetractable = cell instanceof RetractableCell;
 
-        sideHeight = side?.height || world.height;
+        sideHeight = cell.faces[face]?.height || world.height;
 
         rays.push(raySections[i]);
 
@@ -169,7 +169,7 @@ export default class POVContainer extends Container {
             elavation: sideHeight,
             checkInitialCell: true,
             ignoreOverlay:
-              player.cell.isElevator || !(isRetractable && !overlay),
+              player.cell.isElevator || !(isRetractable && !hasOverlay),
           });
 
           for (let j = 0, n = elavatedRays.length; j < n; j++) {
@@ -178,7 +178,7 @@ export default class POVContainer extends Container {
         }
 
         // Cast another ray if the side hit is an overlay.
-        if (overlay) {
+        if (hasOverlay) {
           const ignoreOverlayRays = castRay({
             x,
             y,
@@ -192,7 +192,7 @@ export default class POVContainer extends Container {
           for (let j = 0, n = ignoreOverlayRays.length; j < n; j++) {
             const ignoreOverlayRay = ignoreOverlayRays[j];
 
-            if (ignoreOverlayRay.cell.overlay) {
+            if (ignoreOverlayRay.cell.hasOverlay) {
               rays.push(ignoreOverlayRay);
               break;
             }
@@ -211,12 +211,16 @@ export default class POVContainer extends Container {
             isHorizontal,
             cell,
             endPoint,
-            side,
+            face,
             isOverlay,
           } = ray;
 
           // Update total encountered bodies.
           Object.assign(totalEncounteredBodies, encounteredBodies);
+
+          // The ray names which face it hit; the cell knows what that face
+          // looks like.
+          const side = cell.faces[face];
 
           if (side) {
             const { name, spatter } = side;
@@ -261,13 +265,11 @@ export default class POVContainer extends Container {
 
             if (isOverlay) {
               spriteHeight = Math.abs(
-                (cell.overlay.height * CAMERA_DISTANCE) / correctedDistance
+                (sideHeight * CAMERA_DISTANCE) / correctedDistance
               );
               spriteY =
                 centerY -
-                spriteHeight /
-                  (cell.overlay.height /
-                    (cell.overlay.height - player.viewHeight));
+                spriteHeight / (sideHeight / (sideHeight - player.viewHeight));
             } else {
               spriteHeight = Math.abs(
                 (sideHeight * CAMERA_DISTANCE) / correctedDistance
@@ -366,7 +368,7 @@ export default class POVContainer extends Container {
             }
           }
 
-          backgroundName = backgroundCell.top?.name;
+          backgroundName = backgroundCell.faces.top?.name;
 
           pixelX = mapX % CELL_SIZE;
           pixelY = mapY % CELL_SIZE;
@@ -406,7 +408,7 @@ export default class POVContainer extends Container {
           gridY = Math.floor(mapY / CELL_SIZE);
 
           backgroundCell = world.getCell(gridX, gridY);
-          backgroundName = backgroundCell.bottom?.name;
+          backgroundName = backgroundCell.faces.bottom?.name;
 
           if (backgroundName) {
             stainColor = world.stains[mapX][mapY];

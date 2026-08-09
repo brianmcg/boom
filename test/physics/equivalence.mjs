@@ -63,6 +63,15 @@ const makeTransparent = (M, options, transparency) => {
   return new M.TransparentCell({ ...options, transparency });
 };
 
+// An overlay is a face object on the baseline and a flag on the live module,
+// which only ever needed to know one was there.
+const setOverlay = (M, cell, gx, gy) => {
+  if (M === OLD) cell.overlay = side(gx, gy, 'overlay');
+  else cell.hasOverlay = true;
+};
+
+const hasOverlay = cell => cell.hasOverlay ?? !!cell.overlay;
+
 const retracts = cell =>
   Boolean(cell.isDoor) || cell instanceof NEW.RetractableCell;
 const displaces = cell =>
@@ -135,7 +144,7 @@ const makeCell = (M, gx, gy, rnd) => {
       const open = rnd() * CELL_SIZE;
       if (axis === AXES.X) cell.offset.y = open;
       else cell.offset.x = open;
-      if (rnd() < 0.5) cell.overlay = side(gx, gy, 'overlay');
+      if (rnd() < 0.5) setOverlay(M, cell, gx, gy);
       return cell;
     }
     case 7: {
@@ -223,20 +232,29 @@ const buildWorld = M => {
 
 // --- serialisation -------------------------------------------------------
 
-const sideKey = s => {
-  if (s === undefined) return 'undefined';
-  if (s === null) return 'null';
-  if (s === false) return 'false';
-  if (s === true) return 'true';
-  return `side:${s.name}`;
+const FACE_NAMES = ['front', 'left', 'back', 'right', 'overlay'];
+
+// Ray.side (an object off the cell) became Ray.face (which face was hit). Map
+// the baseline's object back to its name by identity, so the two are compared
+// on the thing that was always the point: which face the ray chose.
+const faceKey = ray => {
+  if (ray.face !== undefined) return ray.face;
+  if (ray.side === undefined) return 'none';
+
+  const name = FACE_NAMES.find(f => ray.cell[f] === ray.side);
+
+  return name ?? 'unknown';
 };
 
 const serRay = ray => ({
   // isHorizontal is now always present as a boolean; it used to be omitted
   // entirely on the vertical branch. Compare truthiness, and drop it from the
-  // key set so the rest of the shape is still compared exactly.
+  // key set so the rest of the shape is still compared exactly. `side` is the
+  // same field as `face` under its old name, so map it and keep comparing the
+  // key set exactly rather than dropping a second one.
   keys: Object.keys(ray)
     .filter(k => k !== 'isHorizontal')
+    .map(k => (k === 'side' ? 'face' : k))
     .sort()
     .join(','),
   isHorizontal: Boolean(ray.isHorizontal),
@@ -244,10 +262,9 @@ const serRay = ray => ({
   ep: [ray.endPoint.x, ray.endPoint.y],
   distance: ray.distance,
   angle: ray.angle,
-  side: sideKey(ray.side),
+  face: faceKey(ray),
   // isOverlay deliberately changed from `Side | false | undefined` to a plain
-  // boolean, so compare truthiness. Every consumer only ever used it that way;
-  // the overlay object itself is read from cell.overlay.
+  // boolean, so compare truthiness. Every consumer only ever used it that way.
   isOverlay: Boolean(ray.isOverlay),
   cell: ray.cell ? ray.cell.id : 'null',
   bodies: Object.keys(ray.encounteredBodies).sort().join(','),
@@ -285,7 +302,7 @@ const auditIsOverlay = M => {
             badType.push(typeof ray.isHorizontal);
           if (!Object.prototype.hasOwnProperty.call(ray, 'isHorizontal'))
             badValue.push('isHorizontal-absent');
-          const expected = !ignoreOverlay && !!ray.cell.overlay;
+          const expected = !ignoreOverlay && hasOverlay(ray.cell);
           if (expected && !ray.isOverlay) badValue.push('isOverlay-missed');
         }
       }

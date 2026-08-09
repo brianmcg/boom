@@ -30,6 +30,7 @@ export default class Door extends RetractableCell {
     active = true,
     sounds,
     soundSprite,
+    faces = {},
     ...other
   }) {
     super(other);
@@ -42,6 +43,7 @@ export default class Door extends RetractableCell {
     this.exit = exit;
     this.isElevator = entrance || exit;
 
+    this.faces = faces;
     this.sounds = sounds;
     this.audio = new PositionalAudio({ soundSprite, source: this });
 

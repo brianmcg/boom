@@ -10,9 +10,13 @@
  * `castRay`, `UpdatableBody` with the `World` field it types.
  *
  * **This file is not "the types folder".** It holds the shared vocabulary that
- * belongs to no single file — `Line`, `Side`, `Sides` — and nothing else. A
- * type with an obvious owner goes with its owner, so that changing one and not
- * the other is hard.
+ * belongs to no single file, which is now `Line` alone. A type with an obvious
+ * owner goes with its owner, so that changing one and not the other is hard.
+ *
+ * `Side` and `Sides` used to live here and no longer belong to the module at
+ * all: a face's texture, height and blood are the game layer's, and physics
+ * only ever named which face was hit. `Face` is what is left, and it is derived
+ * from `FACES` in `constants.ts` like the two below.
  *
  * `Axis` and `Transparency` stay in `constants.ts` for the strongest version of
  * that: they are *derived* from `AXES` and `TRANSPARENCY` by indexed access, so
@@ -65,9 +69,9 @@
  * `Ray` bar the two fields `continueFrom` rebases.
  *
  * Not "nothing assigns it today". That basis was tried and it churns: it
- * locked `Cell.transparency` because current maps happen not to animate a
- * wall, which is a fact about content rather than about cells. If a field is
- * merely quiet, leave it writable.
+ * locked what is now `TransparentCell.transparency` because current maps happen
+ * not to animate a wall, which is a fact about content rather than about cells.
+ * If a field is merely quiet, leave it writable.
  *
  * **`private` means nothing outside the class touches it** — bookkeeping like
  * `DynamicBody.collisions`, `trackedCollisions` and `previousPos`, and helpers
@@ -157,10 +161,12 @@
  * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
  * of bounds, `getLineShapeIntersectionDistance()` with no crossing. `undefined`
  * marks something never supplied — a constructor option left off, or a cell
- * face the map data never defined. That is why `Ray.side` is `Side | undefined`
- * rather than `Side | null`: it passes through
- * `Cell.front`/`left`/`back`/`right` unchanged, and those come straight from
- * the map.
+ * face the map data never defined.
+
+ * `Ray` used to be the example here, carrying `Side | undefined` straight from
+ * the map. It names a `Face` now and the absent case moved out with the rest of
+ * the face data: whether a level drew that face is a question for whoever holds
+ * the textures.
  *
  * Where the absent case shares a type with a real one, `null` is what keeps
  * them apart, and callers must test for it rather than for truthiness.
@@ -182,52 +188,4 @@ import type Point from './geometry/Point';
 export interface Line {
   startPoint: Point;
   endPoint: Point;
-}
-
-/**
- * One face of a cell: which texture to draw, how tall to draw it, and how much
- * blood has been splattered on it.
- *
- * **Physics never reads any of these.** It is a token: `castRay` decides which
- * face a ray hit — `y < cell.y ? cell.left : cell.right` — and `Ray.side`
- * carries that object out untouched. The single mention in the whole module is
- * the assignment in `Ray`'s constructor. `POVContainer` is the only reader, on
- * its way to `WallSprite.changeTexture(name, sliceY, spatter)`.
- *
- * So do not trim members physics "does not need" — that is all of them — and
- * do not go looking for where the raycaster uses `height`. Physics selects a
- * face; it never opens one.
- *
- * What physics *does* read is whether a cell has an `overlay` at all: eight
- * sites in `castRay` branch on its presence, and that moves the grid line and
- * the hit distance. Presence is geometry; contents are not.
- *
- * `spatter` is a different kind of member from the other two. `name` and
- * `height` come from the map data at construction; `spatter` is game state,
- * written at runtime by `AbstractActor` when blood lands on a wall.
- */
-export interface Side {
-  name: string;
-  height: number;
-  spatter: number;
-}
-
-/**
- * The faces of a cell. Every one is optional: the map data defines only the
- * faces a level actually draws.
- *
- * `front`/`left`/`back`/`right` and `overlay` are what the raycaster returns as
- * {@link Ray.side}. `top` and `bottom` are read only by the renderer, for the
- * ceiling and floor behind a cell, and live here so a cell's faces stay one
- * object rather than being split across two layers.
- */
-export interface Sides {
-  front?: Side;
-  left?: Side;
-  back?: Side;
-  right?: Side;
-  top?: Side;
-  bottom?: Side;
-  /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
-  overlay?: Side;
 }

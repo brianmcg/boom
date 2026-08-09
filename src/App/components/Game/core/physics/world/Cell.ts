@@ -1,14 +1,11 @@
 import { CELL_SIZE } from '@constants/config';
 import { AXES } from '../constants';
 import type { Axis } from '../constants';
-import type { Side, Sides } from '../types';
 import Point from '../geometry/Point';
 import Body, { type BodyOptions } from './Body';
 
 export interface CellOptions extends BodyOptions {
   axis?: Axis;
-  /** The texture drawn on each face. Faces the map data omits stay undefined. */
-  sides?: Sides;
   /**
    * How far open the cell starts, as a ratio of a cell. Stored as world units
    * on {@link Cell.offset} — the input and the stored value are different units.
@@ -17,6 +14,7 @@ export interface CellOptions extends BodyOptions {
   reverse?: boolean;
   closed?: boolean;
   edge?: boolean;
+  hasOverlay?: boolean;
 }
 
 /**
@@ -83,30 +81,23 @@ export default class Cell extends Body {
   edge: boolean;
 
   /**
-   * The texture drawn on each face, spread onto the cell so the raycaster can
-   * read a face by name. Undefined where the map data defined no face; the
-   * raycaster passes that through verbatim, which is how {@link Ray.side} ends
-   * up `Side | undefined`.
+   * Whether a second surface is drawn in front of this cell's own face — a door
+   * frame, say.
+   *
+   * A boolean rather than the surface itself, because presence is the only part
+   * of it that is geometry: an overlay moves the grid line and the hit distance,
+   * and eight sites in `castRay` branch on it. What the overlay *looks like*
+   * belongs to whoever draws it.
    */
-  front?: Side;
-  left?: Side;
-  back?: Side;
-  right?: Side;
-
-  /** Read by the renderer, not the raycaster: the ceiling and floor behind. */
-  top?: Side;
-  bottom?: Side;
-
-  /** A second surface drawn in front of the cell's own face, e.g. a door frame. */
-  overlay?: Side;
+  hasOverlay: boolean;
 
   constructor({
     axis,
     offset = 0,
-    sides = {},
     reverse = false,
     closed = false,
     edge = false,
+    hasOverlay = false,
     ...other
   }: CellOptions) {
     super(other);
@@ -115,14 +106,7 @@ export default class Cell extends Body {
     this.axis = axis;
     this.offset = new Point(0, 0);
 
-    this.front = sides.front;
-    this.left = sides.left;
-    this.back = sides.back;
-    this.right = sides.right;
-    this.top = sides.top;
-    this.bottom = sides.bottom;
-    this.overlay = sides.overlay;
-
+    this.hasOverlay = hasOverlay;
     this.reverse = reverse;
     this.closed = closed;
     this.edge = edge;

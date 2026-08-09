@@ -13,8 +13,10 @@ const SHAKE_MULTIPLIER = 0.2;
  * itself: which way it was shoved from, the noise it makes, and the message.
  */
 export default class PushWall extends DisplaceableCell {
-  constructor({ sounds, soundSprite, ...other }) {
+  constructor({ sounds, soundSprite, faces = {}, ...other }) {
     super(other);
+
+    this.faces = faces;
 
     this.sounds = sounds;
     this.audio = new PositionalAudio({ soundSprite, source: this });

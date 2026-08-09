@@ -1,4 +1,5 @@
-import { Cell, TransparentCell } from '@game/core/physics';
+import MapCell from './components/MapCell';
+import TransparentCell from './components/TransparentCell';
 import World from './components/World';
 import Door from './components/Door';
 import Entity from './components/Entity';
@@ -17,7 +18,7 @@ import Arachnacopter from './components/Arachnacopter';
 import Arachnatron from './components/Arachnatron';
 
 export {
-  Cell,
+  MapCell,
   World,
   Door,
   Entity,

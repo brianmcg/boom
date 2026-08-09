@@ -1,9 +1,5 @@
-import {
-  degrees,
-  RetractableCell,
-  TRANSPARENCY,
-  TransparentCell,
-} from '@game/core/physics';
+import { degrees, RetractableCell, TRANSPARENCY } from '@game/core/physics';
+import TransparentCell from './TransparentCell';
 import { CELL_SIZE, UPDATE_DISTANCE } from '@constants/config';
 import AbstractActor from './AbstractActor';
 import Explosion from './Explosion';

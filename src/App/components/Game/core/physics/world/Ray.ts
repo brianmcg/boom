@@ -1,6 +1,6 @@
 import type Body from './Body';
 import type Cell from './Cell';
-import type { Side } from '../types';
+import type { Face } from '../constants';
 import type Point from '../geometry/Point';
 
 export interface RayOptions {
@@ -9,7 +9,7 @@ export interface RayOptions {
   distance: number;
   encounteredBodies: Record<string, Body>;
   isHorizontal: boolean;
-  side: Side | undefined;
+  face: Face;
   cell: Cell;
   angle: number;
   isOverlay: boolean;
@@ -20,8 +20,12 @@ export interface RayOptions {
  *
  * `isHorizontal` distinguishes a hit on a horizontal grid line from one on a
  * vertical grid line, which decides whether the texture is sampled along x or
- * y. When `isOverlay` is set, the overlay itself is `cell.overlay`, not the
- * flag — and `side` has already been resolved to it by the caster.
+ * y.
+ *
+ * `face` names which face was hit, and nothing more: what that face looks like
+ * is the game layer's, kept in its own grid and looked up from here. When
+ * `isOverlay` is set, `face` has already been resolved to `OVERLAY` by the
+ * caster.
  */
 export default class Ray {
   /** Rebased onto the original origin by {@link continueFrom}. */
@@ -36,7 +40,7 @@ export default class Ray {
   readonly encounteredBodies: Record<string, Body>;
 
   readonly isHorizontal: boolean;
-  readonly side: Side | undefined;
+  readonly face: Face;
   readonly cell: Cell;
   readonly angle: number;
   readonly isOverlay: boolean;
@@ -47,7 +51,7 @@ export default class Ray {
     distance,
     encounteredBodies,
     isHorizontal,
-    side,
+    face,
     cell,
     angle,
     isOverlay,
@@ -57,7 +61,7 @@ export default class Ray {
     this.distance = distance;
     this.encounteredBodies = encounteredBodies;
     this.isHorizontal = isHorizontal;
-    this.side = side;
+    this.face = face;
     this.cell = cell;
     this.angle = angle;
     this.isOverlay = isOverlay;

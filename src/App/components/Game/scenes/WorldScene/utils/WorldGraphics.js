@@ -322,7 +322,8 @@ export default class WorldGraphics extends SceneGraphics {
 
     world.grid.forEach(col => {
       col.forEach(cell => {
-        const { front, left, back, right, transparency, overlay } = cell;
+        const { front, left, back, right, overlay } = cell.faces;
+        const transparent = cell instanceof TransparentCell;
 
         [front, left, back, right].forEach(side => {
           if (
@@ -332,7 +333,7 @@ export default class WorldGraphics extends SceneGraphics {
           ) {
             wallImages.push({
               name: side.name,
-              transparent: !!transparency,
+              transparent,
               rotate: !overlay,
               height: cell.height,
             });
@@ -483,7 +484,7 @@ export default class WorldGraphics extends SceneGraphics {
 
     world.grid.forEach(col => {
       col.forEach(cell => {
-        const { top, bottom } = cell;
+        const { top, bottom } = cell.faces;
 
         if (top && !backgroundImages.includes(top.name)) {
           backgroundImages.push(top.name);
