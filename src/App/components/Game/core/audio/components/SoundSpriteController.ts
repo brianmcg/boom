@@ -13,9 +13,9 @@ export interface SoundSpriteControllerOptions {
 type LastPlayed = Record<string, number | undefined>;
 
 export default class SoundSpriteController {
-  private soundSprite: Sound | null;
+  private readonly soundSprite: Sound;
 
-  private lastPlayed: LastPlayed | null;
+  private readonly lastPlayed: LastPlayed;
 
   private playing: number[];
 
@@ -26,7 +26,7 @@ export default class SoundSpriteController {
   }
 
   emitSound(name: string, volume: number, loop?: boolean) {
-    const id = this.soundSprite!.play(name);
+    const id = this.soundSprite.play(name);
 
     // Null is a name the sprite does not define, so there is no sound to
     // configure or remember. Registering the handler below against it would be
@@ -37,14 +37,14 @@ export default class SoundSpriteController {
     }
 
     if (loop) {
-      this.soundSprite!.loop(true, id);
+      this.soundSprite.loop(true, id);
     }
 
-    this.soundSprite!.volume(volume, id);
+    this.soundSprite.volume(volume, id);
     this.playing.push(id);
-    this.lastPlayed![name] = id;
+    this.lastPlayed[name] = id;
 
-    this.soundSprite!.once(
+    this.soundSprite.once(
       'end',
       () => {
         if (!loop) {
@@ -56,7 +56,7 @@ export default class SoundSpriteController {
   }
 
   stopSound(name: string) {
-    const id = this.lastPlayed![name];
+    const id = this.lastPlayed[name];
 
     // Nothing to stop, and nothing that may be passed on: Howler resolves an
     // undefined id to every id it holds, so an unknown name would stop the
@@ -67,43 +67,43 @@ export default class SoundSpriteController {
 
     this.playing = this.playing.filter(playingId => playingId !== id);
 
-    this.soundSprite!.stop(id);
+    this.soundSprite.stop(id);
   }
 
   pauseSound(name: string) {
-    const id = this.lastPlayed![name];
+    const id = this.lastPlayed[name];
 
     if (typeof id !== 'number') {
       return;
     }
 
-    this.soundSprite!.pause(id);
+    this.soundSprite.pause(id);
   }
 
   update(volume: number) {
-    this.playing.forEach(id => this.soundSprite!.volume(volume, id));
+    this.playing.forEach(id => this.soundSprite.volume(volume, id));
   }
 
   pause() {
-    this.playing.forEach(id => this.soundSprite!.pause(id));
+    this.playing.forEach(id => this.soundSprite.pause(id));
   }
 
   play() {
-    this.playing.forEach(id => this.soundSprite!.play(id));
+    this.playing.forEach(id => this.soundSprite.play(id));
   }
 
   stop() {
-    this.playing.forEach(id => this.soundSprite!.stop(id));
+    this.playing.forEach(id => this.soundSprite.stop(id));
   }
 
   isPlaying(name: string): boolean {
-    const id = this.lastPlayed![name];
+    const id = this.lastPlayed[name];
 
-    if (id) {
-      return this.soundSprite!.playing(id);
+    if (typeof id !== 'number') {
+      return false;
     }
 
-    return false;
+    return this.soundSprite.playing(id);
   }
 
   destroy() {
@@ -111,10 +111,8 @@ export default class SoundSpriteController {
 
     // Remove any `end` handlers still attached to the shared sound sprite for
     // sounds that were stopped (or are looping) without firing `end`.
-    this.playing.forEach(id => this.soundSprite!.off('end', undefined, id));
+    this.playing.forEach(id => this.soundSprite.off('end', undefined, id));
 
     this.playing = [];
-    this.lastPlayed = null;
-    this.soundSprite = null;
   }
 }
