@@ -1,7 +1,7 @@
 import type Body from './Body';
 import type Cell from './Cell';
 import type { Side } from '../types';
-import type Point from './Point';
+import type Point from '../geometry/Point';
 
 export interface RayOptions {
   startPoint: Point;

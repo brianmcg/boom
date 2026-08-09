@@ -7,7 +7,7 @@
  * for the cases where you do hold one.
  */
 import { DEG_360 } from './degrees';
-import type Point from '../components/Point';
+import type Point from '../geometry/Point';
 
 export const getDistanceBetween = (from: Point, to: Point): number => {
   const dx = from.x - to.x;

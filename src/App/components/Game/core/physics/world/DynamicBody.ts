@@ -2,7 +2,7 @@ import { CELL_SIZE } from '@constants/config';
 import Body, { type BodyOptions } from './Body';
 import { TRANSPARENCY } from '../constants';
 import { DEG_90, DEG_270, DEG_360 } from '../utils/degrees';
-import Point from './Point';
+import Point from '../geometry/Point';
 import type Ray from './Ray';
 import Cell from './Cell';
 import type World from './World';

@@ -171,7 +171,7 @@
  * deliberate behaviour change updates the harness in the same commit, with the
  * divergence explained in `test/physics/README.md`.
  */
-import type Point from './components/Point';
+import type Point from './geometry/Point';
 
 /** A line segment, between two positions. */
 export interface Line {

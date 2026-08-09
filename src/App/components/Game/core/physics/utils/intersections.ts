@@ -17,8 +17,8 @@
  * bounds tests need it; it is just no longer carried out of the module.
  */
 import type { Line } from '../types';
-import Point from '../components/Point';
-import type Shape from '../components/Shape';
+import Point from '../geometry/Point';
+import type Shape from '../geometry/Shape';
 
 /**
  * How far along `startPoint`→`endPoint` it crosses `edgeStart`→`edgeEnd`, or

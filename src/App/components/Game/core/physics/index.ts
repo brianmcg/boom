@@ -1,11 +1,11 @@
-import Body from './components/Body';
-import DynamicBody from './components/DynamicBody';
-import World from './components/World';
-import Cell from './components/Cell';
-import DynamicCell from './components/DynamicCell';
-import Ray from './components/Ray';
-import Point from './components/Point';
-import Shape from './components/Shape';
+import Body from './world/Body';
+import DynamicBody from './world/DynamicBody';
+import World from './world/World';
+import Cell from './world/Cell';
+import DynamicCell from './world/DynamicCell';
+import Ray from './world/Ray';
+import Point from './geometry/Point';
+import Shape from './geometry/Shape';
 import { degrees } from './utils/degrees';
 import { castRay } from './utils/castRay';
 import { AXES, TRANSPARENCY } from './constants';
@@ -31,13 +31,13 @@ export type { Line, Side, Sides } from './types';
 
 export type { CastRayOptions } from './utils/castRay';
 
-export type { BodyOptions } from './components/Body';
-export type { CellOptions } from './components/Cell';
-export type { DynamicCellOptions } from './components/DynamicCell';
-export type { RayOptions } from './components/Ray';
-export type { WorldOptions } from './components/World';
+export type { BodyOptions } from './world/Body';
+export type { CellOptions } from './world/Cell';
+export type { DynamicCellOptions } from './world/DynamicCell';
+export type { RayOptions } from './world/Ray';
+export type { WorldOptions } from './world/World';
 export type {
   BodyConstructor,
   DynamicBodyOptions,
   TrackedCollision,
-} from './components/DynamicBody';
+} from './world/DynamicBody';

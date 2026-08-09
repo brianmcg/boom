@@ -1,6 +1,6 @@
 import { CELL_SIZE } from '@constants/config';
 import Cell, { type CellOptions } from './Cell';
-import Point from './Point';
+import Point from '../geometry/Point';
 import type World from './World';
 
 export interface DynamicCellOptions extends CellOptions {

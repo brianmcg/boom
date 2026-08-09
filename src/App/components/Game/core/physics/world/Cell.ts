@@ -2,7 +2,7 @@ import { CELL_SIZE } from '@constants/config';
 import { AXES, TRANSPARENCY } from '../constants';
 import type { Axis, Transparency } from '../constants';
 import type { Side, Sides } from '../types';
-import Point from './Point';
+import Point from '../geometry/Point';
 import Body, { type BodyOptions } from './Body';
 
 export interface CellOptions extends BodyOptions {

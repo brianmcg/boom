@@ -1,8 +1,8 @@
 import { EventEmitter } from '@game/core/graphics';
 import { CELL_SIZE } from '@constants/config';
 import type { Line } from '../types';
-import Point from './Point';
-import Shape from './Shape';
+import Point from '../geometry/Point';
+import Shape from '../geometry/Shape';
 import {
   isLineShapeIntersection,
   getLineShapeIntersectionDistance,

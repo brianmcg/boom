@@ -15,13 +15,13 @@
 import { CELL_SIZE, WALL_LAYERS } from '@constants/config';
 import { AXES, TRANSPARENCY } from '../constants';
 import { DEG_90, DEG_180, DEG_270 } from './degrees';
-import Ray from '../components/Ray';
-import Point from '../components/Point';
+import Ray from '../world/Ray';
+import Point from '../geometry/Point';
 import { isLineShapeIntersection } from './intersections';
 import type { Side } from '../types';
-import type Body from '../components/Body';
-import type Cell from '../components/Cell';
-import type World from '../components/World';
+import type Body from '../world/Body';
+import type Cell from '../world/Cell';
+import type World from '../world/World';
 
 const { X, Y } = AXES;
 
