@@ -1,28 +1,32 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
-import { AXES } from '@game/core/physics';
-import DynamicCell from './DynamicCell';
+import { AXES, DisplaceableCell } from '@game/core/physics';
+import PositionalAudio from './PositionalAudio';
 
 const SHAKE_MULTIPLIER = 0.2;
 
-export default class PushWall extends DynamicCell {
-  constructor(options) {
-    super({ ...options, displaces: true });
+/**
+ * A displacing cell the player can shove, and the secret behind it.
+ *
+ * Sliding, swapping grid places with the cell ahead and stopping against an
+ * obstruction all belong to `DisplaceableCell`. What is left here is the push
+ * itself: which way it was shoved from, the noise it makes, and the message.
+ */
+export default class PushWall extends DisplaceableCell {
+  constructor({ sounds, soundSprite, ...other }) {
+    super(other);
 
-    this.direction = { x: 0, y: 0 };
+    this.sounds = sounds;
+    this.audio = new PositionalAudio({ soundSprite, sounds });
   }
 
   use(user) {
     if (this.axis === AXES.X) {
-      this.direction = {
-        x: 0,
-        y: Math.sign(user.gridY - this.gridY),
-      };
+      this.direction.x = 0;
+      this.direction.y = Math.sign(user.gridY - this.gridY);
     } else {
-      this.direction = {
-        x: Math.sign(user.gridX - this.gridX),
-        y: 0,
-      };
+      this.direction.x = Math.sign(user.gridX - this.gridX);
+      this.direction.y = 0;
     }
 
     if (!this.isPushed && this.canMove()) {
@@ -30,6 +34,7 @@ export default class PushWall extends DynamicCell {
       this.distanceToPlayer = this.getDistanceTo(user.pos);
       this.emitSound(this.sounds.start);
       this.emitSound(this.sounds.move, true);
+
       const shake =
         (CELL_SIZE / this.distanceToPlayer) * this.speed * SHAKE_MULTIPLIER;
 
@@ -41,56 +46,59 @@ export default class PushWall extends DynamicCell {
     }
   }
 
-  /** A push wall slides across its axis, not along it, unlike a door. */
-  get slideAxis() {
-    return this.axis === AXES.X ? AXES.Y : AXES.X;
+  // super.update() slides by the velocity and hands over the grid square;
+  // onBlocked below is what it calls when the next one will not take it.
+  update(delta, elapsedMS) {
+    super.update(delta, elapsedMS);
+
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
+    this.audio.setDistance(this.distanceToPlayer);
   }
 
-  // super.update() slides by the velocity; everything below reacts to it
-  // arriving at the next cell.
-  update(delta) {
-    super.update(delta);
+  onBlocked() {
+    const shake =
+      (CELL_SIZE / this.distanceToPlayer) * this.speed * SHAKE_MULTIPLIER;
 
-    const { x, y, speed, slideAxis: axis } = this;
-
-    if (this.offset[axis] > CELL_SIZE) {
-      const currentGridX = this.gridX;
-      const currentGridY = this.gridY;
-      const nextGridX = this.gridX - this.direction.x;
-      const nextGridY = this.gridY - this.direction.y;
-      const nextCell = this.parent.getCell(nextGridX, nextGridY);
-
-      nextCell.x = x;
-      nextCell.y = y;
-
-      this.x = CELL_SIZE * nextGridX + CELL_SIZE / 2;
-      this.y = CELL_SIZE * nextGridY + CELL_SIZE / 2;
-
-      this.parent.setCell(currentGridX, currentGridY, nextCell);
-      this.parent.setCell(nextGridX, nextGridY, this);
-
-      if (this.canMove()) {
-        this.offset[axis] = 0;
-      } else {
-        const shake =
-          (CELL_SIZE / this.distanceToPlayer) * speed * SHAKE_MULTIPLIER;
-
-        this.offset[axis] = 0.1 * CELL_SIZE;
-        this.velocity[axis] = 0;
-        this.parent.player.shake(shake);
-        this.stopSound(this.sounds.move);
-        this.emitSound(this.sounds.stop);
-        this.stopUpdates();
-        this.isOpened = true;
-      }
-    }
+    this.parent.player.shake(shake);
+    this.stopSound(this.sounds.move);
+    this.emitSound(this.sounds.stop);
+    this.isOpened = true;
   }
 
-  canMove() {
-    const x = this.gridX - this.direction.x;
-    const y = this.gridY - this.direction.y;
-    const nextCell = this.parent.getCell(x, y);
+  emitSound(name, loop) {
+    this.audio.emit(name, loop);
+  }
 
-    return nextCell.id !== this.id && !nextCell.blocking;
+  stopSound(name) {
+    this.audio.stop(name);
+  }
+
+  isPlaying(name) {
+    return this.audio.isPlaying(name);
+  }
+
+  play() {
+    this.audio.play();
+  }
+
+  pause() {
+    this.audio.pause();
+  }
+
+  stop() {
+    this.audio.stopAll();
+  }
+
+  startUpdates() {
+    super.startUpdates();
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
+  }
+
+  destroy(options) {
+    this.audio.destroy();
+    this.audio = null;
+    this.sounds = null;
+    this.parent = null;
+    super.destroy(options);
   }
 }

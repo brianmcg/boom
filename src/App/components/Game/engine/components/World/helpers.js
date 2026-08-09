@@ -1,5 +1,5 @@
 import { Graph } from '@game/core/ai';
-import { TRANSPARENCY } from '@game/core/physics';
+import { DynamicCell, TRANSPARENCY, TransparentCell } from '@game/core/physics';
 
 export const NODE_WEIGHTS = {
   WALL: 0,
@@ -43,9 +43,11 @@ export const createGraphs = (grid = [], radius = 1) => {
       col.map(cell => {
         if (
           cell.blocking &&
-          !cell.retracts &&
-          !cell.displaces &&
-          cell.transparency !== TRANSPARENCY.FULL
+          !(cell instanceof DynamicCell) &&
+          !(
+            cell instanceof TransparentCell &&
+            cell.transparency === TRANSPARENCY.FULL
+          )
         ) {
           return NODE_WEIGHTS.WALL;
         }
@@ -59,11 +61,11 @@ export const createGraphs = (grid = [], radius = 1) => {
     ),
     grid.map(col =>
       col.map(cell => {
-        if (cell.blocking && cell.transparency) {
+        if (cell.blocking && cell instanceof TransparentCell) {
           return NODE_WEIGHTS.FREE; // NODE_WEIGHTS.TRANSPARENT_CELL;
         }
 
-        if (cell.blocking && !cell.retracts && !cell.displaces) {
+        if (cell.blocking && !(cell instanceof DynamicCell)) {
           return NODE_WEIGHTS.WALL;
         }
 

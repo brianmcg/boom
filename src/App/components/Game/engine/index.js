@@ -1,4 +1,4 @@
-import { Cell } from '@game/core/physics';
+import { Cell, TransparentCell } from '@game/core/physics';
 import World from './components/World';
 import Door from './components/Door';
 import Entity from './components/Entity';
@@ -13,7 +13,6 @@ import HealthItem from './components/HealthItem';
 import WeaponItem from './components/WeaponItem';
 import PortalItem from './components/PortalItem';
 import PushWall from './components/PushWall';
-import TransparentCell from './components/TransparentCell';
 import Arachnacopter from './components/Arachnacopter';
 import Arachnatron from './components/Arachnatron';
 

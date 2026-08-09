@@ -64,6 +64,42 @@ froze every door in the game.
 
 Ray output and the dynamic-body sim are unaffected and still IDENTICAL.
 
+**Cells are four classes, not one with flags.** `Cell` no longer has
+`retracts`, `displaces`, `double` or `transparency`. What a cell _is_ — plain,
+retracting, displacing, transparent — became `RetractableCell`,
+`DisplaceableCell` and `TransparentCell`, and `castRay` asks with `instanceof`.
+
+The point was to move the geometry that acted on those flags out of `engine`,
+where it sat on classes that also held states, sounds and screen shake:
+`Door.get shape()`, its open/shut limits, `PushWall.slideAxis`, `canMove` and
+the grid swap are all physics now. `contract` tests the retraction limits and
+the shape override on `RetractableCell` directly, where it used to have to
+import `@engine/Door.js` to reach them.
+
+Three shims carry the difference rather than three divergences being accepted,
+because none of this is a behaviour change — the baseline behaves identically,
+it just says things differently:
+
+- `makeRetractable`/`makeDisplaceable`/`makeTransparent` in `equivalence.mjs`
+  build whichever shape the module in hand uses: a flagged generic cell for the
+  baseline, a class for the live module.
+- `logicalShape` projects `isDoor`/`isPushWall`/`double`/`transparency` off both
+  sides into four values compared by meaning, so a door still has to come out a
+  door with the same leaf count and a grate with the same degree.
+- `norm` collapses the id prefix. `generateId` builds an id from
+  `constructor.name`, so renaming the classes renamed every door and push wall
+  id; the number is the identity and nothing reads the prefix.
+
+`direction` joins `ADDED_TRUTHY` on the same terms as `velocity`: a
+`DisplaceableCell` nobody has shoved has a zero one, which the predicate proves.
+
+One thing here **is** a divergence. `TRANSPARENCY.NONE` is gone, so the
+constants check compares the baseline's enum without it. A cell rays do not pass
+through is no longer a cell holding a zero — it is not a `TransparentCell` at
+all. The cost is that an opaque wall can no longer be made transparent by
+assignment, only by replacing the cell, which `DisplaceableCell` already does
+through `parent.setCell`. No map animates transparency today.
+
 **`Body` no longer has `z`.** Same story, one step further. Physics declared
 elevation, exposed it through `get elavation()`, let `setPos` write it — and
 computed with it nowhere. `castRay`'s `elavation` option is a different thing

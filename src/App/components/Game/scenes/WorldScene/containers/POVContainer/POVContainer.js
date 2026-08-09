@@ -1,5 +1,10 @@
 import { Container } from '@game/core/graphics';
-import { degrees, castRay } from '@game/core/physics';
+import {
+  degrees,
+  castRay,
+  RetractableCell,
+  TransparentCell,
+} from '@game/core/physics';
 import { SCREEN, CELL_SIZE, FOV, WALL_LAYERS } from '@constants/config';
 import { LIGHT_GREY, WHITE, BLACK } from '@constants/colors';
 import WorldGraphics from '../../utils/WorldGraphics';
@@ -145,14 +150,16 @@ export default class POVContainer extends Container {
       for (let i = 0, m = raySections.length; i < m; i++) {
         const { side, cell } = raySections[i];
 
-        const { overlay, closed, retracts, transparency } = cell;
+        const { overlay, closed } = cell;
+        const isTransparent = cell instanceof TransparentCell;
+        const isRetractable = cell instanceof RetractableCell;
 
         sideHeight = side?.height || world.height;
 
         rays.push(raySections[i]);
 
         // Cast another ray if the side height is lower than the world height.
-        if (!closed && !transparency && sideHeight < world.height) {
+        if (!closed && !isTransparent && sideHeight < world.height) {
           const elavatedRays = castRay({
             x,
             y,
@@ -161,7 +168,8 @@ export default class POVContainer extends Container {
             radius,
             elavation: sideHeight,
             checkInitialCell: true,
-            ignoreOverlay: player.cell.isElevator || !(retracts && !overlay),
+            ignoreOverlay:
+              player.cell.isElevator || !(isRetractable && !overlay),
           });
 
           for (let j = 0, n = elavatedRays.length; j < n; j++) {
@@ -219,7 +227,7 @@ export default class POVContainer extends Container {
             sideHeight = side.height;
 
             // Determine the slice to render.
-            if (!isOverlay && cell.retracts) {
+            if (!isOverlay && cell instanceof RetractableCell) {
               if (cell.double) {
                 if (isHorizontal) {
                   if (endPoint.x % CELL_SIZE < HALF_CELL) {

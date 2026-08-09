@@ -21,6 +21,9 @@ import { isLineShapeIntersection } from './intersections';
 import type { Side } from '../types';
 import type Body from '../world/Body';
 import type Cell from '../world/Cell';
+import RetractableCell from '../world/RetractableCell';
+import DisplaceableCell from '../world/DisplaceableCell';
+import TransparentCell from '../world/TransparentCell';
 import type World from '../world/World';
 
 const { X, Y } = AXES;
@@ -160,7 +163,11 @@ const castCellRay = ({
       return null;
     }
 
-    if (horizontalOverlay || initialCell.transparency === FULL) {
+    if (
+      horizontalOverlay ||
+      (initialCell instanceof TransparentCell &&
+        initialCell.transparency === FULL)
+    ) {
       if (initialCell.reverse) {
         if (y < horizontalGrid) {
           return null;
@@ -171,7 +178,7 @@ const castCellRay = ({
     }
 
     // if door offset miss.
-    if (!horizontalOverlay && initialCell.retracts) {
+    if (!horizontalOverlay && initialCell instanceof RetractableCell) {
       xOffsetHit = xIntersection % CELL_SIZE;
 
       if (initialCell.double) {
@@ -227,7 +234,11 @@ const castCellRay = ({
     return null;
   }
 
-  if (verticalOverlay || initialCell.transparency === FULL) {
+  if (
+    verticalOverlay ||
+    (initialCell instanceof TransparentCell &&
+      initialCell.transparency === FULL)
+  ) {
     if (initialCell.reverse) {
       if (x < verticalGrid) {
         return null;
@@ -238,7 +249,7 @@ const castCellRay = ({
   }
 
   // if door offset miss.
-  if (!verticalOverlay && initialCell.retracts) {
+  if (!verticalOverlay && initialCell instanceof RetractableCell) {
     yOffsetHit = yIntersection % CELL_SIZE;
 
     if (initialCell.double) {
@@ -394,7 +405,7 @@ const castRaySection = ({
         horizontalOverlay
       ) {
         if (horizontalCell.axis) {
-          if (horizontalCell.retracts) {
+          if (horizontalCell instanceof RetractableCell) {
             if (horizontalCell.reverse) {
               if (y < horizontalCell.y) {
                 offsetRatio = CELL_SIZE / (CELL_SIZE - horizontalCell.offset.y);
@@ -441,7 +452,7 @@ const castRaySection = ({
               xIntersection += distToNextXIntersection;
               horizontalGrid += distToNextHorizontalGrid;
             }
-          } else if (horizontalCell.displaces) {
+          } else if (horizontalCell instanceof DisplaceableCell) {
             offsetRatio = CELL_SIZE / horizontalCell.offset.y;
             xOffsetDist = distToNextXIntersection / offsetRatio;
             yOffsetDist = distToNextHorizontalGrid / offsetRatio;
@@ -458,7 +469,7 @@ const castRaySection = ({
               xIntersection += distToNextXIntersection;
               horizontalGrid += distToNextHorizontalGrid;
             }
-          } else if (horizontalCell.transparency) {
+          } else if (horizontalCell instanceof TransparentCell) {
             if (horizontalCell.offset.y) {
               if (horizontalCell.reverse) {
                 if (y < horizontalCell.y) {
@@ -561,7 +572,7 @@ const castRaySection = ({
         verticalOverlay
       ) {
         if (verticalCell.axis) {
-          if (verticalCell.retracts) {
+          if (verticalCell instanceof RetractableCell) {
             if (verticalCell.reverse) {
               if (x < verticalCell.x) {
                 offsetRatio = CELL_SIZE / (CELL_SIZE - verticalCell.offset.x);
@@ -607,7 +618,7 @@ const castRaySection = ({
               yIntersection += distToNextYIntersection;
               verticalGrid += distToNextVerticalGrid;
             }
-          } else if (verticalCell.displaces) {
+          } else if (verticalCell instanceof DisplaceableCell) {
             offsetRatio = CELL_SIZE / verticalCell.offset.x;
             yOffsetDist = distToNextYIntersection / offsetRatio;
             xOffsetDist = distToNextVerticalGrid / offsetRatio;
@@ -624,7 +635,7 @@ const castRaySection = ({
               yIntersection += distToNextYIntersection;
               verticalGrid += distToNextVerticalGrid;
             }
-          } else if (verticalCell.transparency) {
+          } else if (verticalCell instanceof TransparentCell) {
             if (verticalCell.offset.x) {
               if (verticalCell.reverse) {
                 if (x < verticalCell.x) {
@@ -838,7 +849,7 @@ export const castRay = ({
 
     result.push(currentRay);
 
-    if (!(currentRay.cell.transparency || currentRay.isOverlay)) {
+    if (!(currentRay.cell instanceof TransparentCell || currentRay.isOverlay)) {
       break;
     }
   }

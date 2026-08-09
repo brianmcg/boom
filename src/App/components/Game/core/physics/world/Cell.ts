@@ -1,6 +1,6 @@
 import { CELL_SIZE } from '@constants/config';
-import { AXES, TRANSPARENCY } from '../constants';
-import type { Axis, Transparency } from '../constants';
+import { AXES } from '../constants';
+import type { Axis } from '../constants';
 import type { Side, Sides } from '../types';
 import Point from '../geometry/Point';
 import Body, { type BodyOptions } from './Body';
@@ -14,11 +14,6 @@ export interface CellOptions extends BodyOptions {
    * on {@link Cell.offset} — the input and the stored value are different units.
    */
   offset?: number;
-  transparency?: Transparency;
-  retracts?: boolean;
-  displaces?: boolean;
-  /** Only meaningful with {@link CellOptions.retracts}. */
-  double?: boolean;
   reverse?: boolean;
   closed?: boolean;
   edge?: boolean;
@@ -56,45 +51,27 @@ export default class Cell extends Body {
    *
    * Swap the components for a cell aligned to `y`.
    *
-   * Which one a subclass moves is what separates {@link Cell.retracts} from
-   * {@link Cell.displaces}: a door slides the parallel component, opening a
+   * Which one moves separates {@link RetractableCell} from
+   * {@link DisplaceableCell}: a door slides the parallel component, opening a
    * gap; a push wall slides the perpendicular one, taking the whole slab with
    * it. The constructor's `offset` option initialises the perpendicular one,
    * which is why a door starts inset half a cell and a push wall starts
    * where it will later slide.
+   *
+   * A cell that never moves may still carry one: this is where its surface
+   * sits, and standing still is not the same as sitting on the boundary.
    */
   offset: Point;
 
   /**
    * The contract the raycaster reads. Subclasses configure it by passing these
    * through `super()` rather than assigning them afterwards — that is the house
-   * style for options, not a restriction. Nothing currently changes them once a
-   * cell is built, but nothing stops you: a wall that turns transparent
-   * mid-level is a feature, not a violation.
-   */
-
-  /** Whether rays pass through this cell into the next wall layer. */
-  transparency: Transparency;
-
-  /**
-   * What `offset` does to this cell's surface. Both are only read when `axis`
-   * is set, and they are mutually exclusive — the raycaster tests `retracts`,
-   * then `displaces`, then `transparency`.
+   * style for options, not a restriction.
    *
-   * **`retracts`** — the surface slides back within its own cell, leaving an
-   * opening. A ray crossing the opened part passes through and keeps stepping;
-   * one crossing the remaining leaf hits it. Doors are built from this.
-   *
-   * **`displaces`** — the whole surface translates as a solid slab. Nothing
-   * opens, so there is no gap test: the hit plane simply moves, and the ray
-   * misses only once the slab has left this cell entirely. Push walls are built
-   * from this.
+   * What a cell *is* — a plain wall, one that retracts, one that displaces, one
+   * rays pass through — is its class, and the raycaster asks with `instanceof`.
+   * Only the settings shared by all four live here.
    */
-  retracts: boolean;
-  displaces: boolean;
-
-  /** A retracting cell that parts from the middle rather than one way. */
-  double: boolean;
 
   /** Inverts which side of the cell the offset is applied from. */
   reverse: boolean;
@@ -127,10 +104,6 @@ export default class Cell extends Body {
     axis,
     offset = 0,
     sides = {},
-    transparency = TRANSPARENCY.NONE,
-    retracts = false,
-    displaces = false,
-    double = false,
     reverse = false,
     closed = false,
     edge = false,
@@ -150,10 +123,6 @@ export default class Cell extends Body {
     this.bottom = sides.bottom;
     this.overlay = sides.overlay;
 
-    this.transparency = transparency;
-    this.retracts = retracts;
-    this.displaces = displaces;
-    this.double = double;
     this.reverse = reverse;
     this.closed = closed;
     this.edge = edge;

@@ -1,7 +1,11 @@
-import { degrees, TRANSPARENCY } from '@game/core/physics';
+import {
+  degrees,
+  RetractableCell,
+  TRANSPARENCY,
+  TransparentCell,
+} from '@game/core/physics';
 import { CELL_SIZE, UPDATE_DISTANCE } from '@constants/config';
 import AbstractActor from './AbstractActor';
-import TransparentCell from './TransparentCell';
 import Explosion from './Explosion';
 import Door from './Door';
 
@@ -257,7 +261,11 @@ export default class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.transparency === TRANSPARENCY.PARTIAL && this.projectiles) {
+      if (
+        nextCell instanceof TransparentCell &&
+        nextCell.transparency === TRANSPARENCY.PARTIAL &&
+        this.projectiles
+      ) {
         if (this.findPlayer()) {
           this.setRange(Number.MAX_VALUE);
           this.setAttacking();
@@ -296,7 +304,7 @@ export default class AbstractEnemy extends AbstractActor {
     } else if (nextCell) {
       this.face(nextCell);
 
-      if (nextCell.retracts) {
+      if (nextCell instanceof RetractableCell) {
         nextCell.use(this);
       }
 

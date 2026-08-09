@@ -4,7 +4,6 @@ export const AXES = {
 } as const;
 
 export const TRANSPARENCY = {
-  NONE: 0,
   PARTIAL: 1,
   FULL: 2,
 } as const;
@@ -13,7 +12,8 @@ export const TRANSPARENCY = {
 export type Axis = (typeof AXES)[keyof typeof AXES];
 
 /**
- * How a ray treats a cell it hits: NONE stops the ray, PARTIAL and FULL let it
- * continue into the next wall layer.
+ * How far a ray gets through a {@link TransparentCell}. There is no NONE: a
+ * cell rays do not pass through is not a `TransparentCell`, so absence is the
+ * class and only the degree is a value.
  */
 export type Transparency = (typeof TRANSPARENCY)[keyof typeof TRANSPARENCY];

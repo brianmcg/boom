@@ -1,5 +1,5 @@
 import { search } from '@game/core/ai';
-import { World as PhysicsWorld } from '@game/core/physics';
+import { DisplaceableCell, World as PhysicsWorld } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import Effect from './components/Effect';
 import { NODE_WEIGHTS, createGraphs } from './helpers';
@@ -59,7 +59,10 @@ export default class World extends PhysicsWorld {
     this.floorOffset = floorOffset;
 
     this.secrets = this.grid.reduce(
-      (memo, col) => [...memo, ...col.filter(cell => cell.displaces)],
+      (memo, col) => [
+        ...memo,
+        ...col.filter(cell => cell instanceof DisplaceableCell),
+      ],
       []
     );
 

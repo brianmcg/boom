@@ -1,6 +1,6 @@
 import { SCREEN, FOV, CELL_SIZE } from '@constants/config';
 import { Container } from '@game/core/graphics';
-import { degrees, castRay } from '@game/core/physics';
+import { degrees, castRay, RetractableCell } from '@game/core/physics';
 
 const ANGLE_INCREMENT = degrees(FOV) / SCREEN.WIDTH;
 
@@ -127,7 +127,10 @@ export default class TopDownContainer extends Container {
     // Update cells
     grid.forEach(col => {
       col.forEach(sector => {
-        if (sector.retracts || (sector.blocking && !sector.edge)) {
+        if (
+          sector instanceof RetractableCell ||
+          (sector.blocking && !sector.edge)
+        ) {
           const sprite = gridSprites[sector.id];
           const { shape } = sector;
           sprite.x = CENTER.X - (player.x - (shape.x + shape.width / 2));

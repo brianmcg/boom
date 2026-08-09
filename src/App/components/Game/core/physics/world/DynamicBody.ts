@@ -5,6 +5,7 @@ import { DEG_90, DEG_270, DEG_360 } from '../utils/degrees';
 import Point from '../geometry/Point';
 import type Ray from './Ray';
 import Cell from './Cell';
+import TransparentCell from './TransparentCell';
 import type World from './World';
 import { isLineShapeIntersection } from '../utils/intersections';
 import { castRay } from '../utils/castRay';
@@ -178,7 +179,7 @@ export default class DynamicBody extends Body {
 
   isBodyCollision(body: Body): boolean {
     // A weightless body passes through anything rays can see through.
-    if (!this.weight && body instanceof Cell && body.transparency) {
+    if (!this.weight && body instanceof TransparentCell) {
       return false;
     }
 
@@ -232,7 +233,7 @@ export default class DynamicBody extends Body {
 
         if (
           body.blocking &&
-          !(body instanceof Cell && body.transparency === FULL)
+          !(body instanceof TransparentCell && body.transparency === FULL)
         ) {
           const { shape } = body;
           const { x, width } = shape;
@@ -258,7 +259,7 @@ export default class DynamicBody extends Body {
 
         if (
           body.blocking &&
-          !(body instanceof Cell && body.transparency === FULL)
+          !(body instanceof TransparentCell && body.transparency === FULL)
         ) {
           const { shape } = body;
           const { y, length } = shape;

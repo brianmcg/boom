@@ -26,18 +26,48 @@ const RENAMED = { isDoor: 'retracts', isPushWall: 'displaces' };
 // either. See DIVERGENCES in README.md.
 const REMOVED = new Set(['anchor', 'z']);
 
-const setRetracts = (M, cell) => {
-  if (M === OLD) cell.isDoor = true;
-  else cell.retracts = true;
+// What a cell IS became its class. The baseline says it with a flag on a
+// generic cell, so each of these builds whichever shape the module in hand
+// uses, and the readers below answer for either.
+const makeRetractable = (M, options, double) => {
+  if (M === OLD) {
+    const cell = new M.DynamicCell({ ...options, speed: 0.2 });
+    cell.isDoor = true;
+    cell.double = double;
+    return cell;
+  }
+
+  return new M.RetractableCell({ ...options, speed: 0.2, double });
 };
 
-const setDisplaces = (M, cell) => {
-  if (M === OLD) cell.isPushWall = true;
-  else cell.displaces = true;
+// A DynamicCell on both sides: `DisplaceableCell` is one, and the engine's
+// PushWall extended DynamicCell at the baseline too, so a plain Cell was never
+// what the game built here.
+const makeDisplaceable = (M, options) => {
+  if (M === OLD) {
+    const cell = new M.DynamicCell({ ...options, speed: 0.2 });
+    cell.isPushWall = true;
+    return cell;
+  }
+
+  return new M.DisplaceableCell({ ...options, speed: 0.2 });
 };
 
-const retracts = cell => cell.retracts ?? cell.isDoor;
-const displaces = cell => cell.displaces ?? cell.isPushWall;
+const makeTransparent = (M, options, transparency) => {
+  if (M === OLD) {
+    const cell = new M.Cell(options);
+    cell.transparency = transparency;
+    return cell;
+  }
+
+  return new M.TransparentCell({ ...options, transparency });
+};
+
+const retracts = cell =>
+  Boolean(cell.isDoor) || cell instanceof NEW.RetractableCell;
+const displaces = cell =>
+  Boolean(cell.isPushWall) || cell instanceof NEW.DisplaceableCell;
+const transparencyOf = cell => cell.transparency ?? 0;
 
 const mulberry32 = a => () => {
   a |= 0;
@@ -63,7 +93,7 @@ const addSides = (cell, gx, gy) => {
 // Mirrors what the engine's Cell/Door/PushWall/TransparentCell subclasses do:
 // construct a core cell, then assign the game-layer properties on top.
 const makeCell = (M, gx, gy, rnd) => {
-  const { Cell, DynamicCell, AXES } = M;
+  const { Cell, AXES } = M;
   const isEdge = gx === 0 || gy === 0 || gx === SIZE - 1 || gy === SIZE - 1;
 
   const base = {
@@ -95,15 +125,12 @@ const makeCell = (M, gx, gy, rnd) => {
     case 6:
     case 9: {
       // Door, parked part-way open.
-      const cell = new DynamicCell({
-        ...base,
-        blocking: true,
-        speed: 0.2,
-        axis,
-      });
+      const cell = makeRetractable(
+        M,
+        { ...base, blocking: true, axis },
+        kind === 9
+      );
       addSides(cell, gx, gy);
-      setRetracts(M, cell);
-      cell.double = kind === 9;
       cell.reverse = rnd() < 0.5;
       const open = rnd() * CELL_SIZE;
       if (axis === AXES.X) cell.offset.y = open;
@@ -113,9 +140,8 @@ const makeCell = (M, gx, gy, rnd) => {
     }
     case 7: {
       // Push wall, mid-slide.
-      const cell = new Cell({ ...base, blocking: true, axis });
+      const cell = makeDisplaceable(M, { ...base, blocking: true, axis });
       addSides(cell, gx, gy);
-      setDisplaces(M, cell);
       const open = rnd() * CELL_SIZE;
       if (axis === AXES.X) cell.offset.y = open || 1;
       else cell.offset.x = open || 1;
@@ -123,9 +149,12 @@ const makeCell = (M, gx, gy, rnd) => {
     }
     case 8: {
       // Transparent cell (grate / window).
-      const cell = new Cell({ ...base, blocking: true, axis });
+      const cell = makeTransparent(
+        M,
+        { ...base, blocking: true, axis },
+        rnd() < 0.5 ? 1 : 2
+      );
       addSides(cell, gx, gy);
-      cell.transparency = rnd() < 0.5 ? 1 : 2;
       cell.reverse = rnd() < 0.5;
       if (rnd() < 0.5) cell.offset.y = rnd() * CELL_SIZE;
       if (rnd() < 0.5) cell.offset.x = rnd() * CELL_SIZE;
@@ -343,8 +372,11 @@ let failed = false;
 // Both modules are bundled into one file, so esbuild renames the second copy of
 // each class (Cell -> Cell2). Body ids are built from constructor.name, so undo
 // that purely-lexical suffix before comparing.
-const norm = s =>
-  String(s).replace(/\b(DynamicBody|DynamicCell|Body|Cell)2_/g, '$1_');
+// Two things about ids are noise here. esbuild suffixes a `2` onto whichever
+// of two same-named classes it bundled second, and `generateId` builds an id
+// out of `constructor.name` — so splitting the cell classes renamed every door
+// and push wall id. The number is the identity; nothing reads the prefix.
+const norm = s => String(s).replace(/\b\w*(?:Body|Cell)2?_(\d+)/g, 'id_$1');
 
 const check = (name, xRaw, yRaw) => {
   const x = norm(xRaw);
@@ -369,10 +401,16 @@ check('castRay output', a, b);
 check('dynamic body sim', simA, simB);
 check('degrees table', degA, degB);
 
-// Constants must keep their exact runtime shape.
+// Constants must keep their exact runtime shape, bar one deliberate removal:
+// TRANSPARENCY.NONE is gone, because a cell rays do not pass through is no
+// longer a cell holding a zero — it is not a TransparentCell at all. Everything
+// that survives must still match by name and value. See DIVERGENCES in
+// README.md.
+const withoutNone = ({ NONE, ...rest }) => rest;
+
 check(
   'AXES/TRANSPARENCY',
-  JSON.stringify([OLD.AXES, OLD.TRANSPARENCY]),
+  JSON.stringify([OLD.AXES, withoutNone(OLD.TRANSPARENCY)]),
   JSON.stringify([NEW.AXES, NEW.TRANSPARENCY])
 );
 
@@ -402,15 +440,34 @@ const sample = M => {
 // project both sides into the same logical shape first: drop `pos`, and read
 // x/y explicitly, which works on either module. Everything else still diffs by
 // name, so the audit keeps its teeth on every other field.
+const PROJECTED = new Set([
+  'pos',
+  'id',
+  'isDoor',
+  'isPushWall',
+  'double',
+  'transparency',
+]);
+
 const logicalShape = cell => {
   const shape = {};
 
   for (const key of Object.keys(cell)) {
-    if (key !== 'pos') shape[key] = cell[key];
+    if (!PROJECTED.has(key)) shape[key] = cell[key];
   }
 
   shape.x = cell.x;
   shape.y = cell.y;
+  shape.id = norm(cell.id);
+
+  // What a cell is moved from flags on a generic cell to the class itself, and
+  // `double`/`transparency` moved with it. Compare the meaning rather than the
+  // storage, so a door still has to come out a door on both sides, with the
+  // same leaf count, and a grate with the same degree.
+  shape.retracts = retracts(cell);
+  shape.displaces = displaces(cell);
+  shape.double = Boolean(cell.double);
+  shape.transparency = transparencyOf(cell);
 
   return shape;
 };
@@ -431,6 +488,11 @@ const ADDED_TRUTHY = {
   // calls those paths on an untouched cell, but that is an argument, not
   // something this predicate can check, so it deliberately asserts nothing.
   parent: () => true,
+
+  // A zero heading on every DisplaceableCell. The game layer sets it from
+  // whichever side the push came from; a wall nobody has shoved has none, so it
+  // sits exactly where the baseline's did.
+  direction: d => d.x === 0 && d.y === 0,
 };
 
 const oldCells = sample(OLD);

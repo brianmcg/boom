@@ -2,21 +2,24 @@
 // are supposed to mean rather than against the pre-migration baseline.
 //
 // Two things live here. The cell section covers the contract the raycaster
-// reads off a cell — transparency, retracts, displaces, double, reverse,
-// closed, edge, and the sides — which subclasses can only set by passing
+// reads off a cell — which of the four cell classes it is, and then
+// transparency, double, reverse, closed, edge and the sides — which
+// subclasses can only set by passing
 // options through super(); every subclass that does so is unchecked
 // JavaScript, so nothing else covers that plumbing. The body section covers
 // guarantees the baseline did not make at all, which is exactly why the
 // equivalence suite cannot be the thing that checks them.
 import {
   Cell,
+  DisplaceableCell,
   DynamicBody,
   DynamicCell,
   Point,
+  RetractableCell,
   Shape,
+  TransparentCell,
   World,
 } from '@game/core/physics';
-import TransparentCell from '@engine/TransparentCell.js';
 import Door from '@engine/Door.js';
 import PushWall from '@engine/PushWall.js';
 
@@ -58,9 +61,9 @@ const wall = new Cell({ ...base, closed: true, edge: true, reverse: true });
 eq('wall.closed', wall.closed, true);
 eq('wall.edge', wall.edge, true);
 eq('wall.reverse', wall.reverse, true);
-eq('wall.retracts', wall.retracts, false);
-eq('wall.displaces', wall.displaces, false);
-eq('wall.transparency', wall.transparency, TRANSPARENCY.NONE);
+ok('a plain wall is only a Cell', !(wall instanceof DynamicCell));
+ok('and is not transparent', !(wall instanceof TransparentCell));
+eq('so it has no transparency at all', wall.transparency, undefined);
 
 // A map that omits these must yield false, not undefined — every read is a
 // truthiness test, but the own-property shape should still be honest.
@@ -88,7 +91,7 @@ const glass = new TransparentCell({
 });
 eq('transparent.transparency', glass.transparency, TRANSPARENCY.PARTIAL);
 eq('transparent.reverse', glass.reverse, true);
-eq('transparent.retracts', glass.retracts, false);
+ok('a grate does not move', !(glass instanceof DynamicCell));
 ok('TransparentCell still carries its sides', glass.front?.name === 'f');
 
 // --- door -----------------------------------------------------------------
@@ -102,15 +105,15 @@ const door = new Door({
   soundSprite,
   sounds,
 });
-eq('door.retracts', door.retracts, true);
+ok('a door retracts', door instanceof RetractableCell);
+ok('and does not displace', !(door instanceof DisplaceableCell));
 eq('door.double', door.double, true);
 eq('door.reverse', door.reverse, true);
-eq('door.displaces', door.displaces, false);
 ok('door kept its own options', door.interval === 500);
 
 const singleDoor = new Door({ ...base, interval: 500, soundSprite, sounds });
 eq('omitted double defaults to false', singleDoor.double, false);
-eq('single door is still a door', singleDoor.retracts, true);
+ok('single door is still a door', singleDoor instanceof RetractableCell);
 
 // --- push wall ------------------------------------------------------------
 const push = new PushWall({
@@ -120,8 +123,8 @@ const push = new PushWall({
   soundSprite,
   sounds,
 });
-eq('pushWall.displaces', push.displaces, true);
-eq('pushWall.retracts', push.retracts, false);
+ok('a push wall displaces', push instanceof DisplaceableCell);
+ok('and does not retract', !(push instanceof RetractableCell));
 
 // --- DynamicCell slides by its velocity -----------------------------------
 // Physics owns the movement; Door and PushWall own what reaching a limit
@@ -155,8 +158,9 @@ ok(
   `x=${slider.offset.x}, y=${slider.offset.y}`
 );
 
-// Nothing here clamps: a door stopping at CELL_SIZE is Door's rule, not this
-// class's, and physics must not quietly enforce it.
+// Nothing clamps at THIS level: a plain DynamicCell has no limit to reach.
+// Where the travel ends is a property of how the surface moves, so the limits
+// live one class down, on RetractableCell and DisplaceableCell.
 slider.velocity.x = CELL * 10;
 slider.update(1);
 ok(
@@ -181,12 +185,43 @@ ok(
   `closed went ${before} -> ${wall.closed}`
 );
 
-// --- an opened door still produces a real Shape ---------------------------
-// Door.get shape() overrides Body's with its own geometry while the door is
-// open, and Door.js is unchecked JavaScript -- so nothing but this notices if
-// it goes back to returning an object literal. It would still have x/y/width/
-// length, and would still pass every type check, but `shape.corners()` in the
-// raycaster would throw at render time.
+// --- RetractableCell stops itself at both ends ----------------------------
+// The limits used to be Door's, checked after calling super.update(). They are
+// geometry now: a surface cannot retract past its own cell or return past shut.
+// Only the reaction is the game's, and that arrives through the hooks below.
+const retractable = new RetractableCell({
+  ...base,
+  axis: 'x',
+  speed: 0.5,
+});
+
+let retractedCalls = 0;
+let returnedCalls = 0;
+retractable.onRetracted = () => {
+  retractedCalls += 1;
+};
+retractable.onReturned = () => {
+  returnedCalls += 1;
+};
+
+// A retracting cell slides the component parallel to its own axis — the gap
+// along the surface — while the perpendicular one is where the surface sits.
+retractable.velocity.x = CELL * 10;
+retractable.update(1);
+eq('a retraction stops at exactly one cell', retractable.offset.x, CELL);
+eq('and says so once', retractedCalls, 1);
+
+retractable.velocity.x = -CELL * 10;
+retractable.update(1);
+eq('a return stops at shut', retractable.offset.x, 0);
+eq('and says so once', returnedCalls, 1);
+
+// --- an opened RetractableCell still produces a real Shape ----------------
+// It overrides Body's shape with its own geometry while fully retracted. This
+// lived on engine's Door until the cell classes split; nothing but this notices
+// if it goes back to returning an object literal. It would still have
+// x/y/width/length, and would still pass every type check, but `shape.corners()`
+// in the raycaster would throw at render time.
 const openDoor = new Door({
   ...base,
   axis: 'y',

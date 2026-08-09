@@ -6,6 +6,7 @@ import {
   Rectangle,
   Sprite,
 } from '@game/core/graphics';
+import { RetractableCell, TransparentCell } from '@game/core/physics';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
@@ -1136,7 +1137,7 @@ export default class WorldGraphics extends SceneGraphics {
         return GREEN;
       }
 
-      if (body.retracts) {
+      if (body instanceof RetractableCell) {
         return WHITE;
       }
 
@@ -1156,7 +1157,7 @@ export default class WorldGraphics extends SceneGraphics {
     };
 
     const alpha = body => {
-      if (body.transparency) {
+      if (body instanceof TransparentCell) {
         return 1 - 0.5 / body.transparency;
       }
 

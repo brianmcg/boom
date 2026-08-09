@@ -1,7 +1,7 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
-import { Shape } from '@game/core/physics';
-import DynamicCell from './DynamicCell';
+import { RetractableCell } from '@game/core/physics';
+import PositionalAudio from './PositionalAudio';
 
 const STATES = {
   OPENING: 'door:opening',
@@ -11,20 +11,28 @@ const STATES = {
   LOCKED: 'door:locked',
 };
 
-const HALF_CELL_SIZE = CELL_SIZE / 2;
-
 const SHAKE_MULTIPLIER = 0.1;
 
-export default class Door extends DynamicCell {
+/**
+ * A retracting cell with a lock, a timer and a voice.
+ *
+ * The sliding, its limits and the shape of a half-open door belong to
+ * `RetractableCell`. What is left here is what makes it a door: which key card
+ * opens it, how long it waits before closing, what it sounds like, and that an
+ * opened one stops blocking.
+ */
+export default class Door extends RetractableCell {
   constructor({
     key,
     interval,
     entrance = false,
     exit = false,
     active = true,
+    sounds,
+    soundSprite,
     ...other
   }) {
-    super({ ...other, retracts: true });
+    super(other);
 
     this.timer = 0;
     this.keyCard = key;
@@ -34,7 +42,28 @@ export default class Door extends DynamicCell {
     this.exit = exit;
     this.isElevator = entrance || exit;
 
+    this.sounds = sounds;
+    this.audio = new PositionalAudio({ soundSprite, sounds });
+
     this.setClosed();
+  }
+
+  /**
+   * Subclass-defined state machine label, and the only way to set it.
+   * Returns true only when the state actually changed.
+   *
+   * The twin of `DynamicEntity.setState`. It lived on a shared cell base until
+   * the cell classes split; `PushWall` never called it, so it came here rather
+   * than being duplicated again.
+   */
+  setState(state) {
+    if (this.state !== state) {
+      this.state = state;
+
+      return true;
+    }
+
+    return false;
   }
 
   use(user) {
@@ -59,39 +88,32 @@ export default class Door extends DynamicCell {
     }
   }
 
-  // super.update() comes FIRST: it is what slides the door now, so checking a
-  // limit before it ran would test last frame's offset.
+  // super.update() comes FIRST: it is what slides the door, and it is also what
+  // calls onRetracted/onReturned. `wasOpened` is read before it, so the
+  // auto-close timer never ticks on the same frame it was set.
   update(delta, elapsedMS) {
+    const wasOpened = this.isOpened();
+
     super.update(delta, elapsedMS);
 
-    const { axis } = this;
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
+    this.audio.setDistance(this.distanceToPlayer);
 
-    switch (this.state) {
-      case STATES.OPENING: {
-        if (this.offset[axis] > CELL_SIZE) {
-          this.offset[axis] = CELL_SIZE;
-          this.setOpened();
-        }
-        break;
-      }
-      case STATES.CLOSING: {
-        if (this.offset[axis] < 0) {
-          if (this.entrance) {
-            this.active = false;
-          }
-
-          this.offset[axis] = 0;
-          this.setClosed();
-        }
-        break;
-      }
-      case STATES.OPENED: {
-        this.updateOpened(delta, elapsedMS);
-        break;
-      }
-      default:
-        break;
+    if (wasOpened && this.isOpened()) {
+      this.updateOpened(delta, elapsedMS);
     }
+  }
+
+  onRetracted() {
+    this.setOpened();
+  }
+
+  onReturned() {
+    if (this.entrance) {
+      this.active = false;
+    }
+
+    this.setClosed();
   }
 
   updateOpened(delta, elapsedMS) {
@@ -182,33 +204,40 @@ export default class Door extends DynamicCell {
     return this.state === STATES.CLOSED;
   }
 
-  get shape() {
-    if (this.offset.x === CELL_SIZE || this.offset.y === CELL_SIZE) {
-      if (this.axis === 'y') {
-        const offsetX = this.reverse
-          ? this.offset.x
-          : CELL_SIZE - this.offset.x + this.width;
+  emitSound(name, loop) {
+    this.audio.emit(name, loop);
+  }
 
-        return new Shape(
-          this.x - HALF_CELL_SIZE + (CELL_SIZE - offsetX),
-          this.y - HALF_CELL_SIZE + this.offset.y,
-          this.width,
-          this.length
-        );
-      }
+  stopSound(name) {
+    this.audio.stop(name);
+  }
 
-      const offsetY = this.reverse
-        ? this.offset.y
-        : CELL_SIZE - this.offset.y + this.length;
+  isPlaying(name) {
+    return this.audio.isPlaying(name);
+  }
 
-      return new Shape(
-        this.x - HALF_CELL_SIZE + this.offset.x,
-        this.y - HALF_CELL_SIZE + (CELL_SIZE - offsetY),
-        this.width,
-        this.length
-      );
-    }
+  play() {
+    this.audio.play();
+  }
 
-    return super.shape;
+  pause() {
+    this.audio.pause();
+  }
+
+  stop() {
+    this.audio.stopAll();
+  }
+
+  startUpdates() {
+    super.startUpdates();
+    this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);
+  }
+
+  destroy(options) {
+    this.audio.destroy();
+    this.audio = null;
+    this.sounds = null;
+    this.parent = null;
+    super.destroy(options);
   }
 }
