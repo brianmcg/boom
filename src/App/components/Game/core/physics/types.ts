@@ -158,10 +158,16 @@
  * ## Absence
  *
  * `null` marks a slot that held a value and was cleared, or a lookup that
- * computed to nothing — `Body.parent` after `destroy()`, `World.getCell()` out
- * of bounds, `getLineShapeIntersectionDistance()` with no crossing. `undefined`
- * marks something never supplied — a constructor option left off, or a cell
- * face the map data never defined.
+ * computed to nothing — `Body.parent` after `destroy()`,
+ * `getLineShapeIntersectionDistance()` with no crossing. `undefined` marks
+ * something never supplied — a constructor option left off, or a cell face the
+ * map data never defined.
+ *
+ * A lookup that *cannot* compute to nothing should not offer the case at all.
+ * `World.getCell` was the counter-example: nullable for out of bounds, which
+ * only the two neighbour scans ever hit, and only because they walked a square
+ * off the edge of the grid and dropped what came back. They clip now and it
+ * throws, so nine call sites stopped dismissing a null that could not arrive.
 
  * `Ray` used to be the example here, carrying `Side | undefined` straight from
  * the map. It names a `Face` now and the absent case moved out with the rest of

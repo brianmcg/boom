@@ -111,11 +111,15 @@ export default class HitScan {
 
     const { isExplosion, parent, pos } = this.source;
 
+    if (!parent) {
+      throw new Error('Cannot fire a hit scan outside a world.');
+    }
+
     const sourceId = this.effect && this.id;
 
     const originAngle = (angle + DEG_180) % DEG_360;
 
-    const rays = castRay({ x: pos.x, y: pos.y, angle, world: parent! });
+    const rays = castRay({ x: pos.x, y: pos.y, angle, world: parent });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } =
       rays[rays.length - 1];
@@ -176,7 +180,7 @@ export default class HitScan {
             body instanceof AbstractDestroyableEntity && !!body.effects?.spurt;
 
           if (sourceId && !hasOwnSpurt) {
-            parent!.addEffect({
+            parent.addEffect({
               x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
               y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
               sourceId,
@@ -206,7 +210,7 @@ export default class HitScan {
 
       // Handle collision with wall
       if (sourceId) {
-        parent!.addEffect({
+        parent.addEffect({
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,

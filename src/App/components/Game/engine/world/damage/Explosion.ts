@@ -71,10 +71,13 @@ export default class Explosion {
   readonly effects: { explode: string };
 
   /**
-   * Taken from the source at construction and again on every {@link run},
-   * because a pooled projectile is unparented between shots.
+   * Null until the first {@link run}, and taken from the source again on every
+   * one after that, because a pooled projectile is unparented between shots.
+   *
+   * Read from outside only by this explosion's own scans, which take the
+   * explosion as their source — and they fire from `run`, after it is set.
    */
-  parent: World | null;
+  parent: World | null = null;
 
   /** Read by `HitScan`, to spare a boss the damage of its own explosion. */
   readonly isExplosion = true;
@@ -96,7 +99,6 @@ export default class Explosion {
     this.sounds = sounds;
     this.power = power;
     this.effects = effects;
-    this.parent = source.parent;
     this.flash = flash;
 
     this.hitScans = ANGLES.map(angle => ({
@@ -113,12 +115,15 @@ export default class Explosion {
 
   run() {
     const { source } = this;
+    const { parent } = source;
 
-    this.parent = source.parent;
+    if (!parent) {
+      throw new Error('Cannot detonate an explosion outside a world.');
+    }
+
+    this.parent = parent;
     this.pos.x = source.x;
     this.pos.y = source.y;
-
-    const parent = this.parent!;
 
     const distanceToPlayer = source.getDistanceTo(parent.player.pos);
     const shake = (CELL_SIZE / distanceToPlayer) * (this.power / CELL_SIZE);

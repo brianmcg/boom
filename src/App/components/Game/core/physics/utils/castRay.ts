@@ -347,7 +347,7 @@ const castRaySection = ({
   const rayStart = new Point(x + cosAngle * radius, y + sinAngle * radius);
   const originPoint = new Point(x, y);
 
-  const initialCell = world.getCell(gridX, gridY)!;
+  const initialCell = world.getCell(gridX, gridY);
 
   // Each stepping loop below overwrites its cell on the first in-bounds
   // iteration, so this fallback only survives when the ray leaves the grid
@@ -398,7 +398,7 @@ const castRaySection = ({
         break;
       }
 
-      horizontalCell = world.getCell(xGridIndex, yGridIndex)!;
+      horizontalCell = world.getCell(xGridIndex, yGridIndex);
 
       horizontalOverlay = !ignoreOverlay && horizontalCell.hasOverlay;
 
@@ -565,7 +565,7 @@ const castRaySection = ({
         break;
       }
 
-      verticalCell = world.getCell(xGridIndex, yGridIndex)!;
+      verticalCell = world.getCell(xGridIndex, yGridIndex);
 
       verticalOverlay = !ignoreOverlay && verticalCell.hasOverlay;
 
@@ -831,7 +831,7 @@ export const castRay = ({
       if (checkInitialCell) {
         const gridX = Math.floor(x / CELL_SIZE);
         const gridY = Math.floor(y / CELL_SIZE);
-        const initialCell = world.getCell(gridX, gridY)!;
+        const initialCell = world.getCell(gridX, gridY);
 
         if (initialCell.offset.x || initialCell.offset.y) {
           currentRay = castCellRay(

@@ -158,8 +158,8 @@ export default class DynamicBody extends Body {
     const current = this.parent.getCell(this.gridX, this.gridY);
 
     if (previous !== current) {
-      previous?.remove(this);
-      current?.add(this);
+      previous.remove(this);
+      current.add(this);
     }
 
     this.cell = current;
@@ -305,7 +305,7 @@ export default class DynamicBody extends Body {
     // Mark current cell with id. The assertion is `getCell`'s documented
     // contract, not the parent invariant above: it returns null off the edge
     // of the grid, and a body that has just moved is still on it.
-    const nextCell = parent.getCell(this.gridX, this.gridY)!;
+    const nextCell = parent.getCell(this.gridX, this.gridY);
 
     this.cell = nextCell;
     nextCell.add(this);

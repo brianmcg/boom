@@ -57,17 +57,23 @@ export default class Tail {
    * smoking.
    */
   update(elapsedMS: number) {
-    if (!this.source.velocity) {
+    const { source } = this;
+
+    if (!source.velocity) {
       return;
     }
 
     this.timer += elapsedMS;
 
     if (this.timer >= INTERVAL) {
-      this.source.parent!.addEffect({
-        x: this.source.x,
-        y: this.source.y,
-        elavation: this.source.elavation,
+      if (!source.parent) {
+        throw new Error('Cannot leave a trail outside a world.');
+      }
+
+      source.parent.addEffect({
+        x: source.x,
+        y: source.y,
+        elavation: source.elavation,
         sourceId: this.ids[this.index],
         scale: Math.random() * 0.5 + 0.5,
       });

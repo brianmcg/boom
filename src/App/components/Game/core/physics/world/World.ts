@@ -92,7 +92,7 @@ export default class World extends EventEmitter {
       // register for updates, record the body, then hand it its world.
       const updatable = isUpdatable(body) ? body : null;
 
-      this.getCell(body.gridX, body.gridY)!.add(body);
+      this.getCell(body.gridX, body.gridY).add(body);
 
       if (updatable?.autoPlay) {
         this.startUpdates(updatable);
@@ -106,7 +106,7 @@ export default class World extends EventEmitter {
 
   remove(body: Body) {
     this.stopUpdates(body);
-    this.getCell(body.gridX, body.gridY)!.remove(body);
+    this.getCell(body.gridX, body.gridY).remove(body);
 
     if (isUpdatable(body)) {
       body.onRemoved();
@@ -133,30 +133,39 @@ export default class World extends EventEmitter {
     }
   }
 
-  /** Returns null outside the grid — callers on a guarded path may assume non-null. */
-  getCell(x: number, y: number): Cell | null {
-    if (x >= 0 && x < this.width && y >= 0 && y < this.length) {
-      return this.grid[x][y];
+  /**
+   * Throws off the grid, rather than returning null for callers to dismiss.
+   *
+   * Every caller works from a coordinate already known to be on the grid — a
+   * body's own position, a clamped scan, a step the raycaster has just
+   * bounds-checked. The nullable version existed for the two scans below,
+   * which used it to reject coordinates they had generated out of range; they
+   * clamp now, so nothing wants the null.
+   */
+  getCell(x: number, y: number): Cell {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.length) {
+      throw new RangeError(`No cell at ${x}, ${y}`);
     }
 
-    return null;
+    return this.grid[x][y];
   }
 
   setCell(x: number, y: number, cell: Cell) {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.length) {
+      throw new RangeError(`No cell at ${x}, ${y}`);
+    }
+
     this.grid[x][y] = cell;
   }
 
+  /** The square of cells around a body, clipped to the grid. */
   getNeighbourCells(body: Body, radius = 1): Cell[] {
     const cells: Cell[] = [];
-    const { gridX, gridY } = body;
+    const { minX, maxX, minY, maxY } = this.getNeighbourBounds(body, radius);
 
-    for (let i = gridX - radius; i <= gridX + radius; i++) {
-      for (let j = gridY - radius; j <= gridY + radius; j++) {
-        const cell = this.getCell(i, j);
-
-        if (cell) {
-          cells.push(cell);
-        }
+    for (let i = minX; i <= maxX; i++) {
+      for (let j = minY; j <= maxY; j++) {
+        cells.push(this.getCell(i, j));
       }
     }
 
@@ -166,29 +175,44 @@ export default class World extends EventEmitter {
   /** Every body in the surrounding cells, plus the blocking cells themselves. */
   getNeighbourBodies(body: Body, radius = 1): Body[] {
     const bodies: Body[] = [];
-    const { gridX, gridY } = body;
+    const { minX, maxX, minY, maxY } = this.getNeighbourBounds(body, radius);
 
-    for (let i = gridX - radius; i <= gridX + radius; i++) {
-      for (let j = gridY - radius; j <= gridY + radius; j++) {
+    for (let i = minX; i <= maxX; i++) {
+      for (let j = minY; j <= maxY; j++) {
         const cell = this.getCell(i, j);
 
-        if (cell) {
-          for (let k = 0; k < cell.bodies.length; k++) {
-            const cellBody = cell.bodies[k];
+        for (let k = 0; k < cell.bodies.length; k++) {
+          const cellBody = cell.bodies[k];
 
-            if (cellBody.id !== body.id) {
-              bodies.push(cellBody);
-            }
+          if (cellBody.id !== body.id) {
+            bodies.push(cellBody);
           }
+        }
 
-          if (cell.id !== body.id && cell.blocking) {
-            bodies.push(cell);
-          }
+        if (cell.id !== body.id && cell.blocking) {
+          bodies.push(cell);
         }
       }
     }
 
     return bodies;
+  }
+
+  /**
+   * The square around a body clipped to the grid, so the two scans above ask
+   * only for cells that exist. They used to walk the unclipped square and drop
+   * whatever came back null, which is the whole reason {@link getCell} was
+   * nullable.
+   */
+  private getNeighbourBounds(body: Body, radius: number) {
+    const { gridX, gridY } = body;
+
+    return {
+      minX: Math.max(gridX - radius, 0),
+      maxX: Math.min(gridX + radius, this.width - 1),
+      minY: Math.max(gridY - radius, 0),
+      maxY: Math.min(gridY + radius, this.length - 1),
+    };
   }
 
   destroy(_options?: unknown) {

@@ -133,7 +133,7 @@ export default class Projectile extends DynamicEntity {
     super.onAdded(parent);
 
     const { x, y } = this.source!;
-    const cell = parent.getCell(this.gridX, this.gridY)!;
+    const cell = parent.getCell(this.gridX, this.gridY);
 
     if (cell.blocking && this.isBodyCollision(cell)) {
       this.x = x;

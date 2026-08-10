@@ -56,7 +56,7 @@ export default class DisplaceableCell extends DynamicCell {
 
     // `getCell`'s documented contract: null only off the edge of the grid,
     // which the cell ahead of a slab inside the map never is.
-    const nextCell = parent.getCell(x, y)!;
+    const nextCell = parent.getCell(x, y);
 
     return nextCell.id !== this.id && !nextCell.blocking;
   }
@@ -104,7 +104,7 @@ export default class DisplaceableCell extends DynamicCell {
     const currentGridY = this.gridY;
     const nextGridX = this.gridX - this.direction.x;
     const nextGridY = this.gridY - this.direction.y;
-    const nextCell = parent.getCell(nextGridX, nextGridY)!;
+    const nextCell = parent.getCell(nextGridX, nextGridY);
 
     nextCell.x = x;
     nextCell.y = y;
