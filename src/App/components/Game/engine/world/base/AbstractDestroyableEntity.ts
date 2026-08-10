@@ -4,18 +4,6 @@ import PositionalAudio from '../../audio/PositionalAudio';
 import DynamicEntity, { type DynamicEntityOptions } from './DynamicEntity';
 
 /**
- * The sounds one entity can make, keyed by the role its map data gives them —
- * `travel`, `pain`, `death`, `explode`. Which keys exist differs per entity
- * type, so this stays an open map rather than a fixed shape.
- *
- * Declared here because this is the larger of the two branches that make a
- * noise; `Projectile` is the other, and will import it from here when it
- * converts. Its real home is beside `PositionalAudio`, once that is
- * TypeScript.
- */
-export type Sounds = Record<string, string>;
-
-/**
  * One recorded hit. Hits are collected as they land and applied together on
  * the next update, so that a shotgun blast reads as one wound from the mean
  * direction rather than eight from eight.
@@ -41,7 +29,8 @@ export interface Hit {
 
 /**
  * The effects one entity can show, keyed by the role its map data gives them —
- * `spatter`, `spurt`, `explode`. An open map for the same reason as `Sounds`.
+ * `spatter`, `spurt`, `explode`. Open for the same reason the sound map below
+ * is, and with the same answer: each branch should name its own as it converts.
  */
 export type Effects = Record<string, string>;
 
@@ -49,7 +38,7 @@ export interface AbstractDestroyableEntityOptions extends DynamicEntityOptions {
   maxHealth?: number;
   health?: number;
   effects?: Effects;
-  sounds?: Sounds;
+  sounds?: Record<string, string>;
   soundSprite?: Sound;
 }
 
@@ -61,8 +50,19 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
 
   readonly effects?: Effects;
 
-  /** `Player` adds a name-to-sound entry per weapon, so this is not readonly. */
-  sounds: Sounds | null;
+  /**
+   * Every sound this entity can make, keyed by the role its map data gives it.
+   *
+   * Open here and nowhere else, because the three branches below share no keys
+   * — a barrel has `explode`, an enemy has `alert`, `attack`, `death`,
+   * `nearby` and `pain`, the player has `item`, `step` and one per weapon —
+   * and this class never reads a key. It only counts the entries, to decide
+   * whether the entity needs a voice at all. Each branch names its own set as
+   * it converts.
+   *
+   * Not readonly: `Player` adds an entry per weapon after construction.
+   */
+  sounds: Record<string, string> | null;
 
   /**
    * Null when the map data supplied no sounds, and null again after destroy,

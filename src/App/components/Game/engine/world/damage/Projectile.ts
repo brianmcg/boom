@@ -4,9 +4,7 @@ import { CELL_SIZE } from '@constants/config';
 import DynamicEntity, {
   type DynamicEntityOptions,
 } from '../base/DynamicEntity';
-import AbstractDestroyableEntity, {
-  type Sounds,
-} from '../base/AbstractDestroyableEntity';
+import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
 import PositionalAudio from '../../audio/PositionalAudio';
 import Tail, { type TailOptions } from '../effects/Tail';
 import Explosion, { type ExplosionOptions } from './Explosion';
@@ -21,6 +19,20 @@ const STATES = {
 const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
+
+/**
+ * What a projectile can be heard doing.
+ *
+ * `impact` is in no map in `data.json` — every projectile the game defines
+ * carries `travel` and nothing else — so the branch reading it in
+ * {@link Projectile.setColliding} never fires. Named here rather than dropped,
+ * because whether that is dead weight or a sound never added is a question
+ * about the game, not about the type.
+ */
+export interface ProjectileSounds {
+  travel?: string;
+  impact?: string;
+}
 
 /** How a weapon aims one shot from the pool. */
 export interface ProjectileShot {
@@ -41,7 +53,7 @@ export interface ProjectileOptions extends Omit<DynamicEntityOptions, 'state'> {
   elavation?: number;
   tail?: Omit<TailOptions, 'source'>;
   explosion?: Omit<ExplosionOptions, 'source'>;
-  sounds?: Sounds;
+  sounds?: ProjectileSounds;
   soundSprite?: Sound;
 }
 
@@ -71,7 +83,7 @@ export default class Projectile extends DynamicEntity {
   // Audio is not inherited: the two branches that make a noise are the
   // destroyable entities and these, and they meet no lower than
   // `DynamicEntity`, most of whose subclasses are silent.
-  sounds: Sounds | null;
+  sounds: ProjectileSounds | null;
 
   audio: PositionalAudio | null;
 
