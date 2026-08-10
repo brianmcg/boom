@@ -572,10 +572,6 @@ export default class Player extends AbstractActor {
       return this.pickUpWeapon(item);
     }
 
-    if (item.isPortal) {
-      this.emit(EVENTS.EXIT);
-    }
-
     return false;
   }
 

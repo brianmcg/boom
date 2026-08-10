@@ -39,7 +39,6 @@ export const ITEM_TYPES = {
   AMMO: 'ammoitem',
   HEALTH: 'healthitem',
   WEAPON: 'weaponitem',
-  PORTAL: 'portalitem',
 };
 
 export const TITLE_SCENE_ASSETS = {

@@ -12,7 +12,6 @@ import KeyItem from './world/items/KeyItem';
 import AmmoItem from './world/items/AmmoItem';
 import HealthItem from './world/items/HealthItem';
 import WeaponItem from './world/items/WeaponItem';
-import PortalItem from './world/items/PortalItem';
 import PushWall from './world/cells/PushWall';
 import Arachnacopter from './world/actors/Arachnacopter';
 import Arachnatron from './world/actors/Arachnatron';
@@ -31,7 +30,6 @@ export {
   AmmoItem,
   HealthItem,
   WeaponItem,
-  PortalItem,
   PushWall,
   TransparentMapCell,
   Arachnacopter,

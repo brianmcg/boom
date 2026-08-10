@@ -16,7 +16,6 @@ import {
   AmmoItem,
   HealthItem,
   WeaponItem,
-  PortalItem,
   TransparentMapCell,
   Arachnacopter,
   Arachnatron,
@@ -27,7 +26,6 @@ const ITEMS = {
   [ITEM_TYPES.AMMO]: AmmoItem,
   [ITEM_TYPES.HEALTH]: HealthItem,
   [ITEM_TYPES.WEAPON]: WeaponItem,
-  [ITEM_TYPES.PORTAL]: PortalItem,
 };
 
 const ENEMIES = {
