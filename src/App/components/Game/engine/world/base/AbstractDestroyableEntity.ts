@@ -31,6 +31,12 @@ export interface Hit {
   /** How far along the ray the hit landed. Absent from a melee or projectile hit. */
   distance?: number;
   rays?: Ray[];
+  /**
+   * Splash from an explosion rather than a direct shot. A fact about the
+   * damage, which is why it rides on the hit rather than being something the
+   * target asks the shooter about.
+   */
+  fromBlast?: boolean;
 }
 
 /**
@@ -98,16 +104,21 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
     this.audio?.update();
 
     if (this.hits.length) {
-      const totalDamage = this.hits.reduce(
-        (memo, { damage }) => memo + damage,
-        0
-      );
-      const instantKill = this.hits.some(h => h.instantKill);
+      const hits = this.hits.filter(hit => !this.isImmuneTo(hit));
+
+      // Drained whether or not any of it landed. The clear used to sit inside
+      // the `totalDamage` branch, which was harmless while every hit carried
+      // damage — but a volley this entity is immune to sums to zero, and would
+      // have been re-aggregated every frame from here on.
+      this.hits = [];
+
+      const totalDamage = hits.reduce((memo, { damage }) => memo + damage, 0);
+      const instantKill = hits.some(h => h.instantKill);
 
       if (totalDamage) {
-        const { length } = this.hits;
+        const { length } = hits;
 
-        const { x, y } = this.hits.reduce(
+        const { x, y } = hits.reduce(
           (memo, { angle }) => ({
             x: memo.x + Math.cos(angle),
             y: memo.y + Math.sin(angle),
@@ -118,8 +129,6 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
         const meanAngle = Math.atan2(y / length, x / length);
 
         this.hurt(totalDamage, meanAngle, instantKill);
-
-        this.hits = [];
       }
     }
   }
@@ -132,6 +141,19 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
   hit(options: Hit) {
     this.hits.push(options);
     this.startUpdates();
+  }
+
+  /**
+   * Whether a hit does anything to this entity. Anything that shrugs off a
+   * kind of damage says so here; the default is that everything hurts.
+   *
+   * Asked when the queue is drained rather than when the hit arrives, so an
+   * immune entity still registers being struck — `AbstractActor.hit` is what
+   * places blood, and a boss standing in a blast should look like it took one
+   * and did not care.
+   */
+  isImmuneTo(_hit: Hit): boolean {
+    return false;
   }
 
   /**

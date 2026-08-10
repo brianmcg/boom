@@ -63,6 +63,7 @@ export default class AbstractEnemy extends AbstractActor {
     type,
     painChance,
     isBoss,
+    immuneToBlasts,
     splash,
     ripple,
     spawnItem,
@@ -97,6 +98,7 @@ export default class AbstractEnemy extends AbstractActor {
     this.type = type;
     this.submerged = submerged;
     this.isBoss = isBoss;
+    this.immuneToBlasts = immuneToBlasts;
     this.painChance = painChance;
     this.attackTime = attackTime;
     this.hurtTime = hurtTime;
@@ -488,6 +490,11 @@ export default class AbstractEnemy extends AbstractActor {
     }
 
     return null;
+  }
+
+  /** Splash washes over an enemy the map data marks as proof against it. */
+  isImmuneTo({ fromBlast }) {
+    return !!fromBlast && !!this.immuneToBlasts;
   }
 
   hurt(damage, angle = 0, instantKill = false) {

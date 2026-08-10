@@ -23,7 +23,7 @@ export interface Penetration {
  *
  * Structural rather than a union of `Explosion | Player`, because `Explosion`
  * imports this module — naming it here would be a cycle — and because these
- * three members are the whole of what `run` asks for.
+ * two members are the whole of what `run` asks for.
  *
  * The position is a `Point` rather than a pair of numbers on purpose. Per the
  * note on that class there is no "something with coordinates" type: a bare
@@ -32,8 +32,6 @@ export interface Penetration {
 export interface HitScanSource {
   pos: Point;
   parent: World | null;
-  /** Set only by `Explosion`; a blast spares a boss its own damage. */
-  isExplosion?: boolean;
 }
 
 /** One body the ray crossed, and how far along the ray it stands. */
@@ -51,6 +49,7 @@ export interface HitScanOptions {
   fade?: boolean;
   penetration?: Penetration;
   instantKill?: boolean;
+  fromBlast?: boolean;
 }
 
 /**
@@ -86,6 +85,13 @@ export default class HitScan {
 
   instantKill?: boolean;
 
+  /**
+   * Marks every hit this scan lands as splash. Set by `Explosion` for its own
+   * fan, and by nothing else. The scan only reports it — what it costs is the
+   * target's to decide, through {@link AbstractDestroyableEntity.isImmuneTo}.
+   */
+  fromBlast?: boolean;
+
   constructor({
     effect,
     source,
@@ -95,6 +101,7 @@ export default class HitScan {
     fade,
     penetration,
     instantKill,
+    fromBlast,
   }: HitScanOptions) {
     this.source = source;
     this.effect = effect;
@@ -104,12 +111,13 @@ export default class HitScan {
     this.fade = fade;
     this.penetration = penetration;
     this.instantKill = instantKill;
+    this.fromBlast = fromBlast;
   }
 
   run(angle: number): Body[] {
     const collisionsInRange: Body[] = [];
 
-    const { isExplosion, parent, pos } = this.source;
+    const { parent, pos } = this.source;
 
     if (!parent) {
       throw new Error('Cannot fire a hit scan outside a world.');
@@ -188,18 +196,14 @@ export default class HitScan {
           }
 
           if (damage) {
-            // `isBoss` is `AbstractEnemy`'s, which is still JavaScript, so it
-            // is asked for by name rather than by narrowing to that class.
-            const isShieldedBoss =
-              !!isExplosion && 'isBoss' in body && !!body.isBoss;
-
-            if (body instanceof AbstractDestroyableEntity && !isShieldedBoss) {
+            if (body instanceof AbstractDestroyableEntity) {
               body.hit({
                 damage,
                 angle,
                 distance: hitDistance,
                 rays,
                 instantKill: this.instantKill,
+                fromBlast: this.fromBlast,
               });
             }
           }

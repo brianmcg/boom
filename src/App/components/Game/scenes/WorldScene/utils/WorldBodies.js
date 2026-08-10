@@ -183,6 +183,11 @@ export default class WorldBodies {
       add: enemy.add,
       spawnEnemy: enemy.spawnEnemy,
       ...props.enemies[enemy.name],
+      // The generated data still says `isBoss`, and every boss is proof
+      // against splash today, so that is what it means here. When the
+      // generator emits the property itself this line goes and the spread
+      // above carries it.
+      immuneToBlasts: props.enemies[enemy.name].isBoss,
       spatters,
       soundSprite,
       splash,

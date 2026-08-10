@@ -79,9 +79,6 @@ export default class Explosion {
    */
   parent: World | null = null;
 
-  /** Read by `HitScan`, to spare a boss the damage of its own explosion. */
-  readonly isExplosion = true;
-
   /** One scan per angle in the fan, reused on every run. */
   private readonly hitScans: { hitScan: HitScan; angle: number }[];
 
@@ -107,6 +104,7 @@ export default class Explosion {
         power: this.power,
         range: this.range,
         fade: true,
+        fromBlast: true,
         penetration,
       }),
       angle,
