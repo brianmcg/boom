@@ -68,8 +68,6 @@ export default class Projectile extends DynamicEntity {
    */
   damage = 0;
 
-  timer = 0;
-
   // Audio is not inherited: the two branches that make a noise are the
   // destroyable entities and these, and they meet no lower than
   // `DynamicEntity`, most of whose subclasses are silent.

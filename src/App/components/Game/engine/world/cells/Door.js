@@ -1,6 +1,7 @@
 import translate from '@util/translate';
 import { CELL_SIZE } from '@constants/config';
 import { RetractableCell } from '@game/core/physics';
+import AbstractActor from '../actors/AbstractActor';
 import PositionalAudio from '../../audio/PositionalAudio';
 
 const STATES = {
@@ -82,7 +83,12 @@ export default class Door extends RetractableCell {
 
   use(user) {
     if (this.active && this.isClosed()) {
-      if (this.keyCard && user?.isPlayer) {
+      // Asked by capability rather than by class: what a locked door needs is
+      // someone carrying key cards, and only the player does. Narrowing to
+      // `Player` instead would make a cell in this directory depend on the top
+      // of the actor hierarchy — and pull the whole player subtree into the
+      // contract suite, which imports this file.
+      if (this.keyCard && user?.keyCards) {
         const keyCard = user.keyCards[this.keyCard];
 
         if (keyCard && keyCard.isEquiped()) {
@@ -126,7 +132,7 @@ export default class Door extends RetractableCell {
         const blocked =
           this.parent
             .getNeighbourBodies(this)
-            .some(body => body.isActor && body.isAlive()) ||
+            .some(body => body instanceof AbstractActor && body.isAlive()) ||
           this.bodies.some(b => b.isDynamic);
 
         if (!blocked) {

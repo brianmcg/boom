@@ -27,7 +27,6 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     this.spatters = spatters;
     this.bloodColor = bloodColor;
 
-    this.isActor = true;
     this.standingOn = [];
 
     this.addTrackedCollision({

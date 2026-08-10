@@ -90,7 +90,6 @@ export default class Player extends AbstractActor {
      */
     this.heading = this.angle;
 
-    this.isPlayer = true;
     this.distanceToPlayer = 0;
 
     this.weaponIndex = weaponIndex;

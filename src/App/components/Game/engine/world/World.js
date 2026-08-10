@@ -1,6 +1,7 @@
 import { search } from '@game/core/ai';
 import { DisplaceableCell, World as PhysicsWorld } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
+import AbstractEnemy from './actors/AbstractEnemy';
 import Effect from './effects/Effect';
 import { NODE_WEIGHTS, createGraphs } from '../utils/createGraphs';
 
@@ -70,7 +71,7 @@ export default class World extends PhysicsWorld {
     this.graphs = this.updatableBodies
       .reduce((memo, b) => {
         if (
-          b.isEnemy &&
+          b instanceof AbstractEnemy &&
           b.collisionRadius &&
           !memo.includes(b.collisionRadius)
         ) {

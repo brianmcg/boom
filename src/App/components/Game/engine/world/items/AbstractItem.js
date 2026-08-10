@@ -18,7 +18,6 @@ export default class AbstractItem extends DynamicEntity {
   constructor({ type, floorOffset, respawn, ...other }) {
     super({ state: STATES.IDLE, blocking: false, autoPlay: false, ...other });
 
-    this.isItem = true;
     this.type = type;
     this.respawn = respawn;
     this.timer = 0;

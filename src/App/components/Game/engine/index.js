@@ -1,4 +1,6 @@
 import AbstractDestroyableEntity from './world/base/AbstractDestroyableEntity';
+import AbstractEnemy from './world/actors/AbstractEnemy';
+import AbstractItem from './world/items/AbstractItem';
 import MapCell from './world/cells/MapCell';
 import TransparentMapCell from './world/cells/TransparentMapCell';
 import World from './world/World';
@@ -19,6 +21,8 @@ import Arachnatron from './world/actors/Arachnatron';
 
 export {
   AbstractDestroyableEntity,
+  AbstractEnemy,
+  AbstractItem,
   MapCell,
   World,
   Door,

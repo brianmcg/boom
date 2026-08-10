@@ -108,7 +108,6 @@ export default class AbstractEnemy extends AbstractActor {
     this.hurtTimer = 0;
     this.alertTimer = 0;
     this.aimTimer = 0;
-    this.isEnemy = true;
     this.float = float;
     this.floatDirection = 1;
     this.floatAmount = 0;
