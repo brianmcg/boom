@@ -1,14 +1,5 @@
 import { DynamicBody, type DynamicBodyOptions } from '@game/core/physics';
-import type { Sound } from '@game/core/audio';
-import PositionalAudio from '../../audio/PositionalAudio';
 import type World from '../World';
-
-/**
- * The sounds one entity can make, keyed by the role its map data gives them —
- * `travel`, `pain`, `death`, `open`. Which keys exist differs per entity type,
- * so this stays an open map rather than a fixed shape.
- */
-export type Sounds = Record<string, string>;
 
 export interface DynamicEntityOptions extends DynamicBodyOptions {
   /**
@@ -19,17 +10,18 @@ export interface DynamicEntityOptions extends DynamicBodyOptions {
    */
   state: string;
   name?: string;
-  sounds?: Sounds;
-  soundSprite?: Sound;
   scale?: number;
   anchor?: number;
   elavation?: number;
 }
 
 /**
- * A moving body that is drawn and heard: it knows which sprite stands for it,
- * how far away the player is, and how to make a noise at the volume that
- * distance earns.
+ * A moving body that is drawn: it knows which sprite stands for it, where that
+ * sprite sits, and how far away the player is.
+ *
+ * Being *heard* is one level down, on `AbstractDestroyableEntity` and
+ * `Projectile` — the only two branches that make a noise. Items and scenery
+ * inherit from here and never did.
  */
 export default class DynamicEntity extends DynamicBody {
   /** Which sprite the renderer draws for this entity. */
@@ -47,9 +39,10 @@ export default class DynamicEntity extends DynamicBody {
   /** Height above the floor. Declared on both branches for the same reason. */
   elavation: number;
 
-  sounds: Sounds | null;
-
-  /** Kept current by {@link update}; `PositionalAudio` reads it for its falloff. */
+  /**
+   * Kept current by {@link update}. The `PositionalAudio` a subclass owns reads
+   * it for its falloff, and the POV container sorts sprites by it.
+   */
   distanceToPlayer: number;
 
   /**
@@ -61,13 +54,6 @@ export default class DynamicEntity extends DynamicBody {
    * one too, and the two meet no lower than `Body`.
    */
   state: string;
-
-  /**
-   * Most entities have no sounds at all — every ammo, health, key and weapon
-   * pickup, and the explosive barrel — and the rest release theirs on destroy,
-   * so every use is guarded.
-   */
-  private audio: PositionalAudio | null = null;
 
   /**
    * Narrower than `DynamicBody.parent`, which is the physics `World`.
@@ -84,8 +70,6 @@ export default class DynamicEntity extends DynamicBody {
   constructor({
     state,
     name,
-    sounds = {},
-    soundSprite,
     scale = 1,
     anchor = 1,
     elavation = 0,
@@ -97,13 +81,8 @@ export default class DynamicEntity extends DynamicBody {
     this.scale = scale;
     this.anchor = anchor;
     this.elavation = elavation;
-    this.sounds = sounds;
     this.name = name;
     this.distanceToPlayer = Number.MAX_VALUE;
-
-    if (Object.entries(sounds).length) {
-      this.audio = new PositionalAudio({ soundSprite, source: this });
-    }
   }
 
   /** Returns true only when the state actually changed. */
@@ -119,40 +98,8 @@ export default class DynamicEntity extends DynamicBody {
 
   update(delta: number, _elapsedMS?: number) {
     this.distanceToPlayer = this.getDistanceTo(this.parent!.player.pos);
-    this.audio?.update();
 
     super.update(delta);
-  }
-
-  emitSound(name?: string, loop?: boolean) {
-    this.audio?.emit(name, loop);
-  }
-
-  stopSound(name?: string) {
-    this.audio?.stop(name);
-  }
-
-  play() {
-    this.audio?.play();
-  }
-
-  pause() {
-    this.audio?.pause();
-  }
-
-  stop() {
-    this.audio?.stopAll();
-  }
-
-  isPlaying(name?: string): boolean {
-    return this.audio?.isPlaying(name) ?? false;
-  }
-
-  destroy(options?: unknown) {
-    this.audio?.destroy();
-    this.audio = null;
-    this.sounds = null;
-    super.destroy(options);
   }
 
   /**

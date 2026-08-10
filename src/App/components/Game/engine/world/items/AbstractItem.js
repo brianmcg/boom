@@ -94,11 +94,7 @@ export default class AbstractItem extends DynamicEntity {
       this.velocity = 0;
     }
 
-    if (
-      Object.entries(this.sounds).length === 0 &&
-      this.velocity === 0 &&
-      this.scale === 1
-    ) {
+    if (this.velocity === 0 && this.scale === 1) {
       this.stopUpdates();
     }
 

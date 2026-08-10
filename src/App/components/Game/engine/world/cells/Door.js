@@ -218,17 +218,6 @@ export default class Door extends RetractableCell {
     return this.audio.isPlaying(name);
   }
 
-  play() {
-    this.audio.play();
-  }
-
-  pause() {
-    this.audio.pause();
-  }
-
-  stop() {
-    this.audio.stopAll();
-  }
   startUpdates() {
     super.startUpdates();
     this.distanceToPlayer = this.getDistanceTo(this.parent.player.pos);

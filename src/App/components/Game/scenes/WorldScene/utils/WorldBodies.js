@@ -194,7 +194,6 @@ export default class WorldBodies {
             height: CELL_SIZE / 4,
             floorOffset,
             ...spawnItem,
-            soundSprite,
           })
         : null,
     });

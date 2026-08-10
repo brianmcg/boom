@@ -1,4 +1,18 @@
+import type { Sound } from '@game/core/audio';
+import PositionalAudio from '../../audio/PositionalAudio';
 import DynamicEntity, { type DynamicEntityOptions } from './DynamicEntity';
+
+/**
+ * The sounds one entity can make, keyed by the role its map data gives them —
+ * `travel`, `pain`, `death`, `explode`. Which keys exist differs per entity
+ * type, so this stays an open map rather than a fixed shape.
+ *
+ * Declared here because this is the larger of the two branches that make a
+ * noise; `Projectile` is the other, and will import it from here when it
+ * converts. Its real home is beside `PositionalAudio`, once that is
+ * TypeScript.
+ */
+export type Sounds = Record<string, string>;
 
 /**
  * One recorded hit. Hits are collected as they land and applied together on
@@ -24,6 +38,8 @@ export interface AbstractDestroyableEntityOptions extends DynamicEntityOptions {
   maxHealth?: number;
   health?: number;
   effects?: Effects;
+  sounds?: Sounds;
+  soundSprite?: Sound;
 }
 
 /** An entity with health, which can be hit and eventually killed. */
@@ -36,6 +52,18 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
 
   readonly isDestroyable = true;
 
+  /** `Player` adds a name-to-sound entry per weapon, so this is not readonly. */
+  sounds: Sounds | null;
+
+  /**
+   * Null when the map data supplied no sounds, and null again after destroy,
+   * so every use is guarded. Every destroyable entity in the current data has
+   * some, but they arrive as data and nothing requires them.
+   *
+   * Public because `World` collects these to pause and resume the level.
+   */
+  audio: PositionalAudio | null = null;
+
   /** Landed but not yet applied — see {@link Hit}. */
   private hits: Hit[] = [];
 
@@ -43,6 +71,8 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
     maxHealth = 100,
     health,
     effects,
+    sounds = {},
+    soundSprite,
     ...other
   }: AbstractDestroyableEntityOptions) {
     super(other);
@@ -50,10 +80,19 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
     this.health = health !== undefined ? health : maxHealth;
     this.maxHealth = maxHealth;
     this.effects = effects;
+    this.sounds = sounds;
+
+    if (Object.entries(sounds).length) {
+      this.audio = new PositionalAudio({ soundSprite, source: this });
+    }
   }
 
   update(delta: number, elapsedMS: number) {
     super.update(delta, elapsedMS);
+
+    // After `super`, which is what refreshes the `distanceToPlayer` the volume
+    // is derived from.
+    this.audio?.update();
 
     if (this.hits.length) {
       const totalDamage = this.hits.reduce(
@@ -96,5 +135,24 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
     if (this.constructor === AbstractDestroyableEntity) {
       throw new TypeError('You have to implement this method.');
     }
+  }
+
+  emitSound(name?: string, loop?: boolean) {
+    this.audio?.emit(name, loop);
+  }
+
+  stopSound(name?: string) {
+    this.audio?.stop(name);
+  }
+
+  isPlaying(name?: string): boolean {
+    return this.audio?.isPlaying(name) ?? false;
+  }
+
+  destroy(options?: unknown) {
+    this.audio?.destroy();
+    this.audio = null;
+    this.sounds = null;
+    super.destroy(options);
   }
 }

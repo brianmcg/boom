@@ -1,6 +1,7 @@
 import { Body, degrees } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import DynamicEntity from '../base/DynamicEntity';
+import PositionalAudio from '../../audio/PositionalAudio';
 import Tail from '../effects/Tail';
 import Explosion from './Explosion';
 
@@ -26,6 +27,8 @@ export default class Projectile extends DynamicEntity {
     explosion,
     elavation = 0,
     tail,
+    sounds = {},
+    soundSprite,
     ...other
   }) {
     super({
@@ -44,6 +47,15 @@ export default class Projectile extends DynamicEntity {
     this.baseElavation = elavation * CELL_SIZE;
 
     this.timer = 0;
+
+    // Audio is not inherited: the two branches that make a noise are the
+    // destroyable entities and these, and they meet no lower than
+    // `DynamicEntity`, most of whose subclasses are silent.
+    this.sounds = sounds;
+
+    this.audio = Object.entries(sounds).length
+      ? new PositionalAudio({ soundSprite, source: this })
+      : null;
 
     if (tail) {
       this.tail = new Tail({ source: this, ...tail });
@@ -107,6 +119,10 @@ export default class Projectile extends DynamicEntity {
     this.tail?.update(elapsedMS);
 
     super.update(delta, elapsedMS);
+
+    // After it, which is what refreshes the `distanceToPlayer` the volume is
+    // derived from.
+    this.audio?.update();
   }
 
   updateColliding() {
@@ -140,7 +156,8 @@ export default class Projectile extends DynamicEntity {
     const isStateChanged = this.setState(STATES.EXPLODING);
 
     if (isStateChanged) {
-      this.stop();
+      // Silences the looping travel sound before the impact one lands.
+      this.audio?.stopAll();
 
       if (this.sounds?.impact) {
         this.emitSound(this.sounds.impact);
@@ -150,7 +167,18 @@ export default class Projectile extends DynamicEntity {
     return isStateChanged;
   }
 
+  /**
+   * `Explosion.run` calls this on whatever it was given as a source, which is
+   * either a destroyable entity or one of these.
+   */
+  emitSound(name, loop) {
+    this.audio?.emit(name, loop);
+  }
+
   destroy() {
+    this.audio?.destroy();
+    this.audio = null;
+    this.sounds = null;
     super.destroy();
     this.explosion.destroy();
     this.source = null;

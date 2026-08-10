@@ -161,16 +161,43 @@ export default class World extends PhysicsWorld {
     this.enemies.forEach(enemy => enemy.start?.());
   }
 
+  /**
+   * Every sound source in the world, cells and entities alike.
+   *
+   * These used to be reached by iterating `updatableBodies` and calling a
+   * `play`/`pause`/`stop` forward on each — but that list means "has an
+   * `update` method" and nothing else, so a push wall that has stopped moving
+   * or an enemy that has finished dying was outside it while still audible.
+   *
+   * Derived rather than kept, for the reason `PositionalAudio.volume` is:
+   * there is one list and nothing to hold in step. A stored one would have to
+   * be maintained from `add` and `remove`, and both of those run during the
+   * physics constructor's `super(...)` — before any field declared here
+   * exists — so it would need a guard on every push to survive its own
+   * construction.
+   *
+   * Read on pause, resume and level end, not per frame.
+   */
+  get audioSources() {
+    return Object.values(this.bodies).reduce((memo, body) => {
+      if (body.audio) {
+        memo.push(body.audio);
+      }
+
+      return memo;
+    }, []);
+  }
+
   play() {
-    this.updatableBodies.forEach(body => body.play());
+    this.audioSources.forEach(audio => audio.play());
   }
 
   pause() {
-    this.updatableBodies.forEach(body => body.pause());
+    this.audioSources.forEach(audio => audio.pause());
   }
 
   stop() {
-    this.updatableBodies.forEach(body => body.stop());
+    this.audioSources.forEach(audio => audio.stopAll());
   }
 
   onPlayerDeath() {
