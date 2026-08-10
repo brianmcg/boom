@@ -27,19 +27,6 @@ export interface ExplosionSource extends Body {
   emitSound(name?: string, loop?: boolean): void;
 }
 
-/**
- * `isDead` is declared on `Player` and on `AbstractEnemy` rather than on the
- * `AbstractActor` they share, and both are still JavaScript. Asking for the
- * method by name narrows without importing `AbstractEnemy`, which imports this
- * module.
- */
-interface Killable {
-  isDead(): boolean;
-}
-
-const isKillableActor = (body: Body): body is AbstractActor & Killable =>
-  body instanceof AbstractActor && 'isDead' in body;
-
 export interface ExplosionOptions {
   source: ExplosionSource;
   /** In cells. Zero means noise, light and shake but no damage. */
@@ -136,26 +123,21 @@ export default class Explosion {
     const distanceToPlayer = source.getDistanceTo(parent.player.pos);
     const shake = (CELL_SIZE / distanceToPlayer) * (this.power / CELL_SIZE);
     const range = Math.ceil(this.range / CELL_SIZE);
-    const deadBodies: AbstractActor[] = [];
+    const exposed: AbstractActor[] = [];
 
     if (this.range > 0) {
-      // Make dead bodies collideable and updateable for this frame,
-      // so that an explosion will apply a force to them.
+      // A corpse is not solid, so the rays below would pass straight through
+      // it. What that costs and how it is undone is the actor's own business.
       parent.getNeighbourBodies(source, range).forEach((body: Body) => {
-        if (isKillableActor(body) && body.isDead()) {
-          body.startUpdates();
-          body.blocking = true;
-          deadBodies.push(body);
+        if (body instanceof AbstractActor && body.exposeToBlast()) {
+          exposed.push(body);
         }
       });
 
       // Fire rays in all directions.
       this.hitScans.forEach(({ hitScan, angle }) => hitScan.run(angle));
 
-      // Stop dead bodies from colliding.
-      deadBodies.forEach(body => {
-        body.blocking = false;
-      });
+      exposed.forEach(body => body.concealFromBlast());
     }
 
     parent.addEffect({

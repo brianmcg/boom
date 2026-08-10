@@ -115,8 +115,14 @@ export default class World extends EventEmitter {
     delete this.bodies[body.id];
   }
 
+  /**
+   * Idempotent. Callers reach for this whenever a body needs to be running —
+   * a door opening, a hit landing on a corpse that had settled — without
+   * knowing whether it already is, and a second push would have it updated
+   * twice a frame.
+   */
   startUpdates(body: Body) {
-    if (isUpdatable(body)) {
+    if (isUpdatable(body) && !this.updatableBodies.includes(body)) {
       this.updatableBodies.push(body);
     }
   }

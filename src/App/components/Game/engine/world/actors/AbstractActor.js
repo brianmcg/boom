@@ -65,10 +65,51 @@ export default class AbstractActor extends AbstractDestroyableEntity {
     }
   }
 
+  /** @returns {boolean} */
   isAlive() {
     if (this.constructor === AbstractActor) {
       throw new TypeError('You have to implement this method.');
     }
+  }
+
+  /**
+   * Declared here beside {@link isAlive} rather than only on `Player` and
+   * `AbstractEnemy`, so that narrowing to an actor is enough to ask.
+   *
+   * @returns {boolean}
+   */
+  isDead() {
+    if (this.constructor === AbstractActor) {
+      throw new TypeError('You have to implement this method.');
+    }
+  }
+
+  /**
+   * Makes a corpse solid for as long as a blast is passing through it.
+   *
+   * A dead actor is `blocking: false` so the living can walk over it — which
+   * also makes it invisible to the rays an explosion casts, since those pick
+   * their targets by `blocking`. Restored by {@link concealFromBlast}.
+   *
+   * The updates are started here and deliberately not stopped again: a corpse
+   * has to keep running to slide under the force, and `updateDead` unregisters
+   * itself once it comes to rest.
+   *
+   * @returns {boolean} whether the actor was a corpse, and so exposed.
+   */
+  exposeToBlast() {
+    if (this.isDead()) {
+      this.startUpdates();
+      this.blocking = true;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  concealFromBlast() {
+    this.blocking = false;
   }
 
   face(body) {

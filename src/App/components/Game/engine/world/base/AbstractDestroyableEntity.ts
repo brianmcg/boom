@@ -124,8 +124,14 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
     }
   }
 
+  /**
+   * Queued rather than applied, and drained by {@link update} — so the entity
+   * has to be running to feel it. A corpse that had settled has unregistered
+   * itself, which is why being hit is what puts it back.
+   */
   hit(options: Hit) {
     this.hits.push(options);
+    this.startUpdates();
   }
 
   /**
