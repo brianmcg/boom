@@ -1,6 +1,7 @@
 import { CELL_SIZE } from '@constants/config';
-import { Body, degrees, castRay } from '@game/core/physics';
+import { Body, degrees, castRay, type BodyOptions } from '@game/core/physics';
 import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
+import type World from '../World';
 
 const DEG_180 = degrees(180);
 
@@ -8,7 +9,73 @@ const DEG_360 = degrees(360);
 
 const OFFSET = CELL_SIZE * 0.0625;
 
+/** How far a shot carries past the first body it hits, and at what cost. */
+export interface Penetration {
+  /** In cells, measured from the first body struck. */
+  distance: number;
+  fade: number;
+}
+
+/**
+ * What a scan needs from whatever fired it: where the shot starts, the world
+ * to cast into, and whether it came from an explosion.
+ *
+ * Structural rather than a union of `Explosion | Player`, because `Explosion`
+ * imports this module — naming it here would be a cycle — and because these
+ * four members are the whole of what `run` asks for.
+ */
+export interface HitScanSource {
+  x: number;
+  y: number;
+  parent: World | null;
+  /** Set only by `Explosion`; a blast spares a boss its own damage. */
+  isExplosion?: boolean;
+}
+
+/** One body the ray crossed, and how far along the ray it stands. */
+interface Collision {
+  body: Body;
+  distance: number;
+}
+
+export interface HitScanOptions extends BodyOptions {
+  source: HitScanSource;
+  power: number;
+  effect?: string;
+  range?: number;
+  accuracy?: number;
+  fade?: boolean;
+  penetration?: Penetration;
+  instantKill?: boolean;
+}
+
+/**
+ * An instant shot along one angle: cast a ray, sort what it crossed by
+ * distance, and apply damage and an impact effect to each in turn.
+ *
+ * A `Body` itself only so that it has an id, which is what the impact effect
+ * is keyed by. It never stands in the world.
+ */
 export default class HitScan extends Body {
+  /** Null once destroyed. */
+  source: HitScanSource | null;
+
+  /** The impact effect's name, or absent for a shot that leaves no mark. */
+  effect?: string;
+
+  power: number;
+
+  range: number;
+
+  accuracy: number;
+
+  /** Damage falls off with distance across the range. */
+  fade?: boolean;
+
+  penetration?: Penetration;
+
+  instantKill?: boolean;
+
   constructor({
     effect,
     source,
@@ -19,7 +86,7 @@ export default class HitScan extends Body {
     penetration,
     instantKill,
     ...other
-  } = {}) {
+  }: HitScanOptions) {
     super(other);
 
     this.source = source;
@@ -32,23 +99,23 @@ export default class HitScan extends Body {
     this.instantKill = instantKill;
   }
 
-  run(angle) {
-    const collisionsInRange = [];
+  run(angle: number): Body[] {
+    const collisionsInRange: Body[] = [];
 
-    const { isExplosion, parent, x, y } = this.source;
+    const { isExplosion, parent, x, y } = this.source!;
 
     const sourceId = this.effect && this.id;
 
     const originAngle = (angle + DEG_180) % DEG_360;
 
-    const rays = castRay({ x, y, angle, world: parent });
+    const rays = castRay({ x, y, angle, world: parent! });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } =
       rays[rays.length - 1];
 
     // Get sorted collisions
     const collisions = Object.values(encounteredBodies)
-      .reduce((memo, body) => {
+      .reduce<Collision[]>((memo, body) => {
         if (body.blocking) {
           const hitDistance = body.getLineIntersectionDistance({
             startPoint,
@@ -98,8 +165,11 @@ export default class HitScan extends Body {
           }
 
           // Handle a body that doesn't have it's own impact effect
-          if (sourceId && !body.effects?.spurt) {
-            parent.addEffect({
+          const hasOwnSpurt =
+            body instanceof AbstractDestroyableEntity && !!body.effects?.spurt;
+
+          if (sourceId && !hasOwnSpurt) {
+            parent!.addEffect({
               x: body.x + Math.cos(originAngle) * (body.width + OFFSET),
               y: body.y + Math.sin(originAngle) * (body.length + OFFSET),
               sourceId,
@@ -107,10 +177,12 @@ export default class HitScan extends Body {
           }
 
           if (damage) {
-            if (
-              body instanceof AbstractDestroyableEntity &&
-              !(isExplosion && body.isBoss)
-            ) {
+            // `isBoss` is `AbstractEnemy`'s, which is still JavaScript, so it
+            // is asked for by name rather than by narrowing to that class.
+            const isShieldedBoss =
+              !!isExplosion && 'isBoss' in body && !!body.isBoss;
+
+            if (body instanceof AbstractDestroyableEntity && !isShieldedBoss) {
               body.hit({
                 damage,
                 angle,
@@ -127,7 +199,7 @@ export default class HitScan extends Body {
 
       // Handle collision with wall
       if (sourceId) {
-        parent.addEffect({
+        parent!.addEffect({
           x: endPoint.x + Math.cos(originAngle) * OFFSET,
           y: endPoint.y + Math.sin(originAngle) * OFFSET,
           sourceId,

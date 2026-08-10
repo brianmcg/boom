@@ -1,3 +1,4 @@
+import type { Ray } from '@game/core/physics';
 import type { Sound } from '@game/core/audio';
 import PositionalAudio from '../../audio/PositionalAudio';
 import DynamicEntity, { type DynamicEntityOptions } from './DynamicEntity';
@@ -19,13 +20,17 @@ export type Sounds = Record<string, string>;
  * the next update, so that a shotgun blast reads as one wound from the mean
  * direction rather than eight from eight.
  *
- * `HitScan` sends `distance` and `rays` alongside these; `AbstractActor` takes
- * those two off to place its blood spatter and passes the rest up.
+ * `HitScan` is the only caller that sends `distance` and `rays`;
+ * `AbstractActor` takes those two off to place its blood spatter and passes
+ * the rest up. Everything else — a melee swing, a projectile — sends neither.
  */
 export interface Hit {
   damage: number;
   angle: number;
   instantKill?: boolean;
+  /** How far along the ray the hit landed. Absent from a melee or projectile hit. */
+  distance?: number;
+  rays?: Ray[];
 }
 
 /**
