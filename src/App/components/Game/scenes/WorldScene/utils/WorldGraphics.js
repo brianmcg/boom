@@ -7,6 +7,7 @@ import {
   Sprite,
 } from '@game/core/graphics';
 import { RetractableCell, TransparentCell } from '@game/core/physics';
+import { AbstractDestroyableEntity } from '@game/engine';
 import { GAME_FONT } from '@constants/assets';
 import { FONT_SIZES } from '@constants/fonts';
 import { CELL_SIZE, SCREEN, WALL_LAYERS } from '@constants/config';
@@ -1150,7 +1151,7 @@ export default class WorldGraphics extends SceneGraphics {
         return PINK;
       }
 
-      if (body.isDestroyable) {
+      if (body instanceof AbstractDestroyableEntity) {
         return PURPLE;
       }
 

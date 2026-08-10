@@ -50,8 +50,6 @@ export default class AbstractDestroyableEntity extends DynamicEntity {
 
   readonly effects?: Effects;
 
-  readonly isDestroyable = true;
-
   /** `Player` adds a name-to-sound entry per weapon, so this is not readonly. */
   sounds: Sounds | null;
 

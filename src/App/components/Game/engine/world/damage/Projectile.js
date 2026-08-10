@@ -1,6 +1,7 @@
 import { Body, degrees } from '@game/core/physics';
 import { CELL_SIZE } from '@constants/config';
 import DynamicEntity from '../base/DynamicEntity';
+import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
 import PositionalAudio from '../../audio/PositionalAudio';
 import Tail from '../effects/Tail';
 import Explosion from './Explosion';
@@ -88,7 +89,7 @@ export default class Projectile extends DynamicEntity {
 
   handleCollision(body) {
     if (body.blocking && this.setColliding() && !body.edge) {
-      if (body.isDestroyable) {
+      if (body instanceof AbstractDestroyableEntity) {
         const angle = (body.getAngleTo(this.pos) + DEG_180) % DEG_360;
 
         body.hit({ damage: this.damage, angle });

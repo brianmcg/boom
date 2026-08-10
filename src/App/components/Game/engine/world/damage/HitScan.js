@@ -1,5 +1,6 @@
 import { CELL_SIZE } from '@constants/config';
 import { Body, degrees, castRay } from '@game/core/physics';
+import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
 
 const DEG_180 = degrees(180);
 
@@ -106,7 +107,10 @@ export default class HitScan extends Body {
           }
 
           if (damage) {
-            if (body.isDestroyable && !(isExplosion && body.isBoss)) {
+            if (
+              body instanceof AbstractDestroyableEntity &&
+              !(isExplosion && body.isBoss)
+            ) {
               body.hit({
                 damage,
                 angle,
