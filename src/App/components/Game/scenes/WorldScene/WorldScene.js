@@ -54,7 +54,6 @@ export default class WorldScene extends Scene {
         [KEYS.E]: () => this.assignPlayerAction({ use: true }),
         [KEYS.SPACE]: () => this.assignPlayerAction({ use: true }),
         [KEYS.CTRL]: () => this.assignPlayerAction({ attack: true }),
-        [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: true }),
         [KEYS.ALT]: () => this.assignPlayerAction({ secondaryAttack: true }),
         [KEYS.NUM_1]: () => this.assignPlayerAction({ selectWeapon: 1 }),
         [KEYS.NUM_2]: () => this.assignPlayerAction({ selectWeapon: 2 }),
@@ -73,7 +72,6 @@ export default class WorldScene extends Scene {
         [KEYS.D]: () => this.assignPlayerAction({ strafeRight: false }),
         [KEYS.CTRL]: () =>
           this.assignPlayerAction({ attack: false, stopAttack: true }),
-        [KEYS.SHIFT]: () => this.assignPlayerAction({ crouch: false }),
       },
       onMouseDown: {
         [BUTTONS.LEFT]: () => this.assignPlayerAction({ attack: true }),

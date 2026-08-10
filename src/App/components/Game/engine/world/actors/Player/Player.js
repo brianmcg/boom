@@ -72,10 +72,7 @@ export default class Player extends AbstractActor {
 
     this.rotateSpeed = rotateSpeed;
     this.rotateAcceleration = rotateAcceleration;
-    this.maxHeight = this.height;
-    this.maxSpeed = this.speed;
 
-    this.crouchHeight = this.height * 0.6;
     this.deadHeight = this.height * 0.45;
 
     this.actions = {};
@@ -250,7 +247,6 @@ export default class Player extends AbstractActor {
       turnLeft,
       turnRight,
       rotate,
-      crouch,
       selectWeapon,
       attack,
       stopAttack,
@@ -261,9 +257,6 @@ export default class Player extends AbstractActor {
 
     let moveX = 0;
     let moveY = 0;
-
-    // Update speed.
-    this.speed = (this.maxSpeed * this.height) / this.maxHeight;
 
     // Update rotation.
     if (rotate) {
@@ -315,19 +308,6 @@ export default class Player extends AbstractActor {
     const moveAngle = Math.atan2(moveY, moveX);
 
     this.angle = (this.heading + moveAngle + DEG_360) % DEG_360;
-
-    // Update height.
-    if (crouch) {
-      this.height = Math.max(
-        this.height - HEIGHT_INCREMENT * delta,
-        this.crouchHeight
-      );
-    } else {
-      this.height = Math.min(
-        this.height + HEIGHT_INCREMENT * delta,
-        this.maxHeight
-      );
-    }
 
     // Update vision.
     if (this.vision < 1) {
@@ -688,10 +668,6 @@ export default class Player extends AbstractActor {
     this.sounds = null;
     this.actions = null;
     this.keyCards = null;
-  }
-
-  get elavationOffset() {
-    return this.height - CELL_SIZE / 2;
   }
 
   get props() {

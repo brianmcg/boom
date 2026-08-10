@@ -50,7 +50,7 @@ export default class Body extends EventEmitter {
   readonly width: number;
   readonly length: number;
 
-  /** Mutable: the player crouches and dies by changing its height. */
+  /** Mutable: the player sinks as it dies by changing its height. */
   height: number;
 
   /** Whether the body stops movement and rays. Doors and corpses toggle this. */

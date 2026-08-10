@@ -65,12 +65,6 @@ export default {
   'home.input.weapon': {
     text: 'mouse wheel / num keys',
   },
-  'home.action.crouch': {
-    text: 'crouch',
-  },
-  'home.input.shift': {
-    text: 'shift',
-  },
   'home.action.pause': {
     text: 'menu open',
   },

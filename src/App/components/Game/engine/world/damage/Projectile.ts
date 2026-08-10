@@ -22,15 +22,6 @@ const DEG_180 = degrees(180);
 
 const DEG_360 = degrees(360);
 
-/**
- * Whatever fired the shot, which is the player or an enemy. `set` places the
- * projectile just clear of it and at the elevation it is aiming from.
- */
-export interface ProjectileSource extends DynamicEntity {
-  /** The player's only — how far its aim sits above its body. */
-  elavationOffset?: number;
-}
-
 /** How a weapon aims one shot from the pool. */
 export interface ProjectileShot {
   angle?: number;
@@ -40,7 +31,8 @@ export interface ProjectileShot {
 }
 
 export interface ProjectileOptions extends Omit<DynamicEntityOptions, 'state'> {
-  source: ProjectileSource;
+  /** Whatever fired the shot, which is the player or an enemy. */
+  source: DynamicEntity;
   /** The pool this returns itself to once it has hit something. */
   queue: Projectile[];
   /** In cells per frame. */
@@ -63,7 +55,7 @@ export interface ProjectileOptions extends Omit<DynamicEntityOptions, 'state'> {
  */
 export default class Projectile extends DynamicEntity {
   /** Null once destroyed. */
-  source: ProjectileSource | null;
+  source: DynamicEntity | null;
 
   queue: Projectile[];
 
@@ -204,13 +196,13 @@ export default class Projectile extends DynamicEntity {
   }
 
   set({ angle = 0, damage = 0, offset = 0 }: ProjectileShot) {
-    const { x, y, visualElavation, elavationOffset = 0, width } = this.source!;
+    const { x, y, visualElavation, width } = this.source!;
 
     const distance = Math.sqrt(width * width + width * width) + 1;
 
     this.x = x + Math.cos(angle + offset) * distance;
     this.y = y + Math.sin(angle + offset) * distance;
-    this.elavation = this.baseElavation + visualElavation + elavationOffset;
+    this.elavation = this.baseElavation + visualElavation;
 
     this.angle = angle;
     this.damage = damage;
