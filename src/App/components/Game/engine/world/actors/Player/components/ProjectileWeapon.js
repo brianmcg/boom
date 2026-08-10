@@ -61,4 +61,9 @@ export default class ProjectileWeapon extends AbstractWeapon {
   canUse() {
     return super.canUse() && this.ammo > 0 && !!this.pool.length;
   }
+
+  destroy() {
+    super.destroy();
+    this.projectiles.forEach(projectile => projectile.destroy());
+  }
 }

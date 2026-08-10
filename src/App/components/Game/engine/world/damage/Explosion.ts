@@ -1,5 +1,6 @@
 import { CELL_SIZE } from '@constants/config';
-import { Body, degrees, type BodyOptions } from '@game/core/physics';
+import { degrees, Point, type Body } from '@game/core/physics';
+import { generateId } from '@game/core/utils';
 import AbstractActor from '../actors/AbstractActor';
 import HitScan, { type Penetration } from './HitScan';
 import type World from '../World';
@@ -39,7 +40,7 @@ interface Killable {
 const isKillableActor = (body: Body): body is AbstractActor & Killable =>
   body instanceof AbstractActor && 'isDead' in body;
 
-export interface ExplosionOptions extends BodyOptions {
+export interface ExplosionOptions {
   source: ExplosionSource;
   /** In cells. Zero means noise, light and shake but no damage. */
   range: number;
@@ -54,12 +55,22 @@ export interface ExplosionOptions extends BodyOptions {
  * A blast at a point: a fan of hit scans in every direction, plus the effect,
  * the flash, the shake and the bang.
  *
- * A `Body` for its id, which keys the explosion effect, and for the position
- * the scans are cast from — never something that stands in the world.
+ * Not a `Body`, though it does have a position — it is never added to the
+ * world, never collides and is never cast against, so all it wanted from
+ * `Body` was an id and two numbers.
  */
-export default class Explosion extends Body {
-  /** Null once destroyed. */
-  source: ExplosionSource | null;
+export default class Explosion {
+  /** Keys the explosion effect's sprite, built up front by `WorldGraphics`. */
+  readonly id = generateId(this);
+
+  /**
+   * Moved onto the source at the start of every {@link run}, and read back by
+   * this explosion's own scans, which take it as their source. Mutated rather
+   * than replaced, the way `Body.x`/`y` move `Body.pos`.
+   */
+  readonly pos = new Point(0, 0);
+
+  readonly source: ExplosionSource;
 
   /** In world units, unlike the option it comes from. */
   readonly range: number;
@@ -92,10 +103,7 @@ export default class Explosion extends Body {
     effects,
     flash,
     penetration,
-    ...other
   }: ExplosionOptions) {
-    super(other);
-
     this.source = source;
     this.range = range * CELL_SIZE;
     this.sounds = sounds;
@@ -117,11 +125,11 @@ export default class Explosion extends Body {
   }
 
   run() {
-    const source = this.source!;
+    const { source } = this;
 
     this.parent = source.parent;
-    this.x = source.x;
-    this.y = source.y;
+    this.pos.x = source.x;
+    this.pos.y = source.y;
 
     const parent = this.parent!;
 
@@ -162,11 +170,5 @@ export default class Explosion extends Body {
     parent.addShake(shake);
 
     source.emitSound(this.sounds.explode);
-  }
-
-  destroy() {
-    super.destroy();
-    this.hitScans.forEach(({ hitScan }) => hitScan.destroy());
-    this.source = null;
   }
 }

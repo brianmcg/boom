@@ -1,5 +1,6 @@
 import { CELL_SIZE } from '@constants/config';
-import { Body, degrees, castRay, type BodyOptions } from '@game/core/physics';
+import { degrees, castRay, type Body, type Point } from '@game/core/physics';
+import { generateId } from '@game/core/utils';
 import AbstractDestroyableEntity from '../base/AbstractDestroyableEntity';
 import type World from '../World';
 
@@ -22,11 +23,14 @@ export interface Penetration {
  *
  * Structural rather than a union of `Explosion | Player`, because `Explosion`
  * imports this module — naming it here would be a cycle — and because these
- * four members are the whole of what `run` asks for.
+ * three members are the whole of what `run` asks for.
+ *
+ * The position is a `Point` rather than a pair of numbers on purpose. Per the
+ * note on that class there is no "something with coordinates" type: a bare
+ * `{ x, y }` must not satisfy a position, or a sprite would qualify as one.
  */
 export interface HitScanSource {
-  x: number;
-  y: number;
+  pos: Point;
   parent: World | null;
   /** Set only by `Explosion`; a blast spares a boss its own damage. */
   isExplosion?: boolean;
@@ -38,7 +42,7 @@ interface Collision {
   distance: number;
 }
 
-export interface HitScanOptions extends BodyOptions {
+export interface HitScanOptions {
   source: HitScanSource;
   power: number;
   effect?: string;
@@ -53,12 +57,18 @@ export interface HitScanOptions extends BodyOptions {
  * An instant shot along one angle: cast a ray, sort what it crossed by
  * distance, and apply damage and an impact effect to each in turn.
  *
- * A `Body` itself only so that it has an id, which is what the impact effect
- * is keyed by. It never stands in the world.
+ * Not a `Body`, and has no position of its own — it casts from wherever its
+ * source stands. It extended `Body` for one thing, the id below, and inherited
+ * a shape, a size and a place in the grid it never used.
  */
-export default class HitScan extends Body {
-  /** Null once destroyed. */
-  source: HitScanSource | null;
+export default class HitScan {
+  /**
+   * Keys the impact effect's sprite, which `WorldGraphics` builds one of per
+   * scan before the level starts.
+   */
+  readonly id = generateId(this);
+
+  readonly source: HitScanSource;
 
   /** The impact effect's name, or absent for a shot that leaves no mark. */
   effect?: string;
@@ -85,10 +95,7 @@ export default class HitScan extends Body {
     fade,
     penetration,
     instantKill,
-    ...other
   }: HitScanOptions) {
-    super(other);
-
     this.source = source;
     this.effect = effect;
     this.power = power;
@@ -102,13 +109,13 @@ export default class HitScan extends Body {
   run(angle: number): Body[] {
     const collisionsInRange: Body[] = [];
 
-    const { isExplosion, parent, x, y } = this.source!;
+    const { isExplosion, parent, pos } = this.source;
 
     const sourceId = this.effect && this.id;
 
     const originAngle = (angle + DEG_180) % DEG_360;
 
-    const rays = castRay({ x, y, angle, world: parent! });
+    const rays = castRay({ x: pos.x, y: pos.y, angle, world: parent! });
 
     const { startPoint, endPoint, distance, encounteredBodies, cell } =
       rays[rays.length - 1];
@@ -208,10 +215,5 @@ export default class HitScan extends Body {
     }
 
     return collisionsInRange;
-  }
-
-  destroy() {
-    super.destroy();
-    this.source = null;
   }
 }

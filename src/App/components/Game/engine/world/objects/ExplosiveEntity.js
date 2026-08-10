@@ -71,9 +71,4 @@ export default class ExplosiveEntity extends AbstractDestroyableEntity {
   isExploding() {
     return this.state === STATES.EXPLODING;
   }
-
-  destroy() {
-    super.destroy();
-    this.explosion.destroy();
-  }
 }

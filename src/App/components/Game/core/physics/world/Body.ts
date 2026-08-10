@@ -1,4 +1,5 @@
 import { EventEmitter } from '@game/core/graphics';
+import { generateId } from '@game/core/utils';
 import { CELL_SIZE } from '@constants/config';
 import type { Line } from '../types';
 import Point from '../geometry/Point';
@@ -7,13 +8,6 @@ import {
   isLineShapeIntersection,
   getLineShapeIntersectionDistance,
 } from '../utils/intersections';
-
-let idCount = 0;
-
-const generateId = (body: Body): string => {
-  idCount += 1;
-  return `${body.constructor.name}_${idCount}`;
-};
 
 export interface BodyOptions {
   x?: number;

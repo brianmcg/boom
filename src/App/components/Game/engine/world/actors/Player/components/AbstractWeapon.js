@@ -149,9 +149,11 @@ export default class AbstractWeapon {
     return false;
   }
 
+  // The projectiles are not torn down here. A `HitScanWeapon`'s are `HitScan`s,
+  // which hold nothing to release; only `ProjectileWeapon`'s need destroying,
+  // and it does that itself.
   destroy() {
     this.player = null;
-    this.projectiles.forEach(projectile => projectile.destroy());
   }
 
   get props() {

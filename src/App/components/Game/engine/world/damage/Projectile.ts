@@ -242,7 +242,6 @@ export default class Projectile extends DynamicEntity {
     this.audio = null;
     this.sounds = null;
     super.destroy();
-    this.explosion!.destroy();
     this.source = null;
     this.explosion = undefined;
   }
