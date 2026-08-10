@@ -205,8 +205,17 @@ export default class DynamicBody extends Body {
    * accepts what they both declare. Subclasses in `engine/` do use it.
    */
   update(delta: number, _elapsedMS?: number) {
+    const { parent, cell } = this;
+
+    // Unreachable: `World.update` only walks `updatableBodies`, and every path
+    // into that list parents the body first — see the ordering in `add`,
+    // `remove` and `destroy`.
+    if (!parent || !cell) {
+      return;
+    }
+
     // Get bodies from surrounding cells
-    const bodies = this.parent!.getNeighbourBodies(this, this.collisionRadius);
+    const bodies = parent.getNeighbourBodies(this, this.collisionRadius);
 
     const collisions: Body[] = [];
 
@@ -219,7 +228,7 @@ export default class DynamicBody extends Body {
     this.previousPos.y = this.y;
 
     // Unmark id from cell before moving
-    this.cell!.remove(this);
+    cell.remove(this);
 
     // Update x coordinate
     this.x += Math.cos(this.angle) * velocity;
@@ -293,18 +302,29 @@ export default class DynamicBody extends Body {
 
     this.collisions = collisions;
 
-    // Mark current cell with id
-    this.cell = this.parent!.getCell(this.gridX, this.gridY);
-    this.cell!.add(this);
+    // Mark current cell with id. The assertion is `getCell`'s documented
+    // contract, not the parent invariant above: it returns null off the edge
+    // of the grid, and a body that has just moved is still on it.
+    const nextCell = parent.getCell(this.gridX, this.gridY)!;
+
+    this.cell = nextCell;
+    nextCell.add(this);
   }
 
   /** Casts along the body's own angle unless one is given. Returns the last layer hit. */
   castRay(rayAngle?: number): Ray {
+    const { parent } = this;
+
+    // Owes the caller a ray, so it cannot shrug the way `update` does.
+    if (!parent) {
+      throw new Error('Cannot cast a ray from a body with no world.');
+    }
+
     const rays = castRay({
       x: this.x,
       y: this.y,
       angle: rayAngle === undefined ? this.angle : rayAngle,
-      world: this.parent!,
+      world: parent,
     });
 
     return rays[rays.length - 1];
@@ -351,7 +371,19 @@ export default class DynamicBody extends Body {
     return this.pos.angleTo(target);
   }
 
+  /**
+   * Unregisters **before** the nulls, and that order is the whole point:
+   * `stopUpdates` goes through `parent`, so clearing it first would turn the
+   * call into a silent no-op and leave a destroyed body in the world's update
+   * list pointing at nothing. `DynamicCell.destroy` is written the same way.
+   *
+   * Every caller today tears the whole world down a moment later, so nothing
+   * would iterate that entry — but the guarantee `update` leans on is that
+   * anything registered has a parent, and this is the one method that could
+   * break it.
+   */
   destroy(options?: unknown) {
+    this.stopUpdates();
     super.destroy(options);
 
     // Only the back-references up the graph. Everything else this body holds

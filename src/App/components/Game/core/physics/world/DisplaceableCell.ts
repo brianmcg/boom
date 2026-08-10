@@ -45,9 +45,18 @@ export default class DisplaceableCell extends DynamicCell {
 
   /** Whether the cell ahead is somewhere this slab could stand. */
   canMove(): boolean {
+    const { parent } = this;
+
+    if (!parent) {
+      return false;
+    }
+
     const x = this.gridX - this.direction.x;
     const y = this.gridY - this.direction.y;
-    const nextCell = this.parent!.getCell(x, y)!;
+
+    // `getCell`'s documented contract: null only off the edge of the grid,
+    // which the cell ahead of a slab inside the map never is.
+    const nextCell = parent.getCell(x, y)!;
 
     return nextCell.id !== this.id && !nextCell.blocking;
   }
@@ -82,12 +91,19 @@ export default class DisplaceableCell extends DynamicCell {
 
   /** Trades grid positions with the cell this slab has moved into. */
   private takeNextCell() {
+    const { parent } = this;
+
+    // Unreachable: reached only from `update`, which the world calls on
+    // registered cells, and `canMove` has already passed.
+    if (!parent) {
+      return;
+    }
+
     const { x, y } = this;
     const currentGridX = this.gridX;
     const currentGridY = this.gridY;
     const nextGridX = this.gridX - this.direction.x;
     const nextGridY = this.gridY - this.direction.y;
-    const parent = this.parent!;
     const nextCell = parent.getCell(nextGridX, nextGridY)!;
 
     nextCell.x = x;

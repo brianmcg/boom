@@ -97,7 +97,14 @@ export default class DynamicEntity extends DynamicBody {
   }
 
   update(delta: number, _elapsedMS?: number) {
-    this.distanceToPlayer = this.getDistanceTo(this.parent!.player.pos);
+    const { parent } = this;
+
+    // Unreachable, for the reason given on `DynamicBody.update`.
+    if (!parent) {
+      return;
+    }
+
+    this.distanceToPlayer = this.getDistanceTo(parent.player.pos);
 
     super.update(delta);
   }
